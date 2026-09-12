@@ -1,0 +1,2125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calwebtech | Custom Websites, Web Apps &amp; Growth Engineering</title>
+<meta name="description" content="Calwebtech builds custom websites, ecommerce platforms and AI-powered web applications for B2B and D2C brands. Own your data, own your platform.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        ink:     '#0A1D37',
+        ink2:    '#12294A',
+        primary: '#1550E0',
+        primaryd:'#0F3FB4',
+        result:  '#0E9F87',
+        mist:    '#EEF3F9',
+        mist2:   '#F7FAFD',
+        line:    '#DCE4EE',
+        body:    '#41536B'
+      },
+      fontFamily: {
+        display: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+        sans:    ['"IBM Plex Sans"', 'system-ui', 'sans-serif']
+      },
+      maxWidth: { shell: '1440px' }
+    }
+  }
+}
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { -webkit-font-smoothing: antialiased; }
+  h1,h2,h3,h4 { font-family: '"Plus Jakarta Sans"', sans-serif; letter-spacing: -0.02em; }
+  .shell { max-width: 1440px; margin: 0 auto; padding-left: 24px; padding-right: 24px; }
+  @media (min-width: 1024px){ .shell { padding-left: 56px; padding-right: 56px; } }
+
+  /* focus visibility */
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+    outline: 3px solid #1550E0; outline-offset: 2px; border-radius: 4px;
+  }
+
+  /* mega menu */
+  .mega { visibility: hidden; opacity: 0; transform: translateY(6px); transition: .16s ease; }
+  .has-mega:hover .mega, .has-mega:focus-within .mega { visibility: visible; opacity: 1; transform: translateY(0); }
+
+  /* logo marquee */
+  .marquee { display: flex; width: max-content; animation: slide 42s linear infinite; }
+  @keyframes slide { to { transform: translateX(-50%); } }
+  .marquee:hover { animation-play-state: paused; }
+
+  /* horizontal work rail */
+  .rail { scrollbar-width: none; }
+  .rail::-webkit-scrollbar { display: none; }
+
+  /* faq */
+  .faq-body { display: none; }
+  .faq.open .faq-body { display: block; }
+  .faq.open .faq-plus { transform: rotate(45deg); }
+
+  /* before/after */
+  #ba-after { width: 50%; }
+  #ba-handle { left: 50%; }
+
+  .fakebar { height: 6px; border-radius: 3px; }
+
+  /* --- background treatments --- */
+  .glow-blue { background: radial-gradient(58% 62% at 78% 18%, rgba(37,99,235,.55), transparent 68%); }
+  .glow-teal { background: radial-gradient(50% 60% at 12% 88%, rgba(14,159,135,.30), transparent 70%); }
+
+  .grid-lines {
+    background-image:
+      linear-gradient(to right, rgba(10,29,55,.055) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(10,29,55,.055) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+  .grid-lines-light {
+    background-image:
+      linear-gradient(to right, rgba(255,255,255,.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,.06) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+  .glass { background: rgba(255,255,255,.08); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,.14); }
+  .fade-b { -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%); mask-image: linear-gradient(to bottom, #000 55%, transparent 100%); }
+
+  /* --- video hero --- */
+  .kenburns { animation: kb 26s ease-in-out infinite alternate; }
+  @keyframes kb { from { transform: scale(1.04) translate3d(0,0,0); } to { transform: scale(1.16) translate3d(-1.5%, -1.5%, 0); } }
+  .vid-layer { opacity: 0; transition: opacity .9s ease; }
+  .vid-layer.ready { opacity: 1; }
+
+  /* --- modal --- */
+  .modal { display: none; }
+  .modal.open { display: flex; }
+
+  /* --- expanding service list (Digital Silk pattern) --- */
+  .exp-panel { display: none; }
+  .exp.open .exp-panel { display: block; }
+  .exp.open .exp-head { color: #0A1D37; }
+  .exp.open .exp-rail { background: #1550E0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .kenburns { animation: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee { animation: none; }
+    * { transition: none !important; }
+  }
+</style>
+</head>
+
+<body class="bg-white font-sans text-body antialiased">
+
+<a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:z-[999] focus:top-3 focus:left-3 focus:bg-ink focus:text-white focus:px-4 focus:py-2 focus:rounded">Skip to content</a>
+
+<!-- ============================ UTILITY BAR ============================ -->
+<div class="hidden lg:block bg-ink text-white/80 text-[13px]">
+  <div class="shell flex items-center justify-between h-11">
+    <div class="flex items-center gap-6">
+      <a href="tel:+18005550188" class="hover:text-white">+1 (800) 555-0188</a>
+      <span class="text-white/25">|</span>
+      <a href="mailto:hello@calwebtech.com" class="hover:text-white">hello@calwebtech.com</a>
+      <span class="text-white/25">|</span>
+      <span>Sacramento &middot; Austin &middot; Dhaka</span>
+    </div>
+    <div class="flex items-center gap-5">
+      <!-- aggregated review widget (Coalition Technologies / Simpalm pattern) -->
+      <div class="relative" id="rev-wrap">
+        <button id="rev-btn" class="flex items-center gap-2 hover:text-white" aria-expanded="false" aria-controls="rev-pop">
+          <span class="text-[#FFC53D]" aria-hidden="true">★★★★★</span>
+          <span class="text-white font-semibold">4.9</span>
+          <span>from 217 verified reviews</span>
+          <svg class="w-3 h-3" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5 6 6.5l5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </button>
+        <div id="rev-pop" class="hidden absolute right-0 top-9 z-50 w-72 bg-white text-ink rounded-xl shadow-2xl border border-line p-4">
+          <p class="font-display font-bold text-sm mb-3">Where our rating comes from</p>
+          <ul class="space-y-2.5 text-[13px]">
+            <li class="flex items-center justify-between"><span class="text-body">Google</span><span><b>4.9</b> <span class="text-body">· 96 reviews</span></span></li>
+            <li class="flex items-center justify-between"><span class="text-body">Clutch</span><span><b>4.9</b> <span class="text-body">· 71 reviews</span></span></li>
+            <li class="flex items-center justify-between"><span class="text-body">DesignRush</span><span><b>5.0</b> <span class="text-body">· 34 reviews</span></span></li>
+            <li class="flex items-center justify-between"><span class="text-body">GoodFirms</span><span><b>4.8</b> <span class="text-body">· 16 reviews</span></span></li>
+          </ul>
+          <p class="mt-3 pt-3 border-t border-line text-[12px] text-body">Net Promoter Score <b class="text-ink">9.6</b>, measured across 41 client projects.</p>
+        </div>
+      </div>
+      <a href="#" class="hover:text-white">Client login</a>
+      <a href="#" class="hover:text-white">Support</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============================ HEADER ============================ -->
+<header id="hdr" class="sticky top-0 z-[100] bg-white border-b border-line">
+  <div class="shell flex items-center justify-between h-[76px]">
+
+    <!-- logo -->
+    <a href="#" class="flex items-center gap-2.5 shrink-0" aria-label="Calwebtech home">
+      <span class="grid place-items-center w-9 h-9 rounded-lg bg-ink text-white font-display font-extrabold text-lg">C</span>
+      <span class="font-display font-extrabold text-[22px] text-ink tracking-tight">Calwebtech</span>
+    </a>
+
+    <!-- desktop nav -->
+    <nav class="hidden xl:flex items-center h-full" aria-label="Main">
+
+      <!-- SERVICES -->
+      <div class="has-mega h-full flex items-center">
+        <button class="px-4 h-full text-[15px] font-medium text-ink hover:text-primary flex items-center gap-1.5">
+          Services
+          <svg class="w-2.5 h-2.5 opacity-60" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5 6 6.5l5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+        <div class="mega absolute left-0 right-0 top-full bg-white border-t border-line shadow-[0_24px_48px_-20px_rgba(10,29,55,.28)]">
+          <div class="shell grid grid-cols-12 gap-10 py-10">
+            <div class="col-span-3">
+              <p class="font-display font-bold text-ink mb-3">Design &amp; build</p>
+              <ul class="space-y-2.5 text-[14px]">
+                <li><a href="#" class="hover:text-primary">Custom website design</a></li>
+                <li><a href="#" class="hover:text-primary">Web application development</a></li>
+                <li><a href="#" class="hover:text-primary">Ecommerce development</a></li>
+                <li><a href="#" class="hover:text-primary">UI/UX and design systems</a></li>
+                <li><a href="#" class="hover:text-primary">Website redesign</a></li>
+                <li><a href="#" class="hover:text-primary">Branding and identity</a></li>
+              </ul>
+            </div>
+            <div class="col-span-3">
+              <p class="font-display font-bold text-ink mb-3">Platforms</p>
+              <ul class="space-y-2.5 text-[14px]">
+                <li><a href="#" class="hover:text-primary">Next.js and React</a></li>
+                <li><a href="#" class="hover:text-primary">WordPress</a></li>
+                <li><a href="#" class="hover:text-primary">Shopify</a></li>
+                <li><a href="#" class="hover:text-primary">WooCommerce</a></li>
+                <li><a href="#" class="hover:text-primary">Headless CMS</a></li>
+                <li><a href="#" class="hover:text-primary">React Native</a></li>
+              </ul>
+            </div>
+            <div class="col-span-3">
+              <p class="font-display font-bold text-ink mb-3">Growth &amp; care</p>
+              <ul class="space-y-2.5 text-[14px]">
+                <li><a href="#" class="hover:text-primary">Technical SEO</a></li>
+                <li><a href="#" class="hover:text-primary">AI search visibility (GEO)</a></li>
+                <li><a href="#" class="hover:text-primary">Conversion optimisation</a></li>
+                <li><a href="#" class="hover:text-primary">Performance engineering</a></li>
+                <li><a href="#" class="hover:text-primary">Website care plans</a></li>
+                <li><a href="#" class="hover:text-primary">Project rescue</a></li>
+              </ul>
+            </div>
+            <div class="col-span-3">
+              <div class="rounded-2xl bg-mist p-6 h-full flex flex-col">
+                <p class="font-display font-bold text-ink text-[17px] leading-snug">Not sure what your project costs?</p>
+                <p class="text-[13.5px] mt-2 leading-relaxed">Answer eight questions and get an indicative price range in under three minutes.</p>
+                <a href="#estimate" class="mt-4 inline-flex items-center justify-center h-11 px-5 rounded-lg bg-ink text-white text-[14px] font-semibold hover:bg-ink2">Get an instant estimate</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INDUSTRIES -->
+      <div class="has-mega h-full flex items-center">
+        <button class="px-4 h-full text-[15px] font-medium text-ink hover:text-primary flex items-center gap-1.5">
+          Industries
+          <svg class="w-2.5 h-2.5 opacity-60" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5 6 6.5l5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+        <div class="mega absolute left-0 right-0 top-full bg-white border-t border-line shadow-[0_24px_48px_-20px_rgba(10,29,55,.28)]">
+          <div class="shell grid grid-cols-12 gap-10 py-10">
+            <div class="col-span-3">
+              <ul class="space-y-2.5 text-[14px]">
+                <li><a href="#" class="hover:text-primary">Manufacturing</a></li>
+                <li><a href="#" class="hover:text-primary">Distribution and supply</a></li>
+                <li><a href="#" class="hover:text-primary">Construction</a></li>
+              </ul>
+            </div>
+            <div class="col-span-3">
+              <ul class="space-y-2.5 text-[14px]">
+                <li><a href="#" class="hover:text-primary">SaaS and technology</a></li>
+                <li><a href="#" class="hover:text-primary">Healthcare</a></li>
+                <li><a href="#" class="hover:text-primary">Financial services</a></li>
+              </ul>
+            </div>
+            <div class="col-span-3">
+              <ul class="space-y-2.5 text-[14px]">
+                <li><a href="#" class="hover:text-primary">Real estate</a></li>
+                <li><a href="#" class="hover:text-primary">Hospitality and travel</a></li>
+                <li><a href="#" class="hover:text-primary">Education</a></li>
+              </ul>
+            </div>
+            <div class="col-span-3">
+              <div class="rounded-2xl border border-line p-6">
+                <p class="font-display font-bold text-ink text-[15px]">Distribution, 4x leads</p>
+                <p class="text-[13.5px] mt-1.5 leading-relaxed">How we cut a supplier's quote turnaround from three days to twelve minutes.</p>
+                <a href="#work" class="mt-3 inline-block text-primary font-semibold text-[14px] hover:text-primaryd">Read the case study</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WORK -->
+      <div class="has-mega h-full flex items-center">
+        <button class="px-4 h-full text-[15px] font-medium text-ink hover:text-primary flex items-center gap-1.5">
+          Work
+          <svg class="w-2.5 h-2.5 opacity-60" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5 6 6.5l5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+        <div class="mega absolute left-0 right-0 top-full bg-white border-t border-line shadow-[0_24px_48px_-20px_rgba(10,29,55,.28)]">
+          <div class="shell grid grid-cols-12 gap-10 py-10">
+            <div class="col-span-3">
+              <p class="font-display font-bold text-ink mb-3">Browse</p>
+              <ul class="space-y-2.5 text-[14px]">
+                <li><a href="#work" class="hover:text-primary">All case studies</a></li>
+                <li><a href="#" class="hover:text-primary">Portfolio grid</a></li>
+                <li><a href="#" class="hover:text-primary">Demo showcase</a></li>
+                <li><a href="#beforeafter" class="hover:text-primary">Before and after</a></li>
+                <li><a href="#" class="hover:text-primary">Client feedback</a></li>
+              </ul>
+            </div>
+            <div class="col-span-3">
+              <p class="font-display font-bold text-ink mb-3">By service</p>
+              <ul class="space-y-2.5 text-[14px]">
+                <li><a href="#" class="hover:text-primary">Website design</a></li>
+                <li><a href="#" class="hover:text-primary">Ecommerce</a></li>
+                <li><a href="#" class="hover:text-primary">Web applications</a></li>
+                <li><a href="#" class="hover:text-primary">SEO and growth</a></li>
+              </ul>
+            </div>
+            <div class="col-span-6 grid grid-cols-2 gap-5">
+              <a href="#work" class="group">
+                <div class="aspect-[16/10] rounded-xl overflow-hidden bg-mist">
+                  <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=640&q=70" alt="Analytics dashboard on a laptop" class="w-full h-full object-cover" loading="lazy">
+                </div>
+                <p class="mt-2.5 font-semibold text-ink text-[14px] group-hover:text-primary">Northmark Supply</p>
+                <p class="text-[13px]">+312% qualified leads</p>
+              </a>
+              <a href="#work" class="group">
+                <div class="aspect-[16/10] rounded-xl overflow-hidden bg-mist">
+                  <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=640&q=70" alt="Retail shopping experience" class="w-full h-full object-cover" loading="lazy">
+                </div>
+                <p class="mt-2.5 font-semibold text-ink text-[14px] group-hover:text-primary">Verona Home</p>
+                <p class="text-[13px]">$2.4M first-year revenue</p>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESOURCES -->
+      <div class="has-mega h-full flex items-center">
+        <button class="px-4 h-full text-[15px] font-medium text-ink hover:text-primary flex items-center gap-1.5">
+          Resources
+          <svg class="w-2.5 h-2.5 opacity-60" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5 6 6.5l5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+        <div class="mega absolute left-0 right-0 top-full bg-white border-t border-line shadow-[0_24px_48px_-20px_rgba(10,29,55,.28)]">
+          <div class="shell grid grid-cols-12 gap-10 py-10">
+            <div class="col-span-3">
+              <p class="font-display font-bold text-ink mb-3">Free tools</p>
+              <ul class="space-y-2.5 text-[14px]">
+                <li><a href="#estimate" class="hover:text-primary">Website cost calculator</a></li>
+                <li><a href="#" class="hover:text-primary">Free website audit</a></li>
+                <li><a href="#" class="hover:text-primary">AI search visibility check</a></li>
+                <li><a href="#" class="hover:text-primary">Which website do you need? Quiz</a></li>
+              </ul>
+            </div>
+            <div class="col-span-3">
+              <p class="font-display font-bold text-ink mb-3">Learn</p>
+              <ul class="space-y-2.5 text-[14px]">
+                <li><a href="#insights" class="hover:text-primary">Insights and blog</a></li>
+                <li><a href="#" class="hover:text-primary">Guides and white papers</a></li>
+                <li><a href="#" class="hover:text-primary">Glossary</a></li>
+                <li><a href="#process" class="hover:text-primary">Our playbook</a></li>
+              </ul>
+            </div>
+            <div class="col-span-3">
+              <p class="font-display font-bold text-ink mb-3">Company</p>
+              <ul class="space-y-2.5 text-[14px]">
+                <li><a href="#" class="hover:text-primary">About Calwebtech</a></li>
+                <li><a href="#" class="hover:text-primary">Team</a></li>
+                <li><a href="#awards" class="hover:text-primary">Awards and recognition</a></li>
+                <li><a href="#" class="hover:text-primary">Careers</a></li>
+                <li><a href="#" class="hover:text-primary">News</a></li>
+              </ul>
+            </div>
+            <div class="col-span-3">
+              <div class="rounded-2xl bg-ink text-white p-6">
+                <p class="font-display font-bold text-[16px] leading-snug">The 2026 B2B Website Trust Report</p>
+                <p class="text-[13.5px] mt-2 text-white/70 leading-relaxed">What 400 buyers said makes them leave a supplier's website.</p>
+                <a href="#" class="mt-4 inline-flex items-center justify-center h-10 px-4 rounded-lg bg-white text-ink text-[13.5px] font-semibold hover:bg-mist">Download the report</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <a href="#tech" class="px-4 text-[15px] font-medium text-ink hover:text-primary">Technology</a>
+      <a href="#pricing" class="px-4 text-[15px] font-medium text-ink hover:text-primary">Pricing</a>
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <a href="#estimate" class="hidden lg:inline-flex items-center h-11 px-4 rounded-lg border border-line text-ink text-[14.5px] font-semibold hover:border-ink hover:bg-mist2">Instant estimate</a>
+      <a href="#book" class="hidden sm:inline-flex items-center h-11 px-5 rounded-lg bg-primary text-white text-[14.5px] font-semibold hover:bg-primaryd">Book a consultation</a>
+      <button id="burger" class="xl:hidden grid place-items-center w-11 h-11 rounded-lg border border-line" aria-label="Open menu" aria-expanded="false">
+        <svg class="w-5 h-5 text-ink" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- mobile nav -->
+  <div id="mnav" class="hidden xl:hidden border-t border-line bg-white max-h-[calc(100vh-76px)] overflow-y-auto">
+    <div class="shell py-6 space-y-5">
+      <div>
+        <p class="font-display font-bold text-ink mb-2">Services</p>
+        <div class="grid grid-cols-2 gap-x-6 gap-y-2 text-[14px]">
+          <a href="#" class="py-0.5">Custom website design</a><a href="#" class="py-0.5">Web applications</a>
+          <a href="#" class="py-0.5">Ecommerce</a><a href="#" class="py-0.5">UI/UX design</a>
+          <a href="#" class="py-0.5">Next.js and React</a><a href="#" class="py-0.5">WordPress</a>
+          <a href="#" class="py-0.5">Shopify</a><a href="#" class="py-0.5">Technical SEO</a>
+          <a href="#" class="py-0.5">AI search (GEO)</a><a href="#" class="py-0.5">Care plans</a>
+        </div>
+      </div>
+      <div>
+        <p class="font-display font-bold text-ink mb-2">Industries</p>
+        <div class="grid grid-cols-2 gap-x-6 gap-y-2 text-[14px]">
+          <a href="#" class="py-0.5">Manufacturing</a><a href="#" class="py-0.5">Distribution</a>
+          <a href="#" class="py-0.5">SaaS</a><a href="#" class="py-0.5">Healthcare</a>
+          <a href="#" class="py-0.5">Real estate</a><a href="#" class="py-0.5">Hospitality</a>
+        </div>
+      </div>
+      <div>
+        <p class="font-display font-bold text-ink mb-2">More</p>
+        <div class="grid grid-cols-2 gap-x-6 gap-y-2 text-[14px]">
+          <a href="#work" class="py-0.5">Case studies</a><a href="#beforeafter" class="py-0.5">Before and after</a>
+          <a href="#tech" class="py-0.5">Technology</a><a href="#process" class="py-0.5">Process</a>
+          <a href="#pricing" class="py-0.5">Pricing</a><a href="#insights" class="py-0.5">Insights</a>
+          <a href="#estimate" class="py-0.5">Cost calculator</a><a href="#awards" class="py-0.5">Awards</a>
+        </div>
+      </div>
+      <div class="flex gap-3 pt-1">
+        <a href="#book" class="flex-1 inline-flex items-center justify-center h-12 rounded-lg bg-primary text-white font-semibold">Book a consultation</a>
+        <a href="#estimate" class="flex-1 inline-flex items-center justify-center h-12 rounded-lg border border-line text-ink font-semibold">Instant estimate</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ============================ HERO ============================ -->
+<section class="relative overflow-hidden bg-ink text-white">
+
+  <!-- layered background: poster image (always) + video on top once it can play -->
+  <div class="absolute inset-0 overflow-hidden" aria-hidden="true">
+    <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1900&q=70"
+         alt="" class="absolute inset-0 w-full h-full object-cover opacity-[.30] kenburns">
+    <video id="heroVid" class="vid-layer absolute inset-0 w-full h-full object-cover opacity-0"
+           muted loop playsinline preload="metadata"
+           poster="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1900&q=70">
+      <source src="assets/calwebtech-showreel.mp4" type="video/mp4">
+    </video>
+    <div class="absolute inset-0 bg-gradient-to-r from-ink via-ink/95 to-ink/70"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-ink/60"></div>
+    <div class="absolute inset-0 glow-blue"></div>
+    <div class="absolute inset-0 glow-teal"></div>
+    <div class="absolute inset-0 grid-lines-light"></div>
+  </div>
+
+  <div class="shell relative grid lg:grid-cols-12 gap-12 lg:gap-14 items-center pt-14 pb-14 lg:pt-20 lg:pb-16">
+
+    <div class="lg:col-span-7">
+      <div class="inline-flex items-center gap-2.5 rounded-full glass px-4 py-2 text-[13px] font-medium text-white">
+        <span class="w-1.5 h-1.5 rounded-full bg-result" aria-hidden="true"></span>
+        Building on the web since 2014
+        <span class="w-px h-3.5 bg-white/25"></span>
+        <span class="text-white/70">240 projects shipped</span>
+      </div>
+
+      <h1 class="mt-7 font-display font-extrabold text-[40px] sm:text-[54px] xl:text-[62px] leading-[1.04]">
+        Websites that carry
+        the weight of your
+        <span class="relative inline-block">
+          whole sales process.
+          <span class="absolute left-0 -bottom-1 h-[6px] w-full rounded-full bg-gradient-to-r from-primary to-result" aria-hidden="true"></span>
+        </span>
+      </h1>
+
+      <p class="mt-7 text-[18px] leading-relaxed text-white/75 max-w-[52ch]">
+        Calwebtech designs and builds custom websites, ecommerce platforms and web applications
+        for B2B, D2C and enterprise brands. Every lead, booking and subscriber lands in a
+        database you own.
+      </p>
+
+      <!-- award + review badges, Digital Silk pattern -->
+      <div class="mt-8 flex flex-wrap items-center gap-3">
+        <a href="#" class="inline-flex items-center gap-2.5 rounded-xl glass px-4 py-3 hover:bg-white/[.16]">
+          <span class="text-[#FFC53D] text-[14px]" aria-hidden="true">★★★★★</span>
+          <span class="text-[13.5px] leading-tight"><b class="block text-white">4.9 average</b><span class="text-white/60">217 verified reviews</span></span>
+        </a>
+        <a href="#awards" class="inline-flex items-center gap-3 rounded-xl glass px-4 py-3 hover:bg-white/[.16]">
+          <span class="text-[13.5px] leading-tight"><b class="block text-white">Top B2B Developer 2026</b><span class="text-white/60">Clutch, California</span></span>
+        </a>
+        <span class="inline-flex items-center gap-2 rounded-xl glass px-4 py-3 text-[13.5px]">
+          <span class="text-white/60">Featured in</span>
+          <span class="font-display font-bold text-white text-[15px]">Forbes</span>
+        </span>
+      </div>
+
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="#work" class="inline-flex items-center h-13 py-3.5 px-6 rounded-xl glass text-white text-[15.5px] font-semibold hover:bg-white/[.16]">See our work</a>
+        <a href="#estimate" class="inline-flex items-center h-13 py-3.5 px-6 rounded-xl text-white text-[15.5px] font-semibold underline underline-offset-4 decoration-white/30 hover:decoration-white">Or get an instant estimate</a>
+      </div>
+    </div>
+
+    <!-- quote form inside the hero -->
+    <div class="lg:col-span-5 w-full" id="quote">
+      <div class="bg-white text-ink rounded-2xl shadow-[0_40px_90px_-30px_rgba(0,0,0,.8)] overflow-hidden">
+        <div class="px-7 py-5 border-b border-line bg-mist">
+          <p class="font-display font-extrabold text-[20px]">Request a free quote</p>
+          <p class="text-[14px] text-body mt-1">A fixed proposal within two business days. No obligation.</p>
+        </div>
+        <form class="p-7 space-y-4" onsubmit="return false">
+          <div>
+            <label for="q-name" class="block text-[13.5px] font-semibold mb-1.5">Full name</label>
+            <input id="q-name" type="text" class="w-full h-12 px-4 rounded-lg border border-line focus:border-primary outline-none" placeholder="Dana Whitfield">
+          </div>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label for="q-company" class="block text-[13.5px] font-semibold mb-1.5">Company</label>
+              <input id="q-company" type="text" class="w-full h-12 px-4 rounded-lg border border-line focus:border-primary outline-none" placeholder="Halloway Group">
+            </div>
+            <div>
+              <label for="q-phone" class="block text-[13.5px] font-semibold mb-1.5">Phone</label>
+              <input id="q-phone" type="tel" class="w-full h-12 px-4 rounded-lg border border-line focus:border-primary outline-none" placeholder="Optional">
+            </div>
+          </div>
+          <div>
+            <label for="q-email" class="block text-[13.5px] font-semibold mb-1.5">Work email</label>
+            <input id="q-email" type="email" class="w-full h-12 px-4 rounded-lg border border-line focus:border-primary outline-none" placeholder="dana@company.com">
+          </div>
+          <div>
+            <label for="q-msg" class="block text-[13.5px] font-semibold mb-1.5">What is going wrong right now?</label>
+            <textarea id="q-msg" rows="3" class="w-full p-4 rounded-lg border border-line focus:border-primary outline-none resize-none" placeholder="Two or three sentences is plenty."></textarea>
+          </div>
+          <button class="w-full h-14 rounded-xl bg-primary text-white text-[16px] font-semibold hover:bg-primaryd shadow-[0_16px_34px_-14px_rgba(21,80,224,.8)]">Start getting results</button>
+          <p class="text-[12.5px] text-body text-center">We sign your NDA before the first call. No spam, ever.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- stats strip -->
+  <div class="relative border-t border-white/12">
+    <div class="shell">
+      <dl class="grid grid-cols-2 lg:grid-cols-4 divide-y lg:divide-y-0 lg:divide-x divide-white/12">
+        <div class="py-7 lg:py-8 lg:pr-10">
+          <dd class="font-display font-extrabold text-white text-[34px] leading-none" data-count="240" data-suffix="+">0</dd>
+          <dt class="text-[14px] text-white/60 mt-2">Projects shipped since 2014</dt>
+        </div>
+        <div class="py-7 lg:py-8 lg:px-10">
+          <dd class="font-display font-extrabold text-result text-[34px] leading-none" data-count="187" data-suffix="%">0</dd>
+          <dt class="text-[14px] text-white/60 mt-2">Average uplift in qualified leads</dt>
+        </div>
+        <div class="py-7 lg:py-8 lg:px-10">
+          <dd class="font-display font-extrabold text-white text-[34px] leading-none" data-count="94" data-suffix="%">0</dd>
+          <dt class="text-[14px] text-white/60 mt-2">Clients still with us after a year</dt>
+        </div>
+        <div class="py-7 lg:py-8 lg:pl-10">
+          <dd class="font-display font-extrabold text-white text-[34px] leading-none" data-count="31" data-suffix="">0</dd>
+          <dt class="text-[14px] text-white/60 mt-2">Industries we have shipped in</dt>
+        </div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ LOGO BAND ============================ -->
+<section class="border-y border-line bg-white py-9 overflow-hidden">
+  <p class="shell text-[13.5px] mb-6">Trusted by teams at</p>
+  <div class="marquee gap-14 px-6" aria-hidden="true">
+    <div class="flex items-center gap-14 shrink-0">
+      <span class="font-display font-bold text-[22px] text-ink/35 whitespace-nowrap">NORTHMARK</span>
+      <span class="font-display font-bold text-[22px] text-ink/35 whitespace-nowrap">Verona Home</span>
+      <span class="font-display font-bold text-[22px] text-ink/35 whitespace-nowrap">HALLOWAY</span>
+      <span class="font-display font-bold text-[22px] text-ink/35 whitespace-nowrap">Bridgeline</span>
+      <span class="font-display font-bold text-[22px] text-ink/35 whitespace-nowrap">Cascadia Health</span>
+      <span class="font-display font-bold text-[22px] text-ink/35 whitespace-nowrap">Truvia Labs</span>
+      <span class="font-display font-bold text-[22px] text-ink/35 whitespace-nowrap">Ridgeway</span>
+      <span class="font-display font-bold text-[22px] text-ink/35 whitespace-nowrap">Meridian Parts</span>
+    </div>
+    <div class="flex items-center gap-14 shrink-0 ml-14">
+      <span class="font-display font-bold text-[22px] text-ink/35 whitespace-nowrap">NORTHMARK</span>
+      <span class="font-display font-bold text-[22px] text-ink/35 whitespace-nowrap">Verona Home</span>
+      <span class="font-display font-bold text-[22px] text-ink/35 whitespace-nowrap">HALLOWAY</span>
+      <span class="font-display font-bold text-[22px] text-ink/35 whitespace-nowrap">Bridgeline</span>
+      <span class="font-display font-bold text-[22px] text-ink/35 whitespace-nowrap">Cascadia Health</span>
+      <span class="font-display font-bold text-[22px] text-ink/35 whitespace-nowrap">Truvia Labs</span>
+      <span class="font-display font-bold text-[22px] text-ink/35 whitespace-nowrap">Ridgeway</span>
+      <span class="font-display font-bold text-[22px] text-ink/35 whitespace-nowrap">Meridian Parts</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ CAPABILITY BAND (video background) ============================ -->
+<section class="relative overflow-hidden bg-ink text-white py-20 lg:py-28">
+  <div class="absolute inset-0 overflow-hidden" aria-hidden="true">
+    <img src="https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=1900&q=70"
+         alt="" class="absolute inset-0 w-full h-full object-cover opacity-[.22] kenburns">
+    <video id="bandVid" class="vid-layer absolute inset-0 w-full h-full object-cover opacity-0"
+           muted loop playsinline preload="none">
+      <source src="assets/calwebtech-showcase-bg.mp4" type="video/mp4">
+    </video>
+    <div class="absolute inset-0 bg-gradient-to-r from-ink via-ink/90 to-ink/60"></div>
+    <div class="absolute inset-0 glow-blue opacity-70"></div>
+  </div>
+
+  <div class="shell relative grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+    <div class="lg:col-span-7">
+      <h2 class="font-display font-extrabold text-[34px] lg:text-[44px] leading-[1.08] max-w-[20ch]">
+        One team, from strategy to the release after launch
+      </h2>
+
+      <ul class="mt-9 space-y-4 text-[17px]">
+        <li class="flex gap-4 items-start">
+          <span class="shrink-0 mt-1 grid place-items-center w-6 h-6 rounded-full bg-result/20 text-result" aria-hidden="true">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span>Custom websites built to convert, not to look busy</span>
+        </li>
+        <li class="flex gap-4 items-start">
+          <span class="shrink-0 mt-1 grid place-items-center w-6 h-6 rounded-full bg-result/20 text-result" aria-hidden="true">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span>Commerce and quoting platforms wired into the systems you already run</span>
+        </li>
+        <li class="flex gap-4 items-start">
+          <span class="shrink-0 mt-1 grid place-items-center w-6 h-6 rounded-full bg-result/20 text-result" aria-hidden="true">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span>Search and AI visibility work that keeps the traffic coming after we leave</span>
+        </li>
+      </ul>
+
+      <p class="mt-8 text-[16.5px] leading-relaxed text-white/70 max-w-[62ch]">
+        Strategy, UX, design, development, content and post-launch optimisation all sit with
+        the same people. You get one dedicated team, a staging URL you can open any day, and
+        a written update every week. No handoffs, no black box.
+      </p>
+
+      <div class="mt-9 flex flex-wrap gap-3">
+        <a href="#work" class="inline-flex items-center h-13 py-3.5 px-6 rounded-xl bg-white text-ink font-semibold hover:bg-mist">See our work</a>
+        <button class="playVideo inline-flex items-center gap-3 h-13 py-3.5 px-6 rounded-xl glass text-white font-semibold hover:bg-white/[.16]">
+          <span class="grid place-items-center w-7 h-7 rounded-full bg-white text-ink" aria-hidden="true">
+            <svg class="w-3 h-3 ml-0.5" viewBox="0 0 16 18" fill="currentColor"><path d="M15 9 0 18V0z"/></svg>
+          </span>
+          Watch the 90-second reel
+        </button>
+      </div>
+    </div>
+
+    <div class="lg:col-span-5">
+      <div class="grid grid-cols-2 gap-4">
+        <div class="glass rounded-2xl p-6">
+          <p class="font-display font-extrabold text-[32px] leading-none">12</p>
+          <p class="text-[14px] text-white/65 mt-2">Years building for the web</p>
+        </div>
+        <div class="glass rounded-2xl p-6">
+          <p class="font-display font-extrabold text-[32px] leading-none text-result">98</p>
+          <p class="text-[14px] text-white/65 mt-2">Average Lighthouse score</p>
+        </div>
+        <div class="glass rounded-2xl p-6">
+          <p class="font-display font-extrabold text-[32px] leading-none">31</p>
+          <p class="text-[14px] text-white/65 mt-2">Industries shipped in</p>
+        </div>
+        <div class="glass rounded-2xl p-6">
+          <p class="font-display font-extrabold text-[32px] leading-none">4 hrs</p>
+          <p class="text-[14px] text-white/65 mt-2">Critical response time</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ PROBLEM ROUTER (Lounge Lizard pattern) ============================ -->
+<section class="bg-white py-20 lg:py-28">
+  <div class="shell grid lg:grid-cols-12 gap-12 lg:gap-20">
+    <div class="lg:col-span-4">
+      <h2 class="font-display font-extrabold text-ink text-[34px] lg:text-[42px] leading-[1.1]">
+        Start where it hurts.
+      </h2>
+      <p class="mt-5 text-[17px] leading-relaxed">
+        Most people arrive here with a problem, not a service name. Pick the one that
+        sounds like your week and we will show you what we would do about it.
+      </p>
+      <a href="#book" class="mt-7 inline-flex items-center h-12 px-6 rounded-lg bg-ink text-white font-semibold hover:bg-ink2">Talk it through with us</a>
+    </div>
+
+    <div class="lg:col-span-8 divide-y divide-line border-t border-b border-line">
+      <div class="faq open py-6">
+        <button class="w-full flex items-start justify-between gap-6 text-left faq-btn">
+          <span class="font-display font-bold text-ink text-[19px] lg:text-[21px]">Traffic is fine. Nobody enquires.</span>
+          <span class="faq-plus shrink-0 grid place-items-center w-8 h-8 rounded-full bg-mist text-ink transition-transform mt-0.5" aria-hidden="true">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </span>
+        </button>
+        <div class="faq-body pt-4 pr-12">
+          <p class="leading-relaxed">Usually the site never asks. We rebuild the page structure around one primary action per page, put proof in front of every request, and shorten the forms until people finish them. On a distributor site last year that alone moved quote requests from 11 a month to 46.</p>
+          <a href="#" class="mt-3 inline-block text-primary font-semibold hover:text-primaryd">See how we approach conversion</a>
+        </div>
+      </div>
+      <div class="faq py-6">
+        <button class="w-full flex items-start justify-between gap-6 text-left faq-btn">
+          <span class="font-display font-bold text-ink text-[19px] lg:text-[21px]">Every content change needs a developer.</span>
+          <span class="faq-plus shrink-0 grid place-items-center w-8 h-8 rounded-full bg-mist text-ink transition-transform mt-0.5" aria-hidden="true">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </span>
+        </button>
+        <div class="faq-body pt-4 pr-12">
+          <p class="leading-relaxed">We model everything repeatable as a content type with its own editor and template, so your team publishes a new service, project or case study in minutes with no deployment and no ticket.</p>
+        </div>
+      </div>
+      <div class="faq py-6">
+        <button class="w-full flex items-start justify-between gap-6 text-left faq-btn">
+          <span class="font-display font-bold text-ink text-[19px] lg:text-[21px]">Our leads are scattered across five inboxes.</span>
+          <span class="faq-plus shrink-0 grid place-items-center w-8 h-8 rounded-full bg-mist text-ink transition-transform mt-0.5" aria-hidden="true">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </span>
+        </button>
+        <div class="faq-body pt-4 pr-12">
+          <p class="leading-relaxed">Every form, booking and subscription writes to one database you own, with the source and campaign attached. One inbox, one export, no form vendor holding your contacts hostage.</p>
+        </div>
+      </div>
+      <div class="faq py-6">
+        <button class="w-full flex items-start justify-between gap-6 text-left faq-btn">
+          <span class="font-display font-bold text-ink text-[19px] lg:text-[21px]">The site is slow and we are paying for it.</span>
+          <span class="faq-plus shrink-0 grid place-items-center w-8 h-8 rounded-full bg-mist text-ink transition-transform mt-0.5" aria-hidden="true">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </span>
+        </button>
+        <div class="faq-body pt-4 pr-12">
+          <p class="leading-relaxed">We build against a written performance budget and fail our own release if it is breached. Static generation, edge caching and a strict JavaScript ceiling, measured on real mobile connections rather than a lab score.</p>
+        </div>
+      </div>
+      <div class="faq py-6">
+        <button class="w-full flex items-start justify-between gap-6 text-left faq-btn">
+          <span class="font-display font-bold text-ink text-[19px] lg:text-[21px]">AI assistants recommend our competitors, not us.</span>
+          <span class="faq-plus shrink-0 grid place-items-center w-8 h-8 rounded-full bg-mist text-ink transition-transform mt-0.5" aria-hidden="true">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </span>
+        </button>
+        <div class="faq-body pt-4 pr-12">
+          <p class="leading-relaxed">Language models answer from structured, citable content and third-party signals. We fix entity clarity, structured data, review presence and answer-shaped content so your name appears when a buyer asks an assistant who to hire.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ SERVICES ============================ -->
+<section class="relative border-y border-line py-20 lg:py-28 bg-gradient-to-b from-mist2 via-mist to-mist2 overflow-hidden">
+  <div class="absolute inset-0 grid-lines opacity-70" aria-hidden="true"></div>
+  <div class="absolute -top-32 -right-24 w-[520px] h-[520px] rounded-full bg-primary/[.07] blur-3xl" aria-hidden="true"></div>
+  <div class="shell relative">
+    <div class="flex flex-wrap items-end justify-between gap-6 mb-12">
+      <h2 class="font-display font-extrabold text-ink text-[34px] lg:text-[42px] leading-[1.1] max-w-[16ch]">What we do, and what you get</h2>
+      <a href="#" class="text-primary font-semibold hover:text-primaryd">All services</a>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <article class="bg-white rounded-2xl border border-line p-7 hover:border-ink transition-colors">
+        <h3 class="font-display font-bold text-ink text-[20px]">Custom website design</h3>
+        <p class="mt-2.5 text-[15px] leading-relaxed">Research-led design built around how your buyers actually decide, not around a template's section order.</p>
+        <ul class="mt-5 space-y-1.5 text-[14px] text-body/90">
+          <li>Conversion map for every page</li>
+          <li>Design system in Figma, handed over</li>
+          <li>WCAG 2.2 AA as the working standard</li>
+        </ul>
+      </article>
+      <article class="bg-white rounded-2xl border border-line p-7 hover:border-ink transition-colors">
+        <h3 class="font-display font-bold text-ink text-[20px]">Web application development</h3>
+        <p class="mt-2.5 text-[15px] leading-relaxed">Portals, dashboards, booking engines and internal tools built on Next.js with a typed API behind them.</p>
+        <ul class="mt-5 space-y-1.5 text-[14px] text-body/90">
+          <li>Role-based access from day one</li>
+          <li>Versioned database migrations</li>
+          <li>Documented API you can reuse</li>
+        </ul>
+      </article>
+      <article class="bg-white rounded-2xl border border-line p-7 hover:border-ink transition-colors">
+        <h3 class="font-display font-bold text-ink text-[20px]">Ecommerce development</h3>
+        <p class="mt-2.5 text-[15px] leading-relaxed">Shopify, WooCommerce or custom, including B2B pricing rules, quoting and ERP integration.</p>
+        <ul class="mt-5 space-y-1.5 text-[14px] text-body/90">
+          <li>Account-specific pricing and terms</li>
+          <li>Catalogue and inventory sync</li>
+          <li>Checkout tuned against real drop-off</li>
+        </ul>
+      </article>
+      <article class="bg-white rounded-2xl border border-line p-7 hover:border-ink transition-colors">
+        <h3 class="font-display font-bold text-ink text-[20px]">AI features and automation</h3>
+        <p class="mt-2.5 text-[15px] leading-relaxed">Qualification assistants, search, content tooling and workflow automation wired into your own data.</p>
+        <ul class="mt-5 space-y-1.5 text-[14px] text-body/90">
+          <li>Assistant trained on your knowledge base</li>
+          <li>Transcripts saved against the lead</li>
+          <li>Human handover when it matters</li>
+        </ul>
+      </article>
+      <article class="bg-white rounded-2xl border border-line p-7 hover:border-ink transition-colors">
+        <h3 class="font-display font-bold text-ink text-[20px]">Search and AI visibility</h3>
+        <p class="mt-2.5 text-[15px] leading-relaxed">Technical SEO plus the newer work of being cited by ChatGPT, Perplexity, Gemini and AI overviews.</p>
+        <ul class="mt-5 space-y-1.5 text-[14px] text-body/90">
+          <li>Entity and structured data groundwork</li>
+          <li>Answer-shaped content architecture</li>
+          <li>Referral tracking from AI assistants</li>
+        </ul>
+      </article>
+      <article class="bg-white rounded-2xl border border-line p-7 hover:border-ink transition-colors">
+        <h3 class="font-display font-bold text-ink text-[20px]">Care plans and hosting</h3>
+        <p class="mt-2.5 text-[15px] leading-relaxed">Patching, backups with a tested restore, monitoring and a fixed allowance of development hours.</p>
+        <ul class="mt-5 space-y-1.5 text-[14px] text-body/90">
+          <li>Month-to-month, no lock-in</li>
+          <li>Quarterly restore drill, not a promise</li>
+          <li>Four-hour response on anything critical</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FEATURED WORK / RESULTS WALL ============================ -->
+<section id="work" class="bg-white py-20 lg:py-28">
+  <div class="shell">
+    <div class="flex flex-wrap items-end justify-between gap-6 mb-9">
+      <div>
+        <h2 class="font-display font-extrabold text-ink text-[34px] lg:text-[42px] leading-[1.1] max-w-[20ch]">The numbers our clients kept</h2>
+        <p class="mt-4 max-w-[58ch] text-[17px] leading-relaxed">Measured in the client's own analytics, twelve months after launch. Every figure below is one they agreed to publish.</p>
+      </div>
+      <a href="#" class="text-primary font-semibold hover:text-primaryd">All case studies</a>
+    </div>
+
+    <!-- filter tabs -->
+    <div class="flex flex-wrap gap-2 mb-9" role="tablist" aria-label="Filter work">
+      <button class="wtab h-10 px-4 rounded-lg text-[14.5px] font-semibold bg-ink text-white" data-filter="all">All work</button>
+      <button class="wtab h-10 px-4 rounded-lg text-[14.5px] font-semibold bg-mist text-ink hover:bg-line" data-filter="b2b">B2B and distribution</button>
+      <button class="wtab h-10 px-4 rounded-lg text-[14.5px] font-semibold bg-mist text-ink hover:bg-line" data-filter="ecom">Ecommerce</button>
+      <button class="wtab h-10 px-4 rounded-lg text-[14.5px] font-semibold bg-mist text-ink hover:bg-line" data-filter="saas">SaaS and technology</button>
+      <button class="wtab h-10 px-4 rounded-lg text-[14.5px] font-semibold bg-mist text-ink hover:bg-line" data-filter="health">Healthcare</button>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-6" id="work-grid">
+
+      <!-- card 1 : hero card with quote -->
+      <article class="wcard lg:col-span-2 rounded-2xl border border-line overflow-hidden grid lg:grid-cols-2" data-cat="b2b">
+        <div class="relative min-h-[280px] bg-mist">
+          <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=70" alt="Sales team reviewing performance figures" class="absolute inset-0 w-full h-full object-cover">
+        </div>
+        <div class="p-8 lg:p-10">
+          <div class="flex flex-wrap gap-2 text-[12.5px] font-medium">
+            <span class="px-2.5 py-1 rounded-md bg-mist text-ink">Ohio, USA</span>
+            <span class="px-2.5 py-1 rounded-md bg-mist text-ink">B2B</span>
+            <span class="px-2.5 py-1 rounded-md bg-mist text-ink">Distribution</span>
+            <span class="px-2.5 py-1 rounded-md bg-mist text-ink">Next.js</span>
+          </div>
+          <h3 class="mt-5 font-display font-extrabold text-ink text-[26px] lg:text-[30px] leading-tight">Northmark Supply</h3>
+          <p class="mt-3 leading-relaxed">A catalogue of 40,000 parts behind a contact form. We rebuilt it as a searchable, account-priced quoting platform tied into their ERP.</p>
+
+          <div class="mt-7 grid grid-cols-3 gap-5 border-t border-line pt-6">
+            <div>
+              <p class="font-display font-extrabold text-result text-[32px] lg:text-[38px] leading-none">+312%</p>
+              <p class="text-[13px] mt-1.5">Quote requests</p>
+            </div>
+            <div>
+              <p class="font-display font-extrabold text-result text-[32px] lg:text-[38px] leading-none">12 min</p>
+              <p class="text-[13px] mt-1.5">Quote turnaround, from 3 days</p>
+            </div>
+            <div>
+              <p class="font-display font-extrabold text-result text-[32px] lg:text-[38px] leading-none">−41%</p>
+              <p class="text-[13px] mt-1.5">Support calls</p>
+            </div>
+          </div>
+
+          <figure class="mt-7 pt-6 border-t border-line">
+            <blockquote class="text-[15.5px] leading-relaxed text-ink">"Our counter staff stopped retyping orders. That is the whole story. Calwebtech understood the ERP side better than the vendor who sold it to us."</blockquote>
+            <figcaption class="mt-4 flex items-center gap-3">
+              <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=120&q=70" alt="" class="w-10 h-10 rounded-full object-cover" loading="lazy">
+              <span class="text-[14px]"><b class="text-ink">Dale Ferris</b>, Director of Ecommerce, Northmark Supply</span>
+            </figcaption>
+          </figure>
+
+          <div class="mt-7 flex flex-wrap gap-3">
+            <a href="#" class="inline-flex items-center h-12 px-6 rounded-lg bg-ink text-white font-semibold hover:bg-ink2">Read the case study</a>
+            <button class="playVideo inline-flex items-center gap-2.5 h-12 px-5 rounded-lg border border-line text-ink font-semibold hover:border-ink hover:bg-mist2">
+              <span class="grid place-items-center w-7 h-7 rounded-full bg-ink text-white" aria-hidden="true">
+                <svg class="w-2.5 h-2.5 ml-0.5" viewBox="0 0 16 18" fill="currentColor"><path d="M15 9 0 18V0z"/></svg>
+              </span>
+              Watch the 30-second story
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- card 2 -->
+      <article class="wcard rounded-2xl border border-line overflow-hidden" data-cat="ecom">
+        <div class="aspect-[16/9] bg-mist">
+          <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=900&q=70" alt="Home furnishing retail display" class="w-full h-full object-cover" loading="lazy">
+        </div>
+        <div class="p-7">
+          <div class="flex flex-wrap gap-2 text-[12.5px] font-medium">
+            <span class="px-2.5 py-1 rounded-md bg-mist text-ink">California, USA</span>
+            <span class="px-2.5 py-1 rounded-md bg-mist text-ink">D2C</span>
+            <span class="px-2.5 py-1 rounded-md bg-mist text-ink">Shopify</span>
+          </div>
+          <h3 class="mt-4 font-display font-extrabold text-ink text-[23px]">Verona Home</h3>
+          <p class="mt-2.5 leading-relaxed text-[15px]">A furniture brand stuck on a page builder, replatformed with a configurator for made-to-order pieces.</p>
+          <div class="mt-6 grid grid-cols-3 gap-4 border-t border-line pt-5">
+            <div><p class="font-display font-extrabold text-result text-[26px] leading-none">$2.4M</p><p class="text-[12.5px] mt-1.5">First-year revenue</p></div>
+            <div><p class="font-display font-extrabold text-result text-[26px] leading-none">+68%</p><p class="text-[12.5px] mt-1.5">Add to cart</p></div>
+            <div><p class="font-display font-extrabold text-result text-[26px] leading-none">1.4s</p><p class="text-[12.5px] mt-1.5">Mobile LCP</p></div>
+          </div>
+          <a href="#" class="mt-6 inline-block text-primary font-semibold hover:text-primaryd">Read the case study</a>
+        </div>
+      </article>
+
+      <!-- card 3 -->
+      <article class="wcard rounded-2xl border border-line overflow-hidden" data-cat="saas">
+        <div class="aspect-[16/9] bg-mist">
+          <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=70" alt="Product team working on a software platform" class="w-full h-full object-cover" loading="lazy">
+        </div>
+        <div class="p-7">
+          <div class="flex flex-wrap gap-2 text-[12.5px] font-medium">
+            <span class="px-2.5 py-1 rounded-md bg-mist text-ink">Texas, USA</span>
+            <span class="px-2.5 py-1 rounded-md bg-mist text-ink">SaaS</span>
+            <span class="px-2.5 py-1 rounded-md bg-mist text-ink">Next.js</span>
+          </div>
+          <h3 class="mt-4 font-display font-extrabold text-ink text-[23px]">Truvia Labs</h3>
+          <p class="mt-2.5 leading-relaxed text-[15px]">Marketing site, docs and in-app onboarding rebuilt on one design system so releases stopped breaking the brand.</p>
+          <div class="mt-6 grid grid-cols-3 gap-4 border-t border-line pt-5">
+            <div><p class="font-display font-extrabold text-result text-[26px] leading-none">+140%</p><p class="text-[12.5px] mt-1.5">Demo bookings</p></div>
+            <div><p class="font-display font-extrabold text-result text-[26px] leading-none">3.1x</p><p class="text-[12.5px] mt-1.5">Organic sessions</p></div>
+            <div><p class="font-display font-extrabold text-result text-[26px] leading-none">98</p><p class="text-[12.5px] mt-1.5">Lighthouse mobile</p></div>
+          </div>
+          <a href="#" class="mt-6 inline-block text-primary font-semibold hover:text-primaryd">Read the case study</a>
+        </div>
+      </article>
+
+      <!-- card 4 -->
+      <article class="wcard rounded-2xl border border-line overflow-hidden" data-cat="health">
+        <div class="aspect-[16/9] bg-mist">
+          <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=900&q=70" alt="Clinician working at a healthcare facility" class="w-full h-full object-cover" loading="lazy">
+        </div>
+        <div class="p-7">
+          <div class="flex flex-wrap gap-2 text-[12.5px] font-medium">
+            <span class="px-2.5 py-1 rounded-md bg-mist text-ink">Oregon, USA</span>
+            <span class="px-2.5 py-1 rounded-md bg-mist text-ink">Healthcare</span>
+            <span class="px-2.5 py-1 rounded-md bg-mist text-ink">WordPress</span>
+          </div>
+          <h3 class="mt-4 font-display font-extrabold text-ink text-[23px]">Cascadia Health</h3>
+          <p class="mt-2.5 leading-relaxed text-[15px]">Fourteen clinic sites merged into one accessible platform with location-aware appointment booking.</p>
+          <div class="mt-6 grid grid-cols-3 gap-4 border-t border-line pt-5">
+            <div><p class="font-display font-extrabold text-result text-[26px] leading-none">+91%</p><p class="text-[12.5px] mt-1.5">Online bookings</p></div>
+            <div><p class="font-display font-extrabold text-result text-[26px] leading-none">14→1</p><p class="text-[12.5px] mt-1.5">Sites to maintain</p></div>
+            <div><p class="font-display font-extrabold text-result text-[26px] leading-none">AA</p><p class="text-[12.5px] mt-1.5">WCAG 2.2 verified</p></div>
+          </div>
+          <a href="#" class="mt-6 inline-block text-primary font-semibold hover:text-primaryd">Read the case study</a>
+        </div>
+      </article>
+
+      <!-- card 5 -->
+      <article class="wcard rounded-2xl border border-line overflow-hidden" data-cat="b2b">
+        <div class="aspect-[16/9] bg-mist">
+          <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=900&q=70" alt="Engineer inspecting equipment on a production floor" class="w-full h-full object-cover" loading="lazy">
+        </div>
+        <div class="p-7">
+          <div class="flex flex-wrap gap-2 text-[12.5px] font-medium">
+            <span class="px-2.5 py-1 rounded-md bg-mist text-ink">Michigan, USA</span>
+            <span class="px-2.5 py-1 rounded-md bg-mist text-ink">Manufacturing</span>
+            <span class="px-2.5 py-1 rounded-md bg-mist text-ink">Headless</span>
+          </div>
+          <h3 class="mt-4 font-display font-extrabold text-ink text-[23px]">Meridian Parts</h3>
+          <p class="mt-2.5 leading-relaxed text-[15px]">Fitment search across 90,000 SKUs, so a technician finds the right part on a phone in a workshop.</p>
+          <div class="mt-6 grid grid-cols-3 gap-4 border-t border-line pt-5">
+            <div><p class="font-display font-extrabold text-result text-[26px] leading-none">+207%</p><p class="text-[12.5px] mt-1.5">Organic traffic</p></div>
+            <div><p class="font-display font-extrabold text-result text-[26px] leading-none">−63%</p><p class="text-[12.5px] mt-1.5">Wrong-part returns</p></div>
+            <div><p class="font-display font-extrabold text-result text-[26px] leading-none">4.2x</p><p class="text-[12.5px] mt-1.5">Repeat orders</p></div>
+          </div>
+          <a href="#" class="mt-6 inline-block text-primary font-semibold hover:text-primaryd">Read the case study</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ PULL QUOTE ============================ -->
+<section class="relative overflow-hidden py-16 lg:py-20 text-white">
+  <div class="absolute inset-0" aria-hidden="true">
+    <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1800&q=65"
+         alt="" class="w-full h-full object-cover opacity-[.30]">
+    <div class="absolute inset-0 bg-gradient-to-r from-ink via-ink/90 to-ink/75"></div>
+  </div>
+  <div class="shell relative">
+    <figure class="max-w-[58ch]">
+      <blockquote class="font-display font-bold text-[24px] lg:text-[32px] leading-[1.25]">
+        "They rebuilt a site three agencies had failed on, and they did it without a single
+        schedule slip. We have gone back to them twice since."
+      </blockquote>
+      <figcaption class="mt-7 flex items-center gap-4">
+        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=120&q=70" alt="" class="w-12 h-12 rounded-full object-cover">
+        <span class="text-[15px]"><b class="block text-white">Elena Marsh</b><span class="text-white/60">Chief Marketing Officer, Bridgeline Industrial</span></span>
+        <a href="#" class="ml-4 hidden sm:inline-block text-[14.5px] font-semibold text-white underline underline-offset-4 decoration-white/30 hover:decoration-white">Read all reviews</a>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================ MID-PAGE CTA BAND ============================ -->
+<section class="bg-white border-y border-line py-14 lg:py-16">
+  <div class="shell flex flex-wrap items-center justify-between gap-8">
+    <div>
+      <p class="text-[14px] text-body">Your industry. Your next growth story.</p>
+      <p class="font-display font-extrabold text-ink text-[28px] lg:text-[36px] leading-tight mt-2">Let's build what comes next.</p>
+    </div>
+    <div class="flex flex-wrap gap-3">
+      <a href="#quote" class="inline-flex items-center h-14 px-7 rounded-xl bg-primary text-white text-[16px] font-semibold hover:bg-primaryd">Request a quote</a>
+      <a href="#estimate" class="inline-flex items-center h-14 px-7 rounded-xl border border-line text-ink text-[16px] font-semibold hover:border-ink hover:bg-mist2">Get an instant estimate</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ BEFORE / AFTER ============================ -->
+<section id="beforeafter" class="relative bg-ink text-white py-20 lg:py-28 overflow-hidden">
+  <div class="absolute inset-0" aria-hidden="true">
+    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1800&q=65"
+         alt="" class="w-full h-full object-cover opacity-[.16]">
+    <div class="absolute inset-0 bg-gradient-to-r from-ink via-ink/92 to-ink/70"></div>
+    <div class="absolute inset-0 glow-blue opacity-60"></div>
+  </div>
+  <div class="shell relative grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+    <div class="lg:col-span-4">
+      <h2 class="font-display font-extrabold text-[34px] lg:text-[42px] leading-[1.1]">Drag it and see the difference</h2>
+      <p class="mt-5 text-[17px] leading-relaxed text-white/70">
+        Most of our work is a rescue, not a launch. Here is Halloway Group's homepage before
+        and after, at the same scroll position, on the same screen.
+      </p>
+      <dl class="mt-8 space-y-4 border-t border-white/15 pt-7">
+        <div class="flex items-baseline justify-between gap-6">
+          <dt class="text-white/60 text-[14px]">Mobile load time</dt>
+          <dd class="font-display font-bold">6.8s <span class="text-white/40">to</span> <span class="text-result">1.6s</span></dd>
+        </div>
+        <div class="flex items-baseline justify-between gap-6">
+          <dt class="text-white/60 text-[14px]">Bounce rate</dt>
+          <dd class="font-display font-bold">71% <span class="text-white/40">to</span> <span class="text-result">38%</span></dd>
+        </div>
+        <div class="flex items-baseline justify-between gap-6">
+          <dt class="text-white/60 text-[14px]">Enquiries per month</dt>
+          <dd class="font-display font-bold">9 <span class="text-white/40">to</span> <span class="text-result">54</span></dd>
+        </div>
+      </dl>
+      <a href="#" class="mt-8 inline-flex items-center h-12 px-6 rounded-lg bg-white text-ink font-semibold hover:bg-mist">See more redesigns</a>
+    </div>
+
+    <div class="lg:col-span-8">
+      <div id="ba" class="relative rounded-2xl overflow-hidden select-none bg-white aspect-[16/10]">
+
+        <!-- BEFORE (old site, rendered in CSS) -->
+        <div class="absolute inset-0 bg-[#e9e6e0] p-5 sm:p-7" aria-hidden="true">
+          <div class="bg-[#2f4a6d] h-9 flex items-center px-3 gap-3">
+            <span class="text-white text-[11px] font-bold">HALLOWAY GROUP</span>
+            <span class="ml-auto flex gap-2.5">
+              <span class="fakebar w-9 bg-white/40"></span><span class="fakebar w-9 bg-white/40"></span><span class="fakebar w-9 bg-white/40"></span>
+            </span>
+          </div>
+          <div class="bg-[#c9d3dd] h-20 sm:h-28 mt-2 flex flex-col justify-center px-4 gap-2">
+            <span class="fakebar w-1/2 bg-[#7d8d9e]"></span>
+            <span class="fakebar w-2/3 bg-[#9daab8]"></span>
+            <span class="fakebar w-24 bg-[#e2762f] h-5 rounded"></span>
+          </div>
+          <div class="grid grid-cols-4 gap-2 mt-2">
+            <div class="bg-white h-14 sm:h-20 p-2 space-y-1.5"><span class="fakebar w-full bg-[#d7dde3]"></span><span class="fakebar w-4/5 bg-[#e4e9ee]"></span><span class="fakebar w-3/5 bg-[#e4e9ee]"></span></div>
+            <div class="bg-white h-14 sm:h-20 p-2 space-y-1.5"><span class="fakebar w-full bg-[#d7dde3]"></span><span class="fakebar w-4/5 bg-[#e4e9ee]"></span><span class="fakebar w-3/5 bg-[#e4e9ee]"></span></div>
+            <div class="bg-white h-14 sm:h-20 p-2 space-y-1.5"><span class="fakebar w-full bg-[#d7dde3]"></span><span class="fakebar w-4/5 bg-[#e4e9ee]"></span><span class="fakebar w-3/5 bg-[#e4e9ee]"></span></div>
+            <div class="bg-white h-14 sm:h-20 p-2 space-y-1.5"><span class="fakebar w-full bg-[#d7dde3]"></span><span class="fakebar w-4/5 bg-[#e4e9ee]"></span><span class="fakebar w-3/5 bg-[#e4e9ee]"></span></div>
+          </div>
+          <div class="bg-white mt-2 p-3 space-y-1.5 h-16 sm:h-24">
+            <span class="fakebar w-full bg-[#e4e9ee]"></span><span class="fakebar w-11/12 bg-[#e4e9ee]"></span>
+            <span class="fakebar w-full bg-[#e4e9ee]"></span><span class="fakebar w-2/3 bg-[#e4e9ee]"></span>
+          </div>
+          <span class="absolute bottom-4 left-5 text-[11px] font-bold text-[#5b6472] bg-white/80 px-2 py-1 rounded">Before</span>
+        </div>
+
+        <!-- AFTER (new site, rendered in CSS) -->
+        <div id="ba-after" class="absolute inset-0 overflow-hidden border-r-2 border-white">
+          <div class="w-full h-full bg-white p-5 sm:p-7" style="width:100vw;max-width:none" aria-hidden="true">
+            <div class="h-9 flex items-center gap-3">
+              <span class="grid place-items-center w-6 h-6 rounded bg-ink text-white text-[10px] font-extrabold">H</span>
+              <span class="text-ink text-[12px] font-extrabold">Halloway</span>
+              <span class="ml-6 hidden sm:flex gap-4">
+                <span class="fakebar w-10 bg-[#dce4ee]"></span><span class="fakebar w-10 bg-[#dce4ee]"></span><span class="fakebar w-10 bg-[#dce4ee]"></span>
+              </span>
+              <span class="ml-auto fakebar w-16 h-6 rounded-md bg-primary"></span>
+            </div>
+            <div class="mt-4 grid grid-cols-5 gap-4 items-center">
+              <div class="col-span-3 space-y-2.5">
+                <span class="fakebar w-full h-3 bg-ink"></span>
+                <span class="fakebar w-4/5 h-3 bg-ink"></span>
+                <span class="fakebar w-3/5 bg-[#c3cede]"></span>
+                <span class="flex gap-2 pt-1"><span class="fakebar w-20 h-6 rounded-md bg-primary"></span><span class="fakebar w-20 h-6 rounded-md bg-[#dce4ee]"></span></span>
+              </div>
+              <div class="col-span-2 h-20 sm:h-28 rounded-lg bg-mist overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=400&q=60" alt="" class="w-full h-full object-cover">
+              </div>
+            </div>
+            <div class="grid grid-cols-3 gap-3 mt-4">
+              <div class="rounded-lg border border-line p-2.5"><span class="block text-result font-display font-extrabold text-[15px]">+312%</span><span class="fakebar w-3/4 bg-[#e4e9ee] mt-1.5"></span></div>
+              <div class="rounded-lg border border-line p-2.5"><span class="block text-result font-display font-extrabold text-[15px]">12 min</span><span class="fakebar w-3/4 bg-[#e4e9ee] mt-1.5"></span></div>
+              <div class="rounded-lg border border-line p-2.5"><span class="block text-result font-display font-extrabold text-[15px]">−41%</span><span class="fakebar w-3/4 bg-[#e4e9ee] mt-1.5"></span></div>
+            </div>
+            <div class="mt-3 rounded-lg bg-mist2 border border-line h-10 sm:h-14"></div>
+          </div>
+          <span class="absolute bottom-4 left-5 text-[11px] font-bold text-white bg-ink px-2 py-1 rounded">After</span>
+        </div>
+
+        <!-- handle -->
+        <div id="ba-handle" class="absolute top-0 bottom-0 -translate-x-1/2 z-20 cursor-ew-resize" style="width:44px">
+          <span class="absolute inset-y-0 left-1/2 -translate-x-1/2 w-0.5 bg-white"></span>
+          <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 grid place-items-center w-11 h-11 rounded-full bg-white shadow-lg text-ink">
+            <svg class="w-5 h-5" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M7 5 3 10l4 5M13 5l4 5-4 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </div>
+
+        <label for="ba-range" class="sr-only">Reveal the redesigned version</label>
+        <input id="ba-range" type="range" min="0" max="100" value="50" class="absolute inset-x-0 bottom-3 z-30 w-[92%] mx-auto opacity-0 h-11 cursor-ew-resize">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ INDUSTRIES ============================ -->
+<section class="bg-white py-20 lg:py-28">
+  <div class="shell">
+    <div class="flex flex-wrap items-end justify-between gap-6 mb-12">
+      <div>
+        <h2 class="font-display font-extrabold text-ink text-[34px] lg:text-[42px] leading-[1.1] max-w-[18ch]">We already know your industry's edge cases</h2>
+        <p class="mt-4 max-w-[58ch] text-[17px] leading-relaxed">Tiered pricing, fitment data, compliance copy, multi-location booking. The parts that break generic builds are the parts we have shipped before.</p>
+      </div>
+      <a href="#" class="text-primary font-semibold hover:text-primaryd">All industries</a>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <a href="#" class="group relative rounded-2xl overflow-hidden aspect-[3/4] bg-ink">
+        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=600&q=70" alt="Manufacturing floor" class="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-55 transition-opacity" loading="lazy">
+        <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent"></div>
+        <div class="absolute inset-x-0 bottom-0 p-6">
+          <h3 class="font-display font-bold text-white text-[20px]">Manufacturing</h3>
+          <p class="text-white/75 text-[14px] mt-1.5 leading-snug">Spec sheets, configurators and ERP-accurate inventory.</p>
+        </div>
+      </a>
+      <a href="#" class="group relative rounded-2xl overflow-hidden aspect-[3/4] bg-ink">
+        <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=600&q=70" alt="Retail store interior" class="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-55 transition-opacity" loading="lazy">
+        <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent"></div>
+        <div class="absolute inset-x-0 bottom-0 p-6">
+          <h3 class="font-display font-bold text-white text-[20px]">Retail and D2C</h3>
+          <p class="text-white/75 text-[14px] mt-1.5 leading-snug">Storefronts tuned against real checkout drop-off.</p>
+        </div>
+      </a>
+      <a href="#" class="group relative rounded-2xl overflow-hidden aspect-[3/4] bg-ink">
+        <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=600&q=70" alt="Software developer at work" class="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-55 transition-opacity" loading="lazy">
+        <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent"></div>
+        <div class="absolute inset-x-0 bottom-0 p-6">
+          <h3 class="font-display font-bold text-white text-[20px]">SaaS and technology</h3>
+          <p class="text-white/75 text-[14px] mt-1.5 leading-snug">Marketing site, docs and product on one system.</p>
+        </div>
+      </a>
+      <a href="#" class="group relative rounded-2xl overflow-hidden aspect-[3/4] bg-ink">
+        <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=600&q=70" alt="Healthcare professional" class="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-55 transition-opacity" loading="lazy">
+        <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent"></div>
+        <div class="absolute inset-x-0 bottom-0 p-6">
+          <h3 class="font-display font-bold text-white text-[20px]">Healthcare</h3>
+          <p class="text-white/75 text-[14px] mt-1.5 leading-snug">Accessible, multi-location, privacy-first booking.</p>
+        </div>
+      </a>
+      <a href="#" class="group relative rounded-2xl overflow-hidden aspect-[3/4] bg-ink">
+        <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=600&q=70" alt="Residential property" class="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-55 transition-opacity" loading="lazy">
+        <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent"></div>
+        <div class="absolute inset-x-0 bottom-0 p-6">
+          <h3 class="font-display font-bold text-white text-[20px]">Real estate</h3>
+          <p class="text-white/75 text-[14px] mt-1.5 leading-snug">Listing search, agent tools and lead routing.</p>
+        </div>
+      </a>
+      <a href="#" class="group relative rounded-2xl overflow-hidden aspect-[3/4] bg-ink">
+        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=600&q=70" alt="Hotel exterior" class="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-55 transition-opacity" loading="lazy">
+        <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent"></div>
+        <div class="absolute inset-x-0 bottom-0 p-6">
+          <h3 class="font-display font-bold text-white text-[20px]">Hospitality</h3>
+          <p class="text-white/75 text-[14px] mt-1.5 leading-snug">Direct booking that beats the commission sites.</p>
+        </div>
+      </a>
+      <a href="#" class="group relative rounded-2xl overflow-hidden aspect-[3/4] bg-ink">
+        <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=600&q=70" alt="University campus" class="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-55 transition-opacity" loading="lazy">
+        <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent"></div>
+        <div class="absolute inset-x-0 bottom-0 p-6">
+          <h3 class="font-display font-bold text-white text-[20px]">Education</h3>
+          <p class="text-white/75 text-[14px] mt-1.5 leading-snug">Programme discovery and application funnels.</p>
+        </div>
+      </a>
+      <a href="#" class="group relative rounded-2xl overflow-hidden aspect-[3/4] bg-mist border border-line grid place-items-center p-6 text-center">
+        <div>
+          <p class="font-display font-bold text-ink text-[20px]">Not listed here?</p>
+          <p class="text-[14px] mt-2 leading-snug">We have shipped in 30 more. Tell us the awkward part of yours.</p>
+          <span class="mt-4 inline-block text-primary font-semibold">Start the conversation</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ ESTIMATE CTA (Huemor pattern) ============================ -->
+<section id="estimate" class="relative overflow-hidden py-20 lg:py-24 text-white" style="background:linear-gradient(135deg,#0A1D37 0%,#123A8F 46%,#1550E0 100%)">
+  <div class="absolute inset-0" aria-hidden="true">
+    <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1800&q=65"
+         alt="" class="w-full h-full object-cover opacity-[.14] mix-blend-luminosity">
+    <div class="absolute inset-0 grid-lines-light"></div>
+    <div class="absolute -bottom-40 -left-20 w-[560px] h-[560px] rounded-full bg-result/25 blur-3xl"></div>
+  </div>
+
+  <div class="shell relative grid lg:grid-cols-12 gap-12 items-center">
+    <div class="lg:col-span-6">
+      <div class="inline-flex items-center gap-2 rounded-full glass px-4 py-2 text-[13px] font-medium">
+        <span class="w-1.5 h-1.5 rounded-full bg-result" aria-hidden="true"></span>
+        Free, no sales call attached
+      </div>
+      <h2 class="mt-6 font-display font-extrabold text-[34px] lg:text-[46px] leading-[1.06]">
+        Get a real number before you get on a call.
+      </h2>
+      <p class="mt-6 text-[17px] leading-relaxed text-white/75 max-w-[54ch]">
+        Eight questions about your timeline, page count, content needs and platform.
+        You get an indicative range in under three minutes, and we get enough context
+        that the first call is useful instead of exploratory.
+      </p>
+      <ul class="mt-8 space-y-3 text-[15.5px] text-white/85">
+        <li class="flex gap-3"><span class="mt-2 w-1.5 h-1.5 rounded-full bg-result shrink-0" aria-hidden="true"></span>No sales call required to see the range</li>
+        <li class="flex gap-3"><span class="mt-2 w-1.5 h-1.5 rounded-full bg-result shrink-0" aria-hidden="true"></span>Based on 240 projects we have actually delivered</li>
+        <li class="flex gap-3"><span class="mt-2 w-1.5 h-1.5 rounded-full bg-result shrink-0" aria-hidden="true"></span>Most Calwebtech projects run between $12,000 and $60,000</li>
+      </ul>
+    </div>
+
+    <div class="lg:col-span-6">
+      <div class="bg-white rounded-2xl border border-line shadow-[0_24px_50px_-28px_rgba(10,29,55,.4)] p-7 sm:p-9">
+        <div class="flex items-center justify-between text-[13.5px]">
+          <span class="font-semibold text-ink">Question 3 of 8</span>
+          <span>About 2 minutes left</span>
+        </div>
+        <div class="mt-3 h-1.5 rounded-full bg-mist overflow-hidden">
+          <span class="block h-full w-[37.5%] bg-primary rounded-full"></span>
+        </div>
+
+        <p class="mt-7 font-display font-bold text-ink text-[22px] leading-snug">How many pages will the new site need?</p>
+
+        <div class="mt-5 space-y-3">
+          <label class="flex items-center gap-3 h-14 px-5 rounded-xl border border-line cursor-pointer hover:border-ink">
+            <input type="radio" name="pages" class="accent-primary w-4 h-4"><span class="text-[15.5px] text-ink">Under 10</span>
+          </label>
+          <label class="flex items-center gap-3 h-14 px-5 rounded-xl border-2 border-primary bg-primary/5 cursor-pointer">
+            <input type="radio" name="pages" class="accent-primary w-4 h-4" checked><span class="text-[15.5px] text-ink font-semibold">10 to 50</span>
+          </label>
+          <label class="flex items-center gap-3 h-14 px-5 rounded-xl border border-line cursor-pointer hover:border-ink">
+            <input type="radio" name="pages" class="accent-primary w-4 h-4"><span class="text-[15.5px] text-ink">50 to 150</span>
+          </label>
+          <label class="flex items-center gap-3 h-14 px-5 rounded-xl border border-line cursor-pointer hover:border-ink">
+            <input type="radio" name="pages" class="accent-primary w-4 h-4"><span class="text-[15.5px] text-ink">More than 150</span>
+          </label>
+        </div>
+
+        <div class="mt-7 flex gap-3">
+          <button class="h-13 py-3.5 px-5 rounded-xl border border-line font-semibold text-ink hover:bg-mist2">Back</button>
+          <button class="flex-1 py-3.5 rounded-xl bg-primary text-white font-semibold hover:bg-primaryd">Next question</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ WHY US ============================ -->
+<section class="bg-white py-20 lg:py-28">
+  <div class="shell">
+    <h2 class="font-display font-extrabold text-ink text-[34px] lg:text-[42px] leading-[1.1] max-w-[20ch]">Six reasons clients stay past the launch</h2>
+
+    <div class="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-11">
+      <div>
+        <h3 class="font-display font-bold text-ink text-[19px]">You own the data, and the server</h3>
+        <p class="mt-2.5 leading-relaxed text-[15.5px]">Leads, bookings and subscribers live in your database, on infrastructure in your name. No per-contact billing, no vendor holding the export button.</p>
+      </div>
+      <div>
+        <h3 class="font-display font-bold text-ink text-[19px]">Senior people on your project</h3>
+        <p class="mt-2.5 leading-relaxed text-[15.5px]">The people in the pitch are the people who build it. No handover to a junior team after the contract is signed.</p>
+      </div>
+      <div>
+        <h3 class="font-display font-bold text-ink text-[19px]">We sign your NDA first</h3>
+        <p class="mt-2.5 leading-relaxed text-[15.5px]">Before the first discovery call, not after. If you are describing something unlaunched, that should not be a negotiation.</p>
+      </div>
+      <div>
+        <h3 class="font-display font-bold text-ink text-[19px]">Month-to-month care plans</h3>
+        <p class="mt-2.5 leading-relaxed text-[15.5px]">No twelve-month lock-in on support. If we stop being useful you should be able to leave, and take the code with you.</p>
+      </div>
+      <div>
+        <h3 class="font-display font-bold text-ink text-[19px]">A written performance budget</h3>
+        <p class="mt-2.5 leading-relaxed text-[15.5px]">Load time, layout shift and JavaScript weight are contractual targets checked on every release, not a promise made in the pitch deck.</p>
+      </div>
+      <div>
+        <h3 class="font-display font-bold text-ink text-[19px]">Training, then independence</h3>
+        <p class="mt-2.5 leading-relaxed text-[15.5px]">Two recorded sessions and a written operations manual, so publishing a page never depends on our availability.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ TECHNOLOGY ============================ -->
+<section id="tech" class="relative border-y border-line py-20 lg:py-28 bg-gradient-to-br from-white via-mist2 to-mist overflow-hidden">
+  <div class="absolute inset-0 grid-lines opacity-60" aria-hidden="true"></div>
+  <div class="absolute -bottom-40 -left-32 w-[600px] h-[600px] rounded-full bg-result/[.08] blur-3xl" aria-hidden="true"></div>
+  <div class="absolute -top-40 right-0 w-[520px] h-[520px] rounded-full bg-primary/[.08] blur-3xl" aria-hidden="true"></div>
+  <div class="shell relative grid lg:grid-cols-12 gap-12 lg:gap-20">
+    <div class="lg:col-span-5">
+      <h2 class="font-display font-extrabold text-ink text-[34px] lg:text-[42px] leading-[1.1]">This site is the proof</h2>
+      <p class="mt-5 text-[17px] leading-relaxed">
+        Calwebtech.com runs on the same stack we sell: a Next.js front end, a typed Node API,
+        PostgreSQL and Redis, all in Docker containers on a server we control. Nothing here
+        depends on a platform that can change its pricing next quarter.
+      </p>
+      <div class="mt-8 grid grid-cols-2 gap-6 border-t border-line pt-7">
+        <div><p class="font-display font-extrabold text-ink text-[30px] leading-none">98</p><p class="text-[14px] mt-2">Lighthouse, mobile</p></div>
+        <div><p class="font-display font-extrabold text-ink text-[30px] leading-none">1.2s</p><p class="text-[14px] mt-2">Largest contentful paint</p></div>
+        <div><p class="font-display font-extrabold text-ink text-[30px] leading-none">99.9%</p><p class="text-[14px] mt-2">Uptime, last 12 months</p></div>
+        <div><p class="font-display font-extrabold text-ink text-[30px] leading-none">0</p><p class="text-[14px] mt-2">Platform licence fees</p></div>
+      </div>
+      <a href="#" class="mt-8 inline-flex items-center h-12 px-6 rounded-lg border border-line bg-white text-ink font-semibold hover:border-ink">See the full stack</a>
+    </div>
+
+    <div class="lg:col-span-7">
+      <div class="grid sm:grid-cols-2 gap-5">
+        <div class="bg-white rounded-2xl border border-line p-6">
+          <h3 class="font-display font-bold text-ink text-[17px]">Front end</h3>
+          <p class="mt-3 text-[14.5px] leading-relaxed">Next.js, React, TypeScript, Tailwind CSS, Framer Motion</p>
+        </div>
+        <div class="bg-white rounded-2xl border border-line p-6">
+          <h3 class="font-display font-bold text-ink text-[17px]">Back end</h3>
+          <p class="mt-3 text-[14.5px] leading-relaxed">Node.js, NestJS, Prisma, Zod, REST with OpenAPI</p>
+        </div>
+        <div class="bg-white rounded-2xl border border-line p-6">
+          <h3 class="font-display font-bold text-ink text-[17px]">Data</h3>
+          <p class="mt-3 text-[14.5px] leading-relaxed">PostgreSQL, Redis, BullMQ queues, nightly encrypted backups</p>
+        </div>
+        <div class="bg-white rounded-2xl border border-line p-6">
+          <h3 class="font-display font-bold text-ink text-[17px]">Content</h3>
+          <p class="mt-3 text-[14.5px] leading-relaxed">WordPress, Shopify, headless CMS, custom dashboards</p>
+        </div>
+        <div class="bg-white rounded-2xl border border-line p-6">
+          <h3 class="font-display font-bold text-ink text-[17px]">Infrastructure</h3>
+          <p class="mt-3 text-[14.5px] leading-relaxed">Docker, Traefik, Cloudflare, GitHub Actions, automatic TLS</p>
+        </div>
+        <div class="bg-white rounded-2xl border border-line p-6">
+          <h3 class="font-display font-bold text-ink text-[17px]">Mobile and AI</h3>
+          <p class="mt-3 text-[14.5px] leading-relaxed">React Native, OpenAI and Anthropic APIs, vector search</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ PROCESS ============================ -->
+<section id="process" class="bg-white py-20 lg:py-28">
+  <div class="shell">
+    <div class="flex flex-wrap items-end justify-between gap-6 mb-14">
+      <div>
+        <h2 class="font-display font-extrabold text-ink text-[34px] lg:text-[42px] leading-[1.1] max-w-[18ch]">How a project actually runs</h2>
+        <p class="mt-4 max-w-[58ch] text-[17px] leading-relaxed">Published in full, including what we need from you and when. Most projects stall on content, not code, so the dates below are shared dates.</p>
+      </div>
+      <a href="#" class="text-primary font-semibold hover:text-primaryd">Read the full playbook</a>
+    </div>
+
+    <ol class="grid md:grid-cols-2 lg:grid-cols-5 gap-6">
+      <li class="border-t-2 border-ink pt-5">
+        <p class="font-display font-extrabold text-ink text-[15px]">Step 1</p>
+        <h3 class="font-display font-bold text-ink text-[19px] mt-1.5">Discovery</h3>
+        <p class="mt-2.5 text-[14.5px] leading-relaxed">Positioning, audience, service catalogue, sitemap and a conversion map for every page.</p>
+        <p class="mt-3 text-[13px] text-body/80">Week 1</p>
+      </li>
+      <li class="border-t-2 border-line pt-5">
+        <p class="font-display font-extrabold text-ink text-[15px]">Step 2</p>
+        <h3 class="font-display font-bold text-ink text-[19px] mt-1.5">Design</h3>
+        <p class="mt-2.5 text-[14.5px] leading-relaxed">Tokens, component library and high-fidelity screens for the pages that carry the money.</p>
+        <p class="mt-3 text-[13px] text-body/80">Weeks 2 to 3</p>
+      </li>
+      <li class="border-t-2 border-line pt-5">
+        <p class="font-display font-extrabold text-ink text-[15px]">Step 3</p>
+        <h3 class="font-display font-bold text-ink text-[19px] mt-1.5">Build</h3>
+        <p class="mt-2.5 text-[14.5px] leading-relaxed">Front end, API, dashboard and integrations, reviewed on a staging URL you can open any day.</p>
+        <p class="mt-3 text-[13px] text-body/80">Weeks 3 to 7</p>
+      </li>
+      <li class="border-t-2 border-line pt-5">
+        <p class="font-display font-extrabold text-ink text-[15px]">Step 4</p>
+        <h3 class="font-display font-bold text-ink text-[19px] mt-1.5">Prove</h3>
+        <p class="mt-2.5 text-[14.5px] leading-relaxed">Cross-browser QA, accessibility audit, performance pass and a tested backup restore.</p>
+        <p class="mt-3 text-[13px] text-body/80">Week 8</p>
+      </li>
+      <li class="border-t-2 border-line pt-5">
+        <p class="font-display font-extrabold text-ink text-[15px]">Step 5</p>
+        <h3 class="font-display font-bold text-ink text-[19px] mt-1.5">Launch and hand over</h3>
+        <p class="mt-2.5 text-[14.5px] leading-relaxed">DNS cutover, monitoring, two training sessions and the full documentation set.</p>
+        <p class="mt-3 text-[13px] text-body/80">Week 9</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============================ TESTIMONIALS ============================ -->
+<section class="relative bg-ink text-white py-20 lg:py-28 overflow-hidden">
+  <div class="absolute inset-0" aria-hidden="true">
+    <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1800&q=65"
+         alt="" class="w-full h-full object-cover opacity-[.22]">
+    <div class="absolute inset-0 bg-gradient-to-b from-ink/95 via-ink/90 to-ink"></div>
+    <div class="absolute inset-0 glow-teal"></div>
+  </div>
+  <div class="shell relative">
+    <div class="flex flex-wrap items-end justify-between gap-6 mb-12">
+      <h2 class="font-display font-extrabold text-[34px] lg:text-[42px] leading-[1.1] max-w-[18ch]">What clients say when we are not in the room</h2>
+      <div class="flex items-center gap-6 text-[14px]">
+        <div><span class="font-display font-extrabold text-[26px] text-white">4.9</span> <span class="text-white/60">Google</span></div>
+        <div><span class="font-display font-extrabold text-[26px] text-white">4.9</span> <span class="text-white/60">Clutch</span></div>
+        <div><span class="font-display font-extrabold text-[26px] text-white">9.6</span> <span class="text-white/60">NPS</span></div>
+      </div>
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-6">
+      <figure class="glass rounded-2xl p-7">
+        <blockquote class="text-[16px] leading-relaxed">"They pushed back on half of what we asked for and were right about most of it. The site does one job on every page now, and our enquiry quality went up before the volume did."</blockquote>
+        <figcaption class="mt-6 pt-5 border-t border-white/10 flex items-center gap-3">
+          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=70" alt="" class="w-11 h-11 rounded-full object-cover" loading="lazy">
+          <span class="text-[14px]"><b class="block text-white">Priya Raman</b><span class="text-white/60">VP Marketing, Truvia Labs</span></span>
+        </figcaption>
+      </figure>
+
+      <figure class="glass rounded-2xl p-7">
+        <blockquote class="text-[16px] leading-relaxed">"Fourteen clinic websites became one. Our staff publish their own updates now, which sounds small until you remember we used to wait nine days for a phone number change."</blockquote>
+        <figcaption class="mt-6 pt-5 border-t border-white/10 flex items-center gap-3">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=70" alt="" class="w-11 h-11 rounded-full object-cover" loading="lazy">
+          <span class="text-[14px]"><b class="block text-white">Marcus Bell</b><span class="text-white/60">Communications Director, Cascadia Health</span></span>
+        </figcaption>
+      </figure>
+
+      <!-- video testimonial -->
+      <figure class="relative rounded-2xl overflow-hidden min-h-[280px] group">
+        <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=700&q=70" alt="Client speaking to camera about working with Calwebtech" class="absolute inset-0 w-full h-full object-cover" loading="lazy">
+        <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/50 to-ink/10"></div>
+        <button class="absolute inset-0 grid place-items-center" aria-label="Play video testimonial from Dana Whitfield, Halloway Group">
+          <span class="grid place-items-center w-16 h-16 rounded-full bg-white text-ink group-hover:scale-105 transition-transform">
+            <svg class="w-6 h-6 ml-1" viewBox="0 0 16 18" fill="currentColor" aria-hidden="true"><path d="M15 9 0 18V0z"/></svg>
+          </span>
+        </button>
+        <figcaption class="absolute inset-x-0 bottom-0 p-6">
+          <b class="block text-white">Dana Whitfield</b>
+          <span class="text-white/70 text-[14px]">Operations Lead, Halloway Group &middot; 2 min</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="mt-12 pt-10 border-t border-white/10 flex flex-wrap items-center gap-x-10 gap-y-5 text-white/45 text-[14px]">
+      <span class="text-white/70 font-semibold">Featured in</span>
+      <span class="font-display font-bold text-[19px]">Forbes</span>
+      <span class="font-display font-bold text-[19px]">TechCrunch</span>
+      <span class="font-display font-bold text-[19px]">Inc.</span>
+      <span class="font-display font-bold text-[19px]">Fast Company</span>
+      <span class="font-display font-bold text-[19px]">Smashing Magazine</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ AWARDS / PRESS / EXPERTISE (tabbed) ============================ -->
+<section id="awards" class="bg-mist2 border-b border-line py-20 lg:py-24">
+  <div class="shell">
+    <div class="flex flex-wrap items-end justify-between gap-6">
+      <div>
+        <p class="text-[14px] text-body">Our work has been judged, and covered</p>
+        <h2 class="font-display font-extrabold text-ink text-[30px] lg:text-[38px] leading-[1.1] mt-2">Recognised web engineering</h2>
+      </div>
+      <a href="#" class="text-primary font-semibold hover:text-primaryd">All awards and certifications</a>
+    </div>
+
+    <div class="mt-9 flex flex-wrap gap-2" role="tablist" aria-label="Recognition">
+      <button class="rtab h-11 px-5 rounded-lg text-[14.5px] font-semibold bg-ink text-white" data-pane="awards">Awards</button>
+      <button class="rtab h-11 px-5 rounded-lg text-[14.5px] font-semibold bg-white border border-line text-ink hover:border-ink" data-pane="press">In the press</button>
+      <button class="rtab h-11 px-5 rounded-lg text-[14.5px] font-semibold bg-white border border-line text-ink hover:border-ink" data-pane="expertise">Expertise</button>
+    </div>
+
+    <div id="pane-awards" class="rpane mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div class="bg-white rounded-2xl border border-line p-6">
+        <p class="font-display font-bold text-ink text-[16px]">Awwwards Honourable Mention</p>
+        <p class="mt-2 text-[14px] leading-relaxed">Verona Home storefront, 2026</p>
+      </div>
+      <div class="bg-white rounded-2xl border border-line p-6">
+        <p class="font-display font-bold text-ink text-[16px]">Clutch Top B2B Developer</p>
+        <p class="mt-2 text-[14px] leading-relaxed">California, 2025 and 2026</p>
+      </div>
+      <div class="bg-white rounded-2xl border border-line p-6">
+        <p class="font-display font-bold text-ink text-[16px]">W3 Silver, Accessibility</p>
+        <p class="mt-2 text-[14px] leading-relaxed">Cascadia Health platform, 2026</p>
+      </div>
+      <div class="bg-white rounded-2xl border border-line p-6">
+        <p class="font-display font-bold text-ink text-[16px]">Horizon Interactive, Gold</p>
+        <p class="mt-2 text-[14px] leading-relaxed">Northmark Supply quoting platform, 2025</p>
+      </div>
+    </div>
+
+    <div id="pane-press" class="rpane mt-8 hidden">
+      <div class="bg-white rounded-2xl border border-line p-8">
+        <div class="flex flex-wrap items-center gap-x-12 gap-y-6 text-ink/40">
+          <span class="font-display font-bold text-[22px]">Forbes</span>
+          <span class="font-display font-bold text-[22px]">TechCrunch</span>
+          <span class="font-display font-bold text-[22px]">Inc.</span>
+          <span class="font-display font-bold text-[22px]">Fast Company</span>
+          <span class="font-display font-bold text-[22px]">Smashing Magazine</span>
+          <span class="font-display font-bold text-[22px]">CNBC</span>
+        </div>
+        <p class="mt-7 pt-7 border-t border-line text-[15px] leading-relaxed max-w-[70ch]">
+          Coverage of our work on B2B commerce, self-hosted infrastructure and AI search
+          visibility. Each mention links to the original article rather than to a press page,
+          so you can check it yourself.
+        </p>
+      </div>
+    </div>
+
+    <div id="pane-expertise" class="rpane mt-8 hidden">
+      <div class="bg-white rounded-2xl border border-line p-8">
+        <div class="flex flex-wrap gap-2.5">
+          <span class="px-4 py-2 rounded-lg bg-mist text-ink text-[14px] font-medium">Custom web design</span>
+          <span class="px-4 py-2 rounded-lg bg-mist text-ink text-[14px] font-medium">Web application development</span>
+          <span class="px-4 py-2 rounded-lg bg-mist text-ink text-[14px] font-medium">Ecommerce development</span>
+          <span class="px-4 py-2 rounded-lg bg-mist text-ink text-[14px] font-medium">Next.js and React</span>
+          <span class="px-4 py-2 rounded-lg bg-mist text-ink text-[14px] font-medium">WordPress</span>
+          <span class="px-4 py-2 rounded-lg bg-mist text-ink text-[14px] font-medium">Shopify</span>
+          <span class="px-4 py-2 rounded-lg bg-mist text-ink text-[14px] font-medium">WooCommerce</span>
+          <span class="px-4 py-2 rounded-lg bg-mist text-ink text-[14px] font-medium">Headless CMS</span>
+          <span class="px-4 py-2 rounded-lg bg-mist text-ink text-[14px] font-medium">React Native</span>
+          <span class="px-4 py-2 rounded-lg bg-mist text-ink text-[14px] font-medium">UI and UX design</span>
+          <span class="px-4 py-2 rounded-lg bg-mist text-ink text-[14px] font-medium">Design systems</span>
+          <span class="px-4 py-2 rounded-lg bg-mist text-ink text-[14px] font-medium">Technical SEO</span>
+          <span class="px-4 py-2 rounded-lg bg-mist text-ink text-[14px] font-medium">AI search visibility</span>
+          <span class="px-4 py-2 rounded-lg bg-mist text-ink text-[14px] font-medium">Conversion optimisation</span>
+          <span class="px-4 py-2 rounded-lg bg-mist text-ink text-[14px] font-medium">Performance engineering</span>
+          <span class="px-4 py-2 rounded-lg bg-mist text-ink text-[14px] font-medium">ERP and CRM integration</span>
+          <span class="px-4 py-2 rounded-lg bg-mist text-ink text-[14px] font-medium">Accessibility, WCAG 2.2</span>
+          <span class="px-4 py-2 rounded-lg bg-mist text-ink text-[14px] font-medium">Self-hosted infrastructure</span>
+          <span class="px-4 py-2 rounded-lg bg-mist text-ink text-[14px] font-medium">Email and campaign systems</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ INSIGHTS ============================ -->
+<section id="insights" class="bg-white py-20 lg:py-28">
+  <div class="shell">
+    <div class="flex flex-wrap items-end justify-between gap-6 mb-12">
+      <h2 class="font-display font-extrabold text-ink text-[34px] lg:text-[42px] leading-[1.1]">Things worth knowing before you brief anyone</h2>
+      <a href="#" class="text-primary font-semibold hover:text-primaryd">All insights</a>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <article class="bg-white rounded-2xl border border-line overflow-hidden">
+        <div class="aspect-[16/9] bg-mist">
+          <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=700&q=70" alt="Notebook and laptop on a desk" class="w-full h-full object-cover" loading="lazy">
+        </div>
+        <div class="p-6">
+          <p class="text-[13px]">Strategy &middot; 7 min read</p>
+          <h3 class="mt-2 font-display font-bold text-ink text-[19px] leading-snug">What a website redesign should actually cost in 2026</h3>
+          <p class="mt-2.5 text-[14.5px] leading-relaxed">A line-by-line breakdown of where the money goes, and the three items that quietly double most quotes.</p>
+        </div>
+      </article>
+      <article class="bg-white rounded-2xl border border-line overflow-hidden">
+        <div class="aspect-[16/9] bg-mist">
+          <img src="https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?auto=format&fit=crop&w=700&q=70" alt="Analytics charts on a screen" class="w-full h-full object-cover" loading="lazy">
+        </div>
+        <div class="p-6">
+          <p class="text-[13px]">AI search &middot; 9 min read</p>
+          <h3 class="mt-2 font-display font-bold text-ink text-[19px] leading-snug">Why ChatGPT recommends your competitor</h3>
+          <p class="mt-2.5 text-[14.5px] leading-relaxed">Language models cite structured, corroborated sources. Here is how to become one of them.</p>
+        </div>
+      </article>
+      <article class="bg-white rounded-2xl border border-line overflow-hidden">
+        <div class="aspect-[16/9] bg-mist">
+          <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=700&q=70" alt="Workspace with a laptop" class="w-full h-full object-cover" loading="lazy">
+        </div>
+        <div class="p-6">
+          <p class="text-[13px]">Engineering &middot; 6 min read</p>
+          <h3 class="mt-2 font-display font-bold text-ink text-[19px] leading-snug">Self-hosting your site is cheaper than you think</h3>
+          <p class="mt-2.5 text-[14.5px] leading-relaxed">What a Docker stack on a $20 server replaces, and the two jobs somebody still has to own.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ WHITEPAPER CAPTURE ============================ -->
+<section class="relative overflow-hidden py-16 lg:py-20 text-white" style="background:linear-gradient(135deg,#0A1D37 0%,#123A8F 55%,#1550E0 100%)">
+  <div class="absolute inset-0 grid-lines-light" aria-hidden="true"></div>
+  <div class="absolute -bottom-40 -right-20 w-[520px] h-[520px] rounded-full bg-result/20 blur-3xl" aria-hidden="true"></div>
+  <div class="shell relative grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+    <div class="lg:col-span-7">
+      <p class="text-[15px] text-white/70">Stay ahead in 2026</p>
+      <h2 class="mt-2 font-display font-extrabold text-[28px] lg:text-[38px] leading-[1.12] max-w-[22ch]">
+        The B2B Website Trust Report
+      </h2>
+      <p class="mt-4 text-[16.5px] leading-relaxed text-white/75 max-w-[56ch]">
+        We asked 400 buyers what makes them leave a supplier's website before contacting
+        anyone. Twenty-four pages, no gated fluff, and the three findings that surprised us most.
+      </p>
+      <form class="mt-7 flex flex-col sm:flex-row gap-3 max-w-lg" onsubmit="return false">
+        <label for="wp-email" class="sr-only">Work email</label>
+        <input id="wp-email" type="email" placeholder="you@company.com"
+               class="flex-1 h-14 px-5 rounded-xl bg-white/[.10] border border-white/20 text-white placeholder-white/45 outline-none focus:border-white/60">
+        <button class="h-14 px-7 rounded-xl bg-white text-ink font-semibold hover:bg-mist whitespace-nowrap">Send me the report</button>
+      </form>
+      <p class="mt-3 text-[13px] text-white/55">One email with the download link. Unsubscribe whenever.</p>
+    </div>
+    <div class="lg:col-span-5">
+      <div class="relative rounded-2xl overflow-hidden aspect-[4/3] ring-1 ring-white/20 shadow-[0_30px_70px_-25px_rgba(0,0,0,.7)]">
+        <img src="https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?auto=format&fit=crop&w=900&q=70" alt="Pages from the B2B Website Trust Report" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-t from-ink/60 to-transparent"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ LOCATIONS ============================ -->
+<section id="locations" class="bg-white py-20 lg:py-28">
+  <div class="shell">
+    <div class="max-w-[62ch]">
+      <h2 class="font-display font-extrabold text-ink text-[32px] lg:text-[42px] leading-[1.1]">Where we work</h2>
+      <p class="mt-5 text-[17px] leading-relaxed">
+        Based in California, working across the United States. We publish a page for every
+        market we can genuinely serve, and we do not pretend to have an office where we do not.
+      </p>
+    </div>
+
+    <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <article class="rounded-2xl border border-line overflow-hidden">
+        <div class="aspect-[16/10] bg-mist">
+          <img src="https://images.unsplash.com/photo-1449034446853-66c86144b0ad?auto=format&fit=crop&w=700&q=70" alt="Sacramento, California" class="w-full h-full object-cover" loading="lazy">
+        </div>
+        <div class="p-6">
+          <h3 class="font-display font-bold text-ink text-[20px]">Sacramento</h3>
+          <p class="mt-2.5 text-[14.5px] leading-relaxed">Head office. Agriculture technology, public sector suppliers and healthcare networks across the Central Valley.</p>
+          <p class="mt-4 pt-4 border-t border-line text-[14px]">1201 J Street, Suite 200<br>Sacramento, CA 95814</p>
+          <a href="#" class="mt-4 inline-block text-primary font-semibold text-[14.5px] hover:text-primaryd">Web design in Sacramento</a>
+        </div>
+      </article>
+
+      <article class="rounded-2xl border border-line overflow-hidden">
+        <div class="aspect-[16/10] bg-mist">
+          <img src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=700&q=70" alt="San Francisco Bay Area" class="w-full h-full object-cover" loading="lazy">
+        </div>
+        <div class="p-6">
+          <h3 class="font-display font-bold text-ink text-[20px]">San Francisco Bay Area</h3>
+          <p class="mt-2.5 text-[14.5px] leading-relaxed">SaaS and venture-backed product teams who need a marketing site that keeps pace with the product.</p>
+          <p class="mt-4 pt-4 border-t border-line text-[14px]">Serving San Francisco, Oakland<br>and San Jose</p>
+          <a href="#" class="mt-4 inline-block text-primary font-semibold text-[14.5px] hover:text-primaryd">Web design in San Francisco</a>
+        </div>
+      </article>
+
+      <article class="rounded-2xl border border-line overflow-hidden">
+        <div class="aspect-[16/10] bg-mist">
+          <img src="https://images.unsplash.com/photo-1580655653885-65763b2597d0?auto=format&fit=crop&w=700&q=70" alt="Los Angeles and Southern California" class="w-full h-full object-cover" loading="lazy">
+        </div>
+        <div class="p-6">
+          <h3 class="font-display font-bold text-ink text-[20px]">Los Angeles</h3>
+          <p class="mt-2.5 text-[14.5px] leading-relaxed">Consumer brands, entertainment and D2C commerce, where the storefront is the whole business.</p>
+          <p class="mt-4 pt-4 border-t border-line text-[14px]">Serving Los Angeles, Irvine<br>and San Diego</p>
+          <a href="#" class="mt-4 inline-block text-primary font-semibold text-[14.5px] hover:text-primaryd">Web design in Los Angeles</a>
+        </div>
+      </article>
+    </div>
+
+    <div class="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 text-[14.5px]">
+      <span class="text-body">Also serving</span>
+      <a href="#" class="text-ink font-medium hover:text-primary">Roseville</a><span class="text-line">·</span>
+      <a href="#" class="text-ink font-medium hover:text-primary">Folsom</a><span class="text-line">·</span>
+      <a href="#" class="text-ink font-medium hover:text-primary">Elk Grove</a><span class="text-line">·</span>
+      <a href="#" class="text-ink font-medium hover:text-primary">Davis</a><span class="text-line">·</span>
+      <a href="#" class="text-ink font-medium hover:text-primary">San Jose</a><span class="text-line">·</span>
+      <a href="#" class="text-ink font-medium hover:text-primary">San Diego</a>
+      <a href="#" class="ml-2 text-primary font-semibold hover:text-primaryd">All locations</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ PRICING POSTURE ============================ -->
+<section id="pricing" class="relative border-t border-line py-20 lg:py-28 bg-gradient-to-b from-mist2 to-white overflow-hidden">
+  <div class="absolute -top-28 -right-20 w-[480px] h-[480px] rounded-full bg-result/[.08] blur-3xl" aria-hidden="true"></div>
+  <div class="shell relative grid lg:grid-cols-12 gap-12 lg:gap-20">
+    <div class="lg:col-span-5">
+      <h2 class="font-display font-extrabold text-ink text-[34px] lg:text-[42px] leading-[1.1]">We will talk about money on the first call</h2>
+      <p class="mt-5 text-[17px] leading-relaxed">
+        Three engagement shapes, published openly so you can tell in ninety seconds
+        whether we are in your range. Every project is quoted fixed after discovery,
+        with the change process written down before we start.
+      </p>
+      <a href="#estimate" class="mt-7 inline-flex items-center h-12 px-6 rounded-lg bg-ink text-white font-semibold hover:bg-ink2">Estimate your project</a>
+    </div>
+
+    <div class="lg:col-span-7 grid sm:grid-cols-3 gap-5">
+      <div class="rounded-2xl border border-line p-6">
+        <p class="font-display font-bold text-ink text-[17px]">Focused build</p>
+        <p class="font-display font-extrabold text-ink text-[26px] mt-3">$12k to $25k</p>
+        <p class="mt-3 text-[14px] leading-relaxed">Marketing site, custom design, CMS and lead capture. Six to eight weeks.</p>
+      </div>
+      <div class="rounded-2xl border-2 border-ink p-6 relative">
+        <span class="absolute -top-3 left-6 bg-ink text-white text-[12px] font-semibold px-2.5 py-1 rounded">Most common</span>
+        <p class="font-display font-bold text-ink text-[17px]">Platform build</p>
+        <p class="font-display font-extrabold text-ink text-[26px] mt-3">$25k to $60k</p>
+        <p class="mt-3 text-[14px] leading-relaxed">Everything above plus booking, dashboard, campaigns and integrations. Nine to fourteen weeks.</p>
+      </div>
+      <div class="rounded-2xl border border-line p-6">
+        <p class="font-display font-bold text-ink text-[17px]">Ongoing partner</p>
+        <p class="font-display font-extrabold text-ink text-[26px] mt-3">From $1.5k/mo</p>
+        <p class="mt-3 text-[14px] leading-relaxed">Care, monitoring, a fixed development allowance and quarterly funnel review. Month to month.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ BOOK / CONTACT ============================ -->
+<section id="book" class="relative border-t border-line py-20 lg:py-28 overflow-hidden bg-mist">
+  <div class="absolute inset-0" aria-hidden="true">
+    <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1800&q=65"
+         alt="" class="w-full h-full object-cover opacity-[.13]">
+    <div class="absolute inset-0 bg-gradient-to-r from-mist via-mist/92 to-mist/70"></div>
+    <div class="absolute -top-24 left-1/3 w-[520px] h-[520px] rounded-full bg-primary/[.09] blur-3xl"></div>
+  </div>
+  <div class="shell relative grid lg:grid-cols-12 gap-12 lg:gap-16">
+
+    <div class="lg:col-span-5">
+      <h2 class="font-display font-extrabold text-ink text-[34px] lg:text-[44px] leading-[1.08]">Tell us what is broken</h2>
+      <p class="mt-5 text-[17px] leading-relaxed max-w-[48ch]">
+        A thirty minute call with the people who would run your project. We will tell you
+        what we would do, roughly what it costs, and whether we are the wrong fit.
+      </p>
+
+      <ul class="mt-9 space-y-5 border-t border-line pt-8">
+        <li class="flex gap-4">
+          <span class="shrink-0 grid place-items-center w-10 h-10 rounded-lg bg-white border border-line text-ink" aria-hidden="true">
+            <svg class="w-4 h-4" viewBox="0 0 16 16" fill="none"><path d="M2 4.5h12v9H2z" stroke="currentColor" stroke-width="1.5"/><path d="M2 7h12M5.5 2v4M10.5 2v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </span>
+          <span><b class="block text-ink">Usually within one business day</b><span class="text-[14.5px]">Real availability, in your timezone.</span></span>
+        </li>
+        <li class="flex gap-4">
+          <span class="shrink-0 grid place-items-center w-10 h-10 rounded-lg bg-white border border-line text-ink" aria-hidden="true">
+            <svg class="w-4 h-4" viewBox="0 0 16 16" fill="none"><path d="M8 1.5 14 4v4.5c0 3.3-2.4 5.5-6 6.5-3.6-1-6-3.2-6-6.5V4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          </span>
+          <span><b class="block text-ink">We sign your NDA before we talk</b><span class="text-[14.5px]">Send yours, or use ours.</span></span>
+        </li>
+        <li class="flex gap-4">
+          <span class="shrink-0 grid place-items-center w-10 h-10 rounded-lg bg-white border border-line text-ink" aria-hidden="true">
+            <svg class="w-4 h-4" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6.5 12 13 4.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span><b class="block text-ink">No obligation, no drip sequence</b><span class="text-[14.5px]">If it is not a fit we will say so and point you elsewhere.</span></span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="lg:col-span-7">
+      <form class="bg-white rounded-2xl border border-line p-7 sm:p-9 shadow-[0_24px_50px_-30px_rgba(10,29,55,.4)]" onsubmit="return false">
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label for="f-name" class="block text-[14px] font-semibold text-ink mb-1.5">Full name</label>
+            <input id="f-name" type="text" class="w-full h-12 px-4 rounded-lg border border-line focus:border-primary outline-none" placeholder="Dana Whitfield">
+          </div>
+          <div>
+            <label for="f-company" class="block text-[14px] font-semibold text-ink mb-1.5">Company</label>
+            <input id="f-company" type="text" class="w-full h-12 px-4 rounded-lg border border-line focus:border-primary outline-none" placeholder="Halloway Group">
+          </div>
+          <div>
+            <label for="f-email" class="block text-[14px] font-semibold text-ink mb-1.5">Work email</label>
+            <input id="f-email" type="email" class="w-full h-12 px-4 rounded-lg border border-line focus:border-primary outline-none" placeholder="dana@halloway.com">
+          </div>
+          <div>
+            <label for="f-phone" class="block text-[14px] font-semibold text-ink mb-1.5">Phone <span class="font-normal text-body">(optional)</span></label>
+            <input id="f-phone" type="tel" class="w-full h-12 px-4 rounded-lg border border-line focus:border-primary outline-none" placeholder="+1 555 000 0000">
+          </div>
+        </div>
+
+        <fieldset class="mt-6">
+          <legend class="block text-[14px] font-semibold text-ink mb-2.5">What do you need?</legend>
+          <div class="flex flex-wrap gap-2">
+            <label class="px-4 h-10 inline-flex items-center rounded-lg border border-line cursor-pointer hover:border-ink text-[14px]"><input type="checkbox" class="sr-only"> New website</label>
+            <label class="px-4 h-10 inline-flex items-center rounded-lg border border-line cursor-pointer hover:border-ink text-[14px]"><input type="checkbox" class="sr-only"> Redesign</label>
+            <label class="px-4 h-10 inline-flex items-center rounded-lg border border-line cursor-pointer hover:border-ink text-[14px]"><input type="checkbox" class="sr-only"> Ecommerce</label>
+            <label class="px-4 h-10 inline-flex items-center rounded-lg border border-line cursor-pointer hover:border-ink text-[14px]"><input type="checkbox" class="sr-only"> Web application</label>
+            <label class="px-4 h-10 inline-flex items-center rounded-lg border border-line cursor-pointer hover:border-ink text-[14px]"><input type="checkbox" class="sr-only"> SEO and AI visibility</label>
+            <label class="px-4 h-10 inline-flex items-center rounded-lg border border-line cursor-pointer hover:border-ink text-[14px]"><input type="checkbox" class="sr-only"> Care plan</label>
+          </div>
+        </fieldset>
+
+        <div class="grid sm:grid-cols-2 gap-5 mt-6">
+          <div>
+            <label for="f-budget" class="block text-[14px] font-semibold text-ink mb-1.5">Budget range</label>
+            <select id="f-budget" class="w-full h-12 px-4 rounded-lg border border-line focus:border-primary outline-none bg-white">
+              <option>Under $12,000</option>
+              <option selected>$12,000 to $25,000</option>
+              <option>$25,000 to $60,000</option>
+              <option>$60,000 to $120,000</option>
+              <option>Over $120,000</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+          <div>
+            <label for="f-source" class="block text-[14px] font-semibold text-ink mb-1.5">How did you find us?</label>
+            <select id="f-source" class="w-full h-12 px-4 rounded-lg border border-line focus:border-primary outline-none bg-white">
+              <option>Google search</option>
+              <option>ChatGPT or another AI assistant</option>
+              <option>Clutch or DesignRush</option>
+              <option>Referral from a client</option>
+              <option>LinkedIn</option>
+              <option>Somewhere else</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="mt-6">
+          <label for="f-msg" class="block text-[14px] font-semibold text-ink mb-1.5">What is going wrong right now?</label>
+          <textarea id="f-msg" rows="4" class="w-full p-4 rounded-lg border border-line focus:border-primary outline-none resize-none" placeholder="Two or three sentences is plenty."></textarea>
+        </div>
+
+        <label class="mt-5 flex items-start gap-3 text-[13.5px] leading-relaxed">
+          <input type="checkbox" class="mt-1 accent-primary w-4 h-4">
+          <span>Send me the occasional Calwebtech note on web performance and lead generation. No more than once a month.</span>
+        </label>
+
+        <button class="mt-7 w-full sm:w-auto inline-flex items-center justify-center h-14 px-8 rounded-xl bg-primary text-white text-[16px] font-semibold hover:bg-primaryd">Book my consultation</button>
+        <p class="mt-4 text-[13px]">Protected by bot filtering. We never sell or share your details, and you can ask us to delete them at any time.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================ FOOTER ============================ -->
+<footer class="relative bg-ink text-white/70 overflow-hidden">
+  <div class="absolute inset-0" aria-hidden="true">
+    <img src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=1800&q=60"
+         alt="" class="w-full h-full object-cover opacity-[.10] fade-b">
+    <div class="absolute inset-0 grid-lines-light"></div>
+    <div class="absolute -top-32 right-10 w-[480px] h-[480px] rounded-full bg-primary/20 blur-3xl"></div>
+  </div>
+  <div class="shell relative py-16 lg:py-20">
+    <div class="grid lg:grid-cols-12 gap-12 lg:gap-10">
+
+      <div class="lg:col-span-4">
+        <a href="#" class="flex items-center gap-2.5" aria-label="Calwebtech home">
+          <span class="grid place-items-center w-9 h-9 rounded-lg bg-white text-ink font-display font-extrabold text-lg">C</span>
+          <span class="font-display font-extrabold text-[22px] text-white">Calwebtech</span>
+        </a>
+        <p class="mt-5 text-[15px] leading-relaxed max-w-[38ch]">
+          A web engineering studio building custom websites, commerce platforms and
+          web applications for companies that would rather own their platform than rent it.
+        </p>
+
+        <div class="mt-8">
+          <p class="text-white font-semibold text-[15px]">Get one useful email a month</p>
+          <form class="mt-3 flex gap-2 max-w-md" onsubmit="return false">
+            <label for="nl" class="sr-only">Email address</label>
+            <input id="nl" type="email" placeholder="you@company.com" class="flex-1 h-12 px-4 rounded-lg bg-white/[.07] border border-white/15 text-white placeholder-white/40 outline-none focus:border-white/50">
+            <button class="h-12 px-5 rounded-lg bg-white text-ink font-semibold hover:bg-mist">Subscribe</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="lg:col-span-2">
+        <p class="text-white font-display font-bold text-[15px] mb-4">Services</p>
+        <ul class="space-y-2.5 text-[14.5px]">
+          <li><a href="#" class="hover:text-white">Website design</a></li>
+          <li><a href="#" class="hover:text-white">Web applications</a></li>
+          <li><a href="#" class="hover:text-white">Ecommerce</a></li>
+          <li><a href="#" class="hover:text-white">Next.js and React</a></li>
+          <li><a href="#" class="hover:text-white">WordPress</a></li>
+          <li><a href="#" class="hover:text-white">Shopify</a></li>
+          <li><a href="#" class="hover:text-white">SEO and GEO</a></li>
+          <li><a href="#" class="hover:text-white">Care plans</a></li>
+        </ul>
+      </div>
+
+      <div class="lg:col-span-2">
+        <p class="text-white font-display font-bold text-[15px] mb-4">Industries</p>
+        <ul class="space-y-2.5 text-[14.5px]">
+          <li><a href="#" class="hover:text-white">Manufacturing</a></li>
+          <li><a href="#" class="hover:text-white">Distribution</a></li>
+          <li><a href="#" class="hover:text-white">Retail and D2C</a></li>
+          <li><a href="#" class="hover:text-white">SaaS</a></li>
+          <li><a href="#" class="hover:text-white">Healthcare</a></li>
+          <li><a href="#" class="hover:text-white">Real estate</a></li>
+          <li><a href="#" class="hover:text-white">Hospitality</a></li>
+          <li><a href="#" class="hover:text-white">Education</a></li>
+        </ul>
+      </div>
+
+      <div class="lg:col-span-2">
+        <p class="text-white font-display font-bold text-[15px] mb-4">Resources</p>
+        <ul class="space-y-2.5 text-[14.5px]">
+          <li><a href="#estimate" class="hover:text-white">Cost calculator</a></li>
+          <li><a href="#" class="hover:text-white">Free website audit</a></li>
+          <li><a href="#" class="hover:text-white">AI visibility check</a></li>
+          <li><a href="#insights" class="hover:text-white">Insights</a></li>
+          <li><a href="#" class="hover:text-white">Guides and reports</a></li>
+          <li><a href="#" class="hover:text-white">Glossary</a></li>
+          <li><a href="#process" class="hover:text-white">Our playbook</a></li>
+          <li><a href="#beforeafter" class="hover:text-white">Before and after</a></li>
+        </ul>
+      </div>
+
+      <div class="lg:col-span-2">
+        <p class="text-white font-display font-bold text-[15px] mb-4">Company</p>
+        <ul class="space-y-2.5 text-[14.5px]">
+          <li><a href="#" class="hover:text-white">About</a></li>
+          <li><a href="#" class="hover:text-white">Team</a></li>
+          <li><a href="#awards" class="hover:text-white">Awards</a></li>
+          <li><a href="#" class="hover:text-white">Client feedback</a></li>
+          <li><a href="#pricing" class="hover:text-white">Pricing</a></li>
+          <li><a href="#" class="hover:text-white">Careers</a></li>
+          <li><a href="#" class="hover:text-white">News</a></li>
+          <li><a href="#book" class="hover:text-white">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-14 pt-10 border-t border-white/10 grid md:grid-cols-3 gap-8 text-[14px]">
+      <div>
+        <p class="text-white font-semibold">Sacramento</p>
+        <p class="mt-1.5 leading-relaxed">1201 J Street, Suite 200<br>Sacramento, CA 95814</p>
+      </div>
+      <div>
+        <p class="text-white font-semibold">Austin</p>
+        <p class="mt-1.5 leading-relaxed">98 San Jacinto Blvd, Suite 400<br>Austin, TX 78701</p>
+      </div>
+      <div>
+        <p class="text-white font-semibold">Get in touch</p>
+        <p class="mt-1.5 leading-relaxed">
+          <a href="tel:+18005550188" class="hover:text-white">+1 (800) 555-0188</a><br>
+          <a href="mailto:hello@calwebtech.com" class="hover:text-white">hello@calwebtech.com</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-10 pt-8 border-t border-white/10 flex flex-wrap items-center justify-between gap-6 text-[13.5px]">
+      <p>&copy; 2026 Calwebtech. All rights reserved.</p>
+      <div class="flex flex-wrap gap-x-6 gap-y-2">
+        <a href="#" class="hover:text-white">Privacy policy</a>
+        <a href="#" class="hover:text-white">Terms</a>
+        <a href="#" class="hover:text-white">Cookie policy</a>
+        <a href="#" class="hover:text-white">Accessibility statement</a>
+        <a href="#" class="hover:text-white">Information security</a>
+        <a href="#" class="hover:text-white">Sitemap</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- video modal -->
+<div id="videoModal" class="modal fixed inset-0 z-[200] items-center justify-center p-5 bg-ink/90 backdrop-blur-sm" role="dialog" aria-modal="true" aria-label="Calwebtech showreel">
+  <div class="w-full max-w-4xl">
+    <div class="flex justify-end mb-3">
+      <button id="closeModal" class="inline-flex items-center gap-2 text-white/80 hover:text-white text-[14.5px] font-semibold">
+        Close
+        <span class="grid place-items-center w-9 h-9 rounded-full border border-white/25" aria-hidden="true">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </span>
+      </button>
+    </div>
+    <div class="relative rounded-2xl overflow-hidden bg-black aspect-video ring-1 ring-white/15">
+      <video id="modalVideo" class="w-full h-full object-cover" controls playsinline
+             poster="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1400&q=75">
+        <source src="assets/calwebtech-showreel.mp4" type="video/mp4">
+      </video>
+      <div id="videoFallback" class="absolute inset-0 grid place-items-center text-center px-8 pointer-events-none">
+        <div class="pointer-events-auto bg-ink/80 backdrop-blur rounded-xl px-6 py-5 max-w-sm">
+          <p class="text-white font-display font-bold text-[17px]">Showreel not attached yet</p>
+          <p class="text-white/70 text-[14px] mt-2 leading-relaxed">Drop the file at <code class="text-white">assets/calwebtech-showreel.mp4</code> and this plays automatically.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- floating CTA -->
+<a href="#book" class="fixed bottom-6 right-6 z-[90] hidden md:inline-flex items-center h-13 py-3.5 px-6 rounded-full bg-ink text-white font-semibold shadow-[0_16px_36px_-12px_rgba(10,29,55,.6)] hover:bg-ink2">
+  Start a project
+</a>
+
+<script>
+(function () {
+  // mobile nav
+  var burger = document.getElementById('burger');
+  var mnav = document.getElementById('mnav');
+  burger.addEventListener('click', function () {
+    var open = mnav.classList.toggle('hidden') === false;
+    burger.setAttribute('aria-expanded', String(open));
+  });
+
+  // review popover
+  var rb = document.getElementById('rev-btn'), rp = document.getElementById('rev-pop');
+  if (rb) {
+    rb.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var open = rp.classList.toggle('hidden') === false;
+      rb.setAttribute('aria-expanded', String(open));
+    });
+    document.addEventListener('click', function () { rp.classList.add('hidden'); rb.setAttribute('aria-expanded','false'); });
+    rp.addEventListener('click', function (e) { e.stopPropagation(); });
+  }
+
+  // accordion
+  document.querySelectorAll('.faq-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var item = btn.closest('.faq');
+      var wasOpen = item.classList.contains('open');
+      item.parentElement.querySelectorAll('.faq').forEach(function (f) { f.classList.remove('open'); });
+      if (!wasOpen) item.classList.add('open');
+    });
+  });
+
+  // work filter
+  var tabs = document.querySelectorAll('.wtab');
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      tabs.forEach(function (t) { t.className = 'wtab h-10 px-4 rounded-lg text-[14.5px] font-semibold bg-mist text-ink hover:bg-line'; });
+      tab.className = 'wtab h-10 px-4 rounded-lg text-[14.5px] font-semibold bg-ink text-white';
+      var f = tab.dataset.filter;
+      document.querySelectorAll('.wcard').forEach(function (c) {
+        c.style.display = (f === 'all' || c.dataset.cat === f) ? '' : 'none';
+      });
+    });
+  });
+
+  // counters
+  var counted = false;
+  function runCounters() {
+    if (counted) return; counted = true;
+    document.querySelectorAll('[data-count]').forEach(function (el) {
+      var target = parseInt(el.dataset.count, 10);
+      var suffix = el.dataset.suffix || '';
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { el.textContent = target + suffix; return; }
+      var start = null;
+      function step(ts) {
+        if (!start) start = ts;
+        var p = Math.min((ts - start) / 1100, 1);
+        el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3))) + suffix;
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  }
+  var statEl = document.querySelector('[data-count]');
+  if (statEl && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (e) { if (e.isIntersecting) { runCounters(); obs.disconnect(); } });
+    }, { threshold: .4 }).observe(statEl);
+  } else { runCounters(); }
+
+  // before / after slider
+  var ba = document.getElementById('ba');
+  if (ba) {
+    var after = document.getElementById('ba-after');
+    var handle = document.getElementById('ba-handle');
+    var range = document.getElementById('ba-range');
+    function setPos(pct) {
+      pct = Math.max(2, Math.min(98, pct));
+      after.style.width = pct + '%';
+      handle.style.left = pct + '%';
+      range.value = pct;
+    }
+    function fromEvent(e) {
+      var rect = ba.getBoundingClientRect();
+      var x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+      setPos((x / rect.width) * 100);
+    }
+    var dragging = false;
+    ba.addEventListener('mousedown', function (e) { dragging = true; fromEvent(e); });
+    window.addEventListener('mousemove', function (e) { if (dragging) fromEvent(e); });
+    window.addEventListener('mouseup', function () { dragging = false; });
+    ba.addEventListener('touchstart', function (e) { dragging = true; fromEvent(e); }, { passive: true });
+    ba.addEventListener('touchmove', function (e) { if (dragging) fromEvent(e); }, { passive: true });
+    ba.addEventListener('touchend', function () { dragging = false; });
+    range.addEventListener('input', function () { setPos(parseFloat(range.value)); });
+  }
+
+  // header shadow on scroll
+  var hdr = document.getElementById('hdr');
+  window.addEventListener('scroll', function () {
+    hdr.classList.toggle('shadow-[0_10px_30px_-18px_rgba(10,29,55,.45)]', window.scrollY > 8);
+  }, { passive: true });
+
+  // background videos: fade in only once they can actually play, so the poster
+  // image is never replaced by a black frame. Paused when off screen.
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  ['heroVid', 'bandVid'].forEach(function (id) {
+    var v = document.getElementById(id);
+    if (!v || reduce) return;
+    v.addEventListener('canplay', function () {
+      v.classList.add('ready');
+      v.play().catch(function () {});
+    });
+    v.load();
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { v.play().catch(function () {}); }
+          else { v.pause(); }
+        });
+      }, { threshold: .05 }).observe(v);
+    }
+  });
+
+  // showreel modal
+  var modal = document.getElementById('videoModal');
+  var modalVideo = document.getElementById('modalVideo');
+  var fallback = document.getElementById('videoFallback');
+  var lastFocus = null;
+
+  function openModal(trigger) {
+    lastFocus = trigger;
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('closeModal').focus();
+    modalVideo.play().catch(function () {});
+  }
+  function closeModal() {
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+    modalVideo.pause();
+    if (lastFocus) lastFocus.focus();
+  }
+
+  document.querySelectorAll('.playVideo').forEach(function (btn) {
+    btn.addEventListener('click', function () { openModal(btn); });
+  });
+  document.getElementById('closeModal').addEventListener('click', closeModal);
+  modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+  });
+  // hide the "not attached yet" note if a real file loads
+  modalVideo.addEventListener('loadeddata', function () { fallback.classList.add('hidden'); });
+
+  // recognition tabs
+  var rtabs = document.querySelectorAll('.rtab');
+  rtabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      rtabs.forEach(function (t) {
+        t.className = 'rtab h-11 px-5 rounded-lg text-[14.5px] font-semibold bg-white border border-line text-ink hover:border-ink';
+      });
+      tab.className = 'rtab h-11 px-5 rounded-lg text-[14.5px] font-semibold bg-ink text-white';
+      document.querySelectorAll('.rpane').forEach(function (p) { p.classList.add('hidden'); });
+      document.getElementById('pane-' + tab.dataset.pane).classList.remove('hidden');
+    });
+  });
+})();
+</script>
+</body>
+</html>

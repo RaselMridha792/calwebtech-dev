@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>B2B Website Design &amp; Development | Calwebtech</title>
+<meta name="description" content="Calwebtech builds B2B websites that turn traffic into booked calls. Fixed quote after a free 30-minute consultation. Serving California and the US.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: { extend: {
+    colors: { ink:'#0A1D37', ink2:'#12294A', primary:'#1550E0', primaryd:'#0F3FB4',
+              result:'#0E9F87', mist:'#EEF3F9', mist2:'#F7FAFD', line:'#DCE4EE', body:'#41536B' },
+    fontFamily: { display:['"Plus Jakarta Sans"','system-ui','sans-serif'], sans:['"IBM Plex Sans"','system-ui','sans-serif'] }
+  } }
+}
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { -webkit-font-smoothing: antialiased; }
+  h1,h2,h3 { font-family:'"Plus Jakarta Sans"',sans-serif; letter-spacing:-.02em; }
+  .shell { max-width: 1320px; margin:0 auto; padding-left:24px; padding-right:24px; }
+  @media (min-width:1024px){ .shell{ padding-left:48px; padding-right:48px; } }
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+    outline:3px solid #1550E0; outline-offset:2px; border-radius:4px; }
+  .glass{ background:rgba(255,255,255,.08); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,.14); }
+  .glow-blue{ background:radial-gradient(55% 60% at 80% 15%,rgba(37,99,235,.5),transparent 68%); }
+  .glow-teal{ background:radial-gradient(48% 58% at 8% 90%,rgba(14,159,135,.28),transparent 70%); }
+  .grid-lines{ background-image:linear-gradient(to right,rgba(10,29,55,.05) 1px,transparent 1px),linear-gradient(to bottom,rgba(10,29,55,.05) 1px,transparent 1px); background-size:64px 64px; }
+  .grid-lines-light{ background-image:linear-gradient(to right,rgba(255,255,255,.06) 1px,transparent 1px),linear-gradient(to bottom,rgba(255,255,255,.06) 1px,transparent 1px); background-size:64px 64px; }
+  .marquee{ display:flex; width:max-content; animation:slide 40s linear infinite; }
+  @keyframes slide{ to{ transform:translateX(-50%);} }
+  .faq-body{ display:none; }
+  .faq.open .faq-body{ display:block; }
+  .faq.open .faq-plus{ transform:rotate(45deg); }
+
+  /* --- scroll reveal --- */
+  .reveal{ opacity:0; transform:translateY(22px); transition:opacity .6s cubic-bezier(.22,.61,.36,1), transform .6s cubic-bezier(.22,.61,.36,1); }
+  .reveal.in{ opacity:1; transform:none; }
+  .reveal-d1{ transition-delay:.08s } .reveal-d2{ transition-delay:.16s }
+  .reveal-d3{ transition-delay:.24s } .reveal-d4{ transition-delay:.32s }
+
+  /* --- card lift --- */
+  .lift{ transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+  .lift:hover{ transform:translateY(-4px); box-shadow:0 24px 44px -24px rgba(10,29,55,.4); border-color:#0A1D37; }
+
+  /* --- process stepper --- */
+  .step-btn.active .step-dot{ background:#1550E0; color:#fff; border-color:#1550E0; }
+  .step-btn.active .step-title{ color:#0A1D37; }
+  .step-panel{ display:none; }
+  .step-panel.active{ display:grid; animation:panelIn .45s cubic-bezier(.22,.61,.36,1); }
+  @keyframes panelIn{ from{ opacity:0; transform:translateY(14px);} to{ opacity:1; transform:none;} }
+  #step-progress{ transition:width .45s cubic-bezier(.22,.61,.36,1); }
+
+  /* --- before/after --- */
+  #ba-after{ width:50%; } #ba-handle{ left:50%; }
+  .fakebar{ height:6px; border-radius:3px; }
+
+  @media (prefers-reduced-motion: reduce){
+    .marquee{animation:none} *{transition:none!important; animation:none!important}
+    .reveal{opacity:1; transform:none}
+  }
+</style>
+</head>
+<body class="bg-white font-sans text-body">
+
+<a href="#form" class="sr-only focus:not-sr-only focus:absolute focus:z-[999] focus:top-3 focus:left-3 focus:bg-ink focus:text-white focus:px-4 focus:py-2 focus:rounded">Skip to the form</a>
+
+<!-- ===== MINIMAL HEADER (no site nav: one way out, and it is the form) ===== -->
+<header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-line">
+  <div class="shell flex items-center justify-between h-[70px]">
+    <div class="flex items-center gap-2.5">
+      <span class="grid place-items-center w-9 h-9 rounded-lg bg-ink text-white font-display font-extrabold text-lg">C</span>
+      <span class="font-display font-extrabold text-[21px] text-ink">Calwebtech</span>
+    </div>
+    <div class="flex items-center gap-5">
+      <div class="hidden md:flex items-center gap-2 text-[14px]">
+        <span class="text-[#FFC53D]" aria-hidden="true">★★★★★</span>
+        <span><b class="text-ink">4.9</b> from 217 reviews</span>
+      </div>
+      <a href="tel:+18005550188" class="hidden sm:block text-[15px] font-semibold text-ink hover:text-primary">+1 (800) 555-0188</a>
+      <a href="#form" class="inline-flex items-center h-11 px-5 rounded-lg bg-primary text-white text-[14.5px] font-semibold hover:bg-primaryd">Get my free proposal</a>
+    </div>
+  </div>
+</header>
+
+<!-- ===== HERO + LEAD FORM ===== -->
+<section class="relative overflow-hidden bg-ink text-white">
+  <div class="absolute inset-0" aria-hidden="true">
+    <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1900&q=70" alt="" class="w-full h-full object-cover opacity-[.26]">
+    <div class="absolute inset-0 bg-gradient-to-r from-ink via-ink/95 to-ink/60"></div>
+    <div class="absolute inset-0 glow-blue"></div>
+    <div class="absolute inset-0 glow-teal"></div>
+    <div class="absolute inset-0 grid-lines-light"></div>
+  </div>
+
+  <div class="shell relative grid lg:grid-cols-12 gap-12 lg:gap-14 items-start pt-14 pb-16 lg:pt-20 lg:pb-20">
+
+    <div class="lg:col-span-7">
+      <div class="inline-flex items-center gap-2.5 rounded-full glass px-4 py-2 text-[13px] font-medium">
+        <span class="w-1.5 h-1.5 rounded-full bg-result" aria-hidden="true"></span>
+        Taking 3 new B2B projects this quarter
+      </div>
+
+      <h1 class="mt-7 font-display font-extrabold text-[38px] sm:text-[50px] xl:text-[58px] leading-[1.05]">
+        Your competitors are not better.
+        Their website just answers faster.
+      </h1>
+
+      <p class="mt-7 text-[18px] leading-relaxed text-white/75 max-w-[56ch]">
+        Calwebtech builds B2B websites that turn the traffic you already have into booked calls.
+        Tell us what is broken and we will send a fixed quote and a plan within two business days.
+        No retainer to find out.
+      </p>
+
+      <ul class="mt-8 space-y-3.5 text-[16px]">
+        <li class="flex gap-3.5 items-start">
+          <span class="shrink-0 mt-0.5 grid place-items-center w-6 h-6 rounded-full bg-result/20 text-result" aria-hidden="true">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span>A fixed price before you commit, not an hourly estimate that drifts</span>
+        </li>
+        <li class="flex gap-3.5 items-start">
+          <span class="shrink-0 mt-0.5 grid place-items-center w-6 h-6 rounded-full bg-result/20 text-result" aria-hidden="true">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span>Every lead lands in a database you own, exportable any day</span>
+        </li>
+        <li class="flex gap-3.5 items-start">
+          <span class="shrink-0 mt-0.5 grid place-items-center w-6 h-6 rounded-full bg-result/20 text-result" aria-hidden="true">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span>We sign your NDA before the first call, not after</span>
+        </li>
+      </ul>
+
+      <div class="mt-10 pt-8 border-t border-white/12 grid grid-cols-3 gap-6 max-w-xl">
+        <div>
+          <p class="font-display font-extrabold text-[30px] leading-none" data-count="240" data-suffix="+">0</p>
+          <p class="text-[13.5px] text-white/60 mt-2">Projects delivered</p>
+        </div>
+        <div>
+          <p class="font-display font-extrabold text-result text-[30px] leading-none" data-count="187" data-suffix="%">0</p>
+          <p class="text-[13.5px] text-white/60 mt-2">Average lead uplift</p>
+        </div>
+        <div>
+          <p class="font-display font-extrabold text-[30px] leading-none" data-count="12" data-suffix=" yrs">0</p>
+          <p class="text-[13.5px] text-white/60 mt-2">Building for B2B</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- FORM -->
+    <div class="lg:col-span-5 w-full" id="form">
+      <div class="bg-white text-ink rounded-2xl shadow-[0_40px_80px_-30px_rgba(0,0,0,.7)] overflow-hidden">
+        <div class="bg-mist px-7 py-5 border-b border-line">
+          <p class="font-display font-extrabold text-[20px]">Get a free proposal</p>
+          <p class="text-[14px] text-body mt-1">Two business days. No obligation, no drip sequence.</p>
+        </div>
+
+        <form class="p-7 space-y-4" onsubmit="return false">
+          <div>
+            <label for="h-name" class="block text-[13.5px] font-semibold mb-1.5">Full name</label>
+            <input id="h-name" type="text" class="w-full h-12 px-4 rounded-lg border border-line focus:border-primary outline-none" placeholder="Dana Whitfield">
+          </div>
+          <div>
+            <label for="h-email" class="block text-[13.5px] font-semibold mb-1.5">Work email</label>
+            <input id="h-email" type="email" class="w-full h-12 px-4 rounded-lg border border-line focus:border-primary outline-none" placeholder="dana@company.com">
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label for="h-company" class="block text-[13.5px] font-semibold mb-1.5">Company</label>
+              <input id="h-company" type="text" class="w-full h-12 px-4 rounded-lg border border-line focus:border-primary outline-none" placeholder="Halloway Group">
+            </div>
+            <div>
+              <label for="h-phone" class="block text-[13.5px] font-semibold mb-1.5">Phone</label>
+              <input id="h-phone" type="tel" class="w-full h-12 px-4 rounded-lg border border-line focus:border-primary outline-none" placeholder="Optional">
+            </div>
+          </div>
+          <div>
+            <label for="h-budget" class="block text-[13.5px] font-semibold mb-1.5">Budget range</label>
+            <select id="h-budget" class="w-full h-12 px-4 rounded-lg border border-line focus:border-primary outline-none bg-white">
+              <option>Under $12,000</option>
+              <option selected>$12,000 to $25,000</option>
+              <option>$25,000 to $60,000</option>
+              <option>$60,000 to $120,000</option>
+              <option>Over $120,000</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+          <div>
+            <label for="h-msg" class="block text-[13.5px] font-semibold mb-1.5">What is going wrong right now?</label>
+            <textarea id="h-msg" rows="3" class="w-full p-4 rounded-lg border border-line focus:border-primary outline-none resize-none" placeholder="Two or three sentences is plenty."></textarea>
+          </div>
+
+          <button class="w-full h-14 rounded-xl bg-primary text-white text-[16px] font-semibold hover:bg-primaryd shadow-[0_16px_34px_-14px_rgba(21,80,224,.8)]">Send me a free proposal</button>
+
+          <div class="flex items-center justify-center gap-5 pt-1 text-[12.5px] text-body">
+            <span class="flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1.5 14 4v4.5c0 3.3-2.4 5.5-6 6.5-3.6-1-6-3.2-6-6.5V4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+              NDA on request
+            </span>
+            <span>No spam, ever</span>
+            <span>Reply in 2 days</span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TRUST BAR ===== -->
+<section class="border-b border-line bg-white py-8 overflow-hidden">
+  <p class="shell text-[13.5px] mb-5">Trusted by B2B teams across California and the US</p>
+  <div class="marquee gap-14 px-6" aria-hidden="true">
+    <div class="flex items-center gap-14 shrink-0">
+      <span class="font-display font-bold text-[21px] text-ink/30 whitespace-nowrap">NORTHMARK</span>
+      <span class="font-display font-bold text-[21px] text-ink/30 whitespace-nowrap">Verona Home</span>
+      <span class="font-display font-bold text-[21px] text-ink/30 whitespace-nowrap">HALLOWAY</span>
+      <span class="font-display font-bold text-[21px] text-ink/30 whitespace-nowrap">Bridgeline</span>
+      <span class="font-display font-bold text-[21px] text-ink/30 whitespace-nowrap">Cascadia Health</span>
+      <span class="font-display font-bold text-[21px] text-ink/30 whitespace-nowrap">Truvia Labs</span>
+      <span class="font-display font-bold text-[21px] text-ink/30 whitespace-nowrap">Meridian Parts</span>
+    </div>
+    <div class="flex items-center gap-14 shrink-0 ml-14">
+      <span class="font-display font-bold text-[21px] text-ink/30 whitespace-nowrap">NORTHMARK</span>
+      <span class="font-display font-bold text-[21px] text-ink/30 whitespace-nowrap">Verona Home</span>
+      <span class="font-display font-bold text-[21px] text-ink/30 whitespace-nowrap">HALLOWAY</span>
+      <span class="font-display font-bold text-[21px] text-ink/30 whitespace-nowrap">Bridgeline</span>
+      <span class="font-display font-bold text-[21px] text-ink/30 whitespace-nowrap">Cascadia Health</span>
+      <span class="font-display font-bold text-[21px] text-ink/30 whitespace-nowrap">Truvia Labs</span>
+      <span class="font-display font-bold text-[21px] text-ink/30 whitespace-nowrap">Meridian Parts</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROBLEM ===== -->
+<section class="relative py-20 lg:py-24 bg-gradient-to-b from-mist2 via-mist to-mist2 overflow-hidden">
+  <div class="absolute inset-0 grid-lines opacity-70" aria-hidden="true"></div>
+  <div class="shell relative">
+    <div class="max-w-[62ch]">
+      <h2 class="font-display font-extrabold text-ink text-[32px] lg:text-[42px] leading-[1.1]">
+        You are not losing deals at the pitch. You are losing them at 11pm on a Tuesday.
+      </h2>
+      <p class="mt-5 text-[17px] leading-relaxed">
+        That is when a buyer is comparing four suppliers on a phone, and picking the two
+        that made the decision easy. Here is what usually costs you that shortlist.
+      </p>
+    </div>
+
+    <div class="mt-12 grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div class="bg-white rounded-2xl border border-line p-6">
+        <p class="font-display font-extrabold text-ink text-[30px] leading-none">8 of 10</p>
+        <p class="mt-3 text-[15px] leading-relaxed">visitors leave without ever identifying themselves, because the only option is a contact form.</p>
+      </div>
+      <div class="bg-white rounded-2xl border border-line p-6">
+        <p class="font-display font-extrabold text-ink text-[30px] leading-none">3 days</p>
+        <p class="mt-3 text-[15px] leading-relaxed">is the average quote turnaround in B2B. Your competitor answers in minutes and wins on speed alone.</p>
+      </div>
+      <div class="bg-white rounded-2xl border border-line p-6">
+        <p class="font-display font-extrabold text-ink text-[30px] leading-none">6.8s</p>
+        <p class="mt-3 text-[15px] leading-relaxed">is what a typical page-builder site loads in on mobile. Most buyers are gone by second four.</p>
+      </div>
+      <div class="bg-white rounded-2xl border border-line p-6">
+        <p class="font-display font-extrabold text-ink text-[30px] leading-none">9 days</p>
+        <p class="mt-3 text-[15px] leading-relaxed">to change a phone number, because every edit needs a developer and a deployment.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SOLUTION ===== -->
+<section class="bg-white py-20 lg:py-28">
+  <div class="shell grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+    <div class="lg:col-span-6 order-2 lg:order-1">
+      <h2 class="font-display font-extrabold text-ink text-[32px] lg:text-[42px] leading-[1.1] max-w-[18ch]">
+        We fix the four things that actually move the number
+      </h2>
+      <div class="mt-9 space-y-8">
+        <div class="flex gap-5">
+          <span class="shrink-0 grid place-items-center w-11 h-11 rounded-xl bg-ink text-white font-display font-bold">1</span>
+          <div>
+            <h3 class="font-display font-bold text-ink text-[19px]">One clear action on every page</h3>
+            <p class="mt-2 text-[15.5px] leading-relaxed">We map the primary action for each page and remove everything competing with it. Proof goes before every ask, never after.</p>
+          </div>
+        </div>
+        <div class="flex gap-5">
+          <span class="shrink-0 grid place-items-center w-11 h-11 rounded-xl bg-ink text-white font-display font-bold">2</span>
+          <div>
+            <h3 class="font-display font-bold text-ink text-[19px]">More ways in than a contact form</h3>
+            <p class="mt-2 text-[15.5px] leading-relaxed">Instant estimator, consultation booking, quick quote, resource download. Different buyers are ready at different moments.</p>
+          </div>
+        </div>
+        <div class="flex gap-5">
+          <span class="shrink-0 grid place-items-center w-11 h-11 rounded-xl bg-ink text-white font-display font-bold">3</span>
+          <div>
+            <h3 class="font-display font-bold text-ink text-[19px]">Speed as a contractual target</h3>
+            <p class="mt-2 text-[15.5px] leading-relaxed">Load time, layout shift and script weight are written into the build and checked on every release, not promised in a deck.</p>
+          </div>
+        </div>
+        <div class="flex gap-5">
+          <span class="shrink-0 grid place-items-center w-11 h-11 rounded-xl bg-ink text-white font-display font-bold">4</span>
+          <div>
+            <h3 class="font-display font-bold text-ink text-[19px]">A dashboard your team can actually use</h3>
+            <p class="mt-2 text-[15.5px] leading-relaxed">Publish a page, edit a price, answer a lead. No tickets, no deployments, no waiting on us.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lg:col-span-6 order-1 lg:order-2">
+      <div class="relative rounded-2xl overflow-hidden aspect-[4/3] ring-1 ring-line shadow-[0_30px_70px_-30px_rgba(10,29,55,.5)]">
+        <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1100&q=75" alt="A team reviewing website performance figures together" class="w-full h-full object-cover">
+      </div>
+      <div class="hidden sm:block absolute"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SERVICES ===== -->
+<section class="relative py-20 lg:py-28 bg-gradient-to-br from-white via-mist2 to-mist border-y border-line overflow-hidden">
+  <div class="absolute -top-40 right-0 w-[520px] h-[520px] rounded-full bg-primary/[.08] blur-3xl" aria-hidden="true"></div>
+  <div class="shell relative">
+    <div class="max-w-[60ch]">
+      <h2 class="font-display font-extrabold text-ink text-[32px] lg:text-[42px] leading-[1.1]">Everything the project needs, from one team</h2>
+      <p class="mt-5 text-[17px] leading-relaxed">No handoffs between a design shop, a developer and a hosting vendor. One contract, one point of contact, one team that owns the outcome.</p>
+    </div>
+
+    <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <article class="bg-white rounded-2xl border border-line p-7">
+        <h3 class="font-display font-bold text-ink text-[19px]">Website design and build</h3>
+        <p class="mt-2.5 text-[15px] leading-relaxed">Custom design mapped to how your buyers decide, built on Next.js or WordPress depending on what you need to maintain.</p>
+      </article>
+      <article class="bg-white rounded-2xl border border-line p-7">
+        <h3 class="font-display font-bold text-ink text-[19px]">Ecommerce and quoting</h3>
+        <p class="mt-2.5 text-[15px] leading-relaxed">Account pricing, tiered terms, configurators and quote-to-order flows, wired into the systems you already run.</p>
+      </article>
+      <article class="bg-white rounded-2xl border border-line p-7">
+        <h3 class="font-display font-bold text-ink text-[19px]">ERP and CRM integration</h3>
+        <p class="mt-2.5 text-[15px] leading-relaxed">Inventory, pricing and order data flowing both ways, so nobody on your team retypes anything.</p>
+      </article>
+      <article class="bg-white rounded-2xl border border-line p-7">
+        <h3 class="font-display font-bold text-ink text-[19px]">Search and AI visibility</h3>
+        <p class="mt-2.5 text-[15px] leading-relaxed">Technical SEO plus the newer work of being cited when a buyer asks ChatGPT or Perplexity who to hire.</p>
+      </article>
+      <article class="bg-white rounded-2xl border border-line p-7">
+        <h3 class="font-display font-bold text-ink text-[19px]">Performance engineering</h3>
+        <p class="mt-2.5 text-[15px] leading-relaxed">Rebuilding a slow site into a fast one without losing the rankings and traffic you already have.</p>
+      </article>
+      <article class="bg-white rounded-2xl border border-line p-7">
+        <h3 class="font-display font-bold text-ink text-[19px]">Care and hosting</h3>
+        <p class="mt-2.5 text-[15px] leading-relaxed">Patching, backups with a tested restore, monitoring and a fixed allowance of dev hours. Month to month.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== RESULTS ===== -->
+<section class="bg-white py-20 lg:py-28">
+  <div class="shell">
+    <div class="max-w-[60ch]">
+      <h2 class="font-display font-extrabold text-ink text-[32px] lg:text-[42px] leading-[1.1]">The numbers our clients kept</h2>
+      <p class="mt-5 text-[17px] leading-relaxed">Measured in the client's own analytics twelve months after launch. Every figure is one they agreed to publish.</p>
+    </div>
+
+    <div class="mt-12 grid lg:grid-cols-2 gap-6">
+      <article class="rounded-2xl border border-line overflow-hidden grid sm:grid-cols-2">
+        <div class="relative min-h-[220px] bg-mist">
+          <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=700&q=70" alt="Industrial distribution facility" class="absolute inset-0 w-full h-full object-cover">
+        </div>
+        <div class="p-7">
+          <div class="flex flex-wrap gap-2 text-[12px] font-medium">
+            <span class="px-2.5 py-1 rounded-md bg-mist text-ink">Ohio</span>
+            <span class="px-2.5 py-1 rounded-md bg-mist text-ink">Distribution</span>
+          </div>
+          <h3 class="mt-4 font-display font-extrabold text-ink text-[21px]">Northmark Supply</h3>
+          <p class="mt-2 text-[14.5px] leading-relaxed">40,000 parts behind a contact form, rebuilt as an account-priced quoting platform.</p>
+          <div class="mt-5 pt-5 border-t border-line space-y-2.5">
+            <p class="flex items-baseline justify-between"><span class="font-display font-extrabold text-result text-[24px]">+312%</span><span class="text-[13px]">Quote requests</span></p>
+            <p class="flex items-baseline justify-between"><span class="font-display font-extrabold text-result text-[24px]">12 min</span><span class="text-[13px]">Turnaround, from 3 days</span></p>
+          </div>
+        </div>
+      </article>
+
+      <article class="rounded-2xl border border-line overflow-hidden grid sm:grid-cols-2">
+        <div class="relative min-h-[220px] bg-mist">
+          <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=700&q=70" alt="Software product team at work" class="absolute inset-0 w-full h-full object-cover">
+        </div>
+        <div class="p-7">
+          <div class="flex flex-wrap gap-2 text-[12px] font-medium">
+            <span class="px-2.5 py-1 rounded-md bg-mist text-ink">Texas</span>
+            <span class="px-2.5 py-1 rounded-md bg-mist text-ink">SaaS</span>
+          </div>
+          <h3 class="mt-4 font-display font-extrabold text-ink text-[21px]">Truvia Labs</h3>
+          <p class="mt-2 text-[14.5px] leading-relaxed">Marketing site, docs and onboarding rebuilt on one design system.</p>
+          <div class="mt-5 pt-5 border-t border-line space-y-2.5">
+            <p class="flex items-baseline justify-between"><span class="font-display font-extrabold text-result text-[24px]">+140%</span><span class="text-[13px]">Demo bookings</span></p>
+            <p class="flex items-baseline justify-between"><span class="font-display font-extrabold text-result text-[24px]">3.1x</span><span class="text-[13px]">Organic sessions</span></p>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="mt-9 text-center">
+      <a href="#form" class="inline-flex items-center h-13 py-3.5 px-7 rounded-xl bg-ink text-white font-semibold hover:bg-ink2">Get a plan for your site</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROCESS (interactive stepper) ===== -->
+<section id="process" class="relative bg-ink text-white py-20 lg:py-28 overflow-hidden">
+  <div class="absolute inset-0" aria-hidden="true">
+    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1800&q=65" alt="" class="w-full h-full object-cover opacity-[.14]">
+    <div class="absolute inset-0 bg-gradient-to-b from-ink via-ink/93 to-ink"></div>
+    <div class="absolute inset-0 glow-blue opacity-50"></div>
+  </div>
+
+  <div class="shell relative">
+    <div class="max-w-[58ch] reveal">
+      <div class="inline-flex items-center gap-2.5 rounded-full glass px-4 py-2 text-[13px] font-medium">
+        <span class="w-1.5 h-1.5 rounded-full bg-result" aria-hidden="true"></span>
+        Six to fourteen weeks, start to handover
+      </div>
+      <h2 class="mt-6 font-display font-extrabold text-[32px] lg:text-[42px] leading-[1.1]">Five steps, and you know the price at step one</h2>
+      <p class="mt-5 text-[17px] leading-relaxed text-white/70">No discovery retainer, no phased quotes that grow. Click through each step to see what happens, what you get, and what we need from you.</p>
+    </div>
+
+    <!-- step rail -->
+    <div class="mt-12 reveal reveal-d1">
+      <div class="relative">
+        <div class="absolute left-0 right-0 top-6 h-px bg-white/15 hidden md:block" aria-hidden="true"></div>
+        <div id="step-progress" class="absolute left-0 top-6 h-px bg-result hidden md:block" style="width:10%" aria-hidden="true"></div>
+
+        <div class="relative grid grid-cols-2 md:grid-cols-5 gap-y-6 gap-x-3" role="tablist" aria-label="Project process">
+          <button class="step-btn active text-left group" data-step="1" role="tab" aria-selected="true" aria-controls="panel-1">
+            <span class="step-dot grid place-items-center w-12 h-12 rounded-full border-2 border-white/25 bg-ink text-white/70 font-display font-bold transition-colors">1</span>
+            <span class="step-title block mt-3 font-display font-bold text-[15px] text-white/60 transition-colors">Discovery</span>
+            <span class="block text-[12.5px] text-white/35 mt-0.5">Week 1</span>
+          </button>
+          <button class="step-btn text-left group" data-step="2" role="tab" aria-selected="false" aria-controls="panel-2">
+            <span class="step-dot grid place-items-center w-12 h-12 rounded-full border-2 border-white/25 bg-ink text-white/70 font-display font-bold transition-colors">2</span>
+            <span class="step-title block mt-3 font-display font-bold text-[15px] text-white/60 transition-colors">Design</span>
+            <span class="block text-[12.5px] text-white/35 mt-0.5">Weeks 2 to 3</span>
+          </button>
+          <button class="step-btn text-left group" data-step="3" role="tab" aria-selected="false" aria-controls="panel-3">
+            <span class="step-dot grid place-items-center w-12 h-12 rounded-full border-2 border-white/25 bg-ink text-white/70 font-display font-bold transition-colors">3</span>
+            <span class="step-title block mt-3 font-display font-bold text-[15px] text-white/60 transition-colors">Build</span>
+            <span class="block text-[12.5px] text-white/35 mt-0.5">Weeks 3 to 7</span>
+          </button>
+          <button class="step-btn text-left group" data-step="4" role="tab" aria-selected="false" aria-controls="panel-4">
+            <span class="step-dot grid place-items-center w-12 h-12 rounded-full border-2 border-white/25 bg-ink text-white/70 font-display font-bold transition-colors">4</span>
+            <span class="step-title block mt-3 font-display font-bold text-[15px] text-white/60 transition-colors">Prove</span>
+            <span class="block text-[12.5px] text-white/35 mt-0.5">Week 8</span>
+          </button>
+          <button class="step-btn text-left group" data-step="5" role="tab" aria-selected="false" aria-controls="panel-5">
+            <span class="step-dot grid place-items-center w-12 h-12 rounded-full border-2 border-white/25 bg-ink text-white/70 font-display font-bold transition-colors">5</span>
+            <span class="step-title block mt-3 font-display font-bold text-[15px] text-white/60 transition-colors">Launch</span>
+            <span class="block text-[12.5px] text-white/35 mt-0.5">Week 9</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- panels -->
+      <div class="mt-10">
+        <div id="panel-1" class="step-panel active lg:grid-cols-12 gap-10 items-center" role="tabpanel">
+          <div class="lg:col-span-6">
+            <h3 class="font-display font-extrabold text-[26px] lg:text-[32px] leading-tight">We work out what is actually wrong</h3>
+            <p class="mt-4 text-[16.5px] leading-relaxed text-white/75">A working session on positioning, buyers and the service catalogue. We map the primary action for every page and agree the sitemap before anyone opens a design tool.</p>
+            <div class="mt-7 grid sm:grid-cols-2 gap-6">
+              <div>
+                <p class="text-[13px] text-white/45 mb-2">You get</p>
+                <ul class="space-y-2 text-[14.5px] text-white/80">
+                  <li>Sitemap and conversion map</li>
+                  <li>Content inventory</li>
+                  <li>A fixed price, in writing</li>
+                </ul>
+              </div>
+              <div>
+                <p class="text-[13px] text-white/45 mb-2">We need from you</p>
+                <ul class="space-y-2 text-[14.5px] text-white/80">
+                  <li>90 minutes of your team</li>
+                  <li>Your service list</li>
+                  <li>A named decision maker</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="lg:col-span-6 mt-8 lg:mt-0">
+            <div class="rounded-2xl overflow-hidden aspect-[16/10] ring-1 ring-white/15">
+              <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=72" alt="Discovery workshop with the client team" class="w-full h-full object-cover" loading="lazy">
+            </div>
+          </div>
+        </div>
+
+        <div id="panel-2" class="step-panel lg:grid-cols-12 gap-10 items-center" role="tabpanel">
+          <div class="lg:col-span-6">
+            <h3 class="font-display font-extrabold text-[26px] lg:text-[32px] leading-tight">You see real screens, not a mood board</h3>
+            <p class="mt-4 text-[16.5px] leading-relaxed text-white/75">Design tokens and a component library first, then high-fidelity screens for the pages that carry the money. Everything else is assembled from approved patterns, which is why this stage does not drag.</p>
+            <div class="mt-7 grid sm:grid-cols-2 gap-6">
+              <div>
+                <p class="text-[13px] text-white/45 mb-2">You get</p>
+                <ul class="space-y-2 text-[14.5px] text-white/80">
+                  <li>Figma file with edit access</li>
+                  <li>7 high-fidelity screens</li>
+                  <li>One revision round included</li>
+                </ul>
+              </div>
+              <div>
+                <p class="text-[13px] text-white/45 mb-2">We need from you</p>
+                <ul class="space-y-2 text-[14.5px] text-white/80">
+                  <li>Logo and brand assets</li>
+                  <li>Copy, or approval to draft</li>
+                  <li>Feedback within 2 days</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="lg:col-span-6 mt-8 lg:mt-0">
+            <div class="rounded-2xl overflow-hidden aspect-[16/10] ring-1 ring-white/15">
+              <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=900&q=72" alt="Interface design work in progress" class="w-full h-full object-cover" loading="lazy">
+            </div>
+          </div>
+        </div>
+
+        <div id="panel-3" class="step-panel lg:grid-cols-12 gap-10 items-center" role="tabpanel">
+          <div class="lg:col-span-6">
+            <h3 class="font-display font-extrabold text-[26px] lg:text-[32px] leading-tight">A staging URL you can open any day</h3>
+            <p class="mt-4 text-[16.5px] leading-relaxed text-white/75">Front end, API, dashboard and integrations, built in the open. Weekly progress notes, no black box, and nothing that only works on a demo day.</p>
+            <div class="mt-7 grid sm:grid-cols-2 gap-6">
+              <div>
+                <p class="text-[13px] text-white/45 mb-2">You get</p>
+                <ul class="space-y-2 text-[14.5px] text-white/80">
+                  <li>Live staging environment</li>
+                  <li>Weekly progress call</li>
+                  <li>Dashboard access early</li>
+                </ul>
+              </div>
+              <div>
+                <p class="text-[13px] text-white/45 mb-2">We need from you</p>
+                <ul class="space-y-2 text-[14.5px] text-white/80">
+                  <li>Project content and images</li>
+                  <li>Integration credentials</li>
+                  <li>One consolidated review</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="lg:col-span-6 mt-8 lg:mt-0">
+            <div class="rounded-2xl overflow-hidden aspect-[16/10] ring-1 ring-white/15">
+              <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=72" alt="Developer building the platform" class="w-full h-full object-cover" loading="lazy">
+            </div>
+          </div>
+        </div>
+
+        <div id="panel-4" class="step-panel lg:grid-cols-12 gap-10 items-center" role="tabpanel">
+          <div class="lg:col-span-6">
+            <h3 class="font-display font-extrabold text-[26px] lg:text-[32px] leading-tight">We try to break it before your customers do</h3>
+            <p class="mt-4 text-[16.5px] leading-relaxed text-white/75">Cross-browser and cross-device QA, an accessibility audit, a performance pass against the written budget, structured data validation, redirect verification, and one tested backup restore.</p>
+            <div class="mt-7 grid sm:grid-cols-2 gap-6">
+              <div>
+                <p class="text-[13px] text-white/45 mb-2">You get</p>
+                <ul class="space-y-2 text-[14.5px] text-white/80">
+                  <li>Lighthouse 90+ on mobile</li>
+                  <li>WCAG 2.2 AA audit report</li>
+                  <li>A restore proven in front of you</li>
+                </ul>
+              </div>
+              <div>
+                <p class="text-[13px] text-white/45 mb-2">We need from you</p>
+                <ul class="space-y-2 text-[14.5px] text-white/80">
+                  <li>Final copy sign-off</li>
+                  <li>Legal page approval</li>
+                  <li>A test run of your own</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="lg:col-span-6 mt-8 lg:mt-0">
+            <div class="rounded-2xl overflow-hidden aspect-[16/10] ring-1 ring-white/15">
+              <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=72" alt="Performance and analytics review before launch" class="w-full h-full object-cover" loading="lazy">
+            </div>
+          </div>
+        </div>
+
+        <div id="panel-5" class="step-panel lg:grid-cols-12 gap-10 items-center" role="tabpanel">
+          <div class="lg:col-span-6">
+            <h3 class="font-display font-extrabold text-[26px] lg:text-[32px] leading-tight">You leave owning all of it</h3>
+            <p class="mt-4 text-[16.5px] leading-relaxed text-white/75">DNS cutover, monitoring switched on, two recorded training sessions, a written operations manual, and every account transferred into your name through a password manager.</p>
+            <div class="mt-7 grid sm:grid-cols-2 gap-6">
+              <div>
+                <p class="text-[13px] text-white/45 mb-2">You get</p>
+                <ul class="space-y-2 text-[14.5px] text-white/80">
+                  <li>Code, database, design files</li>
+                  <li>Two recorded training sessions</li>
+                  <li>60 day warranty</li>
+                </ul>
+              </div>
+              <div>
+                <p class="text-[13px] text-white/45 mb-2">We need from you</p>
+                <ul class="space-y-2 text-[14.5px] text-white/80">
+                  <li>DNS access</li>
+                  <li>Two people at training</li>
+                  <li>Final acceptance sign-off</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="lg:col-span-6 mt-8 lg:mt-0">
+            <div class="rounded-2xl overflow-hidden aspect-[16/10] ring-1 ring-white/15">
+              <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=900&q=72" alt="Handover and training session with the client team" class="w-full h-full object-cover" loading="lazy">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BEFORE / AFTER ===== -->
+<section class="bg-white py-20 lg:py-28 border-b border-line">
+  <div class="shell grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+    <div class="lg:col-span-4 reveal">
+      <h2 class="font-display font-extrabold text-ink text-[32px] lg:text-[42px] leading-[1.1]">Drag it and see the difference</h2>
+      <p class="mt-5 text-[17px] leading-relaxed">Most of our work is a rescue, not a launch. Here is one client homepage before and after, at the same scroll position, on the same screen.</p>
+      <dl class="mt-8 space-y-4 border-t border-line pt-7">
+        <div class="flex items-baseline justify-between gap-6">
+          <dt class="text-[14px]">Mobile load time</dt>
+          <dd class="font-display font-bold text-ink">6.8s <span class="text-body/50">to</span> <span class="text-result">1.6s</span></dd>
+        </div>
+        <div class="flex items-baseline justify-between gap-6">
+          <dt class="text-[14px]">Bounce rate</dt>
+          <dd class="font-display font-bold text-ink">71% <span class="text-body/50">to</span> <span class="text-result">38%</span></dd>
+        </div>
+        <div class="flex items-baseline justify-between gap-6">
+          <dt class="text-[14px]">Enquiries per month</dt>
+          <dd class="font-display font-bold text-ink">9 <span class="text-body/50">to</span> <span class="text-result">54</span></dd>
+        </div>
+      </dl>
+      <a href="#form" class="mt-8 inline-flex items-center h-12 px-6 rounded-lg bg-ink text-white font-semibold hover:bg-ink2">Get a redesign plan</a>
+    </div>
+
+    <div class="lg:col-span-8 reveal reveal-d1">
+      <div id="ba" class="relative rounded-2xl overflow-hidden select-none bg-white aspect-[16/10] ring-1 ring-line shadow-[0_30px_60px_-30px_rgba(10,29,55,.45)]">
+        <div class="absolute inset-0 bg-[#e9e6e0] p-5 sm:p-7" aria-hidden="true">
+          <div class="bg-[#2f4a6d] h-9 flex items-center px-3 gap-3">
+            <span class="text-white text-[11px] font-bold">CLIENT SITE</span>
+            <span class="ml-auto flex gap-2.5"><span class="fakebar w-9 bg-white/40"></span><span class="fakebar w-9 bg-white/40"></span><span class="fakebar w-9 bg-white/40"></span></span>
+          </div>
+          <div class="bg-[#c9d3dd] h-20 sm:h-28 mt-2 flex flex-col justify-center px-4 gap-2">
+            <span class="fakebar w-1/2 bg-[#7d8d9e]"></span><span class="fakebar w-2/3 bg-[#9daab8]"></span>
+            <span class="fakebar w-24 bg-[#e2762f] h-5 rounded"></span>
+          </div>
+          <div class="grid grid-cols-4 gap-2 mt-2">
+            <div class="bg-white h-14 sm:h-20 p-2 space-y-1.5"><span class="fakebar w-full bg-[#d7dde3]"></span><span class="fakebar w-4/5 bg-[#e4e9ee]"></span><span class="fakebar w-3/5 bg-[#e4e9ee]"></span></div>
+            <div class="bg-white h-14 sm:h-20 p-2 space-y-1.5"><span class="fakebar w-full bg-[#d7dde3]"></span><span class="fakebar w-4/5 bg-[#e4e9ee]"></span><span class="fakebar w-3/5 bg-[#e4e9ee]"></span></div>
+            <div class="bg-white h-14 sm:h-20 p-2 space-y-1.5"><span class="fakebar w-full bg-[#d7dde3]"></span><span class="fakebar w-4/5 bg-[#e4e9ee]"></span><span class="fakebar w-3/5 bg-[#e4e9ee]"></span></div>
+            <div class="bg-white h-14 sm:h-20 p-2 space-y-1.5"><span class="fakebar w-full bg-[#d7dde3]"></span><span class="fakebar w-4/5 bg-[#e4e9ee]"></span><span class="fakebar w-3/5 bg-[#e4e9ee]"></span></div>
+          </div>
+          <div class="bg-white mt-2 p-3 space-y-1.5 h-16 sm:h-24">
+            <span class="fakebar w-full bg-[#e4e9ee]"></span><span class="fakebar w-11/12 bg-[#e4e9ee]"></span>
+            <span class="fakebar w-full bg-[#e4e9ee]"></span><span class="fakebar w-2/3 bg-[#e4e9ee]"></span>
+          </div>
+          <span class="absolute bottom-4 left-5 text-[11px] font-bold text-[#5b6472] bg-white/80 px-2 py-1 rounded">Before</span>
+        </div>
+
+        <div id="ba-after" class="absolute inset-0 overflow-hidden border-r-2 border-white">
+          <div class="w-full h-full bg-white p-5 sm:p-7" style="width:100vw;max-width:none" aria-hidden="true">
+            <div class="h-9 flex items-center gap-3">
+              <span class="grid place-items-center w-6 h-6 rounded bg-ink text-white text-[10px] font-extrabold">C</span>
+              <span class="text-ink text-[12px] font-extrabold">Client</span>
+              <span class="ml-6 hidden sm:flex gap-4"><span class="fakebar w-10 bg-[#dce4ee]"></span><span class="fakebar w-10 bg-[#dce4ee]"></span><span class="fakebar w-10 bg-[#dce4ee]"></span></span>
+              <span class="ml-auto fakebar w-16 h-6 rounded-md bg-primary"></span>
+            </div>
+            <div class="mt-4 grid grid-cols-5 gap-4 items-center">
+              <div class="col-span-3 space-y-2.5">
+                <span class="fakebar w-full h-3 bg-ink"></span><span class="fakebar w-4/5 h-3 bg-ink"></span>
+                <span class="fakebar w-3/5 bg-[#c3cede]"></span>
+                <span class="flex gap-2 pt-1"><span class="fakebar w-20 h-6 rounded-md bg-primary"></span><span class="fakebar w-20 h-6 rounded-md bg-[#dce4ee]"></span></span>
+              </div>
+              <div class="col-span-2 h-20 sm:h-28 rounded-lg bg-mist overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=400&q=60" alt="" class="w-full h-full object-cover">
+              </div>
+            </div>
+            <div class="grid grid-cols-3 gap-3 mt-4">
+              <div class="rounded-lg border border-line p-2.5"><span class="block text-result font-display font-extrabold text-[15px]">+312%</span><span class="fakebar w-3/4 bg-[#e4e9ee] mt-1.5"></span></div>
+              <div class="rounded-lg border border-line p-2.5"><span class="block text-result font-display font-extrabold text-[15px]">12 min</span><span class="fakebar w-3/4 bg-[#e4e9ee] mt-1.5"></span></div>
+              <div class="rounded-lg border border-line p-2.5"><span class="block text-result font-display font-extrabold text-[15px]">1.6s</span><span class="fakebar w-3/4 bg-[#e4e9ee] mt-1.5"></span></div>
+            </div>
+            <div class="mt-3 rounded-lg bg-mist2 border border-line h-10 sm:h-14"></div>
+          </div>
+          <span class="absolute bottom-4 left-5 text-[11px] font-bold text-white bg-ink px-2 py-1 rounded">After</span>
+        </div>
+
+        <div id="ba-handle" class="absolute top-0 bottom-0 -translate-x-1/2 z-20 cursor-ew-resize" style="width:44px">
+          <span class="absolute inset-y-0 left-1/2 -translate-x-1/2 w-0.5 bg-white"></span>
+          <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 grid place-items-center w-11 h-11 rounded-full bg-white shadow-lg text-ink">
+            <svg class="w-5 h-5" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M7 5 3 10l4 5M13 5l4 5-4 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </div>
+        <label for="ba-range" class="sr-only">Reveal the redesigned version</label>
+        <input id="ba-range" type="range" min="0" max="100" value="50" class="absolute inset-x-0 bottom-3 z-30 w-[92%] mx-auto opacity-0 h-11 cursor-ew-resize">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PARTNERS / TECHNOLOGY ===== -->
+<section class="bg-white py-18 lg:py-24 border-b border-line">
+  <div class="shell">
+    <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+      <div class="lg:col-span-4">
+        <h2 class="font-display font-extrabold text-ink text-[26px] lg:text-[32px] leading-[1.15]">Certified where it counts</h2>
+        <p class="mt-4 text-[16px] leading-relaxed">Partnerships mean direct support channels and early access when something breaks on a Friday afternoon.</p>
+      </div>
+      <div class="lg:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div class="rounded-xl border border-line px-5 py-6 text-center">
+          <p class="font-display font-bold text-ink text-[16px]">Shopify</p>
+          <p class="text-[13px] mt-1">Partner since 2019</p>
+        </div>
+        <div class="rounded-xl border border-line px-5 py-6 text-center">
+          <p class="font-display font-bold text-ink text-[16px]">Google</p>
+          <p class="text-[13px] mt-1">Partner, Ads &amp; Analytics</p>
+        </div>
+        <div class="rounded-xl border border-line px-5 py-6 text-center">
+          <p class="font-display font-bold text-ink text-[16px]">Vercel</p>
+          <p class="text-[13px] mt-1">Agency partner</p>
+        </div>
+        <div class="rounded-xl border border-line px-5 py-6 text-center">
+          <p class="font-display font-bold text-ink text-[16px]">Cloudflare</p>
+          <p class="text-[13px] mt-1">Certified deployment</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-12 pt-10 border-t border-line flex flex-wrap items-center gap-x-9 gap-y-4 text-[15px] text-ink/40">
+      <span class="text-body font-semibold text-[14px]">Built with</span>
+      <span class="font-display font-bold">Next.js</span>
+      <span class="font-display font-bold">React</span>
+      <span class="font-display font-bold">TypeScript</span>
+      <span class="font-display font-bold">WordPress</span>
+      <span class="font-display font-bold">Shopify</span>
+      <span class="font-display font-bold">PostgreSQL</span>
+      <span class="font-display font-bold">Docker</span>
+      <span class="font-display font-bold">React Native</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TEAM ===== -->
+<section class="bg-mist2 py-20 lg:py-28 border-b border-line">
+  <div class="shell">
+    <div class="max-w-[58ch]">
+      <h2 class="font-display font-extrabold text-ink text-[32px] lg:text-[42px] leading-[1.1]">The people in the pitch are the people who build it</h2>
+      <p class="mt-5 text-[17px] leading-relaxed">No handover to a junior team once the contract is signed. This is who you would be working with.</p>
+    </div>
+
+    <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="bg-white rounded-2xl border border-line overflow-hidden">
+        <div class="aspect-[4/5] bg-mist">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=70" alt="Sawkat Hasan, Founder" class="w-full h-full object-cover" loading="lazy">
+        </div>
+        <div class="p-5">
+          <p class="font-display font-bold text-ink text-[17px]">Sawkat Hasan</p>
+          <p class="text-[14px] text-primary font-semibold">Founder</p>
+          <p class="mt-2 text-[14px] leading-relaxed">Joins every first call and every proposal. Twelve years in B2B commerce.</p>
+        </div>
+      </div>
+      <div class="bg-white rounded-2xl border border-line overflow-hidden">
+        <div class="aspect-[4/5] bg-mist">
+          <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=500&q=70" alt="Rasel Mridha, Chief Technology Officer" class="w-full h-full object-cover" loading="lazy">
+        </div>
+        <div class="p-5">
+          <p class="font-display font-bold text-ink text-[17px]">Rasel Mridha</p>
+          <p class="text-[14px] text-primary font-semibold">Chief Technology Officer</p>
+          <p class="mt-2 text-[14px] leading-relaxed">Owns architecture and delivery. Writes the technical plan behind your quote.</p>
+        </div>
+      </div>
+      <div class="bg-white rounded-2xl border border-line overflow-hidden">
+        <div class="aspect-[4/5] bg-mist">
+          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=70" alt="Priya Raman, Design Lead" class="w-full h-full object-cover" loading="lazy">
+        </div>
+        <div class="p-5">
+          <p class="font-display font-bold text-ink text-[17px]">Priya Raman</p>
+          <p class="text-[14px] text-primary font-semibold">Design Lead</p>
+          <p class="mt-2 text-[14px] leading-relaxed">Runs the design system and every high-fidelity screen you approve.</p>
+        </div>
+      </div>
+      <div class="bg-white rounded-2xl border border-line overflow-hidden">
+        <div class="aspect-[4/5] bg-mist">
+          <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=500&q=70" alt="Dana Whitfield, Delivery Manager" class="w-full h-full object-cover" loading="lazy">
+        </div>
+        <div class="p-5">
+          <p class="font-display font-bold text-ink text-[17px]">Dana Whitfield</p>
+          <p class="text-[14px] text-primary font-semibold">Delivery Manager</p>
+          <p class="mt-2 text-[14px] leading-relaxed">Your weekly point of contact. Keeps the staging URL and the schedule honest.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<section class="relative bg-ink text-white py-20 lg:py-28 overflow-hidden">
+  <div class="absolute inset-0" aria-hidden="true">
+    <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1800&q=65" alt="" class="w-full h-full object-cover opacity-[.20]">
+    <div class="absolute inset-0 bg-gradient-to-b from-ink/95 via-ink/90 to-ink"></div>
+    <div class="absolute inset-0 glow-teal"></div>
+  </div>
+  <div class="shell relative">
+    <div class="flex flex-wrap items-end justify-between gap-6">
+      <h2 class="font-display font-extrabold text-[32px] lg:text-[42px] leading-[1.1] max-w-[18ch]">What clients say when we are not in the room</h2>
+      <div class="flex items-center gap-7 text-[14px]">
+        <div><span class="font-display font-extrabold text-[26px]">4.9</span> <span class="text-white/60">Google</span></div>
+        <div><span class="font-display font-extrabold text-[26px]">4.9</span> <span class="text-white/60">Clutch</span></div>
+        <div><span class="font-display font-extrabold text-[26px]">9.6</span> <span class="text-white/60">NPS</span></div>
+      </div>
+    </div>
+
+    <div class="mt-12 grid lg:grid-cols-3 gap-6">
+      <figure class="glass rounded-2xl p-7">
+        <span class="text-[#FFC53D] text-[15px]" aria-hidden="true">★★★★★</span>
+        <blockquote class="mt-4 text-[16px] leading-relaxed">"Our counter staff stopped retyping orders. That is the whole story. Calwebtech understood the ERP side better than the vendor who sold it to us."</blockquote>
+        <figcaption class="mt-6 pt-5 border-t border-white/10 flex items-center gap-3">
+          <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=120&q=70" alt="" class="w-11 h-11 rounded-full object-cover" loading="lazy">
+          <span class="text-[14px]"><b class="block">Dale Ferris</b><span class="text-white/60">Director of Ecommerce, Northmark Supply</span></span>
+        </figcaption>
+      </figure>
+      <figure class="glass rounded-2xl p-7">
+        <span class="text-[#FFC53D] text-[15px]" aria-hidden="true">★★★★★</span>
+        <blockquote class="mt-4 text-[16px] leading-relaxed">"They pushed back on half of what we asked for and were right about most of it. Our enquiry quality went up before the volume did."</blockquote>
+        <figcaption class="mt-6 pt-5 border-t border-white/10 flex items-center gap-3">
+          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=70" alt="" class="w-11 h-11 rounded-full object-cover" loading="lazy">
+          <span class="text-[14px]"><b class="block">Priya Raman</b><span class="text-white/60">VP Marketing, Truvia Labs</span></span>
+        </figcaption>
+      </figure>
+      <figure class="glass rounded-2xl p-7">
+        <span class="text-[#FFC53D] text-[15px]" aria-hidden="true">★★★★★</span>
+        <blockquote class="mt-4 text-[16px] leading-relaxed">"Fourteen clinic websites became one. Our staff publish their own updates now, which sounds small until you remember we used to wait nine days."</blockquote>
+        <figcaption class="mt-6 pt-5 border-t border-white/10 flex items-center gap-3">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=70" alt="" class="w-11 h-11 rounded-full object-cover" loading="lazy">
+          <span class="text-[14px]"><b class="block">Marcus Bell</b><span class="text-white/60">Communications Director, Cascadia Health</span></span>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ===== GUARANTEES ===== -->
+<section class="bg-white py-20 lg:py-24">
+  <div class="shell">
+    <h2 class="font-display font-extrabold text-ink text-[28px] lg:text-[34px] leading-[1.15] max-w-[22ch]">Four commitments, written into the contract</h2>
+    <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div class="rounded-2xl border border-line p-6">
+        <h3 class="font-display font-bold text-ink text-[17px]">Fixed price, fixed scope</h3>
+        <p class="mt-2.5 text-[14.5px] leading-relaxed">The number in the proposal is the number you pay. Changes are quoted before any work starts.</p>
+      </div>
+      <div class="rounded-2xl border border-line p-6">
+        <h3 class="font-display font-bold text-ink text-[17px]">You own everything</h3>
+        <p class="mt-2.5 text-[14.5px] leading-relaxed">Code, database, accounts and design files transfer to you at handover. No hostage situations.</p>
+      </div>
+      <div class="rounded-2xl border border-line p-6">
+        <h3 class="font-display font-bold text-ink text-[17px]">60 day warranty</h3>
+        <p class="mt-2.5 text-[14.5px] leading-relaxed">Anything that does not behave as specified is fixed free, with a four hour response on critical issues.</p>
+      </div>
+      <div class="rounded-2xl border border-line p-6">
+        <h3 class="font-display font-bold text-ink text-[17px]">No lock-in after launch</h3>
+        <p class="mt-2.5 text-[14.5px] leading-relaxed">Care plans are month to month. If we stop being useful you can leave and take the code.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRICING ANCHOR ===== -->
+<section class="relative overflow-hidden py-20 lg:py-24 text-white" style="background:linear-gradient(135deg,#0A1D37 0%,#123A8F 46%,#1550E0 100%)">
+  <div class="absolute inset-0" aria-hidden="true">
+    <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1800&q=65" alt="" class="w-full h-full object-cover opacity-[.13] mix-blend-luminosity">
+    <div class="absolute inset-0 grid-lines-light"></div>
+    <div class="absolute -bottom-40 -left-24 w-[560px] h-[560px] rounded-full bg-result/25 blur-3xl"></div>
+  </div>
+  <div class="shell relative grid lg:grid-cols-12 gap-12 items-center">
+    <div class="lg:col-span-5">
+      <h2 class="font-display font-extrabold text-[32px] lg:text-[42px] leading-[1.08]">What this usually costs</h2>
+      <p class="mt-5 text-[17px] leading-relaxed text-white/75">Published openly so you can tell in ninety seconds whether we are in your range. Every project is quoted fixed after the call.</p>
+      <a href="#form" class="mt-8 inline-flex items-center h-14 px-7 rounded-xl bg-white text-ink font-semibold hover:bg-mist">Get my exact number</a>
+    </div>
+    <div class="lg:col-span-7 grid sm:grid-cols-3 gap-4">
+      <div class="glass rounded-2xl p-6">
+        <p class="font-display font-bold text-[16px]">Focused build</p>
+        <p class="font-display font-extrabold text-[26px] mt-3">$12k to $25k</p>
+        <p class="mt-3 text-[14px] leading-relaxed text-white/70">Marketing site, custom design, CMS and lead capture. Six to eight weeks.</p>
+      </div>
+      <div class="rounded-2xl p-6 bg-white text-ink">
+        <p class="font-display font-bold text-[16px]">Platform build</p>
+        <p class="font-display font-extrabold text-[26px] mt-3">$25k to $60k</p>
+        <p class="mt-3 text-[14px] leading-relaxed">Plus booking, dashboard, campaigns and integrations. Nine to fourteen weeks.</p>
+      </div>
+      <div class="glass rounded-2xl p-6">
+        <p class="font-display font-bold text-[16px]">Ongoing partner</p>
+        <p class="font-display font-extrabold text-[26px] mt-3">From $1.5k/mo</p>
+        <p class="mt-3 text-[14px] leading-relaxed text-white/70">Care, monitoring and a fixed development allowance. Month to month.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="bg-white py-20 lg:py-28">
+  <div class="shell grid lg:grid-cols-12 gap-12 lg:gap-20">
+    <div class="lg:col-span-4">
+      <h2 class="font-display font-extrabold text-ink text-[32px] lg:text-[40px] leading-[1.1]">Before you fill in the form</h2>
+      <p class="mt-5 text-[17px] leading-relaxed">The questions we get asked most, answered without the sales hedge.</p>
+      <a href="tel:+18005550188" class="mt-7 inline-flex items-center h-12 px-6 rounded-lg border border-line text-ink font-semibold hover:border-ink hover:bg-mist2">Or just call us</a>
+    </div>
+
+    <div class="lg:col-span-8 divide-y divide-line border-t border-b border-line">
+      <div class="faq open py-6">
+        <button class="w-full flex items-start justify-between gap-6 text-left faq-btn">
+          <span class="font-display font-bold text-ink text-[18px] lg:text-[20px]">How long does a project take?</span>
+          <span class="faq-plus shrink-0 grid place-items-center w-8 h-8 rounded-full bg-mist text-ink transition-transform mt-0.5" aria-hidden="true">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </span>
+        </button>
+        <div class="faq-body pt-4 pr-12"><p class="leading-relaxed">Six to eight weeks for a marketing site, nine to fourteen for a platform build with booking, a dashboard and integrations. The most common cause of delay is content, not code, which is why the proposal names the dates we need things from you.</p></div>
+      </div>
+
+      <div class="faq py-6">
+        <button class="w-full flex items-start justify-between gap-6 text-left faq-btn">
+          <span class="font-display font-bold text-ink text-[18px] lg:text-[20px]">What if we already have a developer?</span>
+          <span class="faq-plus shrink-0 grid place-items-center w-8 h-8 rounded-full bg-mist text-ink transition-transform mt-0.5" aria-hidden="true">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </span>
+        </button>
+        <div class="faq-body pt-4 pr-12"><p class="leading-relaxed">That is common and usually fine. We can take design and front end and leave the back end with your team, or work the other way round. The proposal will say exactly where the boundary sits so nobody is guessing.</p></div>
+      </div>
+
+      <div class="faq py-6">
+        <button class="w-full flex items-start justify-between gap-6 text-left faq-btn">
+          <span class="font-display font-bold text-ink text-[18px] lg:text-[20px]">Will we lose our search rankings?</span>
+          <span class="faq-plus shrink-0 grid place-items-center w-8 h-8 rounded-full bg-mist text-ink transition-transform mt-0.5" aria-hidden="true">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </span>
+        </button>
+        <div class="faq-body pt-4 pr-12"><p class="leading-relaxed">Not if the migration is done properly. We map every existing URL to its new destination with permanent redirects before launch, keep the content that is earning traffic, and monitor Search Console for the first thirty days. Rankings normally recover within two to three weeks and then improve on the performance gain.</p></div>
+      </div>
+
+      <div class="faq py-6">
+        <button class="w-full flex items-start justify-between gap-6 text-left faq-btn">
+          <span class="font-display font-bold text-ink text-[18px] lg:text-[20px]">Who owns the site when it is finished?</span>
+          <span class="faq-plus shrink-0 grid place-items-center w-8 h-8 rounded-full bg-mist text-ink transition-transform mt-0.5" aria-hidden="true">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </span>
+        </button>
+        <div class="faq-body pt-4 pr-12"><p class="leading-relaxed">You do, completely. The repository, the database, the design files and every third party account are registered in your name and transferred at handover through a password manager. There is no proprietary format and no vendor holding your data.</p></div>
+      </div>
+
+      <div class="faq py-6">
+        <button class="w-full flex items-start justify-between gap-6 text-left faq-btn">
+          <span class="font-display font-bold text-ink text-[18px] lg:text-[20px]">We are not in California. Does that matter?</span>
+          <span class="faq-plus shrink-0 grid place-items-center w-8 h-8 rounded-full bg-mist text-ink transition-transform mt-0.5" aria-hidden="true">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </span>
+        </button>
+        <div class="faq-body pt-4 pr-12"><p class="leading-relaxed">No. Most of our clients are outside our home metro. We work across US time zones with a weekly call, a shared project board and a staging URL you can open at any hour. If you would rather meet in person, say so on the call and we will tell you honestly whether that is practical.</p></div>
+      </div>
+
+      <div class="faq py-6">
+        <button class="w-full flex items-start justify-between gap-6 text-left faq-btn">
+          <span class="font-display font-bold text-ink text-[18px] lg:text-[20px]">What happens after I submit this form?</span>
+          <span class="faq-plus shrink-0 grid place-items-center w-8 h-8 rounded-full bg-mist text-ink transition-transform mt-0.5" aria-hidden="true">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </span>
+        </button>
+        <div class="faq-body pt-4 pr-12"><p class="leading-relaxed">We look at your current site, then email you within one business day to book a thirty minute call. After that call you get a written proposal with scope, timeline and a fixed price within two business days. If we are not the right fit we will say so and point you somewhere better.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FINAL CONVERSION ===== -->
+<section id="final" class="relative py-20 lg:py-28 overflow-hidden bg-mist border-t border-line">
+  <div class="absolute inset-0" aria-hidden="true">
+    <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1800&q=65" alt="" class="w-full h-full object-cover opacity-[.13]">
+    <div class="absolute inset-0 bg-gradient-to-r from-mist via-mist/92 to-mist/70"></div>
+    <div class="absolute -top-24 left-1/3 w-[520px] h-[520px] rounded-full bg-primary/[.09] blur-3xl"></div>
+  </div>
+
+  <div class="shell relative grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+    <div class="lg:col-span-5">
+      <h2 class="font-display font-extrabold text-ink text-[32px] lg:text-[44px] leading-[1.08]">Tell us what is broken</h2>
+      <p class="mt-5 text-[17px] leading-relaxed max-w-[48ch]">One form, one reply, one honest answer about whether we can help. Nothing else happens to your details.</p>
+
+      <ul class="mt-9 space-y-5 border-t border-line pt-8">
+        <li class="flex gap-4">
+          <span class="shrink-0 grid place-items-center w-10 h-10 rounded-lg bg-white border border-line text-ink" aria-hidden="true">
+            <svg class="w-4 h-4" viewBox="0 0 16 16" fill="none"><path d="M3 8.5 6.5 12 13 4.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span><b class="block text-ink">Reply within one business day</b><span class="text-[14.5px]">From a person, not an autoresponder.</span></span>
+        </li>
+        <li class="flex gap-4">
+          <span class="shrink-0 grid place-items-center w-10 h-10 rounded-lg bg-white border border-line text-ink" aria-hidden="true">
+            <svg class="w-4 h-4" viewBox="0 0 16 16" fill="none"><path d="M8 1.5 14 4v4.5c0 3.3-2.4 5.5-6 6.5-3.6-1-6-3.2-6-6.5V4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          </span>
+          <span><b class="block text-ink">NDA signed before we talk</b><span class="text-[14.5px]">Send yours, or use ours.</span></span>
+        </li>
+        <li class="flex gap-4">
+          <span class="shrink-0 grid place-items-center w-10 h-10 rounded-lg bg-white border border-line text-ink" aria-hidden="true">
+            <svg class="w-4 h-4" viewBox="0 0 16 16" fill="none"><path d="M2 4.5h12v9H2z" stroke="currentColor" stroke-width="1.5"/><path d="M2 7h12M5.5 2v4M10.5 2v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </span>
+          <span><b class="block text-ink">Fixed proposal in two days</b><span class="text-[14.5px]">Scope, timeline, price and exclusions in writing.</span></span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="lg:col-span-7">
+      <form class="bg-white rounded-2xl border border-line p-7 sm:p-9 shadow-[0_30px_60px_-30px_rgba(10,29,55,.45)]" onsubmit="return false">
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label for="f2-name" class="block text-[14px] font-semibold text-ink mb-1.5">Full name</label>
+            <input id="f2-name" type="text" class="w-full h-12 px-4 rounded-lg border border-line focus:border-primary outline-none" placeholder="Dana Whitfield">
+          </div>
+          <div>
+            <label for="f2-company" class="block text-[14px] font-semibold text-ink mb-1.5">Company</label>
+            <input id="f2-company" type="text" class="w-full h-12 px-4 rounded-lg border border-line focus:border-primary outline-none" placeholder="Halloway Group">
+          </div>
+          <div>
+            <label for="f2-email" class="block text-[14px] font-semibold text-ink mb-1.5">Work email</label>
+            <input id="f2-email" type="email" class="w-full h-12 px-4 rounded-lg border border-line focus:border-primary outline-none" placeholder="dana@company.com">
+          </div>
+          <div>
+            <label for="f2-url" class="block text-[14px] font-semibold text-ink mb-1.5">Current website</label>
+            <input id="f2-url" type="url" class="w-full h-12 px-4 rounded-lg border border-line focus:border-primary outline-none" placeholder="halloway.com">
+          </div>
+        </div>
+
+        <fieldset class="mt-6">
+          <legend class="block text-[14px] font-semibold text-ink mb-2.5">What do you need?</legend>
+          <div class="flex flex-wrap gap-2">
+            <label class="px-4 h-10 inline-flex items-center rounded-lg border border-line cursor-pointer hover:border-ink text-[14px]"><input type="checkbox" class="sr-only"> New website</label>
+            <label class="px-4 h-10 inline-flex items-center rounded-lg border border-line cursor-pointer hover:border-ink text-[14px]"><input type="checkbox" class="sr-only"> Redesign</label>
+            <label class="px-4 h-10 inline-flex items-center rounded-lg border border-line cursor-pointer hover:border-ink text-[14px]"><input type="checkbox" class="sr-only"> Ecommerce</label>
+            <label class="px-4 h-10 inline-flex items-center rounded-lg border border-line cursor-pointer hover:border-ink text-[14px]"><input type="checkbox" class="sr-only"> Integration</label>
+            <label class="px-4 h-10 inline-flex items-center rounded-lg border border-line cursor-pointer hover:border-ink text-[14px]"><input type="checkbox" class="sr-only"> SEO and AI visibility</label>
+            <label class="px-4 h-10 inline-flex items-center rounded-lg border border-line cursor-pointer hover:border-ink text-[14px]"><input type="checkbox" class="sr-only"> Care plan</label>
+          </div>
+        </fieldset>
+
+        <div class="grid sm:grid-cols-2 gap-5 mt-6">
+          <div>
+            <label for="f2-budget" class="block text-[14px] font-semibold text-ink mb-1.5">Budget range</label>
+            <select id="f2-budget" class="w-full h-12 px-4 rounded-lg border border-line focus:border-primary outline-none bg-white">
+              <option>Under $12,000</option>
+              <option selected>$12,000 to $25,000</option>
+              <option>$25,000 to $60,000</option>
+              <option>$60,000 to $120,000</option>
+              <option>Over $120,000</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+          <div>
+            <label for="f2-when" class="block text-[14px] font-semibold text-ink mb-1.5">When do you want to start?</label>
+            <select id="f2-when" class="w-full h-12 px-4 rounded-lg border border-line focus:border-primary outline-none bg-white">
+              <option>As soon as possible</option>
+              <option selected>Within the next month</option>
+              <option>This quarter</option>
+              <option>Just researching for now</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="mt-6">
+          <label for="f2-msg" class="block text-[14px] font-semibold text-ink mb-1.5">What is going wrong right now?</label>
+          <textarea id="f2-msg" rows="4" class="w-full p-4 rounded-lg border border-line focus:border-primary outline-none resize-none" placeholder="Two or three sentences is plenty."></textarea>
+        </div>
+
+        <button class="mt-7 w-full sm:w-auto inline-flex items-center justify-center h-14 px-8 rounded-xl bg-primary text-white text-[16px] font-semibold hover:bg-primaryd">Send me a free proposal</button>
+        <p class="mt-4 text-[13px]">Protected by bot filtering. We never sell or share your details, and you can ask us to delete them at any time.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MINIMAL FOOTER ===== -->
+<footer class="bg-ink text-white/60 py-12">
+  <div class="shell flex flex-wrap items-center justify-between gap-8">
+    <div class="flex items-center gap-2.5">
+      <span class="grid place-items-center w-9 h-9 rounded-lg bg-white text-ink font-display font-extrabold text-lg">C</span>
+      <span class="font-display font-extrabold text-[20px] text-white">Calwebtech</span>
+    </div>
+    <div class="text-[14px] leading-relaxed">
+      <a href="tel:+18005550188" class="hover:text-white">+1 (800) 555-0188</a>
+      <span class="mx-2 text-white/25">|</span>
+      <a href="mailto:hello@calwebtech.com" class="hover:text-white">hello@calwebtech.com</a>
+    </div>
+    <div class="flex flex-wrap gap-x-6 gap-y-2 text-[13.5px]">
+      <a href="#" class="hover:text-white">Privacy policy</a>
+      <a href="#" class="hover:text-white">Terms</a>
+      <a href="#" class="hover:text-white">Accessibility</a>
+      <span>&copy; 2026 Calwebtech</span>
+    </div>
+  </div>
+</footer>
+
+<!-- sticky mobile CTA -->
+<div class="lg:hidden fixed bottom-0 inset-x-0 z-50 bg-white border-t border-line p-3 flex gap-3 shadow-[0_-8px_24px_-12px_rgba(10,29,55,.3)]">
+  <a href="tel:+18005550188" class="w-14 shrink-0 grid place-items-center rounded-xl border border-line text-ink" aria-label="Call Calwebtech">
+    <svg class="w-5 h-5" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 3h3l1.5 4-2 1.5a10 10 0 0 0 4 4L13 10.5 17 12v3a1.5 1.5 0 0 1-1.7 1.5A14 14 0 0 1 3.5 4.7 1.5 1.5 0 0 1 5 3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+  </a>
+  <a href="#form" class="flex-1 inline-flex items-center justify-center h-14 rounded-xl bg-primary text-white font-semibold">Get my free proposal</a>
+</div>
+<div class="lg:hidden h-20" aria-hidden="true"></div>
+
+<script>
+(function () {
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- FAQ ---------- */
+  document.querySelectorAll('.faq-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var item = btn.closest('.faq');
+      var wasOpen = item.classList.contains('open');
+      item.parentElement.querySelectorAll('.faq').forEach(function (f) { f.classList.remove('open'); });
+      if (!wasOpen) item.classList.add('open');
+    });
+  });
+
+  /* ---------- card lift + auto reveal ---------- */
+  document.querySelectorAll('section article, section .rounded-2xl.border.border-line').forEach(function (el) {
+    el.classList.add('lift');
+  });
+
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section'));
+  sections.slice(1).forEach(function (sec) {
+    var targets = sec.querySelectorAll(':scope > .shell > *, :scope > .shell > div > h2, section article');
+    var i = 0;
+    sec.querySelectorAll('article, figure, .rounded-2xl.border.border-line').forEach(function (el) {
+      if (el.closest('.step-panel')) return;
+      el.classList.add('reveal');
+      if (i % 4 === 1) el.classList.add('reveal-d1');
+      if (i % 4 === 2) el.classList.add('reveal-d2');
+      if (i % 4 === 3) el.classList.add('reveal-d3');
+      i++;
+    });
+    var h = sec.querySelector('h2');
+    if (h && !h.closest('.reveal')) h.classList.add('reveal');
+  });
+
+  if ('IntersectionObserver' in window && !reduced) {
+    var revealObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); revealObs.unobserve(e.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(function (el) { revealObs.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+  }
+
+  /* ---------- counters ---------- */
+  function runCounters(scope) {
+    scope.querySelectorAll('[data-count]').forEach(function (el) {
+      if (el.dataset.done) return;
+      el.dataset.done = '1';
+      var target = parseInt(el.dataset.count, 10);
+      var suffix = el.dataset.suffix || '';
+      if (reduced) { el.textContent = target + suffix; return; }
+      var start = null;
+      function step(ts) {
+        if (!start) start = ts;
+        var p = Math.min((ts - start) / 1100, 1);
+        el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3))) + suffix;
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  }
+  var firstCounter = document.querySelector('[data-count]');
+  if (firstCounter && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (e) { if (e.isIntersecting) { runCounters(document); obs.disconnect(); } });
+    }, { threshold: 0.4 }).observe(firstCounter);
+  } else { runCounters(document); }
+
+  /* ---------- process stepper ---------- */
+  var stepBtns = document.querySelectorAll('.step-btn');
+  var progress = document.getElementById('step-progress');
+  var autoTimer = null;
+  var touched = false;
+
+  function setStep(n) {
+    stepBtns.forEach(function (b) {
+      var on = b.dataset.step === String(n);
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-selected', String(on));
+    });
+    document.querySelectorAll('.step-panel').forEach(function (p) {
+      p.classList.toggle('active', p.id === 'panel-' + n);
+    });
+    if (progress) progress.style.width = ((n - 1) / 4 * 90 + 10) + '%';
+  }
+
+  stepBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      touched = true;
+      if (autoTimer) clearInterval(autoTimer);
+      setStep(parseInt(b.dataset.step, 10));
+    });
+  });
+
+  // gentle auto-advance until the visitor takes control
+  var stepper = document.getElementById('process');
+  if (stepper && stepBtns.length && !reduced && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting || touched) return;
+        obs.disconnect();
+        var n = 1;
+        autoTimer = setInterval(function () {
+          if (touched) { clearInterval(autoTimer); return; }
+          n = n >= 5 ? 1 : n + 1;
+          setStep(n);
+        }, 5200);
+      });
+    }, { threshold: 0.35 }).observe(stepper);
+  }
+
+  /* ---------- before / after ---------- */
+  var ba = document.getElementById('ba');
+  if (ba) {
+    var after = document.getElementById('ba-after');
+    var handle = document.getElementById('ba-handle');
+    var range = document.getElementById('ba-range');
+    function setPos(pct) {
+      pct = Math.max(2, Math.min(98, pct));
+      after.style.width = pct + '%';
+      handle.style.left = pct + '%';
+      range.value = pct;
+    }
+    function fromEvent(e) {
+      var rect = ba.getBoundingClientRect();
+      var x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+      setPos((x / rect.width) * 100);
+    }
+    var dragging = false;
+    ba.addEventListener('mousedown', function (e) { dragging = true; fromEvent(e); });
+    window.addEventListener('mousemove', function (e) { if (dragging) fromEvent(e); });
+    window.addEventListener('mouseup', function () { dragging = false; });
+    ba.addEventListener('touchstart', function (e) { dragging = true; fromEvent(e); }, { passive: true });
+    ba.addEventListener('touchmove', function (e) { if (dragging) fromEvent(e); }, { passive: true });
+    ba.addEventListener('touchend', function () { dragging = false; });
+    range.addEventListener('input', function () { setPos(parseFloat(range.value)); });
+  }
+})();
+</script>
+</body>
+</html>
