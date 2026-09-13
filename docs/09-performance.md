@@ -54,8 +54,9 @@ Own code by module:
 The homepage's mobile menu, work filters, recognition tabs and review breakdown are
 native elements (`<details>`, radio buttons, `:has()`) and ship no JavaScript. The mega
 menus open with CSS (`:focus-within`, `:hover`); the only script is what lets Escape
-dismiss a panel and keeps `aria-expanded` in step (WCAG 1.4.13 and 4.1.2). `next/link` is not used on marketing routes: it adds about 4 kB
-of framework runtime for a prefetch these pages do not need.
+dismiss a panel and keeps `aria-expanded` in step (WCAG 1.4.13 and 4.1.2). `next/link` is
+not used on marketing routes: it adds about 4 kB of framework runtime for a prefetch these
+pages do not need.
 
 Turnstile's own script (`challenges.cloudflare.com`) is not in these numbers and not in
 initial JS. It loads when a visitor first touches a form.
