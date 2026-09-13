@@ -184,6 +184,7 @@ the task produced without a deploy, and the acceptance criterion in
 | Tokens and component inventory | `docs/05-design-system.md` |
 | What to build next | `docs/06-build-plan.md` |
 | Decisions taken since the handoff | `docs/08-decisions.md` |
+| Budget math and rules for marketing routes | `docs/09-performance.md` |
 
 ## Ask before deciding
 
