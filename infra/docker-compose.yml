@@ -16,12 +16,17 @@ services:
       - --certificatesresolvers.le.acme.email=${ACME_EMAIL}
       - --certificatesresolvers.le.acme.storage=/letsencrypt/acme.json
       - --certificatesresolvers.le.acme.httpchallenge.entrypoint=web
+      # TLS options and compression live in traefik/dynamic/edge.yml, which the
+      # Lighthouse gate's proxy also reads.
+      - --providers.file.directory=/etc/traefik/dynamic
+      - --providers.file.watch=true
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./letsencrypt:/letsencrypt
+      - ./traefik/dynamic:/etc/traefik/dynamic:ro
     networks: [edge]
 
   web:
@@ -40,6 +45,7 @@ services:
       - traefik.http.routers.web.rule=Host(`${PRIMARY_DOMAIN}`)
       - traefik.http.routers.web.entrypoints=websecure
       - traefik.http.routers.web.tls.certresolver=le
+      - traefik.http.routers.web.middlewares=edge-compress@file
       - traefik.http.services.web.loadbalancer.server.port=3000
     networks: [edge, internal]
     deploy:
@@ -67,7 +73,7 @@ services:
       - traefik.http.routers.api.rule=Host(`${PRIMARY_DOMAIN}`) && PathPrefix(`/api`)
       - traefik.http.routers.api.entrypoints=websecure
       - traefik.http.routers.api.tls.certresolver=le
-      - traefik.http.routers.api.middlewares=api-strip-prefix
+      - traefik.http.routers.api.middlewares=api-strip-prefix,edge-compress@file
       - traefik.http.middlewares.api-strip-prefix.stripprefix.prefixes=/api
       - traefik.http.services.api.loadbalancer.server.port=4000
     networks: [edge, internal]

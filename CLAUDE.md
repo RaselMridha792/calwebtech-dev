@@ -114,7 +114,9 @@ mist #EEF3F9  mist2 #F7FAFD     line #DCE4EE   body #41536B
 - Section rhythm alternates: white, tinted gradient, image with overlay, colour band.
   See `reference/homepage.html` for the approved sequence.
 - Motion: opacity and transform only. Nothing that shifts layout. All motion respects
-  `prefers-reduced-motion`.
+  `prefers-reduced-motion`. In-page links are smoothed by `AnchorScroll`, never by CSS
+  `scroll-behavior: smooth`, which lands anchors in the wrong place once sections use
+  `content-auto` (docs/09-performance.md).
 
 `reference/homepage.html` and `reference/landing-page.html` are client-approved. When
 building a component, open the mockup first and match it. Improve the code, not the
@@ -142,7 +144,13 @@ design, unless asked.
 | INP | under 200ms |
 | CLS | under 0.1 |
 | Initial JS, marketing routes | under 150KB gzipped |
+| Own client JS per route, framework excluded | under 20KB gzipped |
 | Lighthouse | 90+ on all four categories |
+
+The 150KB gate is measured by `pnpm lh`; the per-route own-code gate by
+`pnpm --filter @calwebtech/web budget`, so framework growth and page growth stay separate.
+Both are lab proxies. The real gate is field Core Web Vitals at p75, once Umami is
+collecting them (docs/09-performance.md).
 
 Heavy components (booking calendar, carousels, charts, the cost calculator) are
 dynamically imported. Background video always has a poster image and never blocks LCP.
