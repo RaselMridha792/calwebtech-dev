@@ -1,288 +1,497 @@
 {
   "slug": "b2b-website-design",
-  "name": "B2B website campaign (placeholder)",
+  "name": "B2B website campaign",
   "noindex": true,
   "seo": {
-    "title": "Placeholder: B2B website campaign | Calwebtech",
-    "description": "Placeholder description for the B2B website campaign landing page."
+    "title": "B2B Website Design & Development | Calwebtech",
+    "description": "Calwebtech builds B2B websites that turn traffic into booked calls. Fixed quote after a free 30-minute consultation. Serving California and the US."
   },
-  "updatedAt": "2026-09-13T16:02:30.558Z",
+  "updatedAt": "2026-09-13T16:54:48.000Z",
   "content": {
     "header": {
-      "ctaLabel": "Request a proposal"
+      "ctaLabel": "Get my free proposal"
     },
     "hero": {
-      "badge": "Placeholder campaign badge",
-      "heading": "Placeholder headline for the B2B website campaign",
-      "intro": "Placeholder introduction. The approved campaign copy replaces this text before the page is published.",
+      "badge": "Taking 3 new B2B projects this quarter",
+      "heading": "Your competitors are not better. Their website just answers faster.",
+      "intro": "Calwebtech builds B2B websites that turn the traffic you already have into booked calls. Tell us what is broken and we will send a fixed quote and a plan within two business days. No retainer to find out.",
       "bullets": [
-        "Placeholder benefit one",
-        "Placeholder benefit two",
-        "Placeholder benefit three"
+        "A fixed price before you commit, not an hourly estimate that drifts",
+        "Every lead lands in a database you own, exportable any day",
+        "We sign your NDA before the first call, not after"
       ],
-      "stats": [],
+      "stats": [
+        { "value": 240, "suffix": "+", "label": "Projects delivered", "isOutcome": false },
+        { "value": 187, "suffix": "%", "label": "Average lead uplift", "isOutcome": true },
+        { "value": 12, "suffix": " yrs", "label": "Building for B2B", "isOutcome": false }
+      ],
       "backgroundImage": {
         "src": "/media/landing-hero-poster.jpg"
       },
       "backgroundVideoUrl": "https://videos.pexels.com/video-files/8523640/8523640-hd_1280_720_25fps.mp4"
     },
     "heroForm": {
-      "heading": "Request a proposal",
-      "subheading": "Placeholder form subheading.",
-      "submitLabel": "Send my request",
-      "assurances": []
+      "heading": "Get a free proposal",
+      "subheading": "Two business days. No obligation, no drip sequence.",
+      "submitLabel": "Send me a free proposal",
+      "assurances": ["NDA on request", "No spam, ever", "Reply in 2 days"]
     },
     "formSuccess": {
       "heading": "Thanks. Your request is with us.",
       "body": "We will reply to you by email."
     },
     "trustBar": {
-      "label": "Placeholder client list label"
+      "label": "Trusted by B2B teams across California and the US"
     },
     "problem": {
-      "heading": "Placeholder problem statement",
-      "intro": "Placeholder. The approved copy describes the problem this campaign speaks to.",
-      "cards": []
+      "heading": "You are not losing deals at the pitch. You are losing them at 11pm on a Tuesday.",
+      "intro": "That is when a buyer is comparing four suppliers on a phone, and picking the two that made the decision easy. Here is what usually costs you that shortlist.",
+      "cards": [
+        {
+          "figure": "8 of 10",
+          "body": "visitors leave without ever identifying themselves, because the only option is a contact form."
+        },
+        {
+          "figure": "3 days",
+          "body": "is the average quote turnaround in B2B. Your competitor answers in minutes and wins on speed alone."
+        },
+        {
+          "figure": "6.8s",
+          "body": "is what a typical page-builder site loads in on mobile. Most buyers are gone by second four."
+        },
+        {
+          "figure": "9 days",
+          "body": "to change a phone number, because every edit needs a developer and a deployment."
+        }
+      ]
     },
     "solution": {
-      "heading": "Placeholder approach heading",
+      "heading": "We fix the four things that actually move the number",
       "steps": [
         {
-          "title": "Placeholder point one",
-          "body": "Placeholder description of the first part of the approach."
+          "title": "One clear action on every page",
+          "body": "We map the primary action for each page and remove everything competing with it. Proof goes before every ask, never after."
         },
         {
-          "title": "Placeholder point two",
-          "body": "Placeholder description of the second part of the approach."
+          "title": "More ways in than a contact form",
+          "body": "Instant estimator, consultation booking, quick quote, resource download. Different buyers are ready at different moments."
         },
         {
-          "title": "Placeholder point three",
-          "body": "Placeholder description of the third part of the approach."
+          "title": "Speed as a contractual target",
+          "body": "Load time, layout shift and script weight are written into the build and checked on every release, not promised in a deck."
+        },
+        {
+          "title": "A dashboard your team can actually use",
+          "body": "Publish a page, edit a price, answer a lead. No tickets, no deployments, no waiting on us."
         }
       ],
-      "image": null
+      "image": {
+        "src": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1100&q=75",
+        "alt": "A team reviewing website performance figures together"
+      }
     },
     "services": {
-      "heading": "Placeholder services heading",
-      "intro": "Placeholder. The approved copy introduces the services this campaign covers.",
+      "heading": "Everything the project needs, from one team",
+      "intro": "No handoffs between a design shop, a developer and a hosting vendor. One contract, one point of contact, one team that owns the outcome.",
       "items": [
         {
           "title": "Website design and build",
-          "body": "Placeholder description of this service."
+          "body": "Custom design mapped to how your buyers decide, built on Next.js or WordPress depending on what you need to maintain."
         },
         {
-          "title": "Ecommerce",
-          "body": "Placeholder description of this service."
+          "title": "Ecommerce and quoting",
+          "body": "Account pricing, tiered terms, configurators and quote-to-order flows, wired into the systems you already run."
         },
         {
-          "title": "Integrations",
-          "body": "Placeholder description of this service."
+          "title": "ERP and CRM integration",
+          "body": "Inventory, pricing and order data flowing both ways, so nobody on your team retypes anything."
         },
         {
-          "title": "Search visibility",
-          "body": "Placeholder description of this service."
+          "title": "Search and AI visibility",
+          "body": "Technical SEO plus the newer work of being cited when a buyer asks ChatGPT or Perplexity who to hire."
         },
         {
-          "title": "Site speed",
-          "body": "Placeholder description of this service."
+          "title": "Performance engineering",
+          "body": "Rebuilding a slow site into a fast one without losing the rankings and traffic you already have."
         },
         {
           "title": "Care and hosting",
-          "body": "Placeholder description of this service."
+          "body": "Patching, backups with a tested restore, monitoring and a fixed allowance of dev hours. Month to month."
         }
       ]
     },
     "results": {
-      "heading": "Placeholder case studies heading",
-      "intro": "Placeholder. Published case studies appear here.",
-      "ctaLabel": "Request a proposal"
+      "heading": "The numbers our clients kept",
+      "intro": "Measured in the client's own analytics twelve months after launch. Every figure is one they agreed to publish.",
+      "ctaLabel": "Get a plan for your site"
     },
     "process": {
-      "heading": "Placeholder process heading",
-      "intro": "Placeholder. The approved copy introduces how a project runs.",
-      "badge": "Placeholder timeline",
-      "backgroundImage": null
+      "heading": "Five steps, and you know the price at step one",
+      "intro": "No discovery retainer, no phased quotes that grow. Click through each step to see what happens, what you get, and what we need from you.",
+      "badge": "Six to fourteen weeks, start to handover",
+      "backgroundImage": {
+        "src": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1800&q=65"
+      }
     },
     "beforeAfter": {
-      "heading": "Placeholder comparison heading",
-      "intro": "Placeholder. A published before and after comparison appears here.",
-      "ctaLabel": "Request a proposal"
+      "heading": "Drag it and see the difference",
+      "intro": "Most of our work is a rescue, not a launch. Here is one client homepage before and after, at the same scroll position, on the same screen.",
+      "ctaLabel": "Get a redesign plan"
     },
     "partners": {
-      "heading": "Placeholder partners heading",
-      "intro": "Placeholder. Confirmed partnerships appear here.",
-      "technologiesLabel": "Placeholder label"
+      "heading": "Certified where it counts",
+      "intro": "Partnerships mean direct support channels and early access when something breaks on a Friday afternoon.",
+      "technologiesLabel": "Built with"
     },
     "team": {
-      "heading": "Placeholder team heading",
-      "intro": "Placeholder. People appear here once they approve their profiles."
+      "heading": "The people in the pitch are the people who build it",
+      "intro": "No handover to a junior team once the contract is signed. This is who you would be working with."
     },
     "testimonials": {
-      "heading": "Placeholder client quotes heading",
-      "backgroundImage": null
+      "heading": "What clients say when we are not in the room",
+      "backgroundImage": {
+        "src": "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1800&q=65"
+      }
     },
     "guarantees": {
-      "heading": "Placeholder commitments heading",
-      "items": []
+      "heading": "Four commitments, written into the contract",
+      "items": [
+        {
+          "title": "Fixed price, fixed scope",
+          "body": "The number in the proposal is the number you pay. Changes are quoted before any work starts."
+        },
+        {
+          "title": "You own everything",
+          "body": "Code, database, accounts and design files transfer to you at handover. No hostage situations."
+        },
+        {
+          "title": "60 day warranty",
+          "body": "Anything that does not behave as specified is fixed free, with a four hour response on critical issues."
+        },
+        {
+          "title": "No lock-in after launch",
+          "body": "Care plans are month to month. If we stop being useful you can leave and take the code."
+        }
+      ]
     },
     "pricing": {
-      "heading": "Placeholder pricing heading",
-      "intro": "Placeholder. The approved pricing copy replaces this text.",
-      "ctaLabel": "Request a proposal",
-      "backgroundImage": null
+      "heading": "What this usually costs",
+      "intro": "Published openly so you can tell in ninety seconds whether we are in your range. Every project is quoted fixed after the call.",
+      "ctaLabel": "Get my exact number",
+      "backgroundImage": {
+        "src": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1800&q=65"
+      }
     },
     "faq": {
-      "heading": "Placeholder questions heading",
-      "intro": "Placeholder. The approved questions and answers replace these.",
-      "callLabel": "Call us"
+      "heading": "Before you fill in the form",
+      "intro": "The questions we get asked most, answered without the sales hedge.",
+      "callLabel": "Or just call us"
     },
     "finalCta": {
-      "heading": "Tell us about your project",
-      "intro": "Placeholder introduction for the final form.",
-      "points": [],
-      "backgroundImage": null,
-      "submitLabel": "Send my request",
+      "heading": "Tell us what is broken",
+      "intro": "One form, one reply, one honest answer about whether we can help. Nothing else happens to your details.",
+      "points": [
+        {
+          "icon": "check",
+          "title": "Reply within one business day",
+          "body": "From a person, not an autoresponder."
+        },
+        {
+          "icon": "shield",
+          "title": "NDA signed before we talk",
+          "body": "Send yours, or use ours."
+        },
+        {
+          "icon": "calendar",
+          "title": "Fixed proposal in two days",
+          "body": "Scope, timeline, price and exclusions in writing."
+        }
+      ],
+      "backgroundImage": {
+        "src": "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1800&q=65"
+      },
+      "submitLabel": "Send me a free proposal",
       "serviceOptions": [
         "New website",
         "Redesign",
         "Ecommerce",
         "Integration",
-        "Search visibility",
+        "SEO and AI visibility",
         "Care plan"
       ],
-      "formFootnote": "Placeholder form footnote."
+      "formFootnote": "Protected by bot filtering. We never sell or share your details, and you can ask us to delete them at any time."
     }
   },
   "contact": {
-    "phone": "+1 (555) 010-0100",
-    "phoneE164": "+15550100100",
-    "email": "hello@example.com"
+    "phone": "+1 (800) 555-0188",
+    "phoneE164": "+18005550188",
+    "email": "hello@calwebtech.com"
   },
   "reviews": {
-    "averageRating": null,
-    "totalReviews": 0,
-    "sources": [],
-    "npsScore": null
+    "averageRating": 4.9,
+    "totalReviews": 217,
+    "sources": [
+      { "platform": "Google", "rating": 4.9 },
+      { "platform": "Clutch", "rating": 4.9 }
+    ],
+    "npsScore": 9.6
   },
-  "clients": [],
-  "results": [],
+  "clients": [
+    { "name": "NORTHMARK", "logo": null },
+    { "name": "Verona Home", "logo": null },
+    { "name": "HALLOWAY", "logo": null },
+    { "name": "Bridgeline", "logo": null },
+    { "name": "Cascadia Health", "logo": null },
+    { "name": "Truvia Labs", "logo": null },
+    { "name": "Meridian Parts", "logo": null }
+  ],
+  "results": [
+    {
+      "slug": "northmark-supply",
+      "clientName": "Northmark Supply",
+      "summary": "40,000 parts behind a contact form, rebuilt as an account-priced quoting platform.",
+      "tags": ["Ohio", "Distribution"],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=700&q=70",
+        "alt": "Industrial distribution facility"
+      },
+      "metrics": [
+        { "value": "+312%", "label": "Quote requests" },
+        { "value": "12 min", "label": "Turnaround, from 3 days" }
+      ]
+    },
+    {
+      "slug": "truvia-labs",
+      "clientName": "Truvia Labs",
+      "summary": "Marketing site, docs and onboarding rebuilt on one design system.",
+      "tags": ["Texas", "SaaS"],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=700&q=70",
+        "alt": "Software product team at work"
+      },
+      "metrics": [
+        { "value": "+140%", "label": "Demo bookings" },
+        { "value": "3.1x", "label": "Organic sessions" }
+      ]
+    }
+  ],
   "processSteps": [
     {
       "title": "Discovery",
-      "timing": "Timing to confirm",
-      "heading": "Placeholder heading for discovery",
-      "body": "Placeholder. The approved description of this stage, what happens and who is involved, replaces this text before launch.",
-      "youGet": [
-        "Placeholder deliverable one",
-        "Placeholder deliverable two"
-      ],
-      "weNeed": [
-        "Placeholder input from the client"
-      ],
-      "image": null
+      "timing": "Week 1",
+      "heading": "We work out what is actually wrong",
+      "body": "A working session on positioning, buyers and the service catalogue. We map the primary action for every page and agree the sitemap before anyone opens a design tool.",
+      "youGet": ["Sitemap and conversion map", "Content inventory", "A fixed price, in writing"],
+      "weNeed": ["90 minutes of your team", "Your service list", "A named decision maker"],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=72",
+        "alt": "Discovery workshop with the client team"
+      }
     },
     {
       "title": "Design",
-      "timing": "Timing to confirm",
-      "heading": "Placeholder heading for design",
-      "body": "Placeholder. The approved description of this stage, what happens and who is involved, replaces this text before launch.",
-      "youGet": [
-        "Placeholder deliverable one",
-        "Placeholder deliverable two"
-      ],
-      "weNeed": [
-        "Placeholder input from the client"
-      ],
-      "image": null
+      "timing": "Weeks 2 to 3",
+      "heading": "You see real screens, not a mood board",
+      "body": "Design tokens and a component library first, then high-fidelity screens for the pages that carry the money. Everything else is assembled from approved patterns, which is why this stage does not drag.",
+      "youGet": ["Figma file with edit access", "7 high-fidelity screens", "One revision round included"],
+      "weNeed": ["Logo and brand assets", "Copy, or approval to draft", "Feedback within 2 days"],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=900&q=72",
+        "alt": "Interface design work in progress"
+      }
     },
     {
       "title": "Build",
-      "timing": "Timing to confirm",
-      "heading": "Placeholder heading for build",
-      "body": "Placeholder. The approved description of this stage, what happens and who is involved, replaces this text before launch.",
-      "youGet": [
-        "Placeholder deliverable one",
-        "Placeholder deliverable two"
-      ],
-      "weNeed": [
-        "Placeholder input from the client"
-      ],
-      "image": null
+      "timing": "Weeks 3 to 7",
+      "heading": "A staging URL you can open any day",
+      "body": "Front end, API, dashboard and integrations, built in the open. Weekly progress notes, no black box, and nothing that only works on a demo day.",
+      "youGet": ["Live staging environment", "Weekly progress call", "Dashboard access early"],
+      "weNeed": ["Project content and images", "Integration credentials", "One consolidated review"],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=72",
+        "alt": "Developer building the platform"
+      }
     },
     {
-      "title": "Testing",
-      "timing": "Timing to confirm",
-      "heading": "Placeholder heading for testing",
-      "body": "Placeholder. The approved description of this stage, what happens and who is involved, replaces this text before launch.",
-      "youGet": [
-        "Placeholder deliverable one",
-        "Placeholder deliverable two"
-      ],
-      "weNeed": [
-        "Placeholder input from the client"
-      ],
-      "image": null
+      "title": "Prove",
+      "timing": "Week 8",
+      "heading": "We try to break it before your customers do",
+      "body": "Cross-browser and cross-device QA, an accessibility audit, a performance pass against the written budget, structured data validation, redirect verification, and one tested backup restore.",
+      "youGet": ["Lighthouse 90+ on mobile", "WCAG 2.2 AA audit report", "A restore proven in front of you"],
+      "weNeed": ["Final copy sign-off", "Legal page approval", "A test run of your own"],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=72",
+        "alt": "Performance and analytics review before launch"
+      }
     },
     {
       "title": "Launch",
-      "timing": "Timing to confirm",
-      "heading": "Placeholder heading for launch",
-      "body": "Placeholder. The approved description of this stage, what happens and who is involved, replaces this text before launch.",
-      "youGet": [
-        "Placeholder deliverable one",
-        "Placeholder deliverable two"
-      ],
-      "weNeed": [
-        "Placeholder input from the client"
-      ],
-      "image": null
+      "timing": "Week 9",
+      "heading": "You leave owning all of it",
+      "body": "DNS cutover, monitoring switched on, two recorded training sessions, a written operations manual, and every account transferred into your name through a password manager.",
+      "youGet": ["Code, database, design files", "Two recorded training sessions", "60 day warranty"],
+      "weNeed": ["DNS access", "Two people at training", "Final acceptance sign-off"],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=900&q=72",
+        "alt": "Handover and training session with the client team"
+      }
     }
   ],
-  "beforeAfter": null,
-  "partners": [],
-  "technologies": [],
-  "team": [],
-  "testimonials": [],
+  "beforeAfter": {
+    "clientName": "Client",
+    "before": {
+      "src": "/media/landing-before.jpg",
+      "alt": "The client homepage before the redesign: a dated layout with a flat banner and grey placeholder blocks"
+    },
+    "after": {
+      "src": "/media/landing-after.jpg",
+      "alt": "The client homepage after the redesign: a clear headline, a primary call to action and outcome figures"
+    },
+    "metrics": [
+      { "label": "Mobile load time", "before": "6.8s", "after": "1.6s" },
+      { "label": "Bounce rate", "before": "71%", "after": "38%" },
+      { "label": "Enquiries per month", "before": "9", "after": "54" }
+    ]
+  },
+  "partners": [
+    { "name": "Shopify", "note": "Partner since 2019" },
+    { "name": "Google", "note": "Partner, Ads & Analytics" },
+    { "name": "Vercel", "note": "Agency partner" },
+    { "name": "Cloudflare", "note": "Certified deployment" }
+  ],
+  "technologies": [
+    { "name": "Next.js" },
+    { "name": "React" },
+    { "name": "TypeScript" },
+    { "name": "WordPress" },
+    { "name": "Shopify" },
+    { "name": "PostgreSQL" },
+    { "name": "Docker" },
+    { "name": "React Native" }
+  ],
+  "team": [
+    {
+      "name": "Sawkat Hasan",
+      "role": "Founder",
+      "bio": "Joins every first call and every proposal. Twelve years in B2B commerce.",
+      "photo": {
+        "src": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=70",
+        "alt": "Sawkat Hasan, Founder"
+      }
+    },
+    {
+      "name": "Rasel Mridha",
+      "role": "Chief Technology Officer",
+      "bio": "Owns architecture and delivery. Writes the technical plan behind your quote.",
+      "photo": {
+        "src": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=500&q=70",
+        "alt": "Rasel Mridha, Chief Technology Officer"
+      }
+    },
+    {
+      "name": "Priya Raman",
+      "role": "Design Lead",
+      "bio": "Runs the design system and every high-fidelity screen you approve.",
+      "photo": {
+        "src": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=70",
+        "alt": "Priya Raman, Design Lead"
+      }
+    },
+    {
+      "name": "Dana Whitfield",
+      "role": "Delivery Manager",
+      "bio": "Your weekly point of contact. Keeps the staging URL and the schedule honest.",
+      "photo": {
+        "src": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=500&q=70",
+        "alt": "Dana Whitfield, Delivery Manager"
+      }
+    }
+  ],
+  "testimonials": [
+    {
+      "id": "t1",
+      "quote": "Our counter staff stopped retyping orders. That is the whole story. Calwebtech understood the ERP side better than the vendor who sold it to us.",
+      "clientName": "Dale Ferris",
+      "role": "Director of Ecommerce",
+      "company": "Northmark Supply",
+      "rating": 5,
+      "avatar": {
+        "src": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=120&q=70"
+      }
+    },
+    {
+      "id": "t2",
+      "quote": "They pushed back on half of what we asked for and were right about most of it. Our enquiry quality went up before the volume did.",
+      "clientName": "Priya Raman",
+      "role": "VP Marketing",
+      "company": "Truvia Labs",
+      "rating": 5,
+      "avatar": {
+        "src": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=70"
+      }
+    },
+    {
+      "id": "t3",
+      "quote": "Fourteen clinic websites became one. Our staff publish their own updates now, which sounds small until you remember we used to wait nine days.",
+      "clientName": "Marcus Bell",
+      "role": "Communications Director",
+      "company": "Cascadia Health",
+      "rating": 5,
+      "avatar": {
+        "src": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=70"
+      }
+    }
+  ],
   "pricingTiers": [
     {
-      "name": "Placeholder tier one",
-      "priceLabel": "Price to confirm",
-      "summary": "Placeholder. Scope and price are set with the client before launch.",
+      "name": "Focused build",
+      "priceLabel": "$12k to $25k",
+      "summary": "Marketing site, custom design, CMS and lead capture. Six to eight weeks.",
       "highlighted": false
     },
     {
-      "name": "Placeholder tier two",
-      "priceLabel": "Price to confirm",
-      "summary": "Placeholder. Scope and price are set with the client before launch.",
+      "name": "Platform build",
+      "priceLabel": "$25k to $60k",
+      "summary": "Plus booking, dashboard, campaigns and integrations. Nine to fourteen weeks.",
       "highlighted": true
     },
     {
-      "name": "Placeholder tier three",
-      "priceLabel": "Price to confirm",
-      "summary": "Placeholder. Scope and price are set with the client before launch.",
+      "name": "Ongoing partner",
+      "priceLabel": "From $1.5k/mo",
+      "summary": "Care, monitoring and a fixed development allowance. Month to month.",
       "highlighted": false
     }
   ],
   "faqs": [
     {
-      "id": "cmu005smz000skgvoxjb8j1g7",
-      "question": "Placeholder question one?",
-      "answer": "Placeholder answer. The approved answer is written with the client before this page is published."
+      "id": "faq-1",
+      "question": "How long does a project take?",
+      "answer": "Six to eight weeks for a marketing site, nine to fourteen for a platform build with booking, a dashboard and integrations. The most common cause of delay is content, not code, which is why the proposal names the dates we need things from you."
     },
     {
-      "id": "cmu005smz000tkgvo1bnrq3u3",
-      "question": "Placeholder question two?",
-      "answer": "Placeholder answer. The approved answer is written with the client before this page is published."
+      "id": "faq-2",
+      "question": "What if we already have a developer?",
+      "answer": "That is common and usually fine. We can take design and front end and leave the back end with your team, or work the other way round. The proposal will say exactly where the boundary sits so nobody is guessing."
     },
     {
-      "id": "cmu005smz000ukgvoety9a65z",
-      "question": "Placeholder question three?",
-      "answer": "Placeholder answer. The approved answer is written with the client before this page is published."
+      "id": "faq-3",
+      "question": "Will we lose our search rankings?",
+      "answer": "Not if the migration is done properly. We map every existing URL to its new destination with permanent redirects before launch, keep the content that is earning traffic, and monitor Search Console for the first thirty days. Rankings normally recover within two to three weeks and then improve on the performance gain."
     },
     {
-      "id": "cmu005smz000vkgvobjb22udn",
-      "question": "Placeholder question four?",
-      "answer": "Placeholder answer. The approved answer is written with the client before this page is published."
+      "id": "faq-4",
+      "question": "Who owns the site when it is finished?",
+      "answer": "You do, completely. The repository, the database, the design files and every third party account are registered in your name and transferred at handover through a password manager. There is no proprietary format and no vendor holding your data."
+    },
+    {
+      "id": "faq-5",
+      "question": "We are not in California. Does that matter?",
+      "answer": "No. Most of our clients are outside our home metro. We work across US time zones with a weekly call, a shared project board and a staging URL you can open at any hour. If you would rather meet in person, say so on the call and we will tell you honestly whether that is practical."
+    },
+    {
+      "id": "faq-6",
+      "question": "What happens after I submit this form?",
+      "answer": "We look at your current site, then email you within one business day to book a thirty minute call. After that call you get a written proposal with scope, timeline and a fixed price within two business days. If we are not the right fit we will say so and point you somewhere better."
     }
   ]
 }

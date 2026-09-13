@@ -178,11 +178,21 @@ export function toHomePageView(sources: HomePageSources): HomePageView {
     };
   });
 
+  const reviews = summariseReviews(sources.reviewSources, proof?.npsScore ?? null);
+  const reviewCounts = new Map(sources.reviewSources.map((source) => [source.platform, source.reviewCount]));
+
   return homePageViewSchema.parse({
     indexable: indexing.success && indexing.data.index,
     content: sources.contentSetting,
     contact: sources.contactSetting,
-    reviews: summariseReviews(sources.reviewSources, proof?.npsScore ?? null),
+    reviews: {
+      ...reviews,
+      sources: reviews.sources.map((source) => ({
+        ...source,
+        reviewCount: reviewCounts.get(source.platform) ?? null,
+      })),
+      npsProjectCount: proof?.npsProjectCount ?? null,
+    },
     statistics: sources.statistics
       .slice(0, 4)
       .map((statistic) => ({ label: statistic.label, value: statistic.value, suffix: statistic.suffix ?? '' })),

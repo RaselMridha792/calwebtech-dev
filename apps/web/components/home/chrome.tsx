@@ -1,10 +1,15 @@
-import type { HomePageView, Link as NavLink, ReviewSummary, SiteContact } from '@calwebtech/shared';
+import type { HomePageContent, HomePageView, Link as NavLink, SiteContact } from '@calwebtech/shared';
 import type { ReactNode } from 'react';
-import { Wordmark } from '../ui/brand';
+import { BackdropImage, Wordmark } from '../ui/brand';
 import { Stars } from '../ui/primitives';
+import { ResponsiveImage } from '../ui/responsive-image';
 import { MegaMenuState } from './mega-menu-state';
+import { asPhrase } from './parts';
 
 type Home = HomePageView;
+type Reviews = Home['reviews'];
+type MenuColumn = { title: string | null; links: NavLink[] };
+type MenuPromoContent = HomePageContent['megaMenu']['servicesPromo'];
 
 function Chevron() {
   return (
@@ -14,30 +19,40 @@ function Chevron() {
   );
 }
 
+const counted = (count: number, noun: string) => `${String(count)} ${noun}${count === 1 ? '' : 's'}`;
+
 /** Where the rating comes from. Renders only when review sources are published. */
-function ReviewBadge({ reviews }: { reviews: ReviewSummary }) {
+function ReviewBadge({ reviews, noun }: { reviews: Reviews; noun: string }) {
   if (reviews.averageRating === null) return null;
   return (
     <details className="relative">
       <summary className="flex cursor-pointer list-none items-center gap-2 hover:text-white [&::-webkit-details-marker]:hidden">
         <Stars rating={reviews.averageRating} announce={false} />
         <span className="font-semibold text-white">{reviews.averageRating.toFixed(1)}</span>
-        <span>from {reviews.totalReviews} reviews</span>
+        <span>{`from ${String(reviews.totalReviews)} ${noun}`}</span>
         <Chevron />
       </summary>
       <div className="absolute top-9 right-0 z-50 w-72 rounded-xl border border-line bg-white p-4 text-ink shadow-2xl">
-        <p className="mb-3 font-display text-sm font-bold">Where the rating comes from</p>
+        <p className="mb-3 font-display text-sm font-bold">Where our rating comes from</p>
         <ul className="space-y-2.5 text-[13px]">
           {reviews.sources.map((source) => (
             <li key={source.platform} className="flex items-center justify-between">
               <span className="text-body">{source.platform}</span>
-              <b>{source.rating.toFixed(1)}</b>
+              <span>
+                <b>{source.rating.toFixed(1)}</b>
+                {source.reviewCount !== null ? (
+                  <span className="text-body">{` · ${counted(source.reviewCount, 'review')}`}</span>
+                ) : null}
+              </span>
             </li>
           ))}
         </ul>
         {reviews.npsScore !== null ? (
           <p className="mt-3 border-t border-line pt-3 text-[12px] text-body">
             Net Promoter Score <b className="text-ink">{reviews.npsScore.toFixed(1)}</b>
+            {reviews.npsProjectCount !== null
+              ? `, measured across ${counted(reviews.npsProjectCount, 'client project')}.`
+              : null}
           </p>
         ) : null}
       </div>
@@ -48,11 +63,11 @@ function ReviewBadge({ reviews }: { reviews: ReviewSummary }) {
 export function UtilityBar({
   contact,
   reviews,
-  serviceArea,
+  utilityBar,
 }: {
   contact: SiteContact;
-  reviews: ReviewSummary;
-  serviceArea: string | null;
+  reviews: Reviews;
+  utilityBar: HomePageContent['utilityBar'];
 }) {
   return (
     <div className="hidden bg-ink text-[13px] text-white/80 lg:block">
@@ -67,22 +82,29 @@ export function UtilityBar({
           <a href={`mailto:${contact.email}`} className="hover:text-white">
             {contact.email}
           </a>
-          {serviceArea ? (
+          {utilityBar.serviceArea ? (
             <>
               <span className="text-white/25" aria-hidden="true">
                 |
               </span>
-              <span>{serviceArea}</span>
+              <span>{utilityBar.serviceArea}</span>
             </>
           ) : null}
         </div>
-        <ReviewBadge reviews={reviews} />
+        <div className="flex items-center gap-5">
+          <ReviewBadge reviews={reviews} noun={utilityBar.reviewNoun} />
+          {utilityBar.links.map((link) => (
+            <a key={`${link.label}${link.href}`} href={link.href} className="hover:text-white">
+              {link.label}
+            </a>
+          ))}
+        </div>
       </div>
     </div>
   );
 }
 
-function MenuList({ title, links, className = 'col-span-3' }: { title?: string; links: NavLink[]; className?: string }) {
+function MenuList({ title, links, className = 'col-span-3' }: { title?: string | null; links: NavLink[]; className?: string }) {
   if (links.length === 0) return null;
   return (
     <div className={className}>
@@ -96,6 +118,49 @@ function MenuList({ title, links, className = 'col-span-3' }: { title?: string; 
           </li>
         ))}
       </ul>
+    </div>
+  );
+}
+
+function MenuColumns({ columns }: { columns: MenuColumn[] }) {
+  return columns.map((column, index) => (
+    <MenuList key={`${column.title ?? ''}-${String(index)}`} title={column.title} links={column.links} />
+  ));
+}
+
+const PROMO_STYLES = {
+  mist: {
+    box: 'flex h-full flex-col rounded-2xl bg-mist p-6',
+    heading: 'font-display text-[17px] leading-snug font-bold text-ink',
+    body: 'mt-2 text-[13.5px] leading-relaxed',
+    cta: 'mt-4 inline-flex h-11 items-center justify-center rounded-lg bg-ink px-5 text-[14px] font-semibold text-white hover:bg-ink2',
+  },
+  outline: {
+    box: 'rounded-2xl border border-line p-6',
+    heading: 'font-display text-[15px] font-bold text-ink',
+    body: 'mt-1.5 text-[13.5px] leading-relaxed',
+    cta: 'mt-3 inline-block text-[14px] font-semibold text-primary hover:text-primaryd',
+  },
+  dark: {
+    box: 'rounded-2xl bg-ink p-6 text-white',
+    heading: 'font-display text-[16px] leading-snug font-bold',
+    body: 'mt-2 text-[13.5px] leading-relaxed text-white/70',
+    cta: 'mt-4 inline-flex h-10 items-center justify-center rounded-lg bg-white px-4 text-[13.5px] font-semibold text-ink hover:bg-mist',
+  },
+} as const;
+
+/** The featured card closing a mega menu panel. */
+function MenuPromo({ promo, tone }: { promo: MenuPromoContent; tone: keyof typeof PROMO_STYLES }) {
+  const style = PROMO_STYLES[tone];
+  return (
+    <div className="col-span-3 col-start-10">
+      <div className={style.box}>
+        <p className={style.heading}>{promo.heading}</p>
+        <p className={style.body}>{promo.body}</p>
+        <a href={promo.cta.href} className={style.cta}>
+          {promo.cta.label}
+        </a>
+      </div>
     </div>
   );
 }
@@ -145,24 +210,58 @@ const MORE_LINKS: NavLink[] = [
   { label: 'Locations', href: '#locations' },
 ];
 
+/** Used when the homepage copy sets no columns of its own. */
+const DEFAULT_WORK_COLUMNS: MenuColumn[] = [
+  {
+    title: 'Browse',
+    links: [
+      { label: 'Case studies', href: '#work' },
+      { label: 'Before and after', href: '#beforeafter' },
+      { label: 'Client quotes', href: '#testimonials' },
+    ],
+  },
+];
+
+const DEFAULT_RESOURCE_COLUMNS: MenuColumn[] = [
+  { title: 'Tools', links: [{ label: 'Cost estimate', href: '#estimate' }] },
+  {
+    title: 'Learn',
+    links: [
+      { label: 'Insights', href: '#insights' },
+      { label: 'How a project runs', href: '#process' },
+    ],
+  },
+  {
+    title: 'Company',
+    links: [
+      { label: 'Recognition', href: '#awards' },
+      { label: 'Locations', href: '#locations' },
+      { label: 'Contact', href: '#book' },
+    ],
+  },
+];
+
+/** Splits links into up to `count` columns, filled top to bottom. */
+function columnsOf(links: NavLink[], count: number): NavLink[][] {
+  const size = Math.ceil(links.length / count);
+  if (size === 0) return [];
+  return Array.from({ length: count }, (_column, index) => links.slice(index * size, (index + 1) * size)).filter(
+    (column) => column.length > 0,
+  );
+}
+
 /** The small-screen menu: a native disclosure, closed again when a link is followed. */
 function MobileMenu({ home }: { home: Home }) {
   const { primaryCta, secondaryCta } = home.content.header;
-  const group = (title: string, links: NavLink[]) =>
-    links.length > 0 ? (
-      <div>
-        <p className="mb-2 font-display font-bold text-ink">{title}</p>
-        <ul className="grid grid-cols-2 gap-x-6 gap-y-2 text-[14px]">
-          {links.map((link) => (
-            <li key={link.label}>
-              <a href={link.href} className="block py-0.5">
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-    ) : null;
+  const configured = home.content.mobileMenu.groups;
+  const groups =
+    configured.length > 0
+      ? configured
+      : [
+          { title: 'Services', links: home.services.map((service) => serviceLink(service.title)) },
+          { title: 'Industries', links: home.industries.map((industry) => industryLink(industry.name)) },
+          { title: 'More', links: MORE_LINKS },
+        ];
 
   return (
     <details className="xl:hidden">
@@ -176,9 +275,22 @@ function MobileMenu({ home }: { home: Home }) {
       </summary>
       <div className="absolute inset-x-0 top-full max-h-[calc(100vh-76px)] overflow-y-auto border-t border-line bg-white shadow-[0_24px_48px_-20px_rgba(10,29,55,.28)]">
         <div className="shell space-y-5 py-6">
-          {group('Services', home.services.map((service) => serviceLink(service.title)))}
-          {group('Industries', home.industries.map((industry) => industryLink(industry.name)))}
-          {group('More', MORE_LINKS)}
+          {groups.map((group) =>
+            group.links.length > 0 ? (
+              <div key={group.title}>
+                <p className="mb-2 font-display font-bold text-ink">{group.title}</p>
+                <ul className="grid grid-cols-2 gap-x-6 gap-y-2 text-[14px]">
+                  {group.links.map((link) => (
+                    <li key={`${link.label}${link.href}`}>
+                      <a href={link.href} className="block py-0.5">
+                        {link.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null,
+          )}
           <div className="flex gap-3 pt-1">
             <a
               href={primaryCta.href}
@@ -201,11 +313,18 @@ function MobileMenu({ home }: { home: Home }) {
 
 export function SiteHeader({ home }: { home: Home }) {
   const { content } = home;
-  const promo = content.megaMenu.servicesPromo;
-  const industryLinks = home.industries.map((industry) => industryLink(industry.name));
-  const industryColumns = [0, 1, 2]
-    .map((column) => industryLinks.filter((_link, index) => index % 3 === column))
-    .filter((links) => links.length > 0);
+  const menu = content.megaMenu;
+  const serviceColumns: MenuColumn[] =
+    menu.serviceColumns.length > 0
+      ? menu.serviceColumns
+      : home.serviceGroups.slice(0, 2).map((group) => ({
+          title: group.name,
+          links: group.services.map((service) => serviceLink(service.title)),
+        }));
+  const industryLinks =
+    menu.industryLinks.length > 0 ? menu.industryLinks : home.industries.map((industry) => industryLink(industry.name));
+  const workColumns = menu.workColumns.length > 0 ? menu.workColumns : DEFAULT_WORK_COLUMNS;
+  const resourceColumns = menu.resourceColumns.length > 0 ? menu.resourceColumns : DEFAULT_RESOURCE_COLUMNS;
 
   return (
     <header className="header-shadow sticky top-0 z-100 border-b border-line bg-white">
@@ -217,71 +336,42 @@ export function SiteHeader({ home }: { home: Home }) {
 
         <nav className="hidden h-full items-center xl:flex" aria-label="Main">
           <MegaMenu id="services" label="Services">
-            {home.serviceGroups.slice(0, 2).map((group) => (
-              <MenuList key={group.name} title={group.name} links={group.services.map((service) => serviceLink(service.title))} />
-            ))}
-            <div className="col-span-3 col-start-10">
-              <div className="flex h-full flex-col rounded-2xl bg-mist p-6">
-                <p className="font-display text-[17px] leading-snug font-bold text-ink">{promo.heading}</p>
-                <p className="mt-2 text-[13.5px] leading-relaxed">{promo.body}</p>
-                <a
-                  href={promo.cta.href}
-                  className="mt-4 inline-flex h-11 items-center justify-center rounded-lg bg-ink px-5 text-[14px] font-semibold text-white hover:bg-ink2"
-                >
-                  {promo.cta.label}
-                </a>
-              </div>
-            </div>
+            <MenuColumns columns={serviceColumns} />
+            <MenuPromo promo={menu.servicesPromo} tone="mist" />
           </MegaMenu>
 
           <MegaMenu id="industries" label="Industries">
-            {industryColumns.map((links) => (
+            {columnsOf(industryLinks, 3).map((links) => (
               <MenuList key={links[0]?.label ?? 'industries'} links={links} />
             ))}
+            {menu.industriesPromo ? <MenuPromo promo={menu.industriesPromo} tone="outline" /> : null}
           </MegaMenu>
 
           <MegaMenu id="work" label="Work">
-            <MenuList
-              title="Browse"
-              links={[
-                { label: 'Case studies', href: '#work' },
-                { label: 'Before and after', href: '#beforeafter' },
-                { label: 'Client quotes', href: '#testimonials' },
-              ]}
-            />
+            <MenuColumns columns={workColumns} />
             {home.projects.length > 0 ? (
               <div className="col-span-6 grid grid-cols-2 gap-5">
-                {home.projects.slice(0, 2).map((project) => (
-                  <a key={project.slug} href="#work" className="group">
-                    <p className="font-semibold text-ink group-hover:text-primary">{project.clientName}</p>
-                    {project.metrics[0] ? (
-                      <p className="text-[13px]">
-                        {project.metrics[0].value} {project.metrics[0].label}
-                      </p>
-                    ) : null}
-                  </a>
-                ))}
+                {home.projects.slice(0, 2).map((project) => {
+                  const metric = project.metrics[0];
+                  return (
+                    <a key={project.slug} href="#work" className="group">
+                      {project.image ? (
+                        <div className="relative mb-2.5 aspect-[16/10] overflow-hidden rounded-xl bg-mist">
+                          <ResponsiveImage src={project.image.src} alt="" fill sizes="320px" className="object-cover" />
+                        </div>
+                      ) : null}
+                      <p className="text-[14px] font-semibold text-ink group-hover:text-primary">{project.clientName}</p>
+                      {metric ? <p className="text-[13px]">{`${metric.value} ${asPhrase(metric.label)}`}</p> : null}
+                    </a>
+                  );
+                })}
               </div>
             ) : null}
           </MegaMenu>
 
           <MegaMenu id="resources" label="Resources">
-            <MenuList title="Tools" links={[{ label: 'Cost estimate', href: '#estimate' }]} />
-            <MenuList
-              title="Learn"
-              links={[
-                { label: 'Insights', href: '#insights' },
-                { label: 'How a project runs', href: '#process' },
-              ]}
-            />
-            <MenuList
-              title="Company"
-              links={[
-                { label: 'Recognition', href: '#awards' },
-                { label: 'Locations', href: '#locations' },
-                { label: 'Contact', href: '#book' },
-              ]}
-            />
+            <MenuColumns columns={resourceColumns} />
+            {menu.resourcesPromo ? <MenuPromo promo={menu.resourcesPromo} tone="dark" /> : null}
           </MegaMenu>
 
           <a href="#tech" className="px-4 text-[15px] font-medium text-ink hover:text-primary">
@@ -320,7 +410,7 @@ function FooterColumn({ title, links }: { title: string; links: NavLink[] }) {
       <p className="mb-4 font-display text-[15px] font-bold text-white">{title}</p>
       <ul className="space-y-2.5 text-[14.5px]">
         {links.map((link) => (
-          <li key={link.label}>
+          <li key={`${link.label}${link.href}`}>
             <a href={link.href} className="hover:text-white">
               {link.label}
             </a>
@@ -333,10 +423,16 @@ function FooterColumn({ title, links }: { title: string; links: NavLink[] }) {
 
 export function SiteFooter({ home }: { home: Home }) {
   const { content, contact } = home;
+  const { footer } = content;
   const offices = home.locations.filter((location) => location.address).slice(0, 2);
+  const serviceLinks =
+    footer.services.length > 0 ? footer.services : home.services.map((service) => serviceLink(service.title));
+  const industryLinks =
+    footer.industries.length > 0 ? footer.industries : home.industries.map((industry) => industryLink(industry.name));
   return (
     <footer className="relative overflow-hidden bg-ink text-white/70">
       <div className="absolute inset-0" aria-hidden="true">
+        <BackdropImage image={footer.backgroundImage} className="opacity-[.10] mask-b-from-55%" />
         <div className="grid-lines-light absolute inset-0" />
         <div className="absolute -top-32 right-10 h-[480px] w-[480px] rounded-full bg-primary/20 blur-3xl" />
       </div>
@@ -347,12 +443,12 @@ export function SiteFooter({ home }: { home: Home }) {
             <a href="/" aria-label="Calwebtech home" className="inline-block">
               <Wordmark tone="light" />
             </a>
-            <p className="mt-5 max-w-[38ch] text-[15px] leading-relaxed">{content.footer.blurb}</p>
+            <p className="mt-5 max-w-[38ch] text-[15px] leading-relaxed">{footer.blurb}</p>
           </div>
-          <FooterColumn title="Services" links={home.services.map((service) => serviceLink(service.title))} />
-          <FooterColumn title="Industries" links={home.industries.map((industry) => industryLink(industry.name))} />
-          <FooterColumn title="Resources" links={content.footer.resources} />
-          <FooterColumn title="Company" links={content.footer.company} />
+          <FooterColumn title="Services" links={serviceLinks} />
+          <FooterColumn title="Industries" links={industryLinks} />
+          <FooterColumn title="Resources" links={footer.resources} />
+          <FooterColumn title="Company" links={footer.company} />
         </div>
 
         <div className="mt-14 grid gap-8 border-t border-white/10 pt-10 text-[14px] md:grid-cols-3">
@@ -383,7 +479,7 @@ export function SiteFooter({ home }: { home: Home }) {
         <div className="mt-10 flex flex-wrap items-center justify-between gap-6 border-t border-white/10 pt-8 text-[13.5px]">
           <p>&copy; {new Date().getFullYear()} Calwebtech. All rights reserved.</p>
           <nav aria-label="Legal" className="flex flex-wrap gap-x-6 gap-y-2">
-            {content.footer.legal.map((link) => (
+            {footer.legal.map((link) => (
               <a key={link.label} href={link.href} className="hover:text-white">
                 {link.label}
               </a>
