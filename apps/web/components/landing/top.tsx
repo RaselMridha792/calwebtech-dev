@@ -88,7 +88,7 @@ export function LandingHero({ hero, form }: { hero: Content['hero']; form: React
           ) : null}
         </div>
 
-        <div id="form" className="w-full scroll-mt-24 lg:col-span-5">
+        <div id="form" className="w-full lg:col-span-5">
           {form}
         </div>
       </div>

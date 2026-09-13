@@ -14,17 +14,25 @@
     letter-spacing: -0.02em;
   }
 
+  /*
+   * Anchor targets and focused fields stop clear of the sticky header (WCAG 2.2
+   * focus not obscured). `:where` keeps it overridable by a `scroll-mt-*` utility.
+   */
+  :where([id]) {
+    scroll-margin-top: 6rem;
+  }
+
   /* Focus ring is a requirement, not a default. Never remove it. */
   :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
     outline: 3px solid var(--color-primary);
     outline-offset: 2px;
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    html {
-      scroll-behavior: smooth;
-    }
-  }
+  /*
+   * No `scroll-behavior: smooth` here. It fixes the destination before `content-auto`
+   * sections render at their real height, so anchors land in the wrong place. In-page
+   * links are smoothed by components/motion/anchor-scroll.tsx instead.
+   */
 }
 
 /* Card hover. Uses `translate`, not `transform`, so it composes with the reveal. */

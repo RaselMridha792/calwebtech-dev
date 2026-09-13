@@ -20,6 +20,7 @@ import {
 } from '@/components/landing/proof';
 import { ProblemSection, ServicesSection, SolutionSection } from '@/components/landing/story';
 import { LandingHeader, LandingHero, TrustBar } from '@/components/landing/top';
+import { AnchorScroll } from '@/components/motion/anchor-scroll';
 import { RevealObserver } from '@/components/motion/reveal-observer';
 import { getLandingPage } from '@/lib/api';
 
@@ -75,7 +76,7 @@ export default async function CampaignLandingPage({ params }: PageProps<'/lp/[ca
     <>
       <a
         href="#form"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[999] focus:rounded focus:bg-ink focus:px-4 focus:py-2 focus:text-white"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-999 focus:rounded focus:bg-ink focus:px-4 focus:py-2 focus:text-white"
       >
         Skip to the form
       </a>
@@ -148,6 +149,7 @@ export default async function CampaignLandingPage({ params }: PageProps<'/lp/[ca
       <LandingFooter contact={contact} />
       <StickyMobileCta contact={contact} ctaLabel={content.header.ctaLabel} />
       <RevealObserver />
+      <AnchorScroll />
     </>
   );
 }

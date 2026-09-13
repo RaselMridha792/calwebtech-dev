@@ -1,0 +1,26 @@
+{
+  "name": "@calwebtech/perf",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "The Lighthouse budget gate: serves the built apps behind a production-like edge, calibrates CPU throttling to the host, collects healthy runs and asserts the budget.",
+  "scripts": {
+    "lh": "node src/collect.mjs && lhci assert --config=lighthouserc.cjs && lhci upload --config=lighthouserc.cjs",
+    "serve": "node src/serve.mjs",
+    "compare": "node src/compare.mjs",
+    "lint": "eslint .",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@lhci/cli": "0.15.1",
+    "chrome-launcher": "1.2.1",
+    "lighthouse": "12.6.1",
+    "yaml": "^2.8.0"
+  },
+  "devDependencies": {
+    "@calwebtech/config": "workspace:*",
+    "eslint": "9.39.5",
+    "globals": "^17.0.0",
+    "vitest": "4.1.11"
+  }
+}

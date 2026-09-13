@@ -45,20 +45,35 @@ jobs:
       - name: Type check, lint and build
         run: pnpm build
       - run: pnpm test
+      - name: Own client JavaScript per route (20 kB, framework excluded)
+        run: pnpm --filter @calwebtech/web budget
       - name: Migrate and seed the CI database
         run: pnpm db:deploy && pnpm db:seed
       - name: Lighthouse budget gate
         run: pnpm lh
-        # Fails below 90 on any category, or when LCP, CLS, Total Blocking Time (the
-        # INP lab proxy) or initial JS breach the budget in CLAUDE.md. Not advisory.
+        # Five healthy runs through an edge proxy that mirrors infra/traefik/dynamic/edge.yml,
+        # with CPU throttling calibrated to this runner. Fails below 90 on any category, or
+        # when LCP, CLS, Total Blocking Time (the INP lab proxy) or initial JS breach the
+        # budget in CLAUDE.md. Not advisory.
+      - name: Install the Playwright browser
+        run: pnpm --filter @calwebtech/web exec playwright install --with-deps chromium
+      - name: End-to-end tests at 360px and 1440px
+        run: pnpm --filter @calwebtech/web e2e
       - name: Keep Lighthouse reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: lighthouse
-          path: .lighthouseci
+          path: packages/perf/.lighthouseci
           # The folder name starts with a dot; upload-artifact skips hidden paths by default.
           include-hidden-files: true
+          if-no-files-found: ignore
+      - name: Keep the Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright
+          path: apps/web/playwright-report
           if-no-files-found: ignore
 
   build:

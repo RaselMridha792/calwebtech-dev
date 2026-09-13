@@ -16,9 +16,6 @@
     "db:migrate": "pnpm --filter @calwebtech/db migrate:dev",
     "db:deploy": "pnpm --filter @calwebtech/db migrate:deploy",
     "db:seed": "pnpm --filter @calwebtech/db seed",
-    "lh": "lhci autorun --config=lighthouserc.cjs"
-  },
-  "devDependencies": {
-    "@lhci/cli": "0.15.1"
+    "lh": "pnpm --filter @calwebtech/perf lh"
   }
 }

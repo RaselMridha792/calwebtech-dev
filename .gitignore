@@ -2,6 +2,9 @@ node_modules/
 .next/
 .next-analyze/
 .lighthouseci/
+.lighthouseci-*/
+playwright-report/
+test-results/
 out/
 dist/
 coverage/

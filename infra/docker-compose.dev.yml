@@ -1,0 +1,23 @@
+# Local development overrides for infra/docker-compose.yml (docs/01-architecture.md:
+# local runs the same Compose file with development overrides).
+#
+#   docker compose -f infra/docker-compose.yml -f infra/docker-compose.dev.yml \
+#     --env-file .env up -d db redis
+#
+# Postgres and Redis stay on the internal network, as in production, and additionally
+# join a host-reachable network so that apps started with pnpm (dev servers, tests,
+# the Lighthouse gate) can reach them. Ports bind to loopback only, and avoid 5432 and
+# 6379 so they do not collide with services already installed on the machine.
+services:
+  db:
+    ports:
+      - "127.0.0.1:55432:5432"
+    networks: [internal, devhost]
+
+  redis:
+    ports:
+      - "127.0.0.1:56379:6379"
+    networks: [internal, devhost]
+
+networks:
+  devhost: {}

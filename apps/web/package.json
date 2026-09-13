@@ -9,7 +9,9 @@
     "typecheck": "next typegen && tsc --noEmit",
     "analyze": "node scripts/bundle-report.mjs",
     "lint": "eslint .",
-    "test": "vitest run"
+    "test": "vitest run",
+    "budget": "node scripts/bundle-budget.mjs",
+    "e2e": "playwright test"
   },
   "dependencies": {
     "@calwebtech/shared": "workspace:*",
@@ -21,6 +23,7 @@
   },
   "devDependencies": {
     "@calwebtech/config": "workspace:*",
+    "@playwright/test": "1.63.0",
     "@tailwindcss/postcss": "4.3.3",
     "@types/node": "22.20.2",
     "@types/react": "^19",
