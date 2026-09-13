@@ -1,0 +1,21 @@
+# Access rules for non-production stacks. A stack opts in through EDGE_MIDDLEWARES in its
+# env file, e.g. "staging-auth@file,noindex@file,edge-compress@file".
+#
+# Kept apart from edge.yml, which the Lighthouse gate's proxy mirrors setting by setting.
+http:
+  middlewares:
+    # HTTP basic auth. The users file is created on the server with
+    #   htpasswd -nbB <user> <password> > /srv/calwebtech/secrets/staging.htpasswd
+    # and never enters the repo. Without the file Traefik rejects this middleware, and
+    # every router that uses it stops serving: staging fails closed, never open.
+    staging-auth:
+      basicAuth:
+        usersFile: /etc/traefik/secrets/staging.htpasswd
+        realm: Calwebtech staging
+        removeHeader: true
+
+    # A non-production host must never be indexed, whatever the page itself says.
+    noindex:
+      headers:
+        customResponseHeaders:
+          X-Robots-Tag: "noindex, nofollow, noarchive"

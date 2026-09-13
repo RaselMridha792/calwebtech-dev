@@ -35,7 +35,7 @@ export class LeadsController {
     SettingsService,
     {
       provide: TurnstileService,
-      useFactory: (env: ApiEnv) => new TurnstileService(env.TURNSTILE_SECRET),
+      useFactory: (env: ApiEnv) => new TurnstileService(env.TURNSTILE_SECRET ?? ''),
       inject: [API_ENV],
     },
     {

@@ -25,7 +25,7 @@ export const WEB = 'http://localhost:3000';
 export const API = 'http://localhost:4000';
 export const EDGE_PORT = 3443;
 export const EDGE = `https://localhost:${EDGE_PORT}`;
-export const PAGES = ['/lp/b2b-website-design/'];
+export const PAGES = ['/', '/lp/b2b-website-design/'];
 
 const CHROME_ACCEPT_ENCODING = 'gzip, deflate, br, zstd';
 const CHROME_IMAGE_ACCEPT = 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8';

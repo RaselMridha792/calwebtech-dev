@@ -51,6 +51,14 @@ describe('TurnstileService', () => {
     expect(await new TurnstileService('s', cloudflare(json({}, 503)).fetchImpl).verify('t', undefined)).toBe('unavailable');
   });
 
+  it('has no verdict, and asks nobody, when no secret is configured', async () => {
+    const { calls, fetchImpl } = cloudflare(json({ success: true }));
+    const service = new TurnstileService('', fetchImpl);
+    expect(await service.verify('token', undefined)).toBe('unavailable');
+    expect(await service.verify(undefined, undefined)).toBe('unavailable');
+    expect(calls).toHaveLength(0);
+  });
+
   it('has no verdict when our own secret is wrong, rather than blaming the visitor', async () => {
     const { fetchImpl } = cloudflare(json({ success: false, 'error-codes': ['invalid-input-secret'] }));
     expect(await new TurnstileService('wrong', fetchImpl).verify('token', undefined)).toBe('unavailable');

@@ -1,6 +1,7 @@
 import type { LandingPageView } from '@calwebtech/shared';
 import type { ReactNode } from 'react';
 import { CountUp } from '../motion/count-up';
+import { BackgroundVideo } from '../ui/background-video';
 import { BackdropImage, Wordmark } from '../ui/brand';
 import { CheckBullet, PillBadge, Stars } from '../ui/primitives';
 import { ResponsiveImage } from '../ui/responsive-image';
@@ -52,10 +53,18 @@ export function LandingHeader({
 export function LandingHero({ hero, form }: { hero: Content['hero']; form: ReactNode }) {
   return (
     <section className="relative overflow-hidden bg-ink text-white">
+      <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
+        <BackdropImage image={hero.backgroundImage} className="kenburns opacity-[.34]" priority />
+      </div>
+      {hero.backgroundVideoUrl ? <BackgroundVideo src={hero.backgroundVideoUrl} className="opacity-60" /> : null}
+      {/*
+        Copy stays on near-solid ink; the footage shows through on the form side from lg up.
+        On small screens, where the poster alone shows, the wash runs top to bottom.
+      */}
       <div className="absolute inset-0" aria-hidden="true">
-        <BackdropImage image={hero.backgroundImage} className="opacity-[.26]" priority />
-        <div className="absolute inset-0 bg-linear-to-r from-ink via-ink/95 to-ink/60" />
-        <div className="glow-blue absolute inset-0" />
+        <div className="absolute inset-0 bg-linear-to-b from-ink/85 via-ink/90 to-ink lg:bg-linear-to-r lg:from-ink lg:via-ink/85 lg:to-ink/30" />
+        <div className="absolute inset-0 bg-linear-to-t from-ink via-transparent to-ink/55" />
+        <div className="glow-blue absolute inset-0 opacity-80" />
         <div className="glow-teal absolute inset-0" />
         <div className="grid-lines-light absolute inset-0" />
       </div>

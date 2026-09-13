@@ -1,96 +1,91 @@
-# Production topology. Only `proxy` publishes host ports; everything else is
-# reachable on the internal network alone. Staging runs this same file with a
-# different project name, volumes and env file.
+# One application stack: web, api, worker, db and redis.
+#
+# Production and staging each run this file as their own Compose project, with their own
+# env file, database and volumes (Compose namespaces volumes and private networks by
+# project). The shared Traefik in infra/proxy routes to each stack by host name.
+# infra/scripts/deploy.sh runs both. Local development starts db and redis from this same
+# file with docker-compose.dev.yml.
+#
+#   docker compose -p calwebtech-staging --env-file /srv/calwebtech/env/staging.env \
+#     -f infra/docker-compose.yml up -d
+#
+# Per-stack values come from the env file (infra/env/staging.env.example):
+#   STACK             router, middleware and alias prefix: production or staging
+#   SITE_HOST         public host name
+#   EDGE_MIDDLEWARES  Traefik middlewares in front of the stack (infra/traefik/dynamic)
+#   APP_ENV_FILE      the env file every container reads
 name: calwebtech
 
 services:
-  proxy:
-    image: traefik:v3
-    restart: unless-stopped
-    command:
-      - --providers.docker=true
-      - --providers.docker.exposedbydefault=false
-      - --entrypoints.web.address=:80
-      - --entrypoints.websecure.address=:443
-      - --entrypoints.web.http.redirections.entrypoint.to=websecure
-      - --certificatesresolvers.le.acme.email=${ACME_EMAIL}
-      - --certificatesresolvers.le.acme.storage=/letsencrypt/acme.json
-      - --certificatesresolvers.le.acme.httpchallenge.entrypoint=web
-      # TLS options and compression live in traefik/dynamic/edge.yml, which the
-      # Lighthouse gate's proxy also reads.
-      - --providers.file.directory=/etc/traefik/dynamic
-      - --providers.file.watch=true
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./letsencrypt:/letsencrypt
-      - ./traefik/dynamic:/etc/traefik/dynamic:ro
-    networks: [edge]
-
   web:
-    image: ${GHCR_IMAGE_WEB}:${TAG:-latest}
+    image: ${GHCR_IMAGE_WEB:-calwebtech-web}:${TAG:-latest}
     restart: unless-stopped
-    env_file: [../.env]
+    env_file: ["${APP_ENV_FILE:-../.env}"]
     depends_on:
       api: { condition: service_healthy }
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:3000/health/"]
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/health/"]
       interval: 20s
       timeout: 5s
       retries: 5
     labels:
       - traefik.enable=true
-      - traefik.http.routers.web.rule=Host(`${PRIMARY_DOMAIN}`)
-      - traefik.http.routers.web.entrypoints=websecure
-      - traefik.http.routers.web.tls.certresolver=le
-      - traefik.http.routers.web.middlewares=edge-compress@file
-      - traefik.http.services.web.loadbalancer.server.port=3000
+      - traefik.docker.network=calwebtech-edge
+      - traefik.http.routers.${STACK:-local}-web.rule=Host(`${SITE_HOST:-localhost}`)
+      - traefik.http.routers.${STACK:-local}-web.entrypoints=websecure
+      - traefik.http.routers.${STACK:-local}-web.tls.certresolver=le
+      - traefik.http.routers.${STACK:-local}-web.middlewares=${EDGE_MIDDLEWARES:-edge-compress@file}
+      - traefik.http.services.${STACK:-local}-web.loadbalancer.server.port=3000
     networks: [edge, internal]
     deploy:
       resources:
         limits: { memory: 1g }
 
   api:
-    image: ${GHCR_IMAGE_API}:${TAG:-latest}
+    image: ${GHCR_IMAGE_API:-calwebtech-api}:${TAG:-latest}
     restart: unless-stopped
-    env_file: [../.env]
+    env_file: ["${APP_ENV_FILE:-../.env}"]
     depends_on:
       db: { condition: service_healthy }
-      redis: { condition: service_started }
+      redis: { condition: service_healthy }
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:4000/health"]
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:4000/health"]
       interval: 20s
       timeout: 5s
       retries: 5
-    # Same origin as the site: https://<domain>/api/* reaches the API with the
-    # prefix stripped. No api. subdomain, so session cookies stay first-party
-    # (SameSite=Strict) and no CORS is configured. The web app still calls the API
-    # directly on the internal network at http://api:4000.
+    # Same origin as the site: https://<SITE_HOST>/api/* reaches the API with the prefix
+    # stripped. No api. subdomain, so session cookies stay first-party (SameSite=Strict)
+    # and no CORS is configured.
     labels:
       - traefik.enable=true
-      - traefik.http.routers.api.rule=Host(`${PRIMARY_DOMAIN}`) && PathPrefix(`/api`)
-      - traefik.http.routers.api.entrypoints=websecure
-      - traefik.http.routers.api.tls.certresolver=le
-      - traefik.http.routers.api.middlewares=api-strip-prefix,edge-compress@file
-      - traefik.http.middlewares.api-strip-prefix.stripprefix.prefixes=/api
-      - traefik.http.services.api.loadbalancer.server.port=4000
-    networks: [edge, internal]
+      - traefik.docker.network=calwebtech-edge
+      - traefik.http.routers.${STACK:-local}-api.rule=Host(`${SITE_HOST:-localhost}`) && PathPrefix(`/api`)
+      - traefik.http.routers.${STACK:-local}-api.entrypoints=websecure
+      - traefik.http.routers.${STACK:-local}-api.tls.certresolver=le
+      - traefik.http.routers.${STACK:-local}-api.middlewares=${EDGE_MIDDLEWARES:-edge-compress@file},${STACK:-local}-api-strip
+      - traefik.http.middlewares.${STACK:-local}-api-strip.stripprefix.prefixes=/api
+      - traefik.http.services.${STACK:-local}-api.loadbalancer.server.port=4000
+    networks:
+      edge: {}
+      internal:
+        # Every stack's API sits on the shared edge network, where the name `api` would
+        # resolve to more than one stack. Web calls its own API by this alias
+        # (API_INTERNAL_URL=http://<STACK>-api:4000).
+        aliases: ["${STACK:-local}-api"]
     deploy:
       resources:
         limits: { memory: 768m }
 
   worker:
-    image: ${GHCR_IMAGE_WORKER}:${TAG:-latest}
+    image: ${GHCR_IMAGE_WORKER:-calwebtech-worker}:${TAG:-latest}
     restart: unless-stopped
-    env_file: [../.env]
+    env_file: ["${APP_ENV_FILE:-../.env}"]
     depends_on:
       db: { condition: service_healthy }
-      redis: { condition: service_started }
-    # `internal` has no route out. `edge` gives the worker outbound access to the Resend
-    # API; it carries no Traefik labels, so nothing routes in.
-    networks: [edge, internal]
+      redis: { condition: service_healthy }
+    # `internal` has no route out. `egress` is this stack's own outbound network for the
+    # Resend API; it is not the shared edge, so nothing routes in.
+    networks: [egress, internal]
     stop_grace_period: 30s
     deploy:
       resources:
@@ -118,12 +113,21 @@ services:
     command: ["redis-server", "--appendonly", "yes"]
     volumes:
       - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks: [internal]
 
+  # ---- operations (Tasks 6.3 and 6.4). Not started by deploys yet: the backup entrypoint
+  # script does not exist and Umami needs its own database. Start with `--profile ops`
+  # once they are ready.
   backup:
     image: alpine:3.20
+    profiles: [ops]
     restart: unless-stopped
-    env_file: [../.env]
+    env_file: ["${APP_ENV_FILE:-../.env}"]
     volumes:
       - ./scripts:/scripts:ro
       - media:/media:ro
@@ -133,31 +137,35 @@ services:
 
   analytics:
     image: ghcr.io/umami-software/umami:postgresql-latest
+    profiles: [ops]
     restart: unless-stopped
     environment:
-      DATABASE_URL: ${DATABASE_URL}
-      APP_SECRET: ${AUTH_SECRET}
+      DATABASE_URL: ${UMAMI_DATABASE_URL:-}
+      APP_SECRET: ${AUTH_SECRET:-}
     depends_on:
       db: { condition: service_healthy }
     labels:
       - traefik.enable=true
-      - traefik.http.routers.analytics.rule=Host(`analytics.${PRIMARY_DOMAIN}`)
-      - traefik.http.routers.analytics.entrypoints=websecure
-      - traefik.http.routers.analytics.tls.certresolver=le
-      - traefik.http.services.analytics.loadbalancer.server.port=3000
+      - traefik.docker.network=calwebtech-edge
+      - traefik.http.routers.${STACK:-local}-analytics.rule=Host(`analytics.${SITE_HOST:-localhost}`)
+      - traefik.http.routers.${STACK:-local}-analytics.entrypoints=websecure
+      - traefik.http.routers.${STACK:-local}-analytics.tls.certresolver=le
+      - traefik.http.services.${STACK:-local}-analytics.loadbalancer.server.port=3000
     networks: [edge, internal]
 
   uptime:
     image: louislam/uptime-kuma:1
+    profiles: [ops]
     restart: unless-stopped
     volumes:
       - uptimedata:/app/data
     labels:
       - traefik.enable=true
-      - traefik.http.routers.uptime.rule=Host(`status.${PRIMARY_DOMAIN}`)
-      - traefik.http.routers.uptime.entrypoints=websecure
-      - traefik.http.routers.uptime.tls.certresolver=le
-      - traefik.http.services.uptime.loadbalancer.server.port=3001
+      - traefik.docker.network=calwebtech-edge
+      - traefik.http.routers.${STACK:-local}-uptime.rule=Host(`status.${SITE_HOST:-localhost}`)
+      - traefik.http.routers.${STACK:-local}-uptime.entrypoints=websecure
+      - traefik.http.routers.${STACK:-local}-uptime.tls.certresolver=le
+      - traefik.http.services.${STACK:-local}-uptime.loadbalancer.server.port=3001
     networks: [edge, internal]
 
 volumes:
@@ -167,6 +175,10 @@ volumes:
   uptimedata:
 
 networks:
+  # Created by infra/proxy and shared by every stack. Only services Traefik routes to join it.
   edge:
+    name: calwebtech-edge
+    external: true
+  egress: {}
   internal:
-    internal: true   # no route to the public internet except through the proxy
+    internal: true   # no route to the public internet

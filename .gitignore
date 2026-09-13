@@ -20,3 +20,6 @@ infra/backups/
 apps/web/public/assets/*.mp4
 # Prisma client is generated at build time from packages/db/prisma/schema.prisma
 packages/db/src/generated/
+
+# Vercel CLI project link
+.vercel

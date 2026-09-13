@@ -7,6 +7,7 @@ import {
   SETTING_KEYS,
   acknowledgementSchema,
   emailJobId,
+  homePageContentSchema,
   type LeadSubmission,
   type LeadSummary,
 } from '@calwebtech/shared';
@@ -176,5 +177,28 @@ describe('LeadsService against Postgres, Redis and Turnstile test keys', () => {
     });
     expect(await inspect.getJob(`lead-notification-${lead.id}`)).toBeUndefined();
     expect(lead.activities.map((activity) => activity.type)).toContain('notification_skipped');
+  });
+
+  it('stores the referral source of a homepage form and confirms with the homepage success copy', async () => {
+    await setRecipients(['leads@example.com']);
+    const input = submission({
+      type: 'CONSULTATION',
+      formId: 'home-book',
+      referralSource: 'AI assistant',
+      landingPageSlug: undefined,
+      attribution: { lastTouch: { source: 'integration' }, landingPage: '/' },
+    });
+    await leadsWith(TURNSTILE_TEST.alwaysPassesSecret).create(input, undefined);
+
+    const lead = await storedLead(input.email);
+    expect(lead.type).toBe('CONSULTATION');
+    expect(lead.referralSource).toBe('AI assistant');
+    expect(lead.attribution?.formId).toBe('home-book');
+    expect(lead.attribution?.landingPageId).toBeNull();
+
+    const home = await db.setting.findUniqueOrThrow({ where: { key: SETTING_KEYS.homeContent } });
+    const acknowledgement = acknowledgementSchema.parse(homePageContentSchema.parse(home.value).formSuccess);
+    const confirmation = await inspect.getJob(`lead-confirmation-${lead.id}`);
+    expect(confirmation?.data).toMatchObject({ template: 'lead-confirmation', to: [input.email], acknowledgement });
   });
 });

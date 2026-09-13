@@ -5,7 +5,18 @@ export const SETTING_KEYS = {
   contact: 'site.contact',
   proof: 'site.proof',
   leadNotificationRecipients: 'leads.notificationRecipients',
+  homepageIndexing: 'homepage.indexing',
+  /** Homepage copy, validated by homePageContentSchema (home-page.ts). */
+  homeContent: 'home.content',
 } as const;
+
+/**
+ * Whether search engines may index the homepage. A missing row or `index: false` means
+ * noindex, so the homepage stays out of search until real content replaces the
+ * placeholders, and flipping it needs no redeploy.
+ */
+export const homepageIndexingSchema = z.object({ index: z.boolean() });
+export type HomepageIndexing = z.infer<typeof homepageIndexingSchema>;
 
 export const siteContactSchema = z.object({
   /** Display form, e.g. "+1 (800) 555-0188". */

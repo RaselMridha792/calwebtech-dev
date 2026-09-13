@@ -1,0 +1,288 @@
+{
+  "slug": "b2b-website-design",
+  "name": "B2B website campaign (placeholder)",
+  "noindex": true,
+  "seo": {
+    "title": "Placeholder: B2B website campaign | Calwebtech",
+    "description": "Placeholder description for the B2B website campaign landing page."
+  },
+  "updatedAt": "2026-09-13T16:02:30.558Z",
+  "content": {
+    "header": {
+      "ctaLabel": "Request a proposal"
+    },
+    "hero": {
+      "badge": "Placeholder campaign badge",
+      "heading": "Placeholder headline for the B2B website campaign",
+      "intro": "Placeholder introduction. The approved campaign copy replaces this text before the page is published.",
+      "bullets": [
+        "Placeholder benefit one",
+        "Placeholder benefit two",
+        "Placeholder benefit three"
+      ],
+      "stats": [],
+      "backgroundImage": {
+        "src": "/media/landing-hero-poster.jpg"
+      },
+      "backgroundVideoUrl": "https://videos.pexels.com/video-files/8523640/8523640-hd_1280_720_25fps.mp4"
+    },
+    "heroForm": {
+      "heading": "Request a proposal",
+      "subheading": "Placeholder form subheading.",
+      "submitLabel": "Send my request",
+      "assurances": []
+    },
+    "formSuccess": {
+      "heading": "Thanks. Your request is with us.",
+      "body": "We will reply to you by email."
+    },
+    "trustBar": {
+      "label": "Placeholder client list label"
+    },
+    "problem": {
+      "heading": "Placeholder problem statement",
+      "intro": "Placeholder. The approved copy describes the problem this campaign speaks to.",
+      "cards": []
+    },
+    "solution": {
+      "heading": "Placeholder approach heading",
+      "steps": [
+        {
+          "title": "Placeholder point one",
+          "body": "Placeholder description of the first part of the approach."
+        },
+        {
+          "title": "Placeholder point two",
+          "body": "Placeholder description of the second part of the approach."
+        },
+        {
+          "title": "Placeholder point three",
+          "body": "Placeholder description of the third part of the approach."
+        }
+      ],
+      "image": null
+    },
+    "services": {
+      "heading": "Placeholder services heading",
+      "intro": "Placeholder. The approved copy introduces the services this campaign covers.",
+      "items": [
+        {
+          "title": "Website design and build",
+          "body": "Placeholder description of this service."
+        },
+        {
+          "title": "Ecommerce",
+          "body": "Placeholder description of this service."
+        },
+        {
+          "title": "Integrations",
+          "body": "Placeholder description of this service."
+        },
+        {
+          "title": "Search visibility",
+          "body": "Placeholder description of this service."
+        },
+        {
+          "title": "Site speed",
+          "body": "Placeholder description of this service."
+        },
+        {
+          "title": "Care and hosting",
+          "body": "Placeholder description of this service."
+        }
+      ]
+    },
+    "results": {
+      "heading": "Placeholder case studies heading",
+      "intro": "Placeholder. Published case studies appear here.",
+      "ctaLabel": "Request a proposal"
+    },
+    "process": {
+      "heading": "Placeholder process heading",
+      "intro": "Placeholder. The approved copy introduces how a project runs.",
+      "badge": "Placeholder timeline",
+      "backgroundImage": null
+    },
+    "beforeAfter": {
+      "heading": "Placeholder comparison heading",
+      "intro": "Placeholder. A published before and after comparison appears here.",
+      "ctaLabel": "Request a proposal"
+    },
+    "partners": {
+      "heading": "Placeholder partners heading",
+      "intro": "Placeholder. Confirmed partnerships appear here.",
+      "technologiesLabel": "Placeholder label"
+    },
+    "team": {
+      "heading": "Placeholder team heading",
+      "intro": "Placeholder. People appear here once they approve their profiles."
+    },
+    "testimonials": {
+      "heading": "Placeholder client quotes heading",
+      "backgroundImage": null
+    },
+    "guarantees": {
+      "heading": "Placeholder commitments heading",
+      "items": []
+    },
+    "pricing": {
+      "heading": "Placeholder pricing heading",
+      "intro": "Placeholder. The approved pricing copy replaces this text.",
+      "ctaLabel": "Request a proposal",
+      "backgroundImage": null
+    },
+    "faq": {
+      "heading": "Placeholder questions heading",
+      "intro": "Placeholder. The approved questions and answers replace these.",
+      "callLabel": "Call us"
+    },
+    "finalCta": {
+      "heading": "Tell us about your project",
+      "intro": "Placeholder introduction for the final form.",
+      "points": [],
+      "backgroundImage": null,
+      "submitLabel": "Send my request",
+      "serviceOptions": [
+        "New website",
+        "Redesign",
+        "Ecommerce",
+        "Integration",
+        "Search visibility",
+        "Care plan"
+      ],
+      "formFootnote": "Placeholder form footnote."
+    }
+  },
+  "contact": {
+    "phone": "+1 (555) 010-0100",
+    "phoneE164": "+15550100100",
+    "email": "hello@example.com"
+  },
+  "reviews": {
+    "averageRating": null,
+    "totalReviews": 0,
+    "sources": [],
+    "npsScore": null
+  },
+  "clients": [],
+  "results": [],
+  "processSteps": [
+    {
+      "title": "Discovery",
+      "timing": "Timing to confirm",
+      "heading": "Placeholder heading for discovery",
+      "body": "Placeholder. The approved description of this stage, what happens and who is involved, replaces this text before launch.",
+      "youGet": [
+        "Placeholder deliverable one",
+        "Placeholder deliverable two"
+      ],
+      "weNeed": [
+        "Placeholder input from the client"
+      ],
+      "image": null
+    },
+    {
+      "title": "Design",
+      "timing": "Timing to confirm",
+      "heading": "Placeholder heading for design",
+      "body": "Placeholder. The approved description of this stage, what happens and who is involved, replaces this text before launch.",
+      "youGet": [
+        "Placeholder deliverable one",
+        "Placeholder deliverable two"
+      ],
+      "weNeed": [
+        "Placeholder input from the client"
+      ],
+      "image": null
+    },
+    {
+      "title": "Build",
+      "timing": "Timing to confirm",
+      "heading": "Placeholder heading for build",
+      "body": "Placeholder. The approved description of this stage, what happens and who is involved, replaces this text before launch.",
+      "youGet": [
+        "Placeholder deliverable one",
+        "Placeholder deliverable two"
+      ],
+      "weNeed": [
+        "Placeholder input from the client"
+      ],
+      "image": null
+    },
+    {
+      "title": "Testing",
+      "timing": "Timing to confirm",
+      "heading": "Placeholder heading for testing",
+      "body": "Placeholder. The approved description of this stage, what happens and who is involved, replaces this text before launch.",
+      "youGet": [
+        "Placeholder deliverable one",
+        "Placeholder deliverable two"
+      ],
+      "weNeed": [
+        "Placeholder input from the client"
+      ],
+      "image": null
+    },
+    {
+      "title": "Launch",
+      "timing": "Timing to confirm",
+      "heading": "Placeholder heading for launch",
+      "body": "Placeholder. The approved description of this stage, what happens and who is involved, replaces this text before launch.",
+      "youGet": [
+        "Placeholder deliverable one",
+        "Placeholder deliverable two"
+      ],
+      "weNeed": [
+        "Placeholder input from the client"
+      ],
+      "image": null
+    }
+  ],
+  "beforeAfter": null,
+  "partners": [],
+  "technologies": [],
+  "team": [],
+  "testimonials": [],
+  "pricingTiers": [
+    {
+      "name": "Placeholder tier one",
+      "priceLabel": "Price to confirm",
+      "summary": "Placeholder. Scope and price are set with the client before launch.",
+      "highlighted": false
+    },
+    {
+      "name": "Placeholder tier two",
+      "priceLabel": "Price to confirm",
+      "summary": "Placeholder. Scope and price are set with the client before launch.",
+      "highlighted": true
+    },
+    {
+      "name": "Placeholder tier three",
+      "priceLabel": "Price to confirm",
+      "summary": "Placeholder. Scope and price are set with the client before launch.",
+      "highlighted": false
+    }
+  ],
+  "faqs": [
+    {
+      "id": "cmu005smz000skgvoxjb8j1g7",
+      "question": "Placeholder question one?",
+      "answer": "Placeholder answer. The approved answer is written with the client before this page is published."
+    },
+    {
+      "id": "cmu005smz000tkgvo1bnrq3u3",
+      "question": "Placeholder question two?",
+      "answer": "Placeholder answer. The approved answer is written with the client before this page is published."
+    },
+    {
+      "id": "cmu005smz000ukgvoety9a65z",
+      "question": "Placeholder question three?",
+      "answer": "Placeholder answer. The approved answer is written with the client before this page is published."
+    },
+    {
+      "id": "cmu005smz000vkgvobjb22udn",
+      "question": "Placeholder question four?",
+      "answer": "Placeholder answer. The approved answer is written with the client before this page is published."
+    }
+  ]
+}

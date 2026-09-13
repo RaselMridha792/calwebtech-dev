@@ -10,6 +10,7 @@
 //    left the band around calibration would be judged too strictly or too leniently, and
 //    is discarded. Without five healthy runs the gate fails; it never passes on a guess.
 // 3. Healthy results are written as lhr-*.json for `lhci assert` and `lhci upload`.
+import { execFileSync } from 'node:child_process';
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { parseArgs } from 'node:util';
@@ -60,8 +61,10 @@ async function runLighthouse(url, cpuSlowdownMultiplier) {
           formFactor: 'mobile',
           throttlingMethod: 'simulate',
           throttling: { ...MOBILE_NETWORK, cpuSlowdownMultiplier },
-          // Campaign pages are noindex by design (docs/08-decisions.md).
-          skipAudits: ['is-crawlable'],
+          // Campaign pages are noindex by design (docs/08-decisions.md). Every other page
+          // keeps the crawlability audit; skipping it there would relax the SEO gate. The
+          // homepage keeps it too: it is measured with homepage.indexing switched on.
+          skipAudits: new URL(url).pathname.startsWith('/lp/') ? ['is-crawlable'] : [],
           ...(extraHeaders ? { extraHeaders } : {}),
         },
       },
@@ -83,12 +86,35 @@ function summary(lhr) {
   return `perf=${lhr.categories.performance?.score} LCP=${audit('largest-contentful-paint')} TBT=${audit('total-blocking-time')} CLS=${lhr.audits['cumulative-layout-shift']?.numericValue}`;
 }
 
-const stack = args['no-serve'] ? null : await startStack();
+const INDEXING = 'homepage.indexing';
+const API_DIR = path.resolve(import.meta.dirname, '../../../apps/api');
+
+function settingsCli(...cliArgs) {
+  return execFileSync(process.execPath, ['dist/settings-cli.js', ...cliArgs], { cwd: API_DIR, encoding: 'utf8' });
+}
+
+/**
+ * The homepage is noindex until homepage.indexing is on, and noindex fails the
+ * is-crawlable audit by design. The gate measures the page as it ships once indexable,
+ * locally and in CI alike, and returns a function that puts the setting back. Done before
+ * the stack starts, so the API's short homepage cache cannot serve the old value. Never
+ * with --no-serve, which measures a site whose database this process does not own.
+ */
+function indexHomepageForTheRun() {
+  const previous = JSON.parse(settingsCli('get', INDEXING));
+  settingsCli('set', INDEXING, JSON.stringify({ index: true }));
+  // A missing row already means noindex, and the CLI cannot delete one.
+  return () => settingsCli('set', INDEXING, JSON.stringify(previous ?? { index: false }));
+}
+
 const report = { urls: URLS, calibration: [], runs: [] };
+rmSync(OUT, { recursive: true, force: true });
+mkdirSync(OUT, { recursive: true });
+const restoreIndexing = args['no-serve'] ? null : indexHomepageForTheRun();
+let stack = null;
 
 try {
-  rmSync(OUT, { recursive: true, force: true });
-  mkdirSync(OUT, { recursive: true });
+  stack = args['no-serve'] ? null : await startStack();
 
   for (const url of URLS) {
     const benchmarks = [];
@@ -126,4 +152,5 @@ try {
 } finally {
   writeFileSync(path.join(OUT, 'collect-report.json'), JSON.stringify(report, null, 2));
   stack?.stop();
+  restoreIndexing?.();
 }

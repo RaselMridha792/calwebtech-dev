@@ -4,7 +4,7 @@
 
 | Container | Role | Exposed |
 |---|---|---|
-| proxy | Traefik v3, TLS, Let's Encrypt, routing, security headers | 80, 443 |
+| proxy | Traefik v3, TLS, Let's Encrypt, routing, security headers. One per server, shared by every environment (`infra/proxy`) | 80, 443 |
 | web | Next.js standalone, public site and `/admin` | internal |
 | api | NestJS REST: content, leads, bookings, campaigns, auth, webhooks | via proxy at `/api` on the site origin |
 | worker | BullMQ consumer: email, reminders, revalidation, image processing | internal |
@@ -45,19 +45,47 @@ to `http://api:4000` on the internal network.
 
 ## Deployment
 
-Push to the release branch triggers: type check, lint, test, build, then multi-stage
-Docker images tagged by commit SHA pushed to GHCR, then Prisma migrations as a one-off
-container, then a VPS pull and rolling restart gated on health checks, then smoke
-tests, with automatic rollback to the previous tag on failure.
+A push to `main` runs verify, then builds the web, api and worker images, tags them by
+commit SHA and pushes them to GHCR. When the repository variable `DEPLOY_ENABLED` is
+`true`, the deploy job copies `infra/` for that commit to the server over SSH, with the
+host key pinned, and runs `infra/scripts/deploy.sh staging <sha>`:
 
-Images are tagged by SHA, never `latest`, so rollback is a tag change.
+1. The shared edge proxy (`infra/proxy`, Compose project `calwebtech-proxy`) comes up.
+2. The images for the new tag are pulled. The tag is passed in the environment; the
+   stack's env file still names the release that is live.
+3. Postgres and Redis come up, and `node dist/migrate.js` applies migrations from the new
+   API image.
+4. A stack with `SEED_ON_DEPLOY=true` (staging only) re-runs the placeholder seed,
+   `node dist/seed.js`.
+5. Web, api and worker roll out, gated on their health checks.
+6. `infra/scripts/smoke.sh` checks the routes, and on staging basic auth and noindex.
+
+The new tag is written to the env file only after the smoke test passes, so a failed or
+interrupted deploy leaves it on the last release that went live. A failing step brings
+that release back, and a failed first deploy stops the new release. Images are tagged by
+SHA, never `latest`, so rollback is a tag change. Production deploys will be a separate,
+manual job, added once production keys exist.
 
 ## Environments
 
-- **Production**: primary domain, protected branch deploys, full backup and monitoring.
-- **Staging**: same Compose file, separate project name, volumes and database, behind
-  HTTP basic auth with noindex headers.
-- **Local**: same Compose file with development overrides.
+One server runs one shared Traefik (`infra/proxy`), which owns ports 80 and 443. Each
+environment is its own Compose project running `infra/docker-compose.yml`, with its own
+env file, database, volumes, host name and router names.
+
+| | Production | Staging | Local |
+|---|---|---|---|
+| Compose project | `calwebtech-production` | `calwebtech-staging` | `calwebtech`, db and redis only |
+| Env file | `/srv/calwebtech/env/production.env` | `/srv/calwebtech/env/staging.env`, from `infra/env/staging.env.example` | repo-root `.env` |
+| `APP_ENV` | `production` | `staging` | `development` |
+| Edge middlewares | compression | basic auth, `X-Robots-Tag: noindex`, compression | none |
+| Seed on deploy | never | placeholder seed on every deploy | `pnpm db:seed`, plus `pnpm db:seed:fixtures` for end-to-end tests |
+| Turnstile | client keys, required | Cloudflare test keys, or none | Cloudflare test keys |
+| Email | Resend | log transport | log transport |
+
+Every stack's API sits on the shared edge network, so the name `api` would resolve across
+stacks. Web reaches its own API by the stack alias `<STACK>-api` (`API_INTERNAL_URL`).
+Local development runs Postgres and Redis from the same Compose file with
+`docker-compose.dev.yml`.
 
 Configuration is entirely environment-variable driven. No environment-specific code
 branches.

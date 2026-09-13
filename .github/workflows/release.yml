@@ -63,11 +63,17 @@ jobs:
       - run: pnpm test
       - name: Own client JavaScript per route (20 kB, framework excluded)
         run: pnpm --filter @calwebtech/web budget
-      - name: Migrate and seed the CI database
-        run: pnpm db:deploy && pnpm db:seed
+      - name: Migrate and seed the CI database, with end-to-end fixtures
+        # The seeds run only with APP_ENV=development (packages/db/src/seed/guard.ts). Set here
+        # alone, so every other step keeps the unset-means-production path.
+        run: pnpm db:deploy && APP_ENV=development pnpm db:seed && APP_ENV=development pnpm db:seed:fixtures
       - name: Integration tests (Postgres, Redis, Turnstile test keys, mocked email transport)
         run: pnpm test:integration
       - name: Lighthouse budget gate
+        # The homepage is noindex until homepage.indexing is on, and noindex fails Lighthouse's
+        # is-crawlable audit by design. The collector switches indexing on for the run and puts
+        # it back afterwards, even when the gate fails (packages/perf/src/collect.mjs), so the
+        # end-to-end tests see the noindex homepage.
         run: pnpm lh
         # Five healthy runs through an edge proxy that mirrors infra/traefik/dynamic/edge.yml,
         # with CPU throttling calibrated to this runner. Fails below 90 on any category, or
@@ -139,30 +145,51 @@ jobs:
 
   deploy:
     needs: build
-    # Off until the VPS exists. To enable, set the repository variable
-    # DEPLOY_ENABLED=true and the VPS_HOST, VPS_USER and VPS_SSH_KEY secrets.
+    # Deploys main to staging. Off until the repository variable DEPLOY_ENABLED is true.
+    # Switch it on only once the staging environment's secrets exist, or every push to
+    # main fails here. The server's side is described in infra/env/staging.env.example
+    # and infra/scripts/deploy.sh. Production gets its own manual job once its keys exist.
     if: github.event_name == 'push' && vars.DEPLOY_ENABLED == 'true'
     runs-on: ubuntu-latest
+    environment:
+      name: staging
+      url: ${{ vars.STAGING_URL }}
+    concurrency:
+      group: deploy-staging
+      cancel-in-progress: false
+    env:
+      VPS_HOST: ${{ secrets.VPS_HOST }}
+      VPS_PORT: ${{ secrets.VPS_PORT || '22' }}
+      VPS_USER: ${{ secrets.VPS_USER }}
     steps:
-      - name: Pull, migrate, roll out, smoke test, roll back on failure
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          script: |
-            set -euo pipefail
-            cd /srv/calwebtech
-            COMPOSE="docker compose --env-file .env -f infra/docker-compose.yml"
-            PREVIOUS=$(grep '^TAG=' .env | cut -d= -f2 || true)
-            # Point at the new images first, so the migration runs from the new code.
-            sed -i "s/^TAG=.*/TAG=${{ github.sha }}/" .env
-            $COMPOSE pull web api worker
-            $COMPOSE run --rm api node dist/migrate.js
-            $COMPOSE up -d --wait web api worker
-            ./infra/scripts/smoke.sh || {
-              echo "smoke failed, rolling back to $PREVIOUS"
-              sed -i "s/^TAG=.*/TAG=$PREVIOUS/" .env
-              $COMPOSE up -d --wait web api worker
+      - uses: actions/checkout@v4
+      - name: Open SSH to the server, with its host key pinned
+        env:
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          VPS_KNOWN_HOSTS: ${{ secrets.VPS_KNOWN_HOSTS }}
+        run: |
+          for name in VPS_HOST VPS_USER VPS_SSH_KEY VPS_KNOWN_HOSTS; do
+            if [ -z "${!name}" ]; then
+              echo "::error::The staging environment has no $name secret"
               exit 1
-            }
+            fi
+          done
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$VPS_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "$VPS_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          printf 'Host deploy-target\n  HostName %s\n  Port %s\n  User %s\n  IdentityFile ~/.ssh/deploy_key\n  IdentitiesOnly yes\n' \
+            "$VPS_HOST" "$VPS_PORT" "$VPS_USER" > ~/.ssh/config
+      - name: Copy infra/ for this commit to the server
+        run: rsync -az --delete infra/ deploy-target:/srv/calwebtech/infra/
+      - name: Let the server pull images from GHCR
+        env:
+          GHCR_PULL_USER: ${{ secrets.GHCR_PULL_USER }}
+          GHCR_PULL_TOKEN: ${{ secrets.GHCR_PULL_TOKEN }}
+        run: |
+          # Not needed once the container packages are public.
+          if [ -n "$GHCR_PULL_TOKEN" ]; then
+            printf '%s' "$GHCR_PULL_TOKEN" | ssh deploy-target docker login ghcr.io -u "$GHCR_PULL_USER" --password-stdin
+          fi
+      - name: Deploy staging, smoke test, roll back on failure
+        run: ssh deploy-target bash /srv/calwebtech/infra/scripts/deploy.sh staging ${{ github.sha }}

@@ -1,0 +1,50 @@
+# The shared edge. One Traefik owns ports 80 and 443 on the server and routes by host
+# name to every application stack (infra/docker-compose.yml, one Compose project per
+# environment). infra/scripts/deploy.sh starts it before any stack.
+#
+#   docker compose -p calwebtech-proxy --env-file /srv/calwebtech/env/staging.env \
+#     -f infra/proxy/docker-compose.yml up -d
+name: calwebtech-proxy
+
+services:
+  traefik:
+    image: traefik:v3
+    restart: unless-stopped
+    command:
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.docker.network=calwebtech-edge
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --certificatesresolvers.le.acme.email=${ACME_EMAIL:?ACME_EMAIL is required}
+      - --certificatesresolvers.le.acme.storage=/letsencrypt/acme.json
+      - --certificatesresolvers.le.acme.httpchallenge.entrypoint=web
+      # TLS options and compression (edge.yml, which the Lighthouse gate's proxy also
+      # reads) and access rules for non-production stacks (access.yml).
+      - --providers.file.directory=/etc/traefik/dynamic
+      - --providers.file.watch=true
+      # For the container health check below; served on the internal entrypoint only.
+      - --ping=true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - letsencrypt:/letsencrypt
+      - ../traefik/dynamic:/etc/traefik/dynamic:ro
+      # Basic auth users files. Generated on the server, never in the repo.
+      - ${TRAEFIK_SECRETS_DIR:-/srv/calwebtech/secrets}:/etc/traefik/secrets:ro
+    networks: [edge]
+    healthcheck:
+      test: ["CMD", "traefik", "healthcheck", "--ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  letsencrypt:
+
+networks:
+  edge:
+    name: calwebtech-edge

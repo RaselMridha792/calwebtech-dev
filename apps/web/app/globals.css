@@ -35,6 +35,41 @@
    */
 }
 
+/*
+ * Slow drift for background posters under video (docs/05, Background video). Transform
+ * only, and off under reduced motion.
+ */
+@keyframes kenburns {
+  from {
+    transform: scale(1.04);
+  }
+  to {
+    transform: scale(1.16) translate3d(-1.5%, -1.5%, 0);
+  }
+}
+.kenburns {
+  animation: kenburns 26s ease-in-out infinite alternate;
+}
+@media (prefers-reduced-motion: reduce) {
+  .kenburns {
+    animation: none;
+  }
+}
+
+/* The site header gains its shadow once the page scrolls: scroll-driven, no script. */
+@supports (animation-timeline: scroll()) {
+  @keyframes header-shadow {
+    to {
+      box-shadow: 0 10px 30px -18px rgb(10 29 55 / 0.45);
+    }
+  }
+  .header-shadow {
+    animation: header-shadow linear both;
+    animation-timeline: scroll();
+    animation-range: 0 8px;
+  }
+}
+
 /* Card hover. Uses `translate`, not `transform`, so it composes with the reveal. */
 @utility lift {
   transition:

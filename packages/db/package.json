@@ -9,6 +9,10 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./seed": {
+      "types": "./dist/seed/index.d.ts",
+      "default": "./dist/seed/index.js"
     }
   },
   "files": ["dist"],
@@ -20,22 +24,25 @@
     "lint": "eslint .",
     "migrate:dev": "prisma migrate dev",
     "migrate:deploy": "prisma migrate deploy",
-    "seed": "prisma db seed"
+    "seed": "prisma db seed",
+    "seed:fixtures": "tsx prisma/seed-fixtures.ts",
+    "test": "vitest run"
   },
   "dependencies": {
+    "@calwebtech/shared": "workspace:*",
     "@prisma/adapter-pg": "7.10.0",
     "@prisma/client": "7.10.0",
     "pg": "^8.16.3"
   },
   "devDependencies": {
     "@calwebtech/config": "workspace:*",
-    "@calwebtech/shared": "workspace:*",
     "@types/node": "22.20.2",
     "@types/pg": "^8.16.0",
     "dotenv": "17.4.2",
     "eslint": "9.39.5",
     "prisma": "7.10.0",
     "tsx": "^4.20.0",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "vitest": "4.1.11"
   }
 }
