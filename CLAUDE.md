@@ -31,11 +31,11 @@ wrong, however convenient.
 
 | Layer | Choice |
 |---|---|
-| Frontend | Next.js 16 App Router, React 19, TypeScript strict, Tailwind CSS |
+| Frontend | Next.js 16 App Router, React 19, TypeScript strict, Tailwind CSS v4 |
 | API | Node 22 LTS, NestJS, Zod validation, OpenAPI |
 | ORM / DB | Prisma, PostgreSQL 17 |
 | Cache / queue | Redis 7, BullMQ |
-| Auth | Auth.js, Argon2id, httpOnly session cookies, RBAC |
+| Auth | Owned by the API: identity, sessions, RBAC. Argon2id, first-party httpOnly session cookies (SameSite=Strict). No Auth.js, no external auth service |
 | Email | Resend + React Email templates |
 | Proxy | Traefik v3, automatic Let's Encrypt |
 | CI/CD | GitHub Actions building to GHCR, VPS pulls and rolling restarts |
@@ -82,25 +82,33 @@ docker compose -f infra/docker-compose.yml up -d
 - Validate at every boundary with Zod, schemas imported from `packages/shared`.
   The client never decides what is valid.
 - No `any`. No non-null assertions to silence the compiler.
-- Database access only through Prisma, only from the API or server components.
-  Never from a client component.
+- Database access only through Prisma, only from the API and worker. `apps/web`
+  never imports `@calwebtech/db`; server components and server actions call the API.
+  Lint enforces this.
 - Every mutation goes through the API, never straight to Prisma from a route handler
   in `web`, so business rules stay in one place.
+- `/api/*` on the public origin belongs to the API (see Security). The web app never
+  defines routes under `app/api`.
 - Migrations are forward-only and committed. Never edit the production schema by hand.
 - Every table carries `createdAt`, `updatedAt`, and `deletedAt` where soft deletion
   applies.
 
 ## Design system
 
-Tokens are already defined in `tailwind.config.ts` and `apps/web/app/globals.css`.
-Use the token names, never raw hex.
+Tokens are defined in `packages/config/tailwind/theme.css` (Tailwind v4 `@theme`) and
+imported by `apps/web/app/globals.css`. Use the token names, never raw hex; lint rejects
+arbitrary hex values in `apps/web`.
 
 ```
 ink #0A1D37   primary #1550E0   result #0E9F87
 mist #EEF3F9  mist2 #F7FAFD     line #DCE4EE   body #41536B
+--glow-teal #0E9F87   ambient glow only, via `glow-teal` and `bg-glow-teal-*`
 ```
 
-- `result` (teal) is reserved for outcome metrics. Do not use it for decoration.
+- `result` (teal) is reserved for outcome figures and affirmative marks (check icons,
+  status dots). Ambient glows use the separate `--glow-teal` token. Teal is banned from
+  headings, body text, buttons, links, borders and card backgrounds. The
+  `calwebtech/teal-usage` lint rule enforces this in `apps/web`.
 - Display face: Plus Jakarta Sans. Body face: IBM Plex Sans.
 - Content width 1440px with 24px gutters, 56px from the large breakpoint.
 - Section rhythm alternates: white, tinted gradient, image with overlay, colour band.
@@ -141,7 +149,10 @@ dynamically imported. Background video always has a poster image and never block
 
 ## Security
 
-- Argon2id hashing, httpOnly and SameSite cookies, CSRF protection.
+- The API owns identity, sessions and RBAC. Argon2id hashing. Session cookies are
+  first-party, httpOnly, Secure and SameSite=Strict. CSRF protection on mutations.
+- The API is served on the site's own origin at `/api` (Traefik routes the path and
+  strips the prefix), never on an `api.` subdomain. No CORS is configured.
 - RBAC enforced server-side on every admin route. Never trust the UI.
 - Rate limiting per IP and per endpoint. Cloudflare Turnstile on public forms.
 - Postgres and Redis on the internal Docker network only, never published to the host.
@@ -172,6 +183,8 @@ the task produced without a deploy, and the acceptance criterion in
 | What each page targets in search | `docs/04-seo-keyword-map.md` |
 | Tokens and component inventory | `docs/05-design-system.md` |
 | What to build next | `docs/06-build-plan.md` |
+| Decisions taken since the handoff | `docs/08-decisions.md` |
+| Budget math and rules for marketing routes | `docs/09-performance.md` |
 
 ## Ask before deciding
 

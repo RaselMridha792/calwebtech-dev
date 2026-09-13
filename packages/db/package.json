@@ -1,0 +1,41 @@
+{
+  "name": "@calwebtech/db",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Prisma schema, migrations, seed and the client factory. Imported by api and worker only.",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "generate": "prisma generate",
+    "build": "node -e \"fs.rmSync('dist',{recursive:true,force:true})\" && prisma generate && tsc -p tsconfig.build.json",
+    "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
+    "typecheck": "prisma generate && tsc --noEmit",
+    "lint": "eslint .",
+    "migrate:dev": "prisma migrate dev",
+    "migrate:deploy": "prisma migrate deploy",
+    "seed": "prisma db seed"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "7.10.0",
+    "@prisma/client": "7.10.0",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "@calwebtech/config": "workspace:*",
+    "@calwebtech/shared": "workspace:*",
+    "@types/node": "22.20.2",
+    "@types/pg": "^8.16.0",
+    "dotenv": "17.4.2",
+    "eslint": "9.39.5",
+    "prisma": "7.10.0",
+    "tsx": "^4.20.0",
+    "typescript": "5.9.3"
+  }
+}

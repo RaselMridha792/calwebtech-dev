@@ -11,7 +11,8 @@ records the decisions behind them so new pages stay consistent.
 | `ink2` | `#12294A` | hover state for ink surfaces |
 | `primary` | `#1550E0` | primary actions, links, focus rings |
 | `primaryd` | `#0F3FB4` | primary hover |
-| `result` | `#0E9F87` | **outcome metrics only**, never decoration |
+| `result` | `#0E9F87` | **outcome figures and affirmative marks only** (check icons, status dots). Never headings, body text, buttons, links, borders or card backgrounds |
+| `--glow-teal` | `#0E9F87` | ambient background glow only, through `glow-teal` and `bg-glow-teal-*` |
 | `mist` | `#EEF3F9` | tinted section fill, chips |
 | `mist2` | `#F7FAFD` | lightest tint |
 | `line` | `#DCE4EE` | borders, dividers |

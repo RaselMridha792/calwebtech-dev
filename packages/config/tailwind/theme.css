@@ -1,0 +1,156 @@
+/*
+ * Calwebtech design tokens (Tailwind CSS v4).
+ * Imported by apps/web/app/globals.css straight after `@import "tailwindcss"`.
+ * Values match the approved mockups in /reference. Components use the token
+ * names only; a new colour is added here, never inline.
+ */
+
+@theme {
+  /* Default palette removed so only tokens exist as colour utilities. */
+  --color-*: initial;
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  --color-ink: #0a1d37;
+  --color-ink2: #12294a;
+  --color-primary: #1550e0;
+  --color-primaryd: #0f3fb4;
+  /* Midpoint of the ink-to-primary colour band gradient. */
+  --color-cobalt: #123a8f;
+  /*
+   * Outcome figures and affirmative marks (check icons, status dots) only.
+   * Never headings, body text, buttons, links, borders or card backgrounds.
+   * Enforced by the calwebtech/teal-usage lint rule.
+   */
+  --color-result: #0e9f87;
+  --color-mist: #eef3f9;
+  --color-mist2: #f7fafd;
+  --color-line: #dce4ee;
+  --color-body: #41536b;
+  /* Rating stars only. */
+  --color-star: #ffc53d;
+  /* Form validation messages. 6.2:1 on white. */
+  --color-danger: #b42318;
+
+  --font-display: var(--font-jakarta), system-ui, sans-serif;
+  --font-sans: var(--font-plex), system-ui, sans-serif;
+
+  --radius-card: 1rem;
+
+  --shadow-card: 0 24px 50px -30px rgb(10 29 55 / 0.45);
+  --shadow-form: 0 40px 80px -30px rgb(0 0 0 / 0.7);
+  --shadow-cta: 0 16px 34px -14px rgb(21 80 224 / 0.8);
+  --shadow-media: 0 30px 70px -30px rgb(10 29 55 / 0.5);
+  --shadow-panel: 0 30px 60px -30px rgb(10 29 55 / 0.45);
+  --shadow-hover: 0 24px 44px -24px rgb(10 29 55 / 0.4);
+  --shadow-dock: 0 -8px 24px -12px rgb(10 29 55 / 0.3);
+
+  --ease-out-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-panel-in: panel-in 0.45s var(--ease-out-soft);
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes panel-in {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+/* Content width 1440px, 24px gutters, 56px from lg. */
+@utility shell {
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+  @media (width >= 64rem) {
+    padding-inline: 3.5rem;
+  }
+}
+
+/* Campaign landing width, as approved in reference/landing-page.html. */
+@utility shell-narrow {
+  max-width: 1320px;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+  @media (width >= 64rem) {
+    padding-inline: 3rem;
+  }
+}
+
+/*
+ * Below-the-fold sections skip style, layout and paint until they approach the
+ * viewport. On the landing page this took first paint from ~0.9s to ~0.7s at 4x CPU
+ * with no layout shift. `auto` remembers each section's real height once rendered.
+ * Never put it on the section that holds the LCP element.
+ */
+@utility content-auto {
+  content-visibility: auto;
+  contain-intrinsic-block-size: auto 900px;
+}
+
+@utility glass {
+  background: rgb(255 255 255 / 0.08);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgb(255 255 255 / 0.14);
+}
+
+@utility grid-lines {
+  background-image:
+    linear-gradient(to right, rgb(10 29 55 / 0.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(10 29 55 / 0.055) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+@utility grid-lines-light {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.06) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+@utility glow-blue {
+  background: radial-gradient(58% 62% at 78% 18%, rgb(37 99 235 / 0.55), transparent 68%);
+}
+
+/*
+ * Ambient teal glow. Decorative only, and deliberately a separate token from
+ * `result`, which is reserved for outcome figures and affirmative marks.
+ */
+@layer base {
+  :root {
+    --glow-teal: #0e9f87;
+  }
+}
+
+@utility glow-teal {
+  background: radial-gradient(
+    50% 60% at 12% 88%,
+    color-mix(in oklab, var(--glow-teal) 30%, transparent),
+    transparent 70%
+  );
+}
+
+/* A soft teal orb behind a section, e.g. `bg-glow-teal-25` for 25% strength. */
+@utility bg-glow-teal-* {
+  background-color: color-mix(in oklab, var(--glow-teal) calc(--value(integer) * 1%), transparent);
+}
+
+/* The colour band: ink through cobalt to primary. */
+@utility band-gradient {
+  background: linear-gradient(
+    135deg,
+    var(--color-ink) 0%,
+    var(--color-cobalt) 46%,
+    var(--color-primary) 100%
+  );
+}

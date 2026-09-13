@@ -1,0 +1,24 @@
+{
+  "name": "calwebtech",
+  "private": true,
+  "packageManager": "pnpm@10.32.1",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "build:packages": "pnpm -r --filter \"./packages/*\" build",
+    "dev": "pnpm build:packages && pnpm -r --parallel dev",
+    "typecheck": "pnpm build:packages && pnpm -r typecheck",
+    "lint": "pnpm build:packages && pnpm -r lint",
+    "test": "pnpm build:packages && pnpm -r test",
+    "build": "pnpm typecheck && pnpm -r lint && pnpm -r --filter \"./apps/*\" build",
+    "db:generate": "pnpm --filter @calwebtech/db generate",
+    "db:migrate": "pnpm --filter @calwebtech/db migrate:dev",
+    "db:deploy": "pnpm --filter @calwebtech/db migrate:deploy",
+    "db:seed": "pnpm --filter @calwebtech/db seed",
+    "lh": "lhci autorun --config=lighthouserc.cjs"
+  },
+  "devDependencies": {
+    "@lhci/cli": "0.15.1"
+  }
+}

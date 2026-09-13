@@ -1,0 +1,49 @@
+import { attributionSchema, type Attribution } from '@calwebtech/shared';
+import { utmFromSearchParams } from './utm';
+
+function field(form: FormData, name: string): string | undefined {
+  const value = form.get(name);
+  return typeof value === 'string' ? value : undefined;
+}
+
+/**
+ * Attribution captured in the browser, or, when script did not run, whatever the
+ * Referer of the form post reveals: the landing page path and its UTM tags.
+ */
+export function attributionFromForm(form: FormData, referer: string | null): Attribution {
+  const raw = field(form, 'attribution');
+  if (raw) {
+    try {
+      const parsed = attributionSchema.safeParse(JSON.parse(raw) as unknown);
+      if (parsed.success) return parsed.data;
+    } catch {
+      // Malformed JSON falls through to the Referer.
+    }
+  }
+  if (!referer || !URL.canParse(referer)) return {};
+  const url = new URL(referer);
+  return { lastTouch: utmFromSearchParams(url.searchParams), landingPage: url.pathname };
+}
+
+/** Maps a posted lead form onto the `leadSubmissionSchema` input shape. */
+export function leadSubmissionFromForm(
+  form: FormData,
+  referer: string | null,
+): Record<string, unknown> {
+  return {
+    type: field(form, 'type'),
+    formId: field(form, 'formId'),
+    name: field(form, 'name'),
+    email: field(form, 'email'),
+    company: field(form, 'company'),
+    phone: field(form, 'phone'),
+    siteUrl: field(form, 'siteUrl'),
+    budgetBand: field(form, 'budgetBand'),
+    timeline: field(form, 'timeline'),
+    serviceInterest: form.getAll('serviceInterest').filter((value) => typeof value === 'string'),
+    message: field(form, 'message'),
+    landingPageSlug: field(form, 'landingPageSlug'),
+    attribution: attributionFromForm(form, referer),
+    referenceCode: field(form, 'referenceCode'),
+  };
+}

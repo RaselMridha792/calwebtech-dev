@@ -31,7 +31,7 @@ services:
     depends_on:
       api: { condition: service_healthy }
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/health"]
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/health/"]
       interval: 20s
       timeout: 5s
       retries: 5
@@ -58,6 +58,18 @@ services:
       interval: 20s
       timeout: 5s
       retries: 5
+    # Same origin as the site: https://<domain>/api/* reaches the API with the
+    # prefix stripped. No api. subdomain, so session cookies stay first-party
+    # (SameSite=Strict) and no CORS is configured. The web app still calls the API
+    # directly on the internal network at http://api:4000.
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.api.rule=Host(`${PRIMARY_DOMAIN}`) && PathPrefix(`/api`)
+      - traefik.http.routers.api.entrypoints=websecure
+      - traefik.http.routers.api.tls.certresolver=le
+      - traefik.http.routers.api.middlewares=api-strip-prefix
+      - traefik.http.middlewares.api-strip-prefix.stripprefix.prefixes=/api
+      - traefik.http.services.api.loadbalancer.server.port=4000
     networks: [edge, internal]
     deploy:
       resources:

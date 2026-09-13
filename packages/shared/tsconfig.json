@@ -1,0 +1,8 @@
+{
+  "extends": "@calwebtech/config/tsconfig/node.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist"
+  },
+  "include": ["src"]
+}

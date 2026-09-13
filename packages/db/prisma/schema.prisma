@@ -3,12 +3,16 @@
 // Intent and field rationale: docs/02-content-model.md
 
 generator client {
-  provider = "prisma-client-js"
+  provider            = "prisma-client"
+  output              = "../src/generated/prisma"
+  moduleFormat        = "cjs"
+  runtime             = "nodejs"
+  importFileExtension = "js"
 }
 
+// The connection URL lives in prisma.config.ts (Prisma 7).
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 // ---------------------------------------------------------------- identity
@@ -32,10 +36,10 @@ model User {
   updatedAt    DateTime  @updatedAt
   deletedAt    DateTime?
 
-  sessions  Session[]
-  auditLogs AuditLog[]
-  leadNotes LeadNote[]
-  ownedLeads Lead[]    @relation("LeadOwner")
+  sessions   Session[]
+  auditLogs  AuditLog[]
+  leadNotes  LeadNote[]
+  ownedLeads Lead[]     @relation("LeadOwner")
 }
 
 model Session {
@@ -78,14 +82,9 @@ enum Status {
   ARCHIVED
 }
 
-/// Embedded on every public content type. Fallbacks are applied at render time.
-type Seo {
-  title       String?
-  description String?
-  canonical   String?
-  ogImage     String?
-  noindex     Boolean @default(false)
-}
+// SEO fields are stored as `seo Json?` on each public content type and validated
+// with seoSchema from packages/shared. Fallbacks are applied at render time.
+// (Prisma composite types are MongoDB-only, so an embedded type is not possible.)
 
 model Redirect {
   id         String   @id @default(cuid())
@@ -97,7 +96,7 @@ model Redirect {
 }
 
 model MediaAsset {
-  id         String   @id @default(cuid())
+  id         String    @id @default(cuid())
   url        String
   altText    String // required: the media library rejects uploads without it
   mimeType   String
@@ -106,22 +105,22 @@ model MediaAsset {
   sizeBytes  Int?
   variants   Json? // generated responsive and modern-format variants
   uploadedBy String?
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
   deletedAt  DateTime?
 }
 
 model PageSection {
-  id          String   @id @default(cuid())
-  sectionKey  String   @unique // e.g. "home.hero", "global.announcement"
-  heading     String?
-  subheading  String?
-  body        String?
-  mediaUrl    String?
-  ctaLabel    String?
-  ctaUrl      String?
-  visible     Boolean  @default(true)
-  updatedAt   DateTime @updatedAt
+  id         String   @id @default(cuid())
+  sectionKey String   @unique // e.g. "home.hero", "global.announcement"
+  heading    String?
+  subheading String?
+  body       String?
+  mediaUrl   String?
+  ctaLabel   String?
+  ctaUrl     String?
+  visible    Boolean  @default(true)
+  updatedAt  DateTime @updatedAt
 }
 
 model Setting {
@@ -143,9 +142,9 @@ model ServiceCategory {
 }
 
 model Service {
-  id                String   @id @default(cuid())
+  id                String    @id @default(cuid())
   title             String
-  slug              String   @unique
+  slug              String    @unique
   shortDescription  String
   answerBlock       String // 2-3 sentence extraction target, rendered first
   icon              String?
@@ -154,12 +153,12 @@ model Service {
   deliverables      Json? // string[]
   processSteps      Json? // { title, body, duration }[]
   startingPriceBand String?
-  order             Int      @default(0)
-  status            Status   @default(DRAFT)
+  order             Int       @default(0)
+  status            Status    @default(DRAFT)
   publishedAt       DateTime?
-  seo               Seo?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  seo               Json? // seoSchema, packages/shared
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
   deletedAt         DateTime?
 
   categoryId   String?
@@ -175,18 +174,18 @@ model Service {
 }
 
 model Industry {
-  id          String   @id @default(cuid())
-  name        String
-  slug        String   @unique
-  answerBlock String
-  heroCopy    String?
-  painPoints  Json? // string[]
+  id           String   @id @default(cuid())
+  name         String
+  slug         String   @unique
+  answerBlock  String
+  heroCopy     String?
+  painPoints   Json? // string[]
   integrations Json? // string[]
-  order       Int      @default(0)
-  status      Status   @default(DRAFT)
-  seo         Seo?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  order        Int      @default(0)
+  status       Status   @default(DRAFT)
+  seo          Json? // seoSchema, packages/shared
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   services Service[]
   projects Project[]
@@ -202,43 +201,49 @@ model Technology {
   proficiencyNote String?
   order           Int     @default(0)
 
-  services Service[]
-  projects Project[]
+  services     Service[]
+  projects     Project[]
+  landingPages LandingPage[]
 }
 
 model Project {
-  id             String   @id @default(cuid())
-  title          String
-  slug           String   @unique
-  clientName     String
-  clientAlias    String? // used when the real name cannot be published
-  answerBlock    String
-  liveUrl        String?
-  location       String? // "Ohio, USA" - shown as a card tag
-  segment        String? // B2B, D2C, enterprise
-  coverImageUrl  String?
-  gallery        Json? // string[]
-  challenge      String?
-  approach       String?
-  buildNotes     String?
-  outcome        String?
-  outcomeMetrics Json // { value, label }[] - mandatory, minimum three
-  duration       String?
-  year           Int?
-  featured       Boolean  @default(false)
-  beforeImageUrl String?
-  afterImageUrl  String?
-  status         Status   @default(DRAFT)
-  seo            Seo?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  deletedAt      DateTime?
+  id                 String    @id @default(cuid())
+  title              String
+  slug               String    @unique
+  clientName         String
+  clientAlias        String? // used when the real name cannot be published
+  answerBlock        String
+  summary            String // one line, shown on case study cards
+  liveUrl            String?
+  location           String? // "Ohio, USA" - shown as a card tag
+  segment            String? // B2B, D2C, enterprise
+  coverImageUrl      String?
+  coverImageAlt      String? // required whenever coverImageUrl is set
+  gallery            Json? // string[]
+  challenge          String?
+  approach           String?
+  buildNotes         String?
+  outcome            String?
+  outcomeMetrics     Json // { value, label }[] - mandatory, minimum three
+  duration           String?
+  year               Int?
+  featured           Boolean   @default(false)
+  beforeImageUrl     String?
+  afterImageUrl      String?
+  beforeAfterMetrics Json? // { label, before, after }[]
+  status             Status    @default(DRAFT)
+  seo                Json? // seoSchema, packages/shared
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  deletedAt          DateTime?
 
-  industryId   String?
-  industry     Industry?    @relation(fields: [industryId], references: [id])
-  services     Service[]
-  technologies Technology[]
-  testimonials Testimonial[]
+  industryId    String?
+  industry      Industry?     @relation(fields: [industryId], references: [id])
+  services      Service[]
+  technologies  Technology[]
+  testimonials  Testimonial[]
+  landingPages  LandingPage[] @relation("LandingPageResults")
+  beforeAfterOn LandingPage[] @relation("LandingPageBeforeAfter")
 
   @@index([status, featured])
 }
@@ -256,22 +261,24 @@ model Demo {
 }
 
 model Testimonial {
-  id         String   @id @default(cuid())
+  id         String    @id @default(cuid())
   clientName String
   role       String?
   company    String?
   avatarUrl  String?
-  rating     Int      @default(5)
+  rating     Int       @default(5)
   quote      String
   source     String? // Google, Clutch, DesignRush, direct
   videoUrl   String?
-  featured   Boolean  @default(false)
+  featured   Boolean   @default(false)
   consentAt  DateTime? // permission to publish
   date       DateTime?
-  createdAt  DateTime @default(now())
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 
-  projectId String?
-  project   Project? @relation(fields: [projectId], references: [id])
+  projectId    String?
+  project      Project?      @relation(fields: [projectId], references: [id])
+  landingPages LandingPage[]
 }
 
 /// Aggregated third-party ratings, refreshed on a schedule rather than called live,
@@ -305,7 +312,7 @@ model Post {
   featured    Boolean   @default(false)
   status      Status    @default(DRAFT)
   publishedAt DateTime?
-  seo         Seo?
+  seo         Json? // seoSchema, packages/shared
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
@@ -333,7 +340,7 @@ model GlossaryTerm {
   body            String
   example         String?
   status          Status   @default(DRAFT)
-  seo             Seo?
+  seo             Json? // seoSchema, packages/shared
   updatedAt       DateTime @updatedAt
 
   relatedServiceId String?
@@ -341,15 +348,15 @@ model GlossaryTerm {
 }
 
 model Guide {
-  id           String  @id @default(cuid())
-  title        String
-  slug         String  @unique
-  summary      String // ungated: this is what ranks
-  fileUrl      String
-  coverImage   String?
-  pageCount    Int?
-  status       Status  @default(DRAFT)
-  seo          Seo?
+  id         String  @id @default(cuid())
+  title      String
+  slug       String  @unique
+  summary    String // ungated: this is what ranks
+  fileUrl    String
+  coverImage String?
+  pageCount  Int?
+  status     Status  @default(DRAFT)
+  seo        Json? // seoSchema, packages/shared
 }
 
 model Faq {
@@ -359,12 +366,14 @@ model Faq {
   group    String? // pricing, process, technology, ownership, support
   order    Int     @default(0)
 
-  serviceId  String?
-  service    Service?  @relation(fields: [serviceId], references: [id])
-  industryId String?
-  industry   Industry? @relation(fields: [industryId], references: [id])
-  locationId String?
-  location   Location? @relation(fields: [locationId], references: [id])
+  serviceId     String?
+  service       Service?     @relation(fields: [serviceId], references: [id])
+  industryId    String?
+  industry      Industry?    @relation(fields: [industryId], references: [id])
+  locationId    String?
+  location      Location?    @relation(fields: [locationId], references: [id])
+  landingPageId String?
+  landingPage   LandingPage? @relation(fields: [landingPageId], references: [id], onDelete: Cascade)
 }
 
 model TeamMember {
@@ -379,7 +388,8 @@ model TeamMember {
   order   Int     @default(0)
   active  Boolean @default(true)
 
-  posts Post[]
+  posts        Post[]
+  landingPages LandingPage[]
 }
 
 model Award {
@@ -395,34 +405,109 @@ model Award {
 }
 
 model Partner {
-  id                String  @id @default(cuid())
-  name              String
-  logoUrl           String?
-  tier              String?
-  certification     String?
-  meaningForClient  String?
-  quote             String?
-  order             Int     @default(0)
+  id               String  @id @default(cuid())
+  name             String
+  logoUrl          String?
+  tier             String?
+  certification    String?
+  meaningForClient String?
+  quote            String?
+  order            Int     @default(0)
+
+  landingPages LandingPage[]
 }
 
 model Statistic {
-  id     String @id @default(cuid())
+  id     String  @id @default(cuid())
   label  String
   value  String
   suffix String?
-  order  Int    @default(0)
+  order  Int     @default(0)
+}
+
+/// The delivery process. One source for the homepage timeline, /process/ and
+/// the landing page stepper.
+model ProcessStep {
+  id        String   @id @default(cuid())
+  title     String // "Discovery"
+  timing    String // "Week 1"
+  summary   String // one line for compact timelines
+  heading   String // "We work out what is actually wrong"
+  body      String
+  youGet    String[]
+  weNeed    String[]
+  imageUrl  String?
+  imageAlt  String? // required whenever imageUrl is set
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+/// Published engagement shapes. Shared by the homepage, /pricing/ and landing pages.
+model PricingTier {
+  id          String   @id @default(cuid())
+  name        String
+  priceLabel  String // "$12k to $25k"
+  summary     String
+  highlighted Boolean  @default(false) // the "most common" option
+  active      Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+/// Client names and logos for the trust bar.
+model ClientLogo {
+  id        String   @id @default(cuid())
+  name      String
+  logoUrl   String?
+  logoAlt   String?
+  active    Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+/// Campaign landing page served at /lp/<slug>/. The template and section order
+/// are fixed; campaign copy lives in `content` (landingPageContentSchema in
+/// packages/shared) and proof is related from shared content types.
+model LandingPage {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  name        String
+  status      Status    @default(DRAFT)
+  noindex     Boolean   @default(true)
+  content     Json // landingPageContentSchema, packages/shared
+  seo         Json? // seoSchema, packages/shared
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+
+  beforeAfterProjectId String?
+  beforeAfterProject   Project? @relation("LandingPageBeforeAfter", fields: [beforeAfterProjectId], references: [id], onDelete: SetNull)
+
+  results      Project[]         @relation("LandingPageResults")
+  testimonials Testimonial[]
+  team         TeamMember[]
+  partners     Partner[]
+  technologies Technology[]
+  faqs         Faq[]
+  attributions LeadAttribution[]
+
+  @@index([status])
 }
 
 model JobOpening {
-  id           String  @id @default(cuid())
+  id           String    @id @default(cuid())
   title        String
-  slug         String  @unique
+  slug         String    @unique
   type         String // full-time, contract
   location     String
   salaryBand   String?
   description  String
   requirements Json?
-  status       Status  @default(DRAFT)
+  status       Status    @default(DRAFT)
   validThrough DateTime?
 }
 
@@ -450,7 +535,7 @@ model Location {
   latitude        Float?
   longitude       Float?
   status          Status       @default(DRAFT)
-  seo             Seo?
+  seo             Json? // seoSchema, packages/shared
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
 
@@ -493,32 +578,33 @@ model Contact {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  leads       Lead[]
-  bookings    Booking[]
-  subscriber  Subscriber?
+  leads      Lead[]
+  bookings   Booking[]
+  subscriber Subscriber?
 }
 
 model Lead {
-  id          String     @id @default(cuid())
-  type        LeadType
-  status      LeadStatus @default(NEW)
-  name        String
-  email       String
-  phone       String?
-  company     String?
-  message     String?
-  budgetBand  String?
-  timeline    String?
-  projectType String?
-  siteUrl     String?
-  referralSource String? // "How did you find us", includes AI assistants
+  id              String     @id @default(cuid())
+  type            LeadType
+  status          LeadStatus @default(NEW)
+  name            String
+  email           String
+  phone           String?
+  company         String?
+  message         String?
+  budgetBand      String?
+  timeline        String?
+  projectType     String?
+  siteUrl         String?
+  serviceInterest String[]
+  referralSource  String? // "How did you find us", includes AI assistants
   /// Calculator answers and any other structured payload, stored as queryable fields.
-  answers     Json?
-  consentAt   DateTime?
-  value       Decimal?   @db.Decimal(12, 2)
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  deletedAt   DateTime?
+  answers         Json?
+  consentAt       DateTime?
+  value           Decimal?   @db.Decimal(12, 2)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  deletedAt       DateTime?
 
   contactId String?
   contact   Contact? @relation(fields: [contactId], references: [id])
@@ -538,17 +624,22 @@ model Lead {
 }
 
 model LeadAttribution {
-  id             String   @id @default(cuid())
-  leadId         String   @unique
-  firstTouchUtm  Json?
-  lastTouchUtm   Json?
-  referrer       String?
-  landingPage    String?
-  device         String?
-  campaignId     String?
-  createdAt      DateTime @default(now())
+  id            String   @id @default(cuid())
+  leadId        String   @unique
+  firstTouchUtm Json?
+  lastTouchUtm  Json?
+  referrer      String?
+  landingPage   String?
+  device        String?
+  campaignId    String?
+  formId        String? // which form on the page, e.g. "lp-hero"
+  landingPageId String?
+  createdAt     DateTime @default(now())
 
-  lead Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  lead         Lead         @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  campaignPage LandingPage? @relation(fields: [landingPageId], references: [id], onDelete: SetNull)
+
+  @@index([landingPageId])
 }
 
 model LeadActivity {
@@ -606,38 +697,38 @@ enum BookingStatus {
 }
 
 model ConsultationType {
-  id              String  @id @default(cuid())
-  name            String
-  slug            String  @unique
-  durationMinutes Int
-  bufferBefore    Int     @default(0)
-  bufferAfter     Int     @default(0)
-  description     String?
+  id               String  @id @default(cuid())
+  name             String
+  slug             String  @unique
+  durationMinutes  Int
+  bufferBefore     Int     @default(0)
+  bufferAfter      Int     @default(0)
+  description      String?
   requiresApproval Boolean @default(false)
-  active          Boolean @default(true)
+  active           Boolean @default(true)
 
   bookings Booking[]
   rules    AvailabilityRule[]
 }
 
 model AvailabilityRule {
-  id                 String   @id @default(cuid())
+  id                 String  @id @default(cuid())
   consultationTypeId String?
   weekday            Int // 0-6
   startMinute        Int // minutes from midnight, in the business timezone
   endMinute          Int
-  minimumNoticeHours Int      @default(24)
+  minimumNoticeHours Int     @default(24)
 
   consultationType ConsultationType? @relation(fields: [consultationTypeId], references: [id])
 }
 
 model AvailabilityOverride {
-  id        String   @id @default(cuid())
-  date      DateTime @db.Date
-  blocked   Boolean  @default(true)
+  id          String   @id @default(cuid())
+  date        DateTime @db.Date
+  blocked     Boolean  @default(true)
   startMinute Int?
   endMinute   Int?
-  reason    String?
+  reason      String?
 
   @@unique([date])
 }
@@ -684,19 +775,19 @@ model BookingEvent {
 // ---------------------------------------------------------------- audience
 
 model Subscriber {
-  id           String    @id @default(cuid())
-  contactId    String?   @unique
-  email        String    @unique
-  name         String?
-  sourcePage   String?
-  consentAt    DateTime
-  consentIp    String?
+  id             String    @id @default(cuid())
+  contactId      String?   @unique
+  email          String    @unique
+  name           String?
+  sourcePage     String?
+  consentAt      DateTime
+  consentIp      String?
   unsubscribedAt DateTime?
   lastEngagedAt  DateTime?
-  createdAt    DateTime  @default(now())
+  createdAt      DateTime  @default(now())
 
-  contact Contact?         @relation(fields: [contactId], references: [id])
-  tags    SubscriberTag[]
+  contact    Contact?            @relation(fields: [contactId], references: [id])
+  tags       SubscriberTag[]
   recipients CampaignRecipient[]
 }
 
@@ -776,12 +867,12 @@ model CampaignRecipient {
 }
 
 model EmailEvent {
-  id          String   @id @default(cuid())
-  providerId  String?
-  email       String
-  type        String // delivered, opened, clicked, bounced, complained
-  payload     Json?
-  occurredAt  DateTime @default(now())
+  id         String   @id @default(cuid())
+  providerId String?
+  email      String
+  type       String // delivered, opened, clicked, bounced, complained
+  payload    Json?
+  occurredAt DateTime @default(now())
 
   @@index([email, type])
 }
@@ -799,13 +890,13 @@ model Automation {
 }
 
 model AutomationRun {
-  id           String   @id @default(cuid())
+  id           String    @id @default(cuid())
   automationId String
   contactEmail String
-  stepIndex    Int      @default(0)
+  stepIndex    Int       @default(0)
   nextRunAt    DateTime?
   completedAt  DateTime?
-  createdAt    DateTime @default(now())
+  createdAt    DateTime  @default(now())
 
   automation Automation @relation(fields: [automationId], references: [id], onDelete: Cascade)
 

@@ -6,7 +6,7 @@
 |---|---|---|
 | proxy | Traefik v3, TLS, Let's Encrypt, routing, security headers | 80, 443 |
 | web | Next.js standalone, public site and `/admin` | internal |
-| api | NestJS REST: content, leads, bookings, campaigns, auth, webhooks | internal |
+| api | NestJS REST: content, leads, bookings, campaigns, auth, webhooks | via proxy at `/api` on the site origin |
 | worker | BullMQ consumer: email, reminders, revalidation, image processing | internal |
 | db | PostgreSQL 17, named volume | internal |
 | redis | Queue, rate limiting, cache | internal |
@@ -15,6 +15,11 @@
 | uptime | Uptime Kuma | internal, proxied |
 
 Only `proxy` publishes host ports. The internal network is declared `internal: true`.
+
+The API shares the site's origin: Traefik routes `https://<domain>/api/*` to `api` and
+strips the prefix. There is no `api.` subdomain, so session cookies stay first-party
+with `SameSite=Strict` and no CORS is needed. Server-side calls from `web` go straight
+to `http://api:4000` on the internal network.
 
 ## Rendering strategy, per route group
 
