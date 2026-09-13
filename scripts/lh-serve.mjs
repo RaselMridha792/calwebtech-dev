@@ -11,6 +11,7 @@ const envFile = path.join(root, '.env');
 if (existsSync(envFile)) process.loadEnvFile(envFile);
 
 const WEB = 'http://localhost:3000';
+const CHROME_IMAGE_ACCEPT = 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8';
 const PAGE = `${WEB}/lp/b2b-website-design/`;
 const env = {
   ...process.env,
@@ -75,7 +76,8 @@ async function warm() {
   const queue = images.filter((src) => Number(new URLSearchParams(src.split('?')[1]).get('w')) < 1200);
   const worker = async () => {
     for (let next = queue.shift(); next; next = queue.shift()) {
-      await fetch(`${WEB}${next}`).catch(() => undefined);
+      // The optimiser caches per output format, so ask the way Chrome does.
+      await fetch(`${WEB}${next}`, { headers: { accept: CHROME_IMAGE_ACCEPT } }).catch(() => undefined);
     }
   };
   await Promise.all(Array.from({ length: 6 }, worker));

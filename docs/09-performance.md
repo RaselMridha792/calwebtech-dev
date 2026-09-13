@@ -43,6 +43,11 @@ all of a page's own client JavaScript. The homepage has to fit in that too.
   the LCP element.
 - **No `backdrop-filter` on sticky or full-width elements.** It costs paint time on
   every frame.
+- **Keep decorative backdrops small.** Use `BackdropImage`, which applies quality 50 and
+  half-width `sizes` below `lg`. On mobile the hero backdrop is the LCP element, and
+  under Lighthouse's simulated 1.6Mbps connection its bytes share bandwidth with the
+  whole initial payload. On CI, network load time was 1.9s of a 2.7s LCP, while the
+  real (unthrottled) LCP was about 0.2s.
 
 ## What is not reducible
 

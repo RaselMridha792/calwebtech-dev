@@ -21,7 +21,14 @@ export function Wordmark({ tone = 'dark' }: { tone?: 'dark' | 'light' }) {
   );
 }
 
-/** Full-bleed decorative photograph behind a section. Always empty alt. */
+/**
+ * Full-bleed decorative photograph behind a section. Always empty alt.
+ *
+ * These sit at 13–30% opacity under gradients and are cropped with object-cover,
+ * so a small, lower-quality source looks the same. It matters for LCP: the hero
+ * backdrop is the LCP element on mobile, and its bytes share the simulated
+ * connection with the whole initial payload.
+ */
 export function BackdropImage({
   image,
   className,
@@ -37,7 +44,8 @@ export function BackdropImage({
       src={image.src}
       alt=""
       fill
-      sizes="100vw"
+      sizes="(min-width: 1024px) 100vw, 50vw"
+      quality={50}
       priority={priority}
       className={`object-cover ${className}`}
     />

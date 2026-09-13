@@ -13,6 +13,8 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
   images: {
+    // 50 is for decorative backdrops under heavy overlays; 75 is the default.
+    qualities: [50, 75],
     remotePatterns: [
       // Placeholder photography used by the seed. Remove once client imagery is
       // served from the media library.

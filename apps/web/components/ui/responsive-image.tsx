@@ -10,6 +10,8 @@ interface ResponsiveImageProps {
   width?: number;
   height?: number;
   draggable?: boolean;
+  /** One of `images.qualities` in next.config.ts. */
+  quality?: 50 | 75;
   /** For the largest image above the fold: preloaded and fetched at high priority. */
   priority?: boolean;
 }

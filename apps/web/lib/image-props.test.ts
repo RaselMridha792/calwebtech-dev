@@ -16,6 +16,7 @@ const cases: ImageProps[] = [
   },
   { src: '/media/logo.png', alt: 'Northmark', width: 140, height: 32, sizes: '140px', loading: 'lazy' },
   { src: '/media/team.jpg', alt: 'Dana Whitfield, Delivery Manager', fill: true, sizes: '(min-width: 1024px) 25vw, 100vw' },
+  { src: '/media/backdrop.jpg', alt: '', fill: true, sizes: '(min-width: 1024px) 100vw, 50vw', quality: 50 },
 ];
 
 describe('imageProps', () => {
