@@ -1,7 +1,8 @@
 /**
  * Lighthouse CI budget gate for CLAUDE.md "Budget". `pnpm lh` runs it after
  * `pnpm build`, against a migrated and seeded database. scripts/lh-serve.mjs
- * starts the built API and web app. Every assertion uses the median of three runs.
+ * starts the built API and web app behind a local HTTP/2 + TLS proxy, matching how
+ * Traefik serves production. Every assertion uses the median of three runs.
  */
 const median = { aggregationMethod: 'median-run' };
 
@@ -11,14 +12,15 @@ module.exports = {
       startServerCommand: 'node scripts/lh-serve.mjs',
       startServerReadyPattern: 'lh-serve: ready',
       startServerReadyTimeout: 240000,
-      url: ['http://localhost:3000/lp/b2b-website-design/'],
+      url: ['https://localhost:3443/lp/b2b-website-design/'],
       numberOfRuns: 3,
       settings: {
         // Campaign landing pages are noindex by design (docs/08-decisions.md), so
         // the crawlability audit fails on purpose. Indexable routes get a run
         // without this skip once they exist.
         skipAudits: ['is-crawlable'],
-        chromeFlags: '--no-sandbox',
+        // The proxy uses a throwaway self-signed certificate for localhost.
+        chromeFlags: '--no-sandbox --ignore-certificate-errors',
       },
     },
     assert: {

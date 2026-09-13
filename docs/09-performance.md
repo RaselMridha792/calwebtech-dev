@@ -56,6 +56,13 @@ while the streamed HTML arrives. It runs for 400–550ms at 4x CPU on a mid-rang
 and it grows with every module evaluated on load. Keep client code small, and add no
 synchronous work during hydration.
 
+Lighthouse's simulated LCP counts every request that finished before the observed
+LCP, including async framework scripts. On localhost everything finishes within
+milliseconds, so the page's whole initial payload (about 250KB) is modelled as
+downloading over 1.6Mbps before LCP. That puts roughly 2.2–2.5s of LCP on any App
+Router page with two web fonts, before any page-specific cost. Every kilobyte of
+fonts, HTML and client JavaScript on a marketing route counts against that 2.5s gate.
+
 Lighthouse varies a lot on developer machines. The same build scored TBT anywhere from
 243ms to 484ms across local runs. Compare variants by alternating them in the same
 session, and treat the Linux CI run as the source of truth.

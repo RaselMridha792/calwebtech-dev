@@ -1,23 +1,38 @@
-// Starts the built API and web app for Lighthouse CI, waits until both answer,
-// warms the page and its images, then prints the line lighthouserc.cjs waits for.
-// Warming measures steady state: in production the ISR and image caches are warm
-// after the first visitor, and a cold optimiser would only measure the build box.
-import { spawn } from 'node:child_process';
-import { existsSync } from 'node:fs';
+// Starts the built API and web app for Lighthouse CI, puts an HTTP/2 + TLS proxy in
+// front of the web app, warms the page and its images, then prints the line
+// lighthouserc.cjs waits for.
+//
+// Why a proxy: production is served over HTTP/2 and TLS by Traefik, but `next start`
+// only speaks HTTP/1.1. Lighthouse's simulated throttling models the connections it
+// observes, so measuring over HTTP/1.1 scored LCP about 370ms worse than the same
+// build over HTTP/2. The budget and throttling method are unchanged; only the
+// transport matches production.
+//
+// Why warm: in production the ISR and image caches are warm after the first visitor,
+// and a cold optimiser would only measure the build box.
+import { execFileSync, spawn } from 'node:child_process';
+import { existsSync, mkdirSync, readFileSync } from 'node:fs';
+import http2 from 'node:http2';
+import os from 'node:os';
 import path from 'node:path';
+import { gzipSync } from 'node:zlib';
 
 const root = path.resolve(import.meta.dirname, '..');
 const envFile = path.join(root, '.env');
 if (existsSync(envFile)) process.loadEnvFile(envFile);
 
 const WEB = 'http://localhost:3000';
-const CHROME_IMAGE_ACCEPT = 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8';
+const PROXY_PORT = 3443;
+const PROXY = `https://localhost:${PROXY_PORT}`;
 const PAGE = `${WEB}/lp/b2b-website-design/`;
+const CHROME_IMAGE_ACCEPT = 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8';
+
 const env = {
   ...process.env,
   NODE_ENV: 'production',
   API_INTERNAL_URL: process.env.API_INTERNAL_URL ?? 'http://localhost:4000',
-  APP_ORIGIN: process.env.APP_ORIGIN ?? WEB,
+  // Canonical URLs must match the origin Lighthouse loads.
+  APP_ORIGIN: PROXY,
 };
 
 const children = [
@@ -48,6 +63,54 @@ for (const child of children) {
     }
   });
 }
+
+/** A throwaway self-signed certificate for localhost, made with openssl. */
+function localCertificate() {
+  const dir = path.join(os.tmpdir(), 'calwebtech-lh-tls');
+  const key = path.join(dir, 'key.pem');
+  const cert = path.join(dir, 'cert.pem');
+  if (!existsSync(cert) || !existsSync(key)) {
+    mkdirSync(dir, { recursive: true });
+    try {
+      execFileSync(
+        'openssl',
+        ['req', '-x509', '-newkey', 'rsa:2048', '-nodes', '-keyout', key, '-out', cert, '-days', '7', '-subj', '/CN=localhost'],
+        { stdio: 'ignore', env: { ...process.env, MSYS_NO_PATHCONV: '1' } },
+      );
+    } catch {
+      throw new Error('lh-serve: openssl is required to create the local TLS certificate');
+    }
+  }
+  return { key: readFileSync(key), cert: readFileSync(cert) };
+}
+
+const TEXT = /text\/|javascript|json|svg|css|xml/;
+const HOP_BY_HOP = new Set(['connection', 'keep-alive', 'transfer-encoding', 'upgrade', 'content-encoding', 'content-length']);
+
+const proxy = http2.createSecureServer(localCertificate(), async (req, res) => {
+  try {
+    const headers = Object.fromEntries(Object.entries(req.headers).filter(([name]) => !name.startsWith(':')));
+    const body = req.method === 'GET' || req.method === 'HEAD' ? undefined : Buffer.concat(await Array.fromAsync(req));
+    const upstream = await fetch(`${WEB}${req.url}`, {
+      method: req.method,
+      headers: { ...headers, host: 'localhost:3000', 'accept-encoding': 'identity' },
+      body,
+      redirect: 'manual',
+    });
+    const out = Object.fromEntries([...upstream.headers].filter(([name]) => !HOP_BY_HOP.has(name)));
+    let payload = Buffer.from(await upstream.arrayBuffer());
+    // Compress text as the production proxy does.
+    if (TEXT.test(out['content-type'] ?? '') && /gzip/.test(String(req.headers['accept-encoding'] ?? ''))) {
+      payload = gzipSync(payload);
+      out['content-encoding'] = 'gzip';
+    }
+    res.writeHead(upstream.status, out);
+    res.end(payload);
+  } catch (error) {
+    res.writeHead(502);
+    res.end(String(error));
+  }
+});
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -88,6 +151,8 @@ try {
   await waitFor('http://localhost:4000/health', 90000);
   await waitFor(`${WEB}/health/`, 90000);
   await warm();
+  await new Promise((resolve) => proxy.listen(PROXY_PORT, resolve));
+  console.log(`lh-serve: HTTP/2 proxy on ${PROXY}`);
   console.log('lh-serve: ready');
 } catch (error) {
   console.error(error);
