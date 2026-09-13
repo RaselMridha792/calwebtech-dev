@@ -29,6 +29,9 @@ ENV NODE_ENV=production
 WORKDIR /app
 RUN addgroup -S -g 1001 app && adduser -S -u 1001 -G app app
 COPY --from=build --chown=app:app /out ./
+# Schema and committed migrations for `node dist/migrate.js`, the one-off release step.
+COPY --from=build --chown=app:app /repo/packages/db/prisma/schema.prisma ./prisma/schema.prisma
+COPY --from=build --chown=app:app /repo/packages/db/prisma/migrations ./prisma/migrations
 USER app
 EXPOSE 4000
 HEALTHCHECK --interval=20s --timeout=5s --retries=5 \

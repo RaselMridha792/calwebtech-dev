@@ -101,6 +101,7 @@ export default async function CampaignLandingPage({ params }: PageProps<'/lp/[ca
                 success={content.formSuccess}
                 budgetOptions={BUDGET_BANDS}
                 assurances={content.heroForm.assurances}
+                turnstileSiteKey={process.env.TURNSTILE_SITE_KEY}
               />
             </div>
           }
@@ -140,6 +141,7 @@ export default async function CampaignLandingPage({ params }: PageProps<'/lp/[ca
               timelineOptions={START_TIMELINES}
               serviceOptions={content.finalCta.serviceOptions}
               footnote={content.finalCta.formFootnote}
+              turnstileSiteKey={process.env.TURNSTILE_SITE_KEY}
               className="rounded-2xl border border-line bg-white p-7 shadow-panel sm:p-9"
             />
           }

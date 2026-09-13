@@ -45,5 +45,6 @@ export function leadSubmissionFromForm(
     landingPageSlug: field(form, 'landingPageSlug'),
     attribution: attributionFromForm(form, referer),
     referenceCode: field(form, 'referenceCode'),
+    turnstileToken: field(form, 'cf-turnstile-response'),
   };
 }

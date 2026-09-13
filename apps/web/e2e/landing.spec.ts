@@ -36,8 +36,9 @@ test.describe('campaign landing page', () => {
     await page.goto(`${PAGE}?utm_source=e2e&utm_campaign=${testInfo.project.name}`);
     const form = page.locator('#form form');
 
+    // The first submit waits for a Turnstile token (Cloudflare's always-pass test key).
     await form.getByRole('button', { name: /send me a free proposal/i }).click();
-    await expect(page.locator('#form [role="alert"]')).toBeVisible();
+    await expect(page.locator('#form [role="alert"]')).toBeVisible({ timeout: 20_000 });
     const email = form.getByLabel('Work email');
     await expect(email).toHaveAttribute('aria-invalid', 'true');
     await expect(email).toHaveAttribute('aria-describedby', 'lp-hero-email-error');

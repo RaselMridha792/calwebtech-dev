@@ -1,5 +1,6 @@
 import 'server-only';
 import {
+  botCheckFailedResponseSchema,
   landingPageViewSchema,
   validationErrorResponseSchema,
   type LandingPageView,
@@ -33,7 +34,7 @@ export async function getLandingPage(slug: string): Promise<LandingPageView | nu
 export type LeadPostResult =
   | { ok: true }
   | { ok: false; reason: 'invalid'; fieldErrors: Record<string, string[]> }
-  | { ok: false; reason: 'rate_limited' | 'unavailable' };
+  | { ok: false; reason: 'rate_limited' | 'unavailable' | 'bot_check_failed' };
 
 export async function postLead(
   submission: LeadSubmission,
@@ -56,6 +57,10 @@ export async function postLead(
 
   if (response.status === 202) return { ok: true };
   if (response.status === 429) return { ok: false, reason: 'rate_limited' };
+  if (response.status === 403) {
+    const body = botCheckFailedResponseSchema.safeParse(await response.json().catch(() => null));
+    if (body.success) return { ok: false, reason: 'bot_check_failed' };
+  }
   if (response.status === 400) {
     const body = validationErrorResponseSchema.safeParse(await response.json());
     if (body.success) return { ok: false, reason: 'invalid', fieldErrors: body.data.fieldErrors };

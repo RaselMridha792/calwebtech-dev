@@ -9,6 +9,7 @@
 import {
   SETTING_KEYS,
   landingPageContentSchema,
+  leadNotificationRecipientsSchema,
   siteContactSchema,
   siteProofSchema,
   type LandingPageContentInput,
@@ -38,6 +39,15 @@ async function seedSettings() {
   ] as const) {
     await prisma.setting.upsert({ where: { key }, create: { key, value }, update: { value } });
   }
+
+  // Placeholder until the client confirms the address: Resend's test inbox. `update: {}`
+  // never overwrites an address set later with settings-cli, so re-seeding is safe.
+  const recipients = leadNotificationRecipientsSchema.parse({ emails: ['delivered+leads@resend.dev'] });
+  await prisma.setting.upsert({
+    where: { key: SETTING_KEYS.leadNotificationRecipients },
+    create: { key: SETTING_KEYS.leadNotificationRecipients, value: recipients },
+    update: {},
+  });
 
   const reviews = [
     { platform: 'Google', rating: 4.9, reviewCount: 96 },

@@ -82,14 +82,16 @@ services:
         limits: { memory: 768m }
 
   worker:
-    image: ${GHCR_IMAGE_API}:${TAG:-latest}
+    image: ${GHCR_IMAGE_WORKER}:${TAG:-latest}
     restart: unless-stopped
-    command: ["node", "dist/worker.js"]
     env_file: [../.env]
     depends_on:
       db: { condition: service_healthy }
       redis: { condition: service_started }
-    networks: [internal]
+    # `internal` has no route out. `edge` gives the worker outbound access to the Resend
+    # API; it carries no Traefik labels, so nothing routes in.
+    networks: [edge, internal]
+    stop_grace_period: 30s
     deploy:
       resources:
         limits: { memory: 512m }

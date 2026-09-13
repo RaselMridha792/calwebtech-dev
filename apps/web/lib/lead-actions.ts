@@ -71,6 +71,8 @@ export async function submitLead(_previous: LeadFormState, form: FormData): Prom
   switch (result.reason) {
     case 'invalid':
       return fail('Please check the highlighted fields.', result.fieldErrors);
+    case 'bot_check_failed':
+      return fail('We could not confirm this request came from a person. Please try again.');
     case 'rate_limited':
       return fail('You have sent several requests in a row. Please wait a minute and try again.');
     case 'unavailable':

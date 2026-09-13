@@ -11,5 +11,7 @@ onlyBuiltDependencies:
   - prisma
 
 ignoredBuiltDependencies:
+  # Optional native speed-up for BullMQ's msgpackr; the JavaScript fallback is used.
+  - msgpackr-extract
   - sharp
   - unrs-resolver

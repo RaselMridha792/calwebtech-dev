@@ -11,6 +11,7 @@
     "typecheck": "pnpm build:packages && pnpm -r typecheck",
     "lint": "pnpm build:packages && pnpm -r lint",
     "test": "pnpm build:packages && pnpm -r test",
+    "test:integration": "pnpm build:packages && pnpm -r --if-present test:integration",
     "build": "pnpm typecheck && pnpm -r lint && pnpm -r --filter \"./apps/*\" build",
     "db:generate": "pnpm --filter @calwebtech/db generate",
     "db:migrate": "pnpm --filter @calwebtech/db migrate:dev",

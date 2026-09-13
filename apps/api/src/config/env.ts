@@ -7,6 +7,13 @@ const apiEnvSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   API_PORT: z.coerce.number().int().positive().default(4000),
   DATABASE_URL: z.string().min(1, 'DATABASE_URL is required'),
+  /** Email jobs are added here for the worker. */
+  REDIS_URL: z.string().min(1, 'REDIS_URL is required'),
+  /**
+   * Cloudflare Turnstile secret. Development and CI use Cloudflare's always-pass test
+   * secret, 1x0000000000000000000000000000000AA.
+   */
+  TURNSTILE_SECRET: z.string().min(1, 'TURNSTILE_SECRET is required'),
   /**
    * Proxy hops whose X-Forwarded-For is trusted. The API is only reachable from
    * the web container, which forwards the visitor IP, so the default is one.

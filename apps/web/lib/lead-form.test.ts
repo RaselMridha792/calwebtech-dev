@@ -30,6 +30,15 @@ describe('leadSubmissionFromForm', () => {
     expect(lead.siteUrl).toBe('https://halloway.com');
     expect(lead.landingPageSlug).toBe('b2b-website-design');
   });
+
+  it('passes the Turnstile token on to the API, and leaves it out when the widget wrote none', () => {
+    const withToken = formWith([...base, ['cf-turnstile-response', 'XXXX.DUMMY.TOKEN.XXXX']]);
+    expect(leadSubmissionSchema.parse(leadSubmissionFromForm(withToken, null)).turnstileToken).toBe(
+      'XXXX.DUMMY.TOKEN.XXXX',
+    );
+    const withoutToken = formWith([...base, ['cf-turnstile-response', '']]);
+    expect(leadSubmissionSchema.parse(leadSubmissionFromForm(withoutToken, null)).turnstileToken).toBeUndefined();
+  });
 });
 
 describe('attributionFromForm', () => {
