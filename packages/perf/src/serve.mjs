@@ -224,17 +224,20 @@ export async function startStack({ log = console.log } = {}) {
   ];
   const edge = createEdge();
 
+  let stopping = false;
   const stop = () => {
+    stopping = true;
     edge.close();
     for (const child of children) if (child.exitCode === null) child.kill();
   };
   for (const child of children) {
-    child.on('exit', (code) => {
-      if (code) {
-        log(`serve: a server exited with code ${code}`);
-        stop();
-        process.exitCode = 1;
-      }
+    child.on('exit', (code, signal) => {
+      // Servers stopped on purpose exit with 143 (SIGTERM). Only an exit nobody asked
+      // for means the measurement is invalid.
+      if (stopping) return;
+      log(`serve: a server exited unexpectedly (code ${code}, signal ${signal})`);
+      stop();
+      process.exitCode = 1;
     });
   }
 
