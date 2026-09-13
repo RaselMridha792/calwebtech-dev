@@ -1,5 +1,6 @@
 'use client';
 
+import type { LeadType } from '@calwebtech/shared';
 import { useActionState, useEffect, useRef, useState, type ComponentProps, type ReactNode } from 'react';
 import { captureAttribution } from '@/lib/attribution-client';
 import { submitLead, type LeadFormState } from '@/lib/lead-actions';
@@ -14,7 +15,14 @@ interface Option {
 export interface LeadFormProps {
   variant: 'hero' | 'full';
   formId: string;
-  landingPageSlug: string;
+  /** Which kind of lead the form creates. */
+  leadType?: LeadType;
+  /** Campaign page the lead is attributed to, when the form sits on one. */
+  landingPageSlug?: string;
+  /** The second field beside the company in the full form. */
+  contactField?: 'siteUrl' | 'phone';
+  /** "How did you find us?" options; the question is left out when there are none. */
+  referralOptions?: readonly string[];
   /** Page URL, so the form still works before hydration or without script. */
   permalink: string;
   submitLabel: string;
@@ -202,6 +210,11 @@ export function LeadForm(props: LeadFormProps) {
       ))}
     </select>
   ));
+  const phoneField = field('phone', 'Phone', (c) => (
+    <input {...c} type="tel" autoComplete="tel" defaultValue={value('phone')} placeholder="Optional" className={`${controlClass} h-12 px-4`} />
+  ));
+  const timelineOptions = props.timelineOptions ?? [];
+  const referralOptions = props.referralOptions ?? [];
   const messageField = field('message', 'What is going wrong right now?', (c) => (
     <textarea {...c} rows={hero ? 3 : 4} defaultValue={value('message')} placeholder="Two or three sentences is plenty." className={`${controlClass} resize-none p-4`} />
   ));
@@ -217,9 +230,9 @@ export function LeadForm(props: LeadFormProps) {
       aria-busy={busy}
       className={hero ? 'space-y-4 p-7' : props.className}
     >
-      <input type="hidden" name="type" value="PROJECT" />
+      <input type="hidden" name="type" value={props.leadType ?? 'PROJECT'} />
       <input type="hidden" name="formId" value={formId} />
-      <input type="hidden" name="landingPageSlug" value={props.landingPageSlug} />
+      {props.landingPageSlug ? <input type="hidden" name="landingPageSlug" value={props.landingPageSlug} /> : null}
       <input ref={attributionRef} type="hidden" name="attribution" defaultValue="" />
       <div className="absolute left-[-10000px] h-px w-px overflow-hidden" aria-hidden="true">
         <label htmlFor={`${formId}-reference`}>Reference code</label>
@@ -238,11 +251,9 @@ export function LeadForm(props: LeadFormProps) {
           {emailField}
           <div className="grid grid-cols-2 gap-4">
             {companyField}
-            {field('phone', 'Phone', (c) => (
-              <input {...c} type="tel" autoComplete="tel" defaultValue={value('phone')} placeholder="Optional" className={`${controlClass} h-12 px-4`} />
-            ))}
+            {phoneField}
           </div>
-          {budgetField}
+          {props.budgetOptions.length > 0 ? budgetField : null}
           {messageField}
         </>
       ) : (
@@ -251,9 +262,11 @@ export function LeadForm(props: LeadFormProps) {
             {nameField}
             {companyField}
             {emailField}
-            {field('siteUrl', 'Current website', (c) => (
-              <input {...c} type="text" inputMode="url" autoComplete="url" defaultValue={value('siteUrl')} placeholder="company.com" className={`${controlClass} h-12 px-4`} />
-            ))}
+            {props.contactField === 'phone'
+              ? phoneField
+              : field('siteUrl', 'Current website', (c) => (
+                  <input {...c} type="text" inputMode="url" autoComplete="url" defaultValue={value('siteUrl')} placeholder="company.com" className={`${controlClass} h-12 px-4`} />
+                ))}
           </div>
 
           {props.serviceOptions && props.serviceOptions.length > 0 ? (
@@ -281,16 +294,30 @@ export function LeadForm(props: LeadFormProps) {
 
           <div className="mt-6 grid gap-5 sm:grid-cols-2">
             {budgetField}
-            {field('timeline', 'When do you want to start?', (c) => (
-              <select {...c} defaultValue={value('timeline') ?? ''} className={`${controlClass} h-12 px-4`}>
-                <option value="">Choose a timeframe</option>
-                {(props.timelineOptions ?? []).map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            ))}
+            {timelineOptions.length > 0
+              ? field('timeline', 'When do you want to start?', (c) => (
+                  <select {...c} defaultValue={value('timeline') ?? ''} className={`${controlClass} h-12 px-4`}>
+                    <option value="">Choose a timeframe</option>
+                    {timelineOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                ))
+              : null}
+            {referralOptions.length > 0
+              ? field('referralSource', 'How did you find us?', (c) => (
+                  <select {...c} defaultValue={value('referralSource') ?? ''} className={`${controlClass} h-12 px-4`}>
+                    <option value="">Choose one</option>
+                    {referralOptions.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                ))
+              : null}
           </div>
 
           <div className="mt-6">{messageField}</div>

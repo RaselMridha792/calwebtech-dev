@@ -9,7 +9,10 @@ import { expect, test, type Page } from '@playwright/test';
  * browser jumps on its own.
  */
 
-const PAGES = ['/lp/b2b-website-design/'];
+const PAGES = ['/', '/lp/b2b-website-design/'];
+
+// The homepage has about fifteen in-page targets, each glided to and settled in turn.
+test.describe.configure({ timeout: 120_000 });
 
 /** Resolves once the scroll position has not changed for ten frames. */
 async function settle(page: Page): Promise<void> {
@@ -38,6 +41,7 @@ interface Placement {
   headerBottom: number;
   viewportHeight: number;
   atMaxScroll: boolean;
+  atMinScroll: boolean;
 }
 
 async function placementOf(page: Page, id: string): Promise<Placement | null> {
@@ -56,6 +60,7 @@ async function placementOf(page: Page, id: string): Promise<Placement | null> {
           : 0,
       viewportHeight: window.innerHeight,
       atMaxScroll: Math.abs(window.scrollY - maxScroll) < 2,
+      atMinScroll: window.scrollY < 2,
     };
   }, id);
 }
@@ -64,8 +69,11 @@ function expectLandedOn(id: string, placement: Placement | null): void {
   expect(placement, `#${id} exists`).not.toBeNull();
   if (!placement) return;
   // Near the bottom of the page the browser cannot scroll far enough; only then may the
-  // target sit lower than its scroll-margin.
-  if (!placement.atMaxScroll) {
+  // target sit lower than its scroll-margin. Near the top it cannot scroll above zero, so a
+  // target that starts within its scroll-margin of the page top (the skip link target on
+  // small screens, where main starts under a 76px header) may sit higher, never lower.
+  const pinnedAtTop = placement.atMinScroll && placement.top <= placement.scrollMarginTop;
+  if (!placement.atMaxScroll && !pinnedAtTop) {
     expect(Math.abs(placement.top - placement.scrollMarginTop), `#${id} lands at its scroll-margin`).toBeLessThanOrEqual(2);
   }
   expect(placement.top, `#${id} is not hidden under the sticky header`).toBeGreaterThanOrEqual(placement.headerBottom - 1);
@@ -120,7 +128,7 @@ for (const path of PAGES) {
     test('a cold deep link to every section id lands on it', async ({ page }) => {
       await page.goto(path);
       const ids = await page.locator('main [id]').evaluateAll((elements) =>
-        elements.filter((el) => el.tagName === 'SECTION' || el.id === 'form').map((el) => el.id),
+        elements.filter((el) => el.tagName === 'SECTION' || el.id === 'form' || el.id === 'quote').map((el) => el.id),
       );
       expect(ids.length).toBeGreaterThan(0);
       for (const id of ids) {

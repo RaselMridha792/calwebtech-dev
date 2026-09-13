@@ -24,6 +24,7 @@ const ECHOED_FIELDS = [
   'siteUrl',
   'budgetBand',
   'timeline',
+  'referralSource',
   'message',
 ];
 

@@ -3,6 +3,7 @@ import path from 'node:path';
 import { createPrismaClient, type Prisma } from '@calwebtech/db';
 import {
   SETTING_KEYS,
+  homepageIndexingSchema,
   leadNotificationRecipientsSchema,
   siteContactSchema,
   siteProofSchema,
@@ -24,6 +25,7 @@ const SCHEMAS: Record<string, z.ZodType> = {
   [SETTING_KEYS.contact]: siteContactSchema,
   [SETTING_KEYS.proof]: siteProofSchema,
   [SETTING_KEYS.leadNotificationRecipients]: leadNotificationRecipientsSchema,
+  [SETTING_KEYS.homepageIndexing]: homepageIndexingSchema,
 };
 
 for (const candidate of ['.env', '../../.env']) {

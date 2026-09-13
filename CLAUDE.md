@@ -69,11 +69,13 @@ type is duplicated across apps, that is a bug.
 pnpm dev            # all apps in watch mode
 pnpm build          # type check, lint, build everything
 pnpm db:migrate     # prisma migrate dev
-pnpm db:seed        # seed content types with launch records
+pnpm db:seed        # placeholder content, safe on a reachable URL (never real proof)
+pnpm db:seed:fixtures  # proof-shaped end-to-end fixtures; local and CI only
 pnpm test           # unit tests
 pnpm test:integration  # Postgres, Redis, Turnstile test keys; needs the Compose dev overrides
 pnpm lh             # Lighthouse CI against the local build
-docker compose -f infra/docker-compose.yml up -d
+docker compose -f infra/docker-compose.yml -f infra/docker-compose.dev.yml --env-file .env up -d db redis
+bash infra/scripts/deploy.sh staging <sha>   # on the server, run by CI (docs/01)
 ```
 
 ## Conventions

@@ -1,0 +1,535 @@
+{
+  "indexable": false,
+  "content": {
+    "seo": {
+      "title": "Placeholder: Calwebtech homepage",
+      "description": "Placeholder description for the Calwebtech homepage. The approved copy replaces it before launch."
+    },
+    "utilityBar": {
+      "serviceArea": "Placeholder service area"
+    },
+    "header": {
+      "primaryCta": {
+        "label": "Book a consultation",
+        "href": "#book"
+      },
+      "secondaryCta": {
+        "label": "Instant estimate",
+        "href": "#estimate"
+      }
+    },
+    "megaMenu": {
+      "servicesPromo": {
+        "heading": "Placeholder estimate promo",
+        "body": "Placeholder. The approved copy introduces the cost estimate.",
+        "cta": {
+          "label": "Get an instant estimate",
+          "href": "#estimate"
+        }
+      }
+    },
+    "hero": {
+      "eyebrow": "Placeholder eyebrow",
+      "heading": "Placeholder homepage headline, closing with",
+      "headingEmphasis": "an emphasised phrase.",
+      "intro": "Placeholder introduction. The approved homepage copy replaces this text before the site is published.",
+      "primaryCta": {
+        "label": "See our work",
+        "href": "#work"
+      },
+      "secondaryCta": {
+        "label": "Or get an instant estimate",
+        "href": "#estimate"
+      },
+      "form": {
+        "heading": "Request a quote",
+        "subheading": "Placeholder form subheading.",
+        "submitLabel": "Send my request",
+        "footnote": null
+      },
+      "background": {
+        "poster": null,
+        "videoUrl": null
+      }
+    },
+    "formSuccess": {
+      "heading": "Thanks. Your request is with us.",
+      "body": "We will reply to you by email."
+    },
+    "clients": {
+      "label": "Placeholder client list label"
+    },
+    "capability": {
+      "heading": "Placeholder capability heading",
+      "bullets": [
+        "Placeholder capability one",
+        "Placeholder capability two",
+        "Placeholder capability three"
+      ],
+      "body": "Placeholder. The approved copy describes how the team works with clients.",
+      "primaryCta": {
+        "label": "See our work",
+        "href": "#work"
+      },
+      "showreel": null,
+      "background": {
+        "poster": null,
+        "videoUrl": null
+      }
+    },
+    "problemRouter": {
+      "heading": "Placeholder problem router heading",
+      "intro": "Placeholder. The approved copy invites visitors to pick the problem closest to theirs.",
+      "cta": {
+        "label": "Talk it through with us",
+        "href": "#book"
+      }
+    },
+    "services": {
+      "heading": "Placeholder services heading"
+    },
+    "work": {
+      "heading": "Placeholder case studies heading",
+      "intro": "Placeholder. Published case studies appear here.",
+      "empty": "No case studies are published yet."
+    },
+    "midCta": {
+      "eyebrow": "Placeholder band eyebrow",
+      "heading": "Placeholder call to action",
+      "primaryCta": {
+        "label": "Request a quote",
+        "href": "#quote"
+      },
+      "secondaryCta": {
+        "label": "Get an instant estimate",
+        "href": "#estimate"
+      }
+    },
+    "beforeAfter": {
+      "heading": "Placeholder comparison heading",
+      "intro": "Placeholder. A published before and after comparison appears here.",
+      "empty": "No before and after comparison is published yet."
+    },
+    "industries": {
+      "heading": "Placeholder industries heading",
+      "intro": "Placeholder. The approved copy introduces the industries served.",
+      "notListed": {
+        "heading": "Not listed here?",
+        "body": "Placeholder. The approved copy invites other industries to get in touch.",
+        "cta": {
+          "label": "Start the conversation",
+          "href": "#book"
+        }
+      }
+    },
+    "estimate": {
+      "badge": "Placeholder estimate badge",
+      "heading": "Placeholder estimate heading",
+      "intro": "Placeholder. The approved copy explains the cost estimate.",
+      "bullets": [],
+      "preview": {
+        "progressLabel": "Question preview",
+        "question": "How many pages will the new site need?",
+        "options": [
+          "Under 10",
+          "10 to 50",
+          "50 to 150",
+          "More than 150"
+        ]
+      },
+      "cta": {
+        "label": "Talk to us about cost",
+        "href": "#book"
+      }
+    },
+    "whyUs": {
+      "heading": "Placeholder reasons heading",
+      "items": [
+        {
+          "title": "Placeholder reason one",
+          "body": "Placeholder. The approved copy states a reason the client can back up."
+        },
+        {
+          "title": "Placeholder reason two",
+          "body": "Placeholder. The approved copy states a reason the client can back up."
+        },
+        {
+          "title": "Placeholder reason three",
+          "body": "Placeholder. The approved copy states a reason the client can back up."
+        },
+        {
+          "title": "Placeholder reason four",
+          "body": "Placeholder. The approved copy states a reason the client can back up."
+        },
+        {
+          "title": "Placeholder reason five",
+          "body": "Placeholder. The approved copy states a reason the client can back up."
+        },
+        {
+          "title": "Placeholder reason six",
+          "body": "Placeholder. The approved copy states a reason the client can back up."
+        }
+      ]
+    },
+    "technology": {
+      "heading": "Placeholder technology heading",
+      "intro": "Placeholder. The approved copy introduces the technology behind client projects.",
+      "empty": "No technology details are published yet."
+    },
+    "process": {
+      "heading": "Placeholder process heading",
+      "intro": "Placeholder. The approved copy introduces how a project runs."
+    },
+    "testimonials": {
+      "heading": "Placeholder client quotes heading",
+      "empty": "No client quotes are published yet."
+    },
+    "recognition": {
+      "eyebrow": "Placeholder recognition eyebrow",
+      "heading": "Placeholder recognition heading",
+      "empty": "Nothing is published here yet."
+    },
+    "insights": {
+      "heading": "Placeholder insights heading",
+      "empty": "No articles are published yet."
+    },
+    "whitepaper": {
+      "eyebrow": "Placeholder guide eyebrow",
+      "ctaLabel": "Download the guide"
+    },
+    "locations": {
+      "heading": "Placeholder locations heading",
+      "intro": "Placeholder. The approved copy describes where the business works.",
+      "empty": "No locations are published yet."
+    },
+    "pricing": {
+      "heading": "Placeholder pricing heading",
+      "intro": "Placeholder. The approved pricing copy replaces this text.",
+      "cta": {
+        "label": "Estimate your project",
+        "href": "#estimate"
+      }
+    },
+    "book": {
+      "heading": "Tell us about your project",
+      "intro": "Placeholder introduction for the consultation form.",
+      "points": [],
+      "submitLabel": "Book my consultation",
+      "footnote": "Placeholder form footnote.",
+      "serviceOptions": [
+        "New website",
+        "Redesign",
+        "Ecommerce",
+        "Web application",
+        "Search visibility",
+        "Care plan"
+      ],
+      "referralOptions": [
+        "Search engine",
+        "AI assistant",
+        "Referral",
+        "Social media",
+        "Somewhere else"
+      ]
+    },
+    "footer": {
+      "blurb": "Placeholder. The approved one-paragraph description of Calwebtech replaces this text.",
+      "resources": [
+        {
+          "label": "Cost estimate",
+          "href": "#estimate"
+        },
+        {
+          "label": "Insights",
+          "href": "#insights"
+        },
+        {
+          "label": "Process",
+          "href": "#process"
+        },
+        {
+          "label": "Before and after",
+          "href": "#beforeafter"
+        }
+      ],
+      "company": [
+        {
+          "label": "Recognition",
+          "href": "#awards"
+        },
+        {
+          "label": "Technology",
+          "href": "#tech"
+        },
+        {
+          "label": "Pricing",
+          "href": "#pricing"
+        },
+        {
+          "label": "Locations",
+          "href": "#locations"
+        },
+        {
+          "label": "Contact",
+          "href": "#book"
+        }
+      ],
+      "legal": [
+        {
+          "label": "Privacy policy",
+          "href": "/privacy-policy/"
+        },
+        {
+          "label": "Terms",
+          "href": "/terms/"
+        },
+        {
+          "label": "Cookie policy",
+          "href": "/cookie-policy/"
+        },
+        {
+          "label": "Accessibility",
+          "href": "/accessibility/"
+        }
+      ]
+    },
+    "floatingCta": {
+      "label": "Start a project",
+      "href": "#book"
+    }
+  },
+  "contact": {
+    "phone": "+1 (555) 010-0100",
+    "phoneE164": "+15550100100",
+    "email": "hello@example.com"
+  },
+  "reviews": {
+    "averageRating": null,
+    "totalReviews": 0,
+    "sources": [],
+    "npsScore": null
+  },
+  "statistics": [],
+  "clients": [],
+  "serviceGroups": [
+    {
+      "name": "Design and build",
+      "services": [
+        {
+          "slug": "website-design",
+          "title": "Website design"
+        },
+        {
+          "slug": "web-applications",
+          "title": "Web applications"
+        },
+        {
+          "slug": "ecommerce",
+          "title": "Ecommerce"
+        }
+      ]
+    },
+    {
+      "name": "Growth and care",
+      "services": [
+        {
+          "slug": "automation",
+          "title": "Automation"
+        },
+        {
+          "slug": "search-visibility",
+          "title": "Search visibility"
+        },
+        {
+          "slug": "care-plans",
+          "title": "Care plans"
+        }
+      ]
+    }
+  ],
+  "services": [
+    {
+      "slug": "website-design",
+      "title": "Website design",
+      "summary": "Placeholder description of this service.",
+      "deliverables": [
+        "Placeholder deliverable one",
+        "Placeholder deliverable two",
+        "Placeholder deliverable three"
+      ]
+    },
+    {
+      "slug": "web-applications",
+      "title": "Web applications",
+      "summary": "Placeholder description of this service.",
+      "deliverables": [
+        "Placeholder deliverable one",
+        "Placeholder deliverable two",
+        "Placeholder deliverable three"
+      ]
+    },
+    {
+      "slug": "ecommerce",
+      "title": "Ecommerce",
+      "summary": "Placeholder description of this service.",
+      "deliverables": [
+        "Placeholder deliverable one",
+        "Placeholder deliverable two",
+        "Placeholder deliverable three"
+      ]
+    },
+    {
+      "slug": "automation",
+      "title": "Automation",
+      "summary": "Placeholder description of this service.",
+      "deliverables": [
+        "Placeholder deliverable one",
+        "Placeholder deliverable two",
+        "Placeholder deliverable three"
+      ]
+    },
+    {
+      "slug": "search-visibility",
+      "title": "Search visibility",
+      "summary": "Placeholder description of this service.",
+      "deliverables": [
+        "Placeholder deliverable one",
+        "Placeholder deliverable two",
+        "Placeholder deliverable three"
+      ]
+    },
+    {
+      "slug": "care-plans",
+      "title": "Care plans",
+      "summary": "Placeholder description of this service.",
+      "deliverables": [
+        "Placeholder deliverable one",
+        "Placeholder deliverable two",
+        "Placeholder deliverable three"
+      ]
+    }
+  ],
+  "industries": [
+    {
+      "slug": "manufacturing",
+      "name": "Manufacturing",
+      "line": "Placeholder description for this industry."
+    },
+    {
+      "slug": "distribution",
+      "name": "Distribution",
+      "line": "Placeholder description for this industry."
+    },
+    {
+      "slug": "software",
+      "name": "Software",
+      "line": "Placeholder description for this industry."
+    },
+    {
+      "slug": "healthcare",
+      "name": "Healthcare",
+      "line": "Placeholder description for this industry."
+    },
+    {
+      "slug": "real-estate",
+      "name": "Real estate",
+      "line": "Placeholder description for this industry."
+    },
+    {
+      "slug": "hospitality",
+      "name": "Hospitality",
+      "line": "Placeholder description for this industry."
+    },
+    {
+      "slug": "education",
+      "name": "Education",
+      "line": "Placeholder description for this industry."
+    }
+  ],
+  "problemRouter": [
+    {
+      "id": "cmu005sl4000okgvoy412it4f",
+      "question": "Placeholder problem one",
+      "answer": "Placeholder answer. The approved copy describes what the team would do about this problem."
+    },
+    {
+      "id": "cmu005sl4000pkgvoe5igcqz4",
+      "question": "Placeholder problem two",
+      "answer": "Placeholder answer. The approved copy describes what the team would do about this problem."
+    },
+    {
+      "id": "cmu005sl4000qkgvo2quikvn4",
+      "question": "Placeholder problem three",
+      "answer": "Placeholder answer. The approved copy describes what the team would do about this problem."
+    },
+    {
+      "id": "cmu005sl4000rkgvollk0dc7y",
+      "question": "Placeholder problem four",
+      "answer": "Placeholder answer. The approved copy describes what the team would do about this problem."
+    }
+  ],
+  "projects": [],
+  "pullQuote": null,
+  "beforeAfter": null,
+  "technologyGroups": [],
+  "processSteps": [
+    {
+      "title": "Discovery",
+      "timing": "Timing to confirm",
+      "summary": "Placeholder summary of the discovery stage."
+    },
+    {
+      "title": "Design",
+      "timing": "Timing to confirm",
+      "summary": "Placeholder summary of the design stage."
+    },
+    {
+      "title": "Build",
+      "timing": "Timing to confirm",
+      "summary": "Placeholder summary of the build stage."
+    },
+    {
+      "title": "Testing",
+      "timing": "Timing to confirm",
+      "summary": "Placeholder summary of the testing stage."
+    },
+    {
+      "title": "Launch",
+      "timing": "Timing to confirm",
+      "summary": "Placeholder summary of the launch stage."
+    }
+  ],
+  "testimonials": [],
+  "awards": [],
+  "expertise": [
+    "Website design",
+    "Web applications",
+    "Ecommerce",
+    "Automation",
+    "Search visibility",
+    "Care plans"
+  ],
+  "posts": [],
+  "guide": null,
+  "locations": [],
+  "pricingTiers": [
+    {
+      "name": "Placeholder tier one",
+      "priceLabel": "Price to confirm",
+      "summary": "Placeholder. Scope and price are set with the client before launch.",
+      "highlighted": false
+    },
+    {
+      "name": "Placeholder tier two",
+      "priceLabel": "Price to confirm",
+      "summary": "Placeholder. Scope and price are set with the client before launch.",
+      "highlighted": true
+    },
+    {
+      "name": "Placeholder tier three",
+      "priceLabel": "Price to confirm",
+      "summary": "Placeholder. Scope and price are set with the client before launch.",
+      "highlighted": false
+    }
+  ]
+}

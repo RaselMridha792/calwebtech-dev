@@ -80,9 +80,15 @@ export function AnchorScroll() {
       if (event.defaultPrevented || event.button !== 0) return;
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       if (!(event.target instanceof Element)) return;
-      const hash = event.target.closest('a[href^="#"]')?.getAttribute('href') ?? '';
+      const link = event.target.closest('a[href^="#"]');
+      const hash = link?.getAttribute('href') ?? '';
       const target = hash.length > 1 ? document.getElementById(hash.slice(1)) : null;
       if (!target) return;
+
+      // Following a link closes the menu it sits in: the small-screen menu (<details>), and
+      // the mega menus, which stay open while focus is inside them.
+      link?.closest('details[open]')?.removeAttribute('open');
+      if (link instanceof HTMLElement && link.closest('[data-menu]')) link.blur();
 
       if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
         // The browser's instant jump runs straight after this handler.

@@ -40,7 +40,7 @@ export function SolutionSection({ solution }: { solution: Content['solution'] })
   return (
     <section className="content-auto bg-white py-20 lg:py-28">
       <div className="shell-narrow grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
-        <div className="order-2 lg:order-1 lg:col-span-6">
+        <div className={solution.image ? 'order-2 lg:order-1 lg:col-span-6' : 'lg:col-span-8'}>
           <h2 className={`${h2} max-w-[18ch]`} {...reveal()}>
             {solution.heading}
           </h2>
@@ -61,17 +61,19 @@ export function SolutionSection({ solution }: { solution: Content['solution'] })
             ))}
           </ol>
         </div>
-        <div className="order-1 lg:order-2 lg:col-span-6" {...reveal(1)}>
-          <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-media ring-1 ring-line">
-            <ResponsiveImage
-              src={solution.image.src}
-              alt={solution.image.alt}
-              fill
-              sizes="(min-width: 1024px) 50vw, 100vw"
-              className="object-cover"
-            />
+        {solution.image ? (
+          <div className="order-1 lg:order-2 lg:col-span-6" {...reveal(1)}>
+            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-media ring-1 ring-line">
+              <ResponsiveImage
+                src={solution.image.src}
+                alt={solution.image.alt}
+                fill
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                className="object-cover"
+              />
+            </div>
           </div>
-        </div>
+        ) : null}
       </div>
     </section>
   );

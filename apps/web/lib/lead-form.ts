@@ -40,6 +40,7 @@ export function leadSubmissionFromForm(
     siteUrl: field(form, 'siteUrl'),
     budgetBand: field(form, 'budgetBand'),
     timeline: field(form, 'timeline'),
+    referralSource: field(form, 'referralSource'),
     serviceInterest: form.getAll('serviceInterest').filter((value) => typeof value === 'string'),
     message: field(form, 'message'),
     landingPageSlug: field(form, 'landingPageSlug'),

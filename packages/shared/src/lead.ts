@@ -101,6 +101,7 @@ export const leadSubmissionSchema = z.object({
   siteUrl: siteUrlSchema,
   budgetBand: z.preprocess(blankToUndefined, z.enum(BUDGET_BAND_VALUES).optional()),
   timeline: z.preprocess(blankToUndefined, z.enum(START_TIMELINE_VALUES).optional()),
+  referralSource: optionalText(80),
   serviceInterest: z.array(z.string().trim().min(1).max(80)).max(12).default([]),
   message: optionalText(4000),
   landingPageSlug: z.preprocess(blankToUndefined, slugSchema.optional()),

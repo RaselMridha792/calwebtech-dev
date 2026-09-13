@@ -51,7 +51,7 @@ export const landingPageContentSchema = z.object({
   solution: z.object({
     heading: text(160),
     steps: z.array(titledItemSchema).min(1).max(4),
-    image: imageSchema,
+    image: imageSchema.nullable(),
   }),
   services: sectionIntroSchema.extend({ items: z.array(titledItemSchema).max(6) }),
   results: sectionIntroSchema.extend({ ctaLabel: text(40) }),

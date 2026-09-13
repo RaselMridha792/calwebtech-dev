@@ -41,12 +41,12 @@ export interface LandingPageSources {
   pricingTiers: PricingTier[];
 }
 
-const outcomeMetricsSchema = z.array(z.object({ value: z.string(), label: z.string() }));
-const beforeAfterMetricsSchema = z.array(
+export const outcomeMetricsSchema = z.array(z.object({ value: z.string(), label: z.string() }));
+export const beforeAfterMetricsSchema = z.array(
   z.object({ label: z.string(), before: z.string(), after: z.string() }),
 );
 
-function image(src: string | null, alt: string | null): Image | null {
+export function image(src: string | null, alt: string | null): Image | null {
   return src && alt ? { src, alt } : null;
 }
 

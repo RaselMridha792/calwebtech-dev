@@ -1,5 +1,6 @@
 import type { Prisma } from '@calwebtech/db';
 import {
+  SETTING_KEYS,
   acknowledgementSchema,
   type Acknowledgement,
   type BotCheckFailedResponse,
@@ -20,7 +21,10 @@ export const DEFAULT_ACKNOWLEDGEMENT: Acknowledgement = {
   body: 'Someone from our team will reply to you by email.',
 };
 
-/** The campaign page's on-screen success copy, so the email repeats what the visitor saw. */
+/**
+ * The on-screen success copy of the campaign page, or of the homepage (the `home.content`
+ * setting) for its forms, so the email repeats what the visitor saw.
+ */
 function acknowledgementFrom(content: unknown): Acknowledgement {
   const formSuccess =
     typeof content === 'object' && content !== null && 'formSuccess' in content ? content.formSuccess : undefined;
@@ -66,6 +70,11 @@ export class LeadsService {
           select: { id: true, content: true },
         })
       : null;
+    // Homepage forms have no campaign page; their success copy lives in the homepage setting.
+    const homeContent =
+      !landingPage && input.formId.startsWith('home-')
+        ? await db.setting.findUnique({ where: { key: SETTING_KEYS.homeContent }, select: { value: true } })
+        : null;
 
     const lead = await db.$transaction(async (tx) => {
       const contact = await tx.contact.upsert({
@@ -93,6 +102,7 @@ export class LeadsService {
           message: input.message,
           budgetBand: input.budgetBand,
           timeline: input.timeline,
+          referralSource: input.referralSource,
           siteUrl: input.siteUrl,
           serviceInterest: input.serviceInterest,
           contactId: contact.id,
@@ -121,7 +131,7 @@ export class LeadsService {
       this.logger.warn(`Lead ${lead.id} stored without a Turnstile verdict`);
     }
 
-    await this.queueEmails(input, lead, acknowledgementFrom(landingPage?.content));
+    await this.queueEmails(input, lead, acknowledgementFrom(landingPage?.content ?? homeContent?.value));
     return { status: 'received' };
   }
 
