@@ -1,0 +1,78 @@
+@import 'tailwindcss';
+@import '@calwebtech/config/tailwind/theme.css';
+
+@layer base {
+  body {
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+
+  /* Focus ring is a requirement, not a default. Never remove it. */
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+}
+
+/* Card hover. Uses `translate`, not `transform`, so it composes with the reveal. */
+@utility lift {
+  transition:
+    translate 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+  &:hover {
+    translate: 0 -4px;
+    box-shadow: var(--shadow-hover);
+    border-color: var(--color-ink);
+  }
+}
+
+/*
+ * Scroll reveal. `js-motion` is set on <html> by an inline script before first
+ * paint, so content is only hidden when the observer is guaranteed to run.
+ * Opacity and transform only: nothing here can shift layout. The delay applies
+ * to the reveal alone, never to the hover lift.
+ */
+.js-motion [data-reveal] {
+  --reveal-delay: calc(var(--reveal-step, 0) * 80ms);
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.6s var(--ease-out-soft) var(--reveal-delay),
+    transform 0.6s var(--ease-out-soft) var(--reveal-delay),
+    translate 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+.js-motion [data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js-motion [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,33 +1,63 @@
 # Images are built HERE, never on the VPS. A Next.js build on a 4GB box is the
 # known out-of-memory failure this pipeline exists to prevent.
+#
+# Pull requests run verify and build the images without pushing them.
+# Pushes to main also push the images to GHCR and, once enabled, deploy.
 name: release
 
 on:
+  pull_request:
+    branches: [main]
   push:
     branches: [main]
 
 concurrency:
-  group: release
-  cancel-in-progress: false
+  group: release-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   verify:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: calwebtech
+          POSTGRES_PASSWORD: calwebtech
+          POSTGRES_DB: calwebtech
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U calwebtech"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+    env:
+      DATABASE_URL: postgresql://calwebtech:calwebtech@localhost:5432/calwebtech
+      API_INTERNAL_URL: http://localhost:4000
+      APP_ORIGIN: http://localhost:3000
     steps:
       - uses: actions/checkout@v4
+      # Version comes from the packageManager field in package.json.
       - uses: pnpm/action-setup@v4
-        with: { version: 9 }
       - uses: actions/setup-node@v4
         with: { node-version: 22, cache: pnpm }
       - run: pnpm install --frozen-lockfile
-      - run: pnpm typecheck
-      - run: pnpm lint
+      - name: Type check, lint and build
+        run: pnpm build
       - run: pnpm test
-      - run: pnpm build
+      - name: Migrate and seed the CI database
+        run: pnpm db:deploy && pnpm db:seed
       - name: Lighthouse budget gate
         run: pnpm lh
-        # Fails the build below 90 on any category, or if LCP/INP/CLS breach
-        # the budget in CLAUDE.md. This gate is not advisory.
+        # Fails below 90 on any category, or when LCP, CLS, Total Blocking Time (the
+        # INP lab proxy) or initial JS breach the budget in CLAUDE.md. Not advisory.
+      - name: Keep Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse
+          path: .lighthouseci
+          if-no-files-found: ignore
 
   build:
     needs: verify
@@ -35,36 +65,42 @@ jobs:
     permissions: { contents: read, packages: write }
     steps:
       - uses: actions/checkout@v4
+      - name: Image names (GHCR requires lowercase)
+        run: echo "IMAGE_PREFIX=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_ENV"
       - uses: docker/setup-buildx-action@v3
       - uses: docker/login-action@v3
+        if: github.event_name == 'push'
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and push web
+      - name: Build web
         uses: docker/build-push-action@v6
         with:
           context: .
           file: apps/web/Dockerfile
-          push: true
-          tags: ghcr.io/${{ github.repository }}-web:${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-      - name: Build and push api
+          push: ${{ github.event_name == 'push' }}
+          tags: ${{ env.IMAGE_PREFIX }}-web:${{ github.sha }}
+          cache-from: type=gha,scope=web
+          cache-to: type=gha,mode=max,scope=web
+      - name: Build api
         uses: docker/build-push-action@v6
         with:
           context: .
           file: apps/api/Dockerfile
-          push: true
-          tags: ghcr.io/${{ github.repository }}-api:${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          push: ${{ github.event_name == 'push' }}
+          tags: ${{ env.IMAGE_PREFIX }}-api:${{ github.sha }}
+          cache-from: type=gha,scope=api
+          cache-to: type=gha,mode=max,scope=api
 
   deploy:
     needs: build
+    # Off until the VPS exists. To enable, set the repository variable
+    # DEPLOY_ENABLED=true and the VPS_HOST, VPS_USER and VPS_SSH_KEY secrets.
+    if: github.event_name == 'push' && vars.DEPLOY_ENABLED == 'true'
     runs-on: ubuntu-latest
     steps:
-      - name: Migrate, roll out, smoke test, rollback on failure
+      - name: Pull, migrate, roll out, smoke test, roll back on failure
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VPS_HOST }}
@@ -73,16 +109,16 @@ jobs:
           script: |
             set -euo pipefail
             cd /srv/calwebtech
-            PREVIOUS=$(grep '^TAG=' .env | cut -d= -f2 || echo latest)
-            echo "TAG=${{ github.sha }}" > .tag
-            # migrations run as a one-off container before the new version starts
-            docker compose -f infra/docker-compose.yml run --rm api node dist/migrate.js
+            COMPOSE="docker compose --env-file .env -f infra/docker-compose.yml"
+            PREVIOUS=$(grep '^TAG=' .env | cut -d= -f2 || true)
+            # Point at the new images first, so the migration runs from the new code.
             sed -i "s/^TAG=.*/TAG=${{ github.sha }}/" .env
-            docker compose -f infra/docker-compose.yml pull web api worker
-            docker compose -f infra/docker-compose.yml up -d --wait web api worker
+            $COMPOSE pull web api worker
+            $COMPOSE run --rm api node dist/migrate.js
+            $COMPOSE up -d --wait web api worker
             ./infra/scripts/smoke.sh || {
               echo "smoke failed, rolling back to $PREVIOUS"
               sed -i "s/^TAG=.*/TAG=$PREVIOUS/" .env
-              docker compose -f infra/docker-compose.yml up -d --wait web api worker
+              $COMPOSE up -d --wait web api worker
               exit 1
             }

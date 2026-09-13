@@ -1,0 +1,9 @@
+# Normalise to LF in the repo. Shell scripts and Dockerfiles run inside Linux
+# containers and break with CRLF.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.webp binary
+*.avif binary
+*.ico binary
+*.mp4 binary

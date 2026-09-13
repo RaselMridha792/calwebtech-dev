@@ -1,0 +1,7 @@
+{
+  "extends": "@calwebtech/config/tsconfig/node.json",
+  "compilerOptions": {
+    "outDir": "dist"
+  },
+  "include": ["src", "prisma", "prisma.config.ts"]
+}

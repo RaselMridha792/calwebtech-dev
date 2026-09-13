@@ -1,0 +1,17 @@
+**/node_modules
+**/.next
+**/.next-analyze
+**/dist
+**/coverage
+**/*.tsbuildinfo
+packages/db/src/generated
+.git
+.github
+.lighthouseci
+.env
+.env.*
+!.env.example
+docs
+reference
+infra/letsencrypt
+infra/backups
