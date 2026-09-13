@@ -1,0 +1,38 @@
+{
+  "name": "@calwebtech/emails",
+  "version": "0.0.0",
+  "private": true,
+  "description": "React Email templates. The worker renders them to HTML and plain text.",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "node -e \"fs.rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.build.json",
+    "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@calwebtech/shared": "workspace:*",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "react-email": "6.9.5"
+  },
+  "devDependencies": {
+    "@calwebtech/config": "workspace:*",
+    "@types/node": "22.20.2",
+    "@types/react": "^19",
+    "eslint": "9.39.5",
+    "typescript": "5.9.3",
+    "vitest": "4.1.11"
+  }
+}

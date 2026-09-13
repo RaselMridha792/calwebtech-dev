@@ -71,6 +71,7 @@ pnpm build          # type check, lint, build everything
 pnpm db:migrate     # prisma migrate dev
 pnpm db:seed        # seed content types with launch records
 pnpm test           # unit tests
+pnpm test:integration  # Postgres, Redis, Turnstile test keys; needs the Compose dev overrides
 pnpm lh             # Lighthouse CI against the local build
 docker compose -f infra/docker-compose.yml up -d
 ```

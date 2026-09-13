@@ -1,9 +1,10 @@
 'use client';
 
-import { useActionState, useEffect, useRef, type ReactNode } from 'react';
+import { useActionState, useEffect, useRef, useState, type ComponentProps, type ReactNode } from 'react';
 import { captureAttribution } from '@/lib/attribution-client';
 import { submitLead, type LeadFormState } from '@/lib/lead-actions';
 import { ShieldIcon } from '../ui/icons';
+import { TURNSTILE_FIELD, useTurnstile } from './use-turnstile';
 
 interface Option {
   value: string;
@@ -24,7 +25,12 @@ export interface LeadFormProps {
   assurances?: readonly string[];
   footnote?: string;
   className?: string;
+  /** Cloudflare Turnstile site key. Without one the form posts no token and the API refuses it. */
+  turnstileSiteKey?: string;
 }
+
+const CHECK_PROBLEM =
+  'We could not run the security check. Check your connection and try again, or call us.';
 
 const initialState: LeadFormState = { status: 'idle' };
 
@@ -82,9 +88,44 @@ export function LeadForm(props: LeadFormProps) {
   const attributionRef = useRef<HTMLInputElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const successRef = useRef<HTMLDivElement>(null);
+  const {
+    containerRef: turnstileContainerRef,
+    prepare: prepareTurnstile,
+    waitForToken,
+    remove: removeTurnstile,
+    reset: resetTurnstile,
+  } = useTurnstile(props.turnstileSiteKey, formId);
+  const [verifying, setVerifying] = useState(false);
+  const [checkProblem, setCheckProblem] = useState<string | null>(null);
 
-  const recordAttribution = () => {
+  const startTurnstile = () => {
+    // Problems surface on submit, where the visitor can act on them.
+    prepareTurnstile().catch(() => undefined);
+  };
+
+  /**
+   * Holds the first submit until Turnstile has put a token in the form, then submits
+   * again. The second submit finds the token and goes to the server action.
+   */
+  const handleSubmit: NonNullable<ComponentProps<'form'>['onSubmit']> = (event) => {
     writeAttribution(attributionRef.current);
+    if (!props.turnstileSiteKey) return;
+    const form = event.currentTarget;
+    if (form.querySelector<HTMLInputElement>(`input[name="${TURNSTILE_FIELD}"]`)?.value) return;
+
+    event.preventDefault();
+    setCheckProblem(null);
+    setVerifying(true);
+    waitForToken(form).then(
+      () => {
+        setVerifying(false);
+        form.requestSubmit();
+      },
+      () => {
+        setVerifying(false);
+        setCheckProblem(CHECK_PROBLEM);
+      },
+    );
   };
 
   useEffect(() => {
@@ -92,11 +133,15 @@ export function LeadForm(props: LeadFormProps) {
   }, []);
 
   useEffect(() => {
-    if (state.status === 'success') successRef.current?.focus();
+    if (state.status === 'success') {
+      removeTurnstile();
+      successRef.current?.focus();
+    }
     if (state.status === 'error') {
+      resetTurnstile();
       formRef.current?.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
     }
-  }, [state]);
+  }, [state, removeTurnstile, resetTurnstile]);
 
   if (state.status === 'success') {
     return (
@@ -112,6 +157,8 @@ export function LeadForm(props: LeadFormProps) {
     );
   }
 
+  const alertMessage = checkProblem ?? (state.status === 'error' ? state.message : null);
+  const busy = pending || verifying;
   const errors = state.status === 'error' ? state.fieldErrors : {};
   const values = state.status === 'error' ? state.values : {};
   const value = (name: string) => {
@@ -163,23 +210,25 @@ export function LeadForm(props: LeadFormProps) {
     <form
       ref={formRef}
       action={formAction}
-      onSubmit={recordAttribution}
+      onSubmit={handleSubmit}
+      onFocus={startTurnstile}
+      onPointerDown={startTurnstile}
       noValidate
-      aria-busy={pending}
+      aria-busy={busy}
       className={hero ? 'space-y-4 p-7' : props.className}
     >
       <input type="hidden" name="type" value="PROJECT" />
       <input type="hidden" name="formId" value={formId} />
       <input type="hidden" name="landingPageSlug" value={props.landingPageSlug} />
       <input ref={attributionRef} type="hidden" name="attribution" defaultValue="" />
-      <div className="absolute -left-[10000px] h-px w-px overflow-hidden" aria-hidden="true">
+      <div className="absolute left-[-10000px] h-px w-px overflow-hidden" aria-hidden="true">
         <label htmlFor={`${formId}-reference`}>Reference code</label>
         <input id={`${formId}-reference`} type="text" name="referenceCode" tabIndex={-1} autoComplete="off" defaultValue="" />
       </div>
 
-      {state.status === 'error' ? (
+      {alertMessage ? (
         <p role="alert" className="text-[14px] font-medium text-danger">
-          {state.message}
+          {alertMessage}
         </p>
       ) : null}
 
@@ -248,16 +297,19 @@ export function LeadForm(props: LeadFormProps) {
         </>
       )}
 
+      {/* Turnstile renders here, and stays invisible unless it needs the visitor. */}
+      <div ref={turnstileContainerRef} className="empty:hidden" />
+
       <button
         type="submit"
-        disabled={pending}
+        disabled={busy}
         className={
           hero
             ? 'h-14 w-full rounded-xl bg-primary text-[16px] font-semibold text-white shadow-cta hover:bg-primaryd disabled:opacity-70'
             : 'mt-7 inline-flex h-14 w-full items-center justify-center rounded-xl bg-primary px-8 text-[16px] font-semibold text-white hover:bg-primaryd disabled:opacity-70 sm:w-auto'
         }
       >
-        {pending ? 'Sending…' : props.submitLabel}
+        {busy ? 'Sending…' : props.submitLabel}
       </button>
 
       {hero && props.assurances && props.assurances.length > 0 ? (

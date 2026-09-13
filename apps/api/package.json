@@ -11,7 +11,8 @@
     "start": "node dist/main.js",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
-    "test": "vitest run"
+    "test": "vitest run --exclude \"**/*.integration.test.ts\"",
+    "test:integration": "vitest run integration"
   },
   "dependencies": {
     "@calwebtech/db": "workspace:*",
@@ -20,6 +21,9 @@
     "@nestjs/core": "^11.1.0",
     "@nestjs/platform-express": "^11.1.0",
     "@nestjs/throttler": "6.5.0",
+    "bullmq": "6.3.4",
+    "ioredis": "6.0.0",
+    "prisma": "7.10.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "zod": "4.6.2"

@@ -107,6 +107,8 @@ export const leadSubmissionSchema = z.object({
   attribution: attributionSchema.default({}),
   /** Honeypot. Hidden from people; a value here means a bot filled the form. */
   referenceCode: z.string().max(500).optional(),
+  /** Cloudflare Turnstile token from the widget. The API verifies it before storing anything. */
+  turnstileToken: z.preprocess(blankToUndefined, z.string().max(2048).optional()),
 });
 
 export type LeadSubmissionInput = z.input<typeof leadSubmissionSchema>;
@@ -114,3 +116,7 @@ export type LeadSubmission = z.output<typeof leadSubmissionSchema>;
 
 export const leadReceivedSchema = z.object({ status: z.literal('received') });
 export type LeadReceived = z.infer<typeof leadReceivedSchema>;
+
+/** `POST /leads` answers 403 with this body when Turnstile rejects the submission. */
+export const botCheckFailedResponseSchema = z.object({ error: z.literal('bot_check_failed') });
+export type BotCheckFailedResponse = z.infer<typeof botCheckFailedResponseSchema>;

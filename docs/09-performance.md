@@ -34,19 +34,22 @@ React 19.2.8.
 | Part | `/lp/[campaign]` |
 |---|---|
 | Framework: React DOM, App Router runtime, Turbopack runtime | 139.3 kB |
-| **Own code** | **5.7 kB** |
+| **Own code** | **6.6 kB** |
 
 Own code on the landing page:
 
 | Module | Size |
 |---|---|
-| Lead form | 2.1 kB |
-| Process stepper | 1.0 kB |
+| Lead form, with the on-demand Turnstile loader | 2.8 kB |
+| Process stepper | 1.1 kB |
 | Before/after slider | 0.8 kB |
 | Anchor scroll | 0.7 kB |
-| Count-up | 0.4 kB |
+| Count-up | 0.5 kB |
 | Icons | 0.4 kB |
 | Reveal observer | 0.3 kB |
+
+Turnstile's own script (`challenges.cloudflare.com`) is not in these numbers and not in
+initial JS. It loads when a visitor first touches a form.
 
 With the framework at about 139 kB, roughly 11 kB of the 150 kB total is left for a
 route's own code. The 20 kB own-code gate is a ceiling, not an allowance; the total
@@ -72,6 +75,10 @@ gate binds first.
 - **Load heavy or below-the-fold widgets on interaction or visibility.** That covers the
   cost calculator, video modal and booking calendar, through `next/dynamic`, with a
   server-rendered fallback.
+- **Load third-party scripts on interaction, never at page load.** Turnstile loads when a
+  visitor first focuses or touches a form (`lib/turnstile-client.ts`), so it adds nothing
+  to initial JS, TBT or LCP. Load it from Cloudflare's own URL; Cloudflare does not
+  support a proxied or cached copy.
 - **Use `content-auto` on below-the-fold sections.**
   - It moved first paint from about 0.9s to 0.7s at 4x CPU, with no layout shift.
   - Never use it on the section that holds the LCP element.
