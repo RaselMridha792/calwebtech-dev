@@ -66,7 +66,6 @@ export function LandingHero({ hero, form }: { hero: Content['hero']; form: React
         <div className="absolute inset-0 bg-linear-to-t from-ink via-transparent to-ink/55" />
         <div className="glow-blue absolute inset-0 opacity-80" />
         <div className="glow-teal absolute inset-0" />
-        <div className="grid-lines-light absolute inset-0" />
       </div>
 
       <div className="shell-narrow relative grid items-start gap-12 pt-14 pb-16 lg:grid-cols-12 lg:gap-14 lg:pt-20 lg:pb-20">

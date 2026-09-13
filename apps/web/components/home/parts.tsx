@@ -1,4 +1,6 @@
 import type { Link } from '@calwebtech/shared';
+import type { ReactNode } from 'react';
+import { reveal } from '../ui/primitives';
 
 export const h2Dark = 'font-display text-[34px] leading-[1.1] font-extrabold text-ink lg:text-[42px]';
 export const h2Light = 'font-display text-[34px] leading-[1.1] font-extrabold lg:text-[42px]';
@@ -32,7 +34,33 @@ export function TextLink({ link, className = '' }: { link: Link; className?: str
   );
 }
 
+/** A section's heading block, with its "see all" link at the right when one is set. */
+export function SectionHead({
+  link,
+  className = '',
+  children,
+}: {
+  link: Link | null;
+  className?: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className={`flex flex-wrap items-end justify-between gap-6 ${className}`} {...reveal()}>
+      <div>{children}</div>
+      {link ? <TextLink link={link} /> : null}
+    </div>
+  );
+}
+
 /** "Role, Company" when either is known. */
 export function byline(role: string | null, company: string | null): string {
   return [role, company].filter((part): part is string => Boolean(part)).join(', ');
+}
+
+/**
+ * A metric label as it reads after a client name or figure: "Quote requests" becomes
+ * "quote requests", while "WCAG 2.2 verified" and "AA" keep their capitals.
+ */
+export function asPhrase(label: string): string {
+  return /^[A-Z][a-z]/.test(label) ? `${label.charAt(0).toLowerCase()}${label.slice(1)}` : label;
 }

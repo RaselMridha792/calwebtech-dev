@@ -5,14 +5,71 @@ import { CheckBullet, reveal } from '../ui/primitives';
 import { BackgroundVideo } from '../ui/background-video';
 import { BackdropImage } from '../ui/brand';
 import { ResponsiveImage } from '../ui/responsive-image';
-import { EmptyNote, TextLink, byline, h2Dark, h2Light } from './parts';
+import { EmptyNote, SectionHead, TextLink, byline, h2Dark, h2Light } from './parts';
 import { Showreel } from './showreel';
 
 type Content = HomePageContent;
 type Home = HomePageView;
 
+function LogoRow({ clients, duplicate }: { clients: Home['clients']; duplicate: boolean }) {
+  return (
+    <ul
+      className={`flex shrink-0 items-center gap-14 ${duplicate ? 'ml-14' : ''}`}
+      aria-hidden={duplicate ? true : undefined}
+    >
+      {clients.map((client) => (
+        <li key={client.name} className="shrink-0">
+          {client.logo ? (
+            <ResponsiveImage
+              src={client.logo.src}
+              alt={duplicate ? '' : client.logo.alt}
+              width={140}
+              height={32}
+              sizes="140px"
+              className="h-8 w-auto opacity-40 grayscale"
+            />
+          ) : (
+            // ink/50 keeps 3.3:1, the WCAG AA minimum for large bold text.
+            <span className="font-display text-[22px] font-bold whitespace-nowrap text-ink/50">{client.name}</span>
+          )}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/**
+ * Client names sliding past, under the hero. Moving content that starts on its own needs
+ * a way to stop it (WCAG 2.2.2): hover pauses it, and a checkbox that appears on keyboard
+ * focus holds it still. Reduced motion stops it. Nothing links here, so it renders nothing
+ * without clients.
+ */
+export function LogoBand({ label, clients }: { label: string; clients: Home['clients'] }) {
+  if (clients.length === 0) return null;
+  return (
+    <section
+      aria-label={label}
+      className="content-auto group relative overflow-hidden border-y border-line bg-white py-9"
+    >
+      <p className="shell mb-6 text-[13.5px]">{label}</p>
+      <input id="logo-band-pause" type="checkbox" className="peer sr-only" />
+      <label
+        htmlFor="logo-band-pause"
+        className="sr-only peer-focus-visible:not-sr-only peer-focus-visible:absolute peer-focus-visible:top-2 peer-focus-visible:right-6 peer-focus-visible:z-10 peer-focus-visible:rounded-lg peer-focus-visible:bg-ink peer-focus-visible:px-3 peer-focus-visible:py-2 peer-focus-visible:text-[13px] peer-focus-visible:font-semibold peer-focus-visible:text-white peer-focus-visible:outline-3 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary"
+      >
+        Pause the client names
+      </label>
+      <div className="flex w-max animate-marquee px-6 group-hover:[animation-play-state:paused] peer-checked:[animation-play-state:paused]">
+        <LogoRow clients={clients} duplicate={false} />
+        <LogoRow clients={clients} duplicate />
+      </div>
+    </section>
+  );
+}
+
 /** Video-backed band after the logo band, with the showreel when one is published. */
 export function CapabilityBand({ capability }: { capability: Content['capability'] }) {
+  if (!capability.enabled) return null;
   const { showreel } = capability;
   return (
     <section className="content-auto relative overflow-hidden bg-ink py-20 text-white lg:py-28">
@@ -91,9 +148,9 @@ export function ServicesGrid({ services, items }: { services: Content['services'
       <div className="grid-lines absolute inset-0 opacity-70" aria-hidden="true" />
       <div className="absolute -top-32 -right-24 h-[520px] w-[520px] rounded-full bg-primary/7 blur-3xl" aria-hidden="true" />
       <div className="shell relative">
-        <h2 className={`${h2Dark} mb-12 max-w-[16ch]`} {...reveal()}>
-          {services.heading}
-        </h2>
+        <SectionHead link={services.link} className="mb-12">
+          <h2 className={`${h2Dark} max-w-[16ch]`}>{services.heading}</h2>
+        </SectionHead>
         <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((service, index) => (
             <li
@@ -148,7 +205,32 @@ function Metrics({ metrics, lead }: { metrics: HomeProject['metrics']; lead: boo
   );
 }
 
-function LeadProject({ project, filterKey }: { project: HomeProject; filterKey: string }) {
+/** The case study page for a card, named for assistive technology among several alike. */
+function CaseStudyLink({ project, label, lead }: { project: HomeProject; label: string; lead: boolean }) {
+  return (
+    <a
+      href={`/work/${project.slug}/`}
+      className={
+        lead
+          ? 'mt-7 inline-flex h-12 items-center rounded-lg bg-ink px-6 font-semibold text-white hover:bg-ink2'
+          : 'mt-6 inline-block font-semibold text-primary hover:text-primaryd'
+      }
+    >
+      {label}
+      <span className="sr-only">{`: ${project.clientName}`}</span>
+    </a>
+  );
+}
+
+function LeadProject({
+  project,
+  filterKey,
+  caseStudyLabel,
+}: {
+  project: HomeProject;
+  filterKey: string;
+  caseStudyLabel: string | null;
+}) {
   const { quote } = project;
   const quoteByline = quote ? byline(quote.role, quote.company) : '';
   return (
@@ -177,18 +259,39 @@ function LeadProject({ project, filterKey }: { project: HomeProject; filterKey: 
         {quote ? (
           <figure className="mt-7 border-t border-line pt-6">
             <blockquote className="text-[15.5px] leading-relaxed text-ink">{`"${quote.quote}"`}</blockquote>
-            <figcaption className="mt-4 text-[14px]">
-              <b className="text-ink">{quote.clientName}</b>
-              {quoteByline ? `, ${quoteByline}` : null}
+            <figcaption className="mt-4 flex items-center gap-3 text-[14px]">
+              {quote.avatar ? (
+                <ResponsiveImage
+                  src={quote.avatar.src}
+                  alt=""
+                  width={40}
+                  height={40}
+                  sizes="40px"
+                  className="h-10 w-10 rounded-full object-cover"
+                />
+              ) : null}
+              <span>
+                <b className="text-ink">{quote.clientName}</b>
+                {quoteByline ? `, ${quoteByline}` : null}
+              </span>
             </figcaption>
           </figure>
         ) : null}
+        {caseStudyLabel ? <CaseStudyLink project={project} label={caseStudyLabel} lead /> : null}
       </div>
     </article>
   );
 }
 
-function ProjectCard({ project, filterKey }: { project: HomeProject; filterKey: string }) {
+function ProjectCard({
+  project,
+  filterKey,
+  caseStudyLabel,
+}: {
+  project: HomeProject;
+  filterKey: string;
+  caseStudyLabel: string | null;
+}) {
   return (
     <article data-work-filter={filterKey} className="overflow-hidden rounded-2xl border border-line">
       {project.image ? (
@@ -207,6 +310,7 @@ function ProjectCard({ project, filterKey }: { project: HomeProject; filterKey: 
         <h3 className="mt-4 font-display text-[23px] font-extrabold text-ink">{project.clientName}</h3>
         <p className="mt-2.5 text-[15px] leading-relaxed">{project.summary}</p>
         <Metrics metrics={project.metrics} lead={false} />
+        {caseStudyLabel ? <CaseStudyLink project={project} label={caseStudyLabel} lead={false} /> : null}
       </div>
     </article>
   );
@@ -254,10 +358,10 @@ export function FeaturedWork({ work, projects }: { work: Content['work']; projec
   return (
     <section id="work" className="content-auto bg-white py-20 lg:py-28">
       <div className="shell">
-        <div className="mb-9" {...reveal()}>
+        <SectionHead link={work.link} className="mb-9">
           <h2 className={`${h2Dark} max-w-[20ch]`}>{work.heading}</h2>
           <p className="mt-4 max-w-[58ch] text-[17px] leading-relaxed">{work.intro}</p>
-        </div>
+        </SectionHead>
         {projects.length === 0 ? (
           <EmptyNote className="">{work.empty}</EmptyNote>
         ) : (
@@ -266,9 +370,19 @@ export function FeaturedWork({ work, projects }: { work: Content['work']; projec
             <div className="grid gap-6 lg:grid-cols-2">
               {projects.map((project, index) =>
                 index === 0 ? (
-                  <LeadProject key={project.slug} project={project} filterKey={filterKey(project)} />
+                  <LeadProject
+                    key={project.slug}
+                    project={project}
+                    filterKey={filterKey(project)}
+                    caseStudyLabel={work.caseStudyLabel}
+                  />
                 ) : (
-                  <ProjectCard key={project.slug} project={project} filterKey={filterKey(project)} />
+                  <ProjectCard
+                    key={project.slug}
+                    project={project}
+                    filterKey={filterKey(project)}
+                    caseStudyLabel={work.caseStudyLabel}
+                  />
                 ),
               )}
             </div>
@@ -317,6 +431,7 @@ export function PullQuote({ quote }: { quote: Home['pullQuote'] }) {
 }
 
 export function MidCta({ midCta }: { midCta: Content['midCta'] }) {
+  if (!midCta.enabled) return null;
   return (
     <section className="content-auto border-y border-line bg-white py-14 lg:py-16">
       <div className="shell flex flex-wrap items-center justify-between gap-8">
@@ -367,6 +482,7 @@ export function BeforeAfterHome({
   return (
     <section id="beforeafter" className="content-auto relative overflow-hidden bg-ink py-20 text-white lg:py-28">
       <div className="absolute inset-0" aria-hidden="true">
+        <BackdropImage image={beforeAfter.backgroundImage} className="opacity-[.16]" />
         <div className="absolute inset-0 bg-linear-to-r from-ink via-ink/92 to-ink/70" />
         <div className="glow-blue absolute inset-0 opacity-60" />
       </div>
@@ -386,6 +502,14 @@ export function BeforeAfterHome({
                 </div>
               ))}
             </dl>
+          ) : null}
+          {beforeAfter.cta ? (
+            <a
+              href={beforeAfter.cta.href}
+              className="mt-8 inline-flex h-12 items-center rounded-lg bg-white px-6 font-semibold text-ink hover:bg-mist"
+            >
+              {beforeAfter.cta.label}
+            </a>
           ) : null}
         </div>
         <div className="lg:col-span-8" {...reveal(1)}>
@@ -417,19 +541,34 @@ export function IndustriesGrid({
   return (
     <section id="industries" className="content-auto bg-white py-20 lg:py-28">
       <div className="shell">
-        <div className="mb-12" {...reveal()}>
+        <SectionHead link={industries.link} className="mb-12">
           <h2 className={`${h2Dark} max-w-[18ch]`}>{industries.heading}</h2>
           <p className="mt-4 max-w-[58ch] text-[17px] leading-relaxed">{industries.intro}</p>
-        </div>
+        </SectionHead>
         <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {items.map((industry, index) => (
             <li
               key={industry.slug}
-              className="relative flex min-h-44 flex-col justify-end overflow-hidden rounded-2xl bg-ink p-6 sm:aspect-[3/4]"
+              className={`relative flex flex-col justify-end overflow-hidden rounded-2xl bg-ink p-6 sm:aspect-3/4 ${industry.image ? 'min-h-60' : 'min-h-44'}`}
               {...reveal(index)}
             >
-              <div className="glow-blue absolute inset-0 opacity-60" aria-hidden="true" />
-              <div className="grid-lines-light absolute inset-0" aria-hidden="true" />
+              {industry.image ? (
+                <>
+                  <ResponsiveImage
+                    src={industry.image.src}
+                    alt={industry.image.alt}
+                    fill
+                    sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                    className="object-cover opacity-70"
+                  />
+                  <div className="absolute inset-0 bg-linear-to-t from-ink via-ink/40 to-transparent" aria-hidden="true" />
+                </>
+              ) : (
+                <>
+                  <div className="glow-blue absolute inset-0 opacity-60" aria-hidden="true" />
+                  <div className="grid-lines-light absolute inset-0" aria-hidden="true" />
+                </>
+              )}
               <h3 className="relative font-display text-[20px] font-bold text-white">{industry.name}</h3>
               {industry.line ? (
                 <p className="relative mt-1.5 text-[14px] leading-snug text-white/75">{industry.line}</p>
@@ -437,7 +576,7 @@ export function IndustriesGrid({
             </li>
           ))}
           <li
-            className="grid min-h-44 place-items-center rounded-2xl border border-line bg-mist p-6 text-center sm:aspect-[3/4]"
+            className="grid min-h-44 place-items-center rounded-2xl border border-line bg-mist p-6 text-center sm:aspect-3/4"
             {...reveal(items.length)}
           >
             <div>

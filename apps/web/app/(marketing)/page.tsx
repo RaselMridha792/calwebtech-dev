@@ -21,12 +21,12 @@ import {
   CapabilityBand,
   FeaturedWork,
   IndustriesGrid,
+  LogoBand,
   MidCta,
   ProblemRouter,
   PullQuote,
   ServicesGrid,
 } from '@/components/home/sections-top';
-import { TrustBar } from '@/components/landing/top';
 import { AnchorScroll } from '@/components/motion/anchor-scroll';
 import { RevealObserver } from '@/components/motion/reveal-observer';
 import { getHomePage } from '@/lib/api';
@@ -63,15 +63,15 @@ export default async function HomePage() {
         Skip to content
       </a>
 
-      <UtilityBar contact={home.contact} reviews={home.reviews} serviceArea={content.utilityBar.serviceArea} />
+      <UtilityBar contact={home.contact} reviews={home.reviews} utilityBar={content.utilityBar} />
       <SiteHeader home={home} />
 
       <main id="main">
         <HomeHero
           hero={content.hero}
           reviews={home.reviews}
-          awards={home.awards}
           statistics={home.statistics}
+          featured={home.projects[0] ?? null}
           form={
             <div className="overflow-hidden rounded-2xl bg-white text-ink shadow-form">
               <div className="border-b border-line bg-mist px-7 py-5">
@@ -91,7 +91,7 @@ export default async function HomePage() {
             </div>
           }
         />
-        <TrustBar label={content.clients.label} clients={home.clients} />
+        <LogoBand label={content.clients.label} clients={home.clients} />
         <CapabilityBand capability={content.capability} />
         <ProblemRouter problemRouter={content.problemRouter} faqs={home.problemRouter} />
         <ServicesGrid services={content.services} items={home.services} />
@@ -104,11 +104,17 @@ export default async function HomePage() {
         <WhyUs whyUs={content.whyUs} />
         <TechnologyProof technology={content.technology} groups={home.technologyGroups} />
         <ProcessTimeline process={content.process} steps={home.processSteps} />
-        <TestimonialsBand testimonials={content.testimonials} items={home.testimonials} reviews={home.reviews} />
+        <TestimonialsBand
+          testimonials={content.testimonials}
+          items={home.testimonials}
+          reviews={home.reviews}
+          video={home.videoTestimonial}
+          press={home.press}
+        />
         <Recognition recognition={content.recognition} awards={home.awards} expertise={home.expertise} />
+        <Insights insights={content.insights} posts={home.posts} />
         <Whitepaper whitepaper={content.whitepaper} guide={home.guide} />
         <Locations locations={content.locations} items={home.locations} />
-        <Insights insights={content.insights} posts={home.posts} />
         <PricingBands pricing={content.pricing} tiers={home.pricingTiers} />
         <BookSection
           book={content.book}

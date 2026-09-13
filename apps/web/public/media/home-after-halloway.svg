@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 550" width="880" height="550" role="img" aria-label="Halloway Group homepage after the redesign">
+  <defs>
+    <linearGradient id="photo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#eef3f9"/>
+      <stop offset="1" stop-color="#b9c7d6"/>
+    </linearGradient>
+    <clipPath id="photo-clip">
+      <rect x="532" y="80" width="320" height="112" rx="8"/>
+    </clipPath>
+  </defs>
+  <rect width="880" height="550" fill="#ffffff"/>
+
+  <rect x="28" y="34" width="24" height="24" rx="4" fill="#0a1d37"/>
+  <text x="40" y="50" fill="#ffffff" text-anchor="middle" font-family="'Plus Jakarta Sans', 'Segoe UI', Arial, sans-serif" font-size="10" font-weight="800">H</text>
+  <text x="64" y="50" fill="#0a1d37" font-family="'Plus Jakarta Sans', 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="800">Halloway</text>
+  <g fill="#dce4ee">
+    <rect x="148" y="43" width="40" height="6" rx="3"/>
+    <rect x="204" y="43" width="40" height="6" rx="3"/>
+    <rect x="260" y="43" width="40" height="6" rx="3"/>
+  </g>
+  <rect x="788" y="34" width="64" height="24" rx="6" fill="#1550e0"/>
+
+  <rect x="28" y="92" width="488" height="12" rx="3" fill="#0a1d37"/>
+  <rect x="28" y="114" width="390" height="12" rx="3" fill="#0a1d37"/>
+  <rect x="28" y="136" width="293" height="6" rx="3" fill="#c3cede"/>
+  <rect x="28" y="156" width="80" height="24" rx="6" fill="#1550e0"/>
+  <rect x="116" y="156" width="80" height="24" rx="6" fill="#dce4ee"/>
+
+  <g clip-path="url(#photo-clip)">
+    <rect x="532" y="80" width="320" height="112" fill="url(#photo)"/>
+    <g fill="#ffffff" fill-opacity="0.55">
+      <rect x="556" y="92" width="58" height="62" rx="2"/>
+      <rect x="626" y="92" width="58" height="62" rx="2"/>
+      <rect x="696" y="92" width="58" height="62" rx="2"/>
+      <rect x="766" y="92" width="58" height="62" rx="2"/>
+    </g>
+    <rect x="532" y="164" width="320" height="28" fill="#0a1d37" fill-opacity="0.18"/>
+  </g>
+
+  <g fill="#ffffff" stroke="#dce4ee">
+    <rect x="28.5" y="208.5" width="265" height="49" rx="8"/>
+    <rect x="307.5" y="208.5" width="265" height="49" rx="8"/>
+    <rect x="586.5" y="208.5" width="265" height="49" rx="8"/>
+  </g>
+  <g fill="#0e9f87" font-family="'Plus Jakarta Sans', 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="800">
+    <text x="39" y="232">+312%</text>
+    <text x="318" y="232">12 min</text>
+    <text x="597" y="232">−41%</text>
+  </g>
+  <g fill="#e4e9ee">
+    <rect x="39" y="240" width="185" height="6" rx="3"/>
+    <rect x="318" y="240" width="185" height="6" rx="3"/>
+    <rect x="597" y="240" width="185" height="6" rx="3"/>
+  </g>
+
+  <rect x="28.5" y="270.5" width="823" height="55" rx="8" fill="#f7fafd" stroke="#dce4ee"/>
+</svg>

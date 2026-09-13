@@ -1,4 +1,4 @@
-import type { Technology, Testimonial } from '@calwebtech/db';
+import { Prisma, type ReviewSource, type Technology, type Testimonial } from '@calwebtech/db';
 import { HOME_CONTENT, PLACEHOLDER_CONTACT } from '@calwebtech/db/seed';
 import { describe, expect, it } from 'vitest';
 import { ZodError } from 'zod';
@@ -207,5 +207,37 @@ describe('toHomePageView', () => {
       ZodError,
     );
     expect(() => toHomePageView(sources({ contentSetting: null }))).toThrow(ZodError);
+  });
+
+  it('carries each platform review count and the NPS sample size', () => {
+    const review = (platform: string, rating: number, reviewCount: number): ReviewSource => ({
+      id: platform,
+      platform,
+      rating: new Prisma.Decimal(rating),
+      reviewCount,
+      profileUrl: null,
+      refreshedAt: at,
+    });
+    const view = toHomePageView(
+      sources({
+        reviewSources: [review('Test platform A', 4.8, 12), review('Test platform B', 5, 30)],
+        proofSetting: { npsScore: 70, npsProjectCount: 9 },
+      }),
+    );
+    expect(view.reviews.sources).toEqual([
+      { platform: 'Test platform B', rating: 5, reviewCount: 30 },
+      { platform: 'Test platform A', rating: 4.8, reviewCount: 12 },
+    ]);
+    expect(view.reviews.npsProjectCount).toBe(9);
+  });
+
+  it('gives stored copy the defaults of fields added after the first release', () => {
+    const { content, press, videoTestimonial } = toHomePageView(sources());
+    expect(content.hero.media).toBeNull();
+    expect(content.capability.enabled).toBe(true);
+    expect(content.midCta.enabled).toBe(true);
+    expect(content.mobileMenu.groups).toEqual([]);
+    expect(press).toEqual([]);
+    expect(videoTestimonial).toBeNull();
   });
 });

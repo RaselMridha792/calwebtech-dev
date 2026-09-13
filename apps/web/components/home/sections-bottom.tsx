@@ -1,22 +1,25 @@
 import type { FinalPointIcon, HomePageContent, HomePageView } from '@calwebtech/shared';
 import type { ReactNode } from 'react';
+import { BackdropImage } from '../ui/brand';
 import { CalendarIcon, ShieldIcon, TickIcon } from '../ui/icons';
-import { PillBadge, Stars, reveal } from '../ui/primitives';
+import { PillBadge, reveal } from '../ui/primitives';
 import { ResponsiveImage } from '../ui/responsive-image';
-import { EmptyNote, byline, h2Dark, h2Light } from './parts';
+import { EmptyNote, SectionHead, byline, h2Dark, h2Light } from './parts';
+import { Showreel } from './showreel';
 
 type Content = HomePageContent;
 type Home = HomePageView;
 
 /**
  * The cost estimate band. Until the calculator ships (Task 4.1) the card is a static
- * preview of its first question, and the call to action goes to a person.
+ * preview of one question, and its button goes to a person rather than a next step.
  */
 export function EstimateBand({ estimate }: { estimate: Content['estimate'] }) {
   const { preview } = estimate;
   return (
     <section id="estimate" className="content-auto band-gradient relative overflow-hidden py-20 text-white lg:py-24">
       <div className="absolute inset-0" aria-hidden="true">
+        <BackdropImage image={estimate.backgroundImage} className="opacity-[.14] mix-blend-luminosity" />
         <div className="grid-lines-light absolute inset-0" />
         <div className="absolute -bottom-40 -left-20 h-[560px] w-[560px] rounded-full bg-glow-teal-25 blur-3xl" />
       </div>
@@ -35,37 +38,42 @@ export function EstimateBand({ estimate }: { estimate: Content['estimate'] }) {
               ))}
             </ul>
           ) : null}
-          <a
-            href={estimate.cta.href}
-            className="mt-9 inline-flex h-14 items-center rounded-xl bg-white px-7 font-semibold text-ink hover:bg-mist"
-          >
-            {estimate.cta.label}
-          </a>
         </div>
-        <figure className="lg:col-span-6" {...reveal(1)}>
+        <div className="lg:col-span-6" {...reveal(1)}>
           <div className="rounded-2xl border border-line bg-white p-7 text-ink shadow-panel sm:p-9">
-            <p className="text-[13.5px] font-semibold">{preview.progressLabel}</p>
-            <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-mist" aria-hidden="true">
-              <span className="block h-full w-[37.5%] rounded-full bg-primary" />
-            </div>
-            <p className="mt-7 font-display text-[22px] leading-snug font-bold">{preview.question}</p>
-            <ul className="mt-5 space-y-3">
-              {preview.options.map((option, index) => (
-                <li
-                  key={option}
-                  className={`flex h-14 items-center gap-3 rounded-xl px-5 text-[15.5px] ${index === 1 ? 'border-2 border-primary bg-primary/5 font-semibold' : 'border border-line'}`}
-                >
-                  <span
-                    className={`h-4 w-4 shrink-0 rounded-full border-2 ${index === 1 ? 'border-[5px] border-primary' : 'border-line'}`}
-                    aria-hidden="true"
-                  />
-                  {option}
-                </li>
-              ))}
-            </ul>
+            <figure>
+              <figcaption className="sr-only">A preview of the questions in the cost estimate</figcaption>
+              <div className="flex items-center justify-between gap-4 text-[13.5px]">
+                <p className="font-semibold">{preview.progressLabel}</p>
+                {preview.timeLabel ? <p className="text-body">{preview.timeLabel}</p> : null}
+              </div>
+              <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-mist" aria-hidden="true">
+                <span className="block h-full w-[37.5%] rounded-full bg-primary" />
+              </div>
+              <p className="mt-7 font-display text-[22px] leading-snug font-bold">{preview.question}</p>
+              <ul className="mt-5 space-y-3">
+                {preview.options.map((option, index) => (
+                  <li
+                    key={option}
+                    className={`flex h-14 items-center gap-3 rounded-xl px-5 text-[15.5px] ${index === 1 ? 'border-2 border-primary bg-primary/5 font-semibold' : 'border border-line'}`}
+                  >
+                    <span
+                      className={`h-4 w-4 shrink-0 rounded-full border-2 ${index === 1 ? 'border-[5px] border-primary' : 'border-line'}`}
+                      aria-hidden="true"
+                    />
+                    {option}
+                  </li>
+                ))}
+              </ul>
+            </figure>
+            <a
+              href={estimate.cta.href}
+              className="mt-7 flex h-14 items-center justify-center rounded-xl bg-primary px-6 text-center font-semibold text-white hover:bg-primaryd"
+            >
+              {estimate.cta.label}
+            </a>
           </div>
-          <figcaption className="sr-only">A preview of the questions in the cost estimate</figcaption>
-        </figure>
+        </div>
       </div>
     </section>
   );
@@ -111,6 +119,24 @@ export function TechnologyProof({
         <div className="lg:col-span-5" {...reveal()}>
           <h2 className={h2Dark}>{technology.heading}</h2>
           <p className="mt-5 text-[17px] leading-relaxed">{technology.intro}</p>
+          {technology.stats.length > 0 ? (
+            <dl className="mt-8 grid grid-cols-2 gap-6 border-t border-line pt-7">
+              {technology.stats.map((stat) => (
+                <div key={stat.label} className="flex flex-col-reverse">
+                  <dt className="mt-2 text-[14px]">{stat.label}</dt>
+                  <dd className="font-display text-[30px] leading-none font-extrabold text-ink">{stat.value}</dd>
+                </div>
+              ))}
+            </dl>
+          ) : null}
+          {technology.cta ? (
+            <a
+              href={technology.cta.href}
+              className="mt-8 inline-flex h-12 items-center rounded-lg border border-line bg-white px-6 font-semibold text-ink hover:border-ink"
+            >
+              {technology.cta.label}
+            </a>
+          ) : null}
         </div>
         <div className="lg:col-span-7" {...reveal(1)}>
           {groups.length > 0 ? (
@@ -135,10 +161,10 @@ export function ProcessTimeline({ process, steps }: { process: Content['process'
   return (
     <section id="process" className="content-auto bg-white py-20 lg:py-28">
       <div className="shell">
-        <div className="mb-14" {...reveal()}>
+        <SectionHead link={process.link} className="mb-14">
           <h2 className={`${h2Dark} max-w-[18ch]`}>{process.heading}</h2>
           <p className="mt-4 max-w-[58ch] text-[17px] leading-relaxed">{process.intro}</p>
-        </div>
+        </SectionHead>
         {steps.length > 0 ? (
           <ol className="grid gap-6 md:grid-cols-2 lg:grid-cols-5">
             {steps.map((step, index) => (
@@ -160,14 +186,48 @@ export function ProcessTimeline({ process, steps }: { process: Content['process'
   );
 }
 
+/**
+ * A client on camera. The play button and running time appear only with a video to play,
+ * so the card never offers a control that does nothing.
+ */
+function VideoTestimonialCard({ video, step }: { video: NonNullable<Home['videoTestimonial']>; step: number }) {
+  const detail = [byline(video.role, video.company), video.videoUrl ? video.duration : null]
+    .filter((part): part is string => Boolean(part))
+    .join(' · ');
+  const who = [video.clientName, video.company].filter((part): part is string => Boolean(part)).join(', ');
+  return (
+    <figure className="relative min-h-[280px] overflow-hidden rounded-2xl" {...reveal(step)}>
+      <ResponsiveImage
+        src={video.poster.src}
+        alt={video.poster.alt}
+        fill
+        sizes="(min-width: 1024px) 33vw, 100vw"
+        className="object-cover"
+      />
+      <div className="absolute inset-0 bg-linear-to-t from-ink via-ink/50 to-ink/10" aria-hidden="true" />
+      {video.videoUrl ? (
+        <Showreel variant="overlay" label={`Play video testimonial from ${who}`} videoUrl={video.videoUrl} poster={null} />
+      ) : null}
+      <figcaption className="pointer-events-none absolute inset-x-0 bottom-0 p-6">
+        <b className="block text-white">{video.clientName}</b>
+        {detail ? <span className="text-[14px] text-white/70">{detail}</span> : null}
+      </figcaption>
+    </figure>
+  );
+}
+
 export function TestimonialsBand({
   testimonials,
   items,
   reviews,
+  video,
+  press,
 }: {
   testimonials: Content['testimonials'];
   items: Home['testimonials'];
   reviews: Home['reviews'];
+  video: Home['videoTestimonial'];
+  press: Home['press'];
 }) {
   const summary = [
     ...reviews.sources.slice(0, 2).map((source) => ({ value: source.rating.toFixed(1), label: source.platform })),
@@ -176,6 +236,7 @@ export function TestimonialsBand({
   return (
     <section id="testimonials" className="content-auto relative overflow-hidden bg-ink py-20 text-white lg:py-28">
       <div className="absolute inset-0" aria-hidden="true">
+        <BackdropImage image={testimonials.backgroundImage} className="opacity-[.22]" />
         <div className="absolute inset-0 bg-linear-to-b from-ink/95 via-ink/90 to-ink" />
         <div className="glow-teal absolute inset-0" />
       </div>
@@ -193,7 +254,7 @@ export function TestimonialsBand({
             </dl>
           ) : null}
         </div>
-        {items.length === 0 ? (
+        {items.length === 0 && !video ? (
           <EmptyNote tone="dark">{testimonials.empty}</EmptyNote>
         ) : (
           <div className="mt-12 grid gap-6 lg:grid-cols-3">
@@ -201,8 +262,7 @@ export function TestimonialsBand({
               const itemByline = byline(item.role, item.company);
               return (
                 <figure key={item.id} className="glass rounded-2xl p-7" {...reveal(index)}>
-                  <Stars rating={item.rating} className="text-[15px]" />
-                  <blockquote className="mt-4 text-[16px] leading-relaxed">{`"${item.quote}"`}</blockquote>
+                  <blockquote className="text-[16px] leading-relaxed">{`"${item.quote}"`}</blockquote>
                   <figcaption className="mt-6 flex items-center gap-3 border-t border-white/10 pt-5">
                     {item.avatar ? (
                       <ResponsiveImage
@@ -222,8 +282,21 @@ export function TestimonialsBand({
                 </figure>
               );
             })}
+            {video ? <VideoTestimonialCard video={video} step={items.length} /> : null}
           </div>
         )}
+        {testimonials.pressLabel && press.length > 0 ? (
+          <div className="mt-12 flex flex-wrap items-center gap-x-10 gap-y-5 border-t border-white/10 pt-10 text-[14px]">
+            <p className="font-semibold text-white/70">{testimonials.pressLabel}</p>
+            <ul className="flex flex-wrap items-center gap-x-10 gap-y-5 text-white/50">
+              {press.map((item) => (
+                <li key={item.name} className="font-display text-[19px] font-bold">
+                  {item.name}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
       </div>
     </section>
   );
@@ -239,8 +312,9 @@ function RecognitionTab({ id, label, checked = false }: { id: string; label: str
 }
 
 /**
- * Awards and expertise as tabs built from native radio buttons: arrow keys switch them
- * and `:has()` shows the chosen pane, with no script. Each pane shows its own empty state.
+ * Awards, and expertise when any is published, as tabs built from native radio buttons:
+ * arrow keys switch them and `:has()` shows the chosen pane, with no script. Without
+ * expertise there is one pane and no tabs. Each pane shows its own empty state.
  */
 export function Recognition({
   recognition,
@@ -251,27 +325,33 @@ export function Recognition({
   awards: Home['awards'];
   expertise: Home['expertise'];
 }) {
+  const tabs = expertise.length > 0;
   return (
     <section id="awards" className="content-auto group/recognition border-b border-line bg-mist2 py-20 lg:py-24">
       <div className="shell">
-        <div {...reveal()}>
-          <p className="text-[14px]">{recognition.eyebrow}</p>
-          <h2 className="mt-2 font-display text-[30px] leading-[1.1] font-extrabold text-ink lg:text-[38px]">
+        <SectionHead link={recognition.link}>
+          {recognition.eyebrow ? <p className="mb-2 text-[14px]">{recognition.eyebrow}</p> : null}
+          <h2 className="font-display text-[30px] leading-[1.1] font-extrabold text-ink lg:text-[36px]">
             {recognition.heading}
           </h2>
-        </div>
-        <fieldset className="mt-9">
-          <legend className="sr-only">Show</legend>
-          <div className="flex flex-wrap gap-2">
-            <RecognitionTab id="recognition-awards" label="Awards" checked />
-            <RecognitionTab id="recognition-expertise" label="Expertise" />
-          </div>
-        </fieldset>
-        <div data-pane="awards" className="mt-8 group-has-[#recognition-expertise:checked]/recognition:hidden">
+        </SectionHead>
+        {tabs ? (
+          <fieldset className="mt-9">
+            <legend className="sr-only">Show</legend>
+            <div className="flex flex-wrap gap-2">
+              <RecognitionTab id="recognition-awards" label="Awards" checked />
+              <RecognitionTab id="recognition-expertise" label="Expertise" />
+            </div>
+          </fieldset>
+        ) : null}
+        <div
+          data-pane="awards"
+          className={tabs ? 'mt-8 group-has-[#recognition-expertise:checked]/recognition:hidden' : 'mt-10'}
+        >
           {awards.length > 0 ? (
             <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
               {awards.map((award) => (
-                <li key={`${award.name}${award.detail ?? ''}`} className="rounded-2xl border border-line bg-white p-6">
+                <li key={`${award.name}${award.detail ?? ''}`} className="rounded-2xl border border-line p-6">
                   <p className="font-display text-[16px] font-bold text-ink">{award.name}</p>
                   {award.detail ? <p className="mt-2 text-[14px] leading-relaxed">{award.detail}</p> : null}
                 </li>
@@ -281,8 +361,8 @@ export function Recognition({
             <EmptyNote className="">{recognition.empty}</EmptyNote>
           )}
         </div>
-        <div data-pane="expertise" className="mt-8 hidden group-has-[#recognition-expertise:checked]/recognition:block">
-          {expertise.length > 0 ? (
+        {tabs ? (
+          <div data-pane="expertise" className="mt-8 hidden group-has-[#recognition-expertise:checked]/recognition:block">
             <ul className="flex flex-wrap gap-2.5 rounded-2xl border border-line bg-white p-8">
               {expertise.map((item) => (
                 <li key={item} className="rounded-lg bg-mist px-4 py-2 text-[14px] font-medium text-ink">
@@ -290,10 +370,8 @@ export function Recognition({
                 </li>
               ))}
             </ul>
-          ) : (
-            <EmptyNote className="">{recognition.empty}</EmptyNote>
-          )}
-        </div>
+          </div>
+        ) : null}
       </div>
     </section>
   );
@@ -303,9 +381,9 @@ export function Insights({ insights, posts }: { insights: Content['insights']; p
   return (
     <section id="insights" className="content-auto bg-white py-20 lg:py-28">
       <div className="shell">
-        <h2 className={`${h2Dark} mb-12`} {...reveal()}>
-          {insights.heading}
-        </h2>
+        <SectionHead link={insights.link} className="mb-12">
+          <h2 className={h2Dark}>{insights.heading}</h2>
+        </SectionHead>
         {posts.length > 0 ? (
           <ul className="grid gap-6 md:grid-cols-3">
             {posts.map((post, index) => {
@@ -313,10 +391,23 @@ export function Insights({ insights, posts }: { insights: Content['insights']; p
                 .filter((part): part is string => Boolean(part))
                 .join(' · ');
               return (
-                <li key={post.slug} className="rounded-2xl border border-line bg-white p-6" {...reveal(index)}>
-                  {meta ? <p className="text-[13px]">{meta}</p> : null}
-                  <h3 className="mt-2 font-display text-[19px] leading-snug font-bold text-ink">{post.title}</h3>
-                  <p className="mt-2.5 text-[14.5px] leading-relaxed">{post.excerpt}</p>
+                <li key={post.slug} className="overflow-hidden rounded-2xl border border-line bg-white" {...reveal(index)}>
+                  {post.image ? (
+                    <div className="relative aspect-video bg-mist">
+                      <ResponsiveImage
+                        src={post.image.src}
+                        alt={post.image.alt}
+                        fill
+                        sizes="(min-width: 768px) 33vw, 100vw"
+                        className="object-cover"
+                      />
+                    </div>
+                  ) : null}
+                  <div className="p-6">
+                    {meta ? <p className="text-[13px]">{meta}</p> : null}
+                    <h3 className="mt-2 font-display text-[19px] leading-snug font-bold text-ink">{post.title}</h3>
+                    <p className="mt-2.5 text-[14.5px] leading-relaxed">{post.excerpt}</p>
+                  </div>
                 </li>
               );
             })}
@@ -385,7 +476,7 @@ export function Locations({ locations, items }: { locations: Content['locations'
   );
 }
 
-/** Published engagement shapes. The highlighted tier gets a stronger border and no label. */
+/** Published engagement shapes. The highlighted tier gets a stronger border and the badge, when set. */
 export function PricingBands({ pricing, tiers }: { pricing: Content['pricing']; tiers: Home['pricingTiers'] }) {
   return (
     <section
@@ -409,9 +500,14 @@ export function PricingBands({ pricing, tiers }: { pricing: Content['pricing']; 
             {tiers.map((tier, index) => (
               <li
                 key={tier.name}
-                className={`rounded-2xl p-6 ${tier.highlighted ? 'border-2 border-ink' : 'border border-line'}`}
+                className={`relative rounded-2xl p-6 ${tier.highlighted ? 'border-2 border-ink' : 'border border-line'}`}
                 {...reveal(index)}
               >
+                {tier.highlighted && pricing.highlightLabel ? (
+                  <p className="absolute -top-3 left-6 rounded bg-ink px-2.5 py-1 text-[12px] font-semibold text-white">
+                    {pricing.highlightLabel}
+                  </p>
+                ) : null}
                 <h3 className="font-display text-[17px] font-bold text-ink">{tier.name}</h3>
                 <p className="mt-3 font-display text-[26px] leading-tight font-extrabold text-ink">{tier.priceLabel}</p>
                 <p className="mt-3 text-[14px] leading-relaxed">{tier.summary}</p>
@@ -433,7 +529,13 @@ const POINT_ICONS: Record<FinalPointIcon, ReactNode> = {
 export function BookSection({ book, form }: { book: Content['book']; form: ReactNode }) {
   return (
     <section id="book" className="content-auto relative overflow-hidden border-t border-line bg-mist py-20 lg:py-28">
-      <div className="absolute -top-24 left-1/3 h-[520px] w-[520px] rounded-full bg-primary/9 blur-3xl" aria-hidden="true" />
+      <div className="absolute inset-0" aria-hidden="true">
+        <BackdropImage image={book.backgroundImage} className="opacity-[.13]" />
+        {book.backgroundImage ? (
+          <div className="absolute inset-0 bg-linear-to-r from-mist via-mist/92 to-mist/70" />
+        ) : null}
+        <div className="absolute -top-24 left-1/3 h-[520px] w-[520px] rounded-full bg-primary/9 blur-3xl" />
+      </div>
       <div className="shell relative grid items-start gap-12 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-5" {...reveal()}>
           <h2 className="font-display text-[34px] leading-[1.08] font-extrabold text-ink lg:text-[44px]">{book.heading}</h2>
