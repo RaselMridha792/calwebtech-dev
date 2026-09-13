@@ -41,6 +41,10 @@ it here and in `CLAUDE.md` in the same commit.
 
 ## Open
 
+- The landing hero video is Pexels stock footage (video 8523640, 1280×720, 3.3 MB),
+  loaded from `videos.pexels.com`. Move it to our own media storage with the media library,
+  and replace it once the client has footage of their own. Its poster is
+  `apps/web/public/media/landing-hero-poster.jpg`.
 - The web app runs on Vercel with the static snapshot and no API (decision 33). Lead forms
   cannot send until the API is hosted. Hosting the API on Neon puts lead data in a
   third-party database, against the data-ownership rule in `CLAUDE.md`; the owner has

@@ -2,8 +2,9 @@ import type { HomePageContent, HomePageView, HomeProject } from '@calwebtech/sha
 import { BeforeAfterSlider } from '../landing/before-after-slider';
 import { FaqAccordion } from '../landing/faq-accordion';
 import { CheckBullet, reveal } from '../ui/primitives';
+import { BackgroundVideo } from '../ui/background-video';
+import { BackdropImage } from '../ui/brand';
 import { ResponsiveImage } from '../ui/responsive-image';
-import { BackgroundMedia } from './background-media';
 import { EmptyNote, TextLink, byline, h2Dark, h2Light } from './parts';
 import { Showreel } from './showreel';
 
@@ -16,7 +17,12 @@ export function CapabilityBand({ capability }: { capability: Content['capability
   return (
     <section className="content-auto relative overflow-hidden bg-ink py-20 text-white lg:py-28">
       <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
-        <BackgroundMedia background={capability.background} posterClassName="opacity-[.22]" />
+        <BackdropImage image={capability.background.poster} className="kenburns opacity-[.22]" />
+      </div>
+      {capability.background.videoUrl ? (
+        <BackgroundVideo src={capability.background.videoUrl} className="opacity-100" />
+      ) : null}
+      <div className="absolute inset-0" aria-hidden="true">
         <div className="absolute inset-0 bg-linear-to-r from-ink via-ink/90 to-ink/60" />
         <div className="glow-blue absolute inset-0 opacity-70" />
       </div>

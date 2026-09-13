@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { decorativeImageSchema, imageSchema } from './media';
+import { decorativeImageSchema, imageSchema, mediaSrcSchema } from './media';
 import { seoSchema, slugSchema } from './seo';
 import { siteContactSchema } from './site';
 
@@ -34,7 +34,10 @@ export const landingPageContentSchema = z.object({
     intro: text(600),
     bullets: z.array(text(160)).min(1).max(4),
     stats: z.array(statSchema).max(3),
+    /** Poster for the background video, or the backdrop on its own. */
     backgroundImage: decorativeImageSchema.nullable(),
+    /** A muted loop over the poster on wider screens (docs/05, Background video). */
+    backgroundVideoUrl: mediaSrcSchema.nullable().default(null),
   }),
   heroForm: z.object({
     heading: text(60),

@@ -1,8 +1,9 @@
 import type { HomePageContent, HomePageView } from '@calwebtech/shared';
 import type { ReactNode } from 'react';
 import { CountUp } from '../motion/count-up';
+import { BackgroundVideo } from '../ui/background-video';
+import { BackdropImage } from '../ui/brand';
 import { PillBadge, Stars } from '../ui/primitives';
-import { BackgroundMedia } from './background-media';
 
 function StatsStrip({ statistics }: { statistics: HomePageView['statistics'] }) {
   return (
@@ -44,7 +45,12 @@ export function HomeHero({
   return (
     <section className="relative overflow-hidden bg-ink text-white">
       <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
-        <BackgroundMedia background={hero.background} posterClassName="opacity-[.30]" priority />
+        <BackdropImage image={hero.background.poster} className="kenburns opacity-[.30]" priority />
+      </div>
+      {hero.background.videoUrl ? (
+        <BackgroundVideo src={hero.background.videoUrl} className="opacity-100" controlClassName="top-5 right-5" />
+      ) : null}
+      <div className="absolute inset-0" aria-hidden="true">
         <div className="absolute inset-0 bg-linear-to-r from-ink via-ink/95 to-ink/70" />
         <div className="absolute inset-0 bg-linear-to-t from-ink via-transparent to-ink/60" />
         <div className="glow-blue absolute inset-0" />

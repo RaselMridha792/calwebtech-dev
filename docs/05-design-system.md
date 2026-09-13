@@ -55,9 +55,15 @@ card. Pricing band card. FAQ accordion. Conversion band. Footer.
 ## Background video
 
 Poster image sits in the base layer with a slow Ken Burns transform. The video layer
-sits above at `opacity: 0` and fades in only on `canplay`, so a missing or slow file
-never shows a black frame. Videos pause when scrolled out of view via
-IntersectionObserver, and never load at all under `prefers-reduced-motion`.
+(`components/ui/background-video.tsx`) sits above at `opacity: 0` and fades in only on
+`canplay`, so a missing or slow file never shows a black frame. Overlays sit above the
+video. Videos pause when scrolled out of view via IntersectionObserver.
+
+The video never loads under `prefers-reduced-motion`, with Data Saver on, or below 768px:
+phones keep the poster, which is also the LCP image, and download nothing more. Once a
+video plays, a pause button appears (WCAG 2.2.2), so the video component sits outside the
+section's `aria-hidden` backdrop wrapper. Use the video's first frame as the poster, so
+the fade from poster to video is seamless.
 
 Assets expected at `public/assets/calwebtech-showreel.mp4` and
 `public/assets/calwebtech-showcase-bg.mp4`. Eight to twelve second muted loops, under

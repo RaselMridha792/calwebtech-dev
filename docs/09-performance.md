@@ -34,27 +34,27 @@ React 19.2.8.
 | Part | `/` | `/lp/[campaign]` |
 |---|---|---|
 | Framework: React DOM, App Router runtime, Turbopack runtime | 139.3 kB | 139.3 kB |
-| **Own code** | **7.5 kB** | **7.4 kB** |
+| **Own code** | **7.6 kB** | **7.8 kB** |
 
 Own code by module:
 
 | Module | `/` | `/lp/[campaign]` |
 |---|---|---|
-| Lead form, with the on-demand Turnstile loader | 3.0 kB | 3.0 kB |
+| Lead form, with the on-demand Turnstile loader | 2.8 kB | 2.8 kB |
 | Process stepper | | 1.5 kB |
-| Before/after slider | 0.9 kB | 0.9 kB |
-| Anchor scroll | 0.8 kB | 0.8 kB |
-| Showreel dialog | 0.6 kB | |
-| Mega menu state: Escape to dismiss, `aria-expanded` | 0.5 kB | |
-| Background video | 0.5 kB | |
+| Before/after slider | 0.8 kB | 0.8 kB |
+| Anchor scroll | 0.7 kB | 0.7 kB |
+| Background video, with its pause control | 0.7 kB | 0.7 kB |
+| Showreel dialog | 0.7 kB | |
+| Mega menu state: Escape to dismiss, `aria-expanded` | 0.6 kB | |
 | Count-up | 0.5 kB | 0.5 kB |
 | Icons | 0.4 kB | 0.4 kB |
-| Reveal observer | 0.4 kB | 0.4 kB |
+| Reveal observer | 0.3 kB | 0.3 kB |
 
 The homepage's mobile menu, work filters, recognition tabs and review breakdown are
 native elements (`<details>`, radio buttons, `:has()`) and ship no JavaScript. The mega
-menus open with CSS (`:focus-within`, `:hover`); the only script is the 0.5 kB that lets
-Escape dismiss a panel and keeps `aria-expanded` in step (WCAG 1.4.13 and 4.1.2). `next/link` is not used on marketing routes: it adds about 4 kB
+menus open with CSS (`:focus-within`, `:hover`); the only script is what lets Escape
+dismiss a panel and keeps `aria-expanded` in step (WCAG 1.4.13 and 4.1.2). `next/link` is not used on marketing routes: it adds about 4 kB
 of framework runtime for a prefetch these pages do not need.
 
 Turnstile's own script (`challenges.cloudflare.com`) is not in these numbers and not in

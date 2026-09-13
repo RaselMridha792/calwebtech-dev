@@ -41,7 +41,10 @@ export const LANDING_CONTENT: LandingPageContentInput = {
       'Placeholder introduction. The approved campaign copy replaces this text before the page is published.',
     bullets: ['Placeholder benefit one', 'Placeholder benefit two', 'Placeholder benefit three'],
     stats: [],
-    backgroundImage: null,
+    // Stock footage (Pexels licence) until it is moved to our own media storage. The poster
+    // is its first frame, so the fade from poster to video is seamless.
+    backgroundImage: { src: '/media/landing-hero-poster.jpg' },
+    backgroundVideoUrl: 'https://videos.pexels.com/video-files/8523640/8523640-hd_1280_720_25fps.mp4',
   },
   heroForm: {
     heading: requestLabel,
