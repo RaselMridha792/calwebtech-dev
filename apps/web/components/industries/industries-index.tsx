@@ -9,7 +9,9 @@ type Content = IndustriesIndexView['content'];
 
 /**
  * Every published industry as a photograph card, in the homepage's industries grid style,
- * closed by the card for sectors without a page. The industry name is the card's one link.
+ * closed by the card for sectors without a page. The industry name is the card's one link,
+ * stretched over the card: the photograph sits below the text in the card's own stacking
+ * context, so the text needs no positioning and the link's overlay spans the whole card.
  * While nothing is published the list is an empty state that points to the contact page.
  */
 export function IndustriesList({
@@ -31,7 +33,7 @@ export function IndustriesList({
           {industries.map((industry, index) => (
             <li
               key={industry.slug}
-              className={`lift relative flex flex-col justify-end overflow-hidden rounded-2xl bg-ink p-6 sm:aspect-3/4 ${industry.image ? 'min-h-64' : 'min-h-48'}`}
+              className={`lift relative isolate flex flex-col justify-end overflow-hidden rounded-2xl bg-ink p-6 sm:aspect-3/4 ${industry.image ? 'min-h-64' : 'min-h-48'}`}
               {...reveal(index)}
             >
               {industry.image ? (
@@ -41,17 +43,17 @@ export function IndustriesList({
                     alt={industry.image.alt}
                     fill
                     sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                    className="object-cover opacity-70"
+                    className="-z-10 object-cover opacity-70"
                   />
-                  <div className="absolute inset-0 bg-linear-to-t from-ink via-ink/50 to-transparent" aria-hidden="true" />
+                  <div className="absolute inset-0 -z-10 bg-linear-to-t from-ink via-ink/50 to-transparent" aria-hidden="true" />
                 </>
               ) : (
                 <>
-                  <div className="glow-blue absolute inset-0 opacity-60" aria-hidden="true" />
-                  <div className="grid-lines-light absolute inset-0" aria-hidden="true" />
+                  <div className="glow-blue absolute inset-0 -z-10 opacity-60" aria-hidden="true" />
+                  <div className="grid-lines-light absolute inset-0 -z-10" aria-hidden="true" />
                 </>
               )}
-              <h3 className="relative font-display text-[20px] font-bold text-white">
+              <h3 className="font-display text-[20px] font-bold text-white">
                 <a
                   href={industryPath(industry.slug)}
                   className="after:absolute after:inset-0 hover:underline hover:underline-offset-4"
@@ -60,10 +62,10 @@ export function IndustriesList({
                 </a>
               </h3>
               {industry.line ? (
-                <p className="relative mt-1.5 text-[14px] leading-snug text-white/80">{industry.line}</p>
+                <p className="mt-1.5 text-[14px] leading-snug text-white/80">{industry.line}</p>
               ) : null}
               <span
-                className="relative mt-4 text-[14px] font-semibold text-white underline decoration-white/40 underline-offset-4"
+                className="mt-4 text-[14px] font-semibold text-white underline decoration-white/40 underline-offset-4"
                 aria-hidden="true"
               >
                 {list.cardLinkLabel}
