@@ -8,6 +8,8 @@ import {
   staticFaqViewSchema,
   staticLegalContentSchema,
   staticLegalViewSchema,
+  staticNotFoundContentSchema,
+  staticNotFoundViewSchema,
   staticPricingContentSchema,
   staticPricingViewSchema,
   staticProcessContentSchema,
@@ -19,6 +21,7 @@ import {
   type StaticFaqView,
   type StaticLegalSlug,
   type StaticLegalView,
+  type StaticNotFoundView,
   type StaticPricingView,
   type StaticProcessView,
   type StaticThankYouView,
@@ -162,4 +165,16 @@ export function toStaticLegalView(records: StaticLegalRecords): StaticLegalView 
     throw new Error(`The copy stored for "${records.slug}" belongs to "${content.slug}"`);
   }
   return staticLegalViewSchema.parse({ ...content, contact: siteContactSchema.parse(records.contactSetting) });
+}
+
+export interface StaticNotFoundRecords {
+  contentSetting: unknown;
+  contactSetting: unknown;
+}
+
+export function toStaticNotFoundView(records: StaticNotFoundRecords): StaticNotFoundView {
+  return staticNotFoundViewSchema.parse({
+    ...staticNotFoundContentSchema.parse(records.contentSetting),
+    contact: siteContactSchema.parse(records.contactSetting),
+  });
 }

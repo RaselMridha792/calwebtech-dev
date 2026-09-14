@@ -7,8 +7,10 @@ import {
   type StaticFaqView,
   type StaticLegalSlug,
   type StaticLegalView,
+  type StaticNotFoundView,
   type StaticPricingView,
   type StaticProcessView,
+  type StaticThankYouType,
   type StaticThankYouView,
 } from '@calwebtech/shared';
 import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
@@ -19,6 +21,7 @@ import {
   toStaticContactView,
   toStaticFaqView,
   toStaticLegalView,
+  toStaticNotFoundView,
   toStaticPricingView,
   toStaticProcessView,
   toStaticThankYouView,
@@ -40,8 +43,9 @@ export class StaticPagesService {
   private readonly processCache = new ViewCache<StaticProcessView>(STATIC_PAGE_TTL_MS);
   private readonly contactCache = new ViewCache<StaticContactView>(STATIC_PAGE_TTL_MS);
   private readonly faqCache = new ViewCache<StaticFaqView>(STATIC_PAGE_TTL_MS);
-  private readonly thankYouCache = new ViewCache<StaticThankYouView | null>(STATIC_PAGE_TTL_MS, 50);
+  private readonly thankYouCache = new ViewCache<StaticThankYouView | null>(STATIC_PAGE_TTL_MS, 10);
   private readonly legalCache = new ViewCache<StaticLegalView>(STATIC_PAGE_TTL_MS, 10);
+  private readonly notFoundCache = new ViewCache<StaticNotFoundView>(STATIC_PAGE_TTL_MS);
 
   constructor(private readonly prisma: PrismaService) {}
 
@@ -104,8 +108,8 @@ export class StaticPagesService {
     });
   }
 
-  /** Null when there is no thank-you page for the type. */
-  thankYou(type: string): Promise<StaticThankYouView | null> {
+  /** Null when the copy has no page for the type. */
+  thankYou(type: StaticThankYouType): Promise<StaticThankYouView | null> {
     return this.thankYouCache.get(type, async () => {
       const [setting, contactSetting] = await Promise.all([
         this.setting(STATIC_SETTING_KEYS.thankYou),
@@ -123,6 +127,18 @@ export class StaticPagesService {
       const [setting, contactSetting] = await Promise.all([this.setting(key), this.setting(SETTING_KEYS.contact)]);
       return this.validated(`legal page "${slug}"`, [key, SETTING_KEYS.contact], () =>
         toStaticLegalView({ slug, contentSetting: setting, contactSetting }),
+      );
+    });
+  }
+
+  notFound(): Promise<StaticNotFoundView> {
+    return this.notFoundCache.get('not-found', async () => {
+      const [setting, contactSetting] = await Promise.all([
+        this.setting(STATIC_SETTING_KEYS.notFound),
+        this.setting(SETTING_KEYS.contact),
+      ]);
+      return this.validated('not-found page', [STATIC_SETTING_KEYS.notFound, SETTING_KEYS.contact], () =>
+        toStaticNotFoundView({ contentSetting: setting, contactSetting }),
       );
     });
   }

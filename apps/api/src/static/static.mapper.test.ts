@@ -8,6 +8,7 @@ import {
   toStaticContactView,
   toStaticFaqView,
   toStaticLegalView,
+  toStaticNotFoundView,
   toStaticPricingView,
   toStaticProcessView,
   toStaticThankYouView,
@@ -102,6 +103,8 @@ const thankYouContent = {
       eyebrow: 'Received',
       title: 'Thanks',
       intro: note,
+      received: { heading: 'You sent', items: ['Your name and email'] },
+      response: { label: 'Reply', value: 'Test window', detail: note },
       nextSteps: { heading: 'Next', steps: titled },
       secondary: { heading: 'Meanwhile', body: note, cta: { label: 'Home', href: '/' } },
       links: [],
@@ -114,8 +117,6 @@ const legalContent = {
   seo,
   title: 'Terms',
   intro: note,
-  reviewStatus: 'draft',
-  draftNotice: 'Draft pending legal review.',
   lastUpdated: '2026-09-14',
   sections: [{ id: 'use', heading: 'Use', blocks: [{ type: 'paragraph', text: note }] }],
   contactSection: { heading: 'Questions', body: note },
@@ -256,15 +257,35 @@ describe('toStaticThankYouView', () => {
 });
 
 describe('toStaticLegalView', () => {
-  it('adds the contact details and keeps the draft notice', () => {
+  it('adds the contact details to the page copy', () => {
     const view = toStaticLegalView({ slug: 'terms', contentSetting: legalContent, contactSetting: PLACEHOLDER_CONTACT });
-    expect(view).toMatchObject({ slug: 'terms', reviewStatus: 'draft', draftNotice: 'Draft pending legal review.' });
+    expect(view).toMatchObject({ slug: 'terms', lastUpdated: '2026-09-14', contact: PLACEHOLDER_CONTACT });
   });
 
-  it('throws when the stored copy belongs to another page or a draft hides its notice', () => {
+  it('throws when the stored copy belongs to another page or is malformed', () => {
     expect(() => toStaticLegalView({ slug: 'privacy-policy', contentSetting: legalContent, contactSetting: PLACEHOLDER_CONTACT })).toThrow();
     expect(() =>
-      toStaticLegalView({ slug: 'terms', contentSetting: { ...legalContent, draftNotice: null }, contactSetting: PLACEHOLDER_CONTACT }),
+      toStaticLegalView({ slug: 'terms', contentSetting: { ...legalContent, sections: [] }, contactSetting: PLACEHOLDER_CONTACT }),
     ).toThrow(ZodError);
+    expect(() => toStaticLegalView({ slug: 'terms', contentSetting: null, contactSetting: PLACEHOLDER_CONTACT })).toThrow(ZodError);
+  });
+});
+
+describe('toStaticNotFoundView', () => {
+  const notFoundContent = {
+    eyebrow: 'Error 404',
+    title: 'Page not found',
+    intro: note,
+    search: { label: 'Search', placeholder: 'Hint', submitLabel: 'Go', resultsLabel: 'pages match', noResults: note },
+    destinations: { heading: 'Popular pages', items: [{ title: 'Pricing', body: note, href: '/pricing/' }] },
+    help: { heading: 'Need a person?', body: note },
+  };
+
+  it('adds the contact details, and throws on missing copy or more than six destinations', () => {
+    expect(toStaticNotFoundView({ contentSetting: notFoundContent, contactSetting: PLACEHOLDER_CONTACT }).contact).toEqual(PLACEHOLDER_CONTACT);
+    expect(() => toStaticNotFoundView({ contentSetting: null, contactSetting: PLACEHOLDER_CONTACT })).toThrow(ZodError);
+    const items = Array.from({ length: 7 }, (_, index) => ({ title: `Page ${String(index)}`, body: note, href: '/' }));
+    const tooMany = { ...notFoundContent, destinations: { heading: 'Popular pages', items } };
+    expect(() => toStaticNotFoundView({ contentSetting: tooMany, contactSetting: PLACEHOLDER_CONTACT })).toThrow(ZodError);
   });
 });
