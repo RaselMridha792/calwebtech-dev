@@ -9,7 +9,7 @@ import { JsonLd } from '../seo/json-ld';
 import { PageHero } from '../site/page-hero';
 import { Section } from '../site/section';
 import { SectionHeading } from '../site/section-heading';
-import { formatUpdated } from './guide-page';
+import { formatUpdated } from './format-updated';
 import { definedTermJsonLd } from './json-ld';
 
 /** Paragraphs at a readable measure, keyed by their opening words. */

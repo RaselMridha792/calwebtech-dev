@@ -2,6 +2,7 @@ import {
   GLOSSARY_ROUTE,
   GUIDES_ROUTE,
   GUIDE_GATE_ANCHOR,
+  GUIDE_GATE_FORM_ID,
   glossaryTermPath,
   guidePath,
   servicePath,
@@ -15,16 +16,11 @@ import { PageHero } from '../site/page-hero';
 import { Section } from '../site/section';
 import { SectionHeading } from '../site/section-heading';
 import { ResponsiveImage } from '../ui/responsive-image';
+import { formatUpdated } from './format-updated';
 import { GuideGate } from './guide-gate';
 import { guideArticleJsonLd } from './json-ld';
 
 /** "15 September 2026", the way a dated resource reads. */
-export function formatUpdated(iso: string): string {
-  return new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(
-    new Date(iso),
-  );
-}
-
 /** The cover and what the download is, beside the hero. */
 function GuideAside({ page }: { page: GuideDetailView }) {
   const { hero, gate } = page;
@@ -128,6 +124,7 @@ export function GuideDetail({ page, turnstileSiteKey }: { page: GuideDetailView;
               slug={page.slug}
               permalink={path}
               gate={page.gate}
+              formId={GUIDE_GATE_FORM_ID}
               {...(turnstileSiteKey ? { turnstileSiteKey } : {})}
             />
           </div>

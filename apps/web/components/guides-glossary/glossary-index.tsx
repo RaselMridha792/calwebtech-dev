@@ -5,7 +5,7 @@ import { PageHero } from '../site/page-hero';
 import { Section } from '../site/section';
 import { SectionHeading } from '../site/section-heading';
 import { reveal } from '../ui/primitives';
-import { formatUpdated } from './guide-page';
+import { formatUpdated } from './format-updated';
 import { definedTermSetJsonLd } from './json-ld';
 
 /** The anchor a jump link points at. "#" files under `letter-other`. */

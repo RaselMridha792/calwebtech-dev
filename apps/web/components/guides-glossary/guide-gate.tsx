@@ -1,6 +1,6 @@
 'use client';
 
-import { GUIDE_GATE_FORM_ID, type GuideDetailView } from '@calwebtech/shared';
+import type { GuideDetailView } from '@calwebtech/shared';
 import { useActionState, useEffect, useRef, useState, type ComponentProps, type ReactNode } from 'react';
 import { TURNSTILE_FIELD, useTurnstile } from '@/components/forms/use-turnstile';
 import { captureAttribution } from '@/lib/attribution-client';
@@ -29,11 +29,18 @@ export function GuideGate({
   slug,
   permalink,
   gate,
+  formId,
   turnstileSiteKey,
 }: {
   slug: string;
   permalink: string;
   gate: GuideDetailView['gate'];
+  /**
+   * The gate's form id, handed down by the server component. Importing the constant from
+   * `@calwebtech/shared` in a client component pulls the whole schema barrel, and zod with
+   * it, into the browser bundle and breaches the per-route budget (docs/09-performance.md).
+   */
+  formId: string;
   turnstileSiteKey?: string;
 }) {
   const [state, formAction, pending] = useActionState(submitLead, initialState, permalink);
@@ -46,7 +53,7 @@ export function GuideGate({
     waitForToken,
     remove: removeTurnstile,
     reset: resetTurnstile,
-  } = useTurnstile(turnstileSiteKey, GUIDE_GATE_FORM_ID);
+  } = useTurnstile(turnstileSiteKey, formId);
   const [verifying, setVerifying] = useState(false);
   const [checkProblem, setCheckProblem] = useState<string | null>(null);
 
@@ -118,7 +125,7 @@ export function GuideGate({
   const alertMessage = checkProblem ?? (state.status === 'error' ? state.message : null);
   const busy = pending || verifying;
   const field = (name: 'name' | 'email', label: string, input: (control: Control) => ReactNode) => {
-    const id = `${GUIDE_GATE_FORM_ID}-${name}`;
+    const id = `${formId}-${name}`;
     const message = errors[name]?.[0];
     return (
       <div>
@@ -147,7 +154,7 @@ export function GuideGate({
       className="rounded-2xl border border-line bg-white p-7 shadow-panel"
     >
       <input type="hidden" name="type" value="RESOURCE" />
-      <input type="hidden" name="formId" value={GUIDE_GATE_FORM_ID} />
+      <input type="hidden" name="formId" value={formId} />
       {/*
         Which guide was asked for. The shared lead contract has no field for it yet, so the
         foundation drops it today; the family's report asks for `guideSlug` on
@@ -156,9 +163,9 @@ export function GuideGate({
       <input type="hidden" name="guideSlug" value={slug} />
       <input ref={attributionRef} type="hidden" name="attribution" defaultValue="" />
       <div className="absolute left-[-10000px] h-px w-px overflow-hidden" aria-hidden="true">
-        <label htmlFor={`${GUIDE_GATE_FORM_ID}-reference`}>Reference code</label>
+        <label htmlFor={`${formId}-reference`}>Reference code</label>
         <input
-          id={`${GUIDE_GATE_FORM_ID}-reference`}
+          id={`${formId}-reference`}
           type="text"
           name="referenceCode"
           tabIndex={-1}
