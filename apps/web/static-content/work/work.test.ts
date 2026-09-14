@@ -71,6 +71,32 @@ describe('work snapshots', () => {
     }
   });
 
+  it('show the same card for a case study wherever it appears, and headings written as questions', () => {
+    const index = workIndexViewSchema.parse(workIndexSnapshot);
+    const cards = new Map(index.caseStudies.map((card) => [card.slug, card]));
+    for (const [slug, snapshot] of Object.entries(workCaseStudySnapshots)) {
+      const page = workCaseStudyViewSchema.parse(snapshot);
+      for (const related of page.relatedCaseStudies) expect(related, `${slug} links ${related.slug}`).toEqual(cards.get(related.slug));
+      expect(page.relatedCaseStudies.map((card) => card.slug)).not.toContain(slug);
+      const card = cards.get(slug);
+      expect(page.metrics.slice(0, 3)).toEqual(card?.metrics);
+      expect(page.atAGlance.industry?.slug ?? null).toBe(card?.industry);
+      expect(page.atAGlance.services.map((service) => service.slug)).toEqual(card?.services);
+      expect(page.relatedServices.map((service) => service.slug)).toEqual(card?.services);
+      expect(page.headline.metric).toEqual(page.metrics[0]);
+      for (const heading of Object.values(page.headings)) expect(heading).toMatch(/\?$/);
+    }
+  });
+
+  it('show the approved before and after comparison with its approved figures', () => {
+    const view = workBeforeAndAfterViewSchema.parse(workBeforeAndAfterSnapshot);
+    const comparison = view.comparisons.find((item) => item.clientName === approved.beforeAfter?.clientName);
+    expect(comparison).toBeDefined();
+    expect(comparison?.metrics).toEqual(approved.beforeAfter?.metrics);
+    expect(comparison?.before).toEqual(approved.beforeAfter?.before);
+    expect(comparison?.after).toEqual(approved.beforeAfter?.after);
+  });
+
   it('link the menus’ filtered work links to results', () => {
     const view = workIndexViewSchema.parse(workIndexSnapshot);
     for (const service of ['custom-website-development', 'ecommerce-development', 'web-application-development', 'ai-search-visibility']) {
