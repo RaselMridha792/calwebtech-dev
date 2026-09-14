@@ -24,6 +24,8 @@ export const leadSummarySchema = z.object({
   message: z.string().optional(),
   /** The name of the routed enquiry type, when the form asked for one. */
   enquiry: z.string().optional(),
+  /** The title of the guide a download gate asked for. */
+  guide: z.string().optional(),
   landingPageSlug: z.string().optional(),
   attribution: attributionSchema,
   submittedAt: z.iso.datetime(),

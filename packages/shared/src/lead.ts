@@ -109,6 +109,8 @@ export const leadSubmissionSchema = z.object({
   landingPageSlug: z.preprocess(blankToUndefined, slugSchema.optional()),
   /** The service page the enquiry came from. The API links the lead to it when it is published. */
   serviceSlug: z.preprocess(blankToUndefined, slugSchema.optional()),
+  /** The guide a download gate was on. The API records which guide was asked for. */
+  guideSlug: z.preprocess(blankToUndefined, slugSchema.optional()),
   attribution: attributionSchema.default({}),
   /** Honeypot. Hidden from people; a value here means a bot filled the form. */
   referenceCode: z.string().max(500).optional(),
