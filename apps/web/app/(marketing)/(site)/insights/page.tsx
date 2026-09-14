@@ -1,7 +1,7 @@
-import { INSIGHTS_ROUTE, insightsListPath, paginate, readInsightsPage } from '@calwebtech/shared';
+import { INSIGHTS_ROUTE, insightsListPath, readInsightsPage } from '@calwebtech/shared';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { InsightsListing } from '@/components/insights/listing';
+import { InsightsListing, insightsResults } from '@/components/insights/listing';
 import { listingPageSeo } from '@/components/insights/page-seo';
 import { PageHero } from '@/components/site/page-hero';
 import { getInsightsIndex } from '@/lib/api/insights';
@@ -30,12 +30,8 @@ export default async function InsightsIndexPage({ searchParams }: PageProps<'/in
   if (page === null) notFound();
   const view = await getInsightsIndex();
 
-  const featured = page === 1 ? (view.articles.find((article) => article.slug === view.featuredSlug) ?? null) : null;
-  const results = paginate(
-    view.articles.filter((article) => article.slug !== featured?.slug),
-    page,
-  );
-  if (!results) notFound();
+  const listing = insightsResults(view, null, page);
+  if (!listing) notFound();
 
   const { copy } = view;
   return (
@@ -47,7 +43,13 @@ export default async function InsightsIndexPage({ searchParams }: PageProps<'/in
         intro={copy.intro}
         backdrop={copy.backdrop}
       />
-      <InsightsListing view={view} topic={null} heading={copy.listHeading} results={results} featured={featured} />
+      <InsightsListing
+        view={view}
+        topic={null}
+        heading={copy.listHeading}
+        results={listing.results}
+        featured={listing.featured}
+      />
     </>
   );
 }

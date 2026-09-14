@@ -4,7 +4,6 @@ import {
   insightsCategoryPath,
   insightsListPath,
   insightsOgImagePath,
-  paginate,
   readInsightsPage,
   type InsightsArticleView,
   type InsightsCategoryView,
@@ -19,7 +18,7 @@ import {
   RelatedArticlesSection,
 } from '@/components/insights/article-sections';
 import { articleJsonLd } from '@/components/insights/json-ld';
-import { InsightsListing } from '@/components/insights/listing';
+import { InsightsListing, insightsResults } from '@/components/insights/listing';
 import { listingPageSeo } from '@/components/insights/page-seo';
 import { JsonLd } from '@/components/seo/json-ld';
 import { PageHero } from '@/components/site/page-hero';
@@ -86,11 +85,8 @@ export default async function InsightsSlugPage({ params, searchParams }: PagePro
 /** A topic listing: the same list as the index, filtered to one `PostCategory`. */
 async function TopicPage({ topic, page }: { topic: InsightsCategoryView; page: number }) {
   const view = await getInsightsIndex();
-  const results = paginate(
-    view.articles.filter((article) => article.category?.slug === topic.slug),
-    page,
-  );
-  if (!results) notFound();
+  const listing = insightsResults(view, topic.slug, page);
+  if (!listing) notFound();
 
   return (
     <>
@@ -101,7 +97,7 @@ async function TopicPage({ topic, page }: { topic: InsightsCategoryView; page: n
         intro={topic.copy.intro}
         backdrop={view.copy.backdrop}
       />
-      <InsightsListing view={view} topic={topic} heading={topic.copy.listHeading} results={results} featured={null} />
+      <InsightsListing view={view} topic={topic} heading={topic.copy.listHeading} results={listing.results} featured={null} />
     </>
   );
 }

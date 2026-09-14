@@ -23,7 +23,7 @@ import {
   ServiceCallToAction,
 } from './article-sections';
 import { articleJsonLd } from './json-ld';
-import { InsightsListing } from './listing';
+import { InsightsListing, insightsResults } from './listing';
 import { Blocks, articleBodyContext, articleTokens, safeHref, splitAtShare } from './markdown';
 import { listingDocumentTitle, listingPageSeo } from './page-seo';
 
@@ -230,9 +230,10 @@ describe('the Markdown renderer', () => {
 
 describe('the listing', () => {
   it('shows the featured article, the topic filter and every card, with no pagination on one page', () => {
-    const featured = index.articles.find((card) => card.slug === index.featuredSlug) ?? null;
-    const results = paginate(index.articles.filter((card) => card.slug !== featured?.slug), 1);
-    if (!results) throw new Error('No first page');
+    const listing = insightsResults(index, null, 1);
+    if (!listing) throw new Error('No first page');
+    const { results, featured } = listing;
+    expect(featured?.slug).toBe(index.featuredSlug);
     const html = render(
       <InsightsListing view={index} topic={null} heading={index.copy.listHeading} results={results} featured={featured} />,
     );
@@ -260,6 +261,39 @@ describe('the listing', () => {
     expect(html).toContain('aria-current="page"');
     expect(html).toContain(index.copy.empty);
     expect(html).toContain(index.copy.emptyAction?.href ?? '/contact/');
+  });
+
+  it('keeps the same articles on every page, and shows the featured one on page one alone', () => {
+    const many = {
+      ...index,
+      articles: Array.from({ length: 30 }, (_, position) => ({
+        ...(index.articles[position % index.articles.length] ?? index.articles[0]),
+        slug: `article-${String(position)}`,
+        featured: position === 5,
+      })),
+      featuredSlug: 'article-5',
+    } as typeof index;
+
+    const pages = [1, 2, 3].map((page) => insightsResults(many, null, page));
+    expect(pages.every((listing) => listing !== null)).toBe(true);
+    expect(insightsResults(many, null, 4), 'a page past the end is a 404').toBeNull();
+    // Every page counts the same total, and the featured article is on none of them.
+    expect(pages.map((listing) => listing?.results.pageCount)).toEqual([3, 3, 3]);
+    expect(pages.map((listing) => listing?.featured?.slug ?? null)).toEqual(['article-5', null, null]);
+    const shown = pages.flatMap((listing) => listing?.results.items.map((card) => card.slug) ?? []);
+    expect(new Set(shown).size, 'no article appears twice').toBe(shown.length);
+    expect(shown).not.toContain('article-5');
+    expect(shown).toHaveLength(29);
+  });
+
+  it('filters a topic page to its own topic, with no featured article', () => {
+    const topic = index.categories.find((category) => category.articleCount > 1);
+    if (!topic) throw new Error('No topic with articles');
+    const listing = insightsResults(index, topic.slug, 1);
+    expect(listing?.featured).toBeNull();
+    expect(listing?.results.items.map((card) => card.category?.slug)).toEqual(
+      Array.from({ length: topic.articleCount }, () => topic.slug),
+    );
   });
 
   it('paginates past twelve, with every page addressable and the current one marked', () => {

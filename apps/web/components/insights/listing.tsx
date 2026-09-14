@@ -3,6 +3,7 @@ import {
   insightsArticlePath,
   insightsCategoryPath,
   insightsListPath,
+  paginate,
   type InsightsArticleCard,
   type InsightsCategoryView,
   type InsightsIndexCopy,
@@ -21,6 +22,27 @@ import { ResponsiveImage } from '../ui/responsive-image';
  * its own, the featured article, the cards, and pagination past twelve. Every link is a
  * plain anchor, so the listing needs no client JavaScript.
  */
+
+/**
+ * What one page of `/insights/` or `/insights/<topic>/` holds, or null when the page is past
+ * the end. The featured article is off the list on every page, not only the first, so the
+ * pages hold the same articles whichever one a visitor lands on; it is rendered above the
+ * list on page one alone.
+ */
+export function insightsResults(
+  view: InsightsIndexView,
+  topic: string | null,
+  page: number,
+): { results: Paginated<InsightsArticleCard>; featured: InsightsArticleCard | null } | null {
+  const featured = topic === null ? (view.articles.find((card) => card.slug === view.featuredSlug) ?? null) : null;
+  const results = paginate(
+    view.articles.filter(
+      (card) => card.slug !== featured?.slug && (topic === null || card.category?.slug === topic),
+    ),
+    page,
+  );
+  return results ? { results, featured: page === 1 ? featured : null } : null;
+}
 
 /** "Strategy · 7 min read · Sawkat Hasan" under a card's title. */
 function cardMeta(article: InsightsArticleCard, readingTimeLabel: string): string {
