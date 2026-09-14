@@ -1,5 +1,4 @@
 import { describe, expect, it } from 'vitest';
-import { leadSubmissionSchema } from '../lead';
 import {
   INSIGHTS_PAGE_SIZE,
   articleBodyProblems,
@@ -9,6 +8,7 @@ import {
   articleWordCount,
   headingId,
   insightsCategoryCopyFor,
+  insightsCategoryCopySchema,
   insightsCopySchema,
   insightsListPath,
   paginate,
@@ -191,15 +191,40 @@ describe('topic copy', () => {
   it('does not read a topic slug off Object.prototype', () => {
     expect(insightsCategoryCopyFor(COPY, { slug: 'constructor', name: 'Constructor' }).title).toBe('Constructor');
   });
-});
 
-describe('the subscribe block posts a lead with its source page', () => {
-  it('accepts a site path and refuses anything else', () => {
-    const base = { type: 'RESOURCE', formId: 'insights-newsletter', name: 'Sam Reed', email: 'sam@example.com' };
-    expect(leadSubmissionSchema.parse({ ...base, sourcePage: '/insights/an-article/' }).sourcePage).toBe(
-      '/insights/an-article/',
-    );
-    expect(leadSubmissionSchema.parse({ ...base, sourcePage: '' }).sourcePage).toBeUndefined();
-    expect(leadSubmissionSchema.safeParse({ ...base, sourcePage: 'https://example.com/' }).success).toBe(false);
+  // A topic name is up to 60 characters and so is the editor-written SEO title, so the two
+  // together overflow long before either is unreasonable. It runs inside the index mapper:
+  // a throw here would take /insights/, every topic page and every article page down at once.
+  it('gives a long topic name a page instead of throwing', () => {
+    const name = 'Search engine optimisation and AI answer visibility';
+    const copy = insightsCategoryCopyFor(COPY, { slug: 'seo-and-ai-answer-visibility', name });
+    expect(insightsCategoryCopySchema.safeParse(copy).success).toBe(true);
+    expect(copy.seo.title.length).toBeLessThanOrEqual(60);
+    expect(copy.seo.description.length).toBeLessThanOrEqual(155);
+  });
+
+  it('keeps the list heading a question when it has to be cut', () => {
+    const longCopy = insightsCopySchema.parse({
+      ...COPY,
+      categoryFallback: {
+        ...COPY.categoryFallback,
+        seoTitle: 'Every article we have published about {topic}, in one place',
+        listHeading: 'Which of our articles cover {topic} for a business buying a new website this year?',
+      },
+    });
+    const copy = insightsCategoryCopyFor(longCopy, {
+      slug: 'conversion-rate-optimisation',
+      name: 'Conversion rate optimisation and analytics',
+    });
+    expect(insightsCategoryCopySchema.safeParse(copy).success).toBe(true);
+    expect(copy.listHeading.length).toBeLessThanOrEqual(160);
+    expect(copy.listHeading.endsWith('?')).toBe(true);
+  });
+
+  it('falls back to safe copy when nothing can be filled', () => {
+    const copy = insightsCategoryCopyFor(COPY, { slug: 'unnamed', name: '   ' });
+    expect(insightsCategoryCopySchema.safeParse(copy).success).toBe(true);
+    expect(copy.intro).toBeNull();
+    expect(copy.listHeading).toBe(COPY.index.listHeading);
   });
 });

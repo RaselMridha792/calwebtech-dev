@@ -1,8 +1,8 @@
 import { INSIGHTS_SUBSCRIBE_SHARE, articleToc, type InsightsArticleView } from '@calwebtech/shared';
+import type { ReactNode } from 'react';
 import { Section } from '../site/section';
 import { ArticleTakeaways, ArticleToc, AuthorBlock, ServiceCallToAction, SubscribeBlock } from './article-sections';
 import { Blocks, articleBodyContext, articleTokens, splitAtShare } from './markdown';
-import { SubscribeForm } from './subscribe-form';
 
 /**
  * The article itself: the key takeaways, the table of contents, the body rendered from
@@ -11,16 +11,12 @@ import { SubscribeForm } from './subscribe-form';
  *
  * Not deferred: the body is the page, and `content-visibility` on a long article moves the
  * anchors the table of contents points at (docs/09-performance.md).
+ *
+ * The subscribe form arrives as a node, the way `ContactFormSection` takes its lead form:
+ * the form is the page's only client component and reaches a server action, so keeping it
+ * out of this module leaves the whole composition renderable in a unit test.
  */
-export function ArticleBodySection({
-  view,
-  turnstileSiteKey,
-  path,
-}: {
-  view: InsightsArticleView;
-  turnstileSiteKey: string | undefined;
-  path: string;
-}) {
+export function ArticleBodySection({ view, subscribeForm }: { view: InsightsArticleView; subscribeForm: ReactNode }) {
   const tokens = articleTokens(view.body);
   const context = articleBodyContext(tokens);
   const [opening, rest] = splitAtShare(tokens, INSIGHTS_SUBSCRIBE_SHARE);
@@ -43,9 +39,7 @@ export function ArticleBodySection({
 
         <div className="max-w-[72ch] lg:col-span-8 lg:col-start-1 lg:row-start-2">
           <Blocks tokens={opening} ctx={context} />
-          <SubscribeBlock copy={copy.newsletter}>
-            <SubscribeForm copy={copy.newsletter} sourcePage={path} turnstileSiteKey={turnstileSiteKey} />
-          </SubscribeBlock>
+          <SubscribeBlock copy={copy.newsletter}>{subscribeForm}</SubscribeBlock>
           <Blocks tokens={rest} ctx={context} />
           <ServiceCallToAction view={view} />
           <AuthorBlock author={view.author} label={copy.authorLabel} />

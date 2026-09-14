@@ -10,22 +10,20 @@ import {
 } from '@calwebtech/shared';
 import type { ReactNode } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { insightsArticleSnapshots, insightsIndexSnapshot } from '@/static-content/insights';
 import { PageHero } from '../site/page-hero';
-import {
-  ArticleMeta,
-  ArticleServicesSection,
-  ArticleTakeaways,
-  ArticleToc,
-  AuthorBlock,
-  RelatedArticlesSection,
-  ServiceCallToAction,
-} from './article-sections';
+import { ArticleBodySection } from './article-page';
+import { ArticleMeta, ArticleServicesSection, RelatedArticlesSection, ServiceCallToAction } from './article-sections';
 import { articleJsonLd } from './json-ld';
 import { InsightsListing, insightsResults } from './listing';
 import { Blocks, articleBodyContext, articleTokens, safeHref, splitAtShare } from './markdown';
 import { listingDocumentTitle, listingPageSeo } from './page-seo';
+import { SubscribeForm } from './subscribe-form';
+
+// The subscribe block's server action reaches the API, which cannot be imported outside a
+// request. Only the action is stubbed, so the form below is the one the article renders.
+vi.mock('./subscribe-action', () => ({ subscribeToInsights: () => Promise.resolve({ status: 'idle' as const }) }));
 
 const render = (node: ReactNode) => renderToStaticMarkup(node);
 const index = insightsIndexViewSchema.parse(insightsIndexSnapshot);
@@ -46,11 +44,12 @@ function expectHeadingOrder(html: string): void {
   });
 }
 
+/** Stands in for the only client component on the page, the way the route passes it in. */
+const subscribeFormStub = <form data-testid="subscribe-form" />;
+
 /** The article page as the route composes it, without the layout's chrome. */
-function articleMarkup(view: InsightsArticleView): string {
+function articleMarkup(view: InsightsArticleView, subscribeForm: ReactNode = subscribeFormStub): string {
   const path = insightsArticlePath(view.slug);
-  const tokens = articleTokens(view.body);
-  const context = articleBodyContext(tokens);
   return render(
     <>
       <PageHero
@@ -67,11 +66,7 @@ function articleMarkup(view: InsightsArticleView): string {
       >
         <ArticleMeta view={view} />
       </PageHero>
-      <ArticleTakeaways takeaways={view.takeaways} label={view.copy.takeawaysLabel} />
-      <ArticleToc items={articleToc(view)} label={view.copy.tocLabel} />
-      <Blocks tokens={tokens} ctx={context} />
-      <ServiceCallToAction view={view} />
-      <AuthorBlock author={view.author} label={view.copy.authorLabel} />
+      <ArticleBodySection view={view} subscribeForm={subscribeForm} />
       <ArticleServicesSection view={view} />
       <RelatedArticlesSection view={view} />
     </>,
@@ -225,6 +220,74 @@ describe('the Markdown renderer', () => {
     const tokens = articleTokens('## What now?\n\nOne.\n\n## What now?\n\nTwo.\n');
     const context = articleBodyContext(tokens);
     expect([...context.headingIds.values()]).toEqual(['what-now', 'what-now-2']);
+  });
+});
+
+describe('the article body section, as the route composes it', () => {
+  it('puts the subscribe block inside the body, between the two halves', () => {
+    if (!firstArticle) throw new Error('No article snapshots');
+    const html = render(<ArticleBodySection view={firstArticle} subscribeForm={subscribeFormStub} />);
+    const toc = articleToc(firstArticle);
+    const first = toc[0];
+    const last = toc.at(-1);
+    if (!first || !last) throw new Error('No heading on either side of the block');
+
+    const block = html.indexOf('id="article-subscribe-label"');
+    expect(block, 'the block is rendered').toBeGreaterThan(-1);
+    expect(html.indexOf(`id="${first.id}"`), 'the first half is above it').toBeLessThan(block);
+    expect(html.indexOf(`id="${last.id}"`), 'the second half is below it').toBeGreaterThan(block);
+    // The form the route passes in is the block's content, not a second form beside it.
+    expect(html.slice(block)).toContain('data-testid="subscribe-form"');
+  });
+
+  it('carries the takeaways, the contents, the service call to action and the author', () => {
+    if (!firstArticle) throw new Error('No article snapshots');
+    const html = render(<ArticleBodySection view={firstArticle} subscribeForm={subscribeFormStub} />);
+    const { copy } = firstArticle;
+    expect(html).toContain(copy.takeawaysLabel);
+    expect(html).toContain(copy.tocLabel);
+    expect(html).toContain('id="article-service-label"');
+    expect(html).toContain(copy.authorLabel);
+    // The body is rendered once, not once per half.
+    expect(html.split('id="article-subscribe-label"')).toHaveLength(2);
+  });
+});
+
+describe('the subscribe form', () => {
+  const copy = firstArticle?.copy.newsletter;
+
+  const markup = () => {
+    if (!copy) throw new Error('No article snapshots');
+    return render(<SubscribeForm copy={copy} sourcePage="/insights/an-article/" turnstileSiteKey={undefined} />);
+  };
+
+  it('labels both fields and names the article it sits on', () => {
+    const html = markup();
+    if (!copy) throw new Error('No article snapshots');
+    for (const [id, label] of [
+      ['insights-subscribe-name', copy.nameLabel],
+      ['insights-subscribe-email', copy.emailLabel],
+    ]) {
+      expect(html, `${id} is labelled`).toContain(`for="${id}"`);
+      expect(html, `${id} exists`).toContain(`id="${id}"`);
+      expect(html).toContain(label);
+    }
+    expect(html).toContain('name="sourcePage"');
+    expect(html).toContain('value="/insights/an-article/"');
+    expect(html).toContain(copy.submitLabel);
+    expect(html).toContain(copy.privacyNote);
+  });
+
+  it('hides the honeypot from people without hiding it from a bot', () => {
+    const html = markup();
+    const honeypot = html.indexOf('name="referenceCode"');
+    expect(honeypot, 'the honeypot is rendered').toBeGreaterThan(-1);
+    const wrapper = html.lastIndexOf('<div', honeypot);
+    expect(html.slice(wrapper, honeypot)).toContain('aria-hidden="true"');
+    expect(html.slice(wrapper, honeypot)).toContain('left-[-10000px]');
+    expect(html).toContain('tabindex="-1"');
+    // Hidden, but still labelled, so it is a field a bot fills and a person never sees.
+    expect(html).toContain('for="insights-subscribe-reference"');
   });
 });
 

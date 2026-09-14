@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { linkSchema } from '../home-page';
 import { decorativeImageSchema, imageSchema } from '../media';
-import { slugSchema } from '../seo';
+import { SEO_DESCRIPTION_MAX, SEO_TITLE_MAX, slugSchema } from '../seo';
 import { answerBlockSchema, caseStudyCardSchema, pageSeoSchema, questionSchema, requiredText } from './common';
 
 /**
@@ -460,21 +460,61 @@ export const insightsCopySchema = z.object({
 export type InsightsCopy = z.output<typeof insightsCopySchema>;
 export type InsightsCopyInput = z.input<typeof insightsCopySchema>;
 
-/** Fills `{topic}` in the fallback copy of a topic that has no page copy of its own. */
+/**
+ * Cuts filled text to a field's own limit, on a word boundary where there is one. A topic
+ * name is up to 60 characters and an editor may write the template up to its own limit, so
+ * the sum overflows long before either half is unreasonable.
+ */
+function clampFilled(value: string, max: number): string {
+  const trimmed = value.trim();
+  if (trimmed.length <= max) return trimmed;
+  const cut = trimmed.slice(0, max);
+  const lastSpace = cut.lastIndexOf(' ');
+  return (lastSpace > max / 2 ? cut.slice(0, lastSpace) : cut).trim();
+}
+
+/** The same cut for a heading, keeping the question mark that makes it a question. */
+function clampQuestion(value: string, max: number): string {
+  const trimmed = value.trim();
+  if (trimmed.length <= max && trimmed.endsWith('?')) return trimmed;
+  return `${clampFilled(trimmed.replace(/[?\s]+$/u, ''), max - 1)}?`;
+}
+
+/**
+ * Fills `{topic}` in the fallback copy of a topic that has no page copy of its own.
+ *
+ * Total by construction: every field is cut to its own limit and the result is checked
+ * rather than asserted, because this runs inside the index mapper. A topic whose name or
+ * whose editor-written template makes the copy invalid must still get a page, not turn
+ * `/insights/`, every topic page and every article page into a 500 at once.
+ */
 export function insightsCategoryCopyFor(copy: InsightsCopy, category: InsightsCategoryRef): InsightsCategoryCopy {
   const own = Object.hasOwn(copy.categories, category.slug) ? copy.categories[category.slug] : undefined;
   if (own) return own;
+  const fallback = copy.categoryFallback;
   const fill = (value: string) => value.replaceAll('{topic}', category.name);
-  return insightsCategoryCopySchema.parse({
+  const filled = insightsCategoryCopySchema.safeParse({
     seo: {
-      title: fill(copy.categoryFallback.seoTitle),
-      description: fill(copy.categoryFallback.seoDescription),
+      title: clampFilled(fill(fallback.seoTitle), SEO_TITLE_MAX),
+      description: clampFilled(fill(fallback.seoDescription), SEO_DESCRIPTION_MAX),
       ogImage: null,
     },
-    title: fill(copy.categoryFallback.title),
-    intro: copy.categoryFallback.intro === null ? null : fill(copy.categoryFallback.intro),
-    listHeading: fill(copy.categoryFallback.listHeading),
+    title: clampFilled(fill(fallback.title), 120),
+    intro: fallback.intro === null ? null : clampFilled(fill(fallback.intro), 500),
+    listHeading: clampQuestion(fill(fallback.listHeading), 160),
   });
+  if (filled.success) return filled.data;
+
+  // Last resort: the topic's own name and copy that is already validated, so the page is
+  // plain rather than missing. `copy.index` came through `insightsCopySchema`.
+  const safe = insightsCategoryCopySchema.safeParse({
+    seo: { title: clampFilled(category.name, SEO_TITLE_MAX), description: copy.index.seo.description, ogImage: null },
+    title: clampFilled(category.name, 120),
+    intro: null,
+    listHeading: copy.index.listHeading,
+  });
+  if (safe.success) return safe.data;
+  return { seo: copy.index.seo, title: copy.index.title, intro: null, listHeading: copy.index.listHeading };
 }
 
 /* ------------------------------------------------------------------ Views */

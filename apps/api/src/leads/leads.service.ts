@@ -1,10 +1,7 @@
 import type { Prisma } from '@calwebtech/db';
 import {
-  INSIGHTS_COPY_SETTING_KEY,
-  INSIGHTS_NEWSLETTER_FORM_ID,
   SETTING_KEYS,
   acknowledgementSchema,
-  insightsCopySchema,
   type Acknowledgement,
   type BotCheckFailedResponse,
   type EmailJob,
@@ -42,15 +39,6 @@ export function withServiceInterest(serviceInterest: readonly string[], serviceT
   const title = serviceTitle.trim().slice(0, 80);
   const known = serviceInterest.some((item) => item.toLowerCase() === title.toLowerCase());
   return known || title.length === 0 ? [...serviceInterest] : [...serviceInterest, title];
-}
-
-/**
- * The success copy of the inline subscribe block on an article (the `insights.copy`
- * setting), so the confirmation email repeats what the subscriber saw on the page.
- */
-export function newsletterAcknowledgement(setting: unknown): Acknowledgement {
-  const copy = insightsCopySchema.safeParse(setting);
-  return copy.success ? copy.data.article.newsletter.success : DEFAULT_ACKNOWLEDGEMENT;
 }
 
 @Injectable()
@@ -110,11 +98,6 @@ export class LeadsService {
             select: { id: true, title: true, content: true },
           })
         : null;
-    // The subscribe block on an article is answered with the insights family's copy.
-    const insightsCopy =
-      !landingPage && !service && input.formId === INSIGHTS_NEWSLETTER_FORM_ID
-        ? await db.setting.findUnique({ where: { key: INSIGHTS_COPY_SETTING_KEY }, select: { value: true } })
-        : null;
     // Homepage forms have no campaign page; their success copy lives in the homepage setting.
     const homeContent =
       !landingPage && !service && input.formId.startsWith('home-')
@@ -152,16 +135,7 @@ export class LeadsService {
           referralSource: input.referralSource,
           siteUrl: input.siteUrl,
           serviceInterest,
-          // `answers` keeps the routed enquiry type and, for a resource form, the page it sat on
-          // (docs/02-content-model.md, "Newsletter: sourcePage").
-          ...(enquiryType || input.sourcePage
-            ? {
-                answers: {
-                  ...(enquiryType ? { enquiryType: enquiryType.slug } : {}),
-                  ...(input.sourcePage ? { sourcePage: input.sourcePage } : {}),
-                },
-              }
-            : {}),
+          ...(enquiryType ? { answers: { enquiryType: enquiryType.slug } } : {}),
           contactId: contact.id,
           serviceId: service?.id,
           attribution: {
@@ -195,9 +169,7 @@ export class LeadsService {
     await this.queueEmails(
       { ...input, serviceInterest },
       lead,
-      insightsCopy
-        ? newsletterAcknowledgement(insightsCopy.value)
-        : acknowledgementFrom(landingPage?.content ?? service?.content ?? homeContent?.value),
+      acknowledgementFrom(landingPage?.content ?? service?.content ?? homeContent?.value),
       enquiryType,
     );
     return { status: 'received' };

@@ -20,6 +20,7 @@ import {
 import { articleJsonLd } from '@/components/insights/json-ld';
 import { InsightsListing, insightsResults } from '@/components/insights/listing';
 import { listingPageSeo } from '@/components/insights/page-seo';
+import { SubscribeForm } from '@/components/insights/subscribe-form';
 import { JsonLd } from '@/components/seo/json-ld';
 import { PageHero } from '@/components/site/page-hero';
 import { getInsightsArticle, getInsightsIndex, getInsightsTopic } from '@/lib/api/insights';
@@ -27,16 +28,20 @@ import { sitePageMetadata } from '@/lib/seo/page-metadata';
 
 /**
  * `/insights/<slug>/` is one URL space: a topic listing when a `PostCategory` has the slug,
- * an article otherwise. The API leaves an article off `/insights/` when a topic already owns
- * its URL, so the two can never both answer.
+ * an article otherwise. The topic wins, but the article is asked for first: articles are the
+ * many and topics the few, and looking a topic up means fetching and validating the whole
+ * index view. The invariant is upheld where the data is, not by the order here — the API
+ * returns null for an article whose slug a topic owns (apps/api/src/insights/insights.service.ts)
+ * and the snapshot test asserts no article snapshot has a topic's slug — so an article that
+ * answers first can never be one a topic should have taken. Do not reorder these.
  */
 type Resolved = { kind: 'topic'; topic: InsightsCategoryView } | { kind: 'article'; article: InsightsArticleView };
 
 async function resolve(slug: string): Promise<Resolved | null> {
-  const topic = await getInsightsTopic(slug);
-  if (topic) return { kind: 'topic', topic };
   const article = await getInsightsArticle(slug);
-  return article ? { kind: 'article', article } : null;
+  if (article) return { kind: 'article', article };
+  const topic = await getInsightsTopic(slug);
+  return topic ? { kind: 'topic', topic } : null;
 }
 
 const crumbs = (trail: { name: string; path: string }[]) => [{ name: 'Insights', path: INSIGHTS_ROUTE }, ...trail];
@@ -123,7 +128,16 @@ function ArticlePage({ article }: { article: InsightsArticleView }) {
       >
         <ArticleMeta view={article} />
       </PageHero>
-      <ArticleBodySection view={article} path={path} turnstileSiteKey={process.env.TURNSTILE_SITE_KEY} />
+      <ArticleBodySection
+        view={article}
+        subscribeForm={
+          <SubscribeForm
+            copy={article.copy.newsletter}
+            sourcePage={path}
+            turnstileSiteKey={process.env.TURNSTILE_SITE_KEY}
+          />
+        }
+      />
       <ArticleServicesSection view={article} />
       <RelatedArticlesSection view={article} />
       <JsonLd data={articleJsonLd({ view: article, path })} />

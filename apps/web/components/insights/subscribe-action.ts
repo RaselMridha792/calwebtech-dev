@@ -6,10 +6,15 @@ import { postLead } from '@/lib/api';
 import { leadSubmissionFromForm } from '@/lib/lead-form';
 
 /**
- * The inline subscribe block on an article posts here. It is the site's lead flow with two
- * things fixed: the lead is a RESOURCE lead, and it carries the page it was filled on
- * (docs/02-content-model.md, "Newsletter: sourcePage"). The API validates again and owns
- * every rule; without the API nothing can be stored, so the block says it could not send.
+ * The inline subscribe block on an article posts here. It is the site's lead flow with one
+ * thing fixed: the lead is a RESOURCE lead named by `INSIGHTS_NEWSLETTER_FORM_ID`. The API
+ * validates again and owns every rule; without the API nothing can be stored, so the block
+ * says it could not send.
+ *
+ * The page the block sat on is posted as `sourcePage` but dropped by the foundation today:
+ * `leadSubmissionSchema` has no field for it and `leadSubmissionFromForm` does not read it.
+ * The family's report asks the foundation for `sourcePage` (docs/02-content-model.md,
+ * "Newsletter: sourcePage") rather than widening the shared lead contract from a page.
  */
 export type SubscribeReason = 'bot_check_failed' | 'invalid' | 'rate_limited' | 'unavailable';
 
@@ -48,7 +53,6 @@ export async function subscribeToInsights(_previous: SubscribeState, form: FormD
     ...leadSubmissionFromForm(form, requestHeaders.get('referer')),
     type: 'RESOURCE',
     formId: INSIGHTS_NEWSLETTER_FORM_ID,
-    sourcePage: text(form, 'sourcePage'),
   });
   if (!parsed.success) return fail('invalid', toFieldErrors(parsed.error));
 

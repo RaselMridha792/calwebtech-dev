@@ -154,6 +154,11 @@ export function SubscribeForm({
       aria-busy={busy}
       className="mt-6"
     >
+      {/*
+        The article the block sat on. The shared lead contract has no field for it yet, so the
+        foundation drops it today; the family's report asks for `sourcePage` on
+        `leadSubmissionSchema` rather than widening it from a page (subscribe-action.ts).
+      */}
       <input type="hidden" name="sourcePage" value={sourcePage} />
       <input ref={attributionRef} type="hidden" name="attribution" defaultValue="" />
       <div className="absolute left-[-10000px] h-px w-px overflow-hidden" aria-hidden="true">

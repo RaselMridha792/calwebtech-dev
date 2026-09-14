@@ -38,7 +38,8 @@ const POST_ORDER = [{ publishedAt: 'desc' as const }, { createdAt: 'desc' as con
 export class InsightsService {
   private readonly logger = new Logger(InsightsService.name);
   private readonly indexCache = new ViewCache<InsightsIndexView>(INSIGHTS_TTL_MS, 1);
-  private readonly articleCache = new ViewCache<InsightsArticleView | null>(INSIGHTS_TTL_MS);
+  // One entry per slug, including the nulls a 404 leaves behind, so the default cap matters.
+  private readonly articleCache = new ViewCache<InsightsArticleView | null>(INSIGHTS_TTL_MS, 500);
 
   constructor(private readonly prisma: PrismaService) {}
 
