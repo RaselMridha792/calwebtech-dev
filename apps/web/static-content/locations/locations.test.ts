@@ -1,10 +1,11 @@
 import {
+  LOCATION_FAQ_MAX,
+  LOCATION_FAQ_MIN,
   LOCATION_NEARBY_MAX,
   LOCATION_UNIQUE_SHARE_MIN,
-  locationBodyCopy,
+  locationCompleteness,
   locationDetailViewSchema,
   locationPath,
-  locationUniqueShare,
   locationsIndexViewSchema,
 } from '@calwebtech/shared';
 import { readdirSync } from 'node:fs';
@@ -53,7 +54,8 @@ describe('locations snapshots', () => {
 
   it('give every city page four to five FAQs, at most six nearby links to pages that exist, and a local contact', () => {
     for (const { view } of details) {
-      expect(view.faq?.items.length ?? 0).toBeGreaterThanOrEqual(4);
+      expect(view.faq?.items.length ?? 0).toBeGreaterThanOrEqual(LOCATION_FAQ_MIN);
+      expect(view.faq?.items.length ?? 0).toBeLessThanOrEqual(LOCATION_FAQ_MAX);
       expect(view.nearby?.items.length ?? 0).toBeLessThanOrEqual(LOCATION_NEARBY_MAX);
       for (const nearby of view.nearby?.items ?? []) {
         expect(nearby.slug).not.toBe(view.slug);
@@ -65,15 +67,11 @@ describe('locations snapshots', () => {
   });
 
   it('keep at least sixty per cent of each city page unique (docs/04-seo-keyword-map.md)', () => {
-    const places = [
-      ...details.flatMap(({ view }) => [view.city, ...(view.serviceAreaSection?.places ?? [])]),
-      'California',
-      'Texas',
-    ];
+    const views = details.map(({ view }) => view);
     for (const { slug, view } of details) {
-      const others = details.filter((other) => other.slug !== slug).map((other) => locationBodyCopy(other.view));
-      const share = locationUniqueShare(locationBodyCopy(view), others, places);
-      expect(share, `${slug} unique share`).toBeGreaterThanOrEqual(LOCATION_UNIQUE_SHARE_MIN);
+      const completeness = locationCompleteness(view, { others: views, places: ['California', 'Texas'] });
+      expect(completeness.issues, `${slug} completeness`).toEqual([]);
+      expect(completeness.uniqueShare, `${slug} unique share`).toBeGreaterThanOrEqual(LOCATION_UNIQUE_SHARE_MIN);
     }
   });
 

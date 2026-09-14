@@ -1,6 +1,6 @@
 import type { Faq, Location, Testimonial } from '@calwebtech/db';
 import { PLACEHOLDER_CONTACT } from '@calwebtech/db/seed';
-import type { LocationContentInput, LocationsIndexContentInput } from '@calwebtech/shared';
+import { LOCATION_FAQ_MIN, locationCompleteness, type LocationContentInput, type LocationsIndexContentInput } from '@calwebtech/shared';
 import { describe, expect, it } from 'vitest';
 import { ZodError } from 'zod';
 import {
@@ -274,6 +274,14 @@ describe('toLocationDetailView', () => {
     const view = toLocationDetailView(sources({ location: location({ faqs: Array.from({ length: 7 }, () => faq()) }) }));
     expect(view.faq?.items).toHaveLength(5);
     expect(view.faq?.heading).toBe('What do Test City businesses ask before hiring us?');
+  });
+
+  it('renders a published record with three FAQs, which the completeness check reports as short', () => {
+    const view = toLocationDetailView(sources({ location: location({ faqs: Array.from({ length: LOCATION_FAQ_MIN - 1 }, () => faq()) }) }));
+    expect(view.faq?.items).toHaveLength(3);
+    expect(locationCompleteness(view)).toMatchObject({ complete: false, faqCount: 3 });
+    const complete = toLocationDetailView(sources({ location: location({ faqs: Array.from({ length: LOCATION_FAQ_MIN }, () => faq()) }) }));
+    expect(locationCompleteness(complete).complete).toBe(true);
   });
 
   it('shows the service area when there is an address or places, and the local clients when named', () => {

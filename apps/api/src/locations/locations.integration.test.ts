@@ -11,7 +11,8 @@ import {
   type LocationContentInput,
   type LocationsIndexContentInput,
 } from '@calwebtech/shared';
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { Logger } from '@nestjs/common';
+import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { loadEnv } from '../config/env';
 import { PrismaService } from '../prisma/prisma.service';
 import { LocationsService } from './locations.service';
@@ -73,7 +74,8 @@ beforeAll(async () => {
   await ensureSetting(LOCATIONS_SETTING_KEYS.index, INDEX_CONTENT);
   await ensureSetting(SETTING_KEYS.contact, PLACEHOLDER_CONTACT);
 
-  const nearby = await db.location.create({ data: locationData('nearby') });
+  // Blank optional columns, as an editor clearing a field would save them.
+  const nearby = await db.location.create({ data: locationData('nearby', { state: '', serviceArea: ' ' }) });
   const draft = await db.location.create({ data: locationData('draft', { status: 'DRAFT' }) });
   createdLocations.push(nearby.id, draft.id);
 
@@ -101,6 +103,10 @@ beforeAll(async () => {
   service = new LocationsService(prisma);
 });
 
+afterEach(() => {
+  vi.restoreAllMocks();
+});
+
 afterAll(async () => {
   await db.faq.deleteMany({ where: { locationId: { in: createdLocations } } });
   await db.location.deleteMany({ where: { id: { in: createdLocations } } });
@@ -112,11 +118,18 @@ describe('locations against the database', () => {
   it('builds a published city page with its FAQs in order, only published nearby links, and no unpublished proof', async () => {
     const view = locationDetailViewSchema.parse(await service.findPublished(slug('main')));
     expect(view.faq?.items.map((item) => item.question)).toEqual(['Is this the first question?', 'Is this the second question?']);
-    expect(view.nearby?.items.map((item) => item.slug)).toEqual([slug('nearby')]);
+    expect(view.nearby?.items).toEqual([{ slug: slug('nearby'), city: 'Test nearby', state: null, serviceArea: null }]);
     expect(view.nearby?.items.map((item) => item.slug)).not.toContain(slug('draft'));
     expect([view.services, view.caseStudies, view.testimonial]).toEqual([null, null, null]);
     expect(view.serviceAreaSection?.places).toEqual(['Test place']);
     expect(view.contact.phoneE164).toBe('+15550100199');
+  });
+
+  it('still renders a published page with too few FAQs, and logs that it is incomplete', async () => {
+    const warn = vi.spyOn(Logger.prototype, 'warn').mockImplementation(() => undefined);
+    const view = await new LocationsService(prisma).findPublished(slug('main'));
+    expect(view?.faq?.items).toHaveLength(2);
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining(`"${slug('main')}" is incomplete`));
   });
 
   it('answers null for a draft or an unknown slug', async () => {
@@ -132,6 +145,8 @@ describe('locations against the database', () => {
     expect(slugs).toContain(slug('main'));
     expect(slugs).toContain(slug('nearby'));
     expect(slugs).not.toContain(slug('draft'));
+    const blank = view.groups.flatMap((group) => group.locations).find((location) => location.slug === slug('nearby'));
+    expect([blank?.state, blank?.serviceArea]).toEqual([null, null]);
     const tierOf = (wanted: string) => view.groups.find((group) => group.locations.some((location) => location.slug === wanted))?.tier;
     expect([tierOf(slug('main')), tierOf(slug('nearby'))]).toEqual(['TIER_1', 'TIER_2']);
   });

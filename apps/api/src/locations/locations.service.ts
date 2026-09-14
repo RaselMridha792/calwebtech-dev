@@ -1,4 +1,10 @@
-import { LOCATIONS_SETTING_KEYS, SETTING_KEYS, type LocationDetailView, type LocationsIndexView } from '@calwebtech/shared';
+import {
+  LOCATIONS_SETTING_KEYS,
+  SETTING_KEYS,
+  locationCompleteness,
+  type LocationDetailView,
+  type LocationsIndexView,
+} from '@calwebtech/shared';
 import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 import { publishedAsOf } from '../common/published';
 import { ViewCache } from '../common/view-cache';
@@ -56,6 +62,7 @@ export class LocationsService {
     });
     if (!location) return null;
 
+    let view: LocationDetailView;
     try {
       const references = locationReferences(location);
       const [contact, services, projects, nearby] = await Promise.all([
@@ -79,7 +86,7 @@ export class LocationsService {
             })
           : [],
       ]);
-      return toLocationDetailView({ location, contactSetting: contact?.value ?? null, services, projects, nearby });
+      view = toLocationDetailView({ location, contactSetting: contact?.value ?? null, services, projects, nearby });
     } catch (error) {
       this.logger.error(
         `Location "${slug}" failed contract validation. Check its content, local context and FAQs, and the "${SETTING_KEYS.contact}" setting.`,
@@ -87,5 +94,13 @@ export class LocationsService {
       );
       throw new InternalServerErrorException();
     }
+
+    // A published page that falls short still renders, so an indexed page never becomes an
+    // error; the shortfall is logged until the publish endpoint stops it reaching PUBLISHED.
+    const completeness = locationCompleteness(view);
+    if (!completeness.complete) {
+      this.logger.warn(`Published location "${slug}" is incomplete. ${completeness.issues.join(' ')}`);
+    }
+    return view;
   }
 }
