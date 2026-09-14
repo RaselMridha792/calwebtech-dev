@@ -111,9 +111,9 @@ describe('/work/', () => {
   });
 
   it('canonicalises filtered views to /work/ and keeps them out of search', async () => {
-    const plain = await workIndexMetadata(indexProps({}), undefined as never);
+    const plain = await workIndexMetadata(indexProps({}));
     expect(plain.alternates?.canonical).toBe('https://www.calwebtech.com/work/');
-    const filtered = await workIndexMetadata(indexProps({ service: 'ecommerce-development' }), undefined as never);
+    const filtered = await workIndexMetadata(indexProps({ service: 'ecommerce-development' }));
     expect(filtered.alternates?.canonical).toBe('https://www.calwebtech.com/work/');
     expect(filtered.robots).toEqual({ index: false, follow: false });
   });
@@ -187,13 +187,13 @@ describe('/work/<slug>/', () => {
   it('answers 404 for an unknown slug, including names of object properties', async () => {
     await expectNotFound(CaseStudyPage(caseStudyProps('no-such-project')));
     await expectNotFound(CaseStudyPage(caseStudyProps('constructor')));
-    const metadata = await caseStudyMetadata(caseStudyProps('constructor'), undefined as never);
+    const metadata = await caseStudyMetadata(caseStudyProps('constructor'));
     expect(metadata.robots).toEqual({ index: false, follow: false });
   });
 
   it('writes an article title and description within the limits, with a canonical', async () => {
-    const metadata = await caseStudyMetadata(caseStudyProps('cascadia-health'), undefined as never);
-    expect(String((metadata.title as { absolute: string }).absolute).length).toBeLessThanOrEqual(60);
+    const metadata = await caseStudyMetadata(caseStudyProps('cascadia-health'));
+    expect((metadata.title as { absolute: string }).absolute.length).toBeLessThanOrEqual(60);
     expect(String(metadata.description).length).toBeLessThanOrEqual(155);
     expect(metadata.alternates?.canonical).toBe('https://www.calwebtech.com/work/cascadia-health/');
   });
