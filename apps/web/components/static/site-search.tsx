@@ -40,7 +40,7 @@ export function SiteSearch({ copy }: { copy: StaticNotFoundView['search'] }) {
             autoComplete="off"
             placeholder={copy.placeholder}
             aria-describedby="site-search-status"
-            className="h-13 min-w-0 flex-1 basis-60 rounded-xl border border-line bg-white px-4 text-[16px] text-ink placeholder:text-body/60 focus:border-primary"
+            className="h-13 min-w-0 flex-1 basis-60 rounded-xl border border-line bg-white px-4 text-[16px] text-ink placeholder:text-body focus:border-primary"
           />
           <button
             type="submit"
