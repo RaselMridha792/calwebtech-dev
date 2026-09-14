@@ -261,8 +261,11 @@ export const homeProjectSchema = z.object({
 
 export const LOCATION_TIERS = ['TIER_1', 'TIER_2', 'TIER_3'] as const;
 
-/** The landing page's review summary, plus per-platform counts and the NPS sample size. */
-const homeReviewSummarySchema = reviewSummarySchema.extend({
+/**
+ * The landing page's review summary, plus per-platform counts and the NPS sample size.
+ * Also the rating badge in the site chrome (site-chrome.ts).
+ */
+export const homeReviewSummarySchema = reviewSummarySchema.extend({
   sources: z.array(
     z.object({
       platform: text(60),
@@ -365,3 +368,4 @@ export const homePageViewSchema = z.object({
 
 export type HomePageView = z.output<typeof homePageViewSchema>;
 export type HomeProject = z.output<typeof homeProjectSchema>;
+export type HomeReviewSummary = z.output<typeof homeReviewSummarySchema>;

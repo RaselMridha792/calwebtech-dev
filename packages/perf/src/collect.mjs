@@ -86,7 +86,9 @@ function summary(lhr) {
   return `perf=${lhr.categories.performance?.score} LCP=${audit('largest-contentful-paint')} TBT=${audit('total-blocking-time')} CLS=${lhr.audits['cumulative-layout-shift']?.numericValue}`;
 }
 
-const INDEXING = 'homepage.indexing';
+// homepage.indexing gives the homepage its meta robots; site.indexing gives robots.txt,
+// which disallows all crawling while it is off. is-crawlable fails on either.
+const INDEXING_SETTINGS = ['homepage.indexing', 'site.indexing'];
 const API_DIR = path.resolve(import.meta.dirname, '../../../apps/api');
 
 function settingsCli(...cliArgs) {
@@ -94,23 +96,26 @@ function settingsCli(...cliArgs) {
 }
 
 /**
- * The homepage is noindex until homepage.indexing is on, and noindex fails the
- * is-crawlable audit by design. The gate measures the page as it ships once indexable,
- * locally and in CI alike, and returns a function that puts the setting back. Done before
- * the stack starts, so the API's short homepage cache cannot serve the old value. Never
- * with --no-serve, which measures a site whose database this process does not own.
+ * Pages are noindex, and robots.txt disallows crawling, until homepage.indexing and
+ * site.indexing are on, and both fail the is-crawlable audit by design. The gate measures
+ * pages as they ship once indexable, locally and in CI alike, and returns a function that
+ * puts the settings back. Done before the stack starts, so the API's short caches cannot
+ * serve the old values. Never with --no-serve, which measures a site whose database this
+ * process does not own.
  */
-function indexHomepageForTheRun() {
-  const previous = JSON.parse(settingsCli('get', INDEXING));
-  settingsCli('set', INDEXING, JSON.stringify({ index: true }));
+function indexPagesForTheRun() {
+  const previous = INDEXING_SETTINGS.map((key) => [key, JSON.parse(settingsCli('get', key))]);
+  for (const key of INDEXING_SETTINGS) settingsCli('set', key, JSON.stringify({ index: true }));
   // A missing row already means noindex, and the CLI cannot delete one.
-  return () => settingsCli('set', INDEXING, JSON.stringify(previous ?? { index: false }));
+  return () => {
+    for (const [key, value] of previous) settingsCli('set', key, JSON.stringify(value ?? { index: false }));
+  };
 }
 
 const report = { urls: URLS, calibration: [], runs: [] };
 rmSync(OUT, { recursive: true, force: true });
 mkdirSync(OUT, { recursive: true });
-const restoreIndexing = args['no-serve'] ? null : indexHomepageForTheRun();
+const restoreIndexing = args['no-serve'] ? null : indexPagesForTheRun();
 let stack = null;
 
 try {

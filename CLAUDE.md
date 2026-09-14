@@ -196,6 +196,7 @@ the task produced without a deploy, and the acceptance criterion in
 | What to build next | `docs/06-build-plan.md` |
 | Decisions taken since the handoff | `docs/08-decisions.md` |
 | Budget math and rules for marketing routes | `docs/09-performance.md` |
+| Building a site page family, and who owns which file | `docs/10-site-pages.md` |
 
 ## Ask before deciding
 

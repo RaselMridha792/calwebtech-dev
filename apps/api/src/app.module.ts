@@ -7,6 +7,8 @@ import { HomePageModule } from './home/home-page.controller';
 import { LandingPagesModule } from './landing-pages/landing-pages.controller';
 import { LeadsModule } from './leads/leads.controller';
 import { PrismaModule } from './prisma/prisma.service';
+import { SiteChromeModule } from './site/site-chrome.controller';
+// Site page families (docs/10-site-pages.md): one import each, below this line.
 
 @Module({
   imports: [
@@ -17,6 +19,8 @@ import { PrismaModule } from './prisma/prisma.service';
     LandingPagesModule,
     HomePageModule,
     LeadsModule,
+    SiteChromeModule,
+    // Site page families: one module each, below this line.
   ],
   controllers: [HealthController],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],

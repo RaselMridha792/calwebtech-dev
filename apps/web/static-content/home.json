@@ -26,52 +26,52 @@
         {
           "title": "Design & build",
           "links": [
-            { "label": "Custom website design", "href": "#services" },
-            { "label": "Web application development", "href": "#services" },
-            { "label": "Ecommerce development", "href": "#services" },
-            { "label": "UI/UX and design systems", "href": "#services" },
-            { "label": "Website redesign", "href": "#services" },
-            { "label": "Branding and identity", "href": "#services" }
+            { "label": "Custom website design", "href": "/services/custom-website-development/" },
+            { "label": "Web application development", "href": "/services/web-application-development/" },
+            { "label": "Ecommerce development", "href": "/services/ecommerce-development/" },
+            { "label": "UI/UX and design systems", "href": "/services/custom-website-development/" },
+            { "label": "Website redesign", "href": "/services/website-redesign/" },
+            { "label": "Branding and identity", "href": "/services/custom-website-development/" }
           ]
         },
         {
           "title": "Platforms",
           "links": [
-            { "label": "Next.js and React", "href": "#services" },
-            { "label": "WordPress", "href": "#services" },
-            { "label": "Shopify", "href": "#services" },
-            { "label": "WooCommerce", "href": "#services" },
-            { "label": "Headless CMS", "href": "#services" },
-            { "label": "React Native", "href": "#services" }
+            { "label": "Next.js and React", "href": "/services/nextjs-development/" },
+            { "label": "WordPress", "href": "/services/wordpress-development/" },
+            { "label": "Shopify", "href": "/services/shopify-development/" },
+            { "label": "WooCommerce", "href": "/services/wordpress-development/" },
+            { "label": "Headless CMS", "href": "/services/nextjs-development/" },
+            { "label": "React Native", "href": "/services/web-application-development/" }
           ]
         },
         {
           "title": "Growth & care",
           "links": [
-            { "label": "Technical SEO", "href": "#services" },
-            { "label": "AI search visibility (GEO)", "href": "#services" },
-            { "label": "Conversion optimisation", "href": "#services" },
-            { "label": "Performance engineering", "href": "#services" },
-            { "label": "Website care plans", "href": "#services" },
-            { "label": "Project rescue", "href": "#services" }
+            { "label": "Technical SEO", "href": "/services/ai-search-visibility/" },
+            { "label": "AI search visibility (GEO)", "href": "/services/ai-search-visibility/" },
+            { "label": "Conversion optimisation", "href": "/services/website-redesign/" },
+            { "label": "Performance engineering", "href": "/services/website-redesign/" },
+            { "label": "Website care plans", "href": "/services/care-plans/" },
+            { "label": "Project rescue", "href": "/services/website-redesign/" }
           ]
         }
       ],
       "industryLinks": [
-        { "label": "Manufacturing", "href": "#industries" },
-        { "label": "Distribution and supply", "href": "#industries" },
-        { "label": "Construction", "href": "#industries" },
-        { "label": "SaaS and technology", "href": "#industries" },
-        { "label": "Healthcare", "href": "#industries" },
-        { "label": "Financial services", "href": "#industries" },
-        { "label": "Real estate", "href": "#industries" },
-        { "label": "Hospitality and travel", "href": "#industries" },
-        { "label": "Education", "href": "#industries" }
+        { "label": "Manufacturing", "href": "/industries/manufacturing/" },
+        { "label": "Distribution and supply", "href": "/industries/distribution/" },
+        { "label": "Construction", "href": "/industries/" },
+        { "label": "SaaS and technology", "href": "/industries/saas/" },
+        { "label": "Healthcare", "href": "/industries/healthcare/" },
+        { "label": "Financial services", "href": "/industries/" },
+        { "label": "Real estate", "href": "/industries/real-estate/" },
+        { "label": "Hospitality and travel", "href": "/industries/hospitality/" },
+        { "label": "Education", "href": "/industries/" }
       ],
       "industriesPromo": {
         "heading": "Distribution, 4x leads",
         "body": "How we cut a supplier's quote turnaround from three days to twelve minutes.",
-        "cta": { "label": "Read the case study", "href": "#work" }
+        "cta": { "label": "Read the case study", "href": "/work/northmark-supply/" }
       },
       "workColumns": [
         {
@@ -87,10 +87,10 @@
         {
           "title": "By service",
           "links": [
-            { "label": "Website design", "href": "#work" },
-            { "label": "Ecommerce", "href": "#work" },
-            { "label": "Web applications", "href": "#work" },
-            { "label": "SEO and growth", "href": "#work" }
+            { "label": "Website design", "href": "/work/?service=custom-website-development" },
+            { "label": "Ecommerce", "href": "/work/?service=ecommerce-development" },
+            { "label": "Web applications", "href": "/work/?service=web-application-development" },
+            { "label": "SEO and growth", "href": "/work/?service=ai-search-visibility" }
           ]
         }
       ],
@@ -99,8 +99,8 @@
           "title": "Free tools",
           "links": [
             { "label": "Website cost calculator", "href": "#estimate" },
-            { "label": "Free website audit", "href": "/free-website-audit/" },
-            { "label": "AI search visibility check", "href": "/free-website-audit/" },
+            { "label": "Free website audit", "href": "/contact/" },
+            { "label": "AI search visibility check", "href": "/services/ai-search-visibility/" },
             { "label": "Which website do you need? Quiz", "href": "#estimate" }
           ]
         },
@@ -120,7 +120,7 @@
             { "label": "Team", "href": "/team/" },
             { "label": "Awards and recognition", "href": "#awards" },
             { "label": "Careers", "href": "/careers/" },
-            { "label": "News", "href": "/insights/" }
+            { "label": "News", "href": "#insights" }
           ]
         }
       ],
@@ -135,27 +135,27 @@
         {
           "title": "Services",
           "links": [
-            { "label": "Custom website design", "href": "#services" },
-            { "label": "Web applications", "href": "#services" },
-            { "label": "Ecommerce", "href": "#services" },
-            { "label": "UI/UX design", "href": "#services" },
-            { "label": "Next.js and React", "href": "#services" },
-            { "label": "WordPress", "href": "#services" },
-            { "label": "Shopify", "href": "#services" },
-            { "label": "Technical SEO", "href": "#services" },
-            { "label": "AI search (GEO)", "href": "#services" },
-            { "label": "Care plans", "href": "#services" }
+            { "label": "Custom website design", "href": "/services/custom-website-development/" },
+            { "label": "Web applications", "href": "/services/web-application-development/" },
+            { "label": "Ecommerce", "href": "/services/ecommerce-development/" },
+            { "label": "UI/UX design", "href": "/services/custom-website-development/" },
+            { "label": "Next.js and React", "href": "/services/nextjs-development/" },
+            { "label": "WordPress", "href": "/services/wordpress-development/" },
+            { "label": "Shopify", "href": "/services/shopify-development/" },
+            { "label": "Technical SEO", "href": "/services/ai-search-visibility/" },
+            { "label": "AI search (GEO)", "href": "/services/ai-search-visibility/" },
+            { "label": "Care plans", "href": "/services/care-plans/" }
           ]
         },
         {
           "title": "Industries",
           "links": [
-            { "label": "Manufacturing", "href": "#industries" },
-            { "label": "Distribution", "href": "#industries" },
-            { "label": "SaaS", "href": "#industries" },
-            { "label": "Healthcare", "href": "#industries" },
-            { "label": "Real estate", "href": "#industries" },
-            { "label": "Hospitality", "href": "#industries" }
+            { "label": "Manufacturing", "href": "/industries/manufacturing/" },
+            { "label": "Distribution", "href": "/industries/distribution/" },
+            { "label": "SaaS", "href": "/industries/saas/" },
+            { "label": "Healthcare", "href": "/industries/healthcare/" },
+            { "label": "Real estate", "href": "/industries/real-estate/" },
+            { "label": "Hospitality", "href": "/industries/hospitality/" }
           ]
         },
         {
@@ -412,29 +412,29 @@
     "footer": {
       "blurb": "A web engineering studio building custom websites, commerce platforms and web applications for companies that would rather own their platform than rent it.",
       "services": [
-        { "label": "Website design", "href": "#services" },
-        { "label": "Web applications", "href": "#services" },
-        { "label": "Ecommerce", "href": "#services" },
-        { "label": "Next.js and React", "href": "#services" },
-        { "label": "WordPress", "href": "#services" },
-        { "label": "Shopify", "href": "#services" },
-        { "label": "SEO and GEO", "href": "#services" },
-        { "label": "Care plans", "href": "#services" }
+        { "label": "Website design", "href": "/services/custom-website-development/" },
+        { "label": "Web applications", "href": "/services/web-application-development/" },
+        { "label": "Ecommerce", "href": "/services/ecommerce-development/" },
+        { "label": "Next.js and React", "href": "/services/nextjs-development/" },
+        { "label": "WordPress", "href": "/services/wordpress-development/" },
+        { "label": "Shopify", "href": "/services/shopify-development/" },
+        { "label": "SEO and GEO", "href": "/services/ai-search-visibility/" },
+        { "label": "Care plans", "href": "/services/care-plans/" }
       ],
       "industries": [
-        { "label": "Manufacturing", "href": "#industries" },
-        { "label": "Distribution", "href": "#industries" },
-        { "label": "Retail and D2C", "href": "#industries" },
-        { "label": "SaaS", "href": "#industries" },
-        { "label": "Healthcare", "href": "#industries" },
-        { "label": "Real estate", "href": "#industries" },
-        { "label": "Hospitality", "href": "#industries" },
-        { "label": "Education", "href": "#industries" }
+        { "label": "Manufacturing", "href": "/industries/manufacturing/" },
+        { "label": "Distribution", "href": "/industries/distribution/" },
+        { "label": "Retail and D2C", "href": "/industries/ecommerce-and-d2c/" },
+        { "label": "SaaS", "href": "/industries/saas/" },
+        { "label": "Healthcare", "href": "/industries/healthcare/" },
+        { "label": "Real estate", "href": "/industries/real-estate/" },
+        { "label": "Hospitality", "href": "/industries/hospitality/" },
+        { "label": "Education", "href": "/industries/" }
       ],
       "resources": [
         { "label": "Cost calculator", "href": "#estimate" },
-        { "label": "Free website audit", "href": "/free-website-audit/" },
-        { "label": "AI visibility check", "href": "/free-website-audit/" },
+        { "label": "Free website audit", "href": "/contact/" },
+        { "label": "AI visibility check", "href": "/services/ai-search-visibility/" },
         { "label": "Insights", "href": "#insights" },
         { "label": "Guides and reports", "href": "/guides/" },
         { "label": "Glossary", "href": "/glossary/" },
@@ -448,7 +448,7 @@
         { "label": "Client feedback", "href": "#testimonials" },
         { "label": "Pricing", "href": "#pricing" },
         { "label": "Careers", "href": "/careers/" },
-        { "label": "News", "href": "/insights/" },
+        { "label": "News", "href": "#insights" },
         { "label": "Contact", "href": "#book" }
       ],
       "legal": [
@@ -502,7 +502,7 @@
     {
       "name": "Design & build",
       "services": [
-        { "slug": "custom-website-design", "title": "Custom website design" },
+        { "slug": "custom-website-development", "title": "Custom website design" },
         { "slug": "web-application-development", "title": "Web application development" },
         { "slug": "ecommerce-development", "title": "Ecommerce development" }
       ]
@@ -510,15 +510,15 @@
     {
       "name": "Growth & care",
       "services": [
-        { "slug": "ai-features-and-automation", "title": "AI features and automation" },
-        { "slug": "search-and-ai-visibility", "title": "Search and AI visibility" },
-        { "slug": "care-plans-and-hosting", "title": "Care plans and hosting" }
+        { "slug": "ai-integration", "title": "AI features and automation" },
+        { "slug": "ai-search-visibility", "title": "Search and AI visibility" },
+        { "slug": "care-plans", "title": "Care plans and hosting" }
       ]
     }
   ],
   "services": [
     {
-      "slug": "custom-website-design",
+      "slug": "custom-website-development",
       "title": "Custom website design",
       "summary": "Research-led design built around how your buyers actually decide, not around a template's section order.",
       "deliverables": [
@@ -548,7 +548,7 @@
       ]
     },
     {
-      "slug": "ai-features-and-automation",
+      "slug": "ai-integration",
       "title": "AI features and automation",
       "summary": "Qualification assistants, search, content tooling and workflow automation wired into your own data.",
       "deliverables": [
@@ -558,7 +558,7 @@
       ]
     },
     {
-      "slug": "search-and-ai-visibility",
+      "slug": "ai-search-visibility",
       "title": "Search and AI visibility",
       "summary": "Technical SEO plus the newer work of being cited by ChatGPT, Perplexity, Gemini and AI overviews.",
       "deliverables": [
@@ -568,7 +568,7 @@
       ]
     },
     {
-      "slug": "care-plans-and-hosting",
+      "slug": "care-plans",
       "title": "Care plans and hosting",
       "summary": "Patching, backups with a tested restore, monitoring and a fixed allowance of development hours.",
       "deliverables": [
@@ -589,7 +589,7 @@
       }
     },
     {
-      "slug": "retail-and-d2c",
+      "slug": "ecommerce-and-d2c",
       "name": "Retail and D2C",
       "line": "Storefronts tuned against real checkout drop-off.",
       "image": {
@@ -598,7 +598,7 @@
       }
     },
     {
-      "slug": "saas-and-technology",
+      "slug": "saas",
       "name": "SaaS and technology",
       "line": "Marketing site, docs and product on one system.",
       "image": {

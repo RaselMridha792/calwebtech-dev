@@ -6,6 +6,7 @@ import {
   homepageIndexingSchema,
   leadNotificationRecipientsSchema,
   siteContactSchema,
+  siteIndexingSchema,
   siteProofSchema,
 } from '@calwebtech/shared';
 import type { z } from 'zod';
@@ -26,6 +27,7 @@ const SCHEMAS: Record<string, z.ZodType> = {
   [SETTING_KEYS.proof]: siteProofSchema,
   [SETTING_KEYS.leadNotificationRecipients]: leadNotificationRecipientsSchema,
   [SETTING_KEYS.homepageIndexing]: homepageIndexingSchema,
+  [SETTING_KEYS.siteIndexing]: siteIndexingSchema,
 };
 
 for (const candidate of ['.env', '../../.env']) {

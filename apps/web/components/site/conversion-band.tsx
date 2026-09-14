@@ -1,0 +1,84 @@
+import type { FinalPointIcon, SiteChromeView } from '@calwebtech/shared';
+import type { ReactNode } from 'react';
+import { BackdropImage } from '../ui/brand';
+import { CalendarIcon, ShieldIcon, TickIcon } from '../ui/icons';
+import { reveal } from '../ui/primitives';
+
+const POINT_ICONS: Record<FinalPointIcon, ReactNode> = {
+  check: <TickIcon className="h-4 w-4" />,
+  shield: <ShieldIcon className="h-4 w-4" />,
+  calendar: <CalendarIcon className="h-4 w-4" />,
+};
+
+/**
+ * The band closing every site page, rendered by the site layout after `<main>`. It is a
+ * labelled region, so its content sits in a landmark. A page that is itself the
+ * conversion point renders `PageHasOwnForm`, which hides it.
+ */
+export function ConversionBand({ band }: { band: SiteChromeView['conversionBand'] }) {
+  return (
+    <section
+      data-conversion-band=""
+      aria-labelledby="conversion-band-heading"
+      className="content-auto relative overflow-hidden border-t border-line bg-mist py-20 lg:py-24"
+    >
+      <div className="absolute inset-0" aria-hidden="true">
+        <BackdropImage image={band.backgroundImage} className="opacity-[.13]" />
+        {band.backgroundImage ? <div className="absolute inset-0 bg-linear-to-r from-mist via-mist/92 to-mist/70" /> : null}
+        <div className="absolute -top-24 left-1/3 h-[520px] w-[520px] rounded-full bg-primary/9 blur-3xl" />
+      </div>
+      <div className="shell relative grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
+        <div className="lg:col-span-7" {...reveal()}>
+          <h2
+            id="conversion-band-heading"
+            className="max-w-[20ch] font-display text-[34px] leading-[1.08] font-extrabold text-ink lg:text-[44px]"
+          >
+            {band.heading}
+          </h2>
+          <p className="mt-5 max-w-[56ch] text-[17px] leading-relaxed">{band.intro}</p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <a
+              href={band.primaryCta.href}
+              className="inline-flex h-14 items-center rounded-xl bg-primary px-7 text-[16px] font-semibold text-white shadow-cta hover:bg-primaryd"
+            >
+              {band.primaryCta.label}
+            </a>
+            <a
+              href={band.secondaryCta.href}
+              className="inline-flex h-14 items-center rounded-xl border border-line bg-white px-7 text-[16px] font-semibold text-ink hover:border-ink"
+            >
+              {band.secondaryCta.label}
+            </a>
+          </div>
+        </div>
+        {band.points.length > 0 ? (
+          <ul className="space-y-5 border-t border-line pt-8 lg:col-span-5 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-12" {...reveal(1)}>
+            {band.points.map((point) => (
+              <li key={point.title} className="flex gap-4">
+                <span
+                  className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-line bg-white text-ink"
+                  aria-hidden="true"
+                >
+                  {POINT_ICONS[point.icon]}
+                </span>
+                <span>
+                  <b className="block text-ink">{point.title}</b>
+                  <span className="text-[14.5px]">{point.body}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </div>
+    </section>
+  );
+}
+
+/**
+ * Renders nothing visible. Put it on a page that is itself the conversion point (the
+ * contact form, thank-you pages): the closing band and the floating call to action are
+ * hidden with CSS (`app/globals.css`), so the page ships no script for it.
+ */
+export function PageHasOwnForm() {
+  return <span data-page-has-own-form="" hidden />;
+}
