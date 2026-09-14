@@ -13,6 +13,7 @@ import { IndustriesModule } from './industries/industries.controller';
 import { WorkModule } from './work/work.controller';
 import { ServicesModule } from './services/services.controller';
 import { CompanyModule } from './company/company.controller';
+import { LocationsModule } from './locations/locations.controller';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { CompanyModule } from './company/company.controller';
     WorkModule,
     ServicesModule,
     CompanyModule,
+    LocationsModule,
   ],
   controllers: [HealthController],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],

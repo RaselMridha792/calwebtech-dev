@@ -15,3 +15,4 @@ export * from './pages/industries';
 export * from './pages/work';
 export * from './pages/services';
 export * from './pages/company';
+export * from './pages/locations';

@@ -29,6 +29,7 @@ export const PAGE_SEEDS: readonly PageSeedLoader[] = [
   () => import('./work.js').then((module) => module.workSeed),
   () => import('./services.js').then((module) => module.servicesSeed),
   () => import('./company.js').then((module) => module.companySeed),
+  () => import('./locations.js').then((module) => module.locationsSeed),
 ];
 
 /**
