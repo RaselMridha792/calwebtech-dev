@@ -1,7 +1,10 @@
 import type { Prisma } from '@calwebtech/db';
 import {
+  INSIGHTS_COPY_SETTING_KEY,
+  INSIGHTS_NEWSLETTER_FORM_ID,
   SETTING_KEYS,
   acknowledgementSchema,
+  insightsCopySchema,
   type Acknowledgement,
   type BotCheckFailedResponse,
   type EmailJob,
@@ -30,6 +33,15 @@ function acknowledgementFrom(content: unknown): Acknowledgement {
     typeof content === 'object' && content !== null && 'formSuccess' in content ? content.formSuccess : undefined;
   const parsed = acknowledgementSchema.safeParse(formSuccess);
   return parsed.success ? parsed.data : DEFAULT_ACKNOWLEDGEMENT;
+}
+
+/**
+ * The success copy of the inline subscribe block on an article (the `insights.copy`
+ * setting), so the confirmation email repeats what the subscriber saw on the page.
+ */
+export function newsletterAcknowledgement(setting: unknown): Acknowledgement {
+  const copy = insightsCopySchema.safeParse(setting);
+  return copy.success ? copy.data.article.newsletter.success : DEFAULT_ACKNOWLEDGEMENT;
 }
 
 @Injectable()
@@ -70,6 +82,11 @@ export class LeadsService {
           select: { id: true, content: true },
         })
       : null;
+    // The subscribe block on an article is answered with the insights family's copy.
+    const insightsCopy =
+      !landingPage && input.formId === INSIGHTS_NEWSLETTER_FORM_ID
+        ? await db.setting.findUnique({ where: { key: INSIGHTS_COPY_SETTING_KEY }, select: { value: true } })
+        : null;
     // Homepage forms have no campaign page; their success copy lives in the homepage setting.
     const homeContent =
       !landingPage && input.formId.startsWith('home-')
@@ -105,6 +122,8 @@ export class LeadsService {
           referralSource: input.referralSource,
           siteUrl: input.siteUrl,
           serviceInterest: input.serviceInterest,
+          // The page a resource form was filled on, kept for segmentation (docs/02-content-model.md).
+          ...(input.sourcePage ? { answers: { sourcePage: input.sourcePage } } : {}),
           contactId: contact.id,
           attribution: {
             create: {
@@ -131,7 +150,13 @@ export class LeadsService {
       this.logger.warn(`Lead ${lead.id} stored without a Turnstile verdict`);
     }
 
-    await this.queueEmails(input, lead, acknowledgementFrom(landingPage?.content ?? homeContent?.value));
+    await this.queueEmails(
+      input,
+      lead,
+      insightsCopy
+        ? newsletterAcknowledgement(insightsCopy.value)
+        : acknowledgementFrom(landingPage?.content ?? homeContent?.value),
+    );
     return { status: 'received' };
   }
 
