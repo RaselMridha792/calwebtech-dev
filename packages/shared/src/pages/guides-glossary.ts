@@ -88,15 +88,21 @@ export function glossaryAnswer(definition: string, body: string): string | null 
  * published from the dashboard renders a complete page with no deploy:
  *
  * - a block on its own line that ends in a question mark starts a section and is its H2;
- * - lines that start with "- " are that section's bullets;
+ * - a block whose first line starts with "- " holds that section's bullets, one per line;
  * - every other block is a paragraph.
  *
  * Blocks before the first question go into an opening section with no heading.
+ *
+ * A bullet block is split on the line each bullet starts, never on the hyphens inside one,
+ * so an editor can write "- Content audit - what you already have" and still get one bullet.
  */
 export function guideSummarySections(summary: string): GuideSection[] {
   const sections: GuideSection[] = [];
-  for (const block of splitParagraphs(summary)) {
-    const isHeading = block.endsWith('?') && block.length <= 160 && countSentences(block) === 1;
+  for (const raw of summary.split(/\n\s*\n/)) {
+    const isBullets = /^\s*-\s+/.test(raw);
+    const block = raw.replace(/\s+/g, ' ').trim();
+    if (block.length === 0) continue;
+    const isHeading = !isBullets && block.endsWith('?') && block.length <= 160 && countSentences(block) === 1;
     if (isHeading || sections.length === 0) {
       sections.push({
         id: `section-${String(sections.length + 1)}`,
@@ -108,8 +114,18 @@ export function guideSummarySections(summary: string): GuideSection[] {
     }
     const section = sections.at(-1);
     if (!section) continue;
-    if (block.startsWith('- ')) {
-      section.bullets.push(...block.split(/\s*-\s+/).flatMap((item) => (item.trim() ? [item.trim()] : [])));
+    if (isBullets) {
+      section.bullets.push(
+        ...raw
+          .split(/\n\s*-\s+/)
+          .map((item) =>
+            item
+              .replace(/^\s*-\s+/, '')
+              .replace(/\s+/g, ' ')
+              .trim(),
+          )
+          .filter((item) => item.length > 0),
+      );
     } else {
       section.paragraphs.push(block);
     }

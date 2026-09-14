@@ -113,6 +113,17 @@ describe('guideSummarySections', () => {
     expect(section?.paragraphs).toHaveLength(2);
   });
 
+  it('keeps a hyphen inside a bullet, splitting only where a new bullet starts', () => {
+    const [section] = guideSummarySections(
+      '- Content audit - what you already have\n- Redirect map - old URL to new URL\n- Launch checks',
+    );
+    expect(section?.bullets).toEqual([
+      'Content audit - what you already have',
+      'Redirect map - old URL to new URL',
+      'Launch checks',
+    ]);
+  });
+
   it('returns nothing for an empty summary', () => {
     expect(guideSummarySections('   \n\n  ')).toEqual([]);
   });
