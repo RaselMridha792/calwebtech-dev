@@ -5,6 +5,7 @@ import healthcare from './healthcare.json';
 import hospitality from './hospitality.json';
 import index from './index.json';
 import manufacturing from './manufacturing.json';
+import professionalServices from './professional-services.json';
 import realEstate from './real-estate.json';
 import saas from './saas.json';
 
@@ -24,5 +25,6 @@ export const industrySnapshots: Readonly<Partial<Record<string, unknown>>> = {
   healthcare,
   'real-estate': realEstate,
   hospitality,
+  'professional-services': professionalServices,
   education,
 };

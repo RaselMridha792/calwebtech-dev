@@ -17,10 +17,17 @@ export const getIndustriesIndex = cache(
   (): Promise<IndustriesIndexView> => getView('/pages/industries', industriesIndexViewSchema, industriesIndexSnapshot),
 );
 
-/** One industry's page, or null for a 404. Shared by the page and its metadata. */
+/**
+ * One industry's page, or null for a 404. Shared by the page and its metadata. The snapshot
+ * lookup checks own keys only, so a path such as `/industries/constructor/` is a 404.
+ */
 export const getIndustryPage = cache(
   (slug: string): Promise<IndustryDetailView | null> =>
-    findView(`/pages/industries/${encodeURIComponent(slug)}`, industryDetailViewSchema, industrySnapshots[slug]),
+    findView(
+      `/pages/industries/${encodeURIComponent(slug)}`,
+      industryDetailViewSchema,
+      Object.hasOwn(industrySnapshots, slug) ? industrySnapshots[slug] : null,
+    ),
 );
 
 /** The industries index and every published industry page, for sitemap.xml and /sitemap/. */

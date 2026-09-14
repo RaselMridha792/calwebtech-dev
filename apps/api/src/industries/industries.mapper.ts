@@ -1,6 +1,7 @@
 import type { Prisma, Testimonial } from '@calwebtech/db';
 import {
   INDUSTRY_CASE_STUDY_LIMIT,
+  INDUSTRY_FAQ_LIMIT,
   INDUSTRY_METRIC_LIMIT,
   INDUSTRY_SERVICE_LIMIT,
   SEO_DESCRIPTION_MAX,
@@ -206,7 +207,9 @@ export function toIndustryDetailView(industry: IndustryDetailRecord): IndustryDe
     ? content.integrations.items
     : columnIntegrations.map((name) => ({ name, body: null }));
 
-  const faqs = industry.faqs.map((faq) => ({ id: faq.id, question: faq.question, answer: faq.answer }));
+  const faqs = industry.faqs
+    .slice(0, INDUSTRY_FAQ_LIMIT)
+    .map((faq) => ({ id: faq.id, question: faq.question, answer: faq.answer }));
 
   return industryDetailViewSchema.parse({
     slug: industry.slug,

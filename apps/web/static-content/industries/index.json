@@ -2,11 +2,11 @@
   "content": {
     "seo": {
       "title": "Industries we design and build websites for",
-      "description": "Websites, ecommerce and web applications for manufacturing, distribution, retail, SaaS, healthcare, real estate, hospitality and education.",
+      "description": "Websites and web applications for manufacturing, distribution, retail, SaaS, healthcare, real estate, hospitality, professional services and education.",
       "ogImage": null
     },
     "title": "Industries we build websites for",
-    "answerBlock": "Calwebtech designs and builds websites, ecommerce platforms and web applications for manufacturers, distributors, retail and D2C brands, SaaS companies, healthcare providers, real estate firms, hospitality businesses and education providers. Each industry page covers the problems a website in that sector has to solve, the systems it connects to and the work we have delivered there.",
+    "answerBlock": "Calwebtech designs and builds websites, ecommerce platforms and web applications for manufacturers, distributors, retail and D2C brands, SaaS companies, healthcare providers, real estate firms, hospitality businesses, professional services firms and education providers. Each industry page covers the problems a website in that sector has to solve, the systems it connects to and the work we have delivered there.",
     "intro": "Tiered pricing, fitment data, compliance copy, multi-location booking. The parts that break generic builds are the parts we have shipped before.",
     "primaryCta": {
       "label": "Discuss your project",
@@ -114,6 +114,15 @@
       "image": {
         "src": "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=600&q=70",
         "alt": "Sun loungers beside a hotel pool at a waterfront resort"
+      }
+    },
+    {
+      "slug": "professional-services",
+      "name": "Professional services",
+      "line": "Expertise pages, adviser profiles and confidential intake.",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=70",
+        "alt": "Two colleagues talking across a meeting table, one taking notes beside an open laptop"
       }
     },
     {

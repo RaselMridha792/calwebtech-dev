@@ -31,6 +31,8 @@ export const INDUSTRY_CASE_STUDY_LIMIT = 3;
 export const INDUSTRY_METRIC_LIMIT = 6;
 /** Most matched services on an industry page. */
 export const INDUSTRY_SERVICE_LIMIT = 6;
+/** Most FAQs on an industry page; docs/03 asks for five or six. */
+export const INDUSTRY_FAQ_LIMIT = 8;
 
 const industryPointSchema = z.object({ title: requiredText(80), body: requiredText(400) });
 
@@ -219,7 +221,7 @@ export const industryDetailViewSchema = z.object({
     .object({
       heading: questionSchema(),
       intro: requiredText(400).nullable(),
-      items: z.array(faqItemSchema).min(1).max(8),
+      items: z.array(faqItemSchema).min(1).max(INDUSTRY_FAQ_LIMIT),
     })
     .nullable(),
 });

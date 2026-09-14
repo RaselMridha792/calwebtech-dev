@@ -1,0 +1,181 @@
+{
+  "slug": "professional-services",
+  "name": "Professional services",
+  "title": "Website design for law, accounting and consulting firms",
+  "seo": {
+    "title": "Professional services website design",
+    "description": "Websites for law firms, accounting practices and consultancies: practice area and adviser pages, insights and intake forms routed to the right team.",
+    "ogImage": "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&h=630&q=75"
+  },
+  "answerBlock": "A professional services website has to show a prospective client which advisers know their problem, prove that expertise with specific practice pages and insights, and make it easy to start a confidential conversation. Calwebtech builds websites for law firms, accounting practices and consultancies with practice area and adviser pages, insight publishing and intake forms that route each enquiry to the right team. Every enquiry is stored in a database you own.",
+  "updatedAt": "2026-09-14T00:00:00.000Z",
+  "hero": {
+    "intro": "Clients rarely hire a firm. They hire a person who has handled their problem before. We build the practice, people and insight pages that make that expertise easy to find, and an intake path that respects confidentiality from the first message.",
+    "primaryCta": {
+      "label": "Discuss your project",
+      "href": "/contact/"
+    },
+    "secondaryCta": {
+      "label": "See what it costs",
+      "href": "/pricing/"
+    },
+    "highlights": [
+      "Practice area and sector pages written for how clients search",
+      "Adviser profiles your people keep current",
+      "Intake forms routed by matter type and office",
+      "Insights published and attributed without a developer"
+    ],
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1600&q=60"
+    },
+    "line": "Expertise pages, adviser profiles and confidential intake."
+  },
+  "painPoints": {
+    "heading": "Why do professional services websites fail to win new clients?",
+    "intro": "Prospective clients shortlist firms by specific expertise, while most firm websites describe themselves in general terms.",
+    "items": [
+      {
+        "title": "Every firm says the same thing",
+        "body": "Trusted advisers, client-focused, a proven track record. Generic copy gives a general counsel or finance director no reason to pick your firm over the others on the shortlist, so the decision comes down to fees."
+      },
+      {
+        "title": "Practice areas hidden on one services page",
+        "body": "A founder preparing a share sale or a restaurant group with an employment dispute looks for a page about exactly that. One long list of services ranks for nothing and answers nobody."
+      },
+      {
+        "title": "Adviser profiles months out of date",
+        "body": "Profiles are where many prospective clients decide who to call, yet new hires, promotions and recent work wait for a marketing ticket, so clients meet advisers the website has never mentioned."
+      },
+      {
+        "title": "Enquiries that arrive with nothing to act on",
+        "body": "A general contact form sends free text to a shared inbox with no matter type, office or other parties named. Someone has to triage it and run a conflict check by hand while the prospect calls the next firm."
+      }
+    ]
+  },
+  "services": {
+    "heading": "Which services does a law, accounting or consulting firm need from a web partner?",
+    "intro": "Most firm projects rebuild the practice and people structure first, then add intake and a client portal where the work needs one.",
+    "items": [
+      {
+        "slug": "custom-website-development",
+        "title": "Custom website development",
+        "body": "Practice area, sector and adviser pages designed around the questions clients ask, with insights attributed to the people who wrote them."
+      },
+      {
+        "slug": "website-redesign",
+        "title": "Website redesign",
+        "body": "A rebuild after a merger, rebrand or new practice group that keeps the search rankings your practice pages and articles have earned."
+      },
+      {
+        "slug": "wordpress-development",
+        "title": "WordPress development",
+        "body": "A WordPress platform for firms that publish often, with practice areas, people, offices and insights as structured content and a review step before anything goes live."
+      },
+      {
+        "slug": "web-application-development",
+        "title": "Web application development",
+        "body": "Client portals for secure document exchange, multi-step intake with the fields a conflict check needs, and consultation booking by practice group."
+      },
+      {
+        "slug": "ai-search-visibility",
+        "title": "AI search visibility",
+        "body": "Expertise pages, author details and structured data, so search engines and AI assistants can name your advisers when a client asks who handles their problem."
+      },
+      {
+        "slug": "care-plans",
+        "title": "Website care plans",
+        "body": "Security patching, backups with a tested restore, monitoring of intake forms and a monthly development allowance, month to month."
+      }
+    ]
+  },
+  "compliance": {
+    "heading": "Which professional rules does a law, accounting or consulting firm website have to follow?",
+    "intro": "Firms answer to bar associations, state boards and regulators, and each of them has something to say about what a website claims and collects.",
+    "notes": [
+      {
+        "title": "Advertising and solicitation rules",
+        "body": "Law firm websites are advertising under state rules based on the ABA Model Rules of Professional Conduct, which prohibit misleading statements and, in many states, set conditions on testimonials, past results and claims of specialisation. Templates carry the notices your state requires, and your firm approves claims before they publish."
+      },
+      {
+        "title": "Prospective client confidentiality",
+        "body": "An enquiry can create duties to a prospective client. Intake forms ask only for what a conflict check needs, state that sending a message does not create a client relationship, and ask people to keep confidential details back until the firm confirms it can act."
+      },
+      {
+        "title": "Client data and tax documents",
+        "body": "Tax preparers and many accounting and advisory firms fall under the FTC Safeguards Rule, which requires safeguards for customer information. Documents move through an encrypted client portal with access logs, rather than a website form or an email attachment."
+      },
+      {
+        "title": "Professional titles and licences",
+        "body": "State boards regulate who may use titles such as CPA, attorney, architect or professional engineer, and some require licence details on the website. People and office records carry those fields, so every profile shows them the same way."
+      }
+    ]
+  },
+  "caseStudies": null,
+  "results": null,
+  "integrations": {
+    "heading": "Which systems does a professional services website usually connect to?",
+    "intro": "Matters, clients and billing stay in the systems your firm already runs. The website sends them clean enquiries and links clients into the right portal.",
+    "items": [
+      {
+        "name": "Practice management",
+        "body": "Clio, MyCase or PracticePanther for law firms, and Karbon, Canopy or CCH Axcess for accounting practices, receiving new enquiries as contacts or draft matters where the system allows it."
+      },
+      {
+        "name": "CRM and relationship management",
+        "body": "HubSpot, Salesforce or InterAction, with every enquiry, event registration and insight subscription attached to the right contact and relationship partner."
+      },
+      {
+        "name": "Consultation scheduling",
+        "body": "Calendly or Microsoft Bookings, so a prospect books time with the right practice group from the page instead of waiting for a reply."
+      },
+      {
+        "name": "Client portals and e-signature",
+        "body": "ShareFile, SmartVault or a custom portal for document exchange, and DocuSign for engagement letters."
+      },
+      {
+        "name": "Online payments",
+        "body": "LawPay or a hosted payment page for invoices and retainers, keeping trust and operating account payments apart where the rules require it."
+      },
+      {
+        "name": "Insights and events",
+        "body": "Newsletter sign-ups and event registrations kept in a list you own, matched to the practice areas each reader follows."
+      }
+    ]
+  },
+  "faq": {
+    "heading": "What do law, accounting and consulting firms ask before a new website?",
+    "intro": "The questions managing partners, marketing leads and practice managers raise on the first call.",
+    "items": [
+      {
+        "id": "professional-services-faq-cost",
+        "question": "How much does a website for a law or accounting firm cost?",
+        "answer": "A firm website with custom design, practice area and adviser pages, insights and intake forms usually sits in our focused build range of $12k to $25k. A client portal, intake connected to practice management, consultation booking or a multi-office platform makes it a platform build, usually $25k to $60k."
+      },
+      {
+        "id": "professional-services-faq-conflicts",
+        "question": "Can the website help us run conflict checks before we reply?",
+        "answer": "Yes. Intake forms ask for the matter type, the organisations involved and the preferred office, and pass them to your practice management system or intake team as separate fields, so a conflict check can start straight away. The form also asks people to hold back confidential details until the firm confirms it can act."
+      },
+      {
+        "id": "professional-services-faq-documents",
+        "question": "Can clients send us documents securely through the website?",
+        "answer": "Not through a general website form. We link clients to an encrypted portal, either the one your practice management or document system provides or a custom portal with access controls and download logs, so sensitive files never sit in a shared inbox."
+      },
+      {
+        "id": "professional-services-faq-profiles",
+        "question": "Can our partners and advisers update their own profiles?",
+        "answer": "Yes. Each person can edit their profile, photograph, qualifications and recent insights, and marketing can approve changes before they publish if you want a review step. Admissions, licences and offices are structured fields, so every profile shows them consistently."
+      },
+      {
+        "id": "professional-services-faq-advertising",
+        "question": "How do you keep the website within professional advertising rules?",
+        "answer": "We build the notices, disclaimers and review steps your rules call for into the templates, and flag content that needs extra care, such as testimonials, past results and claims of specialisation. Your firm or its ethics adviser decides what the rules require, and the website applies that decision on every page."
+      },
+      {
+        "id": "professional-services-faq-timeline",
+        "question": "How long does a professional services website project take?",
+        "answer": "Six to eight weeks for a firm website, and nine to fourteen weeks for a platform build with a client portal, connected intake or several offices. Adviser profiles and practice area copy are usually the critical path, so the proposal names the dates we need them from your team."
+      }
+    ]
+  }
+}
