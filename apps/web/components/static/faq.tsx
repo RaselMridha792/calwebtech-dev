@@ -1,4 +1,4 @@
-import { SITE_ROUTES, type StaticFaqView } from '@calwebtech/shared';
+import { SITE_ROUTES, type FaqItem, type StaticFaqView } from '@calwebtech/shared';
 import { faqPageJsonLd } from '@/lib/seo/json-ld';
 import { FaqSection } from '../site/faq-section';
 import { EmptyState } from '../site/lists';
@@ -60,4 +60,23 @@ export function FaqGroups({ view }: { view: StaticFaqView }) {
       <JsonLd data={faqPageJsonLd(view.groups.flatMap((group) => group.items))} />
     </>
   );
+}
+
+/**
+ * A topic's questions on its own page (pricing, process), without a FAQPage node. The same
+ * questions are listed on /faq/, which carries the site's one FAQPage node for them: Google
+ * asks for repeated questions to be marked up once across the site.
+ */
+export function TopicFaqSection({
+  heading,
+  intro,
+  items,
+  group,
+}: {
+  heading: string;
+  intro?: string | null;
+  items: readonly Pick<FaqItem, 'id' | 'question' | 'answer'>[];
+  group: string;
+}) {
+  return <FaqSection heading={heading} intro={intro} items={items} group={group} jsonLd={false} />;
 }

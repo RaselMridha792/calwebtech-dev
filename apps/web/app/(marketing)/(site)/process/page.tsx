@@ -1,8 +1,8 @@
 import { SITE_ROUTES } from '@calwebtech/shared';
 import type { Metadata } from 'next';
 import { CtaBand } from '@/components/site/bands';
-import { FaqSection } from '@/components/site/faq-section';
 import { PageHero } from '@/components/site/page-hero';
+import { TopicFaqSection } from '@/components/static/faq';
 import { ProcessAfterLaunch, ProcessPoints, ProcessStages } from '@/components/static/process';
 import { getStaticProcess } from '@/lib/api/static';
 import { sitePageMetadata } from '@/lib/seo/page-metadata';
@@ -34,7 +34,7 @@ export default async function ProcessPage() {
       <ProcessPoints id="principles" copy={content.principles} tone="mist" />
       <ProcessPoints id="delays" copy={content.delays} tone="white" />
       <ProcessAfterLaunch copy={content.afterLaunch} />
-      <FaqSection heading={content.faq.heading} intro={content.faq.intro} items={faqs} group="process-faq" />
+      <TopicFaqSection heading={content.faq.heading} intro={content.faq.intro} items={faqs} group="process-faq" />
       <CtaBand
         id="process-cta"
         heading={content.cta.heading}

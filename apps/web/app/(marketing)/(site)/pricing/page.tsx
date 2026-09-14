@@ -1,8 +1,8 @@
 import { SITE_ROUTES } from '@calwebtech/shared';
 import type { Metadata } from 'next';
 import { CtaBand } from '@/components/site/bands';
-import { FaqSection } from '@/components/site/faq-section';
 import { PageHero } from '@/components/site/page-hero';
+import { TopicFaqSection } from '@/components/static/faq';
 import { PricingFactors, PricingIncluded, PricingQuoting, PricingTiers } from '@/components/static/pricing';
 import { getStaticPricing } from '@/lib/api/static';
 import { sitePageMetadata } from '@/lib/seo/page-metadata';
@@ -34,7 +34,7 @@ export default async function PricingPage() {
       <PricingIncluded copy={content.included} />
       <PricingFactors copy={content.factors} />
       <PricingQuoting copy={content.quoting} />
-      <FaqSection heading={content.faq.heading} intro={content.faq.intro} items={faqs} group="pricing-faq" />
+      <TopicFaqSection heading={content.faq.heading} intro={content.faq.intro} items={faqs} group="pricing-faq" />
       <CtaBand
         id="pricing-cta"
         heading={content.cta.heading}

@@ -23,7 +23,7 @@ import {
 } from '@/static-content/static';
 import { PageHero } from '../site/page-hero';
 import { ContactDetailsCard, ContactFormSection, ContactNextSteps, EnquiryRouting } from './contact';
-import { FaqGroups, FaqTopics } from './faq';
+import { FaqGroups, FaqTopics, TopicFaqSection } from './faq';
 import { LegalPage } from './legal';
 import { NotFoundPage } from './not-found';
 import { ProcessAfterLaunch, ProcessPoints, ProcessStages } from './process';
@@ -49,6 +49,13 @@ const jsonLdTypes = (html: string) =>
   [...html.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/g)].map(
     (match) => (JSON.parse(match[1] ?? '{}') as { '@type'?: string })['@type'],
   );
+
+/** The question names in every FAQPage node of the markup. */
+const faqPageQuestions = (html: string) =>
+  [...html.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/g)].flatMap((match) => {
+    const node = JSON.parse(match[1] ?? '{}') as { '@type'?: string; mainEntity?: { name?: string }[] };
+    return node['@type'] === 'FAQPage' ? (node.mainEntity ?? []).map((question) => question.name ?? '') : [];
+  });
 
 describe('static family pages rendered from their snapshots', () => {
   it('pricing: answer before the calls to action, every tier, headings in order', () => {
@@ -132,6 +139,25 @@ describe('static family pages rendered from their snapshots', () => {
     const empty = render(<FaqGroups view={{ ...view, groups: [] }} />);
     expect(empty).toContain(view.empty);
     expect(jsonLdTypes(empty)).not.toContain('FAQPage');
+  });
+
+  it('FAQ markup: each question is marked up once across the site, on /faq/, never again on pricing or process', () => {
+    const faqPage = render(<FaqGroups view={staticFaqViewSchema.parse(staticFaqSnapshot)} />);
+    const pricing = staticPricingViewSchema.parse(staticPricingSnapshot);
+    const process = staticProcessViewSchema.parse(staticProcessSnapshot);
+    const topicPages = [
+      render(<TopicFaqSection heading={pricing.content.faq.heading} intro={pricing.content.faq.intro} items={pricing.faqs} group="pricing-faq" />),
+      render(<TopicFaqSection heading={process.content.faq.heading} intro={process.content.faq.intro} items={process.faqs} group="process-faq" />),
+    ];
+    const markedUp = [faqPage, ...topicPages].map((html) => faqPageQuestions(html));
+    const all = markedUp.flat();
+    expect(new Set(all).size, 'no question in two FAQPage nodes').toBe(all.length);
+    for (const html of topicPages) {
+      expect(html).toContain('<details');
+      expect(jsonLdTypes(html)).not.toContain('FAQPage');
+    }
+    // The questions the topic pages show are the ones /faq/ marks up.
+    for (const item of [...pricing.faqs, ...process.faqs]) expect(markedUp[0]).toContain(item.question);
   });
 
   it.each(STATIC_THANK_YOU_TYPES)('thank-you %s: what was sent, the response window and a secondary action', (type) => {
