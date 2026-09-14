@@ -134,9 +134,10 @@ export function ComparisonSection({
   return (
     <Section id="comparison" tone={tone} labelledBy="comparison-heading">
       <SectionHeading id="comparison-heading" title={comparison.heading} intro={comparison.intro} ground={groundOf(tone)} />
+      {/* A focusable scroller needs a role and a name; its own name, so it is not a second landmark named like the section. */}
       <div
         role="region"
-        aria-labelledby="comparison-heading"
+        aria-label={`${comparison.heading} The table scrolls sideways.`}
         tabIndex={0}
         className="overflow-x-auto rounded-2xl border border-line bg-white focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-primary"
         {...reveal(1)}

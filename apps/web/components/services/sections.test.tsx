@@ -67,8 +67,13 @@ describe('service page sections', () => {
   it.each(pages)('%s: the comparison is a table with column and row headers in a focusable region', (_slug, page) => {
     if (!page.comparison) return;
     const html = renderToStaticMarkup(<ComparisonSection comparison={page.comparison} tone="white" />);
-    expect(html).toContain('role="region"');
-    expect(html).toContain('tabindex="0"');
+    const region = /<div role="region"([^>]*)>/.exec(html)?.[1] ?? '';
+    expect(region).toContain('tabindex="0"');
+    expect(region).not.toContain('aria-labelledby');
+    const name = /aria-label="([^"]+)"/.exec(region)?.[1];
+    expect(name).toBeTruthy();
+    expect(name).not.toBe(page.comparison.heading);
+    expect(html.match(/aria-labelledby="comparison-heading"/g)).toHaveLength(1);
     expect(html.match(/<th scope="col"/g)).toHaveLength(4);
     expect(html.match(/<th scope="row"/g)).toHaveLength(page.comparison.rows.length);
   });
