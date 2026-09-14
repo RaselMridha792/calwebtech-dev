@@ -15,6 +15,7 @@ import {
   toWorkIndexView,
   workComparisonSelect,
   workProjectInclude,
+  workVideoTestimonialQuery,
 } from './work.mapper';
 
 /**
@@ -94,7 +95,7 @@ export class WorkService {
       return null;
     }
 
-    const [copy, others] = await Promise.all([
+    const [copy, others, videoTestimonial] = await Promise.all([
       this.copySetting(),
       db.project.findMany({
         where: { ...PUBLISHED_PROJECT, slug: { not: slug } },
@@ -102,8 +103,9 @@ export class WorkService {
         orderBy: PROJECT_ORDER,
         take: 60,
       }),
+      db.testimonial.findFirst(workVideoTestimonialQuery(project.id)),
     ]);
-    return this.mapped(() => toCaseStudyView({ copySetting: copy?.value ?? null, project, others }));
+    return this.mapped(() => toCaseStudyView({ copySetting: copy?.value ?? null, project, others, videoTestimonial }));
   }
 
   private async buildBeforeAndAfter(): Promise<WorkBeforeAndAfterView> {

@@ -121,11 +121,23 @@ beforeAll(async () => {
     });
     createdCopy = true;
   }
-  await db.project.create({ data: { slug, status: 'PUBLISHED', ...project } });
+  const published = await db.project.create({ data: { slug, status: 'PUBLISHED', ...project } });
+  // Not consented to: neither the quote nor the video may appear on the case study.
+  await db.testimonial.create({
+    data: {
+      projectId: published.id,
+      clientName: 'Integration test person',
+      quote: 'Integration test quote without consent.',
+      videoUrl: 'https://videos.example.com/integration.mp4',
+      featured: true,
+      consentAt: null,
+    },
+  });
   await db.project.create({ data: { slug: draftSlug, status: 'DRAFT', ...project } });
 });
 
 afterAll(async () => {
+  await db.testimonial.deleteMany({ where: { project: { slug: { in: [slug, draftSlug] } } } });
   await db.project.deleteMany({ where: { slug: { in: [slug, draftSlug] } } });
   if (createdCopy) await db.setting.deleteMany({ where: { key: WORK_COPY_SETTING_KEY } });
   await prisma.onModuleDestroy();
@@ -144,6 +156,8 @@ describe('work pages against the database', () => {
     const view = workCaseStudyViewSchema.parse(await service.findCaseStudy(slug));
     expect(view.challenge).toEqual(['First paragraph.', 'Second paragraph.']);
     expect(view.beforeAfter?.metrics).toHaveLength(1);
+    expect(view.quote).toBeNull();
+    expect(view.videoTestimonial).toBeNull();
     expect(await service.findCaseStudy(draftSlug)).toBeNull();
     expect(await service.findCaseStudy(`no-such-project-${run}`)).toBeNull();
   });

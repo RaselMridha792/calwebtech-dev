@@ -13,7 +13,9 @@ import {
   toBeforeAndAfterView,
   toCaseStudyView,
   toWorkIndexView,
+  videoTestimonialView,
   workProjectInclude,
+  workVideoTestimonialQuery,
   type WorkComparisonRecord,
   type WorkProjectRecord,
 } from './work.mapper';
@@ -342,6 +344,7 @@ describe('toCaseStudyView', () => {
       outcome: null,
       beforeAfter: null,
       quote: null,
+      videoTestimonial: null,
       cover: null,
       gallery: [],
       relatedServices: [],
@@ -372,6 +375,41 @@ describe('toCaseStudyView', () => {
       others: [],
     });
     expect(consented.quote?.quote).toBe('Test quote.');
+  });
+
+  it('adds the client on camera from a consented testimonial with a video, over the cover', () => {
+    expect(workVideoTestimonialQuery('project-1').where).toEqual({
+      projectId: 'project-1',
+      ...CONSENTED,
+      videoUrl: { not: null },
+    });
+
+    const video = testimonial({ id: 'video', videoUrl: 'https://videos.example.com/client.mp4' });
+    const view = toCaseStudyView({ copySetting: COPY, project: project('video'), others: [], videoTestimonial: video });
+    expect(view.videoTestimonial).toEqual({
+      clientName: 'Test person',
+      role: 'Test role',
+      company: 'Test company',
+      poster: { src: 'https://images.example.com/cover.jpg', alt: 'Test cover image' },
+      videoUrl: 'https://videos.example.com/client.mp4',
+    });
+
+    const withoutCover = toCaseStudyView({
+      copySetting: COPY,
+      project: project('video-no-cover', { coverImageUrl: null }),
+      others: [],
+      videoTestimonial: video,
+    });
+    expect(withoutCover.videoTestimonial?.poster).toBeNull();
+  });
+
+  it('shows no video testimonial without consent or without a usable video', () => {
+    const poster = { src: '/media/cover.jpg', alt: 'Cover' };
+    expect(videoTestimonialView(null, poster)).toBeNull();
+    expect(videoTestimonialView(testimonial({ videoUrl: '/media/client.mp4', consentAt: null }), poster)).toBeNull();
+    expect(videoTestimonialView(testimonial({ videoUrl: null }), poster)).toBeNull();
+    expect(videoTestimonialView(testimonial({ videoUrl: 'not a url' }), poster)).toBeNull();
+    expect(videoTestimonialView(testimonial({ videoUrl: '/media/client.mp4' }), poster)?.videoUrl).toBe('/media/client.mp4');
   });
 
   it('picks related case studies that share the industry or services first, skipping incomplete ones', () => {

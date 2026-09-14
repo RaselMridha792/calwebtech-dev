@@ -1,9 +1,10 @@
-import type { Prisma, ReviewSource, Statistic } from '@calwebtech/db';
+import type { Prisma, ReviewSource, Statistic, Testimonial } from '@calwebtech/db';
 import {
   WORK_MAX_METRICS,
   WORK_MIN_METRICS,
   answerBlockSchema,
   imageSchema,
+  mediaSrcSchema,
   metricSchema,
   seoSchema,
   workBeforeAndAfterViewSchema,
@@ -21,6 +22,7 @@ import {
   type WorkCopy,
   type WorkIndexView,
   type WorkTerm,
+  type WorkVideoTestimonial,
 } from '@calwebtech/shared';
 import { z } from 'zod';
 import { CONSENTED, publishedAsOf } from '../common/published';
@@ -45,6 +47,18 @@ export function workProjectInclude(now: Date) {
 }
 
 export type WorkProjectRecord = Prisma.ProjectGetPayload<{ include: ReturnType<typeof workProjectInclude> }>;
+
+/**
+ * The query for a case study's video testimonial: a consented testimonial on the project
+ * with a video, featured and newest first. It is its own query because the quote loaded
+ * with the project (`take: 1`) is often not the one with a video.
+ */
+export function workVideoTestimonialQuery(projectId: string) {
+  return {
+    where: { projectId, ...CONSENTED, videoUrl: { not: null } },
+    orderBy: [{ featured: 'desc' }, { date: 'desc' }],
+  } satisfies Prisma.TestimonialFindFirstArgs;
+}
 
 /** The columns the before and after page reads from a project. */
 export const workComparisonSelect = {
@@ -197,6 +211,8 @@ export interface WorkCaseStudySources {
   project: WorkProjectRecord;
   /** Other published projects to pick related case studies from, in order of preference. */
   others: WorkProjectRecord[];
+  /** The project's consented testimonial with a video (`workVideoTestimonialQuery`), if any. */
+  videoTestimonial?: Testimonial | null;
 }
 
 /** Long text columns as paragraphs, split on blank lines. Null when there is nothing to show. */
@@ -240,6 +256,26 @@ function testimonialView(project: WorkProjectRecord): TestimonialView | null {
     company: testimonial.company,
     rating: testimonial.rating,
     avatar: testimonial.avatarUrl ? { src: testimonial.avatarUrl } : null,
+  };
+}
+
+/**
+ * The client on camera, over the case study's cover. Null without consent or without a
+ * usable video URL, so the page never offers a play button that does nothing.
+ */
+export function videoTestimonialView(
+  testimonial: Testimonial | null | undefined,
+  poster: Image | null,
+): WorkVideoTestimonial | null {
+  if (!testimonial?.consentAt) return null;
+  const videoUrl = mediaSrcSchema.safeParse(testimonial.videoUrl);
+  if (!videoUrl.success) return null;
+  return {
+    clientName: testimonial.clientName,
+    role: testimonial.role,
+    company: testimonial.company,
+    poster,
+    videoUrl: videoUrl.data,
   };
 }
 
@@ -324,6 +360,7 @@ export function toCaseStudyView(sources: WorkCaseStudySources): WorkCaseStudyVie
     outcome: paragraphs(project.outcome),
     measurement: copy.measurement,
     quote: testimonialView(project),
+    videoTestimonial: videoTestimonialView(sources.videoTestimonial, cover),
     relatedServices: project.services
       .slice(0, 6)
       // A service's description belongs to the services family; fit it to the card rather than fail the page.
