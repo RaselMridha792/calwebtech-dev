@@ -6,7 +6,6 @@ import {
   useRef,
   useState,
   type ComponentProps,
-  type FormEvent,
   type ReactNode,
   type RefObject,
 } from 'react';
@@ -128,7 +127,7 @@ export function Calculator({ copy, steps, events, permalink, turnstileSiteKey }:
     setIndex(next);
   };
 
-  const onQuestionSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const onQuestionSubmit: NonNullable<ComponentProps<'form'>['onSubmit']> = (event) => {
     event.preventDefault();
     if (!step) return;
     if ((chosen[step.key] ?? []).length === 0) {
@@ -190,6 +189,8 @@ export function Calculator({ copy, steps, events, permalink, turnstileSiteKey }:
         ? copy.labels.timeLeftOne
         : fill(copy.labels.timeLeft, { minutes });
   const percent = Math.round((stepNumber / (total + 1)) * 100);
+  // The eight questions are numbered; the email step is the last card and says so instead.
+  const progressLabel = atGate ? copy.labels.gateProgress : fill(copy.labels.progress, { current: stepNumber, total });
   const alertMessage = checkProblem ?? (state.status === 'error' ? state.message : null);
   const errors = state.status === 'error' ? state.fieldErrors : {};
   const values = state.status === 'error' ? state.values : { name: '', email: '', company: '' };
@@ -198,7 +199,7 @@ export function Calculator({ copy, steps, events, permalink, turnstileSiteKey }:
   return (
     <div className="rounded-2xl border border-line bg-white p-6 text-ink shadow-panel sm:p-9">
       <div className="flex items-center justify-between gap-4 text-[13.5px]">
-        <p className="font-semibold">{fill(copy.labels.progress, { current: stepNumber, total: total + 1 })}</p>
+        <p className="font-semibold">{progressLabel}</p>
         <p className="text-body">{timeLeft}</p>
       </div>
       <div
@@ -207,7 +208,7 @@ export function Calculator({ copy, steps, events, permalink, turnstileSiteKey }:
         aria-valuemin={1}
         aria-valuemax={total + 1}
         aria-valuenow={stepNumber}
-        aria-valuetext={`${fill(copy.labels.progress, { current: stepNumber, total: total + 1 })}. ${timeLeft}`}
+        aria-valuetext={`${progressLabel}. ${timeLeft}`}
       >
         <span
           className="block h-full rounded-full bg-primary transition-[width] duration-300 motion-reduce:transition-none"
@@ -401,7 +402,8 @@ function Result({
       <p className="mt-6 text-[13px] font-semibold tracking-[0.06em] text-body uppercase">{copy.result.rangeHeading}</p>
       <p className="mt-1 font-display text-[34px] leading-none font-extrabold lg:text-[42px]">{result.rangeLabel}</p>
       <p className="mt-4 text-[15.5px] leading-relaxed">
-        <b>{result.tierName}</b> {result.tierSummary}
+        <b>{result.tierName}</b>
+        {`. ${result.tierSummary}`}
       </p>
 
       <h4 className="mt-9 font-display text-[17px] font-bold">{copy.result.breakdownHeading}</h4>

@@ -70,7 +70,7 @@ function FirstQuestionCard({
   total: number;
 }) {
   if (!step) return null;
-  const progress = copy.labels.progress.replace('{current}', '1').replace('{total}', String(total + 1));
+  const progress = copy.labels.progress.replace('{current}', '1').replace('{total}', String(total));
   const timeLeft = copy.labels.timeLeft.replace('{minutes}', String(Math.round((total * copy.secondsPerStep) / 60)));
 
   return (

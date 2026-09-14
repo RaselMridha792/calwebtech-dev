@@ -24,8 +24,9 @@ export const getCalculatorPage = cache(
     getView('/pages/cost-calculator', calculatorPageViewSchema, calculatorPageSnapshot),
 );
 
-export async function sitemapEntries(): Promise<SitemapEntry[]> {
-  return [{ path: CALCULATOR_PATH, title: 'Cost calculator', section: 'Plan a project' }];
+/** One page, and no record behind it, so this needs nothing from the API. */
+export function sitemapEntries(): Promise<SitemapEntry[]> {
+  return Promise.resolve([{ path: CALCULATOR_PATH, title: 'Cost calculator', section: 'Plan a project' }]);
 }
 
 export type CalculatorPostResult =

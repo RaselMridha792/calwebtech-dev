@@ -75,8 +75,10 @@ const stepsCopySchema = z.object({
 });
 
 const labelsSchema = z.object({
-  /** "Question {current} of {total}". */
+  /** "Question {current} of {total}", counted over the eight questions. */
   progress: requiredText(60),
+  /** The progress label of the email step, which is not one of the eight questions. */
+  gateProgress: requiredText(60),
   /** "About {minutes} minutes left". */
   timeLeft: requiredText(60),
   timeLeftOne: requiredText(60),

@@ -60,6 +60,7 @@ export const CALCULATOR_PAGE_PLACEHOLDER: CalculatorPageContentInput = {
     secondsPerStep: 20,
     labels: {
       progress: 'Question {current} of {total}',
+      gateProgress: 'Last step: where to send it',
       timeLeft: 'About {minutes} minutes left',
       timeLeftOne: 'About a minute left',
       timeLeftShort: 'Under a minute left',

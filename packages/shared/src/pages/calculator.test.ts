@@ -41,6 +41,7 @@ const CONTENT_INPUT: CalculatorPageContentInput = {
     intro: 'Answer eight questions.',
     labels: {
       progress: 'Question {current} of {total}',
+      gateProgress: 'Last step: where to send it',
       timeLeft: 'About {minutes} minutes left',
       timeLeftOne: 'About a minute left',
       timeLeftShort: 'Under a minute left',
