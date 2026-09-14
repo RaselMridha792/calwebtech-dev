@@ -27,6 +27,14 @@ const controlClass =
  * The inline subscribe block inside an article. The only client component on the page:
  * it holds the submission state and the Turnstile widget. Without script it still posts,
  * because the server action is the form's action and the article URL is its permalink.
+ *
+ * This is a second copy of the flow `components/forms/lead-form.tsx` already runs, and it
+ * should not stay one: a change to the lead protections would have to be made twice. Folding
+ * it in needs three foundation changes, which the family's report asks for rather than making
+ * — a `newsletter` variant of `LeadForm` with its own `unavailable` copy (the block takes that
+ * line from the editable `insights.copy` setting, while `lib/lead-actions.ts` hard-codes it),
+ * a `sourcePage` field on the shared lead contract, and `leadSubmissionFromForm` reading it.
+ * Until then the markup below is gated by `components/insights/insights.test.tsx`.
  */
 export function SubscribeForm({
   copy,

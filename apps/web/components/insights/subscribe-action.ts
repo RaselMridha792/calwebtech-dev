@@ -15,6 +15,11 @@ import { leadSubmissionFromForm } from '@/lib/lead-form';
  * `leadSubmissionSchema` has no field for it and `leadSubmissionFromForm` does not read it.
  * The family's report asks the foundation for `sourcePage` (docs/02-content-model.md,
  * "Newsletter: sourcePage") rather than widening the shared lead contract from a page.
+ *
+ * The confirmation email is the foundation's default line for the same reason. Repeating the
+ * `insights.copy` success copy the subscriber just read would mean a branch on this form id
+ * inside `apps/api/src/leads/`; the report asks instead for a form id to setting-and-copy-path
+ * registry the families append to, the way `PAGE_SEEDS` works in `packages/db/src/seed/pages/`.
  */
 export type SubscribeReason = 'bot_check_failed' | 'invalid' | 'rate_limited' | 'unavailable';
 

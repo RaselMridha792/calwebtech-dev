@@ -24,6 +24,11 @@ export async function generateMetadata({ searchParams }: PageProps<'/insights'>)
 /**
  * `/insights/`: the featured article, then every published article, twelve to a page. The
  * topic filter is written into the URL as a page of its own, `/insights/<topic>/`.
+ *
+ * Reached from the homepage, from every article and from `/sitemap/`, but not yet from the
+ * chrome: the five "Insights" and "News" links in the menus and the footer still point at the
+ * homepage `#insights` section. `home.json` and `site-chrome.json` are foundation, so the
+ * family's report asks for those five hrefs rather than editing them here.
  */
 export default async function InsightsIndexPage({ searchParams }: PageProps<'/insights'>) {
   const page = readInsightsPage(await searchParams);
