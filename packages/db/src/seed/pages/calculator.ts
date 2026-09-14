@@ -70,6 +70,7 @@ export const CALCULATOR_PAGE_PLACEHOLDER: CalculatorPageContentInput = {
       chooseOne: 'Choose an answer to continue.',
       chooseAtLeastOne: 'Choose at least one answer to continue.',
       start: 'Start the estimate',
+      methodology: 'Placeholder methodology link label',
       loading: 'Loading the calculator',
       noScript: 'The calculator needs JavaScript in the browser. Placeholder alternative for people without it.',
     },
@@ -120,7 +121,6 @@ export const CALCULATOR_PAGE_PLACEHOLDER: CalculatorPageContentInput = {
     email: {
       heading: 'Placeholder email heading',
       intro: 'Placeholder. The approved copy introduces the emailed copy of the result.',
-      methodologyLabel: 'Placeholder methodology link label',
     },
   },
   methodology: {

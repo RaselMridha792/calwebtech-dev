@@ -400,6 +400,9 @@ export type CalculatorResultRow = z.output<typeof calculatorResultRowSchema>;
  */
 export const calculatorPresentedResultSchema = z.object({
   rangeLabel: z.string().min(1),
+  /** The band and the budget band the range fell in, for the page's measurable events. */
+  tier: z.enum(CALCULATOR_TIERS),
+  budgetBand: z.enum(ESTIMATE_BUDGET_BANDS),
   tierName: z.string().min(1),
   tierSummary: z.string().min(1),
   monthly: z.string().min(1),

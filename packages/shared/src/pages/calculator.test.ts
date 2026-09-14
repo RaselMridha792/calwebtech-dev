@@ -51,6 +51,7 @@ const CONTENT_INPUT: CalculatorPageContentInput = {
       chooseOne: 'Choose one answer to continue.',
       chooseAtLeastOne: 'Choose at least one answer, or "none of these".',
       start: 'Start the estimate',
+      methodology: 'How we work this out',
       loading: 'Loading the calculator',
       noScript: 'The calculator needs JavaScript. Call us and we will do it with you.',
     },
@@ -98,7 +99,7 @@ const CONTENT_INPUT: CalculatorPageContentInput = {
       rateLimited: 'Please wait a minute and try again.',
       unavailable: 'We could not send that just now.',
     },
-    email: { heading: 'Your website cost estimate', intro: 'Here is the range.', methodologyLabel: 'How we work it out' },
+    email: { heading: 'Your website cost estimate', intro: 'Here is the range.' },
   },
   methodology: {
     heading: 'How does this calculator work?',

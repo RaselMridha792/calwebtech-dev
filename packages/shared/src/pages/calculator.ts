@@ -90,6 +90,8 @@ const labelsSchema = z.object({
   chooseAtLeastOne: requiredText(120),
   /** The button on the server-rendered card, before the calculator loads. */
   start: requiredText(40),
+  /** Link to the methodology section, on the page and in the emailed copy. */
+  methodology: requiredText(60),
   loading: requiredText(60),
   /** Shown instead of the calculator when script cannot run. */
   noScript: requiredText(300),
@@ -154,7 +156,6 @@ const errorsSchema = z.object({
 const emailSchema = z.object({
   heading: requiredText(120),
   intro: requiredText(400),
-  methodologyLabel: requiredText(60),
 });
 
 export const calculatorPageContentSchema = z.object({
@@ -289,6 +290,8 @@ export function presentCalculatorResult(
 
   return calculatorPresentedResultSchema.parse({
     rangeLabel: formatUsdRange(estimate.low, estimate.high),
+    tier: estimate.tier,
+    budgetBand: estimate.budgetBand,
     tierName: tier.name,
     tierSummary: tier.summary,
     monthly:
@@ -327,7 +330,7 @@ export function calculatorResultEmail(
     monthlyHeading: copy.monthlyHeading,
     answersHeading: copy.answersHeading,
     bookingLabel: copy.bookLabel,
-    methodologyLabel: content.calculator.email.methodologyLabel,
+    methodologyLabel: content.calculator.labels.methodology,
     methodologyPath: `${CALCULATOR_PATH}#${CALCULATOR_ANCHORS.methodology}`,
   });
 }
