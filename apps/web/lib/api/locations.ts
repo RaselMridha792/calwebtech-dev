@@ -17,10 +17,17 @@ export const getLocationsIndex = cache(
   (): Promise<LocationsIndexView> => getView('/pages/locations', locationsIndexViewSchema, locationsIndexSnapshot),
 );
 
-/** A published city page, or null for an unknown slug. */
+/**
+ * A published city page, or null for an unknown slug. The snapshot lookup checks own keys,
+ * so a path such as `/locations/constructor/` is a 404 rather than an inherited property.
+ */
 export const getLocationPage = cache(
   (slug: string): Promise<LocationDetailView | null> =>
-    findView(`/pages/locations/${encodeURIComponent(slug)}`, locationDetailViewSchema, locationSnapshots[slug]),
+    findView(
+      `/pages/locations/${encodeURIComponent(slug)}`,
+      locationDetailViewSchema,
+      Object.hasOwn(locationSnapshots, slug) ? locationSnapshots[slug] : undefined,
+    ),
 );
 
 /** The index and every published city page, for sitemap.xml and `/sitemap/`. */

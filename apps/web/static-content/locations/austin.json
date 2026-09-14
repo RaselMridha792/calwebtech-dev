@@ -148,8 +148,8 @@
         "body": "When your developers own the product, the proposal sets the boundary: which components are shared, who reviews what, and how the marketing site deploys without touching the application."
       },
       {
-        "title": "Answers within one business day",
-        "body": "Questions get a reply from a person within one business day, and a staging URL shows exactly where the work stands between calls."
+        "title": "A staging URL between calls",
+        "body": "Every page is built on a staging URL your product and marketing leads can open at any hour, with questions and feedback kept on a shared project board."
       }
     ]
   },
@@ -220,7 +220,7 @@
       {
         "id": "austin-faq-time-zone",
         "question": "Which time zone do you work in for Texas clients?",
-        "answer": "Central Time. Calls, review deadlines and launch windows for Texas projects are set inside your working day, and questions sent between calls get a reply from a person within one business day."
+        "answer": "Central Time. Calls, review deadlines and launch windows for Texas projects are set inside your working day, and anything that comes up between calls goes on a shared project board both teams can see."
       },
       {
         "id": "austin-faq-outside-austin",

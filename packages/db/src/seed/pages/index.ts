@@ -25,7 +25,7 @@ export type PageSeedLoader = () => Promise<PageSeed>;
  */
 export const PAGE_SEEDS: readonly PageSeedLoader[] = [
   // Site page families: one line each, below this one.
-  () => import('./locations').then((module) => module.locationsSeed),
+  () => import('./locations.js').then((module) => module.locationsSeed),
 ];
 
 /**
