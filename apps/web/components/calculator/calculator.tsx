@@ -60,6 +60,8 @@ export function Calculator({ copy, steps, events, permalink, turnstileSiteKey, a
   const attributionRef = useRef<HTMLInputElement>(null);
   const mounted = useRef(false);
   const direction = useRef<'start' | 'next' | 'back'>('start');
+  /** Which wait for a Turnstile token is the current one; earlier ones settle into nothing. */
+  const waitId = useRef(0);
 
   const {
     containerRef: turnstileContainerRef,
@@ -135,8 +137,11 @@ export function Calculator({ copy, steps, events, permalink, turnstileSiteKey, a
     if (atGate) {
       // The Turnstile container lives inside the email step, so leaving unmounts the widget
       // with it. Drop it while the container is still attached, or the hook would hold a
-      // reference to a widget that no longer exists and never render a new one.
+      // reference to a widget that no longer exists and never render a new one. A check
+      // still running is abandoned with it, rather than left disabling the button it timed.
       removeTurnstile();
+      waitId.current += 1;
+      setVerifying(false);
       setCheckProblem(null);
     }
     direction.current = way;
@@ -181,12 +186,15 @@ export function Calculator({ copy, steps, events, permalink, turnstileSiteKey, a
     event.preventDefault();
     setCheckProblem(null);
     setVerifying(true);
+    const id = (waitId.current += 1);
     waitForToken(form).then(
       () => {
+        if (id !== waitId.current) return;
         setVerifying(false);
         form.requestSubmit();
       },
       () => {
+        if (id !== waitId.current) return;
         setVerifying(false);
         setCheckProblem(copy.errors.botCheck);
       },
