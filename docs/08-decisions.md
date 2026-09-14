@@ -58,6 +58,15 @@ it here and in `CLAUDE.md` in the same commit.
   `/glossary/`, `/careers/` and `/demos/` return 404 until Tasks 4.2 and the careers and
   demos pages exist, or the links are removed from `home.content`.
 
+- The cost calculator's result depends on the booking page. `CONSULTATION_PATH`
+  (`/book-a-consultation/`) is the booking family's contract: `calculatorBookingPath`
+  carries the eight answers to it, and both the result panel's next action and the emailed
+  copy's button use it. That route does not exist until Task 5.1, so the calculator's
+  closing call to action points at `/contact/` for now, as the site chrome does. Task 5.1
+  must land before a visitor is sent through the result panel in production, and the
+  booking page must read the `?source=cost-calculator&project-type=...` parameters back
+  with `calculatorAnswersFromSearchParams`, or the answers are carried for nothing.
+
 - The landing hero video is Pexels stock footage (video 8523640, 1280×720, 3.3 MB),
   loaded from `videos.pexels.com`. Move it to our own media storage with the media library,
   and replace it once the client has footage of their own. Its poster is

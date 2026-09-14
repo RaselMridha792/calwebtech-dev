@@ -16,6 +16,7 @@ import { CompanyModule } from './company/company.controller';
 import { LocationsModule } from './locations/locations.controller';
 import { StaticPagesModule } from './static/static.controller';
 import { GuidesGlossaryModule } from './guides-glossary/guides-glossary.controller';
+import { CalculatorPageModule } from './calculator/calculator.controller';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { GuidesGlossaryModule } from './guides-glossary/guides-glossary.controll
     LocationsModule,
     StaticPagesModule,
     GuidesGlossaryModule,
+    CalculatorPageModule,
   ],
   controllers: [HealthController],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],

@@ -22,6 +22,11 @@ const workerEnvSchema = z
      */
     EMAIL_REDIRECT_TO: z.preprocess(blankToUndefined, z.email().optional()),
     EMAIL_CONCURRENCY: z.coerce.number().int().min(1).max(20).default(5),
+    /**
+     * The site's public origin. Email jobs carry site paths, never a host, so links back to
+     * a page are built here. Unset, those emails simply carry no link.
+     */
+    APP_ORIGIN: z.preprocess(blankToUndefined, z.url().optional()),
   })
   .superRefine((env, context) => {
     if (env.EMAIL_TRANSPORT === 'resend' && !env.RESEND_API_KEY) {

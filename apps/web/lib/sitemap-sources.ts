@@ -16,4 +16,5 @@ export const SITEMAP_SOURCES: readonly SitemapSource[] = [
   () => import('@/lib/api/locations').then((module) => module.sitemapEntries()),
   () => import('@/lib/api/static').then((module) => module.sitemapEntries()),
   () => import('@/lib/api/guides-glossary').then((module) => module.sitemapEntries()),
+  () => import('@/lib/api/calculator').then((module) => module.sitemapEntries()),
 ];

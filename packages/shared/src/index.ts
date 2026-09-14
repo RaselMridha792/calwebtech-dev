@@ -1,4 +1,5 @@
 export * from './app-env';
+export * from './calculator';
 export * from './email-jobs';
 export * from './home-page';
 export * from './landing-page';
@@ -18,3 +19,4 @@ export * from './pages/company';
 export * from './pages/locations';
 export * from './pages/static';
 export * from './pages/guides-glossary';
+export * from './pages/calculator';

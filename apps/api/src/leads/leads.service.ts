@@ -4,6 +4,7 @@ import {
   acknowledgementSchema,
   type Acknowledgement,
   type BotCheckFailedResponse,
+  type CalculatorLeadReceived,
   type EmailJob,
   type LeadReceived,
   type LeadSubmission,
@@ -11,6 +12,7 @@ import {
   type ValidationErrorResponse,
 } from '@calwebtech/shared';
 import { BadRequestException, ForbiddenException, Injectable, Logger } from '@nestjs/common';
+import { calculatorLeadOutcome, type CalculatorLeadOutcome } from '../calculator/calculator-lead';
 import { publishedAsOf } from '../common/published';
 import { PrismaService } from '../prisma/prisma.service';
 import { EmailQueue } from '../queue/email-queue';
@@ -60,10 +62,18 @@ export class LeadsService {
    * A Turnstile rejection writes nothing. Once the lead is stored it is never lost: a
    * queue failure is recorded on the lead instead of failing the request.
    */
-  async create(input: LeadSubmission, visitorIp: string | undefined): Promise<LeadReceived> {
+  async create(input: LeadSubmission, visitorIp: string | undefined): Promise<LeadReceived | CalculatorLeadReceived> {
+    // The cost calculator's range is recomputed from the answers here and never taken from
+    // the browser (calculator/calculator-lead.ts). It is worked out before anything is
+    // stored, so a submission with answers the model does not recognise is a 400.
+    const db = this.prisma.client;
+    const calculator = input.type === 'CALCULATOR' ? await calculatorLeadOutcome(db, input) : null;
+    const received = (): LeadReceived | CalculatorLeadReceived =>
+      calculator ? { status: 'received', estimate: calculator.estimate } : { status: 'received' };
+
     if (input.referenceCode) {
       this.logger.warn(`Honeypot filled on form "${input.formId}"; submission discarded`);
-      return { status: 'received' };
+      return received();
     }
 
     const botCheck = await this.turnstile.verify(input.turnstileToken, visitorIp);
@@ -72,7 +82,6 @@ export class LeadsService {
       throw new ForbiddenException(body);
     }
 
-    const db = this.prisma.client;
     // A routed enquiry must name a type that exists, since its mailbox receives the notification.
     const enquiryType = input.enquiryType
       ? await db.enquiryType.findUnique({ where: { slug: input.enquiryType }, select: { slug: true, name: true, mailbox: true } })
@@ -130,12 +139,16 @@ export class LeadsService {
           phone: input.phone,
           company: input.company,
           message: input.message,
-          budgetBand: input.budgetBand,
+          // A calculator lead's band is the one its own estimate falls in, so the inbox can
+          // be filtered on a figure we calculated rather than one the visitor guessed.
+          budgetBand: calculator ? calculator.estimate.budgetBand : input.budgetBand,
           timeline: input.timeline,
+          projectType: calculator?.answers.projectType,
+          // One `answers` column holds whichever structured answers the form produced.
+          answers: calculator?.stored ?? (enquiryType ? { enquiryType: enquiryType.slug } : undefined),
           referralSource: input.referralSource,
           siteUrl: input.siteUrl,
           serviceInterest,
-          ...(enquiryType ? { answers: { enquiryType: enquiryType.slug } } : {}),
           contactId: contact.id,
           serviceId: service?.id,
           attribution: {
@@ -170,15 +183,17 @@ export class LeadsService {
       { ...input, serviceInterest },
       lead,
       acknowledgementFrom(landingPage?.content ?? service?.content ?? homeContent?.value),
+      calculator,
       enquiryType,
     );
-    return { status: 'received' };
+    return received();
   }
 
   private async queueEmails(
     input: LeadSubmission,
     lead: { id: string; createdAt: Date },
     acknowledgement: Acknowledgement,
+    calculator: CalculatorLeadOutcome | null,
     enquiryType: { name: string; mailbox: string } | null,
   ): Promise<void> {
     const summary: LeadSummary = {
@@ -196,10 +211,16 @@ export class LeadsService {
       message: input.message,
       enquiry: enquiryType?.name,
       landingPageSlug: input.landingPageSlug,
+      answers: calculator?.stored,
       attribution: input.attribution,
       submittedAt: lead.createdAt.toISOString(),
     };
-    const jobs: EmailJob[] = [{ template: 'lead-confirmation', to: [input.email], lead: summary, acknowledgement }];
+    // A calculator lead gets its result instead of the standard confirmation, so the
+    // visitor's copy carries the same figures the page showed them.
+    const jobs: EmailJob[] =
+      calculator?.email
+        ? [{ template: 'calculator-result', to: [input.email], lead: summary, result: calculator.email }]
+        : [{ template: 'lead-confirmation', to: [input.email], lead: summary, acknowledgement }];
 
     try {
       // The enquiry type's own mailbox joins the usual recipients, which is how enquiries are routed.

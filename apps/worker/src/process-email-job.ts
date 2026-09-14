@@ -23,6 +23,8 @@ export interface EmailJobProcessorOptions {
   store: DeliveryStore;
   from: string;
   redirectTo?: string;
+  /** APP_ORIGIN, for emails that link back to a page. Without it those links are left out. */
+  siteOrigin?: string;
 }
 
 /**
@@ -32,7 +34,7 @@ export interface EmailJobProcessorOptions {
  * transport or database failure throws and BullMQ retries it; the idempotency key stops
  * a retry after a successful send from emailing anyone twice.
  */
-export function createEmailJobProcessor({ transport, store, from, redirectTo }: EmailJobProcessorOptions) {
+export function createEmailJobProcessor({ transport, store, from, redirectTo, siteOrigin }: EmailJobProcessorOptions) {
   return async (job: { data: unknown }): Promise<{ providerId: string }> => {
     const parsed = emailJobSchema.safeParse(job.data);
     if (!parsed.success) {
@@ -41,8 +43,9 @@ export function createEmailJobProcessor({ transport, store, from, redirectTo }: 
     const email = parsed.data;
 
     const contact = await store.siteContact();
-    const rendered = await renderEmail(email, { contact });
-    const replyTo = email.template === 'lead-confirmation' ? contact?.email : email.lead.email;
+    const rendered = await renderEmail(email, { contact, siteOrigin: siteOrigin ?? null });
+    // Everything but the internal notification goes to the visitor, so replies reach the team.
+    const replyTo = email.template === 'lead-notification' ? email.lead.email : contact?.email;
 
     const { id } = await transport.send({
       from,
