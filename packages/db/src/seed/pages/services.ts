@@ -5,7 +5,8 @@ import type { PageSeed } from './index';
 /**
  * Copy of `/services/` for the placeholder database (content.ts rules): placeholder words,
  * no figures, names or promises. The services themselves come from the homepage seed, and
- * the publish-ready copy lives in apps/web/static-content/services.
+ * the publish-ready copy lives in apps/web/static-content/services. Category headings are
+ * left to the API's question fallback.
  */
 export const SERVICES_INDEX_PLACEHOLDER: ServicesIndexContentInput = {
   seo: {
@@ -17,6 +18,7 @@ export const SERVICES_INDEX_PLACEHOLDER: ServicesIndexContentInput = {
     'Placeholder answer for the services index. The approved two to three sentence answer replaces this text before launch.',
   intro: 'Placeholder. The approved copy introduces the services and how they are grouped.',
   otherGroupName: 'Placeholder group name',
+  otherGroupHeading: 'Placeholder group question?',
   empty: 'No services are published yet.',
   cardLinkLabel: 'Placeholder link label',
   guidance: {

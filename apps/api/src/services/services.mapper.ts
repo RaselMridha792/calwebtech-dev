@@ -6,6 +6,7 @@ import {
   SERVICE_RELATED_LIMIT,
   faqItemSchema,
   formatServicePrice,
+  groupHeadingFallback,
   seoSchema,
   serviceContentSchema,
   serviceDetailViewSchema,
@@ -272,19 +273,28 @@ export function toServiceDetailView({ service, others }: ServiceDetailSources): 
 /**
  * `/services/`: the `services.index` copy and every published service, grouped by category
  * in category order, with uncategorised services in a last group. Empty categories are left out.
+ * Each group's heading is the question the copy gives its category, or a question built from its name.
  */
 export function toServicesIndexView({ contentSetting, categories, services }: ServicesIndexSources): ServicesIndexView {
   const content = servicesIndexContentSchema.parse(contentSetting);
   const known = new Set(categories.map((category) => category.id));
+  const headings = new Map(Object.entries(content.groupHeadings));
   const groups: ServicesIndexView['groups'] = categories.map((category) => ({
     slug: category.slug,
     name: category.name,
+    heading: headings.get(category.slug) ?? groupHeadingFallback(category.name),
     description: present(category.description) ? category.description : null,
     services: services.filter((service) => service.categoryId === category.id).map(serviceCard),
   }));
   const other = services.filter((service) => service.categoryId === null || !known.has(service.categoryId));
   if (other.length > 0) {
-    groups.push({ slug: null, name: content.otherGroupName, description: null, services: other.map(serviceCard) });
+    groups.push({
+      slug: null,
+      name: content.otherGroupName,
+      heading: content.otherGroupHeading ?? groupHeadingFallback(content.otherGroupName),
+      description: null,
+      services: other.map(serviceCard),
+    });
   }
   return servicesIndexViewSchema.parse({ content, groups: groups.filter((group) => group.services.length > 0) });
 }

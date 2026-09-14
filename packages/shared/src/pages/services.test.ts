@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { leadSubmissionSchema } from '../lead';
 import {
   formatServicePrice,
+  groupHeadingFallback,
   serviceContentSchema,
   servicePriceSchema,
   servicesIndexContentSchema,
@@ -70,6 +71,7 @@ describe('servicesIndexContentSchema', () => {
       answerBlock: 'We design and build websites and web applications. Every project runs on a fixed scope and price.',
       intro: 'Pick a service.',
       otherGroupName: 'More services',
+      otherGroupHeading: 'Which other services do you offer?',
       empty: 'No services are published yet.',
       cardLinkLabel: 'See the service',
       guidance: { heading: 'Not sure which service you need', body: 'Ask us.', primaryCta: { label: 'Contact us', href: '/contact/' } },
@@ -79,6 +81,28 @@ describe('servicesIndexContentSchema', () => {
       servicesIndexContentSchema.safeParse({ ...index, guidance: { ...index.guidance, heading: 'Not sure which service you need?' } })
         .success,
     ).toBe(true);
+  });
+
+  it('writes every category heading as a question, including the fallback', () => {
+    const index = {
+      seo: { title: 'Services', description: 'What we build.' },
+      title: 'Services',
+      answerBlock: 'We design and build websites and web applications. Every project runs on a fixed scope and price.',
+      intro: 'Pick a service.',
+      otherGroupName: 'More services',
+      otherGroupHeading: 'Which other services do you offer?',
+      empty: 'No services are published yet.',
+      cardLinkLabel: 'See the service',
+      guidance: { heading: 'Not sure which service you need?', body: 'Ask us.', primaryCta: { label: 'Contact us', href: '/contact/' } },
+    };
+    expect(servicesIndexContentSchema.parse(index).groupHeadings).toEqual({});
+    // A setting stored before the headings existed still parses.
+    expect(servicesIndexContentSchema.parse({ ...index, otherGroupHeading: undefined }).otherGroupHeading).toBeNull();
+    expect(servicesIndexContentSchema.safeParse({ ...index, groupHeadings: { platforms: 'Platforms' } }).success).toBe(false);
+    expect(servicesIndexContentSchema.safeParse({ ...index, groupHeadings: { Platforms: 'Which platform fits?' } }).success).toBe(false);
+    expect(servicesIndexContentSchema.safeParse({ ...index, groupHeadings: { platforms: 'Which platform fits?' } }).success).toBe(true);
+    expect(servicesIndexContentSchema.safeParse({ ...index, otherGroupHeading: 'More services' }).success).toBe(false);
+    expect(groupHeadingFallback('Design & build')).toBe('Which services are in Design & build?');
   });
 });
 

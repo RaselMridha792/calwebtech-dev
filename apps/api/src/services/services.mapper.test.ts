@@ -337,7 +337,9 @@ const INDEX: ServicesIndexContentInput = {
   title: 'Services',
   answerBlock: 'We design and build websites and web applications. Every project runs on a fixed scope and price.',
   intro: 'Pick a service.',
+  groupHeadings: { 'design-and-build': 'Do you need a new website or a web application?', retired: 'Which retired services?' },
   otherGroupName: 'More services',
+  otherGroupHeading: 'Which other services do you offer?',
   empty: 'No services are published yet.',
   cardLinkLabel: 'See the service',
   guidance: { heading: 'Not sure which one you need?', body: 'Ask us.', primaryCta: { label: 'Contact us', href: '/contact/' } },
@@ -361,8 +363,18 @@ describe('toServicesIndexView', () => {
       ['growth-and-care', 'Growth and care', ['a']],
       [null, 'More services', ['b', 'd']],
     ]);
+    expect(view.groups.map((group) => group.heading)).toEqual([
+      'Do you need a new website or a web application?',
+      'Which services are in Growth and care?',
+      'Which other services do you offer?',
+    ]);
     expect(view.groups[1]?.description).toBeNull();
     expect(view.groups[0]?.services[0]?.updatedAt).toBe(at.toISOString());
+  });
+
+  it('builds a question from the name when the copy has no heading for the other group', () => {
+    const view = toServicesIndexView({ contentSetting: { ...INDEX, otherGroupHeading: null }, categories, services: [card('b', null)] });
+    expect(view.groups.map((group) => group.heading)).toEqual(['Which services are in More services?']);
   });
 
   it('has no groups when nothing is published', () => {

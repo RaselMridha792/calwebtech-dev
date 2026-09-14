@@ -271,8 +271,16 @@ export const servicesIndexContentSchema = z.object({
   title: requiredText(120),
   answerBlock: answerBlockSchema,
   intro: requiredText(600),
-  /** Heading of the group holding services without a category. */
+  /**
+   * Each category section's heading, keyed by the category's slug and written as the
+   * question a buyer types. The category's name is the small label above it. A category
+   * with no entry gets `groupHeadingFallback(name)`, so a new category never breaks the page.
+   */
+  groupHeadings: z.record(slugSchema, questionSchema()).default({}),
+  /** Label of the group holding services without a category. */
   otherGroupName: requiredText(80),
+  /** Heading of that group, as a question; null gets `groupHeadingFallback(otherGroupName)`. */
+  otherGroupHeading: questionSchema().nullable().default(null),
   /** Shown while no service is published. */
   empty: requiredText(200),
   /** A visual cue on each card; the card's title is the link. */
@@ -288,6 +296,11 @@ export const servicesIndexContentSchema = z.object({
 export type ServicesIndexContent = z.output<typeof servicesIndexContentSchema>;
 export type ServicesIndexContentInput = z.input<typeof servicesIndexContentSchema>;
 
+/** A category section's heading when the index copy has none for it: still a question. */
+export function groupHeadingFallback(name: string): string {
+  return `Which services are in ${name}?`;
+}
+
 /** What `GET /pages/services` returns, and what the index snapshot holds. */
 export const servicesIndexViewSchema = z.object({
   content: servicesIndexContentSchema,
@@ -295,7 +308,10 @@ export const servicesIndexViewSchema = z.object({
   groups: z.array(
     z.object({
       slug: slugSchema.nullable(),
+      /** The category's name, shown as the label above the heading. */
       name: requiredText(80),
+      /** The section's H2, as the question a buyer types. */
+      heading: questionSchema(),
       description: requiredText(600).nullable(),
       services: z.array(serviceCardSchema).min(1),
     }),

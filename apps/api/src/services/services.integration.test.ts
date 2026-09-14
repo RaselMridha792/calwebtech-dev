@@ -53,6 +53,7 @@ const INDEX_CONTENT: ServicesIndexContentInput = {
   answerBlock: 'This index exists for an integration test. It is removed when the test finishes.',
   intro: 'Integration intro.',
   otherGroupName: 'Integration other group',
+  otherGroupHeading: 'Which integration services are left?',
   empty: 'Nothing published.',
   cardLinkLabel: 'See it',
   guidance: { heading: 'Integration guidance?', body: 'Integration body.', primaryCta: { label: 'Contact', href: '/contact/' } },
@@ -184,6 +185,7 @@ describe('services views against Postgres', () => {
     const ours = view.groups.find((group) => group.slug === slug('category'));
     expect(ours?.services.map((service) => service.slug)).toEqual([slug('published')]);
     expect(view.groups.at(-1)?.slug).toBeNull();
+    for (const group of view.groups) expect(group.heading.endsWith('?'), group.heading).toBe(true);
   });
 });
 
