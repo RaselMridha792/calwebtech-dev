@@ -1,9 +1,11 @@
 import {
   LOCATION_NEARBY_MAX,
+  LOCATION_UNIQUE_SHARE_MIN,
+  locationBodyCopy,
   locationDetailViewSchema,
   locationPath,
+  locationUniqueShare,
   locationsIndexViewSchema,
-  type LocationDetailView,
 } from '@calwebtech/shared';
 import { readdirSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
@@ -18,42 +20,6 @@ const details = Object.entries(locationSnapshots).map(([slug, snapshot]) => ({
   view: locationDetailViewSchema.parse(snapshot),
 }));
 const index = locationsIndexViewSchema.parse(locationsIndexSnapshot);
-
-/** The body copy a visitor reads on a city page, without headings shared by the template. */
-function bodyCopy(view: LocationDetailView): string {
-  return [
-    view.answerBlock,
-    view.serviceArea,
-    view.heroIntro,
-    ...view.localContext.paragraphs,
-    ...view.localContext.industries,
-    view.clients?.intro,
-    view.caseStudies?.intro,
-    view.services?.intro,
-    ...(view.services?.items.map((item) => item.body) ?? []),
-    view.workingModel?.intro,
-    ...(view.workingModel?.points.flatMap((point) => [point.title, point.body]) ?? []),
-    view.serviceAreaSection?.intro,
-    ...(view.serviceAreaSection?.places ?? []),
-    ...(view.faq?.items.flatMap((item) => [item.question, item.answer]) ?? []),
-    view.cta.body,
-  ]
-    .filter((part): part is string => typeof part === 'string')
-    .join(' ');
-}
-
-/**
- * Runs of four words, with every city and state name written the same way, so a page
- * cloned from another with the city swapped counts as copied.
- */
-function shingles(text: string, places: readonly string[]): Set<string> {
-  let normalised = text.toLowerCase();
-  for (const place of places) normalised = normalised.replaceAll(place.toLowerCase(), 'city');
-  const words = normalised.split(/[^\p{L}\p{N}]+/u).filter(Boolean);
-  const runs = new Set<string>();
-  for (let start = 0; start + 4 <= words.length; start += 1) runs.add(words.slice(start, start + 4).join(' '));
-  return runs;
-}
 
 describe('locations snapshots', () => {
   it('match the contract, one file per city named after its slug', () => {
@@ -105,12 +71,9 @@ describe('locations snapshots', () => {
       'Texas',
     ];
     for (const { slug, view } of details) {
-      const own = shingles(bodyCopy(view), places);
-      const others = new Set(
-        details.filter((other) => other.slug !== slug).flatMap((other) => [...shingles(bodyCopy(other.view), places)]),
-      );
-      const shared = [...own].filter((run) => others.has(run)).length;
-      expect(1 - shared / own.size, `${slug} unique share`).toBeGreaterThanOrEqual(0.6);
+      const others = details.filter((other) => other.slug !== slug).map((other) => locationBodyCopy(other.view));
+      const share = locationUniqueShare(locationBodyCopy(view), others, places);
+      expect(share, `${slug} unique share`).toBeGreaterThanOrEqual(LOCATION_UNIQUE_SHARE_MIN);
     }
   });
 

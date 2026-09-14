@@ -223,6 +223,63 @@ export const locationsIndexViewSchema = z.object({
   ),
 });
 
+/** A city page needs at least this share of its body copy to be its own (docs/04, "Location rules"). */
+export const LOCATION_UNIQUE_SHARE_MIN = 0.6;
+
+/** Runs of four words, with every place name written the same way. */
+function locationShingles(text: string, places: readonly string[]): Set<string> {
+  let normalised = text.toLowerCase();
+  // Longest names first, so "West Sacramento" is replaced before "Sacramento".
+  for (const place of [...places].sort((a, b) => b.length - a.length)) {
+    const name = place.trim().toLowerCase();
+    if (name) normalised = normalised.replaceAll(name, ' place ');
+  }
+  const words = normalised.split(/[^\p{L}\p{N}]+/u).filter(Boolean);
+  const runs = new Set<string>();
+  for (let start = 0; start + 4 <= words.length; start += 1) runs.add(words.slice(start, start + 4).join(' '));
+  return runs;
+}
+
+/**
+ * The share of a city page's body copy, from 0 to 1, that no other city page repeats:
+ * the runs of four words in `own` that appear in none of `others`. City and place names
+ * are treated as one word, so a page cloned from another with the city swapped scores
+ * close to zero. The snapshot test gates on it, and the location editor can warn with it
+ * before a record is published (docs/06-build-plan.md, 3.1).
+ */
+export function locationUniqueShare(own: string, others: readonly string[], places: readonly string[]): number {
+  const runs = locationShingles(own, places);
+  if (runs.size === 0) return 0;
+  const repeated = new Set(others.flatMap((other) => [...locationShingles(other, places)]));
+  const shared = [...runs].filter((run) => repeated.has(run)).length;
+  return 1 - shared / runs.size;
+}
+
+/** The body copy a visitor reads on a city page, without the headings the template shares. */
+export function locationBodyCopy(view: LocationDetailView): string {
+  return [
+    view.answerBlock,
+    view.serviceArea,
+    view.heroIntro,
+    ...view.localContext.paragraphs,
+    ...view.localContext.industries,
+    view.clients?.intro,
+    ...(view.clients?.names ?? []),
+    view.caseStudies?.intro,
+    view.services?.intro,
+    ...(view.services?.items.map((item) => item.body) ?? []),
+    view.workingModel?.intro,
+    ...(view.workingModel?.points.flatMap((point) => [point.title, point.body]) ?? []),
+    view.serviceAreaSection?.intro,
+    ...(view.serviceAreaSection?.places ?? []),
+    view.nearby?.intro,
+    ...(view.faq?.items.flatMap((item) => [item.question, item.answer]) ?? []),
+    view.cta.body,
+  ]
+    .filter((part): part is string => typeof part === 'string')
+    .join('\n');
+}
+
 export type LocationCard = z.output<typeof locationCardSchema>;
 export type LocationDetailView = z.output<typeof locationDetailViewSchema>;
 export type LocationsIndexView = z.output<typeof locationsIndexViewSchema>;
