@@ -8,14 +8,14 @@ import privacyPolicy from './legal/privacy-policy.json';
 import terms from './legal/terms.json';
 import pricing from './pricing.json';
 import processPage from './process.json';
+import notFound from './not-found.json';
+import audit from './thank-you/audit.json';
+import booking from './thank-you/booking.json';
+import calculator from './thank-you/calculator.json';
 import careers from './thank-you/careers.json';
-import consultation from './thank-you/consultation.json';
 import contactThanks from './thank-you/contact.json';
-import costEstimate from './thank-you/cost-estimate.json';
 import project from './thank-you/project.json';
 import resource from './thank-you/resource.json';
-import serviceEnquiry from './thank-you/service-enquiry.json';
-import websiteAudit from './thank-you/website-audit.json';
 
 /*
  * Snapshots of the static family's API responses (docs/10-site-pages.md), which pages render
@@ -26,19 +26,22 @@ export const staticPricingSnapshot: unknown = pricing;
 export const staticProcessSnapshot: unknown = processPage;
 export const staticContactSnapshot: unknown = contact;
 export const staticFaqSnapshot: unknown = faq;
+export const staticNotFoundSnapshot: unknown = notFound;
 
-const thankYouPages = {
-  project,
-  'service-enquiry': serviceEnquiry,
-  consultation,
+const thankYouPages: Record<StaticThankYouType, unknown> = {
   contact: contactThanks,
-  'cost-estimate': costEstimate,
-  'website-audit': websiteAudit,
+  project,
+  audit,
+  calculator,
+  booking,
   resource,
   careers,
-} satisfies Record<StaticThankYouType, unknown>;
+};
 
-/** `GET /pages/thank-you/:type`, keyed by type. A type without a page reads as undefined. */
+/**
+ * `GET /pages/thank-you/:type`, keyed by type. Look a type up with `Object.hasOwn` first,
+ * so `constructor` or `__proto__` read as no page rather than as a property of Object.
+ */
 export const staticThankYouSnapshots: Readonly<Record<string, unknown>> = thankYouPages;
 
 /** `GET /pages/legal/:slug`, keyed by slug. */

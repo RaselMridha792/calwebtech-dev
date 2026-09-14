@@ -1,7 +1,5 @@
 {
   "slug": "information-security",
-  "reviewStatus": "draft",
-  "draftNotice": "Draft pending legal review. This page describes how the website handles data by design, but a lawyer has not yet reviewed the wording, so it may change before it is final.",
   "lastUpdated": "2026-09-14",
   "seo": {
     "title": "Information security",
@@ -93,7 +91,7 @@
       "blocks": [
         {
           "type": "paragraph",
-          "text": "The database is backed up every night, with an additional weekly snapshot. Backups are encrypted before they leave the server and stored with a separate storage provider, under an account that is not the one the server runs on."
+          "text": "The database is backed up every night. Nightly, weekly and monthly copies are encrypted before they leave the server and stored with a separate storage provider, under an account that is not the one the server runs on."
         },
         {
           "type": "table",

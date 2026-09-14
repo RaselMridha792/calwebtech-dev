@@ -2,11 +2,25 @@
   "type": "careers",
   "seo": {
     "title": "Thank you: application received",
-    "description": "Your application has reached the Calwebtech careers inbox. Here is what happens next and how your details are handled."
+    "description": "Your application has reached the Calwebtech careers inbox. Here is what happens next and how your details are handled.",
+    "ogImage": null
   },
   "eyebrow": "Application received",
   "title": "Thanks. Your application is with us.",
   "intro": "Your details have gone to the careers inbox, which is kept apart from sales and marketing. We use what you send only to consider your application.",
+  "received": {
+    "heading": "What you sent us",
+    "items": [
+      "Your name and email address",
+      "The role you applied for, or that you are writing speculatively",
+      "Your experience, and any links or files you added"
+    ]
+  },
+  "response": {
+    "label": "Expect to hear",
+    "value": "Within one business day",
+    "detail": "A person confirms your application has been read. If your experience fits a role, the email suggests a first conversation."
+  },
   "nextSteps": {
     "heading": "What happens next",
     "steps": [
@@ -15,8 +29,8 @@
         "body": "Every application is read by a person, not filtered out by keyword software."
       },
       {
-        "title": "We get in touch about a match",
-        "body": "If your experience fits a role we are hiring for, we email you to arrange a first conversation."
+        "title": "A first conversation about a match",
+        "body": "If your experience fits a role we are hiring for, we arrange a call to talk about the work and what you want from it."
       },
       {
         "title": "Your details stay in your control",

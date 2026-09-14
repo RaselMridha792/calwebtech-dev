@@ -1,12 +1,26 @@
 {
-  "type": "website-audit",
+  "type": "audit",
   "seo": {
     "title": "Thank you: website audit request received",
-    "description": "Your free website audit request has reached Calwebtech. Here is what we check and how you receive the findings."
+    "description": "Your free website audit request has reached Calwebtech. Here is what we check, how the findings reach you and what happens after.",
+    "ogImage": null
   },
   "eyebrow": "Audit request received",
   "title": "Thanks. Your website audit request is with us.",
-  "intro": "We have your website address and what you asked us to look at. A confirmation email is on its way to the address you gave.",
+  "intro": "We have your website address and anything you asked us to look at. A confirmation email is on its way to the address you gave.",
+  "received": {
+    "heading": "What you sent us",
+    "items": [
+      "Your name and email address",
+      "The address of the website to review",
+      "Anything you asked us to look at in particular"
+    ]
+  },
+  "response": {
+    "label": "Expect a reply",
+    "value": "Within one business day",
+    "detail": "A person confirms the review has started and tells you when the written findings will reach you."
+  },
   "nextSteps": {
     "heading": "What happens next",
     "steps": [
@@ -20,7 +34,7 @@
       },
       {
         "title": "The findings are yours",
-        "body": "Act on them with any team you like. If you want us to fix them, we will quote a fixed price."
+        "body": "Act on them with any team you like. If you want us to fix them, we quote a fixed price."
       }
     ]
   },

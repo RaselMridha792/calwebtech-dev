@@ -1,0 +1,69 @@
+{
+  "type": "booking",
+  "seo": {
+    "title": "Thank you: consultation booked",
+    "description": "Your consultation with Calwebtech is booked. Here is what the confirmation email contains, how to reschedule and how to prepare for the call.",
+    "ogImage": null
+  },
+  "eyebrow": "Consultation booked",
+  "title": "Thanks. Your consultation is booked.",
+  "intro": "The time you chose is reserved for you. A confirmation email with a calendar invite is on its way to the address you gave.",
+  "received": {
+    "heading": "What you sent us",
+    "items": [
+      "The type of consultation, the date and the time you chose, in your timezone",
+      "Your name, email address and company",
+      "What you want to cover on the call"
+    ]
+  },
+  "response": {
+    "label": "Confirmation",
+    "value": "By email, straight away",
+    "detail": "It carries a calendar invite and links to reschedule or cancel. Reminders follow a day and an hour before the call."
+  },
+  "nextSteps": {
+    "heading": "What happens before the call",
+    "steps": [
+      {
+        "title": "We prepare",
+        "body": "The people who would run your project look at your current site first, so the call is useful rather than exploratory."
+      },
+      {
+        "title": "Change the time if you need to",
+        "body": "Use the link in your confirmation email to reschedule or cancel. There is no need to call or write to us."
+      },
+      {
+        "title": "We tell you what we would do",
+        "body": "On the call you hear what we would change, roughly what it costs and whether we are the right fit. Send your NDA beforehand if you need one."
+      }
+    ]
+  },
+  "secondary": {
+    "heading": "Before the call",
+    "body": "Read through the five stages of a project so you can ask about the parts that matter most to you.",
+    "cta": {
+      "label": "Read how a project runs",
+      "href": "/process/"
+    }
+  },
+  "links": [
+    {
+      "label": "Pricing",
+      "href": "/pricing/"
+    },
+    {
+      "label": "Case studies",
+      "href": "/work/"
+    }
+  ],
+  "image": {
+    "src": "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=72",
+    "alt": "A project team planning a website with sticky notes on a whiteboard"
+  },
+  "callLabel": "Prefer to talk? Call us",
+  "contact": {
+    "phone": "+1 (800) 555-0188",
+    "phoneE164": "+18005550188",
+    "email": "hello@calwebtech.com"
+  }
+}

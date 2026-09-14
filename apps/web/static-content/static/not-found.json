@@ -1,0 +1,56 @@
+{
+  "eyebrow": "Error 404",
+  "title": "We could not find that page",
+  "intro": "The address may be mistyped, or the page may have moved when the site was reorganised. Search for what you were after, or start from one of the pages people use most.",
+  "search": {
+    "label": "Search the site",
+    "placeholder": "For example: pricing, Shopify, redesign",
+    "submitLabel": "Search",
+    "resultsLabel": "matching pages",
+    "noResults": "No page title matches that. Try a shorter word, or browse the full list of pages on the sitemap."
+  },
+  "destinations": {
+    "heading": "Pages people use most",
+    "items": [
+      {
+        "title": "Services",
+        "body": "Custom websites, ecommerce, web applications and search visibility, with what each includes.",
+        "href": "/services/"
+      },
+      {
+        "title": "Our work",
+        "body": "Case studies with the problem, the build and the results they measured after launch.",
+        "href": "/work/"
+      },
+      {
+        "title": "Pricing",
+        "body": "Published price bands, what moves the number and how a fixed quote is set.",
+        "href": "/pricing/"
+      },
+      {
+        "title": "How a project runs",
+        "body": "Five stages from discovery to handover, with what you get and what we need.",
+        "href": "/process/"
+      },
+      {
+        "title": "Questions and answers",
+        "body": "Straight answers about cost, timelines, ownership and search rankings.",
+        "href": "/faq/"
+      },
+      {
+        "title": "Contact",
+        "body": "Send a project enquiry, ask for a free website audit or get support.",
+        "href": "/contact/"
+      }
+    ]
+  },
+  "help": {
+    "heading": "Followed a link that should work?",
+    "body": "Tell us where you found it and we will fix it. Call or email us, and a person will help you find what you were looking for."
+  },
+  "contact": {
+    "phone": "+1 (800) 555-0188",
+    "phoneE164": "+18005550188",
+    "email": "hello@calwebtech.com"
+  }
+}

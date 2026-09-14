@@ -5,6 +5,7 @@ import {
   staticContactViewSchema,
   staticFaqViewSchema,
   staticLegalViewSchema,
+  staticNotFoundViewSchema,
   staticPricingViewSchema,
   staticProcessViewSchema,
   staticThankYouViewSchema,
@@ -17,6 +18,7 @@ import {
   staticContactSnapshot,
   staticFaqSnapshot,
   staticLegalSnapshots,
+  staticNotFoundSnapshot,
   staticPricingSnapshot,
   staticProcessSnapshot,
   staticThankYouSnapshots,
@@ -40,6 +42,7 @@ describe('static family snapshots', () => {
     ['process', staticProcessViewSchema, staticProcessSnapshot],
     ['contact', staticContactViewSchema, staticContactSnapshot],
     ['faq', staticFaqViewSchema, staticFaqSnapshot],
+    ['not-found', staticNotFoundViewSchema, staticNotFoundSnapshot],
   ] as const;
 
   it.each(singles)('%s matches its contract and has no unfinished copy', (_name, schema, snapshot) => {
@@ -57,15 +60,33 @@ describe('static family snapshots', () => {
     expect(Object.hasOwn(staticThankYouSnapshots, 'constructor')).toBe(false);
   });
 
-  it('has every legal page, named after its slug, marked as a draft pending legal review', () => {
+  it('has every legal page, named after its slug, each section with its own id', () => {
     expect(jsonFiles('legal')).toEqual([...STATIC_LEGAL_SLUGS].sort());
     for (const slug of STATIC_LEGAL_SLUGS) {
       const view = staticLegalViewSchema.parse(staticLegalSnapshots[slug]);
       expect(view.slug).toBe(slug);
-      expect(view.reviewStatus).toBe('draft');
-      expect(view.draftNotice).toMatch(/draft pending legal review/i);
       expect(unfinishedCopy(view)).toEqual([]);
     }
+  });
+
+  it('describes the data handling the platform actually has', () => {
+    const text = (slug: (typeof STATIC_LEGAL_SLUGS)[number]) => JSON.stringify(staticLegalSnapshots[slug]);
+    expect(text('privacy-policy')).toMatch(/PostgreSQL/);
+    expect(text('privacy-policy')).toMatch(/Turnstile/);
+    expect(text('privacy-policy')).toMatch(/Resend is used only to send email/);
+    expect(text('cookie-policy')).toMatch(/no analytics or advertising cookies/);
+    expect(text('information-security')).toMatch(/7 days/);
+    expect(text('information-security')).toMatch(/4 weeks/);
+    expect(text('information-security')).toMatch(/6 months/);
+    expect(text('information-security')).toMatch(/Up to 24 hours/);
+    expect(text('information-security')).toMatch(/Within 4 hours/);
+    expect(text('accessibility')).toMatch(/WCAG\) 2\.2/);
+  });
+
+  it('points the not-found page at six destinations that are site paths', () => {
+    const view = staticNotFoundViewSchema.parse(staticNotFoundSnapshot);
+    expect(view.destinations.items).toHaveLength(6);
+    for (const item of view.destinations.items) expect(item.href).toMatch(/^\/([a-z0-9-]+\/)*$/);
   });
 
   it('keeps titles and descriptions unique across the family', () => {
