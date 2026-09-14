@@ -230,7 +230,8 @@ export function fitText(value: string, max: number): string {
 
 function testimonialView(project: WorkProjectRecord): TestimonialView | null {
   const testimonial = project.testimonials[0];
-  if (!testimonial) return null;
+  // The query loads consented testimonials only; this keeps the rule if a caller does not.
+  if (!testimonial?.consentAt) return null;
   return {
     id: testimonial.id,
     quote: testimonial.quote,

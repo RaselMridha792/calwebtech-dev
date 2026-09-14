@@ -97,6 +97,7 @@
   ],
   "measurement": "Commercial figures come from the client's own analytics, twelve months after launch, and every figure is one the client agreed to publish. Speed and accessibility results, such as load times, Lighthouse scores and WCAG conformance, are measured on the live site.",
   "quote": null,
+  "videoTestimonial": null,
   "relatedServices": [
     {
       "slug": "ecommerce-development",

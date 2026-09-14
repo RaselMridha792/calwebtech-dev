@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { beforeAfterViewSchema, testimonialViewSchema } from '../landing-page';
-import { decorativeImageSchema, imageSchema } from '../media';
+import { decorativeImageSchema, imageSchema, mediaSrcSchema } from '../media';
 import { slugSchema } from '../seo';
 import { siteLinkSchema } from '../site-chrome';
 import { SITE_ROUTES, WORK_FILTER_PARAMS, workFilterPath, type WorkFilterParam } from '../site-paths';
@@ -198,6 +198,20 @@ export type WorkIndexView = z.output<typeof workIndexViewSchema>;
 
 const paragraphsSchema = z.array(requiredText(1500)).min(1).max(8);
 
+/**
+ * The client on camera (docs/03-page-specs.md, "optional video testimonial"): a consented
+ * testimonial on the project that has a video. The poster is the case study's cover, or
+ * null when it has none; the video plays in a dialog from the play button.
+ */
+export const workVideoTestimonialSchema = z.object({
+  clientName: requiredText(120),
+  role: z.string().nullable(),
+  company: z.string().nullable(),
+  poster: imageSchema.nullable(),
+  videoUrl: mediaSrcSchema,
+});
+export type WorkVideoTestimonial = z.output<typeof workVideoTestimonialSchema>;
+
 /** What `GET /pages/work/:slug` returns. A section with no content is null and not rendered. */
 export const workCaseStudyViewSchema = z.object({
   slug: slugSchema,
@@ -228,6 +242,7 @@ export const workCaseStudyViewSchema = z.object({
   outcome: paragraphsSchema.nullable(),
   measurement: requiredText(600),
   quote: testimonialViewSchema.nullable(),
+  videoTestimonial: workVideoTestimonialSchema.nullable(),
   relatedServices: z.array(workTermSchema.extend({ summary: requiredText(300) })).max(6),
   relatedCaseStudies: z.array(workCaseStudyCardSchema).max(3),
   /** Headings with the client's name filled in, each written as a question. */

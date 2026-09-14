@@ -2,6 +2,7 @@ import { Prisma, type ReviewSource, type Statistic, type Testimonial } from '@ca
 import type { WorkCopyInput } from '@calwebtech/shared';
 import { describe, expect, it } from 'vitest';
 import { ZodError } from 'zod';
+import { CONSENTED } from '../common/published';
 import {
   WorkContractError,
   caseStudyReadiness,
@@ -12,6 +13,7 @@ import {
   toBeforeAndAfterView,
   toCaseStudyView,
   toWorkIndexView,
+  workProjectInclude,
   type WorkComparisonRecord,
   type WorkProjectRecord,
 } from './work.mapper';
@@ -357,8 +359,19 @@ describe('toCaseStudyView', () => {
   });
 
   it('shows no quote without consent: the query loads consented testimonials only', () => {
-    const view = toCaseStudyView({ copySetting: COPY, project: project('no-quote'), others: [] });
-    expect(view.quote).toBeNull();
+    expect(workProjectInclude(at).testimonials.where).toEqual(CONSENTED);
+    const unconsented = toCaseStudyView({
+      copySetting: COPY,
+      project: project('no-consent', { testimonials: [testimonial({ consentAt: null })] }),
+      others: [],
+    });
+    expect(unconsented.quote).toBeNull();
+    const consented = toCaseStudyView({
+      copySetting: COPY,
+      project: project('consent', { testimonials: [testimonial()] }),
+      others: [],
+    });
+    expect(consented.quote?.quote).toBe('Test quote.');
   });
 
   it('picks related case studies that share the industry or services first, skipping incomplete ones', () => {
