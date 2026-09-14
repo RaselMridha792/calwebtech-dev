@@ -27,6 +27,7 @@ export const PAGE_SEEDS: readonly PageSeedLoader[] = [
   // Site page families: one line each, below this one.
   () => import('./industries.js').then((module) => module.industriesSeed),
   () => import('./work.js').then((module) => module.workSeed),
+  () => import('./services.js').then((module) => module.servicesSeed),
 ];
 
 /**

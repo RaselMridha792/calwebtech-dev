@@ -11,4 +11,5 @@ export const SITEMAP_SOURCES: readonly SitemapSource[] = [
   // Site page families: one line each, below this one.
   () => import('@/lib/api/industries').then((module) => module.sitemapEntries()),
   () => import('@/lib/api/work').then((module) => module.sitemapEntries()),
+  () => import('@/lib/api/services').then((module) => module.sitemapEntries()),
 ];

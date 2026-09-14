@@ -11,6 +11,7 @@ import { SiteChromeModule } from './site/site-chrome.controller';
 // Site page families (docs/10-site-pages.md): one import each, below this line.
 import { IndustriesModule } from './industries/industries.controller';
 import { WorkModule } from './work/work.controller';
+import { ServicesModule } from './services/services.controller';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { WorkModule } from './work/work.controller';
     // Site page families: one module each, below this line.
     IndustriesModule,
     WorkModule,
+    ServicesModule,
   ],
   controllers: [HealthController],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],

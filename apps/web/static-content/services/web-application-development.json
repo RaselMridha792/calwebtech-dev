@@ -1,0 +1,413 @@
+{
+  "slug": "web-application-development",
+  "title": "Web application development",
+  "updatedAt": "2026-09-14T00:00:00.000Z",
+  "seo": {
+    "title": "Web application development company",
+    "description": "Customer portals, dashboards, booking engines and internal tools on Next.js with a typed API, plus React Native apps. Fixed price from $25,000.",
+    "ogImage": null
+  },
+  "category": {
+    "slug": "design-and-build",
+    "name": "Design & build"
+  },
+  "answerBlock": "Web application development is building software people use in a browser, such as customer portals, dashboards, booking engines and internal tools. Calwebtech builds them on Next.js with a typed Node API, a PostgreSQL database you own and role-based access from day one, adding React Native companion apps where a phone needs more than a browser. Most first releases take nine to fourteen weeks and cost $25,000 to $60,000.",
+  "hero": {
+    "outcome": "Software your customers and staff use every day, on a database you own, built so the next feature does not mean starting again.",
+    "primaryCta": {
+      "label": "Get a project quote",
+      "href": "#enquire"
+    },
+    "secondaryCta": {
+      "label": "See the work",
+      "href": "/work/?service=web-application-development"
+    },
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1800&q=65"
+    }
+  },
+  "price": {
+    "label": "$25,000 to $60,000",
+    "amount": {
+      "currency": "USD",
+      "min": 25000,
+      "max": 60000,
+      "unit": "PROJECT"
+    }
+  },
+  "problem": {
+    "heading": "When does a business need a custom web application?",
+    "intro": "Web applications usually start as a workaround that became too important to leave alone.",
+    "situations": [
+      {
+        "title": "The spreadsheet became the system",
+        "body": "Orders, quotes or bookings run through shared spreadsheets and inboxes, and one wrong paste costs a customer or a day of rework."
+      },
+      {
+        "title": "Customers keep calling for information",
+        "body": "Buyers phone to check an order, a price or an appointment because there is nowhere to see it themselves, and your team answers the same questions all day."
+      },
+      {
+        "title": "Off-the-shelf software almost fits",
+        "body": "A subscription tool covers most of the process, but the part that makes your business different runs on workarounds while per-seat fees keep rising."
+      }
+    ]
+  },
+  "included": {
+    "heading": "What is included in a web application build?",
+    "intro": "The proposal describes every screen, role and integration in the first release, with anything out of scope written down.",
+    "items": [
+      "Discovery workshops that map the workflow, the roles and the data before any screens",
+      "Clickable prototypes of the key flows, tested with the people who will use them",
+      "A Next.js front end with a component library shared across every screen",
+      "A typed Node API with validation at every boundary and documented endpoints",
+      "A PostgreSQL database you own, with versioned migrations",
+      "Role-based access from day one, with an audit log of sensitive actions",
+      "Integrations with your ERP, CRM, payment or booking systems",
+      "Background jobs and queues for email, imports and anything slow",
+      "React Native companion apps where the work happens on a phone",
+      "Automated tests, separate staging and production environments, and deploys from CI",
+      "Documentation of the API and an operations runbook"
+    ]
+  },
+  "process": {
+    "heading": "How does a web application project run?",
+    "intro": "Nine to fourteen weeks for most first releases, with working software on staging from the early weeks.",
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1800&q=65"
+    },
+    "steps": [
+      {
+        "title": "Discovery",
+        "duration": "Weeks 1 to 2",
+        "body": "Workflow mapping with the people who do the work, a data model, the roles and permissions, and a fixed scope for the first release."
+      },
+      {
+        "title": "Prototype",
+        "duration": "Weeks 2 to 4",
+        "body": "Clickable prototypes of the key flows and the design system behind them, tested with real users before the build starts."
+      },
+      {
+        "title": "Build in slices",
+        "duration": "Weeks 4 to 11",
+        "body": "Each slice ships a working flow end to end, from database to screen, onto a staging URL you can use any day, reviewed on a weekly call."
+      },
+      {
+        "title": "Prove",
+        "duration": "Weeks 11 to 12",
+        "body": "Integration testing against your live systems, security and permission checks, load testing and a tested backup restore."
+      },
+      {
+        "title": "Launch and hand over",
+        "duration": "Weeks 12 to 14",
+        "body": "Data migration, a controlled rollout, monitoring, training for each role and the full documentation set."
+      }
+    ]
+  },
+  "technology": {
+    "heading": "Which technologies do you build web applications with?",
+    "intro": "A typed stack from database to screen, so a change in one place is caught everywhere it matters.",
+    "items": [
+      {
+        "name": "Next.js",
+        "category": "Front end"
+      },
+      {
+        "name": "React",
+        "category": "Front end"
+      },
+      {
+        "name": "TypeScript",
+        "category": "Front end"
+      },
+      {
+        "name": "React Native",
+        "category": "Front end"
+      },
+      {
+        "name": "Node.js",
+        "category": "Back end"
+      },
+      {
+        "name": "NestJS",
+        "category": "Back end"
+      },
+      {
+        "name": "Prisma",
+        "category": "Back end"
+      },
+      {
+        "name": "Zod",
+        "category": "Back end"
+      },
+      {
+        "name": "REST with OpenAPI",
+        "category": "Back end"
+      },
+      {
+        "name": "PostgreSQL",
+        "category": "Back end"
+      },
+      {
+        "name": "Redis",
+        "category": "Back end"
+      },
+      {
+        "name": "BullMQ queues",
+        "category": "Back end"
+      },
+      {
+        "name": "Docker",
+        "category": "Infrastructure"
+      },
+      {
+        "name": "GitHub Actions",
+        "category": "Infrastructure"
+      }
+    ]
+  },
+  "proof": {
+    "heading": "What have web applications delivered for clients?",
+    "intro": null,
+    "caseStudies": [
+      {
+        "slug": "northmark-supply",
+        "clientName": "Northmark Supply",
+        "summary": "A catalogue of 40,000 parts behind a contact form. We rebuilt it as a searchable, account-priced quoting platform tied into their ERP.",
+        "tags": [
+          "Ohio, USA",
+          "B2B",
+          "Distribution",
+          "Next.js"
+        ],
+        "image": {
+          "src": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=70",
+          "alt": "Sales team reviewing performance figures"
+        },
+        "metrics": [
+          {
+            "value": "+312%",
+            "label": "Quote requests"
+          },
+          {
+            "value": "12 min",
+            "label": "Quote turnaround, from 3 days"
+          },
+          {
+            "value": "−41%",
+            "label": "Support calls"
+          }
+        ]
+      }
+    ],
+    "link": {
+      "label": "See all web application work",
+      "href": "/work/?service=web-application-development"
+    }
+  },
+  "comparison": {
+    "heading": "How does a custom web application compare with the alternatives?",
+    "intro": "For software the business depends on, the differences show up in year two rather than week two.",
+    "columns": {
+      "us": "Calwebtech",
+      "freelancer": "A freelancer",
+      "pageBuilder": "A page builder",
+      "offshore": "An offshore body shop"
+    },
+    "rows": [
+      {
+        "label": "Who does the work",
+        "us": "Senior engineers from discovery to launch, the same people throughout.",
+        "freelancer": "One developer, who becomes the only person who understands the system.",
+        "pageBuilder": "Fine for forms and simple pages, but not built for permissions, data and integrations.",
+        "offshore": "A rotating team working from tickets."
+      },
+      {
+        "label": "Your data",
+        "us": "A PostgreSQL database in your name, with versioned migrations.",
+        "freelancer": "Whatever the developer prefers, with documentation that varies.",
+        "pageBuilder": "Stored inside the vendor's platform and exported on its terms.",
+        "offshore": "Depends on the contract and on who hosts it."
+      },
+      {
+        "label": "Access and security",
+        "us": "Role-based access from day one and an audit log of sensitive actions.",
+        "freelancer": "Often added later, when someone asks.",
+        "pageBuilder": "Limited to the roles the tool offers.",
+        "offshore": "Built as specified, so it has to be in the brief."
+      },
+      {
+        "label": "Changes next year",
+        "us": "A typed, tested codebase, so new features do not break old ones.",
+        "freelancer": "Easy while the developer is available.",
+        "pageBuilder": "Quick until the workflow outgrows the tool.",
+        "offshore": "A new ticket, a new estimate and often a new team."
+      },
+      {
+        "label": "How the price is set",
+        "us": "A fixed price per release, with changes quoted before work starts.",
+        "freelancer": "Usually hourly.",
+        "pageBuilder": "Monthly fees per seat that rise as you grow.",
+        "offshore": "Low day rates, with scope changes adding up."
+      }
+    ]
+  },
+  "pricing": {
+    "heading": "How much does a web application cost to build?",
+    "intro": "Most first releases land between $25,000 and $60,000. We scope a first release that proves the workflow, then price later phases once real users have tried it.",
+    "factors": [
+      {
+        "title": "Roles and permissions",
+        "body": "An application with one kind of user is simpler than one where customers, staff, managers and partners each see different data and actions."
+      },
+      {
+        "title": "Integrations",
+        "body": "Every connected system adds build and testing time, and older ERPs without a documented API take longer than modern services."
+      },
+      {
+        "title": "Data migration",
+        "body": "Moving years of records out of spreadsheets or an old system means cleaning and matching data, not only copying it."
+      },
+      {
+        "title": "Mobile needs",
+        "body": "A responsive web application covers most cases. A React Native companion app for offline use, the camera or notifications is a separate build."
+      },
+      {
+        "title": "Reporting",
+        "body": "Simple lists are quick. Dashboards with filters, exports and scheduled reports take longer to design and test."
+      }
+    ],
+    "link": {
+      "label": "How our pricing works",
+      "href": "/pricing/"
+    }
+  },
+  "industries": {
+    "heading": "Which industries do you build web applications for?",
+    "intro": null,
+    "items": [
+      {
+        "slug": "distribution",
+        "name": "Distribution and supply",
+        "line": "Account pricing, fast reordering and quotes tied into your ERP."
+      },
+      {
+        "slug": "manufacturing",
+        "name": "Manufacturing",
+        "line": "Spec sheets, configurators and ERP-accurate inventory."
+      },
+      {
+        "slug": "saas",
+        "name": "SaaS and technology",
+        "line": "Marketing site, docs and product on one system."
+      },
+      {
+        "slug": "healthcare",
+        "name": "Healthcare",
+        "line": "Accessible, multi-location, privacy-first booking."
+      },
+      {
+        "slug": "real-estate",
+        "name": "Real estate",
+        "line": "Listing search, agent tools and lead routing."
+      },
+      {
+        "slug": "professional-services",
+        "name": "Professional services",
+        "line": "Expertise pages, adviser profiles and confidential intake."
+      }
+    ]
+  },
+  "testimonial": {
+    "heading": "What do clients say about the software we built?",
+    "quote": {
+      "id": "testimonial-dale-ferris",
+      "quote": "Our counter staff stopped retyping orders. That is the whole story. Calwebtech understood the ERP side better than the vendor who sold it to us.",
+      "clientName": "Dale Ferris",
+      "role": "Director of Ecommerce",
+      "company": "Northmark Supply",
+      "rating": 5,
+      "avatar": {
+        "src": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=120&q=70"
+      }
+    }
+  },
+  "faq": {
+    "heading": "What do buyers ask before commissioning a web application?",
+    "intro": null,
+    "items": [
+      {
+        "id": "web-application-development-faq-1",
+        "question": "How long does it take to build a web application?",
+        "answer": "Nine to fourteen weeks for most first releases. We scope the smallest release that proves the workflow with real users, then plan later phases from what they tell us."
+      },
+      {
+        "id": "web-application-development-faq-2",
+        "question": "Do you build mobile apps as well?",
+        "answer": "Yes, as React Native companion apps that share the same API and data as the web application. Most teams need a mobile app only for specific jobs, such as working offline, scanning or notifications, and the proposal says whether yours does."
+      },
+      {
+        "id": "web-application-development-faq-3",
+        "question": "Can the application connect to our ERP or CRM?",
+        "answer": "Usually, yes. We have connected quoting and ordering to ERP systems so staff stop retyping orders. The first step is checking what your system exposes, which we do before the proposal so the price reflects the real work."
+      },
+      {
+        "id": "web-application-development-faq-4",
+        "question": "Who owns the code and the data?",
+        "answer": "You do. The repository, the database and every account are registered in your name, and there is no proprietary framework, so another developer could pick the code up from the documentation."
+      },
+      {
+        "id": "web-application-development-faq-5",
+        "question": "How do you keep a web application secure?",
+        "answer": "Access is role-based from the first release, inputs are validated at every boundary, sensitive actions are written to an audit log, and the database is never exposed to the internet. Backups are encrypted and the restore is tested before launch."
+      },
+      {
+        "id": "web-application-development-faq-6",
+        "question": "What happens when we need new features later?",
+        "answer": "The codebase is typed and tested, so new work does not break what already runs. You can keep us on a month-to-month plan with a fixed development allowance, or brief your own developers from the documentation."
+      },
+      {
+        "id": "web-application-development-faq-7",
+        "question": "Do you sign an NDA before we describe the idea?",
+        "answer": "Yes, before the first discovery call, not after. Send yours, or use ours."
+      }
+    ]
+  },
+  "enquiry": {
+    "heading": "How do I get a quote for a web application?",
+    "intro": "Describe the workflow, who uses it and what it has to connect to. We reply within one business day, sign your NDA before we talk, and send a written proposal with a fixed price after the call.",
+    "submitLabel": "Get my project quote",
+    "footnote": "Protected by bot filtering. We never sell or share your details, and you can ask us to delete them at any time.",
+    "success": {
+      "heading": "Thanks. Your enquiry is with us.",
+      "body": "We will reply by email within one business day. Send your NDA with that reply if you would like it signed before the call."
+    }
+  },
+  "related": {
+    "heading": "Which services often go with a web application?",
+    "intro": null,
+    "items": [
+      {
+        "slug": "custom-website-development",
+        "title": "Custom website development",
+        "summary": "Research-led design built around how your buyers actually decide, not around a template's section order.",
+        "priceLabel": "$12,000 to $25,000",
+        "updatedAt": "2026-09-14T00:00:00.000Z"
+      },
+      {
+        "slug": "website-redesign",
+        "title": "Website redesign",
+        "summary": "Rebuild a site that stopped working for the business, keep the rankings and pages that earn, and fix conversion, speed or a stalled project on the way.",
+        "priceLabel": "$12,000 to $25,000",
+        "updatedAt": "2026-09-14T00:00:00.000Z"
+      },
+      {
+        "slug": "ecommerce-development",
+        "title": "Ecommerce development",
+        "summary": "Shopify, WooCommerce or custom, including B2B pricing rules, quoting and ERP integration.",
+        "priceLabel": "$12,000 to $60,000",
+        "updatedAt": "2026-09-14T00:00:00.000Z"
+      }
+    ]
+  }
+}
