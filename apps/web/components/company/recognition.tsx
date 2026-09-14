@@ -6,8 +6,8 @@ const awardDetail = (award: CompanyAward) =>
   [award.projectName ?? award.category, String(award.year)].filter((part): part is string => Boolean(part)).join(', ');
 
 /**
- * Awards with the body that gave them, the year and the project each recognised. `compact` is
- * the about page's preview: name and detail only, as on the homepage.
+ * Awards with the body that gave them, the year and, where there is one, the project it
+ * recognised. `compact` is the about page's preview: name and detail only, as on the homepage.
  */
 export function AwardList({ awards, compact = false }: { awards: readonly CompanyAward[]; compact?: boolean }) {
   if (compact) {

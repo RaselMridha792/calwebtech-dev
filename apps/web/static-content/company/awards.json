@@ -2,14 +2,14 @@
   "content": {
     "seo": {
       "title": "Awards and recognition",
-      "description": "Awards for Calwebtech's work from Awwwards, Clutch, the W3 Awards and Horizon Interactive, with the client project behind each one.",
+      "description": "Awards for Calwebtech's work from Awwwards, Clutch, the W3 Awards and Horizon Interactive, with the client project behind each project award.",
       "ogImage": null
     },
     "hero": {
       "eyebrow": "Recognition",
       "title": "Awards and recognition",
-      "answerBlock": "Calwebtech's work has been recognised by Awwwards, Clutch, the W3 Awards and the Horizon Interactive Awards, for ecommerce design, accessibility and B2B development. Each award below names the year and the client project it was given for.",
-      "intro": "Awards are a second opinion, not a substitute for results. We list each one with the project behind it, so you can read the case study and judge the work yourself.",
+      "answerBlock": "Calwebtech's work has been recognised by Awwwards, Clutch, the W3 Awards and the Horizon Interactive Awards, for ecommerce design, accessibility and B2B development. Each award below names the year and, where it recognised a single project, the client project behind it.",
+      "intro": "Awards are a second opinion, not a substitute for results. We list each one with the project behind it where there is one, so you can read the case study and judge the work yourself.",
       "primaryCta": { "label": "See the case studies", "href": "/work/" },
       "secondaryCta": { "label": "Book a consultation", "href": "/contact/" },
       "backdrop": {
@@ -18,7 +18,7 @@
     },
     "recognition": {
       "heading": "Which awards has Calwebtech won?",
-      "intro": "Newest first, with the awarding body and the project each one recognised.",
+      "intro": "Newest first, with the awarding body, and the client project where an award recognised one.",
       "empty": "Awards appear here once they are published."
     },
     "partners": {
@@ -37,7 +37,7 @@
       "id": "award-awwwards-verona-home-2026",
       "name": "Awwwards Honourable Mention",
       "year": 2026,
-      "category": "Website design",
+      "category": null,
       "awardingBody": "Awwwards",
       "projectName": "Verona Home storefront",
       "description": "For the Verona Home storefront: a furniture brand moved off a page builder and replatformed on Shopify, with a configurator for made-to-order pieces.",
