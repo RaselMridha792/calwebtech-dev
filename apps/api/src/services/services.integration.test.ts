@@ -79,7 +79,7 @@ function serviceData(name: string, overrides: Partial<Prisma.ServiceUncheckedCre
 beforeAll(async () => {
   const existing = await db.setting.findUnique({ where: { key: SERVICES_SETTING_KEYS.index } });
   if (!existing) {
-    await db.setting.create({ data: { key: SERVICES_SETTING_KEYS.index, value: INDEX_CONTENT as Prisma.InputJsonObject } });
+    await db.setting.create({ data: { key: SERVICES_SETTING_KEYS.index, value: INDEX_CONTENT } });
     createdIndexSetting = true;
   }
 
