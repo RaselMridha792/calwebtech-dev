@@ -1,0 +1,163 @@
+<!doctype html>
+<!--
+  Print source for /guides/core-web-vitals-guide/, printed to apps/web/public/guides/core-web-vitals-guide.pdf with
+  the installed Chrome through Playwright from apps/web:
+
+    node_modules/.bin/playwright ... chromium.launch({ channel: 'chrome' }) -> page.pdf({ format: 'A4', printBackground: true })
+
+  Edit this file, reprint, and update pageCount in the guide's snapshot so the page never
+  promises a length the file does not have.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Core Web Vitals guide for business websites — Calwebtech</title>
+<style>
+:root {
+  --ink: #0A1D37;
+  --primary: #1550E0;
+  --body: #41536B;
+  --line: #DCE4EE;
+  --mist: #EEF3F9;
+  --mist2: #F7FAFD;
+}
+@page { size: A4; margin: 20mm 18mm 18mm; }
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  font-size: 11.5pt;
+  line-height: 1.7;
+  color: var(--body);
+}
+h1, h2, h3, .display { font-family: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif; color: var(--ink); }
+.cover { page-break-after: always; padding-top: 34mm; }
+.cover .eyebrow { color: var(--primary); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: 9pt; }
+.cover h1 { font-size: 30pt; line-height: 1.1; font-weight: 800; margin: 10mm 0 6mm; }
+.cover .subtitle { font-size: 13pt; line-height: 1.45; max-width: 130mm; }
+.cover .rule { height: 3px; width: 44mm; background: var(--primary); margin: 12mm 0; }
+.cover .meta { font-size: 9.5pt; color: var(--body); }
+.cover .meta b { color: var(--ink); }
+.intro { background: var(--mist2); border: 1px solid var(--line); border-radius: 4mm; padding: 7mm; margin-bottom: 9mm; }
+.intro p { margin: 0; }
+h2 { font-size: 16pt; line-height: 1.25; font-weight: 800; margin: 11mm 0 5mm; page-break-after: avoid; }
+h2:first-of-type { margin-top: 0; }
+p { margin: 0 0 5mm; }
+ul { margin: 0 0 5mm; padding-left: 6mm; }
+li { margin-bottom: 2.5mm; }
+li::marker { color: var(--primary); }
+.sources { page-break-before: always; margin-top: 0; border-top: 1px solid var(--line); padding-top: 5mm; font-size: 9pt; }
+.sources h2 { font-size: 11pt; margin: 0 0 3mm; }
+.sources a { color: var(--primary); word-break: break-all; }
+.end { margin-top: 10mm; border-top: 3px solid var(--ink); padding-top: 6mm; }
+.end h2 { font-size: 13pt; margin: 0 0 3mm; }
+.end p { margin-bottom: 2mm; }
+.end a { color: var(--primary); }
+</style>
+</head>
+<body>
+<section class="cover">
+  <p class="eyebrow">Calwebtech guide</p>
+  <h1>The Core Web Vitals guide for business websites</h1>
+  <p class="subtitle">What LCP, INP and CLS measure, what breaks them, and how to hold a supplier to them</p>
+  <div class="rule"></div>
+  <p class="meta"><b>Calwebtech</b><br>Custom websites, web applications and ecommerce for B2B companies<br>calwebtech.com</p>
+  <p class="meta">Last updated 15 September 2026</p>
+</section>
+
+<div class="intro"><p>This guide is written for people who buy websites rather than build them, and for the developers who have to explain a failing report to them. It covers what each Core Web Vital measures, the thresholds published on web.dev, the handful of causes behind almost every failure on a business website, the order to diagnose them in, and the wording that turns "fast" into something you can check.</p></div>
+
+<h2>1. Three measurements, and what they are for</h2>
+<p>Core Web Vitals exist because the older measures of speed did not describe what visitors experience. Time to first byte tells you about the server, not about whether anyone could read the page. The vitals are deliberately user-centred: when did it appear, does it respond, and does it hold still.</p>
+<p>Largest Contentful Paint measures when the largest element in the viewport has rendered. On a business site that is almost always the hero image, a video poster or a large headline. web.dev publishes 2.5 seconds or less as good, with 4 seconds as the boundary of poor.</p>
+<p>Interaction to Next Paint measures the delay between an interaction and the next visible frame, taking the worst interactions across the visit rather than only the first. web.dev publishes 200 milliseconds or less as good, with 500 milliseconds as the boundary of poor.</p>
+<p>Cumulative Layout Shift measures unexpected movement of visible content as a unitless score. web.dev publishes 0.1 or less as good, with 0.25 as the boundary of poor. All three are assessed at the seventy-fifth percentile of real visits, so a good average cannot hide a bad experience for a quarter of your visitors.</p>
+
+<h2>2. Field data and laboratory data</h2>
+<p>Two kinds of measurement circulate in these conversations, and confusing them wastes a great deal of time. Laboratory data comes from a tool running a single visit under simulated conditions: Lighthouse, PageSpeed Insights in its laboratory section, or a continuous integration check. Field data comes from real visits, gathered from real browsers.</p>
+<p>Field data decides whether you have a problem. It reflects the phones your buyers actually own, the networks they are on and the pages they actually visit. Laboratory data is for diagnosis: it is repeatable, so you can change one thing and see the effect.</p>
+<p>The most common surprise is a site that scores well in the laboratory and fails in the field. The usual explanations are that the test device is far faster than the average visitor’s phone, that the test ran on the homepage while the traffic arrives on heavier templates, or that tags added through a tag manager are present in production and absent in the test.</p>
+<p>Collect your own field data as well as reading the platform reports, because the platform report is aggregated and delayed. A small script that records the three vitals and sends them to your own analytics gives you the same numbers per template, immediately.</p>
+
+<h2>3. Diagnosing Largest Contentful Paint</h2>
+<p>Work in this order, because it is roughly the order of impact per hour spent. First, identify the element: browser tools will name it, and it is usually not what the team assumed. Second, check how it is delivered. A hero image should be sized for the viewport, served in a modern format, given explicit dimensions, and marked as high priority so the browser fetches it immediately rather than discovering it late.</p>
+<p>Never lazy-load the largest element. Lazy loading is correct for images below the fold and actively harmful for the one at the top, because it delays the very thing being measured.</p>
+<p>Third, look at fonts. Text that waits for a web font is text nobody can read yet. Preload the one or two faces the first screen needs, and allow the text to render immediately with a fallback rather than sitting invisible.</p>
+<p>Fourth, look at the server response. If the HTML takes a second to arrive, everything after it starts late. Caching the rendered page for a short period, rendering on the server rather than in the browser, and serving static assets from an edge near the visitor all address this directly.</p>
+<p>Fifth, background video. It should always have a poster image, should never be the largest contentful element, and should load after the page is usable. A video that blocks the hero is the most expensive decoration on the internet.</p>
+<p>On images specifically, three details do most of the work. Serve several widths and let the browser choose, so a phone downloads a phone-sized file rather than a desktop one. State the sizes the image will occupy at each breakpoint, because without that the browser guesses and usually guesses high. And set explicit dimensions or an aspect ratio, which fixes layout shift at the same time.</p>
+<p>Quality settings are worth a conversation with whoever signs off the design. The difference between a photograph at maximum quality and one at a sensible setting is often two thirds of the file size and invisible on a phone. Agreeing that once, as a rule in the media library, is better than arguing about it per image.</p>
+<ul><li>Identify the actual LCP element before changing anything</li><li>Size, format and prioritise it; remove any lazy-loading from it</li><li>Preload critical fonts; let text render with a fallback</li><li>Cache the HTML and serve assets from an edge</li><li>Give video a poster and load it after the page is usable</li></ul>
+
+<h2>4. Diagnosing Interaction to Next Paint</h2>
+<p>Interaction to Next Paint is a JavaScript problem in nearly every case. The browser runs your scripts on the same thread it uses to respond to taps, so a long task blocks the response. The metric takes the worst interactions of the visit, which means a page that is sluggish once is scored on that moment.</p>
+<p>Start with an inventory of third-party scripts, because on most business sites they outweigh the site’s own code. Chat widgets, heat-mapping tools, several analytics tags, advertising pixels, cookie banners and A/B testing scripts accumulate over years and nobody removes them. Every tag should have a named owner and a stated purpose, and anything without both should be removed for a fortnight to see whether anyone notices.</p>
+<p>Then look at your own code. The question is not how fast the framework is but how much of the page needs to run in the browser at all. Content that only displays information can be rendered on the server and shipped as HTML. Genuinely interactive pieces, a calculator or a booking picker, can be loaded when they are needed instead of on every page.</p>
+<p>Finally, look for long tasks: work that occupies the main thread for more than fifty milliseconds. Breaking large pieces of work into smaller ones, deferring what is not needed for the first interaction, and avoiding expensive layout recalculation in response to every scroll event are the standard remedies.</p>
+
+<h2>5. Diagnosing Cumulative Layout Shift</h2>
+<p>Layout shift is the easiest of the three to fix and the most embarrassing to leave. Every cause is the same: something appeared, and no space had been reserved for it.</p>
+<p>Images and embeds need explicit dimensions or an aspect ratio, so the browser reserves the space before the file arrives. Advertisement and recommendation slots need a reserved minimum height. Banners, consent notices and promotional strips should be placed in space that already exists rather than inserted above content that then jumps down.</p>
+<p>Fonts cause a subtler version: text rendered in a fallback and then re-rendered in a web font with different metrics moves everything below it. Matching the fallback metrics closely, or preloading the face, removes most of it.</p>
+<p>Late-arriving components are the last category. A price, a stock level or a personalised block that loads after the page should occupy its final size from the start, showing a placeholder of the same dimensions rather than growing when the data arrives.</p>
+<p>One rule prevents most new shifts: animate only opacity and transform. Animating height, top or margin moves everything around it, costs more to render, and is what makes a page feel cheap on a mid-range phone.</p>
+
+<h2>6. The cost of a page builder</h2>
+<p>A large share of failing business sites share one cause: a page builder or a theme bought for its demonstration content. The output carries markup for layout options nobody used, stylesheets loaded on every page, and a dozen scripts that arrive whether or not the page needs them.</p>
+<p>This is not an argument that every site needs bespoke development. It is an argument for knowing what you are paying. A builder trades a slower, heavier page and a harder migration for faster initial assembly. If the site is small and rarely changes, that can be a fair trade. If the site is the main source of enquiries, it rarely is.</p>
+<p>The alternative that keeps editors independent is content types: a service, a location, a case study, each with its own fields and its own template. Publishing stays a five-minute job, and the page weight is decided once by the template rather than by whoever built the page.</p>
+
+<h2>7. Make the thresholds a gate, not a goal</h2>
+<p>Performance work that is done once decays. Tags are added, images are uploaded at the wrong size, a new template arrives without the same care. The only durable approach is to check on every release and to fail the build when a threshold is breached.</p>
+<p>On our own platform two gates run in continuous integration. A Lighthouse gate checks the vitals and the total page weight, and a separate budget checks our own client-side JavaScript per route, so that growth in the framework and growth in the page are never confused with one another. Both run on every pull request.</p>
+<p>Field data sits alongside them as the real measure. Laboratory checks catch regressions early; the seventy-fifth percentile of real visits tells you whether your buyers are having a good time.</p>
+<ul><li>Automated checks on every pull request, not once at launch</li><li>Separate budgets for framework code and page code</li><li>Field monitoring per template, at the seventy-fifth percentile</li><li>A named owner for every third-party tag</li></ul>
+
+<h2>8. What to write into a contract</h2>
+<p>Vague performance language is unenforceable. These are the clauses worth insisting on, in plain terms. The named templates — homepage, service page, listing page, case study, contact — will meet Largest Contentful Paint under 2.5 seconds, Interaction to Next Paint under 200 milliseconds and Cumulative Layout Shift under 0.1, measured at the seventy-fifth percentile of field data over twenty-eight days.</p>
+<p>Add the method: checks run automatically on every release, results are reported to the client, and a regression is fixed within an agreed window. Add the exception honestly: third-party scripts the client adds after launch are outside the supplier’s control, and the supplier will report their measured cost rather than quietly absorb it.</p>
+<p>Finally, ask for the budget in kilobytes for client-side JavaScript on a marketing page, and a note of what the current figure is. A supplier who has never measured it will not be able to answer, which is itself the answer.</p>
+
+<h2>9. A worked order of operations</h2>
+<p>If you have a failing report and a fortnight, this is the order we would work in. Day one: collect field data per template and identify which templates fail and on which metric. Day two: identify the LCP element on each failing template and check its delivery.</p>
+<p>Days three to five: image handling, font loading and priority hints. This is usually most of the Largest Contentful Paint problem and it rarely requires design changes.</p>
+<p>Days six to seven: reserve space for everything that arrives late, and remove any animation of layout properties. This usually resolves Cumulative Layout Shift entirely.</p>
+<p>Days eight to ten: the third-party script audit, with owners named and unclaimed tags removed. Measure again; this is often enough to move Interaction to Next Paint into the acceptable band.</p>
+<p>Days eleven onwards: the architectural work, if it is still needed. Rendering on the server, cutting the amount of the page that runs in the browser, and loading heavy interactive pieces only where they are used. This is the expensive part, which is why it comes last.</p>
+
+<h2>10. Measuring the field data yourself</h2>
+<p>Platform reports are aggregated and delayed, which makes them a poor tool for judging a change you shipped last week. Collecting your own field data removes both problems, and it is a small piece of work.</p>
+<p>Browsers expose the three vitals to a short script on the page. That script records the value, the template it came from and a coarse device category, and sends it to your own analytics. Nothing about an individual visitor needs to be stored, and no third-party service needs to be involved, which keeps it inside a consent policy that blocks analytics until permission is given.</p>
+<p>Report it per template, at the seventy-fifth percentile, over a rolling four-week window. That matches the way the platform reports work, so the two do not disagree for uninteresting reasons, and it gives you a number per page type rather than one number for the site.</p>
+<p>Watch the shape as well as the value. A metric that is good on average and terrible on a particular template is a specific, fixable problem. A metric that degrades slowly over months is usually accumulation: another tag, another embedded widget, another image uploaded at full resolution.</p>
+<p>The one thing worth alerting on is a step change after a release. Everything else can be a weekly review.</p>
+
+<h2>11. Four beliefs that waste money</h2>
+<p>The first is that a perfect Lighthouse score is the goal. It is a diagnostic tool on a simulated device. Chasing the last few points on a laptop while the field data fails is optimising for the wrong audience.</p>
+<p>The second is that a faster server fixes everything. Server time matters, but on most business sites the largest element is an image and the interaction delay is JavaScript. Moving to a bigger machine changes neither.</p>
+<p>The third is that performance is a phase near the end of a project. Rendering strategy, image handling and how much runs in the browser are architectural decisions taken in week two. Retrofitting them after launch costs several times what building them in would have cost.</p>
+<p>The fourth is that a plugin will fix it. Caching plugins help with server response and do nothing about a hero image four times larger than it needs to be, a font that blocks text, or a chat widget loading on every page. The work is specific, and so are the fixes.</p>
+<ul><li>A laboratory score is a diagnosis, not a target</li><li>Most LCP problems are images; most INP problems are scripts</li><li>Rendering strategy is an early decision, not a late fix</li><li>No plugin removes a script somebody chose to add</li></ul>
+
+<h2>Checklist: questions for whoever builds your site</h2>
+<p>Ask these before signing. The answers, or the absence of them, tell you what you need to know.</p>
+<ul><li>What are our field figures today, per template, at the 75th percentile?</li><li>Which element is the LCP element on each key template?</li><li>How much client-side JavaScript does a marketing page ship, in kilobytes?</li><li>Which third-party scripts are loaded, who owns each one, and what does each cost?</li><li>How are the thresholds checked on every release?</li><li>What happens, contractually, when a release breaches them?</li></ul>
+
+<section class="sources">
+  <h2>Sources</h2>
+  <ul>
+    <li>Core Web Vitals on web.dev — <a href="https://web.dev/articles/vitals">https://web.dev/articles/vitals</a></li>
+    <li>Largest Contentful Paint — <a href="https://web.dev/articles/lcp">https://web.dev/articles/lcp</a></li>
+    <li>Interaction to Next Paint — <a href="https://web.dev/articles/inp">https://web.dev/articles/inp</a></li>
+    <li>Cumulative Layout Shift — <a href="https://web.dev/articles/cls">https://web.dev/articles/cls</a></li>
+  </ul>
+</section>
+
+<section class="end">
+  <h2>Who wrote this</h2>
+  <p>Calwebtech builds custom websites, web applications and ecommerce for companies selling to other businesses. We publish our price bands, our process and our results, and we write these guides from the projects rather than from a content calendar.</p>
+  <p>If this raised a question about your own site, ask us: <a href="https://calwebtech.com/contact/">calwebtech.com/contact/</a></p>
+  <p>The whole argument of this guide is also published, free and without a form, at <a href="https://calwebtech.com/guides/core-web-vitals-guide/">calwebtech.com/guides/core-web-vitals-guide/</a></p>
+</section>
+</body>
+</html>

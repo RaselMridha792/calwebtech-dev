@@ -1,0 +1,71 @@
+{
+  "slug": "information-architecture",
+  "term": "Information architecture",
+  "letter": "I",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What is information architecture?",
+    "description": "Information architecture is how a site is organised: what pages exist, how they are grouped, and what each one is called.",
+    "ogImage": null
+  },
+  "definition": "Information architecture is how a site is organised: what pages exist, how they are grouped, and what each one is called.",
+  "answerBlock": "Information architecture is how a site is organised: what pages exist, how they are grouped, and what each one is called. It decides whether a buyer can find the thing they came for. Most sites that feel confusing have an architecture problem rather than a design problem.",
+  "body": {
+    "heading": "How is information architecture decided?",
+    "paragraphs": [
+      "By the language buyers use, not the shape of the organisation. Internal department names, product code names and legacy divisions make terrible navigation labels, because nobody outside the company searches for them.",
+      "The work is concrete: list every page that must exist, group them the way buyers group them, name each group in their words, then test whether people can find things. Card sorting and a first-click test on a prototype will expose a bad structure in an afternoon.",
+      "Architecture also decides the URL structure and the internal linking, which is why it has consequences for search. A page reachable only from the footer is a page search engines treat as unimportant."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "Good architecture shortens the path from arrival to enquiry, and it reduces the support load: the questions people ask by email are usually the answers they could not find.",
+      "It is cheapest to fix before the design exists and most expensive after launch, when every change means redirects and rework."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "Fourteen clinic websites became one platform for Cascadia Health, where a visitor picks a location and a service rather than guessing which of fourteen sites holds their appointment.",
+    "caseStudy": {
+      "slug": "cascadia-health",
+      "clientName": "Cascadia Health",
+      "metric": {
+        "value": "14→1",
+        "label": "Sites to maintain"
+      }
+    }
+  },
+  "service": {
+    "slug": "custom-website-development",
+    "title": "Custom website development",
+    "line": "Research-led design built around how your buyers actually decide, not around a template's section order."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "accessibility-wcag",
+        "term": "Accessibility (WCAG)",
+        "definition": "Accessibility means a website can be used by people with disabilities, and WCAG is the published standard that defines what that requires."
+      },
+      {
+        "slug": "design-system",
+        "term": "Design system",
+        "definition": "A design system is the agreed set of colours, type, spacing and components that every page of a product is built from."
+      },
+      {
+        "slug": "responsive-design",
+        "term": "Responsive design",
+        "definition": "Responsive design means one website that rearranges itself to work on any screen, from a phone to a wide monitor."
+      },
+      {
+        "slug": "wireframe",
+        "term": "Wireframe",
+        "definition": "A wireframe is a deliberately plain layout of a page that settles what is on it and in what order, before anyone decides how it looks."
+      }
+    ]
+  },
+  "sources": []
+}

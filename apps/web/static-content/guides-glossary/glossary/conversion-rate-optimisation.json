@@ -1,0 +1,66 @@
+{
+  "slug": "conversion-rate-optimisation",
+  "term": "Conversion rate optimisation",
+  "letter": "C",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What is conversion rate optimisation?",
+    "description": "Conversion rate optimisation is the work of increasing the share of visitors who do the thing the page exists for.",
+    "ogImage": null
+  },
+  "definition": "Conversion rate optimisation is the work of increasing the share of visitors who do the thing the page exists for.",
+  "answerBlock": "Conversion rate optimisation is the work of increasing the share of visitors who do the thing the page exists for. That thing is usually an enquiry, a quote request, a booking or an order. The work is research, then changes, then measurement, rather than a list of tricks.",
+  "body": {
+    "heading": "Where do conversion gains actually come from?",
+    "paragraphs": [
+      "Almost always from removing friction and adding proof, in that order. Friction is a form that asks for a budget before it asks for a name, a price that cannot be found, a phone number hidden two clicks deep, a page that takes six seconds on a phone.",
+      "Proof is the specific evidence a buyer needs to believe you: figures from named clients, the process written out, what is included, what happens after they press send. Generic claims of quality persuade nobody, because every competitor makes them.",
+      "The research comes first: recordings of real sessions, the questions sales hear every week, and the search terms that brought people in. Changes made without that are guesses, however well designed."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "Conversion work compounds with everything else you spend. Doubling the share of visitors who enquire doubles the return on every advertisement, every article and every trade show that sends someone to the site.",
+      "It is also usually cheaper than buying more traffic, because the visitors are already arriving."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "Northmark Supply had a catalogue of forty thousand parts behind a contact form. Replacing that form with account pricing and a quoting journey lifted quote requests by 312%.",
+    "caseStudy": {
+      "slug": "northmark-supply",
+      "clientName": "Northmark Supply",
+      "metric": {
+        "value": "+312%",
+        "label": "Quote requests"
+      }
+    }
+  },
+  "service": {
+    "slug": "website-redesign",
+    "title": "Website redesign",
+    "line": "Rebuild a site that stopped working for the business, keep the rankings and pages that earn, and fix conversion, speed or a stalled project on the way."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "301-redirect",
+        "term": "301 redirect",
+        "definition": "A 301 redirect is a permanent instruction that a page has moved to a new address, sending both visitors and search engines to it."
+      },
+      {
+        "slug": "ab-testing",
+        "term": "A/B testing",
+        "definition": "A/B testing splits live traffic between two versions of a page to see which one produces more of the outcome you care about."
+      },
+      {
+        "slug": "bounce-rate",
+        "term": "Bounce rate",
+        "definition": "Bounce rate is the share of visits where someone looked at one page and left without doing anything else."
+      }
+    ]
+  },
+  "sources": []
+}

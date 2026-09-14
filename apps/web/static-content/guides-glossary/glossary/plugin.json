@@ -1,0 +1,54 @@
+{
+  "slug": "plugin",
+  "term": "Plugin",
+  "letter": "P",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What is a plugin?",
+    "description": "A plugin is a package of code that adds a feature to a content management system without changing the system itself.",
+    "ogImage": null
+  },
+  "definition": "A plugin is a package of code that adds a feature to a content management system without changing the system itself.",
+  "answerBlock": "A plugin is a package of code that adds a feature to a content management system without changing the system itself. Plugins are how a WordPress site gains forms, shops, caching or search. Each one is also third-party code running with full access to your site.",
+  "body": {
+    "heading": "How many plugins is too many?",
+    "paragraphs": [
+      "There is no magic number, but every plugin adds three liabilities: code you did not write, a maintainer who may stop, and a possible route in for an attacker. Two dozen plugins is two dozen dependencies to keep patched.",
+      "The ones that hurt performance are those that load scripts and stylesheets on every page whether or not they are used. A slider plugin used on the homepage should not be adding weight to a service page.",
+      "The practical rule is to prefer a small amount of purpose-written code over a large plugin that does ten things you do not need, and to keep a written list of what each plugin is for, so nobody is afraid to remove it."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "Unpatched plugins are the most common route to a compromised site, and a compromised site is a data-protection incident as well as an outage.",
+      "They are also a recurring cost: annual licences, renewals and the developer time to fix what breaks when one updates."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "A care plan patches plugins on a schedule, tests them against staging first, and reports what changed, which is the only way updates stop being a gamble.",
+    "caseStudy": null
+  },
+  "service": {
+    "slug": "wordpress-development",
+    "title": "WordPress development",
+    "line": "Custom WordPress themes and WooCommerce stores without page-builder bloat, with structured content your editors can manage safely."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "content-management-system",
+        "term": "Content management system (CMS)",
+        "definition": "A content management system is the software your team uses to add and edit website content without a developer."
+      },
+      {
+        "slug": "page-builder",
+        "term": "Page builder",
+        "definition": "A page builder is a drag-and-drop editor that lets someone assemble a web page from blocks without writing code."
+      }
+    ]
+  },
+  "sources": []
+}

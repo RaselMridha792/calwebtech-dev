@@ -1,0 +1,64 @@
+{
+  "slug": "staging-environment",
+  "term": "Staging environment",
+  "letter": "S",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What is a staging environment?",
+    "description": "A staging environment is a private copy of the live site where changes are tested before anyone outside the company sees them.",
+    "ogImage": null
+  },
+  "definition": "A staging environment is a private copy of the live site where changes are tested before anyone outside the company sees them.",
+  "answerBlock": "A staging environment is a private copy of the live site where changes are tested before anyone outside the company sees them. It runs the same code and a copy of the data, so a change behaves the same way it will in production. It is also where a backup restore is rehearsed.",
+  "body": {
+    "heading": "What is staging actually used for?",
+    "paragraphs": [
+      "Reviewing content before it is published, testing platform and plugin updates, rehearsing migrations, and letting a client see a change in context rather than in a screenshot.",
+      "It has to be kept out of search results, or it competes with the live site for rankings. Password protection and a rule against indexing are both required, and a staging site that has leaked into an index is a familiar embarrassment.",
+      "Personal data needs care. A copy of production data means a copy of real customers, so it is either anonymised or protected exactly as carefully as production."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "Staging is what makes updates routine. Without it, every patch is applied to the live site and hoped for, which is how sites end up years behind and vulnerable.",
+      "It also shortens approval cycles: stakeholders sign off on the thing itself rather than on a description of it."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "Plugin and platform updates land on staging first, are checked against the main journeys, then go to production on a schedule, with a rehearsed restore if anything is wrong.",
+    "caseStudy": null
+  },
+  "service": {
+    "slug": "care-plans",
+    "title": "Website care plans",
+    "line": "Patching, backups with a tested restore, monitoring and a fixed allowance of development hours."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "backup-and-restore",
+        "term": "Backup and restore",
+        "definition": "A backup is a copy of the site and its database held somewhere else, and a restore is the rehearsed process of putting that copy back."
+      },
+      {
+        "slug": "content-delivery-network",
+        "term": "Content delivery network (CDN)",
+        "definition": "A content delivery network is a set of servers spread around the world that serve copies of your files from somewhere near each visitor."
+      },
+      {
+        "slug": "dns",
+        "term": "DNS",
+        "definition": "DNS is the system that turns a domain name someone types into the address of the server that answers for it."
+      },
+      {
+        "slug": "tls-certificate",
+        "term": "TLS certificate",
+        "definition": "A TLS certificate is the file that lets a website prove who it is and encrypt the traffic between it and the visitor."
+      }
+    ]
+  },
+  "sources": []
+}

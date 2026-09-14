@@ -1,0 +1,71 @@
+{
+  "slug": "design-system",
+  "term": "Design system",
+  "letter": "D",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What is a design system?",
+    "description": "A design system is the agreed set of colours, type, spacing and components that every page of a product is built from.",
+    "ogImage": null
+  },
+  "definition": "A design system is the agreed set of colours, type, spacing and components that every page of a product is built from.",
+  "answerBlock": "A design system is the agreed set of colours, type, spacing and components that every page of a product is built from. It is not a style guide in a slide deck. It is code and tokens that designers and developers both use, so a button behaves the same way wherever it appears.",
+  "body": {
+    "heading": "What does a design system contain?",
+    "paragraphs": [
+      "Tokens first: the colour values, type faces, sizes, spacing steps and radii, each with a name. Then components built from those tokens: buttons, form fields, cards, tables, dialogs, each with its states and its accessibility behaviour already decided.",
+      "Around them sit the rules. Which colour is reserved for outcome figures and never used for decoration. Which heading level a card title takes. How motion behaves for someone who has asked their device to reduce it. The rules are what keep the system from drifting back into one-off pages.",
+      "A design system is a live dependency, not a document. When a token changes, every page that uses it changes, which is the point."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "The saving is in the second, tenth and fiftieth page. Once the components exist, a new template is assembled rather than designed from nothing, and quality does not depend on who happened to build it.",
+      "It also keeps a brand intact across a marketing site, an application and documentation, which is exactly where brands normally fall apart."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "Truvia Labs rebuilt its marketing site, documentation and in-app onboarding on one design system, so releases stopped breaking the brand and organic sessions grew 3.1 times.",
+    "caseStudy": {
+      "slug": "truvia-labs",
+      "clientName": "Truvia Labs",
+      "metric": {
+        "value": "3.1x",
+        "label": "Organic sessions"
+      }
+    }
+  },
+  "service": {
+    "slug": "custom-website-development",
+    "title": "Custom website development",
+    "line": "Research-led design built around how your buyers actually decide, not around a template's section order."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "accessibility-wcag",
+        "term": "Accessibility (WCAG)",
+        "definition": "Accessibility means a website can be used by people with disabilities, and WCAG is the published standard that defines what that requires."
+      },
+      {
+        "slug": "information-architecture",
+        "term": "Information architecture",
+        "definition": "Information architecture is how a site is organised: what pages exist, how they are grouped, and what each one is called."
+      },
+      {
+        "slug": "responsive-design",
+        "term": "Responsive design",
+        "definition": "Responsive design means one website that rearranges itself to work on any screen, from a phone to a wide monitor."
+      },
+      {
+        "slug": "wireframe",
+        "term": "Wireframe",
+        "definition": "A wireframe is a deliberately plain layout of a page that settles what is on it and in what order, before anyone decides how it looks."
+      }
+    ]
+  },
+  "sources": []
+}

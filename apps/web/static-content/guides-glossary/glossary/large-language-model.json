@@ -1,0 +1,54 @@
+{
+  "slug": "large-language-model",
+  "term": "Large language model",
+  "letter": "L",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What is a large language model?",
+    "description": "A large language model is software trained on very large amounts of text that predicts likely continuations, which is why it can write and summarise.",
+    "ogImage": null
+  },
+  "definition": "A large language model is software trained on very large amounts of text that predicts likely continuations, which is why it can write and summarise.",
+  "answerBlock": "A large language model is software trained on very large amounts of text that predicts likely continuations, which is why it can write and summarise. It has no memory of your business unless you give it the relevant material with the question. Everything it says is a plausible continuation, not a lookup in a database of facts.",
+  "body": {
+    "heading": "What can a language model do on a business website?",
+    "paragraphs": [
+      "Useful, bounded jobs: qualifying an enquiry by asking the follow-up questions a salesperson would, searching documentation in plain language, drafting a first version of a product description, or summarising a long specification a buyer has pasted in.",
+      "Unbounded jobs go wrong. A model asked to quote a price will invent one that sounds reasonable. The rule we apply is that a model may draft, summarise and route, but the server decides what is valid, what something costs and what gets stored.",
+      "The other constraint is data. Anything sent to a third-party model leaves your infrastructure, so the design has to be explicit about what is sent, what is retained and what is never allowed out."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "The return comes from removing repetitive work: first-line qualification, search that actually answers, content drafting that starts from something rather than nothing.",
+      "The risk is reputational. A confident wrong answer about price, lead time or compliance is worse than no answer, which is why these features are built with a fixed scope and a visible fallback to a person."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "A qualification assistant can ask the three questions a salesperson always asks and store the answers on the lead, while the price band stays on the server and is never invented in the chat.",
+    "caseStudy": null
+  },
+  "service": {
+    "slug": "ai-integration",
+    "title": "AI integration",
+    "line": "Qualification assistants, search, content tooling and workflow automation wired into your own data."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "retrieval-augmented-generation",
+        "term": "Retrieval-augmented generation",
+        "definition": "Retrieval-augmented generation is the pattern of finding the relevant documents first and giving them to a language model with the question."
+      },
+      {
+        "slug": "vector-embedding",
+        "term": "Vector embedding",
+        "definition": "A vector embedding turns a piece of text into a list of numbers that places it near other text with a similar meaning."
+      }
+    ]
+  },
+  "sources": []
+}

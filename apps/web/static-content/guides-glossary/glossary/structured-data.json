@@ -1,0 +1,73 @@
+{
+  "slug": "structured-data",
+  "term": "Structured data",
+  "letter": "S",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What is structured data?",
+    "description": "Structured data is machine-readable markup added to a page that states what it is about in a vocabulary search engines understand.",
+    "ogImage": null
+  },
+  "definition": "Structured data is machine-readable markup added to a page that states what it is about in a vocabulary search engines understand.",
+  "answerBlock": "Structured data is machine-readable markup added to a page that states what it is about in a vocabulary search engines understand. It uses the schema.org vocabulary, usually written as JSON-LD in a script tag. It does not change what a visitor sees; it changes what a machine can be certain of.",
+  "body": {
+    "heading": "What does structured data do for a page?",
+    "paragraphs": [
+      "It removes guesswork. A page can say that it is a service with a price range, an article with a publication date, a set of questions and answers, or a defined term inside a glossary. Search engines use that to build richer results, and assistants use it to decide what a page is.",
+      "It must describe what is actually on the page. Marking up a rating nobody left, or questions the page does not answer, is a policy violation as well as a lie, and the markup can be ignored or penalised.",
+      "The practical pattern is one node per thing: the organisation once for the site, a breadcrumb trail on every page, and the template's own type on top."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "Rich results take more space in a search listing and carry more information before the click, which is worth more than a small ranking movement.",
+      "For answer engines it is corroboration: the page says the same thing twice, once for people and once for machines."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "Every page of this site carries an organisation node and a breadcrumb trail, service pages add a service with its price band, and each glossary entry is a defined term inside one defined term set.",
+    "caseStudy": null
+  },
+  "service": {
+    "slug": "ai-search-visibility",
+    "title": "AI search visibility",
+    "line": "Technical SEO plus the newer work of being cited by ChatGPT, Perplexity, Gemini and AI overviews."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "answer-engine-optimisation",
+        "term": "Answer engine optimisation",
+        "definition": "Answer engine optimisation is the work of getting a company cited in the answers that AI assistants write, rather than only ranked in a list of blue links."
+      },
+      {
+        "slug": "canonical-tag",
+        "term": "Canonical tag",
+        "definition": "A canonical tag tells search engines which address is the official one for a page that can be reached at several addresses."
+      },
+      {
+        "slug": "core-web-vitals",
+        "term": "Core Web Vitals",
+        "definition": "Core Web Vitals are three measurements Google publishes to describe how a page feels to the people using it: loading, responsiveness and visual stability."
+      },
+      {
+        "slug": "llms-txt",
+        "term": "llms.txt",
+        "definition": "llms.txt is a plain text file at the root of a website that describes the site and points to its most useful pages for AI assistants."
+      }
+    ]
+  },
+  "sources": [
+    {
+      "label": "Google on structured data",
+      "href": "https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data"
+    },
+    {
+      "label": "schema.org DefinedTerm",
+      "href": "https://schema.org/DefinedTerm"
+    }
+  ]
+}

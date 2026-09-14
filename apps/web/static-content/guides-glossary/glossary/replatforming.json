@@ -1,0 +1,61 @@
+{
+  "slug": "replatforming",
+  "term": "Replatforming",
+  "letter": "R",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What is replatforming?",
+    "description": "Replatforming is moving a shop or website from one platform to another, taking the data, the addresses and the rankings with it.",
+    "ogImage": null
+  },
+  "definition": "Replatforming is moving a shop or website from one platform to another, taking the data, the addresses and the rankings with it.",
+  "answerBlock": "Replatforming is moving a shop or website from one platform to another, taking the data, the addresses and the rankings with it. The visible part is the new storefront. The part that decides whether it goes well is the migration of products, customers, orders and every URL that already earns traffic.",
+  "body": {
+    "heading": "What does a replatforming project involve?",
+    "paragraphs": [
+      "An inventory first: every product and variant, every customer account, order history, content pages, and every address that has links or rankings pointing at it. Anything not on that list will be discovered after launch by its absence.",
+      "Then the mapping. Old addresses are matched to new ones and given permanent redirects, so the authority they have built transfers instead of evaporating. Addresses with no equivalent need a deliberate decision rather than a 404.",
+      "Launch is rehearsed: a full import into staging, a check of totals, a sample of orders compared record by record, then the switch. Search Console and server logs are watched for a fortnight afterwards, because that is when missed addresses show up."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "A replatforming that loses its redirect map loses traffic it has paid years to earn, and recovering it takes months. That single spreadsheet is usually the most valuable artefact in the project.",
+      "Done properly it is also the moment to clean up: retire dead products, fix the catalogue attributes, and stop paying for apps nobody uses."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "Verona Home moved off a page builder onto a platform that could carry a configurator for made-to-order pieces, and first-year revenue through the new store reached $2.4M.",
+    "caseStudy": {
+      "slug": "verona-home",
+      "clientName": "Verona Home",
+      "metric": {
+        "value": "$2.4M",
+        "label": "First-year revenue"
+      }
+    }
+  },
+  "service": {
+    "slug": "shopify-development",
+    "title": "Shopify development",
+    "line": "Custom Shopify storefronts, configurators and replatforming for brands that have outgrown a stock theme or a page builder."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "headless-commerce",
+        "term": "Headless commerce",
+        "definition": "Headless commerce keeps the shop engine for products, checkout and payments, but builds the storefront separately on top of its API."
+      },
+      {
+        "slug": "liquid",
+        "term": "Liquid",
+        "definition": "Liquid is the templating language Shopify themes are written in, which puts store data into the HTML a visitor receives."
+      }
+    ]
+  },
+  "sources": []
+}

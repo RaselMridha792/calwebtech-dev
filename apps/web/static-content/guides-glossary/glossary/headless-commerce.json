@@ -1,0 +1,61 @@
+{
+  "slug": "headless-commerce",
+  "term": "Headless commerce",
+  "letter": "H",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What is headless commerce?",
+    "description": "Headless commerce keeps the shop engine for products, checkout and payments, but builds the storefront separately on top of its API.",
+    "ogImage": null
+  },
+  "definition": "Headless commerce keeps the shop engine for products, checkout and payments, but builds the storefront separately on top of its API.",
+  "answerBlock": "Headless commerce keeps the shop engine for products, checkout and payments, but builds the storefront separately on top of its API. The platform still handles inventory, orders and money. What visitors see is a custom front end that can be as fast and as unusual as the brand requires.",
+  "body": {
+    "heading": "What do you gain and what do you give up?",
+    "paragraphs": [
+      "You gain control of the experience: a configurator, an unusual catalogue structure, account-based pricing, or a storefront that also has to serve content and documentation. You keep the parts of the platform that are genuinely hard, above all payments and fraud handling.",
+      "You give up the theme ecosystem. Apps that inject themselves into a standard theme may not work, and every piece of storefront behaviour is now yours to build and maintain. Checkout is usually left on the platform, because reimplementing it is expensive and risky.",
+      "The decision is rarely about fashion. It is about whether the standard storefront prevents something the business needs to sell."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "For most shops, a well-built standard theme is the better commercial answer. Headless earns its keep where the product genuinely needs configuration, where B2B pricing rules apply, or where speed is a competitive weapon.",
+      "It also raises the cost of ownership, which should be budgeted openly rather than discovered in year two."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "Verona Home sells made-to-order furniture, so the storefront needed a configurator the standard theme could not express, while checkout and payments stayed on the platform.",
+    "caseStudy": {
+      "slug": "verona-home",
+      "clientName": "Verona Home",
+      "metric": {
+        "value": "+68%",
+        "label": "Add to cart"
+      }
+    }
+  },
+  "service": {
+    "slug": "shopify-development",
+    "title": "Shopify development",
+    "line": "Custom Shopify storefronts, configurators and replatforming for brands that have outgrown a stock theme or a page builder."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "liquid",
+        "term": "Liquid",
+        "definition": "Liquid is the templating language Shopify themes are written in, which puts store data into the HTML a visitor receives."
+      },
+      {
+        "slug": "replatforming",
+        "term": "Replatforming",
+        "definition": "Replatforming is moving a shop or website from one platform to another, taking the data, the addresses and the rankings with it."
+      }
+    ]
+  },
+  "sources": []
+}

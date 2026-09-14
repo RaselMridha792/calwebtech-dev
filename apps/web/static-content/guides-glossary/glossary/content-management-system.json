@@ -1,0 +1,61 @@
+{
+  "slug": "content-management-system",
+  "term": "Content management system (CMS)",
+  "letter": "C",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What is a content management system?",
+    "description": "A content management system is the software your team uses to add and edit website content without a developer.",
+    "ogImage": null
+  },
+  "definition": "A content management system is the software your team uses to add and edit website content without a developer.",
+  "answerBlock": "A content management system is the software your team uses to add and edit website content without a developer. It stores the words and images, controls who may change them, and decides what a page looks like when it is published. WordPress is the best known, but the category is much wider.",
+  "body": {
+    "heading": "What separates a good CMS from a bad one?",
+    "paragraphs": [
+      "A good one models your content. If you sell services, a service is a record with its own fields: a title, an answer, deliverables, a price band, questions and answers. Adding a service then produces the page, the listing entry, the menu link, the sitemap entry and the social preview automatically.",
+      "A bad one gives editors a blank canvas and a box of widgets. Every page becomes a one-off, nothing is consistent, and the site slowly becomes impossible to change because no two pages are built the same way.",
+      "The editing experience decides whether the system is used at all. If publishing a page requires a developer, the site stops being updated, and a site nobody updates stops earning traffic."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "The real cost of a CMS is not the licence, it is what it costs to publish. A marketing team that can ship a landing page in an afternoon runs more campaigns than one that waits three weeks for a deployment.",
+      "Ownership matters as much as convenience. Content that lives in a database you control can be exported, migrated and analysed; content locked inside a proprietary page builder cannot."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "Cascadia Health replaced fourteen separate clinic sites with one system where a clinic is a record, so opening a new location produces its page, its listing entry and its booking journey without a deployment.",
+    "caseStudy": {
+      "slug": "cascadia-health",
+      "clientName": "Cascadia Health",
+      "metric": {
+        "value": "14→1",
+        "label": "Sites to maintain"
+      }
+    }
+  },
+  "service": {
+    "slug": "wordpress-development",
+    "title": "WordPress development",
+    "line": "Custom WordPress themes and WooCommerce stores without page-builder bloat, with structured content your editors can manage safely."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "page-builder",
+        "term": "Page builder",
+        "definition": "A page builder is a drag-and-drop editor that lets someone assemble a web page from blocks without writing code."
+      },
+      {
+        "slug": "plugin",
+        "term": "Plugin",
+        "definition": "A plugin is a package of code that adds a feature to a content management system without changing the system itself."
+      }
+    ]
+  },
+  "sources": []
+}

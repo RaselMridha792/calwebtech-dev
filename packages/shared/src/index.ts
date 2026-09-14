@@ -17,3 +17,4 @@ export * from './pages/services';
 export * from './pages/company';
 export * from './pages/locations';
 export * from './pages/static';
+export * from './pages/guides-glossary';

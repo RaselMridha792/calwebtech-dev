@@ -1,0 +1,297 @@
+{
+  "content": {
+    "seo": {
+      "title": "Website glossary for B2B buyers",
+      "description": "Plain definitions of the terms you meet while commissioning a website, what each one means for budget and timeline, and who delivers it.",
+      "ogImage": null
+    },
+    "title": "Website glossary",
+    "answerBlock": "This glossary defines the terms a company meets while commissioning a website, in plain language rather than in developer shorthand. Each entry opens with one sentence of definition, explains what it means in practice, and says why it matters to a budget or a timeline. Every entry also names the service that delivers that work, so you can see who does it and what it costs.",
+    "intro": "Written for the person approving the purchase order as much as for the person writing the brief. Where an entry quotes an established threshold, the source is linked on the entry.",
+    "jumpLabel": "Jump to a letter",
+    "list": {
+      "heading": "Which terms are defined here?",
+      "intro": null,
+      "empty": "No terms are published yet. The service pages explain the same work in context, and we are happy to define anything you have been sent in a proposal."
+    },
+    "method": {
+      "heading": "How are these entries written?",
+      "body": "By the people who do the work, from the questions clients actually ask, and each entry carries the date it was last checked. Where we quote a figure it is either a published standard, with a link to the body that publishes it, or a result from one of our own case studies, with the client named. We do not invent statistics, and we do not cite surveys nobody can read. If an entry is out of date or wrong, tell us and we will correct it."
+    },
+    "elsewhere": {
+      "heading": "What if a term is missing?",
+      "body": "Send us the sentence you were sent. If a proposal has arrived full of words you did not choose, we will explain what they mean and what they should cost, whether or not the proposal is ours.",
+      "primaryCta": {
+        "label": "Ask us to explain a proposal",
+        "href": "/contact/"
+      },
+      "secondaryCta": {
+        "label": "Read the guides",
+        "href": "/guides/"
+      }
+    }
+  },
+  "groups": [
+    {
+      "letter": "A",
+      "terms": [
+        {
+          "slug": "ab-testing",
+          "term": "A/B testing",
+          "definition": "A/B testing splits live traffic between two versions of a page to see which one produces more of the outcome you care about."
+        },
+        {
+          "slug": "accessibility-wcag",
+          "term": "Accessibility (WCAG)",
+          "definition": "Accessibility means a website can be used by people with disabilities, and WCAG is the published standard that defines what that requires."
+        },
+        {
+          "slug": "answer-engine-optimisation",
+          "term": "Answer engine optimisation",
+          "definition": "Answer engine optimisation is the work of getting a company cited in the answers that AI assistants write, rather than only ranked in a list of blue links."
+        },
+        {
+          "slug": "api",
+          "term": "API",
+          "definition": "An API is a defined way for two systems to exchange data without a person copying it between them."
+        }
+      ]
+    },
+    {
+      "letter": "B",
+      "terms": [
+        {
+          "slug": "backup-and-restore",
+          "term": "Backup and restore",
+          "definition": "A backup is a copy of the site and its database held somewhere else, and a restore is the rehearsed process of putting that copy back."
+        },
+        {
+          "slug": "bounce-rate",
+          "term": "Bounce rate",
+          "definition": "Bounce rate is the share of visits where someone looked at one page and left without doing anything else."
+        }
+      ]
+    },
+    {
+      "letter": "C",
+      "terms": [
+        {
+          "slug": "canonical-tag",
+          "term": "Canonical tag",
+          "definition": "A canonical tag tells search engines which address is the official one for a page that can be reached at several addresses."
+        },
+        {
+          "slug": "content-delivery-network",
+          "term": "Content delivery network (CDN)",
+          "definition": "A content delivery network is a set of servers spread around the world that serve copies of your files from somewhere near each visitor."
+        },
+        {
+          "slug": "content-management-system",
+          "term": "Content management system (CMS)",
+          "definition": "A content management system is the software your team uses to add and edit website content without a developer."
+        },
+        {
+          "slug": "conversion-rate-optimisation",
+          "term": "Conversion rate optimisation",
+          "definition": "Conversion rate optimisation is the work of increasing the share of visitors who do the thing the page exists for."
+        },
+        {
+          "slug": "core-web-vitals",
+          "term": "Core Web Vitals",
+          "definition": "Core Web Vitals are three measurements Google publishes to describe how a page feels to the people using it: loading, responsiveness and visual stability."
+        }
+      ]
+    },
+    {
+      "letter": "D",
+      "terms": [
+        {
+          "slug": "design-system",
+          "term": "Design system",
+          "definition": "A design system is the agreed set of colours, type, spacing and components that every page of a product is built from."
+        },
+        {
+          "slug": "dns",
+          "term": "DNS",
+          "definition": "DNS is the system that turns a domain name someone types into the address of the server that answers for it."
+        }
+      ]
+    },
+    {
+      "letter": "H",
+      "terms": [
+        {
+          "slug": "headless-cms",
+          "term": "Headless CMS",
+          "definition": "A headless CMS stores and edits content but does not render the pages that display it."
+        },
+        {
+          "slug": "headless-commerce",
+          "term": "Headless commerce",
+          "definition": "Headless commerce keeps the shop engine for products, checkout and payments, but builds the storefront separately on top of its API."
+        }
+      ]
+    },
+    {
+      "letter": "I",
+      "terms": [
+        {
+          "slug": "information-architecture",
+          "term": "Information architecture",
+          "definition": "Information architecture is how a site is organised: what pages exist, how they are grouped, and what each one is called."
+        }
+      ]
+    },
+    {
+      "letter": "L",
+      "terms": [
+        {
+          "slug": "large-language-model",
+          "term": "Large language model",
+          "definition": "A large language model is software trained on very large amounts of text that predicts likely continuations, which is why it can write and summarise."
+        },
+        {
+          "slug": "liquid",
+          "term": "Liquid",
+          "definition": "Liquid is the templating language Shopify themes are written in, which puts store data into the HTML a visitor receives."
+        },
+        {
+          "slug": "llms-txt",
+          "term": "llms.txt",
+          "definition": "llms.txt is a plain text file at the root of a website that describes the site and points to its most useful pages for AI assistants."
+        }
+      ]
+    },
+    {
+      "letter": "P",
+      "terms": [
+        {
+          "slug": "page-builder",
+          "term": "Page builder",
+          "definition": "A page builder is a drag-and-drop editor that lets someone assemble a web page from blocks without writing code."
+        },
+        {
+          "slug": "payment-gateway",
+          "term": "Payment gateway",
+          "definition": "A payment gateway is the service that takes a card or bank payment from a customer and moves the money to your account."
+        },
+        {
+          "slug": "plugin",
+          "term": "Plugin",
+          "definition": "A plugin is a package of code that adds a feature to a content management system without changing the system itself."
+        },
+        {
+          "slug": "product-catalogue",
+          "term": "Product catalogue",
+          "definition": "A product catalogue is the structured record of everything you sell: the products, their variants, their attributes and how they are grouped."
+        },
+        {
+          "slug": "punchout-catalogue",
+          "term": "Punchout catalogue",
+          "definition": "A punchout catalogue lets a buyer leave their own procurement system, shop on your site with their agreed pricing, and return with the basket as a requisition."
+        }
+      ]
+    },
+    {
+      "letter": "R",
+      "terms": [
+        {
+          "slug": "replatforming",
+          "term": "Replatforming",
+          "definition": "Replatforming is moving a shop or website from one platform to another, taking the data, the addresses and the rankings with it."
+        },
+        {
+          "slug": "responsive-design",
+          "term": "Responsive design",
+          "definition": "Responsive design means one website that rearranges itself to work on any screen, from a phone to a wide monitor."
+        },
+        {
+          "slug": "retrieval-augmented-generation",
+          "term": "Retrieval-augmented generation",
+          "definition": "Retrieval-augmented generation is the pattern of finding the relevant documents first and giving them to a language model with the question."
+        }
+      ]
+    },
+    {
+      "letter": "S",
+      "terms": [
+        {
+          "slug": "server-side-rendering",
+          "term": "Server-side rendering",
+          "definition": "Server-side rendering means the server builds the finished HTML for a page and sends it, rather than sending an empty shell for the browser to fill in."
+        },
+        {
+          "slug": "staging-environment",
+          "term": "Staging environment",
+          "definition": "A staging environment is a private copy of the live site where changes are tested before anyone outside the company sees them."
+        },
+        {
+          "slug": "static-site-generation",
+          "term": "Static site generation",
+          "definition": "Static site generation builds pages into finished files ahead of time, so a request is answered by handing over a file that already exists."
+        },
+        {
+          "slug": "structured-data",
+          "term": "Structured data",
+          "definition": "Structured data is machine-readable markup added to a page that states what it is about in a vocabulary search engines understand."
+        }
+      ]
+    },
+    {
+      "letter": "T",
+      "terms": [
+        {
+          "slug": "tls-certificate",
+          "term": "TLS certificate",
+          "definition": "A TLS certificate is the file that lets a website prove who it is and encrypt the traffic between it and the visitor."
+        }
+      ]
+    },
+    {
+      "letter": "U",
+      "terms": [
+        {
+          "slug": "uptime-monitoring",
+          "term": "Uptime monitoring",
+          "definition": "Uptime monitoring is an external service that checks your site at intervals and alerts someone when it stops answering correctly."
+        }
+      ]
+    },
+    {
+      "letter": "V",
+      "terms": [
+        {
+          "slug": "vector-embedding",
+          "term": "Vector embedding",
+          "definition": "A vector embedding turns a piece of text into a list of numbers that places it near other text with a similar meaning."
+        }
+      ]
+    },
+    {
+      "letter": "W",
+      "terms": [
+        {
+          "slug": "web-application",
+          "term": "Web application",
+          "definition": "A web application is software that runs in a browser and does work, as opposed to a website that mainly publishes information."
+        },
+        {
+          "slug": "wireframe",
+          "term": "Wireframe",
+          "definition": "A wireframe is a deliberately plain layout of a page that settles what is on it and in what order, before anyone decides how it looks."
+        }
+      ]
+    },
+    {
+      "letter": "#",
+      "terms": [
+        {
+          "slug": "301-redirect",
+          "term": "301 redirect",
+          "definition": "A 301 redirect is a permanent instruction that a page has moved to a new address, sending both visitors and search engines to it."
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2026-09-15T00:00:00.000Z"
+}

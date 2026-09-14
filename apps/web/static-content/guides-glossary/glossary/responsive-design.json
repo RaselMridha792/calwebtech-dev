@@ -1,0 +1,76 @@
+{
+  "slug": "responsive-design",
+  "term": "Responsive design",
+  "letter": "R",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What is responsive design?",
+    "description": "Responsive design means one website that rearranges itself to work on any screen, from a phone to a wide monitor.",
+    "ogImage": null
+  },
+  "definition": "Responsive design means one website that rearranges itself to work on any screen, from a phone to a wide monitor.",
+  "answerBlock": "Responsive design means one website that rearranges itself to work on any screen, from a phone to a wide monitor. There is no separate mobile site to maintain and no horizontal scrolling. The layout, the type and the images all adapt to the space available.",
+  "body": {
+    "heading": "What separates responsive from merely shrunk?",
+    "paragraphs": [
+      "A shrunken desktop layout keeps its desktop assumptions: tables that overflow, tap targets sized for a mouse, images downloaded at full size on a phone connection. Responsive design changes the arrangement, not just the scale.",
+      "The details that matter are unglamorous. Content sits inside a gutter at every width. Rows wrap or stack rather than squeezing. Tables and diagrams get their own scrolling container so the page itself never scrolls sideways. Images are served at a size that suits the screen.",
+      "Touch targets are part of it: controls need to be large enough and far enough apart to hit accurately, which WCAG 2.2 makes an explicit criterion."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "Most B2B research now starts on a phone even when the purchase is signed on a desktop. A site that is awkward on a phone loses buyers at the first step of the process.",
+      "One responsive site is also cheaper to run than a desktop site plus a mobile variant that slowly falls out of date."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "Meridian Parts built fitment search for a technician holding a phone in a workshop, which is a harder target than a buyer at a desk and a better one to design for.",
+    "caseStudy": {
+      "slug": "meridian-parts",
+      "clientName": "Meridian Parts",
+      "metric": {
+        "value": "−63%",
+        "label": "Wrong-part returns"
+      }
+    }
+  },
+  "service": {
+    "slug": "custom-website-development",
+    "title": "Custom website development",
+    "line": "Research-led design built around how your buyers actually decide, not around a template's section order."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "accessibility-wcag",
+        "term": "Accessibility (WCAG)",
+        "definition": "Accessibility means a website can be used by people with disabilities, and WCAG is the published standard that defines what that requires."
+      },
+      {
+        "slug": "design-system",
+        "term": "Design system",
+        "definition": "A design system is the agreed set of colours, type, spacing and components that every page of a product is built from."
+      },
+      {
+        "slug": "information-architecture",
+        "term": "Information architecture",
+        "definition": "Information architecture is how a site is organised: what pages exist, how they are grouped, and what each one is called."
+      },
+      {
+        "slug": "wireframe",
+        "term": "Wireframe",
+        "definition": "A wireframe is a deliberately plain layout of a page that settles what is on it and in what order, before anyone decides how it looks."
+      }
+    ]
+  },
+  "sources": [
+    {
+      "label": "Web Content Accessibility Guidelines 2.2",
+      "href": "https://www.w3.org/TR/WCAG22/"
+    }
+  ]
+}

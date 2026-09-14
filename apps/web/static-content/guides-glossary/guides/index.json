@@ -1,0 +1,70 @@
+{
+  "content": {
+    "seo": {
+      "title": "Guides and white papers",
+      "description": "Long-form guides on planning, buying and running a B2B website. Read the whole argument free; the download adds the worksheets.",
+      "ogImage": null
+    },
+    "title": "Guides and white papers",
+    "answerBlock": "Our guides are long-form answers to the questions that come up when a company plans, buys or fixes a website. The full argument of each one is published on its page, free and without a form. The download adds the worksheets, checklists and contract wording we use on our own projects.",
+    "intro": "Written by the people who do the work, from projects rather than from a content calendar. Every figure we quote is either an established public standard with its source linked, or a number from our own published case studies.",
+    "list": {
+      "heading": "Which guides can I read?",
+      "intro": null,
+      "empty": "No guides are published yet. The glossary and the service pages answer most of the same questions in the meantime, and you are welcome to ask us anything they do not cover.",
+      "cardLinkLabel": "Read the summary"
+    },
+    "gateNote": {
+      "heading": "Do I have to give my email address?",
+      "body": "Only for the file. Every guide publishes its whole argument on the page, so you can read it, judge it and share it without giving us anything. If you want the PDF with the worksheets, we ask for a name and a work email, store them in our own database, and send you a confirmation. We do not sell or pass on that address, there is no drip sequence waiting behind it, and you can ask us to delete it at any time."
+    },
+    "elsewhere": {
+      "heading": "What if no guide answers my question?",
+      "body": "The glossary defines the words a buyer meets, the service pages set out what each piece of work includes and what it starts at, and the pricing page explains what moves the number. If none of those covers it, ask us directly: a person answers, usually the person who would do the work.",
+      "primaryCta": {
+        "label": "Ask us a question",
+        "href": "/contact/"
+      },
+      "secondaryCta": {
+        "label": "Browse the glossary",
+        "href": "/glossary/"
+      }
+    }
+  },
+  "guides": [
+    {
+      "slug": "b2b-website-planning-guide",
+      "title": "The B2B website planning guide",
+      "summary": "What to decide before you brief anyone: the one job the site has to do, the content you already have, the integrations that carry the risk, and what actually moves the price.",
+      "pageCountLabel": "11 pages",
+      "cover": {
+        "src": "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=800&q=72",
+        "alt": "Two colleagues talking across a meeting table, one taking notes beside an open laptop"
+      },
+      "topics": [
+        "Scope",
+        "Budget",
+        "Content",
+        "Launch"
+      ],
+      "updatedAt": "2026-09-15T00:00:00.000Z"
+    },
+    {
+      "slug": "core-web-vitals-guide",
+      "title": "The Core Web Vitals guide for business websites",
+      "summary": "What the three metrics measure, the thresholds Google publishes, the handful of things that actually break them on a business website, and what to require from whoever builds yours.",
+      "pageCountLabel": "10 pages",
+      "cover": {
+        "src": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=72",
+        "alt": "Performance and analytics review before launch"
+      },
+      "topics": [
+        "Performance",
+        "LCP",
+        "INP",
+        "CLS"
+      ],
+      "updatedAt": "2026-09-15T00:00:00.000Z"
+    }
+  ]
+}

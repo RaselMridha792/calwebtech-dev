@@ -1,0 +1,56 @@
+{
+  "slug": "web-application",
+  "term": "Web application",
+  "letter": "W",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What is a web application?",
+    "description": "A web application is software that runs in a browser and does work, as opposed to a website that mainly publishes information.",
+    "ogImage": null
+  },
+  "definition": "A web application is software that runs in a browser and does work, as opposed to a website that mainly publishes information.",
+  "answerBlock": "A web application is software that runs in a browser and does work, as opposed to a website that mainly publishes information. Portals, dashboards, booking engines, quoting tools and internal systems are all web applications. They usually have accounts, permissions and data that changes constantly.",
+  "body": {
+    "heading": "What makes an application different from a website?",
+    "paragraphs": [
+      "State and permissions. A brochure page looks the same to everyone; an application shows each person their own data and has to be certain who they are on every request. That means authentication, roles, audit trails and a server that never trusts what the browser sends.",
+      "It also changes how the work is planned. A marketing site is finished and then maintained; an application has a roadmap, releases and a support burden, and it should be budgeted that way from the start.",
+      "The technical shape follows: rendering that keeps the first view fast, a clear boundary between the interface and the business rules, and validation enforced on the server even where the interface has already checked it."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "Applications earn their keep by removing manual work: a portal that lets customers check their own orders removes the calls that ask about them.",
+      "They also raise switching costs in your favour, because a customer who runs part of their process in your system does not move casually."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "Northmark Supply's quoting platform is an application rather than a catalogue: accounts, contract pricing and a quote that used to take three days now takes twelve minutes.",
+    "caseStudy": {
+      "slug": "northmark-supply",
+      "clientName": "Northmark Supply",
+      "metric": {
+        "value": "12 min",
+        "label": "Quote turnaround, from 3 days"
+      }
+    }
+  },
+  "service": {
+    "slug": "web-application-development",
+    "title": "Web application development",
+    "line": "Portals, dashboards, booking engines and internal tools built on Next.js with a typed API behind them."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "api",
+        "term": "API",
+        "definition": "An API is a defined way for two systems to exchange data without a person copying it between them."
+      }
+    ]
+  },
+  "sources": []
+}
