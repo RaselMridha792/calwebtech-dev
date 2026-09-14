@@ -211,6 +211,42 @@ describe('insights snapshots', () => {
     expect(index.copy.backdrop?.src).toMatch(/^https:\/\/images\.(unsplash|pexels)\.com\//);
   });
 
+  it('publish no money figure that is not the approved demo proof', () => {
+    /**
+     * Every amount an article may print, and where it comes from (docs/10-site-pages.md,
+     * Content). The homepage publishes the bands as `$12k to $25k`, `$25k to $60k` and
+     * `From $1.5k/mo`, writes them out as "between $12,000 and $60,000", carries the `$2.4M`
+     * figure of an approved case study and describes the `$20` server the self-hosting
+     * article is about. Anything else is a price, a saving or an overrun somebody invented.
+     */
+    const approved = new Set([
+      '$12,000',
+      '$25,000',
+      '$60,000',
+      '$12k',
+      '$25k',
+      '$60k',
+      '$1,500',
+      '$1.5k',
+      '$2.4M',
+      '$20',
+    ]);
+    const amount = /[$£€]\d[\d,]*(?:\.\d+)?[kKmM]?/g;
+    const sources: [string, unknown][] = [
+      ['index.json', insightsIndexSnapshot],
+      ...Object.entries(insightsArticleSnapshots).map(([slug, snapshot]): [string, unknown] => [
+        `${slug}.json`,
+        snapshot,
+      ]),
+    ];
+
+    for (const [name, snapshot] of sources) {
+      for (const match of JSON.stringify(snapshot).matchAll(amount)) {
+        expect(approved.has(match[0]), `${name} publishes ${match[0]}`).toBe(true);
+      }
+    }
+  });
+
   it('link out only over https, and only inside the site with a trailing slash', () => {
     const LINK = /\]\((?<href>[^)\s]+)\)/g;
     for (const [slug, view] of articles) {

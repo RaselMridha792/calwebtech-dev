@@ -193,7 +193,17 @@ test.describe('topic page', () => {
   });
 });
 
-/** Opens an article, or reports that none is published here rather than passing quietly. */
+/**
+ * Opens an article, or reports that none is published here rather than passing quietly.
+ *
+ * No seed publishes a `Post`: the homepage spec requires the `#insights` section to show its
+ * empty state and its body to carry no money amount, and a fixture article would break both
+ * (apps/web/e2e/home.spec.ts). The template itself is gated in Vitest instead —
+ * `components/insights/insights.test.tsx` renders the real `ArticleBodySection`, its subscribe
+ * block and form, and `static-content/insights/insights.test.ts` checks the copy. What only a
+ * browser can check, the 360px overflow and the keyboard flow, is what these skips cost, and
+ * the family's report asks the foundation for a fixture article.
+ */
 async function openArticle(page: Page): Promise<void> {
   const response = await page.goto(ARTICLE);
   const missing = response?.status() === 404;
