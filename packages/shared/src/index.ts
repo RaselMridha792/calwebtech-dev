@@ -1,4 +1,5 @@
 export * from './app-env';
+export * from './calculator';
 export * from './email-jobs';
 export * from './home-page';
 export * from './landing-page';
@@ -11,3 +12,4 @@ export * from './site-paths';
 export * from './validation';
 // Site page families (docs/10-site-pages.md): one line each, below this one.
 export * from './pages/common';
+export * from './pages/calculator';
