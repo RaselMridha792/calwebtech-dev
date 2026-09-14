@@ -1,0 +1,241 @@
+{
+  "copy": {
+    "seo": {
+      "title": "Insights for B2B website buyers",
+      "description": "Practical articles on what a B2B website costs, how to brief one, how to make it fast and accessible, and how to be cited by AI assistants.",
+      "ogImage": null
+    },
+    "eyebrow": "Insights",
+    "title": "Insights for people who buy and run B2B websites",
+    "intro": "Everything here is written for the person who has to justify the spend and live with the result: what things cost, what moves the number, what breaks later, and what to ask for in writing. No gated downloads and no sales sequence.",
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1800&q=65"
+    },
+    "featuredLabel": "Start here",
+    "listHeading": "Which article answers your question?",
+    "topicsLabel": "Topics",
+    "allTopicsLabel": "All topics",
+    "readingTimeLabel": "min read",
+    "cardLinkLabel": "Read the article",
+    "empty": "Nothing is published here yet. Tell us what you are trying to decide and we will answer it directly.",
+    "emptyAction": {
+      "label": "Ask us your question",
+      "href": "/contact/"
+    },
+    "pagination": {
+      "label": "Insights pages",
+      "previous": "Previous",
+      "next": "Next",
+      "status": "Page {page} of {pages}"
+    }
+  },
+  "categories": [
+    {
+      "slug": "strategy",
+      "name": "Strategy",
+      "articleCount": 3,
+      "copy": {
+        "seo": {
+          "title": "Website strategy articles",
+          "description": "What a B2B website costs, how to brief one, how to compare quotes and how to tell when a redesign is the wrong answer.",
+          "ogImage": null
+        },
+        "title": "Strategy",
+        "intro": "The commercial decisions around a website: what it should cost, how to specify it, how to compare suppliers and when to spend the money on something else instead.",
+        "listHeading": "Which articles cover website strategy?"
+      }
+    },
+    {
+      "slug": "ai-search",
+      "name": "AI search",
+      "articleCount": 1,
+      "copy": {
+        "seo": {
+          "title": "AI search visibility articles",
+          "description": "How assistants choose which companies to name, what makes a page citable, and how to measure whether the work produced enquiries.",
+          "ogImage": null
+        },
+        "title": "AI search",
+        "intro": "Being found and quoted by ChatGPT, Gemini, Perplexity and AI overviews, and how that work differs from the search optimisation you already pay for.",
+        "listHeading": "Which articles cover AI search?"
+      }
+    },
+    {
+      "slug": "engineering",
+      "name": "Engineering",
+      "articleCount": 3,
+      "copy": {
+        "seo": {
+          "title": "Web engineering articles",
+          "description": "Performance thresholds, accessibility standards, hosting choices and the engineering decisions that show up in your running costs.",
+          "ogImage": null
+        },
+        "title": "Engineering",
+        "intro": "How the site is built, and what that decides later: speed, accessibility, hosting, maintenance and how easily you can move it somewhere else.",
+        "listHeading": "Which articles cover engineering?"
+      }
+    },
+    {
+      "slug": "ecommerce",
+      "name": "Ecommerce",
+      "articleCount": 1,
+      "copy": {
+        "seo": {
+          "title": "B2B ecommerce articles",
+          "description": "Contract pricing, customer catalogues, quoting flows and ERP integration, for companies selling to businesses rather than shoppers.",
+          "ogImage": null
+        },
+        "title": "Ecommerce",
+        "intro": "Selling to businesses online: account pricing, quoting, catalogue search at scale, and the integrations that decide the timeline.",
+        "listHeading": "Which articles cover B2B ecommerce?"
+      }
+    }
+  ],
+  "articles": [
+    {
+      "slug": "why-chatgpt-recommends-your-competitor",
+      "title": "Why ChatGPT recommends your competitor",
+      "excerpt": "Language models cite structured, corroborated sources. Here is how to become one of them.",
+      "category": {
+        "slug": "ai-search",
+        "name": "AI search"
+      },
+      "authorName": "Rasel Mridha",
+      "readingTime": 9,
+      "publishedAt": "2026-09-02T09:00:00.000Z",
+      "updatedAt": "2026-09-10T11:30:00.000Z",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?auto=format&fit=crop&w=1200&q=70",
+        "alt": "Analytics charts on a screen"
+      },
+      "featured": false
+    },
+    {
+      "slug": "website-redesign-cost-2026",
+      "title": "What a website redesign should actually cost in 2026",
+      "excerpt": "A line-by-line breakdown of where the money goes, and the three items that quietly double most quotes.",
+      "category": {
+        "slug": "strategy",
+        "name": "Strategy"
+      },
+      "authorName": "Sawkat Hasan",
+      "readingTime": 7,
+      "publishedAt": "2026-08-19T09:00:00.000Z",
+      "updatedAt": "2026-09-08T11:30:00.000Z",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1200&q=70",
+        "alt": "Notebook and laptop on a desk"
+      },
+      "featured": true
+    },
+    {
+      "slug": "b2b-ecommerce-what-a-stock-theme-cannot-do",
+      "title": "What B2B buyers need that a stock ecommerce theme cannot do",
+      "excerpt": "Contract pricing, customer catalogues, minimum quantities and quoting are not theme settings. What actually changes when the buyer has an account.",
+      "category": {
+        "slug": "ecommerce",
+        "name": "Ecommerce"
+      },
+      "authorName": "Sawkat Hasan",
+      "readingTime": 7,
+      "publishedAt": "2026-08-05T09:00:00.000Z",
+      "updatedAt": "2026-08-05T09:00:00.000Z",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=1200&q=70",
+        "alt": "Tall racking stacked with boxed stock along a distribution warehouse aisle"
+      },
+      "featured": false
+    },
+    {
+      "slug": "core-web-vitals-in-plain-english",
+      "title": "Core Web Vitals in plain English",
+      "excerpt": "The three published thresholds, what each one really measures, and why the lab score and the field report never agree.",
+      "category": {
+        "slug": "engineering",
+        "name": "Engineering"
+      },
+      "authorName": "Rasel Mridha",
+      "readingTime": 6,
+      "publishedAt": "2026-07-22T09:00:00.000Z",
+      "updatedAt": "2026-08-26T11:30:00.000Z",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=70",
+        "alt": "Performance and analytics review before launch"
+      },
+      "featured": false
+    },
+    {
+      "slug": "self-hosting-is-cheaper-than-you-think",
+      "title": "Self-hosting your site is cheaper than you think",
+      "excerpt": "What a Docker stack on a $20 server replaces, and the two jobs somebody still has to own.",
+      "category": {
+        "slug": "engineering",
+        "name": "Engineering"
+      },
+      "authorName": "Rasel Mridha",
+      "readingTime": 6,
+      "publishedAt": "2026-07-08T09:00:00.000Z",
+      "updatedAt": "2026-07-08T09:00:00.000Z",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=70",
+        "alt": "Workspace with a laptop"
+      },
+      "featured": false
+    },
+    {
+      "slug": "the-page-builder-tax",
+      "title": "The page builder tax: what drag-and-drop really costs",
+      "excerpt": "Drag-and-drop is cheap to start and expensive to keep. Where the cost shows up, and what the alternative actually looks like.",
+      "category": {
+        "slug": "strategy",
+        "name": "Strategy"
+      },
+      "authorName": "Priya Raman",
+      "readingTime": 6,
+      "publishedAt": "2026-06-24T09:00:00.000Z",
+      "updatedAt": "2026-06-24T09:00:00.000Z",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=1200&q=70",
+        "alt": "Interface design work in progress"
+      },
+      "featured": false
+    },
+    {
+      "slug": "wcag-22-what-changed",
+      "title": "WCAG 2.2 AA: what changed and what it costs to meet it",
+      "excerpt": "Nine new success criteria, four that matter at AA, and the two that break most existing sites.",
+      "category": {
+        "slug": "engineering",
+        "name": "Engineering"
+      },
+      "authorName": "Priya Raman",
+      "readingTime": 7,
+      "publishedAt": "2026-06-10T09:00:00.000Z",
+      "updatedAt": "2026-06-10T09:00:00.000Z",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1558655146-9f40138edfeb?auto=format&fit=crop&w=1200&q=70",
+        "alt": "A designer drawing on a tablet with a stylus beside a keyboard"
+      },
+      "featured": false
+    },
+    {
+      "slug": "how-to-write-a-website-brief",
+      "title": "How to write a website brief that gets comparable quotes",
+      "excerpt": "Why three agencies quote three different projects, and the eight sections that stop it happening.",
+      "category": {
+        "slug": "strategy",
+        "name": "Strategy"
+      },
+      "authorName": "Dana Whitfield",
+      "readingTime": 6,
+      "publishedAt": "2026-05-27T09:00:00.000Z",
+      "updatedAt": "2026-05-27T09:00:00.000Z",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=70",
+        "alt": "A project team planning a website around a meeting table, with sticky notes arranged on the wall behind them"
+      },
+      "featured": false
+    }
+  ],
+  "featuredSlug": "website-redesign-cost-2026"
+}

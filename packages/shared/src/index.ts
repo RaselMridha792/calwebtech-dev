@@ -20,3 +20,4 @@ export * from './pages/locations';
 export * from './pages/static';
 export * from './pages/guides-glossary';
 export * from './pages/calculator';
+export * from './pages/insights';

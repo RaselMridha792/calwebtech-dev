@@ -1,0 +1,186 @@
+{
+  "slug": "b2b-ecommerce-what-a-stock-theme-cannot-do",
+  "title": "What B2B buyers need that a stock ecommerce theme cannot do",
+  "excerpt": "Contract pricing, customer catalogues, minimum quantities and quoting are not theme settings. What actually changes when the buyer has an account.",
+  "answerBlock": "A stock ecommerce theme assumes one public price and an anonymous buyer, which is the opposite of how business-to-business selling works. B2B needs contract pricing per account, customer-specific catalogues, minimum quantities, purchase orders and a quoting flow, all of it decided by who is signed in. That turns a theme choice into an architecture decision.",
+  "seo": {
+    "title": "B2B ecommerce: what a stock theme cannot do",
+    "description": "Contract pricing, customer-specific catalogues, minimums and quoting: what B2B ecommerce needs that a stock theme cannot give it.",
+    "ogImage": null
+  },
+  "category": {
+    "slug": "ecommerce",
+    "name": "Ecommerce"
+  },
+  "author": {
+    "slug": "sawkat-hasan",
+    "name": "Sawkat Hasan",
+    "role": "Founder",
+    "bio": "Joins every first call and every proposal. Twelve years in B2B commerce.",
+    "photo": {
+      "src": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=70",
+      "alt": "Sawkat Hasan, Founder"
+    },
+    "credentials": [
+      "B2B commerce",
+      "Discovery",
+      "Proposals"
+    ]
+  },
+  "publishedAt": "2026-08-05T09:00:00.000Z",
+  "updatedAt": "2026-08-05T09:00:00.000Z",
+  "readingTime": 7,
+  "wordCount": 1470,
+  "cover": {
+    "src": "https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=1200&q=70",
+    "alt": "Tall racking stacked with boxed stock along a distribution warehouse aisle"
+  },
+  "takeaways": [
+    "B2B selling is account-shaped. Price, availability, payment terms and even which products exist all depend on who is logged in, and a stock theme assumes none of that.",
+    "The catalogue is the hard part. Forty thousand parts with fitment data and cross-references need real search and real filters, not a product grid.",
+    "Most B2B customers are not buying, they are quoting. If the site cannot produce a quote, the enquiry goes to an inbox and the clock starts.",
+    "The integration is the project. Whether your ERP has a usable interface decides the timeline more than any design decision.",
+    "Start with search and quoting on the existing catalogue. Full transactional commerce can wait until the first two are earning."
+  ],
+  "body": "## What makes B2B ecommerce different from retail?\n\nRetail is anonymous and one-price. Someone arrives, sees a number, and either buys it or does not. B2B is the opposite in almost every respect: the visitor has an account, the account has a contract, the contract has prices, and those prices are none of the next customer's business.\n\nOnce you accept that, the differences stop being a list of features and become one architectural fact. In B2B the page is a function of the customer. The catalogue they can see, the price they pay, the minimum quantity, the delivery promise and the payment terms all depend on who they are. A stock theme renders a product; a B2B storefront renders a product for an account.\n\n## Which requirements break a stock theme?\n\nNot the ones people expect. Nobody is stopped by needing a logo change. They are stopped by the list below.\n\n| Requirement | What a stock theme assumes | What B2B actually needs |\n|---|---|---|\n| Pricing | One public price per product | Contract price per account, with tiers and breaks |\n| Visibility | The whole catalogue is public | Some lines only exist for some customers |\n| Quantity | Any number, any time | Minimums, pack sizes, multiples |\n| Ordering | Browse, add to cart, pay | Repeat order, upload a parts list, quote first |\n| Approval | One buyer, one card | A requester and an approver, with a limit |\n| Payment | Card at checkout | Purchase order, terms, credit limit |\n| Stock | A number in the shop | A live answer from the warehouse system |\n| Search | Product titles | Part numbers, cross-references, fitment, specifications |\n\nEvery row on that list is a fork in the build. Two or three can usually be handled by a platform's business features; seven of them is a platform decision, not a theme decision.\n\n## Why does contract pricing change the architecture?\n\nBecause a price that depends on who is asking cannot be cached like a price that does not.\n\nA retail site can render a product page once and serve it to everybody, which is why retail sites are fast. A B2B site has to decide, per request, whether the visitor is signed in, which price list applies and whether the line is even visible to them. Do that naively and every page becomes slow and uncacheable.\n\nDoing it properly means splitting the page: the public, cacheable part is the description, the specifications and the imagery, and the account-specific part is the price, the availability and the ordering controls. That is exactly the boundary that modern server rendering is designed for, where most of a page is rendered once on the server and only the small personal region is dynamic ([server and client components](https://nextjs.org/docs/app/getting-started/server-and-client-components)).\n\nIt also decides your search engine strategy. The public half is what gets indexed, with `Product` markup describing what a visitor without an account can actually see, which is the condition Google's structured data guidelines set ([product structured data](https://developers.google.com/search/docs/appearance/structured-data/product)). Marking up a contract price nobody else can get is the fastest way to lose your rich results.\n\n## What does quoting have to do with a shop?\n\nEverything, because most B2B transactions do not start with a checkout. They start with \"can you price this list?\"\n\nNorthmark Supply is the clearest version of the problem we have worked on: forty thousand parts, and the only way to ask about any of them was a contact form. Everything else, the catalogue, the specifications, the cross-references, existed only in a system the customer could not reach. Turning that into a searchable catalogue with account pricing and a quoting flow changed the turnaround from days to minutes, and the [case study](/work/northmark-supply/) has the rest of the numbers.\n\nThe mechanics are not complicated. A customer builds a list, either by searching or by pasting part numbers from their own system. The site prices what it can and flags what it cannot. A salesperson reviews anything unusual and releases the quote. The customer converts it to an order without re-entering a thing.\n\nWhat that removes is the inbox. The enquiry stops being an email somebody has to notice, and becomes a record with a state, an owner and a timestamp.\n\n## How much can the platform do on its own?\n\nMore than it could five years ago, and less than a sales deck suggests.\n\nShopify now has native business-to-business objects for companies, locations, catalogues and payment terms, with an API to drive them ([Shopify's B2B documentation](https://shopify.dev/docs/apps/build/b2b)). That covers a good share of the table above for a brand selling a few hundred lines to a few hundred accounts.\n\nWhere it stops is scale and search. A catalogue with tens of thousands of technical lines, fitment relationships and customer-specific part numbers needs a search index and a data model built for it. That is when the answer becomes a [custom commerce build](/services/ecommerce-development/) with the storefront and the search under your control, and it is worth being honest about which side of that line you are on before signing anything. If you are comfortably inside the platform's model, a [Shopify build](/services/shopify-development/) is faster and cheaper, and we will tell you so.\n\n## What does the search layer have to do?\n\nIn a technical catalogue, search is the product. Nobody browses forty thousand parts; they arrive knowing something specific and expect the site to recognise it.\n\nThat means matching on far more than the product title. A buyer might type your part number, the manufacturer's part number, a superseded number from a catalogue printed in 2009, a competitor's equivalent, or a description with the words in the wrong order and a digit missing. All five have to land on the same page.\n\nIt also means filters that reflect how the industry thinks. Dimensions, materials, tolerances, voltages, fitment, compatibility. These are not tags; they are structured attributes with units, and they are only useful if the data behind them is clean. Which is usually the real discovery finding: the catalogue is fine in the ERP and unusable on the web because nobody has ever had to render it for a stranger.\n\nBudget for the data work. On distribution projects it is regularly the largest single piece of the build, and it is the piece that gets discovered in week six if nobody looked first. A day spent exporting the catalogue and counting how many lines have complete attributes tells you more about the project than any demo.\n\n## What does the ERP integration actually involve?\n\nIt is the part that sets the timeline, and it is decided by something you cannot change: what the far end can do.\n\nA system with a documented, supported interface is a few days of mapping fields and agreeing what is authoritative where. A system without one means a nightly export, an import job, a reconciliation report and a conversation about how stale a stock figure is allowed to be. Both can work. Only one of them is quick.\n\nThree questions settle the estimate. Which system owns the customer record, the website or the ERP? Which owns price? And what happens when they disagree, which they will, usually at month end. Write the answers down before anyone builds anything, because retrofitting that decision is the single most expensive change in this kind of project.\n\n## Do you need to replace everything to start?\n\nNo, and we usually argue against it.\n\nThe staged version runs like this. First, make the catalogue findable: real search over your existing product data, public specifications, indexable pages. That alone recovers enquiries you are currently losing to competitors whose parts show up in search and yours do not.\n\nSecond, add accounts and quoting on top. Sign-in, contract pricing, a list builder, a quote that a salesperson releases. This is where the commercial return usually appears, because it removes the delay between interest and a number.\n\nThird, and only if the volume justifies it, add transactional ordering, payment terms and approval workflows. By then you know which customers would actually use it, because you have watched them quote.\n\nEach stage is useful on its own, each one earns while the next is built, and the [portal work](/services/web-application-development/) at the end is smaller because the first two stages already proved what the data model needed to be.\n\n## What should you decide before you brief anyone?\n\nFour things, and none of them is a design decision.\n\nWho your customers are to the system: companies with several buyers, or individuals with accounts. How price is decided, and by which system. What \"in stock\" is allowed to mean, and how out of date that answer can be. And whether the catalogue is small enough to live in the platform or large enough to need a search layer of its own.\n\nAnswer those and any competent agency can price the work honestly. Leave them open and every quote you receive is a guess, which is why quotes for B2B commerce vary so wildly between suppliers.",
+  "services": [
+    {
+      "slug": "ecommerce-development",
+      "title": "Ecommerce development",
+      "summary": "Shopify, WooCommerce or custom, including B2B pricing rules, quoting and ERP integration."
+    },
+    {
+      "slug": "shopify-development",
+      "title": "Shopify development",
+      "summary": "Custom Shopify storefronts, configurators and replatforming for brands that have outgrown a stock theme or a page builder."
+    },
+    {
+      "slug": "web-application-development",
+      "title": "Web application development",
+      "summary": "Portals, dashboards, booking engines and internal tools built on Next.js with a typed API behind them."
+    }
+  ],
+  "caseStudy": {
+    "slug": "northmark-supply",
+    "clientName": "Northmark Supply",
+    "summary": "A catalogue of 40,000 parts behind a contact form. We rebuilt it as a searchable, account-priced quoting platform tied into their ERP.",
+    "tags": [
+      "Ohio, USA",
+      "B2B",
+      "Distribution",
+      "Next.js"
+    ],
+    "image": {
+      "src": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=70",
+      "alt": "Two colleagues reviewing printed figures beside their laptops"
+    },
+    "metrics": [
+      {
+        "value": "+312%",
+        "label": "Quote requests"
+      },
+      {
+        "value": "12 min",
+        "label": "Quote turnaround, from 3 days"
+      },
+      {
+        "value": "−41%",
+        "label": "Support calls"
+      }
+    ]
+  },
+  "relatedArticles": [
+    {
+      "slug": "why-chatgpt-recommends-your-competitor",
+      "title": "Why ChatGPT recommends your competitor",
+      "excerpt": "Language models cite structured, corroborated sources. Here is how to become one of them.",
+      "category": {
+        "slug": "ai-search",
+        "name": "AI search"
+      },
+      "authorName": "Rasel Mridha",
+      "readingTime": 9,
+      "publishedAt": "2026-09-02T09:00:00.000Z",
+      "updatedAt": "2026-09-10T11:30:00.000Z",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?auto=format&fit=crop&w=1200&q=70",
+        "alt": "Analytics charts on a screen"
+      },
+      "featured": false
+    },
+    {
+      "slug": "website-redesign-cost-2026",
+      "title": "What a website redesign should actually cost in 2026",
+      "excerpt": "A line-by-line breakdown of where the money goes, and the three items that quietly double most quotes.",
+      "category": {
+        "slug": "strategy",
+        "name": "Strategy"
+      },
+      "authorName": "Sawkat Hasan",
+      "readingTime": 7,
+      "publishedAt": "2026-08-19T09:00:00.000Z",
+      "updatedAt": "2026-09-08T11:30:00.000Z",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1200&q=70",
+        "alt": "Notebook and laptop on a desk"
+      },
+      "featured": true
+    },
+    {
+      "slug": "core-web-vitals-in-plain-english",
+      "title": "Core Web Vitals in plain English",
+      "excerpt": "The three published thresholds, what each one really measures, and why the lab score and the field report never agree.",
+      "category": {
+        "slug": "engineering",
+        "name": "Engineering"
+      },
+      "authorName": "Rasel Mridha",
+      "readingTime": 6,
+      "publishedAt": "2026-07-22T09:00:00.000Z",
+      "updatedAt": "2026-08-26T11:30:00.000Z",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=70",
+        "alt": "Performance and analytics review before launch"
+      },
+      "featured": false
+    }
+  ],
+  "copy": {
+    "byLabel": "By",
+    "publishedLabel": "Published",
+    "updatedLabel": "Updated",
+    "readingTimeLabel": "min read",
+    "tocLabel": "On this page",
+    "takeawaysLabel": "Key takeaways",
+    "authorLabel": "About the author",
+    "serviceCta": {
+      "eyebrow": "The service behind this article",
+      "body": "If you would rather not run this yourself, this is the work we do and the way we price it. The first call is thirty minutes and costs nothing.",
+      "linkLabel": "See the service",
+      "contactCta": {
+        "label": "Tell us what you need",
+        "href": "/contact/"
+      }
+    },
+    "servicesHeading": "Which services put this into practice?",
+    "caseStudyLinkLabel": "Read the case study",
+    "relatedHeading": "What should you read next?",
+    "relatedLink": {
+      "label": "All insights",
+      "href": "/insights/"
+    },
+    "newsletter": {
+      "heading": "Would you like the next article by email?",
+      "body": "One article a fortnight, on what B2B websites cost, what breaks and what to ask for. No sequences, no upsells, and one click to stop.",
+      "nameLabel": "Full name",
+      "emailLabel": "Work email",
+      "submitLabel": "Subscribe",
+      "privacyNote": "Your name and email are stored in our own database, never sold or passed to a list vendor. Unsubscribe from any email and the record is removed.",
+      "success": {
+        "heading": "You are subscribed.",
+        "body": "A confirmation is on its way. The next article lands in your inbox within a fortnight, and every email carries a one-click unsubscribe."
+      },
+      "unavailable": "We could not send that just now, so nothing has been stored. Please try again in a moment, or email us and we will add you by hand."
+    }
+  }
+}

@@ -33,6 +33,7 @@ export const PAGE_SEEDS: readonly PageSeedLoader[] = [
   () => import('./static.js').then((module) => module.staticSeed),
   () => import('./guides-glossary.js').then((module) => module.guidesGlossarySeed),
   () => import('./calculator.js').then((module) => module.calculatorSeed),
+  () => import('./insights.js').then((module) => module.insightsSeed),
 ];
 
 /**
@@ -45,6 +46,7 @@ export const PAGE_FIXTURES: readonly PageSeedLoader[] = [
   () => import('./work.js').then((module) => module.workFixtures),
   () => import('./company.js').then((module) => module.companyFixtures),
   () => import('./guides-glossary.js').then((module) => module.guidesGlossaryFixtures),
+  () => import('./insights.js').then((module) => module.insightsFixtures),
 ];
 
 export async function runPageSeeds(db: PrismaClient, loaders: readonly PageSeedLoader[]): Promise<void> {
