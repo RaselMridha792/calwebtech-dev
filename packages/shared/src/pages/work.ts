@@ -125,6 +125,10 @@ const workCaseStudyCopySchema = z.object({
     measurement: requiredText(60),
     serviceLink: requiredText(40),
     caseStudyLink: requiredText(40),
+    /** Over the before and after figures, and their column headings. */
+    comparison: requiredText(60),
+    before: requiredText(20),
+    after: requiredText(20),
   }),
   /** How the published figures were measured, shown with the outcome. */
   measurement: requiredText(600),

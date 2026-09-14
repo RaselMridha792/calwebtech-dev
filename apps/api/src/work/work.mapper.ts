@@ -325,7 +325,8 @@ export function toCaseStudyView(sources: WorkCaseStudySources): WorkCaseStudyVie
     quote: testimonialView(project),
     relatedServices: project.services
       .slice(0, 6)
-      .map((service) => ({ slug: service.slug, name: service.title, summary: service.shortDescription })),
+      // A service's description belongs to the services family; fit it to the card rather than fail the page.
+      .map((service) => ({ slug: service.slug, name: service.title, summary: fitText(service.shortDescription, 300) })),
     relatedCaseStudies: relatedCaseStudies(project, sources.others),
     headings,
     labels: copy.labels,

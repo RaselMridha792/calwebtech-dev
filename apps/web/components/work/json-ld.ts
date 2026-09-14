@@ -1,5 +1,6 @@
 import type { TestimonialView } from '@calwebtech/shared';
-import { absoluteUrl, type JsonLdObject, organizationId } from '@/lib/seo/json-ld';
+import { type JsonLdObject, organizationId } from '@/lib/seo/json-ld';
+import { absoluteUrl } from '@/lib/seo/site';
 
 const CONTEXT = 'https://schema.org';
 

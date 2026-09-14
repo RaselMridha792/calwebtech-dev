@@ -262,7 +262,10 @@
     "visitSite": "Visit the site",
     "measurement": "How we measured",
     "serviceLink": "See the service",
-    "caseStudyLink": "Read the case study"
+    "caseStudyLink": "Read the case study",
+    "comparison": "Measured before and after",
+    "before": "Before",
+    "after": "After"
   },
   "publishedAt": "2026-09-14T00:00:00.000Z",
   "updatedAt": "2026-09-14T00:00:00.000Z"
