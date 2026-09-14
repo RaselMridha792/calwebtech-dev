@@ -1,0 +1,317 @@
+{
+  "slug": "care-plans",
+  "title": "Website care plans",
+  "updatedAt": "2026-09-14T00:00:00.000Z",
+  "seo": {
+    "title": "Website care plans and maintenance",
+    "description": "Month-to-month website care: patching, nightly backups with a tested restore, monitoring, four-hour critical response and development hours.",
+    "ogImage": null
+  },
+  "category": {
+    "slug": "growth-and-care",
+    "name": "Growth & care"
+  },
+  "answerBlock": "A website care plan is a monthly service that keeps a site secure, backed up, monitored and improving after launch. Calwebtech care plans cover patching, nightly encrypted backups with a quarterly restore drill, monitoring, a four-hour response on anything critical and a fixed allowance of development hours. Plans start at $1,500 a month and run month to month, with no lock-in.",
+  "hero": {
+    "outcome": "A site that stays patched, backed up and fast, with someone accountable when it breaks and hours in hand for the next improvement.",
+    "primaryCta": {
+      "label": "Get a care plan quote",
+      "href": "#enquire"
+    },
+    "secondaryCta": {
+      "label": "See what is covered",
+      "href": "#included"
+    },
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1800&q=65"
+    }
+  },
+  "price": {
+    "label": "From $1,500 a month",
+    "amount": {
+      "currency": "USD",
+      "min": 1500,
+      "max": null,
+      "unit": "MONTH"
+    }
+  },
+  "problem": {
+    "heading": "When does a website need a care plan?",
+    "intro": "Care plan enquiries usually follow a scare, a departure or a slow decline.",
+    "situations": [
+      {
+        "title": "Nobody has owned the site since launch",
+        "body": "The agency or developer who built it has moved on, updates are months behind and nobody is sure the backups work."
+      },
+      {
+        "title": "Something broke and took days to fix",
+        "body": "A plugin update, an expired certificate or a hosting problem took the site or its forms down, and enquiries were lost before anyone noticed."
+      },
+      {
+        "title": "Small improvements never happen",
+        "body": "The list of changes keeps growing, because each one needs a quote, a purchase order and a wait."
+      }
+    ]
+  },
+  "included": {
+    "heading": "What is included in a website care plan?",
+    "intro": "Every plan includes the essentials below. The development allowance and response times are written into the plan.",
+    "items": [
+      "Security patching and updates, tested on staging before production",
+      "Nightly encrypted backups, kept off-site",
+      "A quarterly restore drill, so the backup is proven, not promised",
+      "Uptime, certificate and form monitoring, with alerts to our team",
+      "A four-hour response on anything critical",
+      "A fixed allowance of development hours each month for improvements",
+      "A quarterly funnel review of enquiries, speed and search health",
+      "Performance and accessibility checks against the site's budget",
+      "Month-to-month terms, with the code and accounts always in your name"
+    ]
+  },
+  "process": {
+    "heading": "How does a website care plan work?",
+    "intro": "Onboarding in the first two weeks, then a steady monthly and quarterly rhythm.",
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1800&q=65"
+    },
+    "steps": [
+      {
+        "title": "Onboarding audit",
+        "duration": "Weeks 1 to 2",
+        "body": "Access, hosting, backups, updates, security and speed reviewed, with anything urgent fixed first and a written list of the rest."
+      },
+      {
+        "title": "Monitoring and patching",
+        "duration": "Every month",
+        "body": "Updates tested on staging and applied, backups checked, and uptime, certificates and forms watched continuously."
+      },
+      {
+        "title": "Development allowance",
+        "duration": "Every month",
+        "body": "Improvements from your list, prioritised with you and delivered from the fixed allowance of hours."
+      },
+      {
+        "title": "Restore drill and review",
+        "duration": "Every quarter",
+        "body": "A backup restored to prove it works, and a funnel review of enquiries, speed and search health with agreed next steps."
+      }
+    ]
+  },
+  "technology": {
+    "heading": "Which platforms do your care plans cover?",
+    "intro": "Sites we built and sites we did not, once the onboarding audit shows they can be looked after safely.",
+    "items": [
+      {
+        "name": "Next.js",
+        "category": "Front end"
+      },
+      {
+        "name": "WordPress",
+        "category": "Content"
+      },
+      {
+        "name": "WooCommerce",
+        "category": "Ecommerce"
+      },
+      {
+        "name": "Shopify",
+        "category": "Ecommerce"
+      },
+      {
+        "name": "PostgreSQL",
+        "category": "Back end"
+      },
+      {
+        "name": "Docker",
+        "category": "Infrastructure"
+      },
+      {
+        "name": "Cloudflare",
+        "category": "Infrastructure"
+      },
+      {
+        "name": "GitHub Actions",
+        "category": "Infrastructure"
+      }
+    ]
+  },
+  "proof": null,
+  "comparison": {
+    "heading": "How does a care plan compare with the alternatives?",
+    "intro": null,
+    "columns": {
+      "us": "Calwebtech",
+      "freelancer": "A freelancer",
+      "pageBuilder": "A page builder",
+      "offshore": "An offshore body shop"
+    },
+    "rows": [
+      {
+        "label": "Backups",
+        "us": "Nightly, encrypted and off-site, with a quarterly restore drill.",
+        "freelancer": "Often set up once and rarely tested.",
+        "pageBuilder": "The platform's own backups, on its terms.",
+        "offshore": "Included if contracted, rarely tested."
+      },
+      {
+        "label": "When something breaks",
+        "us": "A four-hour response on anything critical.",
+        "freelancer": "Depends on their availability.",
+        "pageBuilder": "The vendor's support queue.",
+        "offshore": "A ticket queue across time zones."
+      },
+      {
+        "label": "Improvements",
+        "us": "A fixed allowance of development hours every month.",
+        "freelancer": "Quoted one job at a time.",
+        "pageBuilder": "Limited to what the builder allows.",
+        "offshore": "A new estimate for each change."
+      },
+      {
+        "label": "Commitment",
+        "us": "Month to month, with no lock-in.",
+        "freelancer": "Usually informal.",
+        "pageBuilder": "A subscription tied to the platform.",
+        "offshore": "Often a long minimum term."
+      },
+      {
+        "label": "Who owns the site",
+        "us": "You do, with the code and accounts always in your name.",
+        "freelancer": "Usually you.",
+        "pageBuilder": "The vendor's platform, rented.",
+        "offshore": "Check the contract."
+      }
+    ]
+  },
+  "pricing": {
+    "heading": "How much does a website care plan cost?",
+    "intro": "Plans start at $1,500 a month, month to month. The price follows the size of the development allowance and how much the site depends on integrations.",
+    "factors": [
+      {
+        "title": "Development allowance",
+        "body": "More monthly hours for improvements is the main thing that moves the price."
+      },
+      {
+        "title": "Platform and complexity",
+        "body": "A marketing site is simpler to look after than a store or web application with integrations and background jobs."
+      },
+      {
+        "title": "Hosting",
+        "body": "A plan can include managing hosting on infrastructure in your name, or work with the host you already use."
+      },
+      {
+        "title": "The site's starting point",
+        "body": "A site that is months behind on updates needs a one-off catch-up before the monthly plan starts."
+      }
+    ],
+    "link": {
+      "label": "How our pricing works",
+      "href": "/pricing/"
+    }
+  },
+  "industries": {
+    "heading": "Which industries rely on our care plans?",
+    "intro": null,
+    "items": [
+      {
+        "slug": "healthcare",
+        "name": "Healthcare",
+        "line": "Accessible, multi-location, privacy-first booking."
+      },
+      {
+        "slug": "hospitality",
+        "name": "Hospitality",
+        "line": "Direct booking that beats the commission sites."
+      },
+      {
+        "slug": "professional-services",
+        "name": "Professional services",
+        "line": "Expertise pages, adviser profiles and confidential intake."
+      },
+      {
+        "slug": "manufacturing",
+        "name": "Manufacturing",
+        "line": "Spec sheets, configurators and ERP-accurate inventory."
+      }
+    ]
+  },
+  "testimonial": null,
+  "faq": {
+    "heading": "What do buyers ask about website care plans?",
+    "intro": null,
+    "items": [
+      {
+        "id": "care-plans-faq-1",
+        "question": "Do you look after websites you did not build?",
+        "answer": "Yes, once the onboarding audit shows the site can be looked after safely. If it cannot, we tell you what needs fixing first and quote that separately."
+      },
+      {
+        "id": "care-plans-faq-2",
+        "question": "What counts as a critical issue?",
+        "answer": "Anything that takes the site or its forms down, exposes data, or stops orders or enquiries. Those get a four-hour response. Everything else is handled in the normal monthly rhythm."
+      },
+      {
+        "id": "care-plans-faq-3",
+        "question": "Is there a minimum term?",
+        "answer": "No. Care plans are month to month. If we stop being useful you should be able to leave, and take the code with you."
+      },
+      {
+        "id": "care-plans-faq-4",
+        "question": "What happens to development hours we do not use?",
+        "answer": "The plan sets out how many hours you get each month and what happens to any left over, in writing, before you start. We keep a prioritised list of improvements ready so the hours are easy to use."
+      },
+      {
+        "id": "care-plans-faq-5",
+        "question": "How do you know the backups work?",
+        "answer": "We restore one every quarter. A backup that has never been restored is a hope rather than a backup, so the drill is part of every plan."
+      },
+      {
+        "id": "care-plans-faq-6",
+        "question": "Can our team still make changes while we are on a plan?",
+        "answer": "Yes. Your team keeps full access and publishes content as normal. We ask that code changes go through staging, so updates and backups stay reliable."
+      },
+      {
+        "id": "care-plans-faq-7",
+        "question": "Can we move the site elsewhere later?",
+        "answer": "Yes. The code, database and accounts stay in your name throughout, so leaving needs a handover call rather than a negotiation."
+      }
+    ]
+  },
+  "enquiry": {
+    "heading": "How do I get a care plan quote?",
+    "intro": "Send the address of your site and what worries you about it today. We reply within one business day, and the quote follows a short look at the site.",
+    "submitLabel": "Get my care plan quote",
+    "footnote": "Protected by bot filtering. We never sell or share your details, and you can ask us to delete them at any time.",
+    "success": {
+      "heading": "Thanks. Your request is with us.",
+      "body": "We will look at your site and reply by email within one business day."
+    }
+  },
+  "related": {
+    "heading": "Which services often go with a care plan?",
+    "intro": null,
+    "items": [
+      {
+        "slug": "ai-search-visibility",
+        "title": "AI search visibility",
+        "summary": "Technical SEO plus the newer work of being cited by ChatGPT, Perplexity, Gemini and AI overviews.",
+        "priceLabel": "From $1,500 a month",
+        "updatedAt": "2026-09-14T00:00:00.000Z"
+      },
+      {
+        "slug": "ai-integration",
+        "title": "AI integration",
+        "summary": "Qualification assistants, search, content tooling and workflow automation wired into your own data.",
+        "priceLabel": "$12,000 to $60,000",
+        "updatedAt": "2026-09-14T00:00:00.000Z"
+      },
+      {
+        "slug": "custom-website-development",
+        "title": "Custom website development",
+        "summary": "Research-led design built around how your buyers actually decide, not around a template's section order.",
+        "priceLabel": "$12,000 to $25,000",
+        "updatedAt": "2026-09-14T00:00:00.000Z"
+      }
+    ]
+  }
+}

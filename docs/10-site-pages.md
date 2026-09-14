@@ -59,7 +59,7 @@ integrator merges the lines.
 | `packages/shared/src/index.ts` | `export * from './pages/<family>';` |
 | `apps/api/src/app.module.ts` | one import line below the import marker, and the module below the `imports` marker |
 | `apps/web/lib/sitemap-sources.ts` | `() => import('@/lib/api/<family>').then((module) => module.sitemapEntries()),` |
-| `packages/db/src/seed/pages/index.ts` | `() => import('./<family>').then((module) => module.<family>Seed),` in `PAGE_SEEDS`, and the same for fixtures in `PAGE_FIXTURES`, only if the family seeds anything |
+| `packages/db/src/seed/pages/index.ts` | `() => import('./<family>.js').then((module) => module.<family>Seed),` in `PAGE_SEEDS`, and the same for fixtures in `PAGE_FIXTURES`, only if the family seeds anything |
 
 Name every export after the family (`serviceDetailViewSchema`, not `detailViewSchema`):
 `export *` fails on two exports with the same name.

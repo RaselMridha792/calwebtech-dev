@@ -1,0 +1,273 @@
+{
+  "slug": "truvia-labs",
+  "clientName": "Truvia Labs",
+  "title": "Truvia Labs: marketing site, docs and onboarding on one design system",
+  "answerBlock": "Truvia Labs is a SaaS company in Texas whose product releases kept breaking the brand across its marketing site, documentation and in-app onboarding. We rebuilt all three on one design system, with the marketing site on Next.js. Demo bookings rose 140%, organic sessions grew 3.1x and the site scores 98 in Lighthouse on mobile.",
+  "summary": "Marketing site, docs and in-app onboarding rebuilt on one design system so releases stopped breaking the brand.",
+  "seo": {
+    "title": "Truvia Labs: SaaS design system case study",
+    "description": "How Truvia Labs put its marketing site, docs and in-app onboarding on one design system: demo bookings up 140% and organic sessions up 3.1x.",
+    "ogImage": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=70"
+  },
+  "eyebrow": "Case study",
+  "cover": {
+    "src": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=70",
+    "alt": "Overhead view of a shared desk with several laptops and phones in use"
+  },
+  "headline": {
+    "label": "Headline result",
+    "metric": {
+      "value": "+140%",
+      "label": "Demo bookings"
+    }
+  },
+  "metrics": [
+    {
+      "value": "+140%",
+      "label": "Demo bookings"
+    },
+    {
+      "value": "3.1x",
+      "label": "Organic sessions"
+    },
+    {
+      "value": "98",
+      "label": "Lighthouse mobile"
+    }
+  ],
+  "atAGlance": {
+    "industry": {
+      "slug": "saas",
+      "name": "SaaS and technology"
+    },
+    "services": [
+      {
+        "slug": "custom-website-development",
+        "name": "Custom website development"
+      },
+      {
+        "slug": "nextjs-development",
+        "name": "Next.js development"
+      },
+      {
+        "slug": "ai-search-visibility",
+        "name": "AI search visibility"
+      }
+    ],
+    "platforms": [
+      {
+        "slug": "nextjs",
+        "name": "Next.js"
+      }
+    ],
+    "location": "Texas, USA",
+    "duration": null,
+    "year": null,
+    "liveUrl": null
+  },
+  "challenge": [
+    "Truvia's marketing site, product documentation and in-app onboarding were three separate surfaces, each carrying the brand in its own way. A product release could leave them disagreeing about how Truvia looks and speaks.",
+    "For a SaaS company those three places are one journey. A buyer reads the site, a trial user reads the docs and a new customer meets the onboarding, so when they drift apart the brand breaks at the moments that decide whether someone books a demo or stays."
+  ],
+  "approach": [
+    "We built one design system and put all three surfaces on it, instead of restyling each one separately. Tokens and components are defined once and used everywhere, so a change is made in one place.",
+    "Each page was given one job, the principle we apply to every build: one primary action per page, with the proof beside it."
+  ],
+  "build": [
+    "The marketing site is built on Next.js on top of the shared design system, and the documentation and in-app onboarding use the same components, so they change in step with the product.",
+    "Performance was built in rather than added at the end. The site scores 98 in Lighthouse on mobile."
+  ],
+  "gallery": [
+    {
+      "src": "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=1200&q=70",
+      "alt": "Colour swatches and printed palettes spread across a design desk"
+    },
+    {
+      "src": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=70",
+      "alt": "A laptop on a glass desk showing an analytics dashboard with charts"
+    },
+    {
+      "src": "https://images.unsplash.com/photo-1558655146-9f40138edfeb?auto=format&fit=crop&w=1200&q=70",
+      "alt": "A designer drawing on a tablet with a stylus beside a keyboard"
+    }
+  ],
+  "beforeAfter": null,
+  "outcome": [
+    "Demo bookings rose 140% and organic sessions grew 3.1x. Releases no longer break the brand, because the marketing site, docs and onboarding draw on the same system."
+  ],
+  "measurement": "Commercial figures come from the client's own analytics, twelve months after launch, and every figure is one the client agreed to publish. Speed and accessibility results, such as load times, Lighthouse scores and WCAG conformance, are measured on the live site.",
+  "quote": {
+    "id": "testimonial-priya-raman",
+    "quote": "They pushed back on half of what we asked for and were right about most of it. The site does one job on every page now, and our enquiry quality went up before the volume did.",
+    "clientName": "Priya Raman",
+    "role": "VP Marketing",
+    "company": "Truvia Labs",
+    "rating": 5,
+    "avatar": {
+      "src": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=70"
+    }
+  },
+  "videoTestimonial": null,
+  "relatedServices": [
+    {
+      "slug": "custom-website-development",
+      "name": "Custom website development",
+      "summary": "Research-led design built around how your buyers actually decide, not around a template's section order."
+    },
+    {
+      "slug": "nextjs-development",
+      "name": "Next.js development",
+      "summary": "Fast, typed Next.js and React builds, including headless CMS setups your team can publish from without a developer."
+    },
+    {
+      "slug": "ai-search-visibility",
+      "name": "AI search visibility",
+      "summary": "Technical SEO plus the newer work of being cited by ChatGPT, Perplexity, Gemini and AI overviews."
+    }
+  ],
+  "relatedCaseStudies": [
+    {
+      "slug": "meridian-parts",
+      "clientName": "Meridian Parts",
+      "summary": "Fitment search across 90,000 SKUs, so a technician finds the right part on a phone in a workshop.",
+      "tags": [
+        "Michigan, USA",
+        "Manufacturing",
+        "Headless CMS"
+      ],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=900&q=70",
+        "alt": "A developer reviewing code across two monitors"
+      },
+      "metrics": [
+        {
+          "value": "+207%",
+          "label": "Organic traffic"
+        },
+        {
+          "value": "−63%",
+          "label": "Wrong-part returns"
+        },
+        {
+          "value": "4.2x",
+          "label": "Repeat orders"
+        }
+      ],
+      "industry": "manufacturing",
+      "services": [
+        "ecommerce-development",
+        "nextjs-development",
+        "ai-search-visibility"
+      ],
+      "platforms": [
+        "headless-cms"
+      ]
+    },
+    {
+      "slug": "northmark-supply",
+      "clientName": "Northmark Supply",
+      "summary": "A catalogue of 40,000 parts behind a contact form. We rebuilt it as a searchable, account-priced quoting platform tied into their ERP.",
+      "tags": [
+        "Ohio, USA",
+        "B2B",
+        "Distribution",
+        "Next.js"
+      ],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=70",
+        "alt": "Two colleagues reviewing printed figures beside their laptops"
+      },
+      "metrics": [
+        {
+          "value": "+312%",
+          "label": "Quote requests"
+        },
+        {
+          "value": "12 min",
+          "label": "Quote turnaround, from 3 days"
+        },
+        {
+          "value": "−41%",
+          "label": "Support calls"
+        }
+      ],
+      "industry": "distribution",
+      "services": [
+        "ecommerce-development",
+        "web-application-development",
+        "nextjs-development"
+      ],
+      "platforms": [
+        "nextjs"
+      ]
+    },
+    {
+      "slug": "verona-home",
+      "clientName": "Verona Home",
+      "summary": "A furniture brand stuck on a page builder, replatformed with a configurator for made-to-order pieces.",
+      "tags": [
+        "California, USA",
+        "D2C",
+        "Shopify"
+      ],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=900&q=70",
+        "alt": "A warehouse floor lined with shelving, cartons and yellow crates ready for dispatch"
+      },
+      "metrics": [
+        {
+          "value": "$2.4M",
+          "label": "First-year revenue"
+        },
+        {
+          "value": "+68%",
+          "label": "Add to cart"
+        },
+        {
+          "value": "1.4s",
+          "label": "Mobile LCP"
+        }
+      ],
+      "industry": "ecommerce-and-d2c",
+      "services": [
+        "ecommerce-development",
+        "shopify-development",
+        "website-redesign"
+      ],
+      "platforms": [
+        "shopify"
+      ]
+    }
+  ],
+  "headings": {
+    "metrics": "What results did Truvia Labs get?",
+    "atAGlance": "What did the Truvia Labs project involve?",
+    "challenge": "What problem did Truvia Labs need to solve?",
+    "approach": "How did we approach the Truvia Labs project?",
+    "build": "What did we build for Truvia Labs?",
+    "gallery": "What does this kind of work look like in practice?",
+    "beforeAfter": "What did the Truvia Labs site look like before and after?",
+    "outcome": "What changed for Truvia Labs after launch?",
+    "quote": "What does Truvia Labs say about working with us?",
+    "relatedServices": "Which services did this project use?",
+    "relatedCaseStudies": "Which other projects are like this one?"
+  },
+  "labels": {
+    "industry": "Industry",
+    "services": "Services",
+    "platform": "Platform",
+    "location": "Location",
+    "duration": "Duration",
+    "year": "Year",
+    "liveSite": "Live site",
+    "visitSite": "Visit the site",
+    "measurement": "How we measured",
+    "serviceLink": "See the service",
+    "caseStudyLink": "Read the case study",
+    "comparison": "Measured before and after",
+    "before": "Before",
+    "after": "After"
+  },
+  "publishedAt": "2026-09-14T00:00:00.000Z",
+  "updatedAt": "2026-09-14T00:00:00.000Z"
+}

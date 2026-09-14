@@ -1,0 +1,138 @@
+{
+  "content": {
+    "seo": {
+      "title": "Industries we design and build websites for",
+      "description": "Websites and web applications for manufacturing, distribution, retail, SaaS, healthcare, real estate, hospitality, professional services and education.",
+      "ogImage": null
+    },
+    "title": "Industries we build websites for",
+    "answerBlock": "Calwebtech designs and builds websites, ecommerce platforms and web applications for manufacturers, distributors, retail and D2C brands, SaaS companies, healthcare providers, real estate firms, hospitality businesses, professional services firms and education providers. Each industry page covers the problems a website in that sector has to solve, the systems it connects to and, where we have published it, the work we delivered there.",
+    "intro": "Tiered pricing, fitment data, compliance copy, multi-location booking. The parts that break generic builds are the parts we have shipped before.",
+    "primaryCta": {
+      "label": "Discuss your project",
+      "href": "/contact/"
+    },
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1600&q=60"
+    },
+    "list": {
+      "heading": "Which industries do we build websites for?",
+      "intro": "Each page starts with the problems buyers in that sector run into, then shows the services and integrations that fit, and the results where we have published them.",
+      "empty": "No industry pages are published right now. Tell us about your sector and we will walk you through the most relevant work.",
+      "cardLinkLabel": "See the industry"
+    },
+    "notListed": {
+      "heading": "Not listed here?",
+      "body": "We have shipped in 30 more. Tell us the awkward part of yours.",
+      "cta": {
+        "label": "Start the conversation",
+        "href": "/contact/"
+      }
+    },
+    "approach": {
+      "heading": "Why does industry experience change how a website is built?",
+      "intro": "A website that fits one sector well usually fails another in the details. These are the details we settle before design starts.",
+      "items": [
+        {
+          "title": "The data model comes first",
+          "body": "A distributor's catalogue, a clinic's locations and a hotel's room types are not pages. We model them as content types your team edits, so the site matches how the business actually works."
+        },
+        {
+          "title": "Integrations are scoped before design",
+          "body": "ERP, practice management, MLS and property management systems decide what a website can promise. We check what their interfaces allow in discovery, not halfway through the build."
+        },
+        {
+          "title": "Compliance is designed in",
+          "body": "Accessibility, consent, pricing disclosure and data handling rules shape forms and templates. Designing for them from the first wireframe costs far less than retrofitting them after launch."
+        },
+        {
+          "title": "Leads stay in a database you own",
+          "body": "Every enquiry, booking and application lands in your own database with its source attached, so sector-specific routing and reporting are yours to change."
+        }
+      ]
+    }
+  },
+  "industries": [
+    {
+      "slug": "manufacturing",
+      "name": "Manufacturing",
+      "line": "Spec sheets, configurators and ERP-accurate inventory.",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=600&q=70",
+        "alt": "A developer reviewing code on a monitor in a bright open-plan office"
+      }
+    },
+    {
+      "slug": "distribution",
+      "name": "Distribution and supply",
+      "line": "Account pricing, fast reordering and quotes tied into your ERP.",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=600&q=70",
+        "alt": "Tall racking stacked with boxed stock along a distribution warehouse aisle"
+      }
+    },
+    {
+      "slug": "ecommerce-and-d2c",
+      "name": "Retail and D2C",
+      "line": "Storefronts tuned against real checkout drop-off.",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=600&q=70",
+        "alt": "A clothing boutique with shelves of folded shirts and bags beside rails of jackets"
+      }
+    },
+    {
+      "slug": "saas",
+      "name": "SaaS and technology",
+      "line": "Marketing site, docs and product on one system.",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=600&q=70",
+        "alt": "Two software developers reviewing code together on a laptop"
+      }
+    },
+    {
+      "slug": "healthcare",
+      "name": "Healthcare",
+      "line": "Accessible, multi-location, privacy-first booking.",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=600&q=70",
+        "alt": "A stethoscope beside a laptop as a clinician types notes"
+      }
+    },
+    {
+      "slug": "real-estate",
+      "name": "Real estate",
+      "line": "Listing search, agent tools and lead routing.",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=600&q=70",
+        "alt": "A model house and a set of keys on a wooden table"
+      }
+    },
+    {
+      "slug": "hospitality",
+      "name": "Hospitality",
+      "line": "Direct booking that beats the commission sites.",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=600&q=70",
+        "alt": "Sun loungers beside a hotel pool at a waterfront resort"
+      }
+    },
+    {
+      "slug": "professional-services",
+      "name": "Professional services",
+      "line": "Expertise pages, adviser profiles and confidential intake.",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=70",
+        "alt": "Two colleagues talking across a meeting table, one taking notes beside an open laptop"
+      }
+    },
+    {
+      "slug": "education",
+      "name": "Education",
+      "line": "Programme discovery and application funnels.",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=600&q=70",
+        "alt": "Graduates in gowns throwing their caps into the air"
+      }
+    }
+  ]
+}

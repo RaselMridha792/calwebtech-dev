@@ -1,0 +1,329 @@
+{
+  "copy": {
+    "seo": {
+      "title": "Case studies and client results",
+      "description": "Case studies in distribution, retail, SaaS, healthcare and manufacturing, each with the figures the client agreed to publish. Filter by industry.",
+      "ogImage": null
+    },
+    "eyebrow": "Our work",
+    "title": "Case studies, with the numbers our clients kept",
+    "intro": "Every project here is measured in the client's own analytics, twelve months after launch, and every figure is one they agreed to publish. Filter by industry, service or platform to find work like yours.",
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1800&q=65"
+    },
+    "primaryCta": {
+      "label": "Start a project",
+      "href": "/contact/"
+    },
+    "highlightsLabel": "Headline results",
+    "summaryLabels": {
+      "caseStudies": "Case studies",
+      "industries": "Industries",
+      "services": "Services",
+      "platforms": "Platforms"
+    },
+    "filters": {
+      "label": "Filter case studies",
+      "industry": "Industry",
+      "service": "Service",
+      "platform": "Platform",
+      "all": "All",
+      "clear": "Clear filters"
+    },
+    "resultsHeading": "Which projects are closest to yours?",
+    "empty": "No case studies are published at the moment. Get in touch and we will talk you through work that is similar to your project.",
+    "noMatches": "No case study matches every filter you have chosen. Remove one of them, or clear the filters to see all of our work.",
+    "caseStudyLabel": "Read the case study",
+    "proofHeading": "What do the numbers across all of our work say?",
+    "proofIntro": "The case studies above are the projects clients agreed to publish in full. These figures cover our client work since 2014, alongside what clients say about us in reviews.",
+    "ratingLabel": "Average rating from client reviews",
+    "targets": []
+  },
+  "caseStudies": [
+    {
+      "slug": "northmark-supply",
+      "clientName": "Northmark Supply",
+      "summary": "A catalogue of 40,000 parts behind a contact form. We rebuilt it as a searchable, account-priced quoting platform tied into their ERP.",
+      "tags": [
+        "Ohio, USA",
+        "B2B",
+        "Distribution",
+        "Next.js"
+      ],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=70",
+        "alt": "Two colleagues reviewing printed figures beside their laptops"
+      },
+      "metrics": [
+        {
+          "value": "+312%",
+          "label": "Quote requests"
+        },
+        {
+          "value": "12 min",
+          "label": "Quote turnaround, from 3 days"
+        },
+        {
+          "value": "−41%",
+          "label": "Support calls"
+        }
+      ],
+      "industry": "distribution",
+      "services": [
+        "ecommerce-development",
+        "web-application-development",
+        "nextjs-development"
+      ],
+      "platforms": [
+        "nextjs"
+      ]
+    },
+    {
+      "slug": "verona-home",
+      "clientName": "Verona Home",
+      "summary": "A furniture brand stuck on a page builder, replatformed with a configurator for made-to-order pieces.",
+      "tags": [
+        "California, USA",
+        "D2C",
+        "Shopify"
+      ],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=900&q=70",
+        "alt": "A warehouse floor lined with shelving, cartons and yellow crates ready for dispatch"
+      },
+      "metrics": [
+        {
+          "value": "$2.4M",
+          "label": "First-year revenue"
+        },
+        {
+          "value": "+68%",
+          "label": "Add to cart"
+        },
+        {
+          "value": "1.4s",
+          "label": "Mobile LCP"
+        }
+      ],
+      "industry": "ecommerce-and-d2c",
+      "services": [
+        "ecommerce-development",
+        "shopify-development",
+        "website-redesign"
+      ],
+      "platforms": [
+        "shopify"
+      ]
+    },
+    {
+      "slug": "truvia-labs",
+      "clientName": "Truvia Labs",
+      "summary": "Marketing site, docs and in-app onboarding rebuilt on one design system so releases stopped breaking the brand.",
+      "tags": [
+        "Texas, USA",
+        "SaaS",
+        "Next.js"
+      ],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=70",
+        "alt": "Overhead view of a shared desk with several laptops and phones in use"
+      },
+      "metrics": [
+        {
+          "value": "+140%",
+          "label": "Demo bookings"
+        },
+        {
+          "value": "3.1x",
+          "label": "Organic sessions"
+        },
+        {
+          "value": "98",
+          "label": "Lighthouse mobile"
+        }
+      ],
+      "industry": "saas",
+      "services": [
+        "custom-website-development",
+        "nextjs-development",
+        "ai-search-visibility"
+      ],
+      "platforms": [
+        "nextjs"
+      ]
+    },
+    {
+      "slug": "cascadia-health",
+      "clientName": "Cascadia Health",
+      "summary": "Fourteen clinic sites merged into one accessible platform with location-aware appointment booking.",
+      "tags": [
+        "Oregon, USA",
+        "Healthcare",
+        "WordPress"
+      ],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=900&q=70",
+        "alt": "Hands typing on a laptop beside a stethoscope"
+      },
+      "metrics": [
+        {
+          "value": "+91%",
+          "label": "Online bookings"
+        },
+        {
+          "value": "14→1",
+          "label": "Sites to maintain"
+        },
+        {
+          "value": "AA",
+          "label": "WCAG 2.2 verified"
+        }
+      ],
+      "industry": "healthcare",
+      "services": [
+        "website-redesign",
+        "wordpress-development"
+      ],
+      "platforms": [
+        "wordpress"
+      ]
+    },
+    {
+      "slug": "meridian-parts",
+      "clientName": "Meridian Parts",
+      "summary": "Fitment search across 90,000 SKUs, so a technician finds the right part on a phone in a workshop.",
+      "tags": [
+        "Michigan, USA",
+        "Manufacturing",
+        "Headless CMS"
+      ],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=900&q=70",
+        "alt": "A developer reviewing code across two monitors"
+      },
+      "metrics": [
+        {
+          "value": "+207%",
+          "label": "Organic traffic"
+        },
+        {
+          "value": "−63%",
+          "label": "Wrong-part returns"
+        },
+        {
+          "value": "4.2x",
+          "label": "Repeat orders"
+        }
+      ],
+      "industry": "manufacturing",
+      "services": [
+        "ecommerce-development",
+        "nextjs-development",
+        "ai-search-visibility"
+      ],
+      "platforms": [
+        "headless-cms"
+      ]
+    }
+  ],
+  "filters": {
+    "industries": [
+      {
+        "slug": "distribution",
+        "name": "Distribution and supply"
+      },
+      {
+        "slug": "healthcare",
+        "name": "Healthcare"
+      },
+      {
+        "slug": "manufacturing",
+        "name": "Manufacturing"
+      },
+      {
+        "slug": "ecommerce-and-d2c",
+        "name": "Retail and D2C"
+      },
+      {
+        "slug": "saas",
+        "name": "SaaS and technology"
+      }
+    ],
+    "services": [
+      {
+        "slug": "ai-search-visibility",
+        "name": "AI search visibility"
+      },
+      {
+        "slug": "custom-website-development",
+        "name": "Custom website development"
+      },
+      {
+        "slug": "ecommerce-development",
+        "name": "Ecommerce development"
+      },
+      {
+        "slug": "nextjs-development",
+        "name": "Next.js development"
+      },
+      {
+        "slug": "shopify-development",
+        "name": "Shopify development"
+      },
+      {
+        "slug": "web-application-development",
+        "name": "Web application development"
+      },
+      {
+        "slug": "website-redesign",
+        "name": "Website redesign"
+      },
+      {
+        "slug": "wordpress-development",
+        "name": "WordPress development"
+      }
+    ],
+    "platforms": [
+      {
+        "slug": "headless-cms",
+        "name": "Headless CMS"
+      },
+      {
+        "slug": "nextjs",
+        "name": "Next.js"
+      },
+      {
+        "slug": "shopify",
+        "name": "Shopify"
+      },
+      {
+        "slug": "wordpress",
+        "name": "WordPress"
+      }
+    ]
+  },
+  "proof": {
+    "statistics": [
+      {
+        "value": "240+",
+        "label": "Projects shipped since 2014"
+      },
+      {
+        "value": "187%",
+        "label": "Average uplift in qualified leads"
+      },
+      {
+        "value": "94%",
+        "label": "Clients still with us after a year"
+      },
+      {
+        "value": "31",
+        "label": "Industries we have shipped in"
+      }
+    ],
+    "rating": {
+      "average": 4.9,
+      "reviewCount": 217
+    }
+  }
+}

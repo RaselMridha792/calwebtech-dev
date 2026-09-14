@@ -1,0 +1,73 @@
+{
+  "type": "project",
+  "seo": {
+    "title": "Thank you: project request received",
+    "description": "Your project request has reached Calwebtech. Here is what happens next, when you will hear from us and when the proposal follows.",
+    "ogImage": null
+  },
+  "eyebrow": "Project request received",
+  "title": "Thanks. Your project request is with us.",
+  "intro": "Your details and your notes about the project have gone straight to the people who scope and price our work. A confirmation email is on its way to the address you gave.",
+  "received": {
+    "heading": "What you sent us",
+    "items": [
+      "Your name, work email and company",
+      "Your current website and the services you are interested in",
+      "Your budget range, when you want to start and your notes about the project"
+    ]
+  },
+  "response": {
+    "label": "Expect a reply",
+    "value": "Within one business day",
+    "detail": "A person emails you to book a thirty minute call. The written proposal follows within two business days of that call."
+  },
+  "nextSteps": {
+    "heading": "What happens next",
+    "steps": [
+      {
+        "title": "We review your request",
+        "body": "We look at your current site and what you told us, so the first conversation starts from your situation rather than a script."
+      },
+      {
+        "title": "A thirty minute call",
+        "body": "At a time that suits you. Send your NDA beforehand if you need one and we will sign it before we talk."
+      },
+      {
+        "title": "You get a written proposal",
+        "body": "Scope, timeline, a fixed price and exclusions, in writing, with no obligation. If we are not the right fit, we say so."
+      }
+    ]
+  },
+  "secondary": {
+    "heading": "While you wait",
+    "body": "See how a project runs week by week, including what we will need from your team and when.",
+    "cta": {
+      "label": "Read how a project runs",
+      "href": "/process/"
+    }
+  },
+  "links": [
+    {
+      "label": "Pricing",
+      "href": "/pricing/"
+    },
+    {
+      "label": "Case studies",
+      "href": "/work/"
+    },
+    {
+      "label": "Questions and answers",
+      "href": "/faq/"
+    }
+  ],
+  "image": {
+    "src": "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=72",
+    "alt": "A project team planning a website with sticky notes on a whiteboard"
+  },
+  "callLabel": "Prefer to talk? Call us",
+  "contact": {
+    "phone": "+1 (800) 555-0188",
+    "phoneE164": "+18005550188",
+    "email": "hello@calwebtech.com"
+  }
+}

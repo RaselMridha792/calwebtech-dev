@@ -1,0 +1,176 @@
+{
+  "slug": "education",
+  "name": "Education",
+  "title": "Education website design for schools and colleges",
+  "seo": {
+    "title": "School and college website design",
+    "description": "Websites for schools, colleges and training providers: programme finders, open day booking and application funnels that turn enquiries into applications.",
+    "ogImage": "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1200&h=630&q=75"
+  },
+  "answerBlock": "An education website has to help prospective students and parents find the right programme, understand entry requirements and costs, and take the next step, whether that is booking an open day or starting an application. Calwebtech builds websites for schools, colleges and training providers with programme finders, event booking and application funnels connected to your admissions systems. Every enquiry is stored in a database you own.",
+  "updatedAt": "2026-09-14T00:00:00.000Z",
+  "hero": {
+    "intro": "Prospective students compare courses on a phone between classes, and parents read every word about fees. We build programme pages that answer both, and an enquiry and application path admissions teams can follow up properly.",
+    "primaryCta": {
+      "label": "Discuss your project",
+      "href": "/contact/"
+    },
+    "secondaryCta": {
+      "label": "See what it costs",
+      "href": "/pricing/"
+    },
+    "highlights": [
+      "Programme finder by subject, level and study mode",
+      "Open day and campus visit booking",
+      "Applications connected to your admissions CRM",
+      "Every template built to WCAG 2.2 AA"
+    ],
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1600&q=60"
+    },
+    "line": "Programme discovery and application funnels."
+  },
+  "painPoints": {
+    "heading": "Why do education websites lose prospective students?",
+    "intro": "Most institution websites are organised around departments, while applicants think in programmes.",
+    "items": [
+      {
+        "title": "Programmes buried in department pages",
+        "body": "A student looking for a part-time evening course has to know which faculty runs it before they can find it, and many give up first."
+      },
+      {
+        "title": "Fees, funding and entry requirements hard to find",
+        "body": "The details applicants and parents care about most sit in PDFs or separate pages, so they email admissions or move on to an institution that answers clearly."
+      },
+      {
+        "title": "Open day sign-ups that go nowhere",
+        "body": "Event registrations are collected in a separate tool, so admissions cannot see who attended, who applied afterwards or who needs a follow-up."
+      },
+      {
+        "title": "Course details that disagree",
+        "body": "Programme pages are maintained by dozens of staff with no workflow, so pages contradict each other on start dates, fees and modules."
+      }
+    ]
+  },
+  "services": {
+    "heading": "Which services does a school, college or training provider need from a web partner?",
+    "intro": "Education projects usually restructure content around programmes before anything is redesigned.",
+    "items": [
+      {
+        "slug": "custom-website-development",
+        "title": "Custom website development",
+        "body": "Programme-first design for course pages, fees and funding, entry requirements and student life, written for applicants and parents."
+      },
+      {
+        "slug": "wordpress-development",
+        "title": "WordPress development",
+        "body": "A WordPress platform with programmes, events and staff profiles as structured content, and editorial roles for departments."
+      },
+      {
+        "slug": "web-application-development",
+        "title": "Web application development",
+        "body": "Programme finders, open day booking and multi-step enquiry and application forms connected to admissions."
+      },
+      {
+        "slug": "ai-search-visibility",
+        "title": "AI search visibility",
+        "body": "Programme structured data and answer-shaped course content, so search engines and AI assistants return your courses for the questions students ask."
+      },
+      {
+        "slug": "care-plans",
+        "title": "Website care plans",
+        "body": "Security patching, accessibility checks on new content, backups with a tested restore and a development allowance for each intake cycle."
+      }
+    ]
+  },
+  "compliance": {
+    "heading": "What privacy and accessibility rules does an education website have to meet?",
+    "intro": "Education websites serve young people, parents and disabled students, so privacy and accessibility shape every form and template.",
+    "notes": [
+      {
+        "title": "Accessibility obligations",
+        "body": "A federal ADA rule requires public colleges and school districts in the US to meet WCAG 2.1 AA, and private institutions face the same expectation through complaints. We build to WCAG 2.2 AA and test with keyboards and screen readers."
+      },
+      {
+        "title": "Student records",
+        "body": "Records covered by FERPA stay in your student information system. The website collects enquiries and applications only, and passes them to admissions systems over secure connections."
+      },
+      {
+        "title": "Children under thirteen",
+        "body": "Websites aimed at younger children do not collect personal information without verifiable parental consent under COPPA, and keep third-party tracking off those pages."
+      },
+      {
+        "title": "Accurate course information",
+        "body": "Fees, entry requirements and start dates are managed as data with an owner and a review date, so marketing pages match what admissions and finance publish."
+      }
+    ]
+  },
+  "caseStudies": null,
+  "results": null,
+  "integrations": {
+    "heading": "Which systems does an education website usually connect to?",
+    "intro": "Admissions data lives in systems your registry already runs. The website feeds them rather than replacing them.",
+    "items": [
+      {
+        "name": "Admissions CRM",
+        "body": "Slate, Salesforce Education Cloud or Ellucian CRM Recruit, with every enquiry and event attendee recorded against the prospect."
+      },
+      {
+        "name": "Student information systems",
+        "body": "Ellucian Banner, Colleague or PowerSchool as the source for programme codes, terms and start dates."
+      },
+      {
+        "name": "Learning management systems",
+        "body": "Links into Canvas, Moodle or Blackboard for current students, kept separate from public marketing pages."
+      },
+      {
+        "name": "Open day and event booking",
+        "body": "Campus visit and open day registration with reminders, attendance tracking and follow-up in the admissions CRM."
+      },
+      {
+        "name": "Online payments",
+        "body": "Application fees and deposits through hosted payment pages from your payment provider."
+      },
+      {
+        "name": "Course search",
+        "body": "A programme finder with filters for subject, level, study mode and start date, fed by the same data as the course pages."
+      }
+    ]
+  },
+  "faq": {
+    "heading": "What do schools and colleges ask before a new website?",
+    "intro": "The questions admissions, marketing and IT teams raise before a project starts.",
+    "items": [
+      {
+        "id": "education-faq-crm",
+        "question": "Can the website connect to our admissions CRM?",
+        "answer": "Yes. Enquiries, open day registrations and application starts are sent to CRMs such as Slate or Salesforce Education Cloud with the programme, source and campaign attached, and every submission is also stored in your own database."
+      },
+      {
+        "id": "education-faq-catalogue",
+        "question": "How do you organise hundreds of courses on one website?",
+        "answer": "We model programmes as structured content with subject, level, study mode, campus and start dates, then build a programme finder and consistent course pages from that data. Departments edit their own programmes within one template, so pages stay consistent."
+      },
+      {
+        "id": "education-faq-accessibility",
+        "question": "Is the website accessible for disabled students?",
+        "answer": "We build to WCAG 2.2 AA as the working standard, with keyboard operation, sufficient contrast, labelled forms and accessible documents, and test before launch. Care plans include accessibility checks on new content."
+      },
+      {
+        "id": "education-faq-events",
+        "question": "Can prospective students book open days and campus tours online?",
+        "answer": "Yes. Events are content types with capacity, reminders and attendance tracking, and every registration flows to your admissions CRM so the team can follow up with attendees."
+      },
+      {
+        "id": "education-faq-departments",
+        "question": "Can departments update their own pages?",
+        "answer": "Yes, with roles and review. Department editors update their programmes and news, while changes to fees, entry requirements and start dates can require approval from admissions before they publish."
+      },
+      {
+        "id": "education-faq-cost",
+        "question": "How much does a school or college website cost?",
+        "answer": "A focused website for a school or training provider with custom design, a CMS and enquiry capture usually sits in our focused build range of $12k to $25k. Institutions with large programme catalogues, CRM integration, event booking and application flows need a platform build, usually $25k to $60k."
+      }
+    ]
+  }
+}

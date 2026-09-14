@@ -1,0 +1,57 @@
+{
+  "copy": {
+    "seo": {
+      "title": "Website redesigns, before and after",
+      "description": "Client websites before and after we rebuilt them, compared on the same screen, with the load time, bounce rate and enquiries measured on each side.",
+      "ogImage": null
+    },
+    "eyebrow": "Before and after",
+    "title": "Website redesigns, before and after",
+    "intro": "Most of our work is a rescue, not a launch. Drag each comparison to see a client's homepage before and after the rebuild, at the same scroll position on the same screen, with the figures that moved.",
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1800&q=65"
+    },
+    "metricsLabel": "Measured before and after",
+    "beforeLabel": "Before",
+    "afterLabel": "After",
+    "caseStudyLabel": "Read the case study",
+    "empty": "No before and after comparisons are published at the moment. Our case studies show what changed for each client, in figures.",
+    "emptyAction": {
+      "label": "See all case studies",
+      "href": "/work/"
+    }
+  },
+  "comparisons": [
+    {
+      "slug": null,
+      "clientName": "Halloway Group",
+      "heading": "What changed when Halloway Group's website was redesigned?",
+      "summary": "A dated homepage rebuilt around a clear headline, a photograph and result figures, compared at the same scroll position on the same screen.",
+      "before": {
+        "src": "/media/home-before-halloway.svg",
+        "alt": "Halloway Group homepage before the redesign: a dated layout with a navy bar, grey banner and orange button"
+      },
+      "after": {
+        "src": "/media/home-after-halloway.svg",
+        "alt": "Halloway Group homepage after the redesign: a clean layout with a clear headline, photograph and result figures"
+      },
+      "metrics": [
+        {
+          "label": "Mobile load time",
+          "before": "6.8s",
+          "after": "1.6s"
+        },
+        {
+          "label": "Bounce rate",
+          "before": "71%",
+          "after": "38%"
+        },
+        {
+          "label": "Enquiries per month",
+          "before": "9",
+          "after": "54"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "type": "contact",
+  "seo": {
+    "title": "Thank you: message received",
+    "description": "Your message has reached the Calwebtech team. Here is when to expect a reply and what happens to your details.",
+    "ogImage": null
+  },
+  "eyebrow": "Message received",
+  "title": "Thanks. Your message is with us.",
+  "intro": "It is saved with the topic you chose, and a person on our team will read it. A confirmation email is on its way to the address you gave.",
+  "received": {
+    "heading": "What you sent us",
+    "items": [
+      "Your name and email address",
+      "The topic you chose, which decides the inbox it lands in",
+      "Your message, and your company if you added it"
+    ]
+  },
+  "response": {
+    "label": "Expect a reply",
+    "value": "Within one business day",
+    "detail": "From a person who handles this kind of enquiry, by email or with a time for a short call if that is quicker."
+  },
+  "nextSteps": {
+    "heading": "What happens next",
+    "steps": [
+      {
+        "title": "A person reads it",
+        "body": "Your message is read by someone who handles this kind of enquiry, not sorted by an autoresponder."
+      },
+      {
+        "title": "We reply by email",
+        "body": "You get an answer, or a time for a short call if the question needs a conversation."
+      },
+      {
+        "title": "Nothing else happens to your details",
+        "body": "Sending a message does not subscribe you to anything. We use your details only to answer you."
+      }
+    ]
+  },
+  "secondary": {
+    "heading": "Looking for something specific?",
+    "body": "Most questions about price, timelines and ownership are already answered on our questions page.",
+    "cta": {
+      "label": "Read the answers",
+      "href": "/faq/"
+    }
+  },
+  "links": [
+    {
+      "label": "Pricing",
+      "href": "/pricing/"
+    },
+    {
+      "label": "How a project runs",
+      "href": "/process/"
+    }
+  ],
+  "image": {
+    "src": "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=72",
+    "alt": "A project team planning a website with sticky notes on a whiteboard"
+  },
+  "callLabel": "Prefer to talk? Call us",
+  "contact": {
+    "phone": "+1 (800) 555-0188",
+    "phoneE164": "+18005550188",
+    "email": "hello@calwebtech.com"
+  }
+}

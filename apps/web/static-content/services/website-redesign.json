@@ -1,0 +1,405 @@
+{
+  "slug": "website-redesign",
+  "title": "Website redesign",
+  "updatedAt": "2026-09-14T00:00:00.000Z",
+  "seo": {
+    "title": "Website redesign services",
+    "description": "Website redesign that keeps your rankings, with conversion optimisation, performance engineering and project rescue. Fixed price from $12,000.",
+    "ogImage": null
+  },
+  "category": {
+    "slug": "design-and-build",
+    "name": "Design & build"
+  },
+  "answerBlock": "A website redesign rebuilds the structure, design and code of an existing site while keeping the pages and rankings that already earn. Calwebtech starts with an audit of what converts, what is slow and what can be saved, then redesigns around one primary action per page and redirects every old URL. Most redesigns take six to eight weeks and cost $12,000 to $25,000.",
+  "hero": {
+    "outcome": "More enquiries from the traffic you already have, a site that loads quickly on a phone, and no lost rankings on launch day.",
+    "primaryCta": {
+      "label": "Get a redesign quote",
+      "href": "#enquire"
+    },
+    "secondaryCta": {
+      "label": "See before and after",
+      "href": "/before-and-after/"
+    },
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?auto=format&fit=crop&w=1800&q=65"
+    }
+  },
+  "price": {
+    "label": "$12,000 to $25,000",
+    "amount": {
+      "currency": "USD",
+      "min": 12000,
+      "max": 25000,
+      "unit": "PROJECT"
+    }
+  },
+  "problem": {
+    "heading": "When does a website need a redesign rather than a refresh?",
+    "intro": "Redesign enquiries tend to arrive for one of three reasons, and each needs a different first step.",
+    "situations": [
+      {
+        "title": "Traffic arrives, enquiries do not",
+        "body": "Visitors land, read and leave, because the page never asks clearly or asks before it has earned trust. That is a conversion problem, and new colours will not fix it."
+      },
+      {
+        "title": "The site is slow and fragile",
+        "body": "Years of plugins, trackers and page-builder layers make every page heavy on a phone, and each update risks breaking something else."
+      },
+      {
+        "title": "A previous project stalled",
+        "body": "An agency or developer left a half-finished build, and you need someone to judge what can be saved before spending more on it."
+      }
+    ]
+  },
+  "included": {
+    "heading": "What does a website redesign include?",
+    "intro": "The audit comes first, so the redesign fixes the causes rather than the symptoms.",
+    "items": [
+      "An audit of analytics, search performance, speed and accessibility before any design",
+      "A content inventory marking which pages to keep, merge, rewrite or retire",
+      "A URL map with a permanent redirect for every page that moves",
+      "Conversion optimisation: one primary action per page, proof before every ask, shorter forms",
+      "Performance engineering against a written budget for load time, layout shift and script weight",
+      "New interface design and a component library in Figma, built on your brand",
+      "A rebuild on Next.js or WordPress, with a dashboard your team publishes from",
+      "Project rescue where needed: a code review and a written verdict on what to keep",
+      "Search Console monitoring for the first thirty days after launch",
+      "Two recorded training sessions and a written operations manual"
+    ]
+  },
+  "process": {
+    "heading": "How does a redesign project run?",
+    "intro": "The same shape as a new build, with an audit week at the front and a careful cutover at the end.",
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1800&q=65"
+    },
+    "steps": [
+      {
+        "title": "Audit",
+        "duration": "Week 1",
+        "body": "Analytics, rankings, speed, accessibility and the forms themselves. You get a written list of what is costing enquiries, in order of impact."
+      },
+      {
+        "title": "Plan and design",
+        "duration": "Weeks 2 to 3",
+        "body": "A sitemap that keeps what earns, a conversion map for each page and high-fidelity screens for the pages that carry the money."
+      },
+      {
+        "title": "Rebuild",
+        "duration": "Weeks 3 to 6",
+        "body": "Front end, content types and forms rebuilt on staging, with old content migrated and every redirect written as pages move."
+      },
+      {
+        "title": "Prove",
+        "duration": "Week 7",
+        "body": "Cross-browser testing, an accessibility audit, a performance pass against the budget and a full redirect check."
+      },
+      {
+        "title": "Cut over and watch",
+        "duration": "Week 8",
+        "body": "DNS cutover, monitoring and thirty days of Search Console checks, with anything that slips fixed straight away."
+      }
+    ]
+  },
+  "technology": {
+    "heading": "Which technologies does a redesign use?",
+    "intro": "We rebuild on what your team can maintain. Often that is the platform you already have, rebuilt cleanly; sometimes the audit shows it is time to move.",
+    "items": [
+      {
+        "name": "Next.js",
+        "category": "Front end"
+      },
+      {
+        "name": "React",
+        "category": "Front end"
+      },
+      {
+        "name": "TypeScript",
+        "category": "Front end"
+      },
+      {
+        "name": "Tailwind CSS",
+        "category": "Front end"
+      },
+      {
+        "name": "WordPress",
+        "category": "Content"
+      },
+      {
+        "name": "headless CMS",
+        "category": "Content"
+      },
+      {
+        "name": "PostgreSQL",
+        "category": "Back end"
+      },
+      {
+        "name": "Figma",
+        "category": "Tooling"
+      },
+      {
+        "name": "Cloudflare",
+        "category": "Infrastructure"
+      }
+    ]
+  },
+  "proof": {
+    "heading": "What have redesigns changed for clients?",
+    "intro": null,
+    "caseStudies": [
+      {
+        "slug": "verona-home",
+        "clientName": "Verona Home",
+        "summary": "A furniture brand stuck on a page builder, replatformed with a configurator for made-to-order pieces.",
+        "tags": [
+          "California, USA",
+          "D2C",
+          "Shopify"
+        ],
+        "image": {
+          "src": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=900&q=70",
+          "alt": "Home furnishing retail display"
+        },
+        "metrics": [
+          {
+            "value": "$2.4M",
+            "label": "First-year revenue"
+          },
+          {
+            "value": "+68%",
+            "label": "Add to cart"
+          },
+          {
+            "value": "1.4s",
+            "label": "Mobile LCP"
+          }
+        ]
+      },
+      {
+        "slug": "cascadia-health",
+        "clientName": "Cascadia Health",
+        "summary": "Fourteen clinic sites merged into one accessible platform with location-aware appointment booking.",
+        "tags": [
+          "Oregon, USA",
+          "Healthcare",
+          "WordPress"
+        ],
+        "image": {
+          "src": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=900&q=70",
+          "alt": "Clinician working at a healthcare facility"
+        },
+        "metrics": [
+          {
+            "value": "+91%",
+            "label": "Online bookings"
+          },
+          {
+            "value": "14→1",
+            "label": "Sites to maintain"
+          },
+          {
+            "value": "AA",
+            "label": "WCAG 2.2 verified"
+          }
+        ]
+      }
+    ],
+    "link": {
+      "label": "See all redesign work",
+      "href": "/work/?service=website-redesign"
+    }
+  },
+  "comparison": {
+    "heading": "How does a Calwebtech redesign compare with the alternatives?",
+    "intro": "Most redesigns go wrong at launch rather than in design. This is where the approaches differ.",
+    "columns": {
+      "us": "Calwebtech",
+      "freelancer": "A freelancer",
+      "pageBuilder": "A page builder",
+      "offshore": "An offshore body shop"
+    },
+    "rows": [
+      {
+        "label": "Where it starts",
+        "us": "An audit of what converts, what is slow and what ranks.",
+        "freelancer": "Often straight into new designs.",
+        "pageBuilder": "A new template, with content pasted across.",
+        "offshore": "A specification you have to write first."
+      },
+      {
+        "label": "Rankings at launch",
+        "us": "Every old URL mapped to a permanent redirect before launch.",
+        "freelancer": "Depends on whether redirects are in scope.",
+        "pageBuilder": "Redirects handled by hand, if at all.",
+        "offshore": "Covered only if the contract lists it."
+      },
+      {
+        "label": "Conversion",
+        "us": "One primary action per page, proof before every ask and forms people finish.",
+        "freelancer": "Varies with experience.",
+        "pageBuilder": "Limited to the forms and blocks the builder offers.",
+        "offshore": "Built as specified, so the brief has to carry the thinking."
+      },
+      {
+        "label": "Speed",
+        "us": "A written budget for load time, layout shift and script weight.",
+        "freelancer": "Varies with the person's habits.",
+        "pageBuilder": "Builder scripts load on every page and cannot be removed.",
+        "offshore": "Rarely measured unless named in the contract."
+      },
+      {
+        "label": "A stalled project",
+        "us": "A code review and a written verdict on what to keep.",
+        "freelancer": "Usually a restart in their preferred tools.",
+        "pageBuilder": "A rebuild inside the builder.",
+        "offshore": "Often a new team starting from scratch."
+      }
+    ]
+  },
+  "pricing": {
+    "heading": "How much does a website redesign cost?",
+    "intro": "Most redesigns land between $12,000 and $25,000. Adding booking, a dashboard or integrations moves a project into the $25,000 to $60,000 band, and the proposal fixes the number first.",
+    "factors": [
+      {
+        "title": "Content to migrate",
+        "body": "A few dozen pages move quickly. A large archive of articles, products or documents needs mapping, cleaning and redirects, which adds time."
+      },
+      {
+        "title": "What the audit finds",
+        "body": "A site that mainly needs structure and design costs less than one with a slow, fragile codebase that has to be replaced underneath."
+      },
+      {
+        "title": "Integrations to keep",
+        "body": "Existing CRM, booking or ERP connections have to be rebuilt and tested against the live systems."
+      },
+      {
+        "title": "Rescue work",
+        "body": "Picking up a stalled project starts with a code review. Salvaging good work can lower the total; untangling poor work raises it."
+      }
+    ],
+    "link": {
+      "label": "How our pricing works",
+      "href": "/pricing/"
+    }
+  },
+  "industries": {
+    "heading": "Which industries do you redesign websites for?",
+    "intro": null,
+    "items": [
+      {
+        "slug": "healthcare",
+        "name": "Healthcare",
+        "line": "Accessible, multi-location, privacy-first booking."
+      },
+      {
+        "slug": "manufacturing",
+        "name": "Manufacturing",
+        "line": "Spec sheets, configurators and ERP-accurate inventory."
+      },
+      {
+        "slug": "professional-services",
+        "name": "Professional services",
+        "line": "Expertise pages, adviser profiles and confidential intake."
+      },
+      {
+        "slug": "hospitality",
+        "name": "Hospitality",
+        "line": "Direct booking that beats the commission sites."
+      }
+    ]
+  },
+  "testimonial": {
+    "heading": "What do clients say after a redesign?",
+    "quote": {
+      "id": "testimonial-marcus-bell",
+      "quote": "Fourteen clinic websites became one. Our staff publish their own updates now, which sounds small until you remember we used to wait nine days for a phone number change.",
+      "clientName": "Marcus Bell",
+      "role": "Communications Director",
+      "company": "Cascadia Health",
+      "rating": 5,
+      "avatar": {
+        "src": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=70"
+      }
+    }
+  },
+  "faq": {
+    "heading": "What do buyers ask before a website redesign?",
+    "intro": null,
+    "items": [
+      {
+        "id": "website-redesign-faq-1",
+        "question": "Will we lose our search rankings after a redesign?",
+        "answer": "Not if the migration is done properly. We map every existing URL to its new destination with permanent redirects before launch, keep the content that is earning traffic, and monitor Search Console for the first thirty days. Rankings normally recover within two to three weeks and then improve on the performance gain."
+      },
+      {
+        "id": "website-redesign-faq-2",
+        "question": "How long does a website redesign take?",
+        "answer": "Six to eight weeks for most sites, including the audit week at the start. Larger migrations or rebuilt integrations take nine to fourteen weeks. The proposal names the dates we need content and approvals from you."
+      },
+      {
+        "id": "website-redesign-faq-3",
+        "question": "Can you redesign our site on the platform we already use?",
+        "answer": "Often, yes. If WordPress or Next.js is serving you well, we rebuild cleanly on it. If the audit shows the platform itself is the problem, we say so and explain what moving would involve before you commit."
+      },
+      {
+        "id": "website-redesign-faq-4",
+        "question": "What is conversion optimisation, and is it included?",
+        "answer": "It is the work of turning more visitors into enquiries: one clear action per page, proof placed before every request, and forms short enough that people finish them. It is part of every redesign, not an add-on."
+      },
+      {
+        "id": "website-redesign-faq-5",
+        "question": "Our last agency left the project half finished. Can you take it over?",
+        "answer": "Yes. We start with a code review and a written verdict on what is worth keeping, what needs fixing and what should be replaced, with a fixed price for finishing the job. Sometimes the honest answer is to keep more than you expect."
+      },
+      {
+        "id": "website-redesign-faq-6",
+        "question": "Can you make our existing site faster without a full redesign?",
+        "answer": "Sometimes. The audit shows whether the slowness comes from images, scripts, hosting or the platform itself. If targeted performance engineering will fix it, we quote that on its own."
+      },
+      {
+        "id": "website-redesign-faq-7",
+        "question": "Who owns the redesigned site?",
+        "answer": "You do, completely. The repository, the database, the design files and every third party account are registered in your name and transferred at handover. There is no proprietary format and no vendor holding your data."
+      }
+    ]
+  },
+  "enquiry": {
+    "heading": "How do I get a quote for a website redesign?",
+    "intro": "Send us the address of your current site and what is not working. We reply within one business day, and after a thirty minute call you get a written proposal with a fixed price.",
+    "submitLabel": "Get my redesign quote",
+    "footnote": "Protected by bot filtering. We never sell or share your details, and you can ask us to delete them at any time.",
+    "success": {
+      "heading": "Thanks. Your redesign enquiry is with us.",
+      "body": "We will look at your current site and reply by email within one business day."
+    }
+  },
+  "related": {
+    "heading": "Which services often go with a redesign?",
+    "intro": null,
+    "items": [
+      {
+        "slug": "custom-website-development",
+        "title": "Custom website development",
+        "summary": "Research-led design built around how your buyers actually decide, not around a template's section order.",
+        "priceLabel": "$12,000 to $25,000",
+        "updatedAt": "2026-09-14T00:00:00.000Z"
+      },
+      {
+        "slug": "web-application-development",
+        "title": "Web application development",
+        "summary": "Portals, dashboards, booking engines and internal tools built on Next.js with a typed API behind them.",
+        "priceLabel": "$25,000 to $60,000",
+        "updatedAt": "2026-09-14T00:00:00.000Z"
+      },
+      {
+        "slug": "ecommerce-development",
+        "title": "Ecommerce development",
+        "summary": "Shopify, WooCommerce or custom, including B2B pricing rules, quoting and ERP integration.",
+        "priceLabel": "$12,000 to $60,000",
+        "updatedAt": "2026-09-14T00:00:00.000Z"
+      }
+    ]
+  }
+}

@@ -1,0 +1,269 @@
+{
+  "slug": "northmark-supply",
+  "clientName": "Northmark Supply",
+  "title": "Northmark Supply: a 40,000-part catalogue turned into online quoting",
+  "answerBlock": "Northmark Supply, a distributor in Ohio, had a catalogue of 40,000 parts sitting behind a contact form. We rebuilt it on Next.js as a searchable, account-priced quoting platform tied into their ERP. Quote requests rose 312% and quote turnaround fell from three days to 12 minutes.",
+  "summary": "A catalogue of 40,000 parts behind a contact form. We rebuilt it as a searchable, account-priced quoting platform tied into their ERP.",
+  "seo": {
+    "title": "Northmark Supply: B2B quoting platform case study",
+    "description": "How Northmark Supply turned 40,000 parts behind a contact form into an account-priced quoting platform tied into its ERP.",
+    "ogImage": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=70"
+  },
+  "eyebrow": "Case study",
+  "cover": {
+    "src": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=70",
+    "alt": "Two colleagues reviewing printed figures beside their laptops"
+  },
+  "headline": {
+    "label": "Headline result",
+    "metric": {
+      "value": "+312%",
+      "label": "Quote requests"
+    }
+  },
+  "metrics": [
+    {
+      "value": "+312%",
+      "label": "Quote requests"
+    },
+    {
+      "value": "12 min",
+      "label": "Quote turnaround, from 3 days"
+    },
+    {
+      "value": "−41%",
+      "label": "Support calls"
+    }
+  ],
+  "atAGlance": {
+    "industry": {
+      "slug": "distribution",
+      "name": "Distribution and supply"
+    },
+    "services": [
+      {
+        "slug": "ecommerce-development",
+        "name": "Ecommerce development"
+      },
+      {
+        "slug": "web-application-development",
+        "name": "Web application development"
+      },
+      {
+        "slug": "nextjs-development",
+        "name": "Next.js development"
+      }
+    ],
+    "platforms": [
+      {
+        "slug": "nextjs",
+        "name": "Next.js"
+      }
+    ],
+    "location": "Ohio, USA",
+    "duration": null,
+    "year": null,
+    "liveUrl": null
+  },
+  "challenge": [
+    "Northmark's customers know exactly which parts they need, but the website could not show them any of it. All 40,000 parts sat behind a single contact form, so every purchase started with a message and a wait.",
+    "Behind the form, the work landed on the counter team. Requests arrived as free text and orders were retyped into the ERP by hand, so a quote took three days to reach the customer. Account customers also expected their own prices, which a public catalogue page cannot show."
+  ],
+  "approach": [
+    "We treated the ERP as the source of truth rather than building a second catalogue beside it. Parts, accounts and prices come from the system Northmark already runs, so the website and the counter never disagree.",
+    "The website's job changed from collecting enquiries to answering them. A buyer should be able to find the right part, see the price on their own account and send a quote request that nobody has to retype."
+  ],
+  "build": [
+    "The platform is built on Next.js. Search runs across the full catalogue of 40,000 parts, and a signed-in buyer sees the prices for their own account instead of a list price.",
+    "Quote requests go straight into the ERP, which is what ended the retyping. The counter team picks each request up in the system they already work in, complete, instead of copying it across from an email."
+  ],
+  "gallery": [
+    {
+      "src": "https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=1200&q=70",
+      "alt": "A long warehouse aisle between tall racks of boxed stock"
+    },
+    {
+      "src": "https://images.unsplash.com/photo-1580674285054-bed31e145f59?auto=format&fit=crop&w=1200&q=70",
+      "alt": "Cartons of stock stacked high in a busy stockroom"
+    }
+  ],
+  "beforeAfter": null,
+  "outcome": [
+    "Quote requests rose 312% once buyers could search the catalogue and see their own prices. Quote turnaround fell from three days to 12 minutes, because a request now arrives in the ERP ready to price.",
+    "Support calls fell 41% over the same period. As their Director of Ecommerce puts it, the counter staff stopped retyping orders."
+  ],
+  "measurement": "Commercial figures come from the client's own analytics, twelve months after launch, and every figure is one the client agreed to publish. Speed and accessibility results, such as load times, Lighthouse scores and WCAG conformance, are measured on the live site.",
+  "quote": {
+    "id": "testimonial-dale-ferris",
+    "quote": "Our counter staff stopped retyping orders. That is the whole story. Calwebtech understood the ERP side better than the vendor who sold it to us.",
+    "clientName": "Dale Ferris",
+    "role": "Director of Ecommerce",
+    "company": "Northmark Supply",
+    "rating": 5,
+    "avatar": {
+      "src": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=120&q=70"
+    }
+  },
+  "videoTestimonial": null,
+  "relatedServices": [
+    {
+      "slug": "ecommerce-development",
+      "name": "Ecommerce development",
+      "summary": "Shopify, WooCommerce or custom, including B2B pricing rules, quoting and ERP integration."
+    },
+    {
+      "slug": "web-application-development",
+      "name": "Web application development",
+      "summary": "Portals, dashboards, booking engines and internal tools built on Next.js with a typed API behind them."
+    },
+    {
+      "slug": "nextjs-development",
+      "name": "Next.js development",
+      "summary": "Fast, typed Next.js and React builds, including headless CMS setups your team can publish from without a developer."
+    }
+  ],
+  "relatedCaseStudies": [
+    {
+      "slug": "meridian-parts",
+      "clientName": "Meridian Parts",
+      "summary": "Fitment search across 90,000 SKUs, so a technician finds the right part on a phone in a workshop.",
+      "tags": [
+        "Michigan, USA",
+        "Manufacturing",
+        "Headless CMS"
+      ],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=900&q=70",
+        "alt": "A developer reviewing code across two monitors"
+      },
+      "metrics": [
+        {
+          "value": "+207%",
+          "label": "Organic traffic"
+        },
+        {
+          "value": "−63%",
+          "label": "Wrong-part returns"
+        },
+        {
+          "value": "4.2x",
+          "label": "Repeat orders"
+        }
+      ],
+      "industry": "manufacturing",
+      "services": [
+        "ecommerce-development",
+        "nextjs-development",
+        "ai-search-visibility"
+      ],
+      "platforms": [
+        "headless-cms"
+      ]
+    },
+    {
+      "slug": "truvia-labs",
+      "clientName": "Truvia Labs",
+      "summary": "Marketing site, docs and in-app onboarding rebuilt on one design system so releases stopped breaking the brand.",
+      "tags": [
+        "Texas, USA",
+        "SaaS",
+        "Next.js"
+      ],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=70",
+        "alt": "Overhead view of a shared desk with several laptops and phones in use"
+      },
+      "metrics": [
+        {
+          "value": "+140%",
+          "label": "Demo bookings"
+        },
+        {
+          "value": "3.1x",
+          "label": "Organic sessions"
+        },
+        {
+          "value": "98",
+          "label": "Lighthouse mobile"
+        }
+      ],
+      "industry": "saas",
+      "services": [
+        "custom-website-development",
+        "nextjs-development",
+        "ai-search-visibility"
+      ],
+      "platforms": [
+        "nextjs"
+      ]
+    },
+    {
+      "slug": "verona-home",
+      "clientName": "Verona Home",
+      "summary": "A furniture brand stuck on a page builder, replatformed with a configurator for made-to-order pieces.",
+      "tags": [
+        "California, USA",
+        "D2C",
+        "Shopify"
+      ],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=900&q=70",
+        "alt": "A warehouse floor lined with shelving, cartons and yellow crates ready for dispatch"
+      },
+      "metrics": [
+        {
+          "value": "$2.4M",
+          "label": "First-year revenue"
+        },
+        {
+          "value": "+68%",
+          "label": "Add to cart"
+        },
+        {
+          "value": "1.4s",
+          "label": "Mobile LCP"
+        }
+      ],
+      "industry": "ecommerce-and-d2c",
+      "services": [
+        "ecommerce-development",
+        "shopify-development",
+        "website-redesign"
+      ],
+      "platforms": [
+        "shopify"
+      ]
+    }
+  ],
+  "headings": {
+    "metrics": "What results did Northmark Supply get?",
+    "atAGlance": "What did the Northmark Supply project involve?",
+    "challenge": "What problem did Northmark Supply need to solve?",
+    "approach": "How did we approach the Northmark Supply project?",
+    "build": "What did we build for Northmark Supply?",
+    "gallery": "What does this kind of work look like in practice?",
+    "beforeAfter": "What did the Northmark Supply site look like before and after?",
+    "outcome": "What changed for Northmark Supply after launch?",
+    "quote": "What does Northmark Supply say about working with us?",
+    "relatedServices": "Which services did this project use?",
+    "relatedCaseStudies": "Which other projects are like this one?"
+  },
+  "labels": {
+    "industry": "Industry",
+    "services": "Services",
+    "platform": "Platform",
+    "location": "Location",
+    "duration": "Duration",
+    "year": "Year",
+    "liveSite": "Live site",
+    "visitSite": "Visit the site",
+    "measurement": "How we measured",
+    "serviceLink": "See the service",
+    "caseStudyLink": "Read the case study",
+    "comparison": "Measured before and after",
+    "before": "Before",
+    "after": "After"
+  },
+  "publishedAt": "2026-09-14T00:00:00.000Z",
+  "updatedAt": "2026-09-14T00:00:00.000Z"
+}

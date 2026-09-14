@@ -1,0 +1,244 @@
+{
+  "slug": "healthcare",
+  "name": "Healthcare",
+  "title": "Healthcare website design and development",
+  "seo": {
+    "title": "Healthcare website design and development",
+    "description": "Accessible, multi-location healthcare websites with privacy-first appointment booking, provider directories and content clinic staff update themselves.",
+    "ogImage": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&h=630&q=75"
+  },
+  "answerBlock": "A healthcare website has to help a patient find the right clinic and clinician and book or request an appointment, accessibly and on any device, without exposing health information. Calwebtech builds multi-location healthcare websites with provider directories, location-aware booking and forms designed around patient privacy. Clinic staff update opening hours, providers and services themselves, with no developer involved.",
+  "updatedAt": "2026-09-14T00:00:00.000Z",
+  "hero": {
+    "intro": "Patients arrive anxious, often on a phone and sometimes with assistive technology. We design every path around finding the right location and booking a visit, and we keep tracking tools away from anything a patient types.",
+    "primaryCta": {
+      "label": "Discuss your project",
+      "href": "/contact/"
+    },
+    "secondaryCta": {
+      "label": "See what it costs",
+      "href": "/pricing/"
+    },
+    "highlights": [
+      "Location and provider search that works on a phone",
+      "Appointment booking connected to your scheduling system",
+      "Built and tested to WCAG 2.2 AA",
+      "Clinic staff publish their own updates"
+    ],
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1600&q=60"
+    },
+    "line": "Accessible, multi-location, privacy-first booking."
+  },
+  "painPoints": {
+    "heading": "Why do healthcare websites frustrate patients and staff?",
+    "intro": "Most of the problems come from websites that grew one clinic at a time.",
+    "items": [
+      {
+        "title": "One website per clinic",
+        "body": "Acquisitions and new locations each brought their own site, so opening hours, providers and services are maintained in several places and are wrong in at least one."
+      },
+      {
+        "title": "Booking means a phone call",
+        "body": "Patients who want to book in the evening find a phone number, and front desk staff spend the next morning returning calls an online request could have handled."
+      },
+      {
+        "title": "Accessibility as an afterthought",
+        "body": "Low contrast, unlabelled forms and PDFs that screen readers cannot read shut out patients who rely on assistive technology, and expose the organisation to complaints."
+      },
+      {
+        "title": "Waiting days for a website change",
+        "body": "A new provider, a changed phone number or a seasonal clinic depends on an agency ticket, so the website is always a few changes behind the practice."
+      }
+    ]
+  },
+  "services": {
+    "heading": "Which services does a healthcare organisation need from a web partner?",
+    "intro": "Healthcare projects usually consolidate several sites into one platform before adding booking.",
+    "items": [
+      {
+        "slug": "wordpress-development",
+        "title": "WordPress development",
+        "body": "A WordPress platform for multi-location groups, with locations, providers and services as structured content your staff already know how to edit."
+      },
+      {
+        "slug": "custom-website-development",
+        "title": "Custom website development",
+        "body": "Patient-first design for finding care: service and condition pages, location search and provider profiles written in plain language."
+      },
+      {
+        "slug": "web-application-development",
+        "title": "Web application development",
+        "body": "Appointment request and booking flows, intake forms and referral portals connected to your scheduling system."
+      },
+      {
+        "slug": "website-redesign",
+        "title": "Website redesign",
+        "body": "Merging several clinic websites into one without losing the local search visibility each location has earned."
+      },
+      {
+        "slug": "care-plans",
+        "title": "Website care plans",
+        "body": "Security patching, uptime monitoring, backups with a tested restore and accessibility checks on new content, month to month."
+      }
+    ]
+  },
+  "compliance": {
+    "heading": "What privacy and accessibility rules does a healthcare website have to meet?",
+    "intro": "Patient privacy is often lost on the website, through a form or a tracking script nobody reviewed. We design these rules in from the first template and review the set-up with your compliance lead.",
+    "notes": [
+      {
+        "title": "Health information in forms",
+        "body": "Appointment and intake forms collect only what is needed, travel over encrypted connections and are stored with access controls. Any third-party tool that handles patient information needs a HIPAA business associate agreement before it goes live."
+      },
+      {
+        "title": "Tracking technologies",
+        "body": "Analytics and advertising pixels can disclose health information to third parties, so we keep them off appointment, patient and condition pages and load analytics only after consent."
+      },
+      {
+        "title": "Accessibility",
+        "body": "We build to WCAG 2.2 AA and test with keyboards and screen readers. Federal rules for providers that receive HHS funding point to WCAG 2.1 AA, which a 2.2 AA build covers."
+      },
+      {
+        "title": "Clinical content review",
+        "body": "Condition and treatment pages carry a named clinical reviewer and a review date, managed in the dashboard, so medical content stays current and accountable."
+      }
+    ]
+  },
+  "caseStudies": {
+    "heading": "Which healthcare websites have we built?",
+    "intro": "Multi-location platforms with accessible, location-aware appointment booking.",
+    "items": [
+      {
+        "slug": "cascadia-health",
+        "clientName": "Cascadia Health",
+        "summary": "Fourteen clinic sites merged into one accessible platform with location-aware appointment booking.",
+        "tags": [
+          "Oregon, USA",
+          "WordPress"
+        ],
+        "image": {
+          "src": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=900&q=70",
+          "alt": "A stethoscope beside a laptop as a clinician types notes"
+        },
+        "metrics": [
+          {
+            "value": "+91%",
+            "label": "Online bookings"
+          },
+          {
+            "value": "14→1",
+            "label": "Sites to maintain"
+          },
+          {
+            "value": "AA",
+            "label": "WCAG 2.2 verified"
+          }
+        ]
+      }
+    ],
+    "link": {
+      "label": "See all healthcare work",
+      "href": "/work/?industry=healthcare"
+    }
+  },
+  "results": {
+    "heading": "What changed for healthcare clients after launch?",
+    "intro": null,
+    "note": "Each figure comes from the case study above and is shown with the client it was measured for.",
+    "metrics": [
+      {
+        "value": "+91%",
+        "label": "Online bookings",
+        "clientName": "Cascadia Health"
+      },
+      {
+        "value": "14→1",
+        "label": "Sites to maintain",
+        "clientName": "Cascadia Health"
+      },
+      {
+        "value": "AA",
+        "label": "WCAG 2.2 verified",
+        "clientName": "Cascadia Health"
+      }
+    ],
+    "testimonial": {
+      "id": "testimonial-marcus-bell",
+      "quote": "Fourteen clinic websites became one. Our staff publish their own updates now, which sounds small until you remember we used to wait nine days for a phone number change.",
+      "clientName": "Marcus Bell",
+      "role": "Communications Director",
+      "company": "Cascadia Health",
+      "rating": 5,
+      "avatar": {
+        "src": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=70"
+      }
+    }
+  },
+  "integrations": {
+    "heading": "Which systems does a healthcare website usually connect to?",
+    "intro": "Patient records stay in the clinical systems. The website connects to them only where the vendor offers a supported interface.",
+    "items": [
+      {
+        "name": "Scheduling and practice management",
+        "body": "athenahealth, eClinicalWorks, NextGen and similar systems, through their scheduling APIs or approved booking widgets."
+      },
+      {
+        "name": "Patient portals",
+        "body": "Clear links into the portal your EHR provides, such as Epic MyChart, rather than a second login on the website."
+      },
+      {
+        "name": "Telehealth",
+        "body": "Links to your telehealth platform from booking confirmations and provider profiles."
+      },
+      {
+        "name": "Listings and reviews",
+        "body": "Location details kept consistent with Google Business Profile and directory listings for every clinic."
+      },
+      {
+        "name": "HIPAA-eligible forms",
+        "body": "Form and storage services that sign a business associate agreement, for intake that has to collect health information."
+      },
+      {
+        "name": "Referral intake",
+        "body": "Referrals routed to the right clinic team, with patient information kept out of marketing systems."
+      }
+    ]
+  },
+  "faq": {
+    "heading": "What do healthcare teams ask before a new website?",
+    "intro": "The questions practice managers, marketing leads and compliance officers raise first.",
+    "items": [
+      {
+        "id": "healthcare-faq-booking",
+        "question": "Can patients book appointments directly on the website?",
+        "answer": "Yes, where your scheduling system allows it. Many practice management systems offer booking APIs or approved widgets; where yours does not, we build an appointment request flow that routes to the right location and confirms by email. We confirm which applies in discovery."
+      },
+      {
+        "id": "healthcare-faq-hipaa",
+        "question": "Is the website HIPAA compliant?",
+        "answer": "HIPAA governs how protected health information is handled, not a website on its own. We keep health information out of general forms and tracking, use services that sign a business associate agreement wherever patient information is collected, and document the set-up so your compliance lead can review it."
+      },
+      {
+        "id": "healthcare-faq-locations",
+        "question": "Can several clinic locations share one website?",
+        "answer": "Yes, and it is usually the right call. Each location gets its own page with hours, providers, services and directions for local search, while content that applies everywhere is written once."
+      },
+      {
+        "id": "healthcare-faq-accessibility",
+        "question": "How do you make a healthcare website accessible?",
+        "answer": "We build to WCAG 2.2 AA as the working standard: sufficient contrast, labelled form fields with clear errors, full keyboard operation and a correct heading order. We test with keyboards and screen readers before launch, and care plans include checks on new content."
+      },
+      {
+        "id": "healthcare-faq-editing",
+        "question": "Can our staff update provider profiles and opening hours themselves?",
+        "answer": "Yes. Providers, locations, services and hours are content types with simple editors and roles, so a clinic manager can update their own location without touching the rest of the site and without a deployment."
+      },
+      {
+        "id": "healthcare-faq-cost",
+        "question": "How much does a healthcare website cost?",
+        "answer": "A single-location website with custom design and appointment requests usually sits in our focused build range of $12k to $25k. Multi-location platforms with provider directories, booking integration and site consolidation are platform builds, usually $25k to $60k."
+      }
+    ]
+  }
+}
