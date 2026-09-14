@@ -218,4 +218,22 @@ describe('insights pages against the database', () => {
       await db.postCategory.deleteMany({ where: { slug: clash } });
     }
   });
+
+  // `PostCategory.name` is unbounded in the schema and the fallback SEO title is editable in
+  // /admin, so their sum overflows the 60-character limit easily. This runs while the index is
+  // built: a throw here would answer 500 for /insights/, every topic and every article at once.
+  it('gives a topic with a very long name a page rather than failing the whole index', async () => {
+    const longSlug = `integration-long-topic-${run}`;
+    const name = 'Search engine optimisation and AI answer engine visibility'.slice(0, 58);
+    await db.postCategory.create({ data: { slug: longSlug, name, order: 992 } });
+    try {
+      const view = insightsIndexViewSchema.parse(await new InsightsService(prisma).findIndex());
+      const topic = view.categories.find((category) => category.slug === longSlug);
+      expect(topic, 'the topic is on the index').toBeDefined();
+      expect(topic?.copy.seo.title.length).toBeLessThanOrEqual(60);
+      expect(topic?.copy.listHeading).toMatch(/\?$/);
+    } finally {
+      await db.postCategory.deleteMany({ where: { slug: longSlug } });
+    }
+  });
 });
