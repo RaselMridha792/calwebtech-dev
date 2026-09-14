@@ -1,0 +1,180 @@
+{
+  "slug": "how-to-write-a-website-brief",
+  "title": "How to write a website brief that gets comparable quotes",
+  "excerpt": "Why three agencies quote three different projects, and the eight sections that stop it happening.",
+  "answerBlock": "A website brief exists to make quotes comparable, so it has to close the gaps that move the price and leave open the ones that need expertise. Lead with the business problem and the buyer, count distinct templates rather than pages, name every system the site must connect to, and give a budget range. Two pages is enough.",
+  "seo": {
+    "title": "How to write a website brief",
+    "description": "The eight sections of a website brief that make quotes comparable, what to leave open, and why you should name your budget range.",
+    "ogImage": null
+  },
+  "category": {
+    "slug": "strategy",
+    "name": "Strategy"
+  },
+  "author": {
+    "slug": "dana-whitfield",
+    "name": "Dana Whitfield",
+    "role": "Delivery Manager",
+    "bio": "Your weekly point of contact. Keeps the staging URL and the schedule honest.",
+    "photo": {
+      "src": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=500&q=70",
+      "alt": "Dana Whitfield, Delivery Manager"
+    },
+    "credentials": [
+      "Delivery management",
+      "Scheduling",
+      "Staging reviews"
+    ]
+  },
+  "publishedAt": "2026-05-27T09:00:00.000Z",
+  "updatedAt": "2026-05-27T09:00:00.000Z",
+  "readingTime": 6,
+  "wordCount": 1275,
+  "cover": {
+    "src": "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=70",
+    "alt": "A project team planning a website around a meeting table, with sticky notes arranged on the wall behind them"
+  },
+  "takeaways": [
+    "A brief exists to make quotes comparable. If three agencies return three different numbers for three different projects, the brief failed, not the agencies.",
+    "Lead with the business problem and the decision you want the site to help buyers make. Leave the solution to the people you are asking to design it.",
+    "Name the templates, not the pages. Count distinct layouts, integrations and languages, because those are what the price is built from.",
+    "Say your budget range. Withholding it produces proposals scoped for a company you are not.",
+    "Two pages is enough. A forty-page requirements document gets skimmed, and the parts that matter get missed."
+  ],
+  "body": "## What is a brief actually for?\n\nTo let several suppliers quote the same project. That is the whole job, and most briefs fail at it, because they describe a website rather than a problem and leave every expensive decision open.\n\nWhen a brief is vague, each agency fills the gaps with its own assumptions. One assumes you have copy; one prices writing it. One assumes eight templates; one assumes twenty. The quotes come back at $14,000, $31,000 and $58,000, and you are no better informed than before, because you are comparing three different projects.\n\nA good brief closes the gaps that move the price and leaves open the ones that need expertise. Those are different sets, and knowing which is which is most of the skill.\n\n## What has to be in it?\n\nEight sections. Two pages. Anything longer is a requirements document, which is a different artefact for a later stage.\n\n| Section | What it settles |\n|---|---|\n| The business problem | Why you are spending the money at all |\n| Who the site is for | Which buyer, at which point in their decision |\n| What you have now | Platform, page count, what earns traffic |\n| Scope | Distinct templates, languages, functionality |\n| Integrations | Named systems, versions, who supports them |\n| Content | Who writes it, who supplies images, by when |\n| Constraints | Budget range, deadline, brand rules, compliance |\n| How you will decide | Who chooses, on what criteria, by when |\n\nIf you write nothing else, write the first two and the fourth. They are the ones that change the number.\n\n## How do you describe the problem without prescribing the answer?\n\nSay what is happening in the business, and what you want to be happening instead. Resist the urge to specify the fix.\n\n\"Our enquiry volume has halved since we moved to the new site, and the enquiries we do get arrive without enough information to quote from\" is a brief. \"We need a multi-step form with conditional logic and a chatbot\" is a solution, and you may have chosen the wrong one.\n\nThe same goes for design. \"Our brand reads as smaller and more local than we are, and buyers tell us they were surprised by our size on the first call\" gives a designer something to work with. \"Make it look like this competitor\" does not, and it guarantees you get a competitor's site.\n\nBe specific about who you are selling to, because it changes everything downstream. Meridian Parts briefed for one person: a technician standing in a workshop, on a phone, with dirty hands, needing to know whether a part fits. That single sentence drove the search design, the page weight budget and the tap target sizes, and the [case study](/work/meridian-parts/) shows what came of it.\n\n## Why should you count templates rather than pages?\n\nBecause price follows distinct layouts, not URLs.\n\nFifty service pages built from one template cost far less than ten pages that each need their own arrangement. An agency that prices per page is either guessing or protecting itself, and either way you are paying for the uncertainty.\n\nSo do the counting yourself. Open your current site and group every page by shape: home, service, industry, case study, article, location, legal, contact. Count the groups, not the members. Then note which ones you actually need, because most redesigns quietly carry forward templates nobody has used in three years.\n\nWhile you are there, export your analytics and mark the pages that earn traffic or enquiries. That list decides your migration scope, and it is usually far shorter than the sitemap.\n\n## How much detail do integrations need?\n\nMore than any other section, because they are the biggest variable in the quote.\n\nName the system. Name the version. Say whether it is hosted by you or by a vendor, whether it has a documented interface, and who in your business can grant access to it. \"It needs to connect to our CRM\" is not enough to price; the same sentence covers a two-day job and a six-week one.\n\nIf you do not know the answers, say so explicitly and ask for the integration to be quoted as a separate, later item. That is a perfectly respectable position, and it is far better than an estimate everyone knows is fiction.\n\n## Should you really give your budget?\n\nYes, as a range, and this is the section people argue with most.\n\nThe fear is that naming a number means paying that number. In practice the opposite happens: without a range, every agency scopes for the project it would like to sell, and you receive proposals for companies you are not. With a range, you receive proposals for what can genuinely be built for your money, and you can compare how differently three suppliers would spend the same amount.\n\nIf you truly do not know, say what the decision is worth instead. \"We would spend up to a year of the revenue this is expected to produce\" tells a supplier more than silence does.\n\n## What makes a brief hard to quote from?\n\nFive things, and we see all of them most months.\n\nAn open-ended feature list with the word \"etc.\" in it. A deadline with no reason behind it, which is usually negotiable but nobody says so. Content that \"the team will supply\", with no name and no date. A committee of approvers who have not agreed with each other yet. And a request for a \"full proposal\" with no shortlist, which tells every good agency you are collecting free work.\n\nFixing those is mostly a matter of making decisions before you send it, rather than after.\n\nThe content line is worth dwelling on, because it is the one that derails schedules most reliably. Somebody has to write fifty pages, and the people who know the subject are always the people with the least free time. Decide now whether that is your team, a freelancer or the agency, put a name and a date against it, and say so in the brief. A supplier who knows the copy arrives in week four can plan around it. A supplier who assumes it exists will build a schedule that quietly falls apart in week five.\n\n## How should you run the process?\n\nShortlist three, not eight. Give everyone the same brief on the same day. Offer one call each, and answer every question to all three in writing, so nobody is quoting on better information than the others.\n\nAsk for the same things back: fixed price for a fixed scope, exclusions listed, timeline with dependencies, and who will actually do the work. Then read the exclusions first. They are the most honest page in any proposal, and the difference between two quotes usually lives there.\n\nGive yourself a decision date and tell the suppliers what it is. A process that drifts for three months costs everybody money and tells you nothing new.\n\n## What if you are not sure enough to write one?\n\nWrite the first two sections and send those. A one-page brief that honestly says \"here is our problem, here is who we sell to, we do not yet know what the answer is\" is far more useful than a padded document full of guesses.\n\nAny supplier worth shortlisting will turn that into a scoped proposal by asking questions, and how they ask is itself information. If the questions are about your business, you are talking to the right people. If they are only about page counts, you are talking to a production shop.\n\nThat is how our own first calls work before a [custom build](/services/custom-website-development/) or a [redesign](/services/website-redesign/) is quoted: thirty minutes on what is broken, then a written proposal with the exclusions on the same page as the price.",
+  "services": [
+    {
+      "slug": "custom-website-development",
+      "title": "Custom website development",
+      "summary": "Research-led design built around how your buyers actually decide, not around a template's section order."
+    },
+    {
+      "slug": "website-redesign",
+      "title": "Website redesign",
+      "summary": "Rebuild a site that stopped working for the business, keep the rankings and pages that earn, and fix conversion, speed or a stalled project on the way."
+    }
+  ],
+  "caseStudy": {
+    "slug": "meridian-parts",
+    "clientName": "Meridian Parts",
+    "summary": "Fitment search across 90,000 SKUs, so a technician finds the right part on a phone in a workshop.",
+    "tags": [
+      "Michigan, USA",
+      "Manufacturing",
+      "Headless CMS"
+    ],
+    "image": {
+      "src": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=900&q=70",
+      "alt": "A developer reviewing code across two monitors"
+    },
+    "metrics": [
+      {
+        "value": "+207%",
+        "label": "Organic traffic"
+      },
+      {
+        "value": "−63%",
+        "label": "Wrong-part returns"
+      },
+      {
+        "value": "4.2x",
+        "label": "Repeat orders"
+      }
+    ]
+  },
+  "relatedArticles": [
+    {
+      "slug": "website-redesign-cost-2026",
+      "title": "What a website redesign should actually cost in 2026",
+      "excerpt": "A line-by-line breakdown of where the money goes, and the three items that quietly double most quotes.",
+      "category": {
+        "slug": "strategy",
+        "name": "Strategy"
+      },
+      "authorName": "Sawkat Hasan",
+      "readingTime": 7,
+      "publishedAt": "2026-08-19T09:00:00.000Z",
+      "updatedAt": "2026-09-08T11:30:00.000Z",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1200&q=70",
+        "alt": "Notebook and laptop on a desk"
+      },
+      "featured": true
+    },
+    {
+      "slug": "the-page-builder-tax",
+      "title": "The page builder tax: what drag-and-drop really costs",
+      "excerpt": "Drag-and-drop is cheap to start and expensive to keep. Where the cost shows up, and what the alternative actually looks like.",
+      "category": {
+        "slug": "strategy",
+        "name": "Strategy"
+      },
+      "authorName": "Priya Raman",
+      "readingTime": 6,
+      "publishedAt": "2026-06-24T09:00:00.000Z",
+      "updatedAt": "2026-06-24T09:00:00.000Z",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=1200&q=70",
+        "alt": "Interface design work in progress"
+      },
+      "featured": false
+    },
+    {
+      "slug": "why-chatgpt-recommends-your-competitor",
+      "title": "Why ChatGPT recommends your competitor",
+      "excerpt": "Language models cite structured, corroborated sources. Here is how to become one of them.",
+      "category": {
+        "slug": "ai-search",
+        "name": "AI search"
+      },
+      "authorName": "Rasel Mridha",
+      "readingTime": 9,
+      "publishedAt": "2026-09-02T09:00:00.000Z",
+      "updatedAt": "2026-09-10T11:30:00.000Z",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?auto=format&fit=crop&w=1200&q=70",
+        "alt": "Analytics charts on a screen"
+      },
+      "featured": false
+    }
+  ],
+  "copy": {
+    "byLabel": "By",
+    "publishedLabel": "Published",
+    "updatedLabel": "Updated",
+    "readingTimeLabel": "min read",
+    "tocLabel": "On this page",
+    "takeawaysLabel": "Key takeaways",
+    "authorLabel": "About the author",
+    "serviceCta": {
+      "eyebrow": "The service behind this article",
+      "body": "If you would rather not run this yourself, this is the work we do and the way we price it. The first call is thirty minutes and costs nothing.",
+      "linkLabel": "See the service",
+      "contactCta": {
+        "label": "Tell us what you need",
+        "href": "/contact/"
+      }
+    },
+    "servicesHeading": "Which services put this into practice?",
+    "caseStudyLinkLabel": "Read the case study",
+    "relatedHeading": "What should you read next?",
+    "relatedLink": {
+      "label": "All insights",
+      "href": "/insights/"
+    },
+    "newsletter": {
+      "heading": "Would you like the next article by email?",
+      "body": "One article a fortnight, on what B2B websites cost, what breaks and what to ask for. No sequences, no upsells, and one click to stop.",
+      "nameLabel": "Full name",
+      "emailLabel": "Work email",
+      "submitLabel": "Subscribe",
+      "privacyNote": "Your name and email are stored in our own database, never sold or passed to a list vendor. Unsubscribe from any email and the record is removed.",
+      "success": {
+        "heading": "You are subscribed.",
+        "body": "A confirmation is on its way. The next article lands in your inbox within a fortnight, and every email carries a one-click unsubscribe."
+      },
+      "unavailable": "We could not send that just now, so nothing has been stored. Please try again in a moment, or email us and we will add you by hand."
+    }
+  }
+}

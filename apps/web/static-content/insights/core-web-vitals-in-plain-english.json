@@ -1,0 +1,180 @@
+{
+  "slug": "core-web-vitals-in-plain-english",
+  "title": "Core Web Vitals in plain English",
+  "excerpt": "The three published thresholds, what each one really measures, and why the lab score and the field report never agree.",
+  "answerBlock": "Core Web Vitals are three published thresholds: 2.5 seconds for Largest Contentful Paint, 200 milliseconds for Interaction to Next Paint and 0.1 for Cumulative Layout Shift. They are judged at the 75th percentile of real visits rather than on a single lab test. Most failures come down to an unoptimised hero image, third-party JavaScript nobody owns, and media without dimensions.",
+  "seo": {
+    "title": "Core Web Vitals in plain English",
+    "description": "The published thresholds for LCP, INP and CLS, what causes each failure, and how much you can fix without rebuilding the site.",
+    "ogImage": null
+  },
+  "category": {
+    "slug": "engineering",
+    "name": "Engineering"
+  },
+  "author": {
+    "slug": "rasel-mridha",
+    "name": "Rasel Mridha",
+    "role": "Chief Technology Officer",
+    "bio": "Owns architecture and delivery. Writes the technical plan behind your quote.",
+    "photo": {
+      "src": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=500&q=70",
+      "alt": "Rasel Mridha, Chief Technology Officer"
+    },
+    "credentials": [
+      "Architecture",
+      "Delivery",
+      "Technical planning"
+    ]
+  },
+  "publishedAt": "2026-07-22T09:00:00.000Z",
+  "updatedAt": "2026-08-26T11:30:00.000Z",
+  "readingTime": 6,
+  "wordCount": 1225,
+  "cover": {
+    "src": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=70",
+    "alt": "Performance and analytics review before launch"
+  },
+  "takeaways": [
+    "Three numbers matter: how long the main thing takes to appear, how quickly the page answers a tap, and how much it moves while you read it.",
+    "The published thresholds are 2.5 seconds for Largest Contentful Paint, 200 milliseconds for Interaction to Next Paint and 0.1 for Cumulative Layout Shift, assessed at the 75th percentile of real visits.",
+    "Lab tools and field data disagree for a good reason. The lab is one simulated load on one device; the field is your actual visitors on their actual phones.",
+    "Most LCP problems are a hero image or a font, most interaction problems are JavaScript you did not need, and almost all layout shift is a missing size attribute.",
+    "Ask your agency for a written performance budget checked on every release. A score measured once at launch decays within a quarter."
+  ],
+  "body": "## What are Core Web Vitals, in one paragraph?\n\nThey are Google's attempt to turn \"this site feels slow\" into three measurable numbers that a person, rather than an engineer, can reason about. Largest Contentful Paint asks how long the biggest visible element takes to render. Interaction to Next Paint asks how quickly the page responds when someone taps or clicks. Cumulative Layout Shift asks how much the content jumps around while it is loading. Google publishes all three, with their definitions and thresholds, on web.dev ([Core Web Vitals](https://web.dev/articles/vitals)).\n\nThat is the whole idea. Everything else is detail about how to move them.\n\n## What counts as a pass?\n\nThe thresholds are published and stable, and they are judged at the 75th percentile of page loads, split between mobile and desktop. The 75th percentile is the important half of that sentence: your median visitor is not the one being measured, the unlucky quarter is.\n\n| Metric | Good | Needs work | Poor | What it means |\n|---|---|---|---|---|\n| Largest Contentful Paint | 2.5s or less | 2.5s to 4s | Over 4s | Time until the main element appears |\n| Interaction to Next Paint | 200ms or less | 200ms to 500ms | Over 500ms | Delay before the page reacts to a tap |\n| Cumulative Layout Shift | 0.1 or less | 0.1 to 0.25 | Over 0.25 | How much the layout jumps while loading |\n\nEach has its own reference page with the measurement details: [LCP](https://web.dev/articles/lcp), [INP](https://web.dev/articles/inp) and [CLS](https://web.dev/articles/cls). Interaction to Next Paint is the newest of the three; it replaced First Input Delay as a Core Web Vital in March 2024, because measuring only the first interaction flattered a lot of sites that were sluggish for the rest of the session ([the change announcement](https://web.dev/blog/inp-cwv-march-12)).\n\n## Why does the lab score disagree with the report?\n\nBecause they measure different things, and both are correct.\n\nA lab tool loads your page once, on a simulated device, on a simulated connection, from a data centre. It is repeatable, which makes it useful for comparing two builds. Field data is collected from real visits by real people on real hardware, aggregated into the Chrome User Experience Report ([CrUX](https://developer.chrome.com/docs/crux)). PageSpeed Insights shows you both on the same screen, field data at the top and lab results underneath ([PageSpeed Insights](https://pagespeed.web.dev/)).\n\nTwo consequences follow. A perfect lab score does not mean you pass, because your audience may be on older phones over patchy mobile networks. And a field improvement takes weeks to show, because the report is a rolling window of real visits rather than a live gauge. Teams that chase the lab number daily usually end up optimising for the tool.\n\n## What actually causes a slow LCP?\n\nAlmost always the hero. In our audits the same four causes come round again and again.\n\nA large, unoptimised hero image, served at desktop dimensions to a phone, in a format from a previous decade. An image that the browser cannot even discover until a script has run, so the download starts a second late. A web font that blocks text from painting until it arrives. And a server that takes too long to respond in the first place, which sets a floor no front-end work can get under.\n\nThe fixes are boring and effective: serve modern formats at the size actually needed, let the browser find the hero element in the initial HTML, preload it, give fonts a sensible fallback so text paints immediately, and put a cache in front of the response. Google's own optimisation guide walks through the same order ([optimising LCP](https://web.dev/articles/optimize-lcp)).\n\nVerona Home's replatform reached 1.4 seconds on mobile with exactly this work rather than anything clever; the [case study](/work/verona-home/) shows what else moved alongside it.\n\n## What causes a bad interaction score?\n\nJavaScript that did not need to be there.\n\nInteraction to Next Paint measures the gap between a tap and the next frame the visitor sees. When the main thread is busy running analytics, a chat widget, a carousel library and a cookie banner, that gap stretches. It is worst on mid-range phones, which is what most business buyers carry between meetings.\n\nThe cure is subtraction, in this order. Remove third-party scripts nobody can name an owner for. Load the genuinely heavy components, such as a booking calendar or a cost calculator, only when they come into view. Render everything else on the server so the browser has markup rather than instructions. A marketing page that ships a few kilobytes of its own JavaScript is not an achievement of optimisation; it is what happens when you stop adding.\n\n## What causes layout shift?\n\nMissing dimensions, nearly every time.\n\nAn image without width and height attributes takes up no space until it loads, then pushes everything below it down. An advert or embed inserted into the flow does the same. A web font that swaps to a different metric at load time nudges every line. A cookie banner that appears at the top of the document after a second moves the entire page under somebody's thumb.\n\nReserve the space in advance for anything that will arrive late, and match the fallback font's metrics to the real one. That is most of CLS solved. The remainder is animation: transform and opacity move pixels without moving layout, and everything else should be treated as suspicious.\n\n## Does any of this affect rankings?\n\nYes, modestly, and it is worth being precise about how much. Google describes page experience, which includes Core Web Vitals, as one of many signals it considers, and is explicit that great content still outranks a fast page with nothing to say ([page experience documentation](https://developers.google.com/search/docs/appearance/page-experience)).\n\nThe commercial case is stronger than the ranking case anyway. A slow page loses people before they read the offer, and the loss is invisible because those visitors never appear in a form submission. That is the number to care about: enquiries per thousand sessions, before and after.\n\n## How much can you fix without a rebuild?\n\nMore than you would think, if the site is structurally sound.\n\nCompressing and resizing images, removing dead third-party scripts, adding dimensions to media, preloading the hero and fixing font loading are a week of work on most sites, and they typically move two of the three metrics into the green.\n\nWhat cannot be fixed that way is a page-builder site whose every section ships its own script bundle, or a platform that cannot serve modern image formats. At that point performance is a symptom, and the honest recommendation is a [rebuild with performance engineered in](/services/website-redesign/) rather than another round of patching.\n\n## What should you ask an agency to commit to?\n\nThree things, in writing.\n\nA performance budget with numbers: a target for the three metrics on mobile, a cap on JavaScript per page, and what happens when a release breaches it. Ours fails the build, which sounds harsh until you have watched a site decay from a 95 to a 60 over a year of small additions.\n\nField measurement, not just lab. Something collecting real visit data from day one, so the first monthly report is real.\n\nAnd a maintenance commitment, because performance is not a launch state. Images get added, scripts get pasted in by a marketing tool, a new section arrives. Keeping the numbers is an ongoing job, which is what a [care plan](/services/care-plans/) is for. A site that passed once and has not been measured since is not a fast site; it is a site that was fast.",
+  "services": [
+    {
+      "slug": "website-redesign",
+      "title": "Website redesign",
+      "summary": "Rebuild a site that stopped working for the business, keep the rankings and pages that earn, and fix conversion, speed or a stalled project on the way."
+    },
+    {
+      "slug": "care-plans",
+      "title": "Website care plans",
+      "summary": "Patching, backups with a tested restore, monitoring and a fixed allowance of development hours."
+    }
+  ],
+  "caseStudy": {
+    "slug": "verona-home",
+    "clientName": "Verona Home",
+    "summary": "A furniture brand stuck on a page builder, replatformed with a configurator for made-to-order pieces.",
+    "tags": [
+      "California, USA",
+      "D2C",
+      "Shopify"
+    ],
+    "image": {
+      "src": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=900&q=70",
+      "alt": "A warehouse floor lined with shelving, cartons and yellow crates ready for dispatch"
+    },
+    "metrics": [
+      {
+        "value": "$2.4M",
+        "label": "First-year revenue"
+      },
+      {
+        "value": "+68%",
+        "label": "Add to cart"
+      },
+      {
+        "value": "1.4s",
+        "label": "Mobile LCP"
+      }
+    ]
+  },
+  "relatedArticles": [
+    {
+      "slug": "self-hosting-is-cheaper-than-you-think",
+      "title": "Self-hosting your site is cheaper than you think",
+      "excerpt": "What a Docker stack on a $20 server replaces, and the two jobs somebody still has to own.",
+      "category": {
+        "slug": "engineering",
+        "name": "Engineering"
+      },
+      "authorName": "Rasel Mridha",
+      "readingTime": 6,
+      "publishedAt": "2026-07-08T09:00:00.000Z",
+      "updatedAt": "2026-07-08T09:00:00.000Z",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=70",
+        "alt": "Workspace with a laptop"
+      },
+      "featured": false
+    },
+    {
+      "slug": "wcag-22-what-changed",
+      "title": "WCAG 2.2 AA: what changed and what it costs to meet it",
+      "excerpt": "Nine new success criteria, four that matter at AA, and the two that break most existing sites.",
+      "category": {
+        "slug": "engineering",
+        "name": "Engineering"
+      },
+      "authorName": "Priya Raman",
+      "readingTime": 7,
+      "publishedAt": "2026-06-10T09:00:00.000Z",
+      "updatedAt": "2026-06-10T09:00:00.000Z",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1558655146-9f40138edfeb?auto=format&fit=crop&w=1200&q=70",
+        "alt": "A designer drawing on a tablet with a stylus beside a keyboard"
+      },
+      "featured": false
+    },
+    {
+      "slug": "why-chatgpt-recommends-your-competitor",
+      "title": "Why ChatGPT recommends your competitor",
+      "excerpt": "Language models cite structured, corroborated sources. Here is how to become one of them.",
+      "category": {
+        "slug": "ai-search",
+        "name": "AI search"
+      },
+      "authorName": "Rasel Mridha",
+      "readingTime": 9,
+      "publishedAt": "2026-09-02T09:00:00.000Z",
+      "updatedAt": "2026-09-10T11:30:00.000Z",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?auto=format&fit=crop&w=1200&q=70",
+        "alt": "Analytics charts on a screen"
+      },
+      "featured": false
+    }
+  ],
+  "copy": {
+    "byLabel": "By",
+    "publishedLabel": "Published",
+    "updatedLabel": "Updated",
+    "readingTimeLabel": "min read",
+    "tocLabel": "On this page",
+    "takeawaysLabel": "Key takeaways",
+    "authorLabel": "About the author",
+    "serviceCta": {
+      "eyebrow": "The service behind this article",
+      "body": "If you would rather not run this yourself, this is the work we do and the way we price it. The first call is thirty minutes and costs nothing.",
+      "linkLabel": "See the service",
+      "contactCta": {
+        "label": "Tell us what you need",
+        "href": "/contact/"
+      }
+    },
+    "servicesHeading": "Which services put this into practice?",
+    "caseStudyLinkLabel": "Read the case study",
+    "relatedHeading": "What should you read next?",
+    "relatedLink": {
+      "label": "All insights",
+      "href": "/insights/"
+    },
+    "newsletter": {
+      "heading": "Would you like the next article by email?",
+      "body": "One article a fortnight, on what B2B websites cost, what breaks and what to ask for. No sequences, no upsells, and one click to stop.",
+      "nameLabel": "Full name",
+      "emailLabel": "Work email",
+      "submitLabel": "Subscribe",
+      "privacyNote": "Your name and email are stored in our own database, never sold or passed to a list vendor. Unsubscribe from any email and the record is removed.",
+      "success": {
+        "heading": "You are subscribed.",
+        "body": "A confirmation is on its way. The next article lands in your inbox within a fortnight, and every email carries a one-click unsubscribe."
+      },
+      "unavailable": "We could not send that just now, so nothing has been stored. Please try again in a moment, or email us and we will add you by hand."
+    }
+  }
+}

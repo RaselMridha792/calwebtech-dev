@@ -1,0 +1,185 @@
+{
+  "slug": "website-redesign-cost-2026",
+  "title": "What a website redesign should actually cost in 2026",
+  "excerpt": "A line-by-line breakdown of where the money goes, and the three items that quietly double most quotes.",
+  "answerBlock": "A business-to-business website redesign costs $12,000 to $25,000 for a marketing site with custom design, a content management system and lead capture. A platform build that adds booking, a dashboard, campaigns or an integration costs $25,000 to $60,000. Price follows the number of distinct templates and integrations, not the number of pages.",
+  "seo": {
+    "title": "What a website redesign costs in 2026",
+    "description": "Published price bands for a B2B website redesign, where the money actually goes, and the three line items that quietly double most quotes.",
+    "ogImage": null
+  },
+  "category": {
+    "slug": "strategy",
+    "name": "Strategy"
+  },
+  "author": {
+    "slug": "sawkat-hasan",
+    "name": "Sawkat Hasan",
+    "role": "Founder",
+    "bio": "Joins every first call and every proposal. Twelve years in B2B commerce.",
+    "photo": {
+      "src": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=70",
+      "alt": "Sawkat Hasan, Founder"
+    },
+    "credentials": [
+      "B2B commerce",
+      "Discovery",
+      "Proposals"
+    ]
+  },
+  "publishedAt": "2026-08-19T09:00:00.000Z",
+  "updatedAt": "2026-09-08T11:30:00.000Z",
+  "readingTime": 7,
+  "wordCount": 1336,
+  "cover": {
+    "src": "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1200&q=70",
+    "alt": "Notebook and laptop on a desk"
+  },
+  "takeaways": [
+    "A marketing site redesign with custom design, a content management system and lead capture is a $12,000 to $25,000 project. Add booking, a dashboard, campaigns or integrations and it becomes a $25,000 to $60,000 platform build.",
+    "Price follows the number of distinct templates and integrations, not the number of pages. Fifty service pages from one template are cheap; ten bespoke layouts are not.",
+    "Three line items quietly double quotes: an integration with a system that has no documented API, content that somebody has to write, and a migration with hundreds of URLs to map.",
+    "A quote without exclusions is not a quote. Ask what is explicitly out of scope and what happens when the scope moves.",
+    "Budget for the year, not the launch. Hosting, licences and a care allowance are the running cost of owning the thing you just bought."
+  ],
+  "body": "## What does a website redesign actually cost in 2026?\n\nFor a business-to-business company replacing a site that no longer sells, the honest range is $12,000 to $25,000 for a marketing site and $25,000 to $60,000 for a platform build. The first covers custom design, a content management system your team can use and lead capture that lands in a database you own. The second adds the things that make a site operational rather than promotional: booking, a customer dashboard, campaign tooling, or a connection to the system your business actually runs on.\n\nThose are the bands we quote from, and they are [published](/services/website-redesign/) for a reason. A buyer should be able to tell in ninety seconds whether an agency is in their range, without sitting through a discovery call to find out.\n\n## Where does the money actually go?\n\nNot where most buyers expect. The visible part, the pages, is rarely the expensive part.\n\n| Line item | What it covers | What moves it |\n|---|---|---|\n| Discovery | Sitemap, content inventory, the fixed price | Number of stakeholders and approval rounds |\n| Design | Component library, then the distinct templates | Bespoke layouts, illustration, motion, photography direction |\n| Build | Front end, CMS, forms, search, performance work | Number of unique templates and components |\n| Integrations | CRM, ERP, booking, payments, marketing tools | Whether the far end has a documented API |\n| Content | Writing, restructuring, media preparation | How much your team supplies finished |\n| Migration | Moving records, mapping every URL, redirects | Volume of existing pages that earn traffic |\n| Launch | Accessibility audit, testing, training, handover | Regulated claims and legal review |\n\nRead that table as a list of decisions rather than a list of tasks. Every one of them is something you can make cheaper by deciding it earlier.\n\n## Which three items quietly double most quotes?\n\nIntegrations, content and migration. They are the three that arrive late, after the number has been agreed, and they are the reason a project that started at $18,000 invoices at $34,000.\n\nIntegrations are first because their cost is invisible from outside. Connecting to a modern system with documented endpoints is a few days. Connecting to a twelve-year-old inventory system that exports a nightly file can take as long as the website itself, and nobody finds out which one you have until somebody tries.\n\nContent is second because everyone underestimates it. A fifty-page site needs fifty pages of copy, and the people who know the subject are the people with the least time. If your team writes it, the budget goes on design and build. If the agency writes it, that should be a separate line you can see, not a footnote.\n\nMigration is third and the most avoidable. Moving hundreds of posts, products or case studies is careful work, and every existing URL that earns traffic needs a permanent redirect to its new address. Google's own guidance is that a 301 is the right signal for a page that has moved for good ([Google on redirects](https://developers.google.com/search/docs/crawling-indexing/301-redirects)). Skip that step and the redesign that was supposed to grow enquiries loses a year of rankings on launch day.\n\n## How long does it take, and why does that change the price?\n\nSix to eight weeks for a marketing site, nine to fourteen for a platform build. The schedule matters to the budget because most overruns are not caused by the agency working slowly; they are caused by the project waiting.\n\nWaiting for copy. Waiting for a decision that needs three people in the same room. Waiting for access to a system that only one person in the business can grant. Every week a build sits idle costs somebody money, and in a fixed-price engagement it eventually shows up as a change request or a shortened testing phase.\n\nThe fix is unglamorous. Name one decision-maker who can approve design without a committee. Book the content deadlines into the schedule as hard dates. Get system credentials issued in week one rather than week six. Agencies that ask about this on the first call are not being difficult; they are the ones who have been burned by it.\n\n## What do you need ready before you ask for a quote?\n\nLess than you think, but the four things below turn a vague range into a number.\n\nA list of what is broken, in business terms rather than design terms: which enquiries you are not getting, which questions support keeps answering, which page loses people.\n\nA rough page inventory. Export your current sitemap or analytics and count what exists, marking the pages that actually earn traffic.\n\nThe systems it has to talk to, by name and version, along with whether anyone still supports them.\n\nAnd a budget range you are willing to say out loud. Withholding it does not get you a better price; it gets you a proposal scoped for the wrong company, and two weeks wasted on both sides.\n\n## What should be in the quote before you sign?\n\nSix things. If any are missing, ask.\n\nA fixed price for a fixed scope, with the scope written out rather than described. A list of exclusions, which is the most informative page in any proposal. A named change process, so a mid-project addition is priced and approved before work starts. A performance budget with numbers in it. An accessibility standard. And a handover clause that says the code, the database, the design files and the accounts are yours at the end.\n\nThat last one matters more than it sounds. A redesign that leaves your domain, hosting and analytics in an agency's account is not a purchase; it is a tenancy.\n\n## How do you compare two quotes that are $20,000 apart?\n\nLine them up on scope, not on price, and the gap usually explains itself.\n\nCount the distinct templates each one includes. Check whether the cheaper quote assumes you supply finished copy and images. Look for the integration in the exclusions rather than the inclusions. Ask both agencies what happens to your existing URLs. Ask who owns the hosting account on the day after launch.\n\nNine times out of ten the cheaper quote is not cheaper; it is smaller, and the difference will arrive later as change requests. The tenth time it genuinely is cheaper, because the other agency priced a bespoke design system you do not need. Both are worth knowing, and you can only tell them apart by reading the exclusions.\n\n## What does a redesign cost after launch?\n\nA site is not a purchase, it is a running cost, and the honest annual figure has three parts.\n\nHosting, domains and platform licences, billed to you directly and registered in your name. Care and maintenance, which covers patching, backups with a tested restore, monitoring and a fixed allowance of development hours; ours starts from $1,500 a month through our [website care plans](/services/care-plans/). And the content someone has to keep publishing, which is a staffing cost rather than a supplier one.\n\nBudget for all three from the start. The most common failure we see is not a bad build; it is a good build left untouched for three years until it is expensive to rescue.\n\n## When is a redesign the wrong answer?\n\nWhen the problem is not the site. If your enquiries are poor because the offer is unclear, or because nobody follows up within a day, a new site will present the same problem more attractively.\n\nIt is also the wrong answer when the current site is structurally sound and only looks dated. Rewriting the copy, fixing the page speed and rebuilding two templates is a fraction of the price and often most of the benefit.\n\nVerona Home is the case where a redesign genuinely was the answer. The furniture brand was stuck on a page builder that could not model made-to-order pieces, so the work was a replatform with a real configurator rather than a reskin: the [full case study](/work/verona-home/) has the numbers and what changed to produce them. If that sounds like your situation, a [custom build](/services/custom-website-development/) is the conversation. If it does not, we will say so on the first call, which costs nothing.",
+  "services": [
+    {
+      "slug": "website-redesign",
+      "title": "Website redesign",
+      "summary": "Rebuild a site that stopped working for the business, keep the rankings and pages that earn, and fix conversion, speed or a stalled project on the way."
+    },
+    {
+      "slug": "care-plans",
+      "title": "Website care plans",
+      "summary": "Patching, backups with a tested restore, monitoring and a fixed allowance of development hours."
+    },
+    {
+      "slug": "custom-website-development",
+      "title": "Custom website development",
+      "summary": "Research-led design built around how your buyers actually decide, not around a template's section order."
+    }
+  ],
+  "caseStudy": {
+    "slug": "verona-home",
+    "clientName": "Verona Home",
+    "summary": "A furniture brand stuck on a page builder, replatformed with a configurator for made-to-order pieces.",
+    "tags": [
+      "California, USA",
+      "D2C",
+      "Shopify"
+    ],
+    "image": {
+      "src": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=900&q=70",
+      "alt": "A warehouse floor lined with shelving, cartons and yellow crates ready for dispatch"
+    },
+    "metrics": [
+      {
+        "value": "$2.4M",
+        "label": "First-year revenue"
+      },
+      {
+        "value": "+68%",
+        "label": "Add to cart"
+      },
+      {
+        "value": "1.4s",
+        "label": "Mobile LCP"
+      }
+    ]
+  },
+  "relatedArticles": [
+    {
+      "slug": "the-page-builder-tax",
+      "title": "The page builder tax: what drag-and-drop really costs",
+      "excerpt": "Drag-and-drop is cheap to start and expensive to keep. Where the cost shows up, and what the alternative actually looks like.",
+      "category": {
+        "slug": "strategy",
+        "name": "Strategy"
+      },
+      "authorName": "Priya Raman",
+      "readingTime": 6,
+      "publishedAt": "2026-06-24T09:00:00.000Z",
+      "updatedAt": "2026-06-24T09:00:00.000Z",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=1200&q=70",
+        "alt": "Interface design work in progress"
+      },
+      "featured": false
+    },
+    {
+      "slug": "how-to-write-a-website-brief",
+      "title": "How to write a website brief that gets comparable quotes",
+      "excerpt": "Why three agencies quote three different projects, and the eight sections that stop it happening.",
+      "category": {
+        "slug": "strategy",
+        "name": "Strategy"
+      },
+      "authorName": "Dana Whitfield",
+      "readingTime": 6,
+      "publishedAt": "2026-05-27T09:00:00.000Z",
+      "updatedAt": "2026-05-27T09:00:00.000Z",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=70",
+        "alt": "A project team planning a website around a meeting table, with sticky notes arranged on the wall behind them"
+      },
+      "featured": false
+    },
+    {
+      "slug": "why-chatgpt-recommends-your-competitor",
+      "title": "Why ChatGPT recommends your competitor",
+      "excerpt": "Language models cite structured, corroborated sources. Here is how to become one of them.",
+      "category": {
+        "slug": "ai-search",
+        "name": "AI search"
+      },
+      "authorName": "Rasel Mridha",
+      "readingTime": 9,
+      "publishedAt": "2026-09-02T09:00:00.000Z",
+      "updatedAt": "2026-09-10T11:30:00.000Z",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?auto=format&fit=crop&w=1200&q=70",
+        "alt": "Analytics charts on a screen"
+      },
+      "featured": false
+    }
+  ],
+  "copy": {
+    "byLabel": "By",
+    "publishedLabel": "Published",
+    "updatedLabel": "Updated",
+    "readingTimeLabel": "min read",
+    "tocLabel": "On this page",
+    "takeawaysLabel": "Key takeaways",
+    "authorLabel": "About the author",
+    "serviceCta": {
+      "eyebrow": "The service behind this article",
+      "body": "If you would rather not run this yourself, this is the work we do and the way we price it. The first call is thirty minutes and costs nothing.",
+      "linkLabel": "See the service",
+      "contactCta": {
+        "label": "Tell us what you need",
+        "href": "/contact/"
+      }
+    },
+    "servicesHeading": "Which services put this into practice?",
+    "caseStudyLinkLabel": "Read the case study",
+    "relatedHeading": "What should you read next?",
+    "relatedLink": {
+      "label": "All insights",
+      "href": "/insights/"
+    },
+    "newsletter": {
+      "heading": "Would you like the next article by email?",
+      "body": "One article a fortnight, on what B2B websites cost, what breaks and what to ask for. No sequences, no upsells, and one click to stop.",
+      "nameLabel": "Full name",
+      "emailLabel": "Work email",
+      "submitLabel": "Subscribe",
+      "privacyNote": "Your name and email are stored in our own database, never sold or passed to a list vendor. Unsubscribe from any email and the record is removed.",
+      "success": {
+        "heading": "You are subscribed.",
+        "body": "A confirmation is on its way. The next article lands in your inbox within a fortnight, and every email carries a one-click unsubscribe."
+      },
+      "unavailable": "We could not send that just now, so nothing has been stored. Please try again in a moment, or email us and we will add you by hand."
+    }
+  }
+}
