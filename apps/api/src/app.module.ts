@@ -14,6 +14,7 @@ import { WorkModule } from './work/work.controller';
 import { ServicesModule } from './services/services.controller';
 import { CompanyModule } from './company/company.controller';
 import { LocationsModule } from './locations/locations.controller';
+import { StaticPagesModule } from './static/static.controller';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { LocationsModule } from './locations/locations.controller';
     ServicesModule,
     CompanyModule,
     LocationsModule,
+    StaticPagesModule,
   ],
   controllers: [HealthController],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],

@@ -1,0 +1,65 @@
+{
+  "type": "careers",
+  "seo": {
+    "title": "Thank you: application received",
+    "description": "Your application has reached Calwebtech. Here is what happens next and how your details are handled.",
+    "ogImage": null
+  },
+  "eyebrow": "Application received",
+  "title": "Thanks. Your application is with us.",
+  "intro": "Your details are with our team, and a person who handles hiring will read them. Applying does not add you to any mailing list.",
+  "received": {
+    "heading": "What you sent us",
+    "items": [
+      "Your name and email address",
+      "The role you applied for, or that you are writing speculatively",
+      "Your experience, and any links or files you added"
+    ]
+  },
+  "response": {
+    "label": "Expect to hear",
+    "value": "Within one business day",
+    "detail": "A person confirms your application has been read. If your experience fits a role, the email suggests a first conversation."
+  },
+  "nextSteps": {
+    "heading": "What happens next",
+    "steps": [
+      {
+        "title": "A person reads it",
+        "body": "Every application is read by a person, not filtered out by keyword software."
+      },
+      {
+        "title": "A first conversation about a match",
+        "body": "If your experience fits a role we are hiring for, we arrange a call to talk about the work and what you want from it."
+      },
+      {
+        "title": "Your details stay in your control",
+        "body": "You can ask us to delete your application at any time through the contact page."
+      }
+    ]
+  },
+  "secondary": {
+    "heading": "See how we work",
+    "body": "Read how our projects run, from discovery to handover, to get a feel for the day-to-day.",
+    "cta": {
+      "label": "Read how a project runs",
+      "href": "/process/"
+    }
+  },
+  "links": [
+    {
+      "label": "Privacy policy",
+      "href": "/privacy-policy/"
+    }
+  ],
+  "image": {
+    "src": "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=72",
+    "alt": "A project team planning a website with sticky notes on a whiteboard"
+  },
+  "callLabel": "Prefer to talk? Call us",
+  "contact": {
+    "phone": "+1 (800) 555-0188",
+    "phoneE164": "+18005550188",
+    "email": "hello@calwebtech.com"
+  }
+}

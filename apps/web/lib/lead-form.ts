@@ -43,6 +43,7 @@ export function leadSubmissionFromForm(
     referralSource: field(form, 'referralSource'),
     serviceInterest: form.getAll('serviceInterest').filter((value) => typeof value === 'string'),
     message: field(form, 'message'),
+    enquiryType: field(form, 'enquiryType'),
     landingPageSlug: field(form, 'landingPageSlug'),
     serviceSlug: field(form, 'serviceSlug'),
     attribution: attributionFromForm(form, referer),

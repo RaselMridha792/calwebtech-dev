@@ -1,0 +1,143 @@
+{
+  "seo": {
+    "title": "Web design FAQ: pricing, process and ownership",
+    "description": "Straight answers about what a Calwebtech website costs, how long it takes, who owns it, search rankings during a redesign and support after launch.",
+    "ogImage": null
+  },
+  "hero": {
+    "title": "Frequently asked questions",
+    "answer": "Most buyers ask what a website costs, how long it takes, who owns it and whether search rankings survive a redesign. A Calwebtech marketing site costs $12,000 to $25,000 and takes six to eight weeks, and you own the code, the database and every account when it is finished. The answers below cover the detail, grouped by topic.",
+    "intro": "Written without the sales hedge. If your question is not here, ask it directly and a person will answer."
+  },
+  "navLabel": "Jump to a topic",
+  "empty": "No questions are published yet. Ask yours through the contact page and we will answer it directly.",
+  "cta": {
+    "heading": "Have a question that is not answered here?",
+    "body": "Send it through the contact form and the people who would run your project will reply, usually within one business day.",
+    "primaryCta": {
+      "label": "Ask your question",
+      "href": "/contact/"
+    },
+    "secondaryCta": {
+      "label": "See pricing",
+      "href": "/pricing/"
+    }
+  },
+  "groups": [
+    {
+      "key": "pricing",
+      "heading": "How is a project priced?",
+      "intro": "Budgets, fixed quotes and what sits outside the price.",
+      "items": [
+        {
+          "id": "faq-pricing-cost",
+          "question": "How much does a website cost with Calwebtech?",
+          "answer": "A marketing website with custom design, a content management system and lead capture costs $12,000 to $25,000 and takes six to eight weeks. A platform build that adds booking, a dashboard, campaigns and integrations costs $25,000 to $60,000 over nine to fourteen weeks. Ongoing care and development starts from $1,500 a month."
+        },
+        {
+          "id": "faq-pricing-fixed",
+          "question": "Is the price fixed once we agree it?",
+          "answer": "Yes. The proposal sets a fixed price for a fixed scope, and that is the number you pay. If you want to add or change something during the project, we quote the change and wait for your approval before any work starts on it."
+        },
+        {
+          "id": "faq-pricing-proposal",
+          "question": "Do you charge for the first call or the proposal?",
+          "answer": "No. The first call and the written proposal are free, with no obligation and no drip sequence afterwards. If we are not the right fit for the project, we will tell you and point you somewhere better."
+        },
+        {
+          "id": "faq-pricing-partner",
+          "question": "What does the Ongoing partner plan cover?",
+          "answer": "Care, monitoring, a fixed development allowance each month and a quarterly review of your enquiry funnel, from $1,500 a month. It runs month to month, so you can stop when it stops being useful and take the code with you."
+        },
+        {
+          "id": "faq-pricing-subscriptions",
+          "question": "Are hosting and software subscriptions included in the price?",
+          "answer": "No. Hosting, domains, paid plugins and platform licences are billed to you directly and registered in your name, so you never depend on us to renew them. The proposal lists each one in its exclusions before you sign."
+        }
+      ]
+    },
+    {
+      "key": "process",
+      "heading": "How does a project run?",
+      "intro": "Timelines, what we need from you and what happens after you get in touch.",
+      "items": [
+        {
+          "id": "faq-process-duration",
+          "question": "How long does a project take?",
+          "answer": "Six to eight weeks for a marketing site, nine to fourteen for a platform build with booking, a dashboard and integrations. The most common cause of delay is content, not code, which is why the proposal names the dates we need things from you."
+        },
+        {
+          "id": "faq-process-developer",
+          "question": "What if we already have a developer?",
+          "answer": "That is common and usually fine. We can take design and front end and leave the back end with your team, or work the other way round. The proposal will say exactly where the boundary sits so nobody is guessing."
+        },
+        {
+          "id": "faq-process-inputs",
+          "question": "What do you need from us during a project?",
+          "answer": "A named decision maker, about ninety minutes of your team in discovery, your brand assets and service list, and feedback on designs within two days. Content is the most common cause of delay, so the proposal names the dates we need copy, images and integration credentials."
+        },
+        {
+          "id": "faq-process-first-reply",
+          "question": "What happens after I get in touch?",
+          "answer": "We read your message, look at your current site and email you within one business day to book a thirty minute call. After that call you get a written proposal with scope, timeline and a fixed price within two business days. If we are not the right fit we will say so and point you somewhere better."
+        }
+      ]
+    },
+    {
+      "key": "ownership",
+      "heading": "Who owns the site and the data?",
+      "intro": "Code, accounts, lead data and confidentiality.",
+      "items": [
+        {
+          "id": "faq-ownership-site",
+          "question": "Who owns the site when it is finished?",
+          "answer": "You do, completely. The repository, the database, the design files and every third party account are registered in your name and transferred at handover through a password manager. There is no proprietary format and no vendor holding your data."
+        },
+        {
+          "id": "faq-ownership-data",
+          "question": "Where are our leads and customer data stored?",
+          "answer": "In a database you own, on infrastructure registered in your name. Every form, booking and subscription writes to that one database with its source and campaign attached, so no form vendor holds your contacts and nothing is billed per contact."
+        },
+        {
+          "id": "faq-ownership-nda",
+          "question": "Will you sign our NDA before we talk?",
+          "answer": "Yes, before the first discovery call rather than after it. Send yours, or use ours. If you are describing something that has not launched yet, that should not be a negotiation."
+        }
+      ]
+    },
+    {
+      "key": "search",
+      "heading": "What happens to our search visibility?",
+      "intro": "Rankings during a redesign, and showing up when buyers ask an AI assistant.",
+      "items": [
+        {
+          "id": "faq-search-rankings",
+          "question": "Will we lose our search rankings?",
+          "answer": "Not if the migration is done properly. We map every existing URL to its new destination with permanent redirects before launch, keep the content that is earning traffic, and monitor Search Console for the first thirty days. Rankings normally recover within two to three weeks and then improve on the performance gain."
+        },
+        {
+          "id": "faq-search-ai",
+          "question": "Can you help us appear in answers from AI assistants?",
+          "answer": "Yes. Language models answer from structured, citable content and third-party signals, so we work on entity clarity, structured data, review presence and answer-shaped content. The aim is for your name to appear when a buyer asks an assistant who to hire."
+        }
+      ]
+    },
+    {
+      "key": "support",
+      "heading": "How do we work together after launch?",
+      "intro": "Working across time zones, the warranty and ongoing care.",
+      "items": [
+        {
+          "id": "faq-support-location",
+          "question": "We are not in California. Does that matter?",
+          "answer": "No. Most of our clients are outside our home metro. We work across US time zones with a weekly call, a shared project board and a staging URL you can open at any hour. If you would rather meet in person, say so on the call and we will tell you honestly whether that is practical."
+        },
+        {
+          "id": "faq-support-after-launch",
+          "question": "What happens after the site launches?",
+          "answer": "Anything that does not behave as specified is fixed free for 60 days, with a four hour response on critical issues. After that, care plans run month to month, and two recorded training sessions and a written operations manual mean your team can publish without waiting for us."
+        }
+      ]
+    }
+  ]
+}

@@ -32,6 +32,12 @@ export interface LeadFormProps {
   budgetOptions: readonly Option[];
   timelineOptions?: readonly Option[];
   serviceOptions?: readonly string[];
+  /** Routed enquiry types, asked first in the full form and posted as `enquiryType`. Left out when there are none. */
+  enquiry?: { label: string; options: readonly Option[]; defaultValue?: string };
+  /** The free-text question, where the default does not fit the form. */
+  message?: { label: string; placeholder: string };
+  /** Where the visitor goes once the lead is stored, e.g. `/thank-you/contact/`. Without script the success message shows in place. */
+  thankYouPath?: string;
   assurances?: readonly string[];
   footnote?: string;
   className?: string;
@@ -93,7 +99,7 @@ function Field({ formId, name, label, errors, labelClass, children }: FieldProps
  * validation and storage rules live in one place.
  */
 export function LeadForm(props: LeadFormProps) {
-  const { variant, formId, success } = props;
+  const { variant, formId, success, thankYouPath } = props;
   const [state, formAction, pending] = useActionState(submitLead, initialState, props.permalink);
   const attributionRef = useRef<HTMLInputElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
@@ -146,12 +152,13 @@ export function LeadForm(props: LeadFormProps) {
     if (state.status === 'success') {
       removeTurnstile();
       successRef.current?.focus();
+      if (thankYouPath) window.location.assign(thankYouPath);
     }
     if (state.status === 'error') {
       resetTurnstile();
       formRef.current?.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
     }
-  }, [state, removeTurnstile, resetTurnstile]);
+  }, [state, removeTurnstile, resetTurnstile, thankYouPath]);
 
   if (state.status === 'success') {
     return (
@@ -217,9 +224,10 @@ export function LeadForm(props: LeadFormProps) {
   ));
   const timelineOptions = props.timelineOptions ?? [];
   const referralOptions = props.referralOptions ?? [];
-  const messageField = field('message', 'What is going wrong right now?', (c) => (
-    <textarea {...c} rows={hero ? 3 : 4} defaultValue={value('message')} placeholder="Two or three sentences is plenty." className={`${controlClass} resize-none p-4`} />
+  const messageField = field('message', props.message?.label ?? 'What is going wrong right now?', (c) => (
+    <textarea {...c} rows={hero ? 3 : 4} defaultValue={value('message')} placeholder={props.message?.placeholder ?? 'Two or three sentences is plenty.'} className={`${controlClass} resize-none p-4`} />
   ));
+  const enquiry = props.enquiry && props.enquiry.options.length > 0 ? props.enquiry : null;
 
   return (
     <form
@@ -261,6 +269,19 @@ export function LeadForm(props: LeadFormProps) {
         </>
       ) : (
         <>
+          {enquiry ? (
+            <div className="mb-5">
+              {field('enquiryType', enquiry.label, (c) => (
+                <select {...c} defaultValue={value('enquiryType') ?? enquiry.defaultValue ?? enquiry.options[0]?.value} className={`${controlClass} h-12 px-4`}>
+                  {enquiry.options.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              ))}
+            </div>
+          ) : null}
           <div className="grid gap-5 sm:grid-cols-2">
             {nameField}
             {companyField}
@@ -295,8 +316,8 @@ export function LeadForm(props: LeadFormProps) {
             </fieldset>
           ) : null}
 
-          <div className="mt-6 grid gap-5 sm:grid-cols-2">
-            {budgetField}
+          <div className="mt-6 grid gap-5 empty:hidden sm:grid-cols-2">
+            {props.budgetOptions.length > 0 ? budgetField : null}
             {timelineOptions.length > 0
               ? field('timeline', 'When do you want to start?', (c) => (
                   <select {...c} defaultValue={value('timeline') ?? ''} className={`${controlClass} h-12 px-4`}>

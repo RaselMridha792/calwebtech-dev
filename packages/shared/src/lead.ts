@@ -104,6 +104,8 @@ export const leadSubmissionSchema = z.object({
   referralSource: optionalText(80),
   serviceInterest: z.array(z.string().trim().min(1).max(80)).max(12).default([]),
   message: optionalText(4000),
+  /** The routed enquiry type chosen on the contact form: an `EnquiryType.slug`, checked by the API. */
+  enquiryType: z.preprocess(blankToUndefined, slugSchema.optional()),
   landingPageSlug: z.preprocess(blankToUndefined, slugSchema.optional()),
   /** The service page the enquiry came from. The API links the lead to it when it is published. */
   serviceSlug: z.preprocess(blankToUndefined, slugSchema.optional()),

@@ -39,6 +39,11 @@ describe('leadSubmissionFromForm', () => {
     const withoutToken = formWith([...base, ['cf-turnstile-response', '']]);
     expect(leadSubmissionSchema.parse(leadSubmissionFromForm(withoutToken, null)).turnstileToken).toBeUndefined();
   });
+
+  it('carries the routed enquiry type of the contact form', () => {
+    const form = formWith([...base, ['type', 'CONTACT'], ['enquiryType', 'free-website-audit']]);
+    expect(leadSubmissionSchema.parse(leadSubmissionFromForm(form, null)).enquiryType).toBe('free-website-audit');
+  });
 });
 
 describe('attributionFromForm', () => {
