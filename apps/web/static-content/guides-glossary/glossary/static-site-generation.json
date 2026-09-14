@@ -27,7 +27,7 @@
   },
   "example": {
     "heading": "What does it look like in practice?",
-    "body": "This glossary is exactly that case: thirty-seven entries that are identical for every visitor, fast to serve and rebuilt when an entry is edited.",
+    "body": "A glossary like this one is the textbook candidate: every entry is identical for every visitor, so the pages could be built once and served from a cache near the reader. We render them per request from our own API instead, because an edit made in the dashboard should be live at once rather than after a rebuild. That is the trade the technique asks you to make.",
     "caseStudy": null
   },
   "service": {

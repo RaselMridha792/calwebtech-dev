@@ -26,7 +26,6 @@
         "id": "section-1",
         "heading": null,
         "paragraphs": [
-          "Core Web Vitals are three measurements Google publishes to describe how a page feels: loading, responsiveness and visual stability. A site passes when the seventy-fifth percentile of real visits meets each threshold, which web.dev gives as 2.5 seconds for Largest Contentful Paint, 200 milliseconds for Interaction to Next Paint and 0.1 for Cumulative Layout Shift. This guide explains what breaks each one on an ordinary business website and what to do about it.",
           "The reason to care is not mainly the ranking signal. A page that takes six seconds on a phone loses the buyer before it has made its argument, and nobody ever sees the enquiry that did not happen."
         ],
         "bullets": []

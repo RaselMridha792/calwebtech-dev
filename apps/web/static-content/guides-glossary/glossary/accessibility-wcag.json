@@ -14,7 +14,7 @@
     "heading": "What does WCAG 2.2 AA actually ask for?",
     "paragraphs": [
       "WCAG is written as testable criteria rather than opinions. At AA the criteria that bite hardest on a business website are colour contrast, full keyboard operation, visible focus, form fields with labels and errors that are described in text, headings in order, and controls that are large enough to hit on a phone. WCAG 2.2 added criteria about focus not being hidden behind sticky headers and about not asking people to re-enter information they have already given.",
-      "Automated tools find perhaps a third of the problems. The rest need a person: tabbing through the page without a mouse, reading it with a screen reader, checking that an error message says what is wrong rather than turning a field red.",
+      "Automated tools find only some of the problems. The rest need a person: tabbing through the page without a mouse, reading it with a screen reader, checking that an error message says what is wrong rather than turning a field red.",
       "Accessibility is not a plugin or an overlay widget. It is decided by the markup and the design tokens, which is why it is cheapest to build in and most expensive to retrofit."
     ]
   },
