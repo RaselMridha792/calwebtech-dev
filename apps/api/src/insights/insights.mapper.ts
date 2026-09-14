@@ -169,6 +169,7 @@ export function authorView(post: InsightsPostRecord): InsightsAuthor | null {
 }
 
 function cardOf(post: InsightsPostRecord, readiness: ReadyArticle, alt: AltTextByUrl): InsightsArticleCard {
+  const publishedAt = publishedDate(post);
   return parseAs(`Post "${post.slug}"`, insightsArticleCardSchema, {
     slug: post.slug,
     title: post.title,
@@ -176,7 +177,8 @@ function cardOf(post: InsightsPostRecord, readiness: ReadyArticle, alt: AltTextB
     category: categoryRef(post),
     authorName: post.author?.name ?? null,
     readingTime: post.readingTime && post.readingTime > 0 ? post.readingTime : readingMinutes(readiness.wordCount),
-    publishedAt: publishedDate(post).toISOString(),
+    publishedAt: publishedAt.toISOString(),
+    updatedAt: (post.updatedAt > publishedAt ? post.updatedAt : publishedAt).toISOString(),
     image: coverImage(post.coverImage, alt),
     featured: post.featured,
   });

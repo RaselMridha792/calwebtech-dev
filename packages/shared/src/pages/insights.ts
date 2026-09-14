@@ -337,6 +337,8 @@ export const insightsArticleCardSchema = z.object({
   authorName: requiredText(120).nullable(),
   readingTime: z.number().int().positive(),
   publishedAt: isoDateTime,
+  /** The last change, for the sitemap's last-modified date. */
+  updatedAt: isoDateTime,
   image: imageSchema.nullable(),
   featured: z.boolean(),
 });
