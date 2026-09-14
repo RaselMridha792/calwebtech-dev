@@ -72,8 +72,22 @@ function joinLinks(items: readonly { key: string; href: string; label: string }[
   ));
 }
 
+/** Whether the at-a-glance strip has anything to show. */
+export function hasAtAGlance({ atAGlance: glance }: View): boolean {
+  return (
+    glance.industry !== null ||
+    glance.services.length > 0 ||
+    glance.platforms.length > 0 ||
+    glance.location !== null ||
+    glance.duration !== null ||
+    glance.year !== null ||
+    glance.liveUrl !== null
+  );
+}
+
 /** Industry, services, platform, location, duration, year and live site, where known. */
 export function AtAGlance({ view, tone }: { view: View; tone: LightTone }) {
+  if (!hasAtAGlance(view)) return null;
   const { atAGlance: glance, labels, headings } = view;
   const headingId = 'at-a-glance-heading';
   return (
@@ -141,8 +155,8 @@ export function NarrativeSection({
           <SectionHeading id={headingId} title={heading} size="medium" className="mb-0" />
         </div>
         <div className="max-w-[68ch] space-y-5 text-[17px] leading-relaxed lg:col-span-7" {...reveal(1)}>
-          {paragraphs.map((paragraph) => (
-            <p key={paragraph}>{paragraph}</p>
+          {paragraphs.map((paragraph, index) => (
+            <p key={`${String(index)}-${paragraph.slice(0, 24)}`}>{paragraph}</p>
           ))}
           {children}
         </div>

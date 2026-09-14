@@ -16,6 +16,7 @@ import {
   QuoteSection,
   RelatedCaseStudies,
   RelatedServices,
+  hasAtAGlance,
   type LightTone,
 } from '@/components/work/case-study';
 import { caseStudyArticleJsonLd, caseStudyReviewJsonLd } from '@/components/work/json-ld';
@@ -76,8 +77,8 @@ function caseStudyParts(view: WorkCaseStudyView): Part[] {
         />
       ),
     },
-    { key: 'at-a-glance', render: (tone) => <AtAGlance view={view} tone={tone} /> },
   ];
+  if (hasAtAGlance(view)) parts.push({ key: 'at-a-glance', render: (tone) => <AtAGlance view={view} tone={tone} /> });
   const narrative = (key: string, heading: string, paragraphs: readonly string[] | null) => {
     if (paragraphs) {
       parts.push({ key, render: (tone) => <NarrativeSection id={key} heading={heading} paragraphs={paragraphs} tone={tone} /> });
