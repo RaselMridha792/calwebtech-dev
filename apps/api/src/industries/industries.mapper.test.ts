@@ -1,5 +1,5 @@
 import type { Faq, Testimonial } from '@calwebtech/db';
-import type { IndustriesIndexContentInput, IndustryContentInput } from '@calwebtech/shared';
+import { INDUSTRY_FAQ_LIMIT, type IndustriesIndexContentInput, type IndustryContentInput } from '@calwebtech/shared';
 import { describe, expect, it } from 'vitest';
 import { ZodError } from 'zod';
 import { CONSENTED } from '../common/published';
@@ -248,6 +248,15 @@ describe('toIndustryDetailView', () => {
     );
     expect(view.faq?.heading).toBe('What do test buyers ask?');
     expect(view.faq?.items.map((item) => item.question)).toEqual(['What is the first test question?', 'What is the second?']);
+  });
+
+  it('shows at most the FAQ limit, so a long list cannot fail the page', () => {
+    const faqs = Array.from({ length: INDUSTRY_FAQ_LIMIT + 2 }, (_, position) =>
+      faq(`What is test question ${String(position)}?`),
+    );
+    const view = toIndustryDetailView(industry({ faqs }));
+    expect(view.faq?.items).toHaveLength(INDUSTRY_FAQ_LIMIT);
+    expect(view.faq?.items[0]?.question).toBe('What is test question 0?');
   });
 
   it('keeps record SEO and shortens fallbacks to the length rules', () => {
