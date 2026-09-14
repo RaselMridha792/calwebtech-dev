@@ -1,0 +1,69 @@
+{
+  "slug": "answer-engine-optimisation",
+  "term": "Answer engine optimisation",
+  "letter": "A",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What is answer engine optimisation?",
+    "description": "Answer engine optimisation is the work of getting a company cited in the answers that AI assistants write, rather than only ranked in a list of blue links.",
+    "ogImage": null
+  },
+  "definition": "Answer engine optimisation is the work of getting a company cited in the answers that AI assistants write, rather than only ranked in a list of blue links.",
+  "answerBlock": "Answer engine optimisation is the work of getting a company cited in the answers that AI assistants write, rather than only ranked in a list of blue links. Assistants such as ChatGPT, Perplexity and Google AI Overviews summarise sources and name a few of them. Being one of the named sources is a different job from ranking tenth on a results page.",
+  "body": {
+    "heading": "How is it different from ordinary SEO?",
+    "paragraphs": [
+      "The mechanics overlap: the page still has to be crawlable, fast and clearly about one thing. What changes is the shape of the content. An assistant extracts a passage that answers the question directly, so a page that opens with two or three plain sentences of answer is far easier to quote than one that opens with a marketing paragraph.",
+      "Specificity wins. Prices, timelines, what is included, what is not, who it is not for: these are the passages that get lifted, because they answer the question the person actually asked. Vague superlatives are unquotable.",
+      "Structured data helps a machine agree with the page about what it is looking at, and a crawlable llms.txt file gives an assistant a map of the site written for that purpose."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "A buyer who asks an assistant \"who builds B2B ecommerce sites in Sacramento\" and reads three names has already shortlisted before visiting a website. Being absent from that answer costs the enquiry before any sales process starts.",
+      "The work is measurable in the same way as ordinary search: which prompts name you, which pages are cited, and how many enquiries say they arrived that way, which is why the referral question on our forms includes AI assistants."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "A service page that opens with a two-sentence answer, states a starting price band and lists what is included is quotable as it stands. The same page written as a brochure paragraph gives an assistant nothing to lift.",
+    "caseStudy": null
+  },
+  "service": {
+    "slug": "ai-search-visibility",
+    "title": "AI search visibility",
+    "line": "Technical SEO plus the newer work of being cited by ChatGPT, Perplexity, Gemini and AI overviews."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "canonical-tag",
+        "term": "Canonical tag",
+        "definition": "A canonical tag tells search engines which address is the official one for a page that can be reached at several addresses."
+      },
+      {
+        "slug": "core-web-vitals",
+        "term": "Core Web Vitals",
+        "definition": "Core Web Vitals are three measurements Google publishes to describe how a page feels to the people using it: loading, responsiveness and visual stability."
+      },
+      {
+        "slug": "llms-txt",
+        "term": "llms.txt",
+        "definition": "llms.txt is a plain text file at the root of a website that describes the site and points to its most useful pages for AI assistants."
+      },
+      {
+        "slug": "structured-data",
+        "term": "Structured data",
+        "definition": "Structured data is machine-readable markup added to a page that states what it is about in a vocabulary search engines understand."
+      }
+    ]
+  },
+  "sources": [
+    {
+      "label": "Google on structured data",
+      "href": "https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data"
+    }
+  ]
+}

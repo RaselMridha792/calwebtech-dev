@@ -214,6 +214,11 @@ export const guideDetailViewSchema = z.object({
       terms: z.array(glossaryTermCardSchema).max(GLOSSARY_RELATED_LIMIT),
     })
     .nullable(),
+  /**
+   * Where the figures in the copy come from. Every established public fact a guide quotes
+   * is linked to the source that published it (owner's content rule, 2026-09-14).
+   */
+  sources: z.object({ heading: questionSchema(), items: z.array(linkSchema).min(1).max(8) }).nullable(),
 });
 export type GuideDetailView = z.output<typeof guideDetailViewSchema>;
 
@@ -280,6 +285,8 @@ export const glossaryTermViewSchema = z.object({
   /** The service that delivers this work. */
   service: deliveringServiceSchema.nullable(),
   related: z.object({ heading: questionSchema(), terms: z.array(glossaryTermCardSchema).min(1) }).nullable(),
+  /** Public sources for any established figure or threshold the entry quotes. */
+  sources: z.array(linkSchema).max(6).default([]),
 });
 export type GlossaryTermView = z.output<typeof glossaryTermViewSchema>;
 

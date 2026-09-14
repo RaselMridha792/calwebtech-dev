@@ -239,6 +239,7 @@ export function toGuideDetailView({ guide, others, terms, services }: GuideDetai
       relatedGuides.length > 0 || named.length > 0
         ? { heading: 'What else should I read?', guides: relatedGuides.map(guideCard), terms: named }
         : null,
+    sources: null,
   });
 }
 
@@ -296,5 +297,6 @@ export function toGlossaryTermView({ term, others }: GlossaryTermSources): Gloss
       : null,
     service: published ? { slug: service.slug, title: service.title, line: clip(service.shortDescription, 300) } : null,
     related: related.length > 0 ? { heading: 'Which terms are related?', terms: related } : null,
+    sources: [],
   });
 }

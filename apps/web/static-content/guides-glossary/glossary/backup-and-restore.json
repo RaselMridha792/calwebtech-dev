@@ -1,0 +1,64 @@
+{
+  "slug": "backup-and-restore",
+  "term": "Backup and restore",
+  "letter": "B",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What is backup and restore?",
+    "description": "A backup is a copy of the site and its database held somewhere else, and a restore is the rehearsed process of putting that copy back.",
+    "ogImage": null
+  },
+  "definition": "A backup is a copy of the site and its database held somewhere else, and a restore is the rehearsed process of putting that copy back.",
+  "answerBlock": "A backup is a copy of the site and its database held somewhere else, and a restore is the rehearsed process of putting that copy back. A backup nobody has ever restored is not a backup, it is a hope. The measures that matter are how much data you could lose and how long recovery takes.",
+  "body": {
+    "heading": "What makes a backup worth having?",
+    "paragraphs": [
+      "Three things: it is stored away from the server it came from, it is encrypted, and someone has actually restored it recently. A copy sitting on the same machine as the website disappears with the machine.",
+      "Two numbers describe the promise. The recovery point objective is how much recent work you accept losing, set by how often backups run. The recovery time objective is how long the site is down while it is put back. Ours are twenty-four hours and four hours, with nightly encrypted dumps kept off site: seven daily, four weekly and six monthly.",
+      "Restores are rehearsed on a staging environment, so the process is a routine rather than an improvisation on the worst day of the quarter."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "The cost of a backup policy is small and fixed. The cost of not having one is the whole site, the order history and the search rankings that came with them.",
+      "It also decides how bravely you can work. Teams that trust their restore process ship changes; teams that do not avoid touching anything, and the site decays."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "A nightly encrypted dump is written off site, retained for seven days, four weeks and six months, and a restore is rehearsed against staging so the four-hour recovery time is a measured figure rather than a promise.",
+    "caseStudy": null
+  },
+  "service": {
+    "slug": "care-plans",
+    "title": "Website care plans",
+    "line": "Patching, backups with a tested restore, monitoring and a fixed allowance of development hours."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "content-delivery-network",
+        "term": "Content delivery network (CDN)",
+        "definition": "A content delivery network is a set of servers spread around the world that serve copies of your files from somewhere near each visitor."
+      },
+      {
+        "slug": "dns",
+        "term": "DNS",
+        "definition": "DNS is the system that turns a domain name someone types into the address of the server that answers for it."
+      },
+      {
+        "slug": "staging-environment",
+        "term": "Staging environment",
+        "definition": "A staging environment is a private copy of the live site where changes are tested before anyone outside the company sees them."
+      },
+      {
+        "slug": "tls-certificate",
+        "term": "TLS certificate",
+        "definition": "A TLS certificate is the file that lets a website prove who it is and encrypt the traffic between it and the visitor."
+      }
+    ]
+  },
+  "sources": []
+}

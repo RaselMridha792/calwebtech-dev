@@ -1,0 +1,54 @@
+{
+  "slug": "payment-gateway",
+  "term": "Payment gateway",
+  "letter": "P",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What is a payment gateway?",
+    "description": "A payment gateway is the service that takes a card or bank payment from a customer and moves the money to your account.",
+    "ogImage": null
+  },
+  "definition": "A payment gateway is the service that takes a card or bank payment from a customer and moves the money to your account.",
+  "answerBlock": "A payment gateway is the service that takes a card or bank payment from a customer and moves the money to your account. It handles the card details so your own systems never have to, which is what keeps the compliance burden manageable. Fees, supported methods and payout timing are the commercial variables.",
+  "body": {
+    "heading": "What should you look at when choosing one?",
+    "paragraphs": [
+      "The payment methods your buyers actually use, which vary by country and by sector. In B2B that often includes purchase orders and invoicing on account, which many consumer gateways handle badly or not at all.",
+      "Then the mechanics: transaction fees, payout schedule, how refunds and partial refunds work, how failed payments are retried, and whether the hosted fields can be styled to look like the rest of the checkout.",
+      "Compliance follows the integration pattern. If card details never touch your servers, the scope of what you must certify is far smaller, which is why hosted fields and redirects remain the default advice."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "Checkout is where the money is lost. A gateway that does not offer a buyer's normal payment method costs the order, and a percentage point of fees on every transaction compounds quietly.",
+      "For B2B, the ability to place an order on account is often worth more than any conversion tweak on the page."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "A distributor selling to trade accounts needs both card payment for new customers and invoicing on agreed terms for existing ones, decided by the account rather than by the visitor.",
+    "caseStudy": null
+  },
+  "service": {
+    "slug": "ecommerce-development",
+    "title": "Ecommerce development",
+    "line": "Shopify, WooCommerce or custom, including B2B pricing rules, quoting and ERP integration."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "product-catalogue",
+        "term": "Product catalogue",
+        "definition": "A product catalogue is the structured record of everything you sell: the products, their variants, their attributes and how they are grouped."
+      },
+      {
+        "slug": "punchout-catalogue",
+        "term": "Punchout catalogue",
+        "definition": "A punchout catalogue lets a buyer leave their own procurement system, shop on your site with their agreed pricing, and return with the basket as a requisition."
+      }
+    ]
+  },
+  "sources": []
+}

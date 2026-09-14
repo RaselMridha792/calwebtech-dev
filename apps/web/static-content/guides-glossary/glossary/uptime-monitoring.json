@@ -1,0 +1,64 @@
+{
+  "slug": "uptime-monitoring",
+  "term": "Uptime monitoring",
+  "letter": "U",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What is uptime monitoring?",
+    "description": "Uptime monitoring is an external service that checks your site at intervals and alerts someone when it stops answering correctly.",
+    "ogImage": null
+  },
+  "definition": "Uptime monitoring is an external service that checks your site at intervals and alerts someone when it stops answering correctly.",
+  "answerBlock": "Uptime monitoring is an external service that checks your site at intervals and alerts someone when it stops answering correctly. The point is that you hear about an outage before a customer telephones about it. Good monitoring checks a real journey, not only whether the front page returns a response.",
+  "body": {
+    "heading": "What should monitoring actually check?",
+    "paragraphs": [
+      "More than the homepage. A site can return a perfectly healthy front page while the checkout is broken, the contact form is failing silently or the search index is empty. Checks should cover the journeys that earn money.",
+      "It should also watch the things that fail quietly: certificate expiry, a queue that has stopped processing, disk filling up, and error rates rising without the site going down.",
+      "Alerts need an owner and a route. An alert that reaches an unread mailbox is monitoring theatre."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "The cost of downtime is not only lost orders. It is the enquiries that never arrive and are never counted, and the buyers who conclude you are not a serious supplier.",
+      "Monitoring evidence also makes a support agreement measurable rather than a matter of opinion about how often things break."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "A care plan monitors the site, the form submissions and the background queue, so a failed email job raises an alert rather than sitting unnoticed until someone asks where their confirmation went.",
+    "caseStudy": null
+  },
+  "service": {
+    "slug": "care-plans",
+    "title": "Website care plans",
+    "line": "Patching, backups with a tested restore, monitoring and a fixed allowance of development hours."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "backup-and-restore",
+        "term": "Backup and restore",
+        "definition": "A backup is a copy of the site and its database held somewhere else, and a restore is the rehearsed process of putting that copy back."
+      },
+      {
+        "slug": "content-delivery-network",
+        "term": "Content delivery network (CDN)",
+        "definition": "A content delivery network is a set of servers spread around the world that serve copies of your files from somewhere near each visitor."
+      },
+      {
+        "slug": "dns",
+        "term": "DNS",
+        "definition": "DNS is the system that turns a domain name someone types into the address of the server that answers for it."
+      },
+      {
+        "slug": "staging-environment",
+        "term": "Staging environment",
+        "definition": "A staging environment is a private copy of the live site where changes are tested before anyone outside the company sees them."
+      }
+    ]
+  },
+  "sources": []
+}

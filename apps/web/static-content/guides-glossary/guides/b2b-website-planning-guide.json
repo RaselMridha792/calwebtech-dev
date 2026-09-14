@@ -1,0 +1,219 @@
+{
+  "slug": "b2b-website-planning-guide",
+  "title": "The B2B website planning guide",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "B2B website planning guide",
+    "description": "How to scope, budget and brief a B2B website project: what to decide before you talk to an agency, and what moves the price.",
+    "ogImage": "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=800&q=72"
+  },
+  "answerBlock": "Planning a B2B website means deciding three things before anyone designs anything: the one commercial job the site has to do, the content and data that already exist, and the systems it has to talk to. Most projects that overrun do so because those decisions were postponed, not because the design took too long. This guide sets out the questions in the order that answers them cheaply.",
+  "hero": {
+    "intro": "Written for the person who has been asked to get a new website built and has not done it before, or has done it once and would like the second time to go better.",
+    "pageCountLabel": "11 pages",
+    "formatLabel": "PDF",
+    "ctaLabel": "Get the guide",
+    "cover": {
+      "src": "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=800&q=72",
+      "alt": "Two colleagues talking across a meeting table, one taking notes beside an open laptop"
+    }
+  },
+  "summary": {
+    "heading": "What does this guide cover?",
+    "intro": "The whole argument of the guide is below. The download adds the worksheets: a scoping questionnaire, a content inventory template, an integration checklist and a launch runbook.",
+    "sections": [
+      {
+        "id": "section-1",
+        "heading": null,
+        "paragraphs": [
+          "Planning a B2B website means deciding three things before anyone designs anything: the one commercial job the site has to do, the content and data that already exist, and the systems it has to talk to. Most projects that overrun do so because those decisions were postponed, not because the design took too long. This guide sets out the questions in the order that answers them cheaply.",
+          "It is written for companies selling considered products or services to other businesses, where the website is where buyers form a shortlist before anyone speaks to a salesperson."
+        ],
+        "bullets": []
+      },
+      {
+        "id": "section-2",
+        "heading": "What job does the website have to do?",
+        "paragraphs": [
+          "A website that is asked to do everything does nothing especially well. Before the first workshop, write one sentence: the site exists to produce qualified enquiries for a named set of services, or to let existing customers place repeat orders without telephoning, or to make a technical audience confident enough to book a demonstration.",
+          "Then name the number that would prove it: quote requests a month, orders placed on account, demonstrations booked. If nobody can say what that number is today, finding out is the first task, because a project without a baseline can only be judged on taste."
+        ],
+        "bullets": [
+          "One sentence naming the commercial job",
+          "One number that proves it, with today’s value",
+          "The buyers it is for, and who it is not for"
+        ]
+      },
+      {
+        "id": "section-3",
+        "heading": "What content do you already have?",
+        "paragraphs": [
+          "Almost every project underestimates this. Before design starts, inventory what exists: every page on the current site with the traffic it earns, every photograph you have the right to use, every case study you are allowed to name, every specification sheet and every price list. Mark each one as keep, rewrite or retire.",
+          "The inventory tells you two things. First, how much writing the project actually needs, which is the line most often left out of a budget. Second, which addresses must survive the move, because those are the pages that carry the traffic you have already paid for and they will need permanent redirects."
+        ],
+        "bullets": []
+      },
+      {
+        "id": "section-4",
+        "heading": "What has to be integrated?",
+        "paragraphs": [
+          "This is where the risk lives. Account pricing, live stock, order history, appointment slots, a CRM that must receive the enquiry: each one is a dependency on a system you may not control. Ask three questions about every integration, early and in writing. Does an API exist. Is it documented. Who owns it and can they give us a test environment.",
+          "Where the answers are vague, plan the first release without the integration and design the page so it degrades honestly: take the enquiry, say the live figure is not available, never leave a visitor watching a spinner. Shipping something that works beats waiting nine months for a system nobody can get access to."
+        ],
+        "bullets": [
+          "Every system the site must read from or write to",
+          "Whether each has a documented API and a test environment",
+          "Who owns it, and how quickly they answer"
+        ]
+      },
+      {
+        "id": "section-5",
+        "heading": "What moves the price?",
+        "paragraphs": [
+          "Four things, in roughly this order. The number of distinct templates, because each one is designed, built, tested and made responsive. The depth of the content work, from editing what you have to researching and writing it. The integrations, which carry the most uncertainty. And the amount of bespoke interaction: configurators, calculators, booking, quoting.",
+          "What does not move it much is the number of pages inside a template. Once a service page exists as a content type, the eleventh service page costs almost nothing, which is exactly why repeatable things should be content types rather than hand-built pages.",
+          "Our own published bands are $12,000 to $25,000 for a focused marketing site, $25,000 to $60,000 for a larger build with catalogue or application work, and from $1,500 a month for care once it is live. A supplier who will not name a band before a discovery call is asking you to spend an hour to learn whether they are in your range."
+        ],
+        "bullets": []
+      },
+      {
+        "id": "section-6",
+        "heading": "How should the project be sequenced?",
+        "paragraphs": [
+          "Structure, then argument, then design, then build. Information architecture settles what pages exist and what they are called. Wireframes settle the order of each page and expose the missing content while changing it is still cheap. Design applies the brand to a structure that has already been agreed. Build turns the templates into content types so the team can publish without a developer.",
+          "Two habits keep the sequence honest: review on a staging environment on a real phone rather than in screenshots, and write the acceptance criteria before the work starts, so \"finished\" is a fact rather than an opinion."
+        ],
+        "bullets": []
+      },
+      {
+        "id": "section-7",
+        "heading": "What has to be true before launch?",
+        "paragraphs": [
+          "A short, non-negotiable list. Every old address has a permanent redirect to its closest equivalent. The site meets the Core Web Vitals thresholds published on web.dev on a mid-range phone, not only on the designer’s laptop. It passes WCAG 2.2 AA for contrast, keyboard operation, labelled fields and heading order. Analytics and conversion tracking are recording. Backups run and a restore has actually been tested.",
+          "Then the ownership questions, settled in writing: the domain registration, the hosting account, the code repository, the database and an export of the content are all in the client company’s name. The agency holds access, not ownership. This is the clause that decides how free you are in three years, and it costs nothing to agree at the start."
+        ],
+        "bullets": []
+      }
+    ]
+  },
+  "takeaways": {
+    "heading": "What should I take away from it?",
+    "items": [
+      "Write down the single commercial job the site has to do, and the number that would prove it did it.",
+      "Inventory the content and the addresses you already have before anyone designs a page.",
+      "Settle the integrations early: does the API exist, is it documented, and who owns it.",
+      "Budget content work as a line of its own; it is the most common cause of a late launch.",
+      "Agree ownership of the domain, the repository, the database and the content in writing, before kick-off."
+    ]
+  },
+  "gate": {
+    "heading": "How do I get the full guide?",
+    "intro": "Tell us where to send it. You get the PDF straight away on this page, and the summary above stays free to read and to share.",
+    "submitLabel": "Send me the guide",
+    "footnote": "Your name and email are stored in our own database, never sold or passed on, and you can ask us to delete them at any time.",
+    "fileUrl": "/guides/b2b-website-planning-guide.pdf",
+    "fileLabel": "PDF, 11 pages",
+    "success": {
+      "heading": "Your guide is ready.",
+      "body": "The download is below. We have your request on file, and nobody will telephone you about it.",
+      "downloadLabel": "Download the guide"
+    }
+  },
+  "faq": {
+    "heading": "What do people ask before starting a project?",
+    "intro": null,
+    "items": [
+      {
+        "id": "b2b-website-planning-guide-faq-1",
+        "question": "How long does a B2B website project take?",
+        "answer": "A focused marketing site with a handful of templates usually runs eight to twelve weeks from kick-off to launch. Catalogue work, account pricing or an integration with an ERP pushes that to four or five months, because the integration has to be specified, built against a real system and tested with real data. The variable that moves the date most is content: projects wait for copy far more often than they wait for code."
+      },
+      {
+        "id": "b2b-website-planning-guide-faq-2",
+        "question": "What does a B2B website cost?",
+        "answer": "Our own bands are published rather than quoted on request: $12,000 to $25,000 for a focused marketing site, $25,000 to $60,000 for a larger build with catalogue or application work, and from $1,500 a month for care once it is live. What moves a project inside or beyond a band is the number of templates, the depth of the content work and the integrations."
+      },
+      {
+        "id": "b2b-website-planning-guide-faq-3",
+        "question": "Who needs to be involved from our side?",
+        "answer": "One decision maker who can approve without a committee, someone who owns the content, and someone with access to the systems the site has to talk to. Projects stall when the third person is discovered in week six. A weekly hour from each of them is worth more than a large workshop at the start."
+      },
+      {
+        "id": "b2b-website-planning-guide-faq-4",
+        "question": "Should we redesign or start again?",
+        "answer": "Start from the evidence. If the pages that earn traffic are working and the problem is the structure and the speed, a redesign that keeps those addresses is cheaper and less risky. If the content model cannot express what you sell, or the platform prevents the thing the business needs, rebuilding is the honest answer."
+      },
+      {
+        "id": "b2b-website-planning-guide-faq-5",
+        "question": "What should we own at the end?",
+        "answer": "The domain registration, the hosting account, the code repository, the database and the content in an exportable form. Ask for that in writing before the project starts. An agency should hold access to those things, not ownership of them."
+      }
+    ]
+  },
+  "service": {
+    "heading": "Who does this work?",
+    "intro": null,
+    "item": {
+      "slug": "custom-website-development",
+      "title": "Custom website development",
+      "line": "Research-led design built around how your buyers actually decide, not around a template's section order."
+    }
+  },
+  "related": {
+    "heading": "What else should I read?",
+    "guides": [
+      {
+        "slug": "core-web-vitals-guide",
+        "title": "The Core Web Vitals guide for business websites",
+        "summary": "What the three metrics measure, the thresholds Google publishes, the handful of things that actually break them on a business website, and what to require from whoever builds yours.",
+        "pageCountLabel": "10 pages",
+        "cover": {
+          "src": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=72",
+          "alt": "Performance and analytics review before launch"
+        },
+        "topics": [
+          "Performance",
+          "LCP",
+          "INP",
+          "CLS"
+        ],
+        "updatedAt": "2026-09-15T00:00:00.000Z"
+      }
+    ],
+    "terms": [
+      {
+        "slug": "information-architecture",
+        "term": "Information architecture",
+        "definition": "Information architecture is how a site is organised: what pages exist, how they are grouped, and what each one is called."
+      },
+      {
+        "slug": "wireframe",
+        "term": "Wireframe",
+        "definition": "A wireframe is a deliberately plain layout of a page that settles what is on it and in what order, before anyone decides how it looks."
+      },
+      {
+        "slug": "design-system",
+        "term": "Design system",
+        "definition": "A design system is the agreed set of colours, type, spacing and components that every page of a product is built from."
+      },
+      {
+        "slug": "content-management-system",
+        "term": "Content management system (CMS)",
+        "definition": "A content management system is the software your team uses to add and edit website content without a developer."
+      }
+    ]
+  },
+  "sources": {
+    "heading": "Where do these figures come from?",
+    "items": [
+      {
+        "label": "Core Web Vitals thresholds on web.dev",
+        "href": "https://web.dev/articles/vitals"
+      },
+      {
+        "label": "Web Content Accessibility Guidelines 2.2",
+        "href": "https://www.w3.org/TR/WCAG22/"
+      }
+    ]
+  }
+}

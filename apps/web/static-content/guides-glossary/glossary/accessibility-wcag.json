@@ -1,0 +1,76 @@
+{
+  "slug": "accessibility-wcag",
+  "term": "Accessibility (WCAG)",
+  "letter": "A",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What is web accessibility and WCAG?",
+    "description": "Accessibility means a website can be used by people with disabilities. WCAG is the standard that says what that requires.",
+    "ogImage": null
+  },
+  "definition": "Accessibility means a website can be used by people with disabilities, and WCAG is the published standard that defines what that requires.",
+  "answerBlock": "Accessibility means a website can be used by people with disabilities, and WCAG is the published standard that defines what that requires. The Web Content Accessibility Guidelines are organised into levels, and AA is the level most organisations are asked to meet. It covers colour contrast, keyboard operation, labelled form fields, correct heading structure and text alternatives for images.",
+  "body": {
+    "heading": "What does WCAG 2.2 AA actually ask for?",
+    "paragraphs": [
+      "WCAG is written as testable criteria rather than opinions. At AA the criteria that bite hardest on a business website are colour contrast, full keyboard operation, visible focus, form fields with labels and errors that are described in text, headings in order, and controls that are large enough to hit on a phone. WCAG 2.2 added criteria about focus not being hidden behind sticky headers and about not asking people to re-enter information they have already given.",
+      "Automated tools find perhaps a third of the problems. The rest need a person: tabbing through the page without a mouse, reading it with a screen reader, checking that an error message says what is wrong rather than turning a field red.",
+      "Accessibility is not a plugin or an overlay widget. It is decided by the markup and the design tokens, which is why it is cheapest to build in and most expensive to retrofit."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "For healthcare, education, finance and any organisation selling to the public sector, accessibility is a procurement requirement. A supplier who cannot describe the standard they meet is a supplier who loses the tender.",
+      "The same work removes friction for everyone else: a form that a screen reader can complete is a form that a distracted buyer can complete on a phone at a trade show."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "Cascadia Health merged fourteen clinic sites into one platform where every appointment journey works from the keyboard and every error message is read out, verified against WCAG 2.2 AA.",
+    "caseStudy": {
+      "slug": "cascadia-health",
+      "clientName": "Cascadia Health",
+      "metric": {
+        "value": "AA",
+        "label": "WCAG 2.2 verified"
+      }
+    }
+  },
+  "service": {
+    "slug": "custom-website-development",
+    "title": "Custom website development",
+    "line": "Research-led design built around how your buyers actually decide, not around a template's section order."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "design-system",
+        "term": "Design system",
+        "definition": "A design system is the agreed set of colours, type, spacing and components that every page of a product is built from."
+      },
+      {
+        "slug": "information-architecture",
+        "term": "Information architecture",
+        "definition": "Information architecture is how a site is organised: what pages exist, how they are grouped, and what each one is called."
+      },
+      {
+        "slug": "responsive-design",
+        "term": "Responsive design",
+        "definition": "Responsive design means one website that rearranges itself to work on any screen, from a phone to a wide monitor."
+      },
+      {
+        "slug": "wireframe",
+        "term": "Wireframe",
+        "definition": "A wireframe is a deliberately plain layout of a page that settles what is on it and in what order, before anyone decides how it looks."
+      }
+    ]
+  },
+  "sources": [
+    {
+      "label": "Web Content Accessibility Guidelines 2.2",
+      "href": "https://www.w3.org/TR/WCAG22/"
+    }
+  ]
+}

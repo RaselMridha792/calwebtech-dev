@@ -1,0 +1,56 @@
+{
+  "slug": "api",
+  "term": "API",
+  "letter": "A",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What is an API?",
+    "description": "An API is a defined way for two systems to exchange data without a person copying it between them.",
+    "ogImage": null
+  },
+  "definition": "An API is a defined way for two systems to exchange data without a person copying it between them.",
+  "answerBlock": "An API is a defined way for two systems to exchange data without a person copying it between them. One system asks a question in a fixed format and the other answers in a fixed format. It is how a website reads live stock from an ERP, or writes an enquiry into a CRM.",
+  "body": {
+    "heading": "What does an API do on a business website?",
+    "paragraphs": [
+      "Most useful website work is integration work. Prices, stock, account terms, order history, appointment slots and customer records live in systems that already exist, and the website is the front of them. An API is the contract that makes that possible: an address to call, a shape of request, a shape of response, and rules about who may ask.",
+      "Good integrations are defensive. They cache what does not change every second, they fail visibly rather than silently, and they never leave the visitor staring at a spinner because a supplier system is slow. A quoting page that cannot reach the ERP should say so and take the enquiry anyway.",
+      "Security is part of the contract. Credentials belong on the server, never in the browser, and every request is validated on the receiving side, because the client can send anything."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "An API is the difference between a website that describes the business and a website that runs part of it. Account pricing, live availability and self-service order tracking all remove work from the people who currently answer the phone.",
+      "It is also where projects overrun. The integration is only as good as the system behind it, so the honest questions early on are: does the API exist, is it documented, and who owns it."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "Northmark Supply put a catalogue of forty thousand parts behind an account-priced quoting platform tied into their ERP, and quote turnaround fell from three days to twelve minutes.",
+    "caseStudy": {
+      "slug": "northmark-supply",
+      "clientName": "Northmark Supply",
+      "metric": {
+        "value": "12 min",
+        "label": "Quote turnaround, from 3 days"
+      }
+    }
+  },
+  "service": {
+    "slug": "web-application-development",
+    "title": "Web application development",
+    "line": "Portals, dashboards, booking engines and internal tools built on Next.js with a typed API behind them."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "web-application",
+        "term": "Web application",
+        "definition": "A web application is software that runs in a browser and does work, as opposed to a website that mainly publishes information."
+      }
+    ]
+  },
+  "sources": []
+}

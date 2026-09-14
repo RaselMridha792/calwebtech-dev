@@ -1,0 +1,64 @@
+{
+  "slug": "tls-certificate",
+  "term": "TLS certificate",
+  "letter": "T",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What is a TLS certificate?",
+    "description": "A TLS certificate is the file that lets a website prove who it is and encrypt the traffic between it and the visitor.",
+    "ogImage": null
+  },
+  "definition": "A TLS certificate is the file that lets a website prove who it is and encrypt the traffic between it and the visitor.",
+  "answerBlock": "A TLS certificate is the file that lets a website prove who it is and encrypt the traffic between it and the visitor. It is what puts the padlock in the address bar and makes the address begin with https. Certificates expire, so renewal has to be automatic.",
+  "body": {
+    "heading": "What do you need to know about certificates?",
+    "paragraphs": [
+      "That they expire, usually within months, and that an expired certificate produces a full-page browser warning rather than a subtle error. Automatic renewal through Let's Encrypt removes the risk of a diary entry being missed.",
+      "That they cover specific names. A certificate for example.com does not automatically cover www.example.com or a subdomain, which is a common cause of a site that works at one address and warns at another.",
+      "That encryption in transit is only half the job. Data also has to be protected where it is stored, and secrets have to live outside the code repository."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "An expired certificate is an outage that looks like fraud to every visitor, and it happens most often to sites nobody is maintaining.",
+      "Encryption in transit is also a baseline expectation in any procurement questionnaire, alongside backups and access control."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "The proxy in front of the platform requests and renews certificates automatically, so renewal is not a task anyone has to remember.",
+    "caseStudy": null
+  },
+  "service": {
+    "slug": "care-plans",
+    "title": "Website care plans",
+    "line": "Patching, backups with a tested restore, monitoring and a fixed allowance of development hours."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "backup-and-restore",
+        "term": "Backup and restore",
+        "definition": "A backup is a copy of the site and its database held somewhere else, and a restore is the rehearsed process of putting that copy back."
+      },
+      {
+        "slug": "content-delivery-network",
+        "term": "Content delivery network (CDN)",
+        "definition": "A content delivery network is a set of servers spread around the world that serve copies of your files from somewhere near each visitor."
+      },
+      {
+        "slug": "dns",
+        "term": "DNS",
+        "definition": "DNS is the system that turns a domain name someone types into the address of the server that answers for it."
+      },
+      {
+        "slug": "staging-environment",
+        "term": "Staging environment",
+        "definition": "A staging environment is a private copy of the live site where changes are tested before anyone outside the company sees them."
+      }
+    ]
+  },
+  "sources": []
+}

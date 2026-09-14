@@ -1,0 +1,61 @@
+{
+  "slug": "punchout-catalogue",
+  "term": "Punchout catalogue",
+  "letter": "P",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What is a punchout catalogue?",
+    "description": "A punchout catalogue lets a procurement buyer shop your site with their agreed pricing and return with the basket as a requisition.",
+    "ogImage": null
+  },
+  "definition": "A punchout catalogue lets a buyer leave their own procurement system, shop on your site with their agreed pricing, and return with the basket as a requisition.",
+  "answerBlock": "A punchout catalogue lets a buyer leave their own procurement system, shop on your site with their agreed pricing, and return with the basket as a requisition. It is a B2B pattern for customers whose purchasing runs through a procurement platform. The order is then approved inside their system rather than paid on your checkout.",
+  "body": {
+    "heading": "How does a punchout session work?",
+    "paragraphs": [
+      "The buyer clicks through from their procurement system, which sends a request identifying the account. Your site opens a session that knows who they are, shows their contracted prices, and, when they finish, sends the basket back to their system rather than taking payment.",
+      "The details are unglamorous: session security, catalogue mapping, unit-of-measure agreement and part-number alignment with the customer's own codes. Most of the effort is in that alignment, not in the shopping journey.",
+      "It only makes sense with a clean catalogue and reliable account pricing behind it, which is why it is usually the second phase of a B2B project rather than the first."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "For a distributor, punchout is often the condition of doing business with a large customer at all. Being the supplier that is easy to buy from inside their system is a defensible advantage.",
+      "It also removes rekeying, which is where order errors come from on both sides."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "Northmark Supply's counter staff stopped retyping orders once the quoting platform was tied into the ERP, which is the same benefit punchout gives the customer's purchasing team.",
+    "caseStudy": {
+      "slug": "northmark-supply",
+      "clientName": "Northmark Supply",
+      "metric": {
+        "value": "−41%",
+        "label": "Support calls"
+      }
+    }
+  },
+  "service": {
+    "slug": "ecommerce-development",
+    "title": "Ecommerce development",
+    "line": "Shopify, WooCommerce or custom, including B2B pricing rules, quoting and ERP integration."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "payment-gateway",
+        "term": "Payment gateway",
+        "definition": "A payment gateway is the service that takes a card or bank payment from a customer and moves the money to your account."
+      },
+      {
+        "slug": "product-catalogue",
+        "term": "Product catalogue",
+        "definition": "A product catalogue is the structured record of everything you sell: the products, their variants, their attributes and how they are grouped."
+      }
+    ]
+  },
+  "sources": []
+}

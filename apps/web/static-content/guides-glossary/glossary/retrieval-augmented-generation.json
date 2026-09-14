@@ -1,0 +1,54 @@
+{
+  "slug": "retrieval-augmented-generation",
+  "term": "Retrieval-augmented generation",
+  "letter": "R",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What is retrieval-augmented generation?",
+    "description": "Retrieval-augmented generation is the pattern of finding the relevant documents first and giving them to a language model with the question.",
+    "ogImage": null
+  },
+  "definition": "Retrieval-augmented generation is the pattern of finding the relevant documents first and giving them to a language model with the question.",
+  "answerBlock": "Retrieval-augmented generation is the pattern of finding the relevant documents first and giving them to a language model with the question. The model answers from the material it has been handed rather than from memory. It is how an assistant can answer about your products without being trained on them.",
+  "body": {
+    "heading": "How does retrieval-augmented generation work?",
+    "paragraphs": [
+      "The content is split into passages and indexed, usually with embeddings so the search can match meaning rather than exact words. When a question arrives, the most relevant passages are retrieved and sent to the model with an instruction to answer only from them.",
+      "The quality of the answer is decided by the retrieval step far more than by the model. Badly chunked documents, missing metadata or an index that is weeks out of date produce confident answers built on the wrong passage.",
+      "The pattern also makes answers auditable, because each answer can cite the passages it used. Without that citation, nobody can check whether the assistant is right."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "It is the difference between a chat widget that invents lead times and one that quotes your documentation. The second is something a support team will actually allow in front of customers.",
+      "It also keeps the content in your own systems: nothing is baked into a model, so a correction to a document corrects the assistant on the next question."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "A documentation assistant retrieves the three most relevant passages from the published documentation, answers from them and links to each one, so the reader can check the source.",
+    "caseStudy": null
+  },
+  "service": {
+    "slug": "ai-integration",
+    "title": "AI integration",
+    "line": "Qualification assistants, search, content tooling and workflow automation wired into your own data."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "large-language-model",
+        "term": "Large language model",
+        "definition": "A large language model is software trained on very large amounts of text that predicts likely continuations, which is why it can write and summarise."
+      },
+      {
+        "slug": "vector-embedding",
+        "term": "Vector embedding",
+        "definition": "A vector embedding turns a piece of text into a list of numbers that places it near other text with a similar meaning."
+      }
+    ]
+  },
+  "sources": []
+}

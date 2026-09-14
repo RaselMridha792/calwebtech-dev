@@ -1,0 +1,61 @@
+{
+  "slug": "product-catalogue",
+  "term": "Product catalogue",
+  "letter": "P",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What is a product catalogue?",
+    "description": "A product catalogue is the structured record of everything you sell: the products, their variants, their attributes and how they are grouped.",
+    "ogImage": null
+  },
+  "definition": "A product catalogue is the structured record of everything you sell: the products, their variants, their attributes and how they are grouped.",
+  "answerBlock": "A product catalogue is the structured record of everything you sell: the products, their variants, their attributes and how they are grouped. Its quality decides whether search, filtering and fitment lookups can work. A catalogue of photographs and free text cannot be filtered by anything.",
+  "body": {
+    "heading": "What makes a catalogue usable?",
+    "paragraphs": [
+      "Attributes, consistently applied. If a buyer needs to filter by voltage, thread size or vehicle fitment, every record needs that field filled in the same units and the same vocabulary. Ninety per cent coverage produces a filter that hides the products it cannot classify.",
+      "Then relationships: which products are variants of one another, which are accessories, which replace a discontinued line. Those relationships are what turn a list into something a technician can navigate under time pressure.",
+      "Where the catalogue lives matters too. If the authoritative version is in an ERP or a product information system, the website should read from it rather than hold a second copy that drifts."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "A searchable, filterable catalogue removes phone calls and wrong orders, and it produces pages that can rank for the specific terms buyers type, which a photograph-and-PDF catalogue never will.",
+      "Wrong-part returns are the visible cost of a bad one, and they are expensive in both freight and goodwill."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "Meridian Parts built fitment search across ninety thousand items so a technician finds the right part on a phone in a workshop, and wrong-part returns fell by 63%.",
+    "caseStudy": {
+      "slug": "meridian-parts",
+      "clientName": "Meridian Parts",
+      "metric": {
+        "value": "−63%",
+        "label": "Wrong-part returns"
+      }
+    }
+  },
+  "service": {
+    "slug": "ecommerce-development",
+    "title": "Ecommerce development",
+    "line": "Shopify, WooCommerce or custom, including B2B pricing rules, quoting and ERP integration."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "payment-gateway",
+        "term": "Payment gateway",
+        "definition": "A payment gateway is the service that takes a card or bank payment from a customer and moves the money to your account."
+      },
+      {
+        "slug": "punchout-catalogue",
+        "term": "Punchout catalogue",
+        "definition": "A punchout catalogue lets a buyer leave their own procurement system, shop on your site with their agreed pricing, and return with the basket as a requisition."
+      }
+    ]
+  },
+  "sources": []
+}

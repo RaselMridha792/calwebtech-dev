@@ -1,0 +1,171 @@
+<!doctype html>
+<!--
+  Print source for /guides/b2b-website-planning-guide/, printed to apps/web/public/guides/b2b-website-planning-guide.pdf with
+  the installed Chrome through Playwright from apps/web:
+
+    node_modules/.bin/playwright ... chromium.launch({ channel: 'chrome' }) -> page.pdf({ format: 'A4', printBackground: true })
+
+  Edit this file, reprint, and update pageCount in the guide's snapshot so the page never
+  promises a length the file does not have.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The B2B website planning guide — Calwebtech</title>
+<style>
+:root {
+  --ink: #0A1D37;
+  --primary: #1550E0;
+  --body: #41536B;
+  --line: #DCE4EE;
+  --mist: #EEF3F9;
+  --mist2: #F7FAFD;
+}
+@page { size: A4; margin: 20mm 18mm 18mm; }
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  font-size: 11.5pt;
+  line-height: 1.7;
+  color: var(--body);
+}
+h1, h2, h3, .display { font-family: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif; color: var(--ink); }
+.cover { page-break-after: always; padding-top: 34mm; }
+.cover .eyebrow { color: var(--primary); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: 9pt; }
+.cover h1 { font-size: 30pt; line-height: 1.1; font-weight: 800; margin: 10mm 0 6mm; }
+.cover .subtitle { font-size: 13pt; line-height: 1.45; max-width: 130mm; }
+.cover .rule { height: 3px; width: 44mm; background: var(--primary); margin: 12mm 0; }
+.cover .meta { font-size: 9.5pt; color: var(--body); }
+.cover .meta b { color: var(--ink); }
+.intro { background: var(--mist2); border: 1px solid var(--line); border-radius: 4mm; padding: 7mm; margin-bottom: 9mm; }
+.intro p { margin: 0; }
+h2 { font-size: 16pt; line-height: 1.25; font-weight: 800; margin: 11mm 0 5mm; page-break-after: avoid; }
+h2:first-of-type { margin-top: 0; }
+p { margin: 0 0 5mm; }
+ul { margin: 0 0 5mm; padding-left: 6mm; }
+li { margin-bottom: 2.5mm; }
+li::marker { color: var(--primary); }
+.sources { page-break-before: always; margin-top: 0; border-top: 1px solid var(--line); padding-top: 5mm; font-size: 9pt; }
+.sources h2 { font-size: 11pt; margin: 0 0 3mm; }
+.sources a { color: var(--primary); word-break: break-all; }
+.end { margin-top: 10mm; border-top: 3px solid var(--ink); padding-top: 6mm; }
+.end h2 { font-size: 13pt; margin: 0 0 3mm; }
+.end p { margin-bottom: 2mm; }
+.end a { color: var(--primary); }
+</style>
+</head>
+<body>
+<section class="cover">
+  <p class="eyebrow">Calwebtech guide</p>
+  <h1>The B2B website planning guide</h1>
+  <p class="subtitle">How to scope, budget and brief a website project that does a commercial job</p>
+  <div class="rule"></div>
+  <p class="meta"><b>Calwebtech</b><br>Custom websites, web applications and ecommerce for B2B companies<br>calwebtech.com</p>
+  <p class="meta">Last updated 15 September 2026</p>
+</section>
+
+<div class="intro"><p>This guide is for the person who has been asked to get a new website built. It assumes a business selling considered products or services to other businesses, where the sale takes weeks, several people are involved, and the website is where buyers form a shortlist before speaking to anyone. It is organised as the decisions to take, in the order that answers them cheaply, with the worksheets we use on our own projects at the end.</p></div>
+
+<h2>1. Decide the job before the design</h2>
+<p>A website that is asked to do everything does nothing especially well. The most useful hour of a project is the one spent writing a single sentence describing the commercial job: the site exists to produce qualified enquiries for a named set of services; or to let existing customers reorder without telephoning; or to make a technical audience confident enough to book a demonstration.</p>
+<p>That sentence has consequences. It decides which pages get the attention, what the homepage is for, and what a conversion is. A site built to produce enquiries and a site built to reduce support calls look different, and a brief that does not choose produces a compromise that does neither.</p>
+<p>Then name the number. Quote requests a month, orders placed on account, demonstrations booked, support tickets deflected. Write down today’s value before the project starts. If nobody knows it, finding out is the first task, because a project without a baseline can only be judged on taste, and taste arguments are the ones that never end.</p>
+<p>Finally, write down what the site is not for. Recruitment, investor relations and press are all legitimate jobs, and all of them will quietly colonise the homepage unless somebody has said where they belong.</p>
+
+<h2>2. Map the three readers</h2>
+<p>In B2B the same page is read by people with different fears. The person with the problem wants to know you have solved it before, for a company like theirs. The technical evaluator is looking for reasons to rule you out: a platform choice they distrust, an integration you have never done, an evasive answer about ownership. The person who signs wants price, risk and evidence that you finish.</p>
+<p>Collect their questions in their own words. The three best sources cost nothing: the questions your sales team answers every week, the search terms already bringing people to the site, and the objections that appear in the last email before a deal is lost. Write them down as questions, not as topics.</p>
+<p>That list is the skeleton of the site. Each question becomes a heading somewhere, and the answer under it is written in plain sentences. This is also what makes the page useful to an AI assistant, which lifts passages that answer a question directly and ignores paragraphs that describe how passionate the team is.</p>
+<ul><li>The user with the problem: does this supplier understand my situation?</li><li>The technical evaluator: what is it built on, what does it integrate with, who owns it?</li><li>The signer: what does it cost, what could go wrong, and who else has trusted them?</li></ul>
+
+<h2>3. Inventory the content you already have</h2>
+<p>Content is the most common cause of a late launch, and the line most often missing from a budget. Before design begins, list every page on the current site with the traffic it earns, every photograph you have the right to use, every case study a client has agreed you may name, every specification sheet, every price list and every piece of documentation.</p>
+<p>Mark each item keep, rewrite or retire. Keep means it is accurate and well written. Rewrite means the substance is right but the words are not. Retire means it exists because somebody made it in 2019 and nobody has dared delete it.</p>
+<p>The inventory gives you two numbers that matter. How many pieces need writing, which is the real content budget, and which addresses must survive the move, which becomes the redirect map. That map is the most valuable spreadsheet in a website project: it carries years of accumulated search authority across to the new site, and losing it costs traffic that takes months to rebuild.</p>
+<p>Photography deserves a specific decision. Stock images of handshakes persuade nobody. A day with a photographer in your own building, or on a customer site where you have permission, produces evidence rather than decoration, and it is usually cheaper than the argument about it.</p>
+
+<h2>4. Settle the integrations early</h2>
+<p>Integration is where website projects actually go wrong. Everything else is estimable; a dependency on a system somebody else owns is not. For every integration, ask three questions in writing before the project is priced. Does an API exist. Is it documented. Who owns it, and can they give us a test environment with realistic data.</p>
+<p>If the answers are confident, the work is schedulable. If they are vague, treat the integration as research rather than delivery, and plan the first release without it. Design the page so the missing piece degrades honestly: take the enquiry, say plainly that live availability is not shown yet, and never leave a visitor waiting on a spinner that will not resolve.</p>
+<p>Ask also what happens when the other system is slow or down, because it will be. A quoting page that cannot reach the ERP should still capture the request. A booking page that cannot read the calendar should offer a callback. The alternative is a site that fails exactly when it is busiest.</p>
+<ul><li>List every system the site reads from or writes to</li><li>Confirm the API exists, is documented, and has a test environment</li><li>Name the owner, and how quickly they answer questions</li><li>Decide what the page does when the system is unavailable</li></ul>
+
+<h2>5. Understand what moves the price</h2>
+<p>Four things move the number, in roughly this order of impact. The count of distinct templates, because each is designed, built, made responsive, tested and documented. The depth of content work, from light editing to research and writing from nothing. The integrations, which carry the uncertainty. And bespoke interaction: configurators, calculators, quoting, booking, anything that has states and rules.</p>
+<p>What barely moves it is the number of pages inside an existing template. Once a service page exists as a content type with its own fields, the eleventh service costs the time it takes to write it. This is the strongest argument for modelling the repeatable things properly instead of hand-building pages: the cost of the site falls as it grows.</p>
+<p>Our published bands are $12,000 to $25,000 for a focused marketing site, $25,000 to $60,000 for a larger build involving catalogue or application work, and from $1,500 a month for care once it is live. Numbers like these are worth asking any supplier for before a discovery call, because the alternative is spending an hour to discover you are not in the same range.</p>
+<p>Two costs are routinely forgotten. The first is content: writing, editing and photography. The second is the year after launch: hosting, patching, monitoring, backups with a tested restore, and the changes you will want once real visitors have shown you what is not working.</p>
+
+<h2>6. Sequence the work so mistakes are cheap</h2>
+<p>Structure, then argument, then design, then build. Information architecture decides which pages exist, how they are grouped and what they are called, in the language buyers use rather than the shape of your org chart. Wireframes decide the order of each page: what is read first, what follows, where the call to action sits. Both are cheap to change and expensive to get wrong.</p>
+<p>Insist on real headings and real first lines in the wireframes. Placeholder text hides the fact that nobody has written the argument, and the argument is the page. If a section cannot be filled with a real sentence, that section is a question, not a design.</p>
+<p>Design then applies the brand to a structure that has already been agreed, working from tokens and components rather than one-off layouts, so the fiftieth page looks like the first. Build turns those templates into content types, with an editor for the fields that should vary and a template that owns everything that should not.</p>
+<p>Review on a staging environment, on a real phone, not in a slide of screenshots. And write the acceptance criteria before the work starts: what must be true for this to be finished, including performance and accessibility thresholds, so "done" is a fact rather than an opinion.</p>
+
+<h2>7. Write acceptance criteria you can check</h2>
+<p>Vague criteria produce arguments at the end of a project. Specific ones produce a checklist. The ones we hold ourselves to are public: Largest Contentful Paint under 2.5 seconds, Interaction to Next Paint under 200 milliseconds and Cumulative Layout Shift under 0.1, measured on real visits at the seventy-fifth percentile, which are the thresholds web.dev publishes as good.</p>
+<p>Accessibility is WCAG 2.2 AA: colour contrast at token level, visible focus, full keyboard operation, labelled inputs with errors described in text, correct heading order and controls large enough to hit on a phone. It is checked with a keyboard and a screen reader, not only with an automated scan, because automated tools find roughly a third of real problems.</p>
+<p>Add the operational criteria that nobody thinks of until they are missing: analytics and conversion tracking recording, forms delivering to a monitored mailbox and to the database, a redirect for every old address, a sitemap, and a backup that somebody has restored.</p>
+<ul><li>Performance thresholds measured on real visits, not a laptop</li><li>WCAG 2.2 AA, checked with a keyboard as well as a scanner</li><li>Redirect for every old address, verified after launch</li><li>Backups running, with a restore actually tested</li></ul>
+
+<h2>8. Agree ownership before kick-off</h2>
+<p>The most consequential clause in a website contract has nothing to do with design. It is the one that says what you own. The domain registration, the hosting account, the code repository, the database and an export of the content should all be in the client company’s name, with the supplier holding access rather than ownership.</p>
+<p>This is not a sign of distrust; it is what makes the relationship voluntary. An agency that is easy to leave is an agency clients stay with for the right reasons. It also protects you from the ordinary risks: a supplier that closes, a contact who leaves, an acquisition that changes everyone’s priorities.</p>
+<p>Ask specifically where the leads are stored. If enquiries live in a third-party form vendor, an email platform and a booking tool, your customer data is spread across three companies with three exports and three sets of terms. Data you own in one database is the difference between a marketing system and a set of rented widgets.</p>
+
+<h2>9. Plan the launch as a rehearsed event</h2>
+<p>A launch is a DNS change with a lot of preparation behind it. Lower the time to live on the records a day before, so the switch takes effect in minutes. Copy every existing record, including mail and verification entries, because the classic launch-day failure is a site that works and email that has quietly stopped.</p>
+<p>Have the redirect map loaded and tested before the switch, not after. Check a sample of the highest-traffic old addresses by hand. Make sure the staging environment is closed off and cannot be indexed, and that the new site is indexable, which is the other classic mistake: launching with the setting that kept staging private still switched on.</p>
+<p>For the fortnight afterwards, watch the logs and the search console daily for missed addresses and fix them the same day. Traffic dips after a migration are normal for a week or two; a dip that is still there after a month is a redirect problem, not a rankings problem.</p>
+
+<h2>10. Budget the year after launch</h2>
+<p>A website is not a capital purchase that then sits there. It needs two kinds of attention, and both should be budgeted at the start. Care is patching, dependency updates, monitoring, backups with a tested restore, uptime and certificate renewal. Change is new pages, new evidence, and improvements to the journeys the data shows are not working.</p>
+<p>The failure mode of neglect is slow and hard to notice. Nothing breaks visibly. The site simply falls behind: an unpatched plugin, a certificate that expires, a form that has been failing silently for six weeks, content that stopped being true. Then the enquiries are down a third and nobody can point to the day it happened.</p>
+<p>Our own care plans start at $1,500 a month and include a fixed allowance of development time, which is the honest way to buy small changes: without it, every improvement becomes a quotation, and improvements that need a quotation do not happen.</p>
+
+<h2>11. Comparing proposals without comparing prices</h2>
+<p>Three proposals for the same brief will usually arrive at three different numbers, and the cheapest is rarely the cheapest. What makes them comparable is asking each supplier to price the same list, and to say what is excluded rather than only what is included.</p>
+<p>Read the exclusions first. Content writing, photography, third-party licences, data migration, training, and the first year of care are the six lines most often left out, and together they can be a third of the real cost. A proposal that excludes them is not cheaper, it is less complete.</p>
+<p>Then read how change is handled. Every project changes; the question is whether a change is a conversation or a contract variation. A fixed allowance of development time each month is the honest mechanism, because it makes small improvements possible without a quotation.</p>
+<p>Ask each supplier for two things that cost them nothing and tell you a great deal: a site they built three years ago that is still being maintained, and a description of a project that went wrong and what they did about it. Suppliers who only show launches from last quarter are showing you their portfolio, not their record.</p>
+<p>Finally, ask who will actually do the work, and whether you will speak to them. A proposal written by a salesperson and delivered by a subcontractor is a common and expensive surprise.</p>
+<ul><li>Price the same list, and read the exclusions first</li><li>Check for content, photography, licences, migration, training and care</li><li>Ask how change is handled once the project is running</li><li>Ask for a site still maintained three years on</li><li>Ask who does the work, and whether you will speak to them</li></ul>
+
+<h2>12. Measure the thing you said mattered</h2>
+<p>Three months after launch, take out the sentence and the number you wrote at the start and compare them with reality. Not traffic: the commercial number. Quote requests, orders on account, demonstrations booked, calls deflected.</p>
+<p>Look at where the enquiries came from and which pages they read before enquiring. That tells you which content is doing the work and what to write next, which is a better content plan than any calendar.</p>
+<p>Write down what you learned, including the parts that did not work. A website is a series of decisions under uncertainty, and the organisations that get better at it are the ones that keep a record of which decisions were wrong.</p>
+
+<h2>Worksheet A: the scoping questionnaire</h2>
+<p>Answer these before approaching a supplier. The answers are the brief.</p>
+<ul><li>What single commercial job does the site have to do?</li><li>What number proves it, and what is that number today?</li><li>Who are the three readers, and what does each need to believe?</li><li>Which services or products need a page of their own?</li><li>What evidence may we publish: clients, figures, quotes, photographs?</li><li>Which systems must the site read from or write to?</li><li>Who approves, who writes, and who holds the system access?</li><li>What is the deadline, and what is driving it?</li></ul>
+
+<h2>Worksheet B: the content inventory</h2>
+<p>One row per page or asset. Sort by traffic, then decide keep, rewrite or retire. The rows marked keep or rewrite become the redirect map.</p>
+<ul><li>Address, title, monthly visits, last updated</li><li>Owner of the content, and who can approve a change</li><li>Keep, rewrite or retire</li><li>New address after the move</li><li>Photography or diagrams needed</li></ul>
+
+<h2>Worksheet C: the integration checklist</h2>
+<p>One sheet per system. If the first three lines cannot be answered, the integration is research, not delivery.</p>
+<ul><li>System name, vendor and internal owner</li><li>Does a documented API exist? Where are the documents?</li><li>Is there a test environment with realistic data?</li><li>What data moves, in which direction, and how often?</li><li>What does the page do when the system is unavailable?</li><li>Who is called when it breaks at nine on a Monday?</li></ul>
+
+<h2>Worksheet D: the launch runbook</h2>
+<p>The order of operations on the day, with the person responsible named against each line.</p>
+<ul><li>Lower DNS time to live, 24 hours before</li><li>Final content freeze and full backup of the old site</li><li>Redirect map loaded and spot-checked</li><li>Indexing enabled on the new site, staging closed</li><li>DNS switched; site and email both confirmed answering</li><li>Analytics, conversion tracking and form delivery verified</li><li>Logs and search console watched daily for two weeks</li></ul>
+
+<section class="sources">
+  <h2>Sources</h2>
+  <ul>
+    <li>Core Web Vitals thresholds on web.dev — <a href="https://web.dev/articles/vitals">https://web.dev/articles/vitals</a></li>
+    <li>Web Content Accessibility Guidelines 2.2 — <a href="https://www.w3.org/TR/WCAG22/">https://www.w3.org/TR/WCAG22/</a></li>
+  </ul>
+</section>
+
+<section class="end">
+  <h2>Who wrote this</h2>
+  <p>Calwebtech builds custom websites, web applications and ecommerce for companies selling to other businesses. We publish our price bands, our process and our results, and we write these guides from the projects rather than from a content calendar.</p>
+  <p>If this raised a question about your own site, ask us: <a href="https://calwebtech.com/contact/">calwebtech.com/contact/</a></p>
+  <p>The whole argument of this guide is also published, free and without a form, at <a href="https://calwebtech.com/guides/b2b-website-planning-guide/">calwebtech.com/guides/b2b-website-planning-guide/</a></p>
+</section>
+</body>
+</html>
