@@ -11,6 +11,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { MetricBand } from '@/components/site/bands';
 import { PageHero } from '@/components/site/page-hero';
+import { workIndexPageSeo } from '@/components/work/index-metadata';
 import { WorkResults, WorkResultsSummary } from '@/components/work/work-index';
 import { getWorkIndex } from '@/lib/api/work';
 import { sitePageMetadata } from '@/lib/seo/page-metadata';
@@ -37,8 +38,8 @@ export async function generateMetadata({ searchParams }: PageProps<'/work'>): Pr
   const indexing = workIndexIndexing(query, view.copy.targets);
   const seo = indexing.target?.seo ?? view.copy.seo;
   return sitePageMetadata({
-    title: query.page > 1 ? `${seo.title}, page ${String(query.page)}` : seo.title,
-    description: seo.description,
+    // Later pages are indexable too, so each has its own title and description.
+    ...workIndexPageSeo(seo, query.page),
     path: SITE_ROUTES.work,
     // Filter combinations that are not deliberate targets point at /work/ and stay out of search.
     canonicalPath: indexing.canonicalPath,
