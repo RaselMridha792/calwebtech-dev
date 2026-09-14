@@ -1,0 +1,236 @@
+{
+  "slug": "austin",
+  "city": "Austin",
+  "state": "TX",
+  "tier": "TIER_1",
+  "seo": {
+    "title": "Web design and development agency in Austin",
+    "description": "Calwebtech's Austin office builds custom websites, web apps and B2B ordering for Central Texas software companies, manufacturers and distributors.",
+    "ogImage": "https://images.unsplash.com/photo-1607305080638-ec3afec8e28d?auto=format&fit=crop&w=1800&q=60"
+  },
+  "updatedAt": "2026-09-14T00:00:00.000Z",
+  "answerBlock": "Calwebtech is a web design and development company with an office at 98 San Jacinto Boulevard in downtown Austin, Texas. We build custom websites, web applications and ecommerce platforms for Central Texas businesses, from software companies whose marketing site has to keep pace with the product to manufacturers and distributors selling to trade buyers. Every project is quoted at a fixed price after discovery, and our published Texas work includes Truvia Labs, a SaaS company whose demo bookings rose 140 per cent.",
+  "serviceArea": null,
+  "heroIntro": "The Austin office serves the city, the Interstate 35 corridor from Georgetown to San Marcos, and companies anywhere in the Central time zone that want their agency working the same hours they do.",
+  "image": {
+    "src": "https://images.unsplash.com/photo-1607305080638-ec3afec8e28d?auto=format&fit=crop&w=1800&q=60",
+    "alt": "Downtown Austin skyline seen across Lady Bird Lake"
+  },
+  "address": "98 San Jacinto Blvd, Suite 400\nAustin, TX 78701",
+  "contact": {
+    "phone": "+1 (800) 555-0188",
+    "phoneE164": "+18005550188",
+    "email": "hello@calwebtech.com"
+  },
+  "localContext": {
+    "heading": "What is different about building websites for Austin companies?",
+    "intro": null,
+    "paragraphs": [
+      "Austin's economy is built around software. Established enterprise vendors, venture-backed start-ups and the local teams of much larger technology firms compete for the same buyers and the same engineers, and most of them ship product faster than their marketing site can follow. A common result is a marketing site, a documentation hub and an onboarding flow that each look like a different company, and a sales team apologising for all three.",
+      "The region also makes things. Semiconductor fabrication and the suppliers around it have grown along the corridor north and east of the city, and electric vehicle manufacturing has followed. Those companies sell to engineers and purchasing teams who search by part number, specification and lead time, expect account pricing once they log in, and have little patience for a catalogue hidden behind a contact form.",
+      "Then there is the Capitol and the University of Texas, which bring state agencies, research groups and the contractors who serve them, alongside a generation of consumer brands that started by selling online. Each of those audiences needs a different kind of site, and we build all of them from San Jacinto Boulevard, a couple of blocks from Congress Avenue."
+    ],
+    "industries": [
+      "SaaS and enterprise software",
+      "Semiconductors and hardware",
+      "Advanced manufacturing",
+      "Distribution and trade supply",
+      "State government contractors",
+      "Consumer brands"
+    ]
+  },
+  "clients": {
+    "heading": "Which Texas clients have we worked with?",
+    "intro": "Truvia Labs, a SaaS company in Texas, is our published Texas client. Its marketing site, documentation and in-app onboarding now share one design system, so a product release no longer breaks the brand.",
+    "names": ["Truvia Labs"]
+  },
+  "caseStudies": {
+    "heading": "What results have we delivered for work like yours?",
+    "intro": "Truvia Labs is in Texas. Meridian Parts and Northmark Supply are not, but a fitment catalogue and an account-priced quoting platform are the kind of build Central Texas manufacturers and distributors need.",
+    "items": [
+      {
+        "slug": "truvia-labs",
+        "clientName": "Truvia Labs",
+        "summary": "Marketing site, docs and in-app onboarding rebuilt on one design system so releases stopped breaking the brand.",
+        "tags": ["Texas, USA", "SaaS", "Next.js"],
+        "image": {
+          "src": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=70",
+          "alt": "Product team working on a software platform"
+        },
+        "metrics": [
+          { "value": "+140%", "label": "Demo bookings" },
+          { "value": "3.1x", "label": "Organic sessions" },
+          { "value": "98", "label": "Lighthouse mobile" }
+        ]
+      },
+      {
+        "slug": "meridian-parts",
+        "clientName": "Meridian Parts",
+        "summary": "Fitment search across 90,000 SKUs, so a technician finds the right part on a phone in a workshop.",
+        "tags": ["Michigan, USA", "Manufacturing", "Headless"],
+        "image": {
+          "src": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=900&q=70",
+          "alt": "Engineer inspecting equipment on a production floor"
+        },
+        "metrics": [
+          { "value": "+207%", "label": "Organic traffic" },
+          { "value": "−63%", "label": "Wrong-part returns" },
+          { "value": "4.2x", "label": "Repeat orders" }
+        ]
+      },
+      {
+        "slug": "northmark-supply",
+        "clientName": "Northmark Supply",
+        "summary": "A catalogue of 40,000 parts behind a contact form. We rebuilt it as a searchable, account-priced quoting platform tied into their ERP.",
+        "tags": ["Ohio, USA", "B2B", "Distribution", "Next.js"],
+        "image": {
+          "src": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=70",
+          "alt": "Sales team reviewing performance figures"
+        },
+        "metrics": [
+          { "value": "+312%", "label": "Quote requests" },
+          { "value": "12 min", "label": "Quote turnaround, from 3 days" },
+          { "value": "−41%", "label": "Support calls" }
+        ]
+      }
+    ]
+  },
+  "services": {
+    "heading": "What can we build for an Austin company?",
+    "intro": "Our services, described for the way software, hardware and consumer companies in Central Texas buy.",
+    "items": [
+      {
+        "slug": "nextjs-development",
+        "title": "Next.js development",
+        "body": "Marketing sites, documentation and product pages on Next.js, sharing one design system with your application so the brand holds up through every release."
+      },
+      {
+        "slug": "web-application-development",
+        "title": "Web application development",
+        "body": "Customer portals, onboarding flows and internal dashboards, built by the same team as the marketing site, so nothing gets lost between the two."
+      },
+      {
+        "slug": "website-redesign",
+        "title": "Website redesign",
+        "body": "For a company that has outgrown its first site: sharper positioning for a new market, faster pages, and a route to a demo request instead of a generic contact form."
+      },
+      {
+        "slug": "ecommerce-development",
+        "title": "Ecommerce development",
+        "body": "Trade ordering for manufacturers and distributors, with part search, specifications, account pricing and quotes tied to your ERP, and storefronts for consumer brands."
+      },
+      {
+        "slug": "shopify-development",
+        "title": "Shopify development",
+        "body": "Shopify storefronts for consumer brands that started online, with product configurators, subscriptions and the performance work that keeps mobile pages quick."
+      },
+      {
+        "slug": "ai-search-visibility",
+        "title": "AI search visibility",
+        "body": "Answer-first pages and clean structured data, so a buyer who asks an assistant to compare software or suppliers finds your product described accurately."
+      }
+    ]
+  },
+  "workingModel": {
+    "heading": "How do we work with clients in Austin?",
+    "intro": "Austin projects run on Central Time and follow the same process our Sacramento clients get, from the fixed quote to the handover.",
+    "points": [
+      {
+        "title": "Meetings downtown or at your office",
+        "body": "Discovery workshops and design reviews can be held on San Jacinto Boulevard or at your office, anywhere from Georgetown to San Marcos."
+      },
+      {
+        "title": "Central Time by default",
+        "body": "Calls, review deadlines and launch windows are booked in Central Time, and releases are planned around your own sprint cycle rather than ours."
+      },
+      {
+        "title": "Alongside your engineers",
+        "body": "When your developers own the product, the proposal sets the boundary: which components are shared, who reviews what, and how the marketing site deploys without touching the application."
+      },
+      {
+        "title": "Answers within one business day",
+        "body": "Questions get a reply from a person within one business day, and a staging URL shows exactly where the work stands between calls."
+      }
+    ]
+  },
+  "serviceAreaSection": {
+    "heading": "Which areas around Austin do we cover?",
+    "intro": "We meet clients in person across the Austin metro and along Interstate 35, and work remotely with companies anywhere in Texas and beyond.",
+    "places": [
+      "Downtown Austin",
+      "North Austin and The Domain",
+      "Round Rock",
+      "Cedar Park",
+      "Georgetown",
+      "Pflugerville",
+      "Leander",
+      "Kyle",
+      "San Marcos"
+    ],
+    "image": {
+      "src": "https://images.unsplash.com/photo-1619380977686-64d4b4ac93bf?auto=format&fit=crop&w=1200&q=70",
+      "alt": "New office towers rising beside Lady Bird Lake in Austin under a clear blue sky"
+    }
+  },
+  "testimonial": {
+    "heading": "What does a Texas client say about working with us?",
+    "item": {
+      "id": "testimonial-priya-raman",
+      "quote": "They pushed back on half of what we asked for and were right about most of it. The site does one job on every page now, and our enquiry quality went up before the volume did.",
+      "clientName": "Priya Raman",
+      "role": "VP Marketing",
+      "company": "Truvia Labs",
+      "rating": 5,
+      "avatar": {
+        "src": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=70"
+      }
+    }
+  },
+  "nearby": {
+    "heading": "Where else does Calwebtech have an office?",
+    "intro": "Our head office is in Sacramento, California. Clients of either office work with the same team and the same process.",
+    "items": [
+      {
+        "slug": "sacramento",
+        "city": "Sacramento",
+        "state": "CA",
+        "serviceArea": "Head office. Agriculture technology, public sector suppliers and healthcare networks across the Central Valley."
+      }
+    ]
+  },
+  "faq": {
+    "heading": "What do Austin companies ask before hiring us?",
+    "intro": "The questions Central Texas teams raise most often on a first call.",
+    "items": [
+      {
+        "id": "austin-faq-meet-in-person",
+        "question": "Can we meet you in person in Austin?",
+        "answer": "Yes. The office is at 98 San Jacinto Boulevard, Suite 400, downtown, and workshops or design reviews can run there or at your office across the Austin metro. Between meetings, projects run on a weekly call and a staging URL you can open at any time."
+      },
+      {
+        "id": "austin-faq-in-house-engineers",
+        "question": "Can you work alongside our in-house engineering team?",
+        "answer": "Yes. We can own the marketing site and the design system while your engineers keep the product, or build shared components that both teams use. The proposal says exactly where the boundary sits, so nobody is guessing who reviews a change or who deploys it."
+      },
+      {
+        "id": "austin-faq-trade-ordering",
+        "question": "Do you build B2B ordering for manufacturers and distributors in Central Texas?",
+        "answer": "Yes. Part search, specifications, account pricing and quote requests tied to your ERP are the parts that break generic builds, and we have shipped them before: Northmark Supply's quote turnaround went from three days to twelve minutes. The same approach suits suppliers along the Interstate 35 corridor."
+      },
+      {
+        "id": "austin-faq-time-zone",
+        "question": "Which time zone do you work in for Texas clients?",
+        "answer": "Central Time. Calls, review deadlines and launch windows for Texas projects are set inside your working day, and questions sent between calls get a reply from a person within one business day."
+      },
+      {
+        "id": "austin-faq-outside-austin",
+        "question": "Do you only work with companies based in Austin?",
+        "answer": "No. Austin is one of our two offices, and most of our clients are outside both cities. Companies nearby can meet us in person; the fixed quote, the weekly call and the handover work the same wherever you are."
+      }
+    ]
+  },
+  "cta": {
+    "heading": "Planning a website or web app in Austin?",
+    "body": "Call us, or book a thirty minute call with the people who would run your project. You will hear what we would build, roughly what it costs, and whether we are the right fit."
+  }
+}

@@ -1,0 +1,218 @@
+{
+  "slug": "sacramento",
+  "city": "Sacramento",
+  "state": "CA",
+  "tier": "TIER_1",
+  "seo": {
+    "title": "Web design and development agency in Sacramento",
+    "description": "Calwebtech's head office is on J Street in Sacramento. Custom websites, ecommerce and web apps for Central Valley agtech, suppliers and healthcare.",
+    "ogImage": "https://images.unsplash.com/photo-1681342288049-3c20cf1da7d7?auto=format&fit=crop&w=1800&q=60"
+  },
+  "updatedAt": "2026-09-14T00:00:00.000Z",
+  "answerBlock": "Calwebtech is a web design and development company with its head office at 1201 J Street in downtown Sacramento. We design and build custom websites, ecommerce platforms and web applications for businesses across Greater Sacramento and the Central Valley, with a focus on agriculture technology companies, public sector suppliers and healthcare networks. Every project is quoted at a fixed price after a discovery call, and a typical marketing site takes six to eight weeks.",
+  "serviceArea": "Head office. Agriculture technology, public sector suppliers and healthcare networks across the Central Valley.",
+  "heroIntro": "Meet us at the office on J Street, or run the whole project over a weekly call. Either way, the people you talk to are the people who design and build your site.",
+  "image": {
+    "src": "https://images.unsplash.com/photo-1681342288049-3c20cf1da7d7?auto=format&fit=crop&w=1800&q=60",
+    "alt": "Sacramento's gold Tower Bridge in front of downtown office towers at dusk"
+  },
+  "address": "1201 J Street, Suite 200\nSacramento, CA 95814",
+  "contact": {
+    "phone": "+1 (800) 555-0188",
+    "phoneE164": "+18005550188",
+    "email": "hello@calwebtech.com"
+  },
+  "localContext": {
+    "heading": "What makes the Sacramento market different?",
+    "intro": null,
+    "paragraphs": [
+      "Sacramento's economy leans on three kinds of business that most agencies treat as edge cases. State government is the region's largest employer, so a long list of engineering firms, consultancies and suppliers sell to public agencies and win or lose work through procurement. The Central Valley around the city is one of the most productive farming regions in the world, and the technology built for it, from irrigation control to yield analytics, is sold to growers rather than to software teams. And the region's health systems and clinic groups run dozens of sites that each need accurate hours, services and booking.",
+      "Each of those buyers reads a website differently. A procurement officer looks for a clear capability statement, past performance, small business or DVBE certification numbers, and documents that open without a sign-up form. A grower checks whether a product suits their crop and acreage, usually on a phone and often with a weak signal at the edge of a field. A patient wants the nearest clinic, today's opening hours and a free appointment. We plan every page around the reader who has to act on it, and only then around how the marketing team wants to describe the business.",
+      "Growth in Roseville, Folsom and Elk Grove has also brought manufacturing, logistics and technology employers into the region, many of them run from head offices in the Bay Area or out of state. Their Sacramento teams often need a site, a careers portal or an internal tool that the head office will sign off without a long agency search. A fixed quote, a published process and an office a few blocks from the Capitol make that an easy decision to defend."
+    ],
+    "industries": [
+      "Agriculture technology",
+      "Public sector suppliers",
+      "Healthcare networks",
+      "Food processing",
+      "Engineering and construction",
+      "Logistics and distribution"
+    ]
+  },
+  "clients": {
+    "heading": "Which California clients have we worked with?",
+    "intro": "Verona Home, a California furniture brand, is the client in this state whose results we can publish. It sold made-to-order pieces through a page builder that could not handle them, and now runs on Shopify with a configurator built for how its furniture is actually ordered.",
+    "names": ["Verona Home"]
+  },
+  "caseStudies": {
+    "heading": "What have we built that fits Central Valley businesses?",
+    "intro": "Verona Home is a California client. Cascadia Health and Meridian Parts are not, but a multi-clinic healthcare group and a parts supplier with a very large catalogue face the same problems as the health networks and equipment suppliers around Sacramento.",
+    "items": [
+      {
+        "slug": "verona-home",
+        "clientName": "Verona Home",
+        "summary": "A furniture brand stuck on a page builder, replatformed with a configurator for made-to-order pieces.",
+        "tags": ["California, USA", "D2C", "Shopify"],
+        "image": {
+          "src": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=900&q=70",
+          "alt": "Home furnishing retail display"
+        },
+        "metrics": [
+          { "value": "$2.4M", "label": "First-year revenue" },
+          { "value": "+68%", "label": "Add to cart" },
+          { "value": "1.4s", "label": "Mobile LCP" }
+        ]
+      },
+      {
+        "slug": "cascadia-health",
+        "clientName": "Cascadia Health",
+        "summary": "Fourteen clinic sites merged into one accessible platform with location-aware appointment booking.",
+        "tags": ["Oregon, USA", "Healthcare", "WordPress"],
+        "image": {
+          "src": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=900&q=70",
+          "alt": "Clinician working at a healthcare facility"
+        },
+        "metrics": [
+          { "value": "+91%", "label": "Online bookings" },
+          { "value": "14→1", "label": "Sites to maintain" },
+          { "value": "AA", "label": "WCAG 2.2 verified" }
+        ]
+      },
+      {
+        "slug": "meridian-parts",
+        "clientName": "Meridian Parts",
+        "summary": "Fitment search across 90,000 SKUs, so a technician finds the right part on a phone in a workshop.",
+        "tags": ["Michigan, USA", "Manufacturing", "Headless"],
+        "image": {
+          "src": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=900&q=70",
+          "alt": "Engineer inspecting equipment on a production floor"
+        },
+        "metrics": [
+          { "value": "+207%", "label": "Organic traffic" },
+          { "value": "−63%", "label": "Wrong-part returns" },
+          { "value": "4.2x", "label": "Repeat orders" }
+        ]
+      }
+    ]
+  },
+  "services": {
+    "heading": "Which of our services suit Sacramento businesses?",
+    "intro": "The same services we offer everywhere, described for the problems that come up most in this region.",
+    "items": [
+      {
+        "slug": "website-redesign",
+        "title": "Website redesign",
+        "body": "For a supplier whose site still reads like the brochure from its last bid. We rebuild it around a capability statement, downloadable documents and a direct route for procurement teams, and keep the search rankings you already have."
+      },
+      {
+        "slug": "custom-website-development",
+        "title": "Custom website development",
+        "body": "A custom site for an agtech or engineering firm whose product has to make sense to two readers at once: the grower or site manager who uses it and the finance lead who signs the order."
+      },
+      {
+        "slug": "ecommerce-development",
+        "title": "Ecommerce development",
+        "body": "Online ordering for growers, distributors and trade buyers, with account pricing, repeat orders and product data that stays in step with your inventory system."
+      },
+      {
+        "slug": "web-application-development",
+        "title": "Web application development",
+        "body": "Portals and internal tools for public sector contractors and clinic groups: document submission, scheduling and dashboards your own staff keep up to date."
+      },
+      {
+        "slug": "ai-search-visibility",
+        "title": "AI search visibility",
+        "body": "Answer-first pages and clean structured data, so when someone asks an assistant for a supplier or a clinic near Sacramento, your business is one it can cite."
+      },
+      {
+        "slug": "care-plans",
+        "title": "Website care plans",
+        "body": "Patching, backups with a tested restore, monitoring and a fixed allowance of development hours each month, so the site stays as fast and secure as the day it launched."
+      }
+    ]
+  },
+  "workingModel": {
+    "heading": "How do we work with clients in Sacramento?",
+    "intro": "The head office is a short walk from the State Capitol, so meeting in person is easy for teams downtown and practical across most of the region.",
+    "points": [
+      {
+        "title": "Workshops at J Street or at your site",
+        "body": "Discovery sessions and design reviews can run at our office on J Street or at your premises anywhere in Greater Sacramento, whichever gets the right people in the room."
+      },
+      {
+        "title": "Pacific Time throughout",
+        "body": "Calls, review deadlines and launch windows are set in Pacific Time, inside your team's working day, with nothing to convert."
+      },
+      {
+        "title": "A weekly call and a staging site",
+        "body": "Between meetings there is a weekly call with the people building your site, and a staging URL you can open on any day to see exactly where the work stands."
+      },
+      {
+        "title": "Answers within one business day",
+        "body": "Questions sent by email or on the shared project board get a reply from a person within one business day, not from an autoresponder."
+      }
+    ]
+  },
+  "serviceAreaSection": {
+    "heading": "Which areas around Sacramento do we cover?",
+    "intro": "We meet clients in person across Greater Sacramento and the surrounding valley towns, and work remotely with anyone further afield.",
+    "places": [
+      "Downtown and Midtown Sacramento",
+      "West Sacramento",
+      "Roseville",
+      "Rocklin",
+      "Folsom",
+      "Rancho Cordova",
+      "Elk Grove",
+      "Davis",
+      "Woodland"
+    ],
+    "image": {
+      "src": "https://images.unsplash.com/photo-1675309828945-73b29399359b?auto=format&fit=crop&w=1200&q=70",
+      "alt": "Aerial view of the Tower Bridge crossing the Sacramento River towards West Sacramento"
+    }
+  },
+  "testimonial": null,
+  "nearby": {
+    "heading": "Where else does Calwebtech have an office?",
+    "intro": "Our second office is in Austin, Texas, run with the same team and the same process as the head office.",
+    "items": [
+      { "slug": "austin", "city": "Austin", "state": "TX", "serviceArea": null }
+    ]
+  },
+  "faq": {
+    "heading": "What do Sacramento businesses ask before hiring us?",
+    "intro": "The questions that come up on first calls with teams in and around the city.",
+    "items": [
+      {
+        "id": "sacramento-faq-meet-in-person",
+        "question": "Can we meet you in person in Sacramento?",
+        "answer": "Yes. Our head office is at 1201 J Street, Suite 200, in downtown Sacramento, and we run discovery workshops and design reviews there or at your premises anywhere in Greater Sacramento. Between those meetings most projects run on a weekly video call, because it keeps decisions moving without anyone losing half a day to travel."
+      },
+      {
+        "id": "sacramento-faq-public-sector-suppliers",
+        "question": "Do you build websites for suppliers bidding on California public contracts?",
+        "answer": "Yes. We structure the site around what a procurement officer checks: a capability statement, past performance, certification numbers such as small business or DVBE status, and documents that download without a form. Every build is audited for accessibility against WCAG 2.2 AA before launch, which matters when your buyers are public bodies."
+      },
+      {
+        "id": "sacramento-faq-agtech",
+        "question": "Can you build websites for agtech products that are used in the field?",
+        "answer": "Yes. Growers and field managers often read your site on a phone with a weak signal, so we keep pages light, make specifications and crop compatibility easy to scan, and put dealer or demo requests one tap away. We also build the ordering tools and customer dashboards that sit behind the marketing site."
+      },
+      {
+        "id": "sacramento-faq-clinic-groups",
+        "question": "Do you work with healthcare groups that run several clinics in the region?",
+        "answer": "Yes. Multi-location healthcare is work we have shipped before: Cascadia Health merged fourteen clinic sites into one accessible platform with location-aware booking. For a Sacramento group that means one site your own staff update, with correct hours, services and appointments for every clinic."
+      },
+      {
+        "id": "sacramento-faq-outside-sacramento",
+        "question": "Do you only work with businesses based in Sacramento?",
+        "answer": "No. Sacramento is our head office, but most of our clients are outside the region. Clients here have the option of meeting in person; everything else, from the fixed quote to the handover, works the same wherever you are."
+      }
+    ]
+  },
+  "cta": {
+    "heading": "Planning a website project in Sacramento?",
+    "body": "Call us, or book a thirty minute call with the people who would run your project. We will tell you what we would do, roughly what it costs, and whether we are the right fit."
+  }
+}
