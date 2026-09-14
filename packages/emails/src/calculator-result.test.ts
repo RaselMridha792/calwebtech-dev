@@ -18,6 +18,8 @@ const result: CalculatorResultEmail = {
   intro: 'Here is the range your answers describe, and where the number comes from.',
   rangeHeading: 'Your indicative range',
   rangeLabel: '$41,500 to $66,500',
+  tier: 'platform',
+  budgetBand: '25k-60k',
   tierName: 'Platform build',
   tierSummary: 'Booking, a dashboard, campaigns and integrations on top of the marketing site.',
   monthly: 'Care plan: from $1,500 a month',
