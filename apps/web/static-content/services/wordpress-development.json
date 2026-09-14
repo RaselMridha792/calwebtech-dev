@@ -1,0 +1,382 @@
+{
+  "slug": "wordpress-development",
+  "title": "WordPress development",
+  "updatedAt": "2026-09-14T00:00:00.000Z",
+  "seo": {
+    "title": "WordPress development company",
+    "description": "Custom WordPress and WooCommerce development without page-builder bloat: custom themes, structured content and fast pages. From $12,000.",
+    "ogImage": null
+  },
+  "category": {
+    "slug": "platforms",
+    "name": "Platforms"
+  },
+  "answerBlock": "WordPress development is building a website on WordPress with a custom theme and structured content, rather than stacking plugins onto a bought theme. Calwebtech builds lean WordPress and WooCommerce sites with custom post types, editor blocks that keep layouts intact and a written performance budget. Most marketing sites cost $12,000 to $25,000, and WooCommerce stores with integrations sit in the $25,000 to $60,000 band.",
+  "hero": {
+    "outcome": "A WordPress site that stays fast, keeps editors inside blocks they cannot break, and does not fall over every time a plugin updates.",
+    "primaryCta": {
+      "label": "Get a WordPress quote",
+      "href": "#enquire"
+    },
+    "secondaryCta": {
+      "label": "See the work",
+      "href": "/work/?service=wordpress-development"
+    },
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1800&q=65"
+    }
+  },
+  "price": {
+    "label": "$12,000 to $60,000",
+    "amount": {
+      "currency": "USD",
+      "min": 12000,
+      "max": 60000,
+      "unit": "PROJECT"
+    }
+  },
+  "problem": {
+    "heading": "When does a WordPress site need proper development?",
+    "intro": "WordPress is rarely the problem. How the site was put together usually is.",
+    "situations": [
+      {
+        "title": "Plugins are holding the site together",
+        "body": "Dozens of plugins overlap and conflict, updates are postponed because something breaks each time, and security patches wait with them."
+      },
+      {
+        "title": "The page builder made everything slow",
+        "body": "Every page loads the builder's scripts and styles, mobile load times keep climbing, and editors can break a layout by dragging one block."
+      },
+      {
+        "title": "Many sites, no shared system",
+        "body": "Separate WordPress installs for each location or brand drift apart, and one small change has to be made again and again."
+      }
+    ]
+  },
+  "included": {
+    "heading": "What is included in a WordPress build?",
+    "intro": null,
+    "items": [
+      "A custom theme built for your design system, with no page builder underneath",
+      "Custom post types and fields for services, case studies, locations and anything repeatable",
+      "Editor blocks designed for your content, with layouts editors cannot accidentally break",
+      "A short, audited plugin list, with each plugin justified in writing",
+      "WooCommerce set up with your pricing, shipping and tax rules, where you sell online",
+      "Multisite or shared components where several sites need to stay consistent",
+      "Forms that store every lead in your own database, with spam protection",
+      "A written performance budget, with image, script and caching work to meet it",
+      "WCAG 2.2 AA as the working standard",
+      "Hardening, updates tested on staging first and nightly encrypted backups",
+      "Editor training and a written operations manual"
+    ]
+  },
+  "process": {
+    "heading": "How does a WordPress project run?",
+    "intro": "Six to eight weeks for most sites. Multisite consolidations and WooCommerce stores with integrations take nine to fourteen.",
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=1800&q=65"
+    },
+    "steps": [
+      {
+        "title": "Audit and plan",
+        "duration": "Week 1",
+        "body": "Content, plugins, speed and editing needs reviewed, then a content model, a plugin plan and a fixed scope agreed in writing."
+      },
+      {
+        "title": "Design",
+        "duration": "Weeks 2 to 3",
+        "body": "High-fidelity screens and the block library editors will use, approved before the theme is built."
+      },
+      {
+        "title": "Build",
+        "duration": "Weeks 3 to 6",
+        "body": "Custom theme, post types, blocks and integrations on staging, with content migrated and redirects written as pages move."
+      },
+      {
+        "title": "Prove",
+        "duration": "Week 7",
+        "body": "Cross-browser and accessibility testing, a performance pass against the budget, a security review and a tested restore."
+      },
+      {
+        "title": "Launch and hand over",
+        "duration": "Week 8",
+        "body": "Cutover, monitoring, editor training and the operations manual, with updates tested on staging from the first day."
+      }
+    ]
+  },
+  "technology": {
+    "heading": "Which technologies go into a WordPress build?",
+    "intro": "WordPress where it is strongest, with modern tooling around it, and a headless front end when speed or integrations call for one.",
+    "items": [
+      {
+        "name": "WordPress",
+        "category": "Content"
+      },
+      {
+        "name": "WooCommerce",
+        "category": "Ecommerce"
+      },
+      {
+        "name": "headless CMS",
+        "category": "Content"
+      },
+      {
+        "name": "React",
+        "category": "Front end"
+      },
+      {
+        "name": "Next.js",
+        "category": "Front end"
+      },
+      {
+        "name": "Tailwind CSS",
+        "category": "Front end"
+      },
+      {
+        "name": "Docker",
+        "category": "Infrastructure"
+      },
+      {
+        "name": "Cloudflare",
+        "category": "Infrastructure"
+      },
+      {
+        "name": "GitHub Actions",
+        "category": "Infrastructure"
+      }
+    ]
+  },
+  "proof": {
+    "heading": "What have WordPress builds delivered for clients?",
+    "intro": null,
+    "caseStudies": [
+      {
+        "slug": "cascadia-health",
+        "clientName": "Cascadia Health",
+        "summary": "Fourteen clinic sites merged into one accessible platform with location-aware appointment booking.",
+        "tags": [
+          "Oregon, USA",
+          "Healthcare",
+          "WordPress"
+        ],
+        "image": {
+          "src": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=900&q=70",
+          "alt": "Clinician working at a healthcare facility"
+        },
+        "metrics": [
+          {
+            "value": "+91%",
+            "label": "Online bookings"
+          },
+          {
+            "value": "14→1",
+            "label": "Sites to maintain"
+          },
+          {
+            "value": "AA",
+            "label": "WCAG 2.2 verified"
+          }
+        ]
+      }
+    ],
+    "link": {
+      "label": "See all WordPress work",
+      "href": "/work/?service=wordpress-development"
+    }
+  },
+  "comparison": {
+    "heading": "How does our WordPress development compare with the alternatives?",
+    "intro": null,
+    "columns": {
+      "us": "Calwebtech",
+      "freelancer": "A freelancer",
+      "pageBuilder": "A page builder",
+      "offshore": "An offshore body shop"
+    },
+    "rows": [
+      {
+        "label": "Theme",
+        "us": "A custom theme built for your design, with nothing unused.",
+        "freelancer": "Often a bought theme, customised.",
+        "pageBuilder": "The builder's layouts on every page.",
+        "offshore": "A theme built to the specification, with quality that varies by team."
+      },
+      {
+        "label": "Plugins",
+        "us": "A short, audited list, with each plugin justified.",
+        "freelancer": "Whatever solves each request quickly.",
+        "pageBuilder": "The builder, plus add-ons for anything it lacks.",
+        "offshore": "As many as the tickets needed."
+      },
+      {
+        "label": "Editing",
+        "us": "Blocks designed for your content that keep layouts intact.",
+        "freelancer": "Varies with the build.",
+        "pageBuilder": "Drag-and-drop freedom that also lets editors break pages.",
+        "offshore": "Depends on the specification."
+      },
+      {
+        "label": "Speed",
+        "us": "A written performance budget, met before launch.",
+        "freelancer": "Varies.",
+        "pageBuilder": "Heavy by default on every page.",
+        "offshore": "Rarely measured unless contracted."
+      },
+      {
+        "label": "Updates and security",
+        "us": "Updates tested on staging first, with nightly encrypted backups.",
+        "freelancer": "Depends on their availability.",
+        "pageBuilder": "Left to you, and plugin conflicts are common.",
+        "offshore": "Usually a separate maintenance contract."
+      }
+    ]
+  },
+  "pricing": {
+    "heading": "How much does a WordPress website cost?",
+    "intro": "Most WordPress marketing sites land between $12,000 and $25,000. WooCommerce stores with integrations, and multisite consolidations, sit in the $25,000 to $60,000 band.",
+    "factors": [
+      {
+        "title": "Content types",
+        "body": "Price follows distinct templates and post types, not page count."
+      },
+      {
+        "title": "Migration",
+        "body": "Moving from a page builder or from several separate sites means rebuilding layouts as structured content, not copying them."
+      },
+      {
+        "title": "WooCommerce",
+        "body": "A standard retail checkout is quick. Account pricing, subscriptions and ERP sync add build and testing."
+      },
+      {
+        "title": "Multisite",
+        "body": "Consolidating several sites into one install needs shared components, roles and a careful redirect plan."
+      },
+      {
+        "title": "Integrations",
+        "body": "CRM, booking and inventory connections add time, especially where no maintained plugin exists."
+      }
+    ],
+    "link": {
+      "label": "How our pricing works",
+      "href": "/pricing/"
+    }
+  },
+  "industries": {
+    "heading": "Which industries do you build WordPress sites for?",
+    "intro": null,
+    "items": [
+      {
+        "slug": "healthcare",
+        "name": "Healthcare",
+        "line": "Accessible, multi-location, privacy-first booking."
+      },
+      {
+        "slug": "professional-services",
+        "name": "Professional services",
+        "line": "Expertise pages, consultation booking and client portals."
+      },
+      {
+        "slug": "hospitality",
+        "name": "Hospitality",
+        "line": "Direct booking that beats the commission sites."
+      },
+      {
+        "slug": "real-estate",
+        "name": "Real estate",
+        "line": "Listing search, agent tools and lead routing."
+      }
+    ]
+  },
+  "testimonial": {
+    "heading": "What do clients say about their WordPress platform?",
+    "quote": {
+      "id": "testimonial-marcus-bell",
+      "quote": "Fourteen clinic websites became one. Our staff publish their own updates now, which sounds small until you remember we used to wait nine days for a phone number change.",
+      "clientName": "Marcus Bell",
+      "role": "Communications Director",
+      "company": "Cascadia Health",
+      "rating": 5,
+      "avatar": {
+        "src": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=70"
+      }
+    }
+  },
+  "faq": {
+    "heading": "What do buyers ask about WordPress development?",
+    "intro": null,
+    "items": [
+      {
+        "id": "wordpress-development-faq-1",
+        "question": "Why not just buy a theme and a page builder?",
+        "answer": "For a small site that rarely changes, that can be fine. Once the site carries many services, locations or case studies, a custom theme with structured content is faster, safer to edit and cheaper to keep running than a builder stacked with add-ons."
+      },
+      {
+        "id": "wordpress-development-faq-2",
+        "question": "Can you rebuild our page-builder site without losing content?",
+        "answer": "Yes. We migrate the content into structured post types and blocks, map every URL to its new address with permanent redirects, and check Search Console for the first thirty days after launch."
+      },
+      {
+        "id": "wordpress-development-faq-3",
+        "question": "Do you build WooCommerce stores?",
+        "answer": "Yes, including account-specific pricing, shipping and tax rules, and connections to inventory or ERP systems. If Shopify or a custom storefront would serve you better, we say so before you commit."
+      },
+      {
+        "id": "wordpress-development-faq-4",
+        "question": "Can several of our sites run on one WordPress install?",
+        "answer": "Yes. Multisite, or shared components across installs, lets locations or brands keep their own content while the design and code stay consistent. That is how fourteen clinic sites became one platform for one of our healthcare clients."
+      },
+      {
+        "id": "wordpress-development-faq-5",
+        "question": "How do you keep WordPress secure?",
+        "answer": "A short plugin list, updates tested on staging before production, hardened hosting, spam protection on forms, nightly encrypted backups and a tested restore. A month-to-month care plan keeps that running after launch."
+      },
+      {
+        "id": "wordpress-development-faq-6",
+        "question": "Will our editors find it easy to use?",
+        "answer": "They get blocks designed for your content, so they fill in the parts that change and cannot break the layout. Two recorded training sessions and a written manual come with every handover."
+      },
+      {
+        "id": "wordpress-development-faq-7",
+        "question": "Should we use WordPress or Next.js?",
+        "answer": "WordPress suits teams who know its editor and rely on its ecosystem. Next.js suits sites that need speed, custom logic or heavy integrations. WordPress can also run headless behind a Next.js front end, and the proposal explains which fits and why."
+      }
+    ]
+  },
+  "enquiry": {
+    "heading": "How do I get a quote for a WordPress project?",
+    "intro": "Send the address of your current site, if you have one, and what the new site needs to do. We reply within one business day and send a written proposal with a fixed price after a thirty minute call.",
+    "submitLabel": "Get my WordPress quote",
+    "footnote": "Protected by bot filtering. We never sell or share your details, and you can ask us to delete them at any time.",
+    "success": {
+      "heading": "Thanks. Your enquiry is with us.",
+      "body": "We will reply by email within one business day to book a thirty minute call."
+    }
+  },
+  "related": {
+    "heading": "Which services often go with a WordPress build?",
+    "intro": null,
+    "items": [
+      {
+        "slug": "nextjs-development",
+        "title": "Next.js development",
+        "summary": "Fast, maintainable sites and applications on Next.js and React, including headless CMS builds, with a typed API and hosting in your name.",
+        "priceLabel": "$12,000 to $60,000",
+        "updatedAt": "2026-09-14T00:00:00.000Z"
+      },
+      {
+        "slug": "shopify-development",
+        "title": "Shopify development",
+        "summary": "Custom Shopify storefronts, configurators and replatforming for brands that have outgrown a stock theme or a page builder.",
+        "priceLabel": "$12,000 to $60,000",
+        "updatedAt": "2026-09-14T00:00:00.000Z"
+      },
+      {
+        "slug": "custom-website-development",
+        "title": "Custom website development",
+        "summary": "Research-led design built around how your buyers actually decide, not around a template's section order.",
+        "priceLabel": "$12,000 to $25,000",
+        "updatedAt": "2026-09-14T00:00:00.000Z"
+      }
+    ]
+  }
+}

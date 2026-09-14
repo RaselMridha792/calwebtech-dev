@@ -1,0 +1,454 @@
+{
+  "slug": "nextjs-development",
+  "title": "Next.js development",
+  "updatedAt": "2026-09-14T00:00:00.000Z",
+  "seo": {
+    "title": "Next.js development agency",
+    "description": "Next.js and React development for marketing sites, headless CMS builds, stores and portals, held to a written performance budget. From $12,000.",
+    "ogImage": null
+  },
+  "category": {
+    "slug": "platforms",
+    "name": "Platforms"
+  },
+  "answerBlock": "Next.js development is building websites and web applications on Next.js, the React framework for fast, server-rendered pages. Calwebtech uses it for marketing sites, headless CMS builds, B2B stores and portals that need speed and custom logic, with a content dashboard so editors keep control. Projects typically cost $12,000 to $60,000, depending on scope.",
+  "hero": {
+    "outcome": "Pages that load fast on a phone, content your team edits without a developer, and a codebase the next developer can read.",
+    "primaryCta": {
+      "label": "Get a project quote",
+      "href": "#enquire"
+    },
+    "secondaryCta": {
+      "label": "See the work",
+      "href": "/work/?service=nextjs-development"
+    },
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1800&q=65"
+    }
+  },
+  "price": {
+    "label": "$12,000 to $60,000",
+    "amount": {
+      "currency": "USD",
+      "min": 12000,
+      "max": 60000,
+      "unit": "PROJECT"
+    }
+  },
+  "problem": {
+    "heading": "When is Next.js the right choice for a website?",
+    "intro": "Teams usually come to Next.js development from one of three places.",
+    "situations": [
+      {
+        "title": "A slow site is costing search and sales",
+        "body": "The current platform piles scripts and plugins onto every page, and no amount of caching gets mobile load times where they need to be."
+      },
+      {
+        "title": "The site needs to do more than publish pages",
+        "body": "Pricing, quoting, accounts, search or integrations have outgrown what a theme and plugins can do reliably."
+      },
+      {
+        "title": "Content and product live in different systems",
+        "body": "Marketing pages, documentation and the product each use different tools, so the brand drifts and every release breaks something."
+      }
+    ]
+  },
+  "included": {
+    "heading": "What is included in a Next.js build?",
+    "intro": null,
+    "items": [
+      "An architecture plan: which pages render on the server, which are static and what is cached",
+      "A React component library and design tokens shared across the whole site",
+      "A headless CMS or a custom content dashboard, modelled around your content types",
+      "TypeScript throughout, with validation at every boundary",
+      "Server routes or a separate Node API for forms, accounts and integrations",
+      "A written performance budget, with load time, layout shift and script weight checked in CI",
+      "Structured data, metadata, sitemaps and redirects built into the templates",
+      "WCAG 2.2 AA as the working standard",
+      "Containerised hosting on infrastructure registered in your name",
+      "Documentation, editor training and a clean handover of the repository"
+    ]
+  },
+  "process": {
+    "heading": "How does a Next.js project run?",
+    "intro": "Six to eight weeks for most marketing sites and headless builds, and nine to fourteen when accounts, pricing or integrations are involved.",
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=1800&q=65"
+    },
+    "steps": [
+      {
+        "title": "Discovery and architecture",
+        "duration": "Week 1",
+        "body": "Content model, rendering strategy, integrations and the performance budget, agreed in writing with a fixed scope."
+      },
+      {
+        "title": "Design system",
+        "duration": "Weeks 2 to 3",
+        "body": "Tokens, components and high-fidelity screens, designed as the same components the site will be built from."
+      },
+      {
+        "title": "Build",
+        "duration": "Weeks 3 to 6",
+        "body": "Templates, content types, forms and integrations on a staging URL, with every pull request checked against the budget."
+      },
+      {
+        "title": "Prove",
+        "duration": "Week 7",
+        "body": "Cross-browser and accessibility testing, a performance pass on real mobile conditions and a tested backup restore."
+      },
+      {
+        "title": "Launch and hand over",
+        "duration": "Week 8",
+        "body": "Cutover, redirects, monitoring, editor training and the repository handed over with its documentation."
+      }
+    ]
+  },
+  "technology": {
+    "heading": "What does a Next.js stack at Calwebtech include?",
+    "intro": "A typed stack from the database to the page, so a change in one place is checked everywhere it matters.",
+    "items": [
+      {
+        "name": "Next.js",
+        "category": "Front end"
+      },
+      {
+        "name": "React",
+        "category": "Front end"
+      },
+      {
+        "name": "TypeScript",
+        "category": "Front end"
+      },
+      {
+        "name": "Tailwind CSS",
+        "category": "Front end"
+      },
+      {
+        "name": "headless CMS",
+        "category": "Content"
+      },
+      {
+        "name": "Node.js",
+        "category": "Back end"
+      },
+      {
+        "name": "NestJS",
+        "category": "Back end"
+      },
+      {
+        "name": "Prisma",
+        "category": "Back end"
+      },
+      {
+        "name": "PostgreSQL",
+        "category": "Back end"
+      },
+      {
+        "name": "Docker",
+        "category": "Infrastructure"
+      },
+      {
+        "name": "Traefik",
+        "category": "Infrastructure"
+      },
+      {
+        "name": "Cloudflare",
+        "category": "Infrastructure"
+      },
+      {
+        "name": "GitHub Actions",
+        "category": "Infrastructure"
+      }
+    ]
+  },
+  "proof": {
+    "heading": "What have Next.js builds delivered for clients?",
+    "intro": null,
+    "caseStudies": [
+      {
+        "slug": "northmark-supply",
+        "clientName": "Northmark Supply",
+        "summary": "A catalogue of 40,000 parts behind a contact form. We rebuilt it as a searchable, account-priced quoting platform tied into their ERP.",
+        "tags": [
+          "Ohio, USA",
+          "B2B",
+          "Distribution",
+          "Next.js"
+        ],
+        "image": {
+          "src": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=70",
+          "alt": "Sales team reviewing performance figures"
+        },
+        "metrics": [
+          {
+            "value": "+312%",
+            "label": "Quote requests"
+          },
+          {
+            "value": "12 min",
+            "label": "Quote turnaround, from 3 days"
+          },
+          {
+            "value": "−41%",
+            "label": "Support calls"
+          }
+        ]
+      },
+      {
+        "slug": "truvia-labs",
+        "clientName": "Truvia Labs",
+        "summary": "Marketing site, docs and in-app onboarding rebuilt on one design system so releases stopped breaking the brand.",
+        "tags": [
+          "Texas, USA",
+          "SaaS",
+          "Next.js"
+        ],
+        "image": {
+          "src": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=70",
+          "alt": "Product team working on a software platform"
+        },
+        "metrics": [
+          {
+            "value": "+140%",
+            "label": "Demo bookings"
+          },
+          {
+            "value": "3.1x",
+            "label": "Organic sessions"
+          },
+          {
+            "value": "98",
+            "label": "Lighthouse mobile"
+          }
+        ]
+      },
+      {
+        "slug": "meridian-parts",
+        "clientName": "Meridian Parts",
+        "summary": "Fitment search across 90,000 SKUs, so a technician finds the right part on a phone in a workshop.",
+        "tags": [
+          "Michigan, USA",
+          "Manufacturing",
+          "Headless"
+        ],
+        "image": {
+          "src": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=900&q=70",
+          "alt": "Engineer inspecting equipment on a production floor"
+        },
+        "metrics": [
+          {
+            "value": "+207%",
+            "label": "Organic traffic"
+          },
+          {
+            "value": "−63%",
+            "label": "Wrong-part returns"
+          },
+          {
+            "value": "4.2x",
+            "label": "Repeat orders"
+          }
+        ]
+      }
+    ],
+    "link": {
+      "label": "See all Next.js work",
+      "href": "/work/?service=nextjs-development"
+    }
+  },
+  "comparison": {
+    "heading": "How does our Next.js development compare with the alternatives?",
+    "intro": null,
+    "columns": {
+      "us": "Calwebtech",
+      "freelancer": "A freelancer",
+      "pageBuilder": "A page builder",
+      "offshore": "An offshore body shop"
+    },
+    "rows": [
+      {
+        "label": "Performance",
+        "us": "A written budget for load time, layout shift and script weight, checked in CI.",
+        "freelancer": "Depends on the developer's habits.",
+        "pageBuilder": "Builder scripts load on every page.",
+        "offshore": "Rarely measured unless named in the contract."
+      },
+      {
+        "label": "Editing",
+        "us": "A headless CMS or dashboard modelled around your content types.",
+        "freelancer": "Often a developer-only codebase with content kept in files.",
+        "pageBuilder": "Easy visual editing, with little structure behind it.",
+        "offshore": "Whatever the specification asked for."
+      },
+      {
+        "label": "Code quality",
+        "us": "TypeScript, tests and reviewed pull requests from the first commit.",
+        "freelancer": "Varies with the person.",
+        "pageBuilder": "No code to review; the vendor controls it.",
+        "offshore": "Varies by team, and often by week."
+      },
+      {
+        "label": "Hosting",
+        "us": "Containers on infrastructure in your name, or the host you prefer.",
+        "freelancer": "Often on the developer's own accounts.",
+        "pageBuilder": "The builder's hosting only.",
+        "offshore": "Often on the vendor's accounts."
+      },
+      {
+        "label": "How the price is set",
+        "us": "A fixed price and scope, agreed before work starts.",
+        "freelancer": "Usually hourly.",
+        "pageBuilder": "Monthly fees that rise with plans and add-ons.",
+        "offshore": "Low day rates, with change requests adding up."
+      }
+    ]
+  },
+  "pricing": {
+    "heading": "How much does a Next.js website cost?",
+    "intro": "Most Next.js projects land between $12,000 and $60,000. A marketing site or headless CMS build sits in the $12,000 to $25,000 band; accounts, pricing and integrations move it towards $60,000.",
+    "factors": [
+      {
+        "title": "Content model",
+        "body": "A handful of content types is quick to model. Many related types, translations or complex editorial workflows take longer."
+      },
+      {
+        "title": "Headless CMS choice",
+        "body": "A hosted headless CMS saves build time but adds a subscription. A custom dashboard costs more up front and has no per-seat fees."
+      },
+      {
+        "title": "Dynamic features",
+        "body": "Accounts, pricing, search and personalisation each need server logic, caching decisions and testing."
+      },
+      {
+        "title": "Integrations",
+        "body": "CRM, ERP, booking and payment systems add build and testing time, especially older ones."
+      },
+      {
+        "title": "Migration",
+        "body": "Moving content and URLs from WordPress or another platform needs mapping, cleaning and redirects."
+      }
+    ],
+    "link": {
+      "label": "How our pricing works",
+      "href": "/pricing/"
+    }
+  },
+  "industries": {
+    "heading": "Which industries do you build Next.js sites for?",
+    "intro": null,
+    "items": [
+      {
+        "slug": "saas",
+        "name": "SaaS and technology",
+        "line": "Marketing site, docs and product on one system."
+      },
+      {
+        "slug": "distribution",
+        "name": "Distribution and supply",
+        "line": "Account pricing, quoting and order history for trade buyers."
+      },
+      {
+        "slug": "manufacturing",
+        "name": "Manufacturing",
+        "line": "Spec sheets, configurators and ERP-accurate inventory."
+      },
+      {
+        "slug": "ecommerce-and-d2c",
+        "name": "Retail and D2C",
+        "line": "Storefronts tuned against real checkout drop-off."
+      }
+    ]
+  },
+  "testimonial": {
+    "heading": "What do clients say about their Next.js build?",
+    "quote": {
+      "id": "testimonial-dale-ferris",
+      "quote": "Our counter staff stopped retyping orders. That is the whole story. Calwebtech understood the ERP side better than the vendor who sold it to us.",
+      "clientName": "Dale Ferris",
+      "role": "Director of Ecommerce",
+      "company": "Northmark Supply",
+      "rating": 5,
+      "avatar": {
+        "src": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=120&q=70"
+      }
+    }
+  },
+  "faq": {
+    "heading": "What do buyers ask about Next.js development?",
+    "intro": null,
+    "items": [
+      {
+        "id": "nextjs-development-faq-1",
+        "question": "Is Next.js better than WordPress?",
+        "answer": "Neither is better for everyone. Next.js suits sites that need speed, custom logic or integrations, and teams happy to edit in a headless CMS or dashboard. WordPress suits teams who know its editor and rely on its plugins. We recommend one in writing, with the reasons."
+      },
+      {
+        "id": "nextjs-development-faq-2",
+        "question": "What is a headless CMS build?",
+        "answer": "It separates where content is edited from how pages are built. Editors work in a CMS or dashboard and Next.js renders the pages, so the site stays fast and the same content can also feed apps, documentation or other channels."
+      },
+      {
+        "id": "nextjs-development-faq-3",
+        "question": "Can our marketing team edit a Next.js site?",
+        "answer": "Yes. Every repeatable page is a content type with its own editor in the CMS or dashboard, so publishing needs no developer and no deployment. Training and a written manual are part of the handover."
+      },
+      {
+        "id": "nextjs-development-faq-4",
+        "question": "Where will a Next.js site be hosted?",
+        "answer": "On infrastructure registered in your name. We deploy in containers behind automatic TLS, or to a managed Next.js host if your team prefers one, and the proposal sets out the running costs."
+      },
+      {
+        "id": "nextjs-development-faq-5",
+        "question": "How fast will the site be?",
+        "answer": "We agree a written performance budget for load time, layout shift and script weight before the build, and fail our own release if it is breached. The targets are set per project and measured on mobile conditions, not only on a fast desk connection."
+      },
+      {
+        "id": "nextjs-development-faq-6",
+        "question": "Can you take over an existing Next.js codebase?",
+        "answer": "Yes. We start with a code review and a written verdict on what to keep, what to fix and what to replace, with a fixed price for the work."
+      },
+      {
+        "id": "nextjs-development-faq-7",
+        "question": "Who owns the code?",
+        "answer": "You do. The repository and every account are in your name from the start, with no proprietary framework, so another developer could continue from the documentation."
+      }
+    ]
+  },
+  "enquiry": {
+    "heading": "How do I get a quote for a Next.js project?",
+    "intro": "Tell us what the site needs to do, where content lives today and what it connects to. We reply within one business day and send a written proposal with a fixed price after a thirty minute call.",
+    "submitLabel": "Get my project quote",
+    "footnote": "Protected by bot filtering. We never sell or share your details, and you can ask us to delete them at any time.",
+    "success": {
+      "heading": "Thanks. Your enquiry is with us.",
+      "body": "We will reply by email within one business day to book a thirty minute call."
+    }
+  },
+  "related": {
+    "heading": "Which services often go with a Next.js build?",
+    "intro": null,
+    "items": [
+      {
+        "slug": "wordpress-development",
+        "title": "WordPress development",
+        "summary": "Custom WordPress themes and WooCommerce stores without page-builder bloat, with structured content your editors can manage safely.",
+        "priceLabel": "$12,000 to $60,000",
+        "updatedAt": "2026-09-14T00:00:00.000Z"
+      },
+      {
+        "slug": "shopify-development",
+        "title": "Shopify development",
+        "summary": "Custom Shopify storefronts, configurators and replatforming for brands that have outgrown a stock theme or a page builder.",
+        "priceLabel": "$12,000 to $60,000",
+        "updatedAt": "2026-09-14T00:00:00.000Z"
+      },
+      {
+        "slug": "custom-website-development",
+        "title": "Custom website development",
+        "summary": "Research-led design built around how your buyers actually decide, not around a template's section order.",
+        "priceLabel": "$12,000 to $25,000",
+        "updatedAt": "2026-09-14T00:00:00.000Z"
+      }
+    ]
+  }
+}

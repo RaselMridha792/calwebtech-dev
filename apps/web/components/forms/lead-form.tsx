@@ -19,6 +19,8 @@ export interface LeadFormProps {
   leadType?: LeadType;
   /** Campaign page the lead is attributed to, when the form sits on one. */
   landingPageSlug?: string;
+  /** Service page the enquiry comes from; the API links the lead to the service. */
+  serviceSlug?: string;
   /** The second field beside the company in the full form. */
   contactField?: 'siteUrl' | 'phone';
   /** "How did you find us?" options; the question is left out when there are none. */
@@ -233,6 +235,7 @@ export function LeadForm(props: LeadFormProps) {
       <input type="hidden" name="type" value={props.leadType ?? 'PROJECT'} />
       <input type="hidden" name="formId" value={formId} />
       {props.landingPageSlug ? <input type="hidden" name="landingPageSlug" value={props.landingPageSlug} /> : null}
+      {props.serviceSlug ? <input type="hidden" name="serviceSlug" value={props.serviceSlug} /> : null}
       <input ref={attributionRef} type="hidden" name="attribution" defaultValue="" />
       <div className="absolute left-[-10000px] h-px w-px overflow-hidden" aria-hidden="true">
         <label htmlFor={`${formId}-reference`}>Reference code</label>

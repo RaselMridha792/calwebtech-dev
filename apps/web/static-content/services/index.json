@@ -1,0 +1,120 @@
+{
+  "content": {
+    "seo": {
+      "title": "Web design and development services",
+      "description": "Custom websites, redesigns, web applications, ecommerce, Next.js, WordPress and Shopify builds, AI search visibility, AI integration and care plans.",
+      "ogImage": null
+    },
+    "title": "Web design and development services",
+    "answerBlock": "Calwebtech designs, builds and looks after websites, online stores and web applications for B2B and growing businesses. Every build has a fixed price, runs on a platform your team can maintain, and is handed over with the code, data and accounts in your name. Most projects cost $12,000 to $60,000, and care plans start at $1,500 a month.",
+    "intro": "Ten services, grouped by what you need: a new site or application, a particular platform, or growth and upkeep after launch.",
+    "otherGroupName": "More services",
+    "empty": "No services are published yet. Tell us what you need and we will reply by email.",
+    "cardLinkLabel": "See the service",
+    "guidance": {
+      "heading": "Not sure which service you need?",
+      "body": "Most projects combine two or three of these. Tell us what is not working and we will say what we would do, roughly what it costs, and whether we are the right fit.",
+      "primaryCta": {
+        "label": "Tell us what you need",
+        "href": "/contact/"
+      },
+      "secondaryCta": {
+        "label": "Get an instant estimate",
+        "href": "/#estimate"
+      }
+    }
+  },
+  "groups": [
+    {
+      "slug": "design-and-build",
+      "name": "Design & build",
+      "description": "Websites and web applications designed around how your buyers decide, then built so your own team can run them.",
+      "services": [
+        {
+          "slug": "custom-website-development",
+          "title": "Custom website development",
+          "summary": "Research-led design built around how your buyers actually decide, not around a template's section order.",
+          "priceLabel": "$12,000 to $25,000",
+          "updatedAt": "2026-09-14T00:00:00.000Z"
+        },
+        {
+          "slug": "website-redesign",
+          "title": "Website redesign",
+          "summary": "Rebuild a site that stopped working for the business, keep the rankings and pages that earn, and fix conversion, speed or a stalled project on the way.",
+          "priceLabel": "$12,000 to $25,000",
+          "updatedAt": "2026-09-14T00:00:00.000Z"
+        },
+        {
+          "slug": "web-application-development",
+          "title": "Web application development",
+          "summary": "Portals, dashboards, booking engines and internal tools built on Next.js with a typed API behind them.",
+          "priceLabel": "$25,000 to $60,000",
+          "updatedAt": "2026-09-14T00:00:00.000Z"
+        },
+        {
+          "slug": "ecommerce-development",
+          "title": "Ecommerce development",
+          "summary": "Shopify, WooCommerce or custom, including B2B pricing rules, quoting and ERP integration.",
+          "priceLabel": "$12,000 to $60,000",
+          "updatedAt": "2026-09-14T00:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "slug": "platforms",
+      "name": "Platforms",
+      "description": "The platform follows what your team needs to maintain and what the business has to connect to, not what we prefer to sell.",
+      "services": [
+        {
+          "slug": "nextjs-development",
+          "title": "Next.js development",
+          "summary": "Fast, maintainable sites and applications on Next.js and React, including headless CMS builds, with a typed API and hosting in your name.",
+          "priceLabel": "$12,000 to $60,000",
+          "updatedAt": "2026-09-14T00:00:00.000Z"
+        },
+        {
+          "slug": "wordpress-development",
+          "title": "WordPress development",
+          "summary": "Custom WordPress themes and WooCommerce stores without page-builder bloat, with structured content your editors can manage safely.",
+          "priceLabel": "$12,000 to $60,000",
+          "updatedAt": "2026-09-14T00:00:00.000Z"
+        },
+        {
+          "slug": "shopify-development",
+          "title": "Shopify development",
+          "summary": "Custom Shopify storefronts, configurators and replatforming for brands that have outgrown a stock theme or a page builder.",
+          "priceLabel": "$12,000 to $60,000",
+          "updatedAt": "2026-09-14T00:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "slug": "growth-and-care",
+      "name": "Growth & care",
+      "description": "Search and AI visibility, AI features wired into your own data, and the upkeep that keeps a site earning after launch.",
+      "services": [
+        {
+          "slug": "ai-search-visibility",
+          "title": "AI search visibility",
+          "summary": "Technical SEO plus the newer work of being cited by ChatGPT, Perplexity, Gemini and AI overviews.",
+          "priceLabel": "From $1,500 a month",
+          "updatedAt": "2026-09-14T00:00:00.000Z"
+        },
+        {
+          "slug": "ai-integration",
+          "title": "AI integration",
+          "summary": "Qualification assistants, search, content tooling and workflow automation wired into your own data.",
+          "priceLabel": "$12,000 to $60,000",
+          "updatedAt": "2026-09-14T00:00:00.000Z"
+        },
+        {
+          "slug": "care-plans",
+          "title": "Website care plans",
+          "summary": "Patching, backups with a tested restore, monitoring and a fixed allowance of development hours.",
+          "priceLabel": "From $1,500 a month",
+          "updatedAt": "2026-09-14T00:00:00.000Z"
+        }
+      ]
+    }
+  ]
+}

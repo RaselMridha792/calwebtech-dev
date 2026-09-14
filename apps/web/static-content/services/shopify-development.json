@@ -1,0 +1,355 @@
+{
+  "slug": "shopify-development",
+  "title": "Shopify development",
+  "updatedAt": "2026-09-14T00:00:00.000Z",
+  "seo": {
+    "title": "Shopify development agency",
+    "description": "Custom Shopify storefronts, product configurators and replatforming for brands that have outgrown a stock theme. Fixed-price builds from $12,000.",
+    "ogImage": null
+  },
+  "category": {
+    "slug": "platforms",
+    "name": "Platforms"
+  },
+  "answerBlock": "Shopify development is building a store on Shopify with a custom theme, the right apps and product data set up around how you sell. Calwebtech builds custom Shopify storefronts, product configurators and migrations from other platforms, keeping pages quick and orders flowing into your other systems. Most Shopify projects cost $12,000 to $60,000, depending on customisation, migration and integrations.",
+  "hero": {
+    "outcome": "A Shopify store that looks like your brand rather than a theme demo, sells made-to-order products properly and stays quick on a phone.",
+    "primaryCta": {
+      "label": "Get a Shopify quote",
+      "href": "#enquire"
+    },
+    "secondaryCta": {
+      "label": "See the work",
+      "href": "/work/?service=shopify-development"
+    },
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1800&q=65"
+    }
+  },
+  "price": {
+    "label": "$12,000 to $60,000",
+    "amount": {
+      "currency": "USD",
+      "min": 12000,
+      "max": 60000,
+      "unit": "PROJECT"
+    }
+  },
+  "problem": {
+    "heading": "When does a Shopify store need custom development?",
+    "intro": "Brands usually bring us a Shopify project at one of three moments.",
+    "situations": [
+      {
+        "title": "Stuck on a page builder or an old platform",
+        "body": "The current store is hard to change, slow on mobile and expensive to extend, and moving to Shopify feels risky for search and for customers."
+      },
+      {
+        "title": "Products do not fit a standard product page",
+        "body": "Made-to-order pieces, bundles or options with rules need a configurator, and apps only get part of the way there."
+      },
+      {
+        "title": "The theme is fighting the brand",
+        "body": "Every campaign needs a workaround, the store looks like thousands of others, and app scripts have piled up on every page."
+      }
+    ]
+  },
+  "included": {
+    "heading": "What is included in a Shopify build?",
+    "intro": null,
+    "items": [
+      "A custom theme built from editable sections, so your team changes pages without code",
+      "Product configurators for made-to-order items, with options, rules and live pricing",
+      "Collections, search and filtering set up around your catalogue",
+      "Checkout, shipping, tax and payment settings configured and tested",
+      "An audited app list, with custom code where an app would slow every page",
+      "Migration of products, customers and order history from your current platform",
+      "A permanent redirect for every old product, collection and page URL",
+      "Integrations with your inventory, ERP, fulfilment or marketing tools",
+      "A written performance budget for product and collection pages on mobile",
+      "Training on products, collections, promotions and the theme editor"
+    ]
+  },
+  "process": {
+    "heading": "How does a Shopify project run?",
+    "intro": "Six to eight weeks for most custom storefronts, and nine to fourteen with configurators, large migrations and integrations.",
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1800&q=65"
+    },
+    "steps": [
+      {
+        "title": "Discovery",
+        "duration": "Week 1",
+        "body": "Catalogue, product options, apps, integrations and the migration plan, agreed with a fixed scope."
+      },
+      {
+        "title": "Design",
+        "duration": "Weeks 2 to 3",
+        "body": "Home, collection, product, configurator and cart screens designed for your brand, starting from the phone."
+      },
+      {
+        "title": "Build",
+        "duration": "Weeks 3 to 6",
+        "body": "Theme, sections, configurator and integrations on a development store, with products and customers migrated in test runs."
+      },
+      {
+        "title": "Prove",
+        "duration": "Week 7",
+        "body": "Order, payment and tax testing, redirect checks, accessibility and a performance pass against the budget."
+      },
+      {
+        "title": "Launch",
+        "duration": "Week 8",
+        "body": "Final migration, domain cutover, monitoring and team training, with Search Console watched for the first thirty days."
+      }
+    ]
+  },
+  "technology": {
+    "heading": "Which technologies go into a Shopify build?",
+    "intro": "Shopify for the store, with custom code only where it earns its place.",
+    "items": [
+      {
+        "name": "Shopify",
+        "category": "Ecommerce"
+      },
+      {
+        "name": "React",
+        "category": "Front end"
+      },
+      {
+        "name": "TypeScript",
+        "category": "Front end"
+      },
+      {
+        "name": "Tailwind CSS",
+        "category": "Front end"
+      },
+      {
+        "name": "Next.js",
+        "category": "Front end"
+      },
+      {
+        "name": "headless CMS",
+        "category": "Content"
+      },
+      {
+        "name": "Node.js",
+        "category": "Back end"
+      },
+      {
+        "name": "Cloudflare",
+        "category": "Infrastructure"
+      }
+    ]
+  },
+  "proof": {
+    "heading": "What have Shopify builds delivered for clients?",
+    "intro": null,
+    "caseStudies": [
+      {
+        "slug": "verona-home",
+        "clientName": "Verona Home",
+        "summary": "A furniture brand stuck on a page builder, replatformed with a configurator for made-to-order pieces.",
+        "tags": [
+          "California, USA",
+          "D2C",
+          "Shopify"
+        ],
+        "image": {
+          "src": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=900&q=70",
+          "alt": "Home furnishing retail display"
+        },
+        "metrics": [
+          {
+            "value": "$2.4M",
+            "label": "First-year revenue"
+          },
+          {
+            "value": "+68%",
+            "label": "Add to cart"
+          },
+          {
+            "value": "1.4s",
+            "label": "Mobile LCP"
+          }
+        ]
+      }
+    ],
+    "link": {
+      "label": "See all Shopify work",
+      "href": "/work/?service=shopify-development"
+    }
+  },
+  "comparison": {
+    "heading": "How does our Shopify development compare with the alternatives?",
+    "intro": null,
+    "columns": {
+      "us": "Calwebtech",
+      "freelancer": "A freelancer",
+      "pageBuilder": "A page builder",
+      "offshore": "An offshore body shop"
+    },
+    "rows": [
+      {
+        "label": "Theme",
+        "us": "A custom theme built for your brand, with editable sections.",
+        "freelancer": "Often a bought theme, customised.",
+        "pageBuilder": "A stock theme with a builder app on top.",
+        "offshore": "A theme built to the specification."
+      },
+      {
+        "label": "Apps",
+        "us": "An audited list, with custom code where an app would slow every page.",
+        "freelancer": "An app for each request.",
+        "pageBuilder": "Builder apps that load on every page.",
+        "offshore": "Whatever the tickets required."
+      },
+      {
+        "label": "Complex products",
+        "us": "Configurators with options, rules and live pricing.",
+        "freelancer": "Depends on their experience.",
+        "pageBuilder": "Limited to what the apps offer.",
+        "offshore": "Built if fully specified."
+      },
+      {
+        "label": "Migration",
+        "us": "Products, customers, orders and redirects moved and checked.",
+        "freelancer": "Often products only.",
+        "pageBuilder": "Content copied across by hand.",
+        "offshore": "Covered if contracted."
+      },
+      {
+        "label": "How the price is set",
+        "us": "A fixed price and scope before you commit.",
+        "freelancer": "Usually hourly.",
+        "pageBuilder": "Low to start, with app subscriptions growing.",
+        "offshore": "Low day rates, with change requests adding up."
+      }
+    ]
+  },
+  "pricing": {
+    "heading": "How much does a Shopify store cost?",
+    "intro": "Most custom Shopify storefronts land between $12,000 and $25,000. Configurators, large migrations and integrations move a project into the $25,000 to $60,000 band.",
+    "factors": [
+      {
+        "title": "Theme customisation",
+        "body": "Adapting a strong theme costs less than a fully custom theme with its own section library."
+      },
+      {
+        "title": "Configurators",
+        "body": "Made-to-order options with rules and live pricing need their own interface, logic and testing."
+      },
+      {
+        "title": "Migration",
+        "body": "Products, customers and orders from another platform need cleaning, matching and redirects."
+      },
+      {
+        "title": "Integrations",
+        "body": "Inventory, ERP and fulfilment connections add build and testing time."
+      }
+    ],
+    "link": {
+      "label": "How our pricing works",
+      "href": "/pricing/"
+    }
+  },
+  "industries": {
+    "heading": "Which industries do you build Shopify stores for?",
+    "intro": null,
+    "items": [
+      {
+        "slug": "ecommerce-and-d2c",
+        "name": "Retail and D2C",
+        "line": "Storefronts tuned against real checkout drop-off."
+      },
+      {
+        "slug": "manufacturing",
+        "name": "Manufacturing",
+        "line": "Spec sheets, configurators and ERP-accurate inventory."
+      },
+      {
+        "slug": "distribution",
+        "name": "Distribution and supply",
+        "line": "Account pricing, quoting and order history for trade buyers."
+      }
+    ]
+  },
+  "testimonial": null,
+  "faq": {
+    "heading": "What do buyers ask about Shopify development?",
+    "intro": null,
+    "items": [
+      {
+        "id": "shopify-development-faq-1",
+        "question": "Are you a Shopify Partner?",
+        "answer": "Yes, since 2019. We still recommend WooCommerce or a custom storefront when either would suit your catalogue and team better."
+      },
+      {
+        "id": "shopify-development-faq-2",
+        "question": "Can you move our store to Shopify without losing search traffic?",
+        "answer": "Yes. We migrate products, customers and order history, map every old URL to its new address with permanent redirects before launch, and monitor Search Console for the first thirty days."
+      },
+      {
+        "id": "shopify-development-faq-3",
+        "question": "Can Shopify handle made-to-order or configurable products?",
+        "answer": "Yes, with a configurator built for your options and rules. We replatformed a furniture brand from a page builder to Shopify with a configurator for its made-to-order pieces."
+      },
+      {
+        "id": "shopify-development-faq-4",
+        "question": "How long does a Shopify build take?",
+        "answer": "Six to eight weeks for most custom storefronts, and nine to fourteen with configurators, large migrations or integrations."
+      },
+      {
+        "id": "shopify-development-faq-5",
+        "question": "Will we be able to edit the store ourselves?",
+        "answer": "Yes. Pages are built from editable sections in the theme editor, and your team gets training on products, collections and promotions at handover."
+      },
+      {
+        "id": "shopify-development-faq-6",
+        "question": "Do we need Shopify Plus?",
+        "answer": "Most brands do not. Plus becomes worth considering for high order volumes, wholesale features or checkout changes beyond the standard plans. We tell you which plan fits before you commit, with the running costs written down."
+      },
+      {
+        "id": "shopify-development-faq-7",
+        "question": "Who owns the store and its data?",
+        "answer": "You do. The store, the theme code and every app account are registered in your name, and the theme repository is handed over with its documentation."
+      }
+    ]
+  },
+  "enquiry": {
+    "heading": "How do I get a quote for a Shopify store?",
+    "intro": "Tell us about your products, your current platform and what the store needs to connect to. We reply within one business day and send a written proposal with a fixed price after a thirty minute call.",
+    "submitLabel": "Get my Shopify quote",
+    "footnote": "Protected by bot filtering. We never sell or share your details, and you can ask us to delete them at any time.",
+    "success": {
+      "heading": "Thanks. Your enquiry is with us.",
+      "body": "We will reply by email within one business day to book a thirty minute call."
+    }
+  },
+  "related": {
+    "heading": "Which services often go with a Shopify build?",
+    "intro": null,
+    "items": [
+      {
+        "slug": "nextjs-development",
+        "title": "Next.js development",
+        "summary": "Fast, maintainable sites and applications on Next.js and React, including headless CMS builds, with a typed API and hosting in your name.",
+        "priceLabel": "$12,000 to $60,000",
+        "updatedAt": "2026-09-14T00:00:00.000Z"
+      },
+      {
+        "slug": "wordpress-development",
+        "title": "WordPress development",
+        "summary": "Custom WordPress themes and WooCommerce stores without page-builder bloat, with structured content your editors can manage safely.",
+        "priceLabel": "$12,000 to $60,000",
+        "updatedAt": "2026-09-14T00:00:00.000Z"
+      },
+      {
+        "slug": "custom-website-development",
+        "title": "Custom website development",
+        "summary": "Research-led design built around how your buyers actually decide, not around a template's section order.",
+        "priceLabel": "$12,000 to $25,000",
+        "updatedAt": "2026-09-14T00:00:00.000Z"
+      }
+    ]
+  }
+}

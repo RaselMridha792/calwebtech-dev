@@ -1,0 +1,331 @@
+{
+  "slug": "ai-integration",
+  "title": "AI integration",
+  "updatedAt": "2026-09-14T00:00:00.000Z",
+  "seo": {
+    "title": "AI integration services for websites",
+    "description": "AI assistants, search and workflow automation wired into your own data, with transcripts saved against every lead and human handover. From $12,000.",
+    "ogImage": null
+  },
+  "category": {
+    "slug": "growth-and-care",
+    "name": "Growth & care"
+  },
+  "answerBlock": "AI integration is connecting language models to your website, data and workflows so they do useful work, such as qualifying enquiries, answering from your knowledge base or automating repetitive tasks. Calwebtech builds assistants and automations on the OpenAI and Anthropic APIs, saves every transcript against the lead in your own database, and hands over to a person when it matters. Projects typically cost $12,000 to $60,000, depending on scope and integrations.",
+  "hero": {
+    "outcome": "An assistant that qualifies enquiries at any hour, answers from your own knowledge base and passes a warm lead to a person when it matters.",
+    "primaryCta": {
+      "label": "Get a project quote",
+      "href": "#enquire"
+    },
+    "secondaryCta": {
+      "label": "Estimate the cost",
+      "href": "/#estimate"
+    },
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1800&q=65"
+    }
+  },
+  "price": {
+    "label": "$12,000 to $60,000",
+    "amount": {
+      "currency": "USD",
+      "min": 12000,
+      "max": 60000,
+      "unit": "PROJECT"
+    }
+  },
+  "problem": {
+    "heading": "When is AI integration worth it for a business?",
+    "intro": "The useful AI projects we see start from a specific, repetitive job, not from a wish to add AI.",
+    "situations": [
+      {
+        "title": "Enquiries arrive when nobody is there",
+        "body": "Buyers visit in the evening, ask a question the site does not answer and leave before anyone can reply the next morning."
+      },
+      {
+        "title": "Your team answers the same questions all day",
+        "body": "Specification, availability, process and pricing questions have answers in documents your team already wrote, but finding them takes a person."
+      },
+      {
+        "title": "Staff retype information between systems",
+        "body": "Emails, forms and documents are read and copied into the CRM or ERP by hand, which is slow and where mistakes creep in."
+      }
+    ]
+  },
+  "included": {
+    "heading": "What does an AI integration project include?",
+    "intro": null,
+    "items": [
+      "A workshop to pick one job worth automating and define what good looks like",
+      "An assistant trained on your knowledge base, with answers grounded in your own documents",
+      "Qualification questions that capture budget, timeline and needs as structured fields",
+      "Transcripts saved against the lead in your own database",
+      "Human handover when it matters, by email, chat or a booked call",
+      "Search across your content and documents using vector search",
+      "Workflow automation between email, forms, your CRM and your ERP",
+      "Guardrails: what the assistant must not answer, and how it says so",
+      "An evaluation set of real questions, run again before every change",
+      "Usage and cost monitoring, with model providers billed to your own account"
+    ]
+  },
+  "process": {
+    "heading": "How does an AI integration project run?",
+    "intro": "A narrow first release in six to eight weeks, measured against real questions before it grows.",
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1800&q=65"
+    },
+    "steps": [
+      {
+        "title": "Pick the job",
+        "duration": "Week 1",
+        "body": "One workflow chosen, the data it needs identified, and success written down as questions the assistant must answer correctly."
+      },
+      {
+        "title": "Prototype",
+        "duration": "Weeks 2 to 3",
+        "body": "A working prototype on your own content, tested against the evaluation set with your team."
+      },
+      {
+        "title": "Build and integrate",
+        "duration": "Weeks 3 to 6",
+        "body": "The assistant or automation built into your site and systems, with transcripts, handover and guardrails in place."
+      },
+      {
+        "title": "Prove",
+        "duration": "Week 7",
+        "body": "Evaluation against real questions, security and data checks, and a soft launch to a small group of visitors or staff."
+      },
+      {
+        "title": "Launch and measure",
+        "duration": "Week 8",
+        "body": "Full launch, monitoring of answers, costs and handovers, and a review of what to automate next."
+      }
+    ]
+  },
+  "technology": {
+    "heading": "Which AI technologies do you use?",
+    "intro": "Models from the major providers, on accounts in your name, wired into your own stack.",
+    "items": [
+      {
+        "name": "OpenAI and Anthropic APIs",
+        "category": "Back end"
+      },
+      {
+        "name": "vector search",
+        "category": "Back end"
+      },
+      {
+        "name": "Node.js",
+        "category": "Back end"
+      },
+      {
+        "name": "NestJS",
+        "category": "Back end"
+      },
+      {
+        "name": "PostgreSQL",
+        "category": "Back end"
+      },
+      {
+        "name": "Redis",
+        "category": "Back end"
+      },
+      {
+        "name": "BullMQ queues",
+        "category": "Back end"
+      },
+      {
+        "name": "Next.js",
+        "category": "Front end"
+      },
+      {
+        "name": "React",
+        "category": "Front end"
+      }
+    ]
+  },
+  "proof": null,
+  "comparison": {
+    "heading": "How does our AI integration compare with the alternatives?",
+    "intro": null,
+    "columns": {
+      "us": "Calwebtech",
+      "freelancer": "A freelancer",
+      "pageBuilder": "A page builder",
+      "offshore": "An offshore body shop"
+    },
+    "rows": [
+      {
+        "label": "Your data",
+        "us": "Documents and transcripts stay in your own database and accounts.",
+        "freelancer": "Depends on the tools they prefer.",
+        "pageBuilder": "A chatbot plugin that stores conversations with its vendor.",
+        "offshore": "Often on the vendor's accounts."
+      },
+      {
+        "label": "Answers",
+        "us": "Grounded in your knowledge base and tested against real questions.",
+        "freelancer": "Varies with experience.",
+        "pageBuilder": "Generic answers, with little control over what it says.",
+        "offshore": "As specified."
+      },
+      {
+        "label": "Leads",
+        "us": "Qualification captured as fields and saved against the lead.",
+        "freelancer": "Often an email notification.",
+        "pageBuilder": "A transcript in the vendor's inbox.",
+        "offshore": "Built if specified."
+      },
+      {
+        "label": "Handover to a person",
+        "us": "A person takes over when it matters, with the context attached.",
+        "freelancer": "Varies.",
+        "pageBuilder": "Limited to the plugin's options.",
+        "offshore": "As specified."
+      },
+      {
+        "label": "How the price is set",
+        "us": "A fixed price for a scoped first release.",
+        "freelancer": "Usually hourly.",
+        "pageBuilder": "A monthly fee per conversation or seat.",
+        "offshore": "Low day rates, with changes adding up."
+      }
+    ]
+  },
+  "pricing": {
+    "heading": "How much does AI integration cost?",
+    "intro": "Most first releases land between $12,000 and $25,000. Several connected systems, large document sets or custom workflows move a project into the $25,000 to $60,000 band. Model usage is billed to your own account.",
+    "factors": [
+      {
+        "title": "How complex the job is",
+        "body": "Answering questions from a tidy knowledge base is simpler than a workflow that reads, decides and writes into several systems."
+      },
+      {
+        "title": "Data preparation",
+        "body": "Clean, current documents are quick to use. Scattered, outdated or conflicting material needs sorting before an assistant can rely on it."
+      },
+      {
+        "title": "Integrations",
+        "body": "Each connected system, such as a CRM, ERP or calendar, adds build and testing time."
+      },
+      {
+        "title": "Guardrails and review",
+        "body": "Regulated topics or high-stakes answers need stricter rules, more evaluation and human review."
+      },
+      {
+        "title": "Model usage",
+        "body": "Running costs depend on volume and model choice, and are billed to your account, so they are visible from day one."
+      }
+    ],
+    "link": {
+      "label": "How our pricing works",
+      "href": "/pricing/"
+    }
+  },
+  "industries": {
+    "heading": "Which industries do you build AI features for?",
+    "intro": null,
+    "items": [
+      {
+        "slug": "distribution",
+        "name": "Distribution and supply",
+        "line": "Account pricing, quoting and order history for trade buyers."
+      },
+      {
+        "slug": "saas",
+        "name": "SaaS and technology",
+        "line": "Marketing site, docs and product on one system."
+      },
+      {
+        "slug": "professional-services",
+        "name": "Professional services",
+        "line": "Expertise pages, consultation booking and client portals."
+      },
+      {
+        "slug": "real-estate",
+        "name": "Real estate",
+        "line": "Listing search, agent tools and lead routing."
+      }
+    ]
+  },
+  "testimonial": null,
+  "faq": {
+    "heading": "What do buyers ask about AI integration?",
+    "intro": null,
+    "items": [
+      {
+        "id": "ai-integration-faq-1",
+        "question": "Will an AI assistant give our customers wrong answers?",
+        "answer": "It can if it is left to improvise, so we ground answers in your own documents, write down what it must not answer, and test it against a set of real questions before every change. When it is unsure, it hands over to a person."
+      },
+      {
+        "id": "ai-integration-faq-2",
+        "question": "Where does our data go?",
+        "answer": "Documents, transcripts and leads are stored in your own database. Requests to model providers go through accounts in your name, and we set out what each provider retains before you choose one."
+      },
+      {
+        "id": "ai-integration-faq-3",
+        "question": "Which AI models do you use?",
+        "answer": "We build on the OpenAI and Anthropic APIs and choose per job, based on answer quality, speed and cost in testing. The code keeps the provider swappable, so you are not tied to one."
+      },
+      {
+        "id": "ai-integration-faq-4",
+        "question": "Can the assistant book calls or create leads?",
+        "answer": "Yes. It can capture qualification answers as structured fields, save the transcript against the lead, and book a call or alert your team when a person should take over."
+      },
+      {
+        "id": "ai-integration-faq-5",
+        "question": "How long does an AI integration take?",
+        "answer": "Six to eight weeks for a focused first release. We start narrow, measure it against real questions and expand from there."
+      },
+      {
+        "id": "ai-integration-faq-6",
+        "question": "What does an AI assistant cost to run each month?",
+        "answer": "Model usage depends on volume and the model chosen, and is billed to your own account. We estimate it during the prototype and set up monitoring, so costs are visible from launch."
+      },
+      {
+        "id": "ai-integration-faq-7",
+        "question": "Do we need a new website to add AI features?",
+        "answer": "No. Assistants and automations connect to your existing site and systems. If the site cannot store leads properly, we say so and scope that separately."
+      }
+    ]
+  },
+  "enquiry": {
+    "heading": "How do I get a quote for an AI integration?",
+    "intro": "Describe the job you would like automated and the systems it touches. We reply within one business day and send a written proposal with a fixed price after a thirty minute call.",
+    "submitLabel": "Get my project quote",
+    "footnote": "Protected by bot filtering. We never sell or share your details, and you can ask us to delete them at any time.",
+    "success": {
+      "heading": "Thanks. Your enquiry is with us.",
+      "body": "We will reply by email within one business day to book a thirty minute call."
+    }
+  },
+  "related": {
+    "heading": "Which services often go with AI integration?",
+    "intro": null,
+    "items": [
+      {
+        "slug": "ai-search-visibility",
+        "title": "AI search visibility",
+        "summary": "Technical SEO plus the newer work of being cited by ChatGPT, Perplexity, Gemini and AI overviews.",
+        "priceLabel": "From $1,500 a month",
+        "updatedAt": "2026-09-14T00:00:00.000Z"
+      },
+      {
+        "slug": "care-plans",
+        "title": "Website care plans",
+        "summary": "Patching, backups with a tested restore, monitoring and a fixed allowance of development hours.",
+        "priceLabel": "From $1,500 a month",
+        "updatedAt": "2026-09-14T00:00:00.000Z"
+      },
+      {
+        "slug": "custom-website-development",
+        "title": "Custom website development",
+        "summary": "Research-led design built around how your buyers actually decide, not around a template's section order.",
+        "priceLabel": "$12,000 to $25,000",
+        "updatedAt": "2026-09-14T00:00:00.000Z"
+      }
+    ]
+  }
+}

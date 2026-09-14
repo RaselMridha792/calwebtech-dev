@@ -1,0 +1,445 @@
+{
+  "slug": "ecommerce-development",
+  "title": "Ecommerce development",
+  "updatedAt": "2026-09-14T00:00:00.000Z",
+  "seo": {
+    "title": "Ecommerce website development",
+    "description": "Ecommerce development on Shopify, WooCommerce or custom Next.js, with B2B pricing, quoting and ERP integration. Fixed-price builds from $12,000.",
+    "ogImage": null
+  },
+  "category": {
+    "slug": "design-and-build",
+    "name": "Design & build"
+  },
+  "answerBlock": "Ecommerce development is designing and building an online store, from the catalogue and checkout to the pricing rules and systems behind it. Calwebtech builds on Shopify, WooCommerce or a custom Next.js storefront, including B2B account pricing, quoting and ERP integration. Most stores cost between $12,000 and $60,000, depending mainly on catalogue size and integrations.",
+  "hero": {
+    "outcome": "A store where buyers find the right product quickly, see the right price for their account, and send orders straight into the systems you already run.",
+    "primaryCta": {
+      "label": "Get a store quote",
+      "href": "#enquire"
+    },
+    "secondaryCta": {
+      "label": "See the work",
+      "href": "/work/?service=ecommerce-development"
+    },
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1800&q=65"
+    }
+  },
+  "price": {
+    "label": "$12,000 to $60,000",
+    "amount": {
+      "currency": "USD",
+      "min": 12000,
+      "max": 60000,
+      "unit": "PROJECT"
+    }
+  },
+  "problem": {
+    "heading": "When does a business need ecommerce development rather than a theme?",
+    "intro": "Ecommerce projects usually begin when the store stops matching how the business actually sells.",
+    "situations": [
+      {
+        "title": "Trade buyers still phone or email orders",
+        "body": "Your prices depend on the account, so the website shows a contact form and your team retypes every order into the ERP."
+      },
+      {
+        "title": "The catalogue is too big to browse",
+        "body": "Thousands of products, variants or parts make search and filtering the whole experience, and the theme's search was not built for that."
+      },
+      {
+        "title": "Checkout loses people at the last step",
+        "body": "Traffic and add-to-cart look healthy, but buyers leave during checkout and nobody can say exactly where or why."
+      }
+    ]
+  },
+  "included": {
+    "heading": "What does an ecommerce build include?",
+    "intro": "Every build is scoped around your catalogue, your pricing rules and the systems orders need to reach.",
+    "items": [
+      "A written platform recommendation: Shopify, WooCommerce or a custom Next.js storefront",
+      "Catalogue structure, a product data model and faceted search and filtering",
+      "Account-specific pricing, tiered terms and customer groups for B2B buyers",
+      "Quote requests and quote-to-order flows alongside standard checkout",
+      "Catalogue and inventory sync with your ERP or inventory system",
+      "Checkout tuned against real drop-off, with the payment methods your buyers use",
+      "Product configurators for made-to-order items where you need them",
+      "Order, shipping and tax rules set up and tested against real scenarios",
+      "Technical SEO for product and category pages, with redirects from any old store",
+      "A written performance budget for product and category pages on mobile",
+      "Training for your team on products, orders and promotions"
+    ]
+  },
+  "process": {
+    "heading": "How does an ecommerce project run?",
+    "intro": "Nine weeks is typical for a store with integrations. A focused store without them is closer to six to eight.",
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1800&q=65"
+    },
+    "steps": [
+      {
+        "title": "Discovery",
+        "duration": "Week 1",
+        "body": "Catalogue, pricing rules, fulfilment and the systems orders must reach. The platform decision and a fixed scope come out of this week."
+      },
+      {
+        "title": "Design",
+        "duration": "Weeks 2 to 3",
+        "body": "Category, search, product, cart and checkout screens designed for how your buyers actually shop, on a phone as well as a desk."
+      },
+      {
+        "title": "Build and integrate",
+        "duration": "Weeks 3 to 7",
+        "body": "Storefront, product data, pricing rules and integrations built on staging, with test orders run through your own systems."
+      },
+      {
+        "title": "Prove",
+        "duration": "Week 8",
+        "body": "End-to-end order testing, payment and tax checks, accessibility and performance passes, and redirects from the old store."
+      },
+      {
+        "title": "Launch and tune",
+        "duration": "Week 9",
+        "body": "Cutover, monitoring and team training, then a first look at checkout drop-off once real orders arrive."
+      }
+    ]
+  },
+  "technology": {
+    "heading": "Which ecommerce platforms and technologies do you use?",
+    "intro": "The platform follows your catalogue, pricing rules and team, not our preference.",
+    "items": [
+      {
+        "name": "Shopify",
+        "category": "Ecommerce"
+      },
+      {
+        "name": "WooCommerce",
+        "category": "Ecommerce"
+      },
+      {
+        "name": "Next.js",
+        "category": "Front end"
+      },
+      {
+        "name": "React",
+        "category": "Front end"
+      },
+      {
+        "name": "headless CMS",
+        "category": "Content"
+      },
+      {
+        "name": "Node.js",
+        "category": "Back end"
+      },
+      {
+        "name": "PostgreSQL",
+        "category": "Back end"
+      },
+      {
+        "name": "Redis",
+        "category": "Back end"
+      },
+      {
+        "name": "BullMQ queues",
+        "category": "Back end"
+      },
+      {
+        "name": "Cloudflare",
+        "category": "Infrastructure"
+      }
+    ]
+  },
+  "proof": {
+    "heading": "What have ecommerce builds delivered for clients?",
+    "intro": null,
+    "caseStudies": [
+      {
+        "slug": "northmark-supply",
+        "clientName": "Northmark Supply",
+        "summary": "A catalogue of 40,000 parts behind a contact form. We rebuilt it as a searchable, account-priced quoting platform tied into their ERP.",
+        "tags": [
+          "Ohio, USA",
+          "B2B",
+          "Distribution",
+          "Next.js"
+        ],
+        "image": {
+          "src": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=70",
+          "alt": "Sales team reviewing performance figures"
+        },
+        "metrics": [
+          {
+            "value": "+312%",
+            "label": "Quote requests"
+          },
+          {
+            "value": "12 min",
+            "label": "Quote turnaround, from 3 days"
+          },
+          {
+            "value": "−41%",
+            "label": "Support calls"
+          }
+        ]
+      },
+      {
+        "slug": "verona-home",
+        "clientName": "Verona Home",
+        "summary": "A furniture brand stuck on a page builder, replatformed with a configurator for made-to-order pieces.",
+        "tags": [
+          "California, USA",
+          "D2C",
+          "Shopify"
+        ],
+        "image": {
+          "src": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=900&q=70",
+          "alt": "Home furnishing retail display"
+        },
+        "metrics": [
+          {
+            "value": "$2.4M",
+            "label": "First-year revenue"
+          },
+          {
+            "value": "+68%",
+            "label": "Add to cart"
+          },
+          {
+            "value": "1.4s",
+            "label": "Mobile LCP"
+          }
+        ]
+      },
+      {
+        "slug": "meridian-parts",
+        "clientName": "Meridian Parts",
+        "summary": "Fitment search across 90,000 SKUs, so a technician finds the right part on a phone in a workshop.",
+        "tags": [
+          "Michigan, USA",
+          "Manufacturing",
+          "Headless"
+        ],
+        "image": {
+          "src": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=900&q=70",
+          "alt": "Engineer inspecting equipment on a production floor"
+        },
+        "metrics": [
+          {
+            "value": "+207%",
+            "label": "Organic traffic"
+          },
+          {
+            "value": "−63%",
+            "label": "Wrong-part returns"
+          },
+          {
+            "value": "4.2x",
+            "label": "Repeat orders"
+          }
+        ]
+      }
+    ],
+    "link": {
+      "label": "See all ecommerce work",
+      "href": "/work/?service=ecommerce-development"
+    }
+  },
+  "comparison": {
+    "heading": "How does our ecommerce build compare with the alternatives?",
+    "intro": null,
+    "columns": {
+      "us": "Calwebtech",
+      "freelancer": "A freelancer",
+      "pageBuilder": "A page builder",
+      "offshore": "An offshore body shop"
+    },
+    "rows": [
+      {
+        "label": "B2B pricing",
+        "us": "Account-specific prices, tiers and terms built into the store.",
+        "freelancer": "Possible, depending on their experience with B2B rules.",
+        "pageBuilder": "Usually limited to discount codes and add-on apps.",
+        "offshore": "Built if specified, often as a separate project."
+      },
+      {
+        "label": "ERP and inventory",
+        "us": "Two-way sync, so nobody retypes orders.",
+        "freelancer": "Often a one-way export or a manual process.",
+        "pageBuilder": "A marketplace app, if one happens to fit your ERP.",
+        "offshore": "Custom integration, priced per change request."
+      },
+      {
+        "label": "Search across a big catalogue",
+        "us": "Faceted search and specification filters designed around your data.",
+        "freelancer": "Depends on the plugins available.",
+        "pageBuilder": "The builder's own search, which struggles with large catalogues.",
+        "offshore": "Built to the specification you provide."
+      },
+      {
+        "label": "Checkout",
+        "us": "Tuned against real drop-off, with the steps and payment methods your buyers need.",
+        "freelancer": "Usually the platform default.",
+        "pageBuilder": "The builder's checkout, with limited room to change it.",
+        "offshore": "As specified."
+      },
+      {
+        "label": "How the price is set",
+        "us": "A fixed price and scope before you commit.",
+        "freelancer": "Often hourly.",
+        "pageBuilder": "Low to start, with app and transaction fees growing over time.",
+        "offshore": "Low day rates, with change requests adding up."
+      },
+      {
+        "label": "Who owns the store",
+        "us": "Your store, data and accounts are registered in your name.",
+        "freelancer": "Usually you, if the contract says so.",
+        "pageBuilder": "Your data sits in the vendor's platform.",
+        "offshore": "Check the contract for how code and data are transferred."
+      }
+    ]
+  },
+  "pricing": {
+    "heading": "How much does an ecommerce website cost?",
+    "intro": "Most stores land between $12,000 and $60,000. A focused store on Shopify or WooCommerce sits at the lower end; account pricing, quoting and ERP integration move it towards the top.",
+    "factors": [
+      {
+        "title": "Catalogue size and data quality",
+        "body": "A few hundred clean products import quickly. Tens of thousands of parts with messy attributes need cleaning and a data model before search can work."
+      },
+      {
+        "title": "Pricing rules",
+        "body": "Retail pricing is simple. Account-specific prices, tiers, contract terms and quote-to-order flows add design, build and testing."
+      },
+      {
+        "title": "Integrations",
+        "body": "ERP, inventory, shipping and accounting connections are usually the largest single cost, and older systems take longer."
+      },
+      {
+        "title": "Configurators",
+        "body": "Made-to-order products with options, dependencies and live pricing need their own interface and rules."
+      },
+      {
+        "title": "Platform",
+        "body": "Shopify and WooCommerce cover standard stores for less. A custom Next.js storefront costs more and pays off when the rules are unusual."
+      }
+    ],
+    "link": {
+      "label": "How our pricing works",
+      "href": "/pricing/"
+    }
+  },
+  "industries": {
+    "heading": "Which industries do you build online stores for?",
+    "intro": null,
+    "items": [
+      {
+        "slug": "ecommerce-and-d2c",
+        "name": "Retail and D2C",
+        "line": "Storefronts tuned against real checkout drop-off."
+      },
+      {
+        "slug": "distribution",
+        "name": "Distribution and supply",
+        "line": "Account pricing, quoting and order history for trade buyers."
+      },
+      {
+        "slug": "manufacturing",
+        "name": "Manufacturing",
+        "line": "Spec sheets, configurators and ERP-accurate inventory."
+      }
+    ]
+  },
+  "testimonial": {
+    "heading": "What do clients say about their new store?",
+    "quote": {
+      "id": "testimonial-dale-ferris",
+      "quote": "Our counter staff stopped retyping orders. That is the whole story. Calwebtech understood the ERP side better than the vendor who sold it to us.",
+      "clientName": "Dale Ferris",
+      "role": "Director of Ecommerce",
+      "company": "Northmark Supply",
+      "rating": 5,
+      "avatar": {
+        "src": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=120&q=70"
+      }
+    }
+  },
+  "faq": {
+    "heading": "What do buyers ask before an ecommerce build?",
+    "intro": null,
+    "items": [
+      {
+        "id": "ecommerce-development-faq-1",
+        "question": "Should we use Shopify, WooCommerce or a custom build?",
+        "answer": "Shopify suits most direct-to-consumer stores that want hosting and payments handled for them. WooCommerce suits teams already on WordPress who want control of their data. A custom Next.js storefront makes sense when pricing rules, catalogue size or integrations push past what either handles well. We recommend one in writing before you commit."
+      },
+      {
+        "id": "ecommerce-development-faq-2",
+        "question": "Can the store show different prices to different trade accounts?",
+        "answer": "Yes. Account-specific pricing, tiered terms and customer groups are a core part of our B2B builds, so a signed-in buyer sees their own prices and can order or request a quote without calling."
+      },
+      {
+        "id": "ecommerce-development-faq-3",
+        "question": "Can the store connect to our ERP?",
+        "answer": "Usually. We sync catalogue, inventory and orders both ways so your team stops retyping. The first step is checking what your ERP exposes, which happens before the proposal so the price reflects the real work."
+      },
+      {
+        "id": "ecommerce-development-faq-4",
+        "question": "How long does an ecommerce build take?",
+        "answer": "Six to eight weeks for a focused store without integrations, and nine to fourteen weeks when account pricing, configurators or ERP integration are involved."
+      },
+      {
+        "id": "ecommerce-development-faq-5",
+        "question": "Will we lose search traffic when we move platforms?",
+        "answer": "Not if the migration is done properly. We map every product, category and page URL to its new address with permanent redirects before launch, and monitor Search Console for the first thirty days."
+      },
+      {
+        "id": "ecommerce-development-faq-6",
+        "question": "Can you migrate our existing products and customers?",
+        "answer": "Yes. Products, categories, customers and order history can move, with the data cleaned and matched rather than copied as it is. Passwords usually cannot move between platforms, so we plan how returning customers set a new one."
+      },
+      {
+        "id": "ecommerce-development-faq-7",
+        "question": "Who owns the store when it is finished?",
+        "answer": "You do, completely. The repository, the database, the design files and every third party account are registered in your name and transferred at handover. There is no proprietary format and no vendor holding your data."
+      }
+    ]
+  },
+  "enquiry": {
+    "heading": "How do I get a quote for an ecommerce build?",
+    "intro": "Tell us about your catalogue, how you price and what orders need to connect to. We reply within one business day and send a written proposal with a fixed price after a thirty minute call.",
+    "submitLabel": "Get my store quote",
+    "footnote": "Protected by bot filtering. We never sell or share your details, and you can ask us to delete them at any time.",
+    "success": {
+      "heading": "Thanks. Your enquiry is with us.",
+      "body": "We will reply by email within one business day to book a thirty minute call about your store."
+    }
+  },
+  "related": {
+    "heading": "Which services often go with an ecommerce build?",
+    "intro": null,
+    "items": [
+      {
+        "slug": "custom-website-development",
+        "title": "Custom website development",
+        "summary": "Research-led design built around how your buyers actually decide, not around a template's section order.",
+        "priceLabel": "$12,000 to $25,000",
+        "updatedAt": "2026-09-14T00:00:00.000Z"
+      },
+      {
+        "slug": "website-redesign",
+        "title": "Website redesign",
+        "summary": "Rebuild a site that stopped working for the business, keep the rankings and pages that earn, and fix conversion, speed or a stalled project on the way.",
+        "priceLabel": "$12,000 to $25,000",
+        "updatedAt": "2026-09-14T00:00:00.000Z"
+      },
+      {
+        "slug": "web-application-development",
+        "title": "Web application development",
+        "summary": "Portals, dashboards, booking engines and internal tools built on Next.js with a typed API behind them.",
+        "priceLabel": "$25,000 to $60,000",
+        "updatedAt": "2026-09-14T00:00:00.000Z"
+      }
+    ]
+  }
+}

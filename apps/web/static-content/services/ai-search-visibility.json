@@ -1,0 +1,383 @@
+{
+  "slug": "ai-search-visibility",
+  "title": "AI search visibility",
+  "updatedAt": "2026-09-14T00:00:00.000Z",
+  "seo": {
+    "title": "AI search visibility and technical SEO",
+    "description": "Technical SEO and generative engine optimisation so ChatGPT, Perplexity and AI Overviews cite you, starting with an AI visibility check.",
+    "ogImage": null
+  },
+  "category": {
+    "slug": "growth-and-care",
+    "name": "Growth & care"
+  },
+  "answerBlock": "AI search visibility is the work of making your business the one AI assistants and search engines name when a buyer asks who to hire. Calwebtech combines technical SEO with entity clarity, structured data, answer-shaped content and review presence, so ChatGPT, Perplexity, Gemini and Google's AI Overviews can find, trust and cite you. It starts with an AI visibility check and continues as monthly work from $1,500 a month.",
+  "hero": {
+    "outcome": "Your name in the answer when a buyer asks an assistant who to hire, and a site search engines can crawl, understand and rank.",
+    "primaryCta": {
+      "label": "Get an AI visibility check",
+      "href": "#enquire"
+    },
+    "secondaryCta": {
+      "label": "See pricing",
+      "href": "/pricing/"
+    },
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?auto=format&fit=crop&w=1800&q=65"
+    }
+  },
+  "price": {
+    "label": "From $1,500 a month",
+    "amount": {
+      "currency": "USD",
+      "min": 1500,
+      "max": null,
+      "unit": "MONTH"
+    }
+  },
+  "problem": {
+    "heading": "Why do AI assistants recommend our competitors instead of us?",
+    "intro": "Buyers now ask assistants as well as search engines, and three problems usually stop a business from being named.",
+    "situations": [
+      {
+        "title": "Assistants cannot tell what you do",
+        "body": "Your services, locations and specialisms are described differently on every page and profile, so language models never form a clear picture of the business."
+      },
+      {
+        "title": "The site is hard to crawl and quote",
+        "body": "Missing structured data, slow pages, duplicate URLs and answers buried in marketing copy make your content hard for search engines and assistants to use."
+      },
+      {
+        "title": "Other sources talk about competitors",
+        "body": "Reviews, directories and articles mention competitors more often, and assistants lean on those third-party signals when they decide who to name."
+      }
+    ]
+  },
+  "included": {
+    "heading": "What does AI search visibility work include?",
+    "intro": "It starts with an AI visibility check, then runs as monthly work against the gaps the check finds.",
+    "items": [
+      "An AI visibility check: how assistants and search engines describe you today, against named competitors",
+      "A technical SEO audit of crawling, indexing, speed, duplicate URLs and redirects",
+      "Entity groundwork: consistent names, services, locations and profiles across the web",
+      "Structured data for your organisation, services, FAQs, reviews and articles",
+      "Answer-shaped content architecture: the direct answer first, question-shaped headings, specific detail",
+      "Review presence on the platforms your buyers and their assistants read",
+      "Referral tracking from AI assistants, so the visits and enquiries they send are counted",
+      "Indexing checks in Google Search Console and Bing Webmaster Tools",
+      "A monthly report, and a quarterly review of what changed and what comes next"
+    ]
+  },
+  "process": {
+    "heading": "How does AI search visibility work run?",
+    "intro": "A check and a technical fix-up first, then a steady monthly rhythm. It runs month to month, with no lock-in.",
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=1800&q=65"
+    },
+    "steps": [
+      {
+        "title": "AI visibility check",
+        "duration": "Weeks 1 to 2",
+        "body": "We ask assistants and search engines the questions your buyers ask, record who they name, and audit the technical and entity gaps behind the result."
+      },
+      {
+        "title": "Technical fix-up",
+        "duration": "Weeks 3 to 6",
+        "body": "Crawling, indexing, speed, structured data and redirects fixed first, because nothing else works until those are right."
+      },
+      {
+        "title": "Content and entity work",
+        "duration": "Every month",
+        "body": "Answer-shaped pages, consistent profiles and review presence, prioritised by the questions that bring in the best enquiries."
+      },
+      {
+        "title": "Measure and review",
+        "duration": "Every quarter",
+        "body": "Assistant answers checked again, AI referrals and rankings reported, and the next quarter's priorities agreed with you."
+      }
+    ]
+  },
+  "technology": {
+    "heading": "Which platforms does the search work cover?",
+    "intro": "We work on the platform your site already runs on, and rebuild templates where structured data or speed needs it.",
+    "items": [
+      {
+        "name": "Next.js",
+        "category": "Front end"
+      },
+      {
+        "name": "WordPress",
+        "category": "Content"
+      },
+      {
+        "name": "Shopify",
+        "category": "Ecommerce"
+      },
+      {
+        "name": "headless CMS",
+        "category": "Content"
+      },
+      {
+        "name": "Cloudflare",
+        "category": "Infrastructure"
+      }
+    ]
+  },
+  "proof": {
+    "heading": "What has search work delivered for clients?",
+    "intro": null,
+    "caseStudies": [
+      {
+        "slug": "meridian-parts",
+        "clientName": "Meridian Parts",
+        "summary": "Fitment search across 90,000 SKUs, so a technician finds the right part on a phone in a workshop.",
+        "tags": [
+          "Michigan, USA",
+          "Manufacturing",
+          "Headless"
+        ],
+        "image": {
+          "src": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=900&q=70",
+          "alt": "Engineer inspecting equipment on a production floor"
+        },
+        "metrics": [
+          {
+            "value": "+207%",
+            "label": "Organic traffic"
+          },
+          {
+            "value": "−63%",
+            "label": "Wrong-part returns"
+          },
+          {
+            "value": "4.2x",
+            "label": "Repeat orders"
+          }
+        ]
+      },
+      {
+        "slug": "truvia-labs",
+        "clientName": "Truvia Labs",
+        "summary": "Marketing site, docs and in-app onboarding rebuilt on one design system so releases stopped breaking the brand.",
+        "tags": [
+          "Texas, USA",
+          "SaaS",
+          "Next.js"
+        ],
+        "image": {
+          "src": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=70",
+          "alt": "Product team working on a software platform"
+        },
+        "metrics": [
+          {
+            "value": "+140%",
+            "label": "Demo bookings"
+          },
+          {
+            "value": "3.1x",
+            "label": "Organic sessions"
+          },
+          {
+            "value": "98",
+            "label": "Lighthouse mobile"
+          }
+        ]
+      }
+    ],
+    "link": {
+      "label": "See all search and growth work",
+      "href": "/work/?service=ai-search-visibility"
+    }
+  },
+  "comparison": {
+    "heading": "How does our AI search visibility work compare with the alternatives?",
+    "intro": null,
+    "columns": {
+      "us": "Calwebtech",
+      "freelancer": "A freelancer",
+      "pageBuilder": "A page builder",
+      "offshore": "An offshore body shop"
+    },
+    "rows": [
+      {
+        "label": "Scope",
+        "us": "Technical SEO, entity clarity, structured data, content and reviews, together.",
+        "freelancer": "Usually one piece, such as content or links.",
+        "pageBuilder": "Built-in settings for titles and descriptions.",
+        "offshore": "Link building and reports, sold by volume."
+      },
+      {
+        "label": "AI assistants",
+        "us": "Checked directly: we ask assistants your buyers' questions and track who they name.",
+        "freelancer": "Rarely measured.",
+        "pageBuilder": "Not addressed.",
+        "offshore": "Rarely in scope."
+      },
+      {
+        "label": "Changes to the site",
+        "us": "We change templates, structured data and speed ourselves.",
+        "freelancer": "Often recommendations for someone else to build.",
+        "pageBuilder": "Limited to what the builder exposes.",
+        "offshore": "Recommendations, with changes quoted separately."
+      },
+      {
+        "label": "Reporting",
+        "us": "AI referrals, rankings and enquiries, not only traffic.",
+        "freelancer": "Varies.",
+        "pageBuilder": "Basic traffic figures.",
+        "offshore": "Long reports of rankings and links."
+      },
+      {
+        "label": "Commitment",
+        "us": "Month to month, with no lock-in.",
+        "freelancer": "Varies.",
+        "pageBuilder": "Part of the platform subscription.",
+        "offshore": "Often a long minimum term."
+      }
+    ]
+  },
+  "pricing": {
+    "heading": "How much does AI search visibility work cost?",
+    "intro": "Monthly work starts at $1,500 a month, month to month. When the check finds a site that needs rebuilding before search work can pay off, that part is quoted as a fixed-price project.",
+    "factors": [
+      {
+        "title": "Technical state of the site",
+        "body": "A fast, well-structured site needs light fixes. A slow site with duplicate URLs and no structured data needs more work first."
+      },
+      {
+        "title": "Services and locations",
+        "body": "Every service and location is an entity to describe consistently and a set of buyer questions to answer."
+      },
+      {
+        "title": "Competition",
+        "body": "Crowded markets need more content and review presence before assistants start to name you."
+      },
+      {
+        "title": "Content production",
+        "body": "Drawing on your team's expertise with our editing costs less than researching and writing every page from scratch."
+      }
+    ],
+    "link": {
+      "label": "How our pricing works",
+      "href": "/pricing/"
+    }
+  },
+  "industries": {
+    "heading": "Which industries do you run search visibility work for?",
+    "intro": null,
+    "items": [
+      {
+        "slug": "saas",
+        "name": "SaaS and technology",
+        "line": "Marketing site, docs and product on one system."
+      },
+      {
+        "slug": "professional-services",
+        "name": "Professional services",
+        "line": "Expertise pages, consultation booking and client portals."
+      },
+      {
+        "slug": "healthcare",
+        "name": "Healthcare",
+        "line": "Accessible, multi-location, privacy-first booking."
+      },
+      {
+        "slug": "manufacturing",
+        "name": "Manufacturing",
+        "line": "Spec sheets, configurators and ERP-accurate inventory."
+      }
+    ]
+  },
+  "testimonial": {
+    "heading": "What do clients say about the results?",
+    "quote": {
+      "id": "testimonial-priya-raman",
+      "quote": "They pushed back on half of what we asked for and were right about most of it. The site does one job on every page now, and our enquiry quality went up before the volume did.",
+      "clientName": "Priya Raman",
+      "role": "VP Marketing",
+      "company": "Truvia Labs",
+      "rating": 5,
+      "avatar": {
+        "src": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=70"
+      }
+    }
+  },
+  "faq": {
+    "heading": "What do buyers ask about AI search visibility?",
+    "intro": null,
+    "items": [
+      {
+        "id": "ai-search-visibility-faq-1",
+        "question": "What is the AI visibility check?",
+        "answer": "We ask ChatGPT, Perplexity, Gemini and Google's AI Overviews the questions your buyers ask, record which businesses they name and how they describe you, and audit the technical, entity and content gaps behind the result. You get a written report with the fixes in order of impact."
+      },
+      {
+        "id": "ai-search-visibility-faq-2",
+        "question": "Is AI search visibility different from SEO?",
+        "answer": "It builds on it. Most AI systems retrieve candidates from a conventional search index first, so technical SEO is the prerequisite. On top of that, assistants favour clear entities, structured data, answer-shaped content and third-party signals such as reviews."
+      },
+      {
+        "id": "ai-search-visibility-faq-3",
+        "question": "Can you guarantee ChatGPT will recommend us?",
+        "answer": "No, and nobody honestly can. Assistants change how they answer, and they weigh signals outside your site. We can fix everything that makes you hard to find, understand and cite, and measure whether you are being named more often."
+      },
+      {
+        "id": "ai-search-visibility-faq-4",
+        "question": "How long before we see results?",
+        "answer": "Technical fixes show up in crawling and indexing within weeks. Being named by assistants takes longer, because it depends on content and third-party signals building up, so we review progress quarterly rather than promising a date."
+      },
+      {
+        "id": "ai-search-visibility-faq-5",
+        "question": "How do you measure visits from AI assistants?",
+        "answer": "We set up referral tracking so visits and enquiries from assistants are counted separately from search and direct traffic, and every lead records how the person found you, including AI assistants."
+      },
+      {
+        "id": "ai-search-visibility-faq-6",
+        "question": "Do we need a new website first?",
+        "answer": "Not usually. Most of the work happens on the site you have. If the check shows the platform itself blocks crawling, speed or structured data, we explain the options and quote a rebuild separately."
+      },
+      {
+        "id": "ai-search-visibility-faq-7",
+        "question": "Is there a minimum contract?",
+        "answer": "No. The monthly work is month to month, with no lock-in. If we stop being useful you should be able to leave."
+      }
+    ]
+  },
+  "enquiry": {
+    "heading": "How do I get an AI visibility check?",
+    "intro": "Tell us your website and the competitors buyers compare you with. We reply within one business day to agree the buyer questions the check will test.",
+    "submitLabel": "Request my visibility check",
+    "footnote": "Protected by bot filtering. We never sell or share your details, and you can ask us to delete them at any time.",
+    "success": {
+      "heading": "Thanks. Your request is with us.",
+      "body": "We will reply by email within one business day to agree which buyer questions the check should test."
+    }
+  },
+  "related": {
+    "heading": "Which services often go with search visibility work?",
+    "intro": null,
+    "items": [
+      {
+        "slug": "ai-integration",
+        "title": "AI integration",
+        "summary": "Qualification assistants, search, content tooling and workflow automation wired into your own data.",
+        "priceLabel": "$12,000 to $60,000",
+        "updatedAt": "2026-09-14T00:00:00.000Z"
+      },
+      {
+        "slug": "care-plans",
+        "title": "Website care plans",
+        "summary": "Patching, backups with a tested restore, monitoring and a fixed allowance of development hours.",
+        "priceLabel": "From $1,500 a month",
+        "updatedAt": "2026-09-14T00:00:00.000Z"
+      },
+      {
+        "slug": "custom-website-development",
+        "title": "Custom website development",
+        "summary": "Research-led design built around how your buyers actually decide, not around a template's section order.",
+        "priceLabel": "$12,000 to $25,000",
+        "updatedAt": "2026-09-14T00:00:00.000Z"
+      }
+    ]
+  }
+}

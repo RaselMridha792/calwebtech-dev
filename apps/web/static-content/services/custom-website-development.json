@@ -1,0 +1,461 @@
+{
+  "slug": "custom-website-development",
+  "title": "Custom website development",
+  "updatedAt": "2026-09-14T00:00:00.000Z",
+  "seo": {
+    "title": "Custom website development company",
+    "description": "Custom websites designed around how your buyers decide, built on Next.js or WordPress with a dashboard your team runs. Fixed price from $12,000.",
+    "ogImage": null
+  },
+  "category": {
+    "slug": "design-and-build",
+    "name": "Design & build"
+  },
+  "answerBlock": "Custom website development is designing and building a site around your buyers, content and systems instead of adapting a theme or page builder template. Calwebtech builds marketing sites on Next.js or WordPress with a design system, a content dashboard your team publishes from, and lead capture that stores every enquiry in a database you own. Most projects take six to eight weeks and cost $12,000 to $25,000.",
+  "hero": {
+    "outcome": "A website that does one job on every page, loads fast on a phone, and lets your team publish without filing a ticket.",
+    "primaryCta": {
+      "label": "Get a fixed quote",
+      "href": "#enquire"
+    },
+    "secondaryCta": {
+      "label": "See the work",
+      "href": "/work/?service=custom-website-development"
+    },
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1558655146-9f40138edfeb?auto=format&fit=crop&w=1800&q=65"
+    }
+  },
+  "price": {
+    "label": "$12,000 to $25,000",
+    "amount": {
+      "currency": "USD",
+      "min": 12000,
+      "max": 25000,
+      "unit": "PROJECT"
+    }
+  },
+  "problem": {
+    "heading": "When is a custom website worth it over a template?",
+    "intro": "Most buyers who ask us for a custom website already have one. It stopped keeping up with the business, and usually for one of three reasons.",
+    "situations": [
+      {
+        "title": "The template decides your page structure",
+        "body": "Your offer does not fit the sections the theme came with, so every page reads like a competitor's and the important detail ends up in a PDF nobody opens."
+      },
+      {
+        "title": "Every change needs a developer",
+        "body": "Adding a service, a case study or a location means a ticket and a wait, so the site falls behind what your sales team is actually saying."
+      },
+      {
+        "title": "The brand and the site have drifted apart",
+        "body": "A rebrand reached the pitch deck and the signage but only half reached the website, and the interface no longer matches anything else buyers see from you."
+      }
+    ]
+  },
+  "included": {
+    "heading": "What is included in a custom website build?",
+    "intro": "Everything below is in the fixed price. The proposal lists it page by page, with anything excluded written down too.",
+    "items": [
+      "Discovery workshop, audience research and a sitemap agreed before design starts",
+      "A conversion map naming the one primary action for every page",
+      "UI/UX design in Figma: wireframes, then high-fidelity screens for the pages that carry the money",
+      "A design system of tokens and components, handed over with the files",
+      "Your brand applied across the site: type, colour, photography direction and icon style",
+      "A build on Next.js or WordPress, whichever your team is better placed to maintain",
+      "A content dashboard where every repeatable page is a content type with its own editor",
+      "Lead capture into a database you own, with the source and campaign attached",
+      "Technical SEO: metadata, structured data, sitemaps and redirects from old URLs",
+      "WCAG 2.2 AA as the working standard, with an accessibility audit before launch",
+      "A written performance budget, checked on every release",
+      "Two recorded training sessions and a written operations manual"
+    ]
+  },
+  "process": {
+    "heading": "How does a custom website project run?",
+    "intro": "Six to eight weeks from discovery to launch for most marketing sites, reviewed on a staging URL you can open any day.",
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=1800&q=65"
+    },
+    "steps": [
+      {
+        "title": "Discovery",
+        "duration": "Week 1",
+        "body": "Positioning, audience, sitemap and a conversion map for every page. You leave the week with a written plan and a fixed scope."
+      },
+      {
+        "title": "Design",
+        "duration": "Weeks 2 to 3",
+        "body": "Design tokens, the component library and high-fidelity screens for the key pages, with your brand applied throughout. Nothing is built until you approve them."
+      },
+      {
+        "title": "Build",
+        "duration": "Weeks 3 to 6",
+        "body": "Front end, content types, forms and integrations, shipped to a staging URL you can review any day, with a weekly call to agree what comes next."
+      },
+      {
+        "title": "Prove",
+        "duration": "Week 7",
+        "body": "Cross-browser testing, an accessibility audit, a performance pass against the budget and a tested backup restore."
+      },
+      {
+        "title": "Launch and hand over",
+        "duration": "Week 8",
+        "body": "DNS cutover, redirects from old URLs, monitoring, two training sessions and the full documentation set."
+      }
+    ]
+  },
+  "technology": {
+    "heading": "Which technologies do you build custom websites with?",
+    "intro": "Next.js for sites that need speed and custom logic, WordPress where a familiar editor matters more. Both run on infrastructure registered in your name.",
+    "items": [
+      {
+        "name": "Next.js",
+        "category": "Front end"
+      },
+      {
+        "name": "React",
+        "category": "Front end"
+      },
+      {
+        "name": "TypeScript",
+        "category": "Front end"
+      },
+      {
+        "name": "Tailwind CSS",
+        "category": "Front end"
+      },
+      {
+        "name": "WordPress",
+        "category": "Content"
+      },
+      {
+        "name": "headless CMS",
+        "category": "Content"
+      },
+      {
+        "name": "PostgreSQL",
+        "category": "Back end"
+      },
+      {
+        "name": "Figma",
+        "category": "Tooling"
+      },
+      {
+        "name": "Docker",
+        "category": "Infrastructure"
+      },
+      {
+        "name": "Cloudflare",
+        "category": "Infrastructure"
+      }
+    ]
+  },
+  "proof": {
+    "heading": "What have custom websites delivered for clients?",
+    "intro": null,
+    "caseStudies": [
+      {
+        "slug": "truvia-labs",
+        "clientName": "Truvia Labs",
+        "summary": "Marketing site, docs and in-app onboarding rebuilt on one design system so releases stopped breaking the brand.",
+        "tags": [
+          "Texas, USA",
+          "SaaS",
+          "Next.js"
+        ],
+        "image": {
+          "src": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=70",
+          "alt": "Product team working on a software platform"
+        },
+        "metrics": [
+          {
+            "value": "+140%",
+            "label": "Demo bookings"
+          },
+          {
+            "value": "3.1x",
+            "label": "Organic sessions"
+          },
+          {
+            "value": "98",
+            "label": "Lighthouse mobile"
+          }
+        ]
+      },
+      {
+        "slug": "cascadia-health",
+        "clientName": "Cascadia Health",
+        "summary": "Fourteen clinic sites merged into one accessible platform with location-aware appointment booking.",
+        "tags": [
+          "Oregon, USA",
+          "Healthcare",
+          "WordPress"
+        ],
+        "image": {
+          "src": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=900&q=70",
+          "alt": "Clinician working at a healthcare facility"
+        },
+        "metrics": [
+          {
+            "value": "+91%",
+            "label": "Online bookings"
+          },
+          {
+            "value": "14→1",
+            "label": "Sites to maintain"
+          },
+          {
+            "value": "AA",
+            "label": "WCAG 2.2 verified"
+          }
+        ]
+      },
+      {
+        "slug": "northmark-supply",
+        "clientName": "Northmark Supply",
+        "summary": "A catalogue of 40,000 parts behind a contact form. We rebuilt it as a searchable, account-priced quoting platform tied into their ERP.",
+        "tags": [
+          "Ohio, USA",
+          "B2B",
+          "Distribution",
+          "Next.js"
+        ],
+        "image": {
+          "src": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=70",
+          "alt": "Sales team reviewing performance figures"
+        },
+        "metrics": [
+          {
+            "value": "+312%",
+            "label": "Quote requests"
+          },
+          {
+            "value": "12 min",
+            "label": "Quote turnaround, from 3 days"
+          },
+          {
+            "value": "−41%",
+            "label": "Support calls"
+          }
+        ]
+      }
+    ],
+    "link": {
+      "label": "See all website design work",
+      "href": "/work/?service=custom-website-development"
+    }
+  },
+  "comparison": {
+    "heading": "How does a custom build compare with the alternatives?",
+    "intro": "A freelancer, a page builder or an offshore team can each be the right call for some projects. This is where the differences usually show.",
+    "columns": {
+      "us": "Calwebtech",
+      "freelancer": "A freelancer",
+      "pageBuilder": "A page builder",
+      "offshore": "An offshore body shop"
+    },
+    "rows": [
+      {
+        "label": "Who does the work",
+        "us": "The senior people from the first call design and build it, start to finish.",
+        "freelancer": "One person, which works well until they are ill, booked up or move on.",
+        "pageBuilder": "You or someone on your team, inside the builder's layout limits.",
+        "offshore": "A team assigned after signing, often changing during the project."
+      },
+      {
+        "label": "How the price is set",
+        "us": "A fixed price and scope in a written proposal, with changes quoted before work starts.",
+        "freelancer": "Often hourly or loosely scoped, so the total can move.",
+        "pageBuilder": "A low monthly fee that rises with plugins, seats and contacts.",
+        "offshore": "Low day rates, with change requests adding up over time."
+      },
+      {
+        "label": "Page structure",
+        "us": "Built around how your buyers decide, with one primary action per page.",
+        "freelancer": "Depends on the person, and on how much strategy the budget allows.",
+        "pageBuilder": "Whatever sections the template offers.",
+        "offshore": "Built to the specification, so the thinking has to arrive with the brief."
+      },
+      {
+        "label": "Speed on a phone",
+        "us": "A written performance budget, checked on every release.",
+        "freelancer": "Varies with the person's habits and tools.",
+        "pageBuilder": "The builder loads its own scripts on every page, and you cannot remove them.",
+        "offshore": "Rarely measured unless the contract names a target."
+      },
+      {
+        "label": "Publishing after launch",
+        "us": "Your team publishes new pages from its own dashboard, with no deployment.",
+        "freelancer": "Structural changes usually go back to the freelancer.",
+        "pageBuilder": "Easy for one-off pages, awkward for anything repeatable.",
+        "offshore": "Usually a ticket and a wait."
+      },
+      {
+        "label": "Who owns the result",
+        "us": "You own the code, database, design files and accounts from handover.",
+        "freelancer": "Usually you, if the contract says so.",
+        "pageBuilder": "You rent the platform, and moving off it means rebuilding.",
+        "offshore": "Check the contract for how and when the code is transferred."
+      }
+    ]
+  },
+  "pricing": {
+    "heading": "How much does a custom website cost?",
+    "intro": "Most marketing sites land between $12,000 and $25,000. Booking, a dashboard, campaigns and integrations move a project into the $25,000 to $60,000 band. The proposal fixes the number before you commit.",
+    "factors": [
+      {
+        "title": "Distinct page types",
+        "body": "Price follows the number of templates, not the number of pages. Forty service pages on one template cost far less than eight pages that each work differently."
+      },
+      {
+        "title": "Integrations",
+        "body": "A CRM, an ERP, a booking system or single sign-on each adds design, build and testing time, and some systems are harder to connect than others."
+      },
+      {
+        "title": "Content and copywriting",
+        "body": "Writing new copy, planning photography or migrating a large archive adds work. Content that is ready keeps the number down."
+      },
+      {
+        "title": "Design depth",
+        "body": "A site built on an existing brand system costs less than one where we also define the components, motion and illustration style."
+      },
+      {
+        "title": "Compliance evidence",
+        "body": "WCAG 2.2 AA is standard in every build. Formal audit reports for a regulator or a procurement team add documentation time."
+      }
+    ],
+    "link": {
+      "label": "How our pricing works",
+      "href": "/pricing/"
+    }
+  },
+  "industries": {
+    "heading": "Which industries do you build custom websites for?",
+    "intro": null,
+    "items": [
+      {
+        "slug": "manufacturing",
+        "name": "Manufacturing",
+        "line": "Spec sheets, configurators and ERP-accurate inventory."
+      },
+      {
+        "slug": "distribution",
+        "name": "Distribution and supply",
+        "line": "Account pricing, quoting and order history for trade buyers."
+      },
+      {
+        "slug": "saas",
+        "name": "SaaS and technology",
+        "line": "Marketing site, docs and product on one system."
+      },
+      {
+        "slug": "healthcare",
+        "name": "Healthcare",
+        "line": "Accessible, multi-location, privacy-first booking."
+      },
+      {
+        "slug": "real-estate",
+        "name": "Real estate",
+        "line": "Listing search, agent tools and lead routing."
+      },
+      {
+        "slug": "professional-services",
+        "name": "Professional services",
+        "line": "Expertise pages, consultation booking and client portals."
+      }
+    ]
+  },
+  "testimonial": {
+    "heading": "What do clients say about their new website?",
+    "quote": {
+      "id": "testimonial-priya-raman",
+      "quote": "They pushed back on half of what we asked for and were right about most of it. The site does one job on every page now, and our enquiry quality went up before the volume did.",
+      "clientName": "Priya Raman",
+      "role": "VP Marketing",
+      "company": "Truvia Labs",
+      "rating": 5,
+      "avatar": {
+        "src": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=70"
+      }
+    }
+  },
+  "faq": {
+    "heading": "What do buyers ask before commissioning a custom website?",
+    "intro": "Straight answers to the questions that come up on most first calls.",
+    "items": [
+      {
+        "id": "custom-website-development-faq-1",
+        "question": "How long does a custom website take to build?",
+        "answer": "Six to eight weeks for most marketing sites, and nine to fourteen weeks when the build includes booking, a dashboard and integrations. The most common cause of delay is content, not code, which is why the proposal names the dates we need things from you."
+      },
+      {
+        "id": "custom-website-development-faq-2",
+        "question": "Should we choose Next.js or WordPress?",
+        "answer": "It depends on who will run the site. WordPress suits teams that already know its editor and rely on its plugins. Next.js suits sites that need speed, custom logic or integrations, and we give it a content dashboard so editors are not left behind. The proposal recommends one and explains why."
+      },
+      {
+        "id": "custom-website-development-faq-3",
+        "question": "Do you design the brand as well as the website?",
+        "answer": "We apply your brand to the site and extend it where the web needs more than a logo and a colour: type scales, components, icon style and photography direction. If you need a new identity from scratch, say so on the first call and we will tell you honestly whether we are the right team for that part."
+      },
+      {
+        "id": "custom-website-development-faq-4",
+        "question": "Can our team update the site without a developer?",
+        "answer": "Yes. Every repeatable page, such as a service, a case study or a location, is a content type with its own editor, so publishing one takes minutes and no deployment. You get two recorded training sessions and a written operations manual at handover."
+      },
+      {
+        "id": "custom-website-development-faq-5",
+        "question": "Who owns the website when it is finished?",
+        "answer": "You do, completely. The repository, the database, the design files and every third party account are registered in your name and transferred at handover. There is no proprietary format and no vendor holding your data."
+      },
+      {
+        "id": "custom-website-development-faq-6",
+        "question": "Will we lose our search rankings when the new site launches?",
+        "answer": "Not if the migration is done properly. We map every existing URL to its new destination with permanent redirects before launch, keep the content that is earning traffic, and monitor Search Console for the first thirty days. Rankings normally recover within two to three weeks and then improve on the performance gain."
+      },
+      {
+        "id": "custom-website-development-faq-7",
+        "question": "What happens after launch?",
+        "answer": "Anything that does not behave as specified is fixed free for 60 days, with a four hour response on critical issues. After that you can run the site yourselves or move to a month-to-month care plan, with no lock-in."
+      }
+    ]
+  },
+  "enquiry": {
+    "heading": "How do I get a quote for a custom website?",
+    "intro": "Tell us what the site needs to do and what is not working today. We reply within one business day, and after a thirty minute call you get a written proposal with a fixed price.",
+    "submitLabel": "Get my fixed quote",
+    "footnote": "Protected by bot filtering. We never sell or share your details, and you can ask us to delete them at any time.",
+    "success": {
+      "heading": "Thanks. Your enquiry is with us.",
+      "body": "We will reply by email within one business day to book a thirty minute call."
+    }
+  },
+  "related": {
+    "heading": "Which services often go with a custom website?",
+    "intro": null,
+    "items": [
+      {
+        "slug": "website-redesign",
+        "title": "Website redesign",
+        "summary": "Rebuild a site that stopped working for the business, keep the rankings and pages that earn, and fix conversion, speed or a stalled project on the way.",
+        "priceLabel": "$12,000 to $25,000",
+        "updatedAt": "2026-09-14T00:00:00.000Z"
+      },
+      {
+        "slug": "web-application-development",
+        "title": "Web application development",
+        "summary": "Portals, dashboards, booking engines and internal tools built on Next.js with a typed API behind them.",
+        "priceLabel": "$25,000 to $60,000",
+        "updatedAt": "2026-09-14T00:00:00.000Z"
+      },
+      {
+        "slug": "ecommerce-development",
+        "title": "Ecommerce development",
+        "summary": "Shopify, WooCommerce or custom, including B2B pricing rules, quoting and ERP integration.",
+        "priceLabel": "$12,000 to $60,000",
+        "updatedAt": "2026-09-14T00:00:00.000Z"
+      }
+    ]
+  }
+}
