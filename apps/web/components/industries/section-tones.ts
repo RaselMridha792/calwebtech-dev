@@ -13,6 +13,7 @@ export const INDUSTRY_SECTIONS = [
 
 export type IndustrySection = (typeof INDUSTRY_SECTIONS)[number];
 export type IndustrySectionTone = 'white' | 'tint' | 'ink';
+export type IndustrySectionTones = Partial<Record<IndustrySection, IndustrySectionTone>>;
 
 /**
  * A tone for each section the page renders, so no two neighbours share one whatever copy
@@ -20,8 +21,8 @@ export type IndustrySectionTone = 'white' | 'tint' | 'ink';
  * the image-with-overlay section; light sections alternate white and tinted around it,
  * counted back from the end so the last one is white against the closing band's tint.
  */
-export function industrySectionTones(page: Pick<IndustryDetailView, IndustrySection>): Partial<Record<IndustrySection, IndustrySectionTone>> {
-  const tones: Partial<Record<IndustrySection, IndustrySectionTone>> = {};
+export function industrySectionTones(page: Pick<IndustryDetailView, IndustrySection>): IndustrySectionTones {
+  const tones: IndustrySectionTones = {};
   let light = 0;
   for (const section of [...INDUSTRY_SECTIONS].reverse()) {
     if (page[section] === null) continue;

@@ -7,7 +7,10 @@ import { ShieldIcon } from '../ui/icons';
 import { reveal } from '../ui/primitives';
 import type { IndustrySectionTone } from './section-tones';
 
-type Sections = Pick<IndustryDetailView, 'painPoints' | 'services' | 'compliance' | 'caseStudies' | 'results' | 'integrations'>;
+type Sections = Pick<
+  IndustryDetailView,
+  'painPoints' | 'services' | 'compliance' | 'caseStudies' | 'results' | 'integrations'
+>;
 type LightTone = Exclude<IndustrySectionTone, 'ink'>;
 
 /** The hero's right-hand column: the sector line over what the build handles, with check marks. */

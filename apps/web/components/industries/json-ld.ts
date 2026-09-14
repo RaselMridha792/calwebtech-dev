@@ -7,7 +7,9 @@ import { absoluteUrl } from '@/lib/seo/site';
  * Service, FAQPage, BreadcrumbList). The FAQPage node comes from `FaqSection` and the
  * trail from `PageHero`; the provider refers to the layout's Organization node.
  */
-export function industryServiceJsonLd(page: Pick<IndustryDetailView, 'slug' | 'name' | 'title' | 'seo' | 'services'>): JsonLdObject {
+export function industryServiceJsonLd(
+  page: Pick<IndustryDetailView, 'slug' | 'name' | 'title' | 'seo' | 'services'>,
+): JsonLdObject {
   const service = serviceJsonLd({
     name: page.title,
     description: page.seo.description,

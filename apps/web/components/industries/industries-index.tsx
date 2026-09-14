@@ -12,7 +12,11 @@ type Content = IndustriesIndexView['content'];
  * closed by the card for sectors without a page. The industry name is the card's one link.
  * While nothing is published the list is an empty state that points to the contact page.
  */
-export function IndustriesList({ list, notListed, industries }: {
+export function IndustriesList({
+  list,
+  notListed,
+  industries,
+}: {
   list: Content['list'];
   notListed: Content['notListed'];
   industries: IndustriesIndexView['industries'];
@@ -48,12 +52,20 @@ export function IndustriesList({ list, notListed, industries }: {
                 </>
               )}
               <h3 className="relative font-display text-[20px] font-bold text-white">
-                <a href={industryPath(industry.slug)} className="after:absolute after:inset-0 hover:underline hover:underline-offset-4">
+                <a
+                  href={industryPath(industry.slug)}
+                  className="after:absolute after:inset-0 hover:underline hover:underline-offset-4"
+                >
                   {industry.name}
                 </a>
               </h3>
-              {industry.line ? <p className="relative mt-1.5 text-[14px] leading-snug text-white/80">{industry.line}</p> : null}
-              <span className="relative mt-4 text-[14px] font-semibold text-white underline decoration-white/40 underline-offset-4" aria-hidden="true">
+              {industry.line ? (
+                <p className="relative mt-1.5 text-[14px] leading-snug text-white/80">{industry.line}</p>
+              ) : null}
+              <span
+                className="relative mt-4 text-[14px] font-semibold text-white underline decoration-white/40 underline-offset-4"
+                aria-hidden="true"
+              >
                 {list.cardLinkLabel}
               </span>
             </li>
@@ -65,7 +77,10 @@ export function IndustriesList({ list, notListed, industries }: {
             <div>
               <h3 className="font-display text-[20px] font-bold text-ink">{notListed.heading}</h3>
               <p className="mt-2 text-[14px] leading-snug">{notListed.body}</p>
-              <a href={notListed.cta.href} className="mt-4 inline-block py-1 font-semibold text-primary hover:text-primaryd">
+              <a
+                href={notListed.cta.href}
+                className="mt-4 inline-block py-1 font-semibold text-primary hover:text-primaryd"
+              >
                 {notListed.cta.label}
               </a>
             </div>
@@ -80,7 +95,13 @@ export function IndustriesList({ list, notListed, industries }: {
  * What changes when a build starts from the sector: image with overlay on ink, between the
  * white list and the closing band. Renders nothing without items.
  */
-export function IndustriesApproach({ approach, backdrop }: { approach: Content['approach']; backdrop: Content['backdrop'] }) {
+export function IndustriesApproach({
+  approach,
+  backdrop,
+}: {
+  approach: Content['approach'];
+  backdrop: Content['backdrop'];
+}) {
   if (approach.items.length === 0) return null;
   return (
     <Section id="approach" tone="ink" backdrop={backdrop} labelledBy="approach-heading">
