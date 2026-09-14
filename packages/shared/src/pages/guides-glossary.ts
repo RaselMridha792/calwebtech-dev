@@ -189,6 +189,56 @@ export const deliveringServiceSchema = z.object({
 });
 
 /**
+ * Page copy of one guide beyond its columns. Section order is fixed by the template; this is
+ * not a page builder. The summary itself stays in the `Guide.summary` column.
+ *
+ * Nothing reads this yet: `Guide` has no `content Json?` column, so `toGuideDetailView`
+ * returns `takeaways`, `faq` and `sources` as null and a guide published from `/admin`
+ * cannot carry them. The family's report asks the foundation for that column and its
+ * forward-only migration; the schema ships here so the change is one line in the mapper.
+ */
+export const guideContentSchema = z.object({
+  hero: z.object({
+    intro: requiredText(600).nullable().default(null),
+    formatLabel: requiredText(40),
+    ctaLabel: requiredText(40),
+  }),
+  summary: z.object({ heading: questionSchema(), intro: requiredText(600).nullable().default(null) }),
+  takeaways: z
+    .object({ heading: questionSchema(), items: z.array(requiredText(300)).min(3).max(8) })
+    .nullable()
+    .default(null),
+  gate: z.object({
+    heading: questionSchema(),
+    intro: requiredText(600).nullable().default(null),
+    submitLabel: requiredText(40),
+    footnote: requiredText(300).nullable().default(null),
+    success: z.object({ heading: requiredText(80), body: requiredText(300), downloadLabel: requiredText(60) }),
+  }),
+  faq: z
+    .object({
+      heading: questionSchema(),
+      intro: requiredText(600).nullable().default(null),
+      items: z.array(faqItemSchema).min(1).max(GUIDE_FAQ_LIMIT),
+    })
+    .nullable()
+    .default(null),
+  /** Heading over the service the summary names; the mapper still finds the service itself. */
+  service: z
+    .object({ heading: questionSchema(), intro: requiredText(600).nullable().default(null) })
+    .nullable()
+    .default(null),
+  related: z.object({ heading: questionSchema() }).nullable().default(null),
+  /** Every established public fact the guide quotes, linked to whoever published it. */
+  sources: z
+    .object({ heading: questionSchema(), items: z.array(linkSchema).min(1).max(8) })
+    .nullable()
+    .default(null),
+});
+export type GuideContent = z.output<typeof guideContentSchema>;
+export type GuideContentInput = z.input<typeof guideContentSchema>;
+
+/**
  * What `GET /pages/guides/:slug` returns, and what each guide snapshot holds. The summary
  * is always rendered; the gate only stands between the visitor and the download file.
  */
@@ -282,6 +332,40 @@ export const guidesIndexViewSchema = z.object({
   guides: z.array(guideCardSchema),
 });
 export type GuidesIndexView = z.output<typeof guidesIndexViewSchema>;
+
+/**
+ * Page copy of one glossary term beyond its columns. `body` and `example` stay in their
+ * columns; this carries the sections the columns have nowhere to put.
+ *
+ * Nothing reads this yet either: `GlossaryTerm` has no `content Json?` column, so
+ * `toGlossaryTermView` returns `commercial`, the case-study figure and `sources` as null,
+ * and docs/03-page-specs.md's required "why it matters commercially" section can only be
+ * published from the static snapshots. The family's report asks for the column.
+ */
+export const glossaryTermContentSchema = z.object({
+  /** H2 over the `body` column. Null keeps the template's "What does <term> mean?". */
+  bodyHeading: questionSchema().nullable().default(null),
+  /** Why it matters commercially, which is what a buyer actually came for (docs/03). */
+  commercial: z.object({
+    heading: questionSchema(),
+    paragraphs: z.array(requiredText(GLOSSARY_PARAGRAPH_MAX)).min(1).max(4),
+  }),
+  /** Heading over the `example` column, and the approved case study its figure comes from. */
+  example: z
+    .object({
+      heading: questionSchema(),
+      caseStudy: z
+        .object({ slug: slugSchema, clientName: requiredText(120), metric: metricSchema })
+        .nullable()
+        .default(null),
+    })
+    .nullable()
+    .default(null),
+  /** Public sources for any established figure or threshold the entry quotes. */
+  sources: z.array(linkSchema).max(6).default([]),
+});
+export type GlossaryTermContent = z.output<typeof glossaryTermContentSchema>;
+export type GlossaryTermContentInput = z.input<typeof glossaryTermContentSchema>;
 
 /** What `GET /pages/glossary/:slug` returns, and what each term snapshot holds. */
 export const glossaryTermViewSchema = z.object({

@@ -6,8 +6,10 @@ import {
   glossaryAnswer,
   glossaryGroups,
   glossaryLetter,
+  glossaryTermContentSchema,
   glossaryTermPath,
   glossaryTermViewSchema,
+  guideContentSchema,
   guideDetailViewSchema,
   guidePath,
   guideSummarySections,
@@ -205,5 +207,40 @@ describe('view contracts', () => {
       },
     };
     expect(guidesIndexViewSchema.parse({ content, guides: [] }).guides).toEqual([]);
+  });
+});
+
+describe('the page-copy schemas for the columns the schema does not have yet', () => {
+  it('accepts the copy an editor would write for a guide, and fills the optional halves', () => {
+    const content = guideContentSchema.parse({
+      hero: { formatLabel: 'PDF', ctaLabel: 'Get the guide' },
+      summary: { heading: 'What does this guide cover?' },
+      gate: {
+        heading: 'How do I get the full guide?',
+        submitLabel: 'Send me the guide',
+        success: { heading: 'Your guide is ready.', body: 'The download link is below.', downloadLabel: 'Download the guide' },
+      },
+      sources: { heading: 'Where do these figures come from?', items: [{ label: 'web.dev', href: 'https://web.dev/vitals/' }] },
+    });
+    expect(content.takeaways).toBeNull();
+    expect(content.hero.intro).toBeNull();
+    expect(content.sources?.items).toHaveLength(1);
+  });
+
+  it('accepts the commercial section docs/03 requires of every term, and rejects a flat heading', () => {
+    const content = glossaryTermContentSchema.parse({
+      commercial: {
+        heading: 'Why does it matter commercially?',
+        paragraphs: ['It decides how much of the budget goes on the rebuild rather than on the content.'],
+      },
+    });
+    expect(content.bodyHeading).toBeNull();
+    expect(content.example).toBeNull();
+    expect(content.sources).toEqual([]);
+    expect(
+      glossaryTermContentSchema.safeParse({
+        commercial: { heading: 'Why it matters', paragraphs: ['A paragraph.'] },
+      }).success,
+    ).toBe(false);
   });
 });

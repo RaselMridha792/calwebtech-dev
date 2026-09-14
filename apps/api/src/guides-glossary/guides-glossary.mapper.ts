@@ -234,6 +234,8 @@ export function toGuideDetailView({ guide, others, terms, services }: GuideDetai
       cover: present(guide.coverImage) ? { src: guide.coverImage, alt: guide.title } : null,
     },
     summary: { heading: 'What does this guide cover?', intro: null, sections },
+    // takeaways, faq and sources need `Guide.content`, which the schema has no column for yet:
+    // `guideContentSchema` in packages/shared says what it will hold (see the family report).
     takeaways: null,
     gate: {
       heading: 'How do I get the full guide?',
@@ -314,6 +316,8 @@ export function toGlossaryTermView({ term, others }: GlossaryTermSources): Gloss
       heading: `What does ${clip(term.term, 60)} mean?`,
       paragraphs: paragraphs.length > 0 ? paragraphs : [clip(term.shortDefinition, 240)],
     },
+    // commercial, the case-study figure and sources need `GlossaryTerm.content`, which the
+    // schema has no column for yet; `glossaryTermContentSchema` says what it will hold.
     commercial: null,
     example: present(term.example)
       ? { heading: 'What does it look like in practice?', body: clip(term.example, GLOSSARY_PARAGRAPH_MAX), caseStudy: null }
