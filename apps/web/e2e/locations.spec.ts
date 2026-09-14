@@ -5,8 +5,11 @@ import { expect, test, type Page } from '@playwright/test';
  * the placeholder `locations.index` setting and no location records, because a city page
  * needs honest local copy a placeholder cannot give, and the homepage's locations section
  * must stay empty (home.spec.ts). The city page tests run wherever Sacramento is published,
- * such as the snapshot demo, and are skipped otherwise. site.indexing is off, so every
- * page is noindex.
+ * such as the snapshot demo. Where it is not, which today includes CI, they are skipped
+ * with a "coverage gap" annotation, so the report shows the [city] template went
+ * unchecked rather than passing quietly. Closing the gap needs a published Location
+ * fixture with home.spec.ts accepting it, or a run against the snapshots.
+ * site.indexing is off, so every page is noindex.
  */
 const INDEX = '/locations/';
 /** An office in the approved homepage content, and a snapshot page on the demo. */
@@ -100,7 +103,14 @@ test.describe('locations index', () => {
   test('a location card opens its city page from the keyboard', async ({ page }) => {
     await page.goto(INDEX);
     const link = page.locator('main section[id^="tier-"] li a[href^="/locations/"]').first();
-    test.skip((await link.count()) === 0, 'No location is published in this database.');
+    const none = (await link.count()) === 0;
+    if (none) {
+      test.info().annotations.push({
+        type: 'coverage gap',
+        description: 'No location is published in this database, so opening a card from the keyboard was not checked here.',
+      });
+    }
+    test.skip(none, 'No location is published in this database.');
     const href = (await link.getAttribute('href')) ?? '';
     await link.focus();
     await expect(link).toBeFocused();
@@ -109,11 +119,26 @@ test.describe('locations index', () => {
   });
 });
 
+/**
+ * Opens the city page, or skips the test with a visible annotation when this database has
+ * no published Sacramento, so the missing template coverage is reported, not hidden.
+ */
+async function openCity(page: Page): Promise<void> {
+  const response = await page.goto(CITY);
+  const missing = response?.status() === 404;
+  if (missing) {
+    test.info().annotations.push({
+      type: 'coverage gap',
+      description: `${CITY} is not published in this database, so the city page template was not checked here.`,
+    });
+  }
+  test.skip(missing, 'Sacramento is not published in this database.');
+}
+
 test.describe('city page', () => {
   test('is noindex with one h1, the answer block straight under it, breadcrumbs and structured data', async ({ page }) => {
     const errors = watchErrors(page);
-    const response = await page.goto(CITY);
-    test.skip(response?.status() === 404, 'Sacramento is not published in this database.');
+    await openCity(page);
     await expectSiteBasics(page, CITY);
 
     const next = await page
@@ -137,8 +162,7 @@ test.describe('city page', () => {
   });
 
   test('has question headings, a local number to call, and at most six links to other locations', async ({ page }) => {
-    const response = await page.goto(CITY);
-    test.skip(response?.status() === 404, 'Sacramento is not published in this database.');
+    await openCity(page);
     await expectQuestionHeadings(page);
 
     const call = page.locator('main a[href^="tel:+"]');
@@ -152,8 +176,7 @@ test.describe('city page', () => {
   });
 
   test('its FAQs open and close from the keyboard', async ({ page }) => {
-    const response = await page.goto(CITY);
-    test.skip(response?.status() === 404, 'Sacramento is not published in this database.');
+    await openCity(page);
     const faqs = page.locator('details[name="location-faq"]');
     const count = await faqs.count();
     expect(count).toBeGreaterThanOrEqual(4);

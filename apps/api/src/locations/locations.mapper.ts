@@ -151,7 +151,9 @@ function cardImage(location: Pick<Location, 'content'>): LocationCard['image'] {
  * Builds a city page and validates it against the shared contract, so malformed copy or a
  * record without its local context fails here rather than rendering a thin page. Proof
  * comes only from published records: services, projects with figures, a consented quote
- * from the project the copy names as local, and published nearby locations.
+ * from the project the copy names as local, and published nearby locations. Fewer than
+ * four FAQs still renders, so a live page never becomes an error; `locationCompleteness`
+ * reports the shortfall and the service logs it.
  */
 export function toLocationDetailView(sources: LocationDetailSources): LocationDetailView {
   const { location } = sources;
