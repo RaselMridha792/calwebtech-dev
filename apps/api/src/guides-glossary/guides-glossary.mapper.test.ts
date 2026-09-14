@@ -172,6 +172,48 @@ describe('guide detail', () => {
     expect(plain.summary.sections).toHaveLength(1);
   });
 
+  it('clips a long-form guide to the contract instead of failing its page', () => {
+    const longParagraph = `${'A sentence about the rebuild that keeps going. '.repeat(50)}End.`;
+    const longBullet = 'A bullet that will not stop '.repeat(30);
+    const blocks = [
+      'A website redesign is a rebuild of an existing site around what the business needs now. It keeps the pages that earn traffic. This guide explains how to plan one.',
+      // One section with more paragraphs and more bullets than a section may hold.
+      'What does a rebuild cost?',
+      longParagraph,
+      ...Array.from({ length: 14 }, (_, index) => `Extra paragraph ${String(index)}.`),
+      Array.from({ length: 14 }, () => `- ${longBullet}`).join('\n'),
+      // And thirteen more question headings, so the guide is over the section cap.
+      ...Array.from({ length: 13 }, (_, index) => `What does step ${String(index)} cost?`),
+    ];
+
+    const view = toGuideDetailView({
+      guide: { ...GUIDE, summary: blocks.join('\n\n') },
+      others: [],
+      terms: [],
+      services: [],
+    });
+    expect(view.summary.sections).toHaveLength(12);
+    for (const section of view.summary.sections) {
+      expect(section.paragraphs.length).toBeLessThanOrEqual(12);
+      expect(section.bullets.length).toBeLessThanOrEqual(12);
+      for (const paragraph of section.paragraphs) expect(paragraph.length).toBeLessThanOrEqual(1600);
+      for (const bullet of section.bullets) expect(bullet.length).toBeLessThanOrEqual(400);
+    }
+    expect(view.summary.sections[1]?.paragraphs[0]?.endsWith('…')).toBe(true);
+    expect(view.summary.sections[1]?.bullets[0]?.endsWith('…')).toBe(true);
+  });
+
+  it('renders a guide whose whole summary is one very long block', () => {
+    const view = toGuideDetailView({
+      guide: { ...GUIDE, summary: 'One unbroken block of prose. '.repeat(200) },
+      others: [],
+      terms: [],
+      services: [],
+    });
+    expect(view.summary.sections).toHaveLength(1);
+    expect(view.summary.sections[0]?.paragraphs[0]?.length).toBeLessThanOrEqual(1600);
+  });
+
   it('fails contract validation rather than publishing a guide with no summary', () => {
     expect(() => toGuideDetailView({ guide: { ...GUIDE, summary: '   ' }, others: [], terms: [], services: [] })).toThrow();
   });
@@ -241,6 +283,18 @@ describe('glossary term', () => {
   it('shows the example only when the record has one', () => {
     expect(toGlossaryTermView({ term: TERM_RECORD(), others: [] }).example?.body).toContain('Truvia Labs');
     expect(toGlossaryTermView({ term: TERM_RECORD({ example: null }), others: [] }).example).toBeNull();
+  });
+
+  it('clips a long example and a long body paragraph rather than failing the term page', () => {
+    const long = 'A worked example that runs on and on. '.repeat(60);
+    const view = toGlossaryTermView({
+      term: TERM_RECORD({ body: `${long}\n\nA second paragraph.`, example: long }),
+      others: [],
+    });
+    expect(view.example?.body.length).toBeLessThanOrEqual(1600);
+    expect(view.example?.body.endsWith('…')).toBe(true);
+    expect(view.body.paragraphs[0]?.length).toBeLessThanOrEqual(1600);
+    expect(view.body.paragraphs[0]?.endsWith('…')).toBe(true);
   });
 
   it('renders a term whose body is one short sentence, without an answer block', () => {

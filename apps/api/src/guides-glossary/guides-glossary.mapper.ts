@@ -1,7 +1,13 @@
 import type { Prisma } from '@calwebtech/db';
 import {
+  GLOSSARY_BODY_LIMIT,
+  GLOSSARY_PARAGRAPH_MAX,
   GLOSSARY_RELATED_LIMIT,
+  GUIDE_BLOCK_LIMIT,
+  GUIDE_BULLET_MAX,
+  GUIDE_PARAGRAPH_MAX,
   GUIDE_RELATED_LIMIT,
+  GUIDE_SECTION_LIMIT,
   glossaryAnswer,
   glossaryGroups,
   glossaryIndexContentSchema,
@@ -32,6 +38,10 @@ import {
  * supply are left out and the template's own headings fill the rest: a guide published from
  * the dashboard still renders a complete page with no deploy. The publish-ready copy of the
  * launch pages lives in apps/web/static-content/guides-glossary.
+ *
+ * The columns are unbounded text, so every field a record supplies is clipped and every list
+ * is capped to what the contract accepts before it is parsed. A long entry loses its tail,
+ * never its page.
  */
 
 /** The columns a guide card needs: the index, related guides and the sitemap. */
@@ -124,7 +134,7 @@ export function guideCard(guide: GuideCardRecord): GuideCard {
   const [first] = splitParagraphs(guide.summary);
   return {
     slug: guide.slug,
-    title: guide.title,
+    title: clip(guide.title, 140),
     summary: clip(first ?? guide.title, 300),
     pageCountLabel: pageCountLabel(guide.pageCount),
     cover: present(guide.coverImage) ? { src: guide.coverImage, alt: guide.title } : null,
@@ -134,7 +144,7 @@ export function guideCard(guide: GuideCardRecord): GuideCard {
 }
 
 function termCard(term: GlossaryCardRecord): GlossaryTermCard {
-  return { slug: term.slug, term: term.term, definition: clip(term.shortDefinition, 240) };
+  return { slug: term.slug, term: clip(term.term, 80), definition: clip(term.shortDefinition, 240) };
 }
 
 /**
@@ -182,7 +192,18 @@ export function toGuidesIndexView({ contentSetting, guides }: GuidesIndexSources
  */
 export function toGuideDetailView({ guide, others, terms, services }: GuideDetailSources): GuideDetailView {
   const seo = seoSchema.nullable().parse(guide.seo);
-  const sections = guideSummarySections(guide.summary);
+  const sections = guideSummarySections(guide.summary)
+    .slice(0, GUIDE_SECTION_LIMIT)
+    .map((section) => ({
+      ...section,
+      paragraphs: section.paragraphs.slice(0, GUIDE_BLOCK_LIMIT).map((paragraph) => clip(paragraph, GUIDE_PARAGRAPH_MAX)),
+      bullets: section.bullets.slice(0, GUIDE_BLOCK_LIMIT).map((bullet) => clip(bullet, GUIDE_BULLET_MAX)),
+    }));
+  // A summary with no blocks at all still has to make one section, or the contract rejects it.
+  const opening = clip(guide.summary, GUIDE_PARAGRAPH_MAX);
+  if (sections.length === 0 && opening.length > 0) {
+    sections.push({ id: 'section-1', heading: null, paragraphs: [opening], bullets: [] });
+  }
   const named = terms
     .map((term) => ({ term, at: firstMention(guide.summary, term.term) }))
     .filter((entry): entry is { term: GlossaryCardRecord; at: number } => entry.at !== null)
@@ -197,7 +218,7 @@ export function toGuideDetailView({ guide, others, terms, services }: GuideDetai
 
   return guideDetailViewSchema.parse({
     slug: guide.slug,
-    title: guide.title,
+    title: clip(guide.title, 140),
     updatedAt: null,
     seo: {
       title: seo?.title ?? clip(guide.title, 60),
@@ -232,7 +253,7 @@ export function toGuideDetailView({ guide, others, terms, services }: GuideDetai
       ? {
           heading: 'Who does this work?',
           intro: null,
-          item: { slug: service.slug, title: service.title, line: clip(service.shortDescription, 300) },
+          item: { slug: service.slug, title: clip(service.title, 120), line: clip(service.shortDescription, 300) },
         }
       : null,
     related:
@@ -273,11 +294,13 @@ export function toGlossaryTermView({ term, others }: GlossaryTermSources): Gloss
     .slice(0, GLOSSARY_RELATED_LIMIT)
     .map(termCard);
   // A record's body is required, but an all-whitespace one would leave nothing to render.
-  const paragraphs = splitParagraphs(term.body).slice(0, 6);
+  const paragraphs = splitParagraphs(term.body)
+    .slice(0, GLOSSARY_BODY_LIMIT)
+    .map((paragraph) => clip(paragraph, GLOSSARY_PARAGRAPH_MAX));
 
   return glossaryTermViewSchema.parse({
     slug: term.slug,
-    term: term.term,
+    term: clip(term.term, 80),
     letter: glossaryLetter(term.term),
     updatedAt: term.updatedAt.toISOString(),
     seo: {
@@ -293,9 +316,11 @@ export function toGlossaryTermView({ term, others }: GlossaryTermSources): Gloss
     },
     commercial: null,
     example: present(term.example)
-      ? { heading: 'What does it look like in practice?', body: term.example.trim(), caseStudy: null }
+      ? { heading: 'What does it look like in practice?', body: clip(term.example, GLOSSARY_PARAGRAPH_MAX), caseStudy: null }
       : null,
-    service: published ? { slug: service.slug, title: service.title, line: clip(service.shortDescription, 300) } : null,
+    service: published
+      ? { slug: service.slug, title: clip(service.title, 120), line: clip(service.shortDescription, 300) }
+      : null,
     related: related.length > 0 ? { heading: 'Which terms are related?', terms: related } : null,
     sources: [],
   });

@@ -48,6 +48,18 @@ export const GLOSSARY_RELATED_LIMIT = 4;
 export const GUIDE_RELATED_LIMIT = 2;
 export const GUIDE_FAQ_LIMIT = 6;
 
+/**
+ * How much of a guide's summary and a term's body a page renders. The schemas below and the
+ * API mapper both read these, so a long record is clipped to what the contract accepts
+ * instead of failing its page.
+ */
+export const GUIDE_SECTION_LIMIT = 12;
+export const GUIDE_BLOCK_LIMIT = 12;
+export const GUIDE_PARAGRAPH_MAX = 1600;
+export const GUIDE_BULLET_MAX = 400;
+export const GLOSSARY_BODY_LIMIT = 6;
+export const GLOSSARY_PARAGRAPH_MAX = 1600;
+
 /** The letter a term is filed under on the A to Z index. Anything not A to Z files under "#". */
 export function glossaryLetter(term: string): string {
   const first = term.trim().charAt(0).toUpperCase();
@@ -140,8 +152,8 @@ export const guideSectionSchema = z.object({
   id: z.string().min(1).max(60),
   /** An H2, written as the question a buyer types. Null only on the opening section. */
   heading: questionSchema().nullable(),
-  paragraphs: z.array(requiredText(1600)).max(12),
-  bullets: z.array(requiredText(400)).max(12),
+  paragraphs: z.array(requiredText(GUIDE_PARAGRAPH_MAX)).max(GUIDE_BLOCK_LIMIT),
+  bullets: z.array(requiredText(GUIDE_BULLET_MAX)).max(GUIDE_BLOCK_LIMIT),
 });
 export type GuideSection = z.output<typeof guideSectionSchema>;
 
@@ -199,7 +211,7 @@ export const guideDetailViewSchema = z.object({
   summary: z.object({
     heading: questionSchema(),
     intro: requiredText(600).nullable(),
-    sections: z.array(guideSectionSchema).min(1).max(12),
+    sections: z.array(guideSectionSchema).min(1).max(GUIDE_SECTION_LIMIT),
   }),
   takeaways: z.object({ heading: questionSchema(), items: z.array(requiredText(300)).min(3).max(8) }).nullable(),
   /** The email gate. `fileUrl` is only reached once the lead is stored. */
@@ -283,7 +295,10 @@ export const glossaryTermViewSchema = z.object({
   definition: requiredText(240),
   /** The definition and the sentences after it, as the extraction target. */
   answerBlock: answerBlockSchema.nullable(),
-  body: z.object({ heading: questionSchema(), paragraphs: z.array(requiredText(1600)).min(1).max(6) }),
+  body: z.object({
+    heading: questionSchema(),
+    paragraphs: z.array(requiredText(GLOSSARY_PARAGRAPH_MAX)).min(1).max(GLOSSARY_BODY_LIMIT),
+  }),
   /** Why it matters commercially, which is what a buyer actually came for. */
   commercial: z
     .object({ heading: questionSchema(), paragraphs: z.array(requiredText(1600)).min(1).max(4) })
@@ -292,7 +307,7 @@ export const glossaryTermViewSchema = z.object({
   example: z
     .object({
       heading: questionSchema(),
-      body: requiredText(1600),
+      body: requiredText(GLOSSARY_PARAGRAPH_MAX),
       caseStudy: z
         .object({ slug: slugSchema, clientName: requiredText(120), metric: metricSchema })
         .nullable(),
