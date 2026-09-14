@@ -105,6 +105,19 @@ export const leadSubmissionSchema = z.object({
   serviceInterest: z.array(z.string().trim().min(1).max(80)).max(12).default([]),
   message: optionalText(4000),
   landingPageSlug: z.preprocess(blankToUndefined, slugSchema.optional()),
+  /**
+   * The page a resource form sits on, such as the article whose subscribe block was filled
+   * (docs/02-content-model.md, "Newsletter: sourcePage"). A site path, stored with the lead.
+   */
+  sourcePage: z.preprocess(
+    blankToUndefined,
+    z
+      .string()
+      .trim()
+      .max(300)
+      .regex(/^\/[a-z0-9\-/]*$/, 'Must be a site path')
+      .optional(),
+  ),
   attribution: attributionSchema.default({}),
   /** Honeypot. Hidden from people; a value here means a bot filled the form. */
   referenceCode: z.string().max(500).optional(),
