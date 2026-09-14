@@ -22,7 +22,13 @@ import { chooseEncoding, edgeSettings } from './edge.mjs';
 const root = path.resolve(import.meta.dirname, '../../..');
 
 export const WEB = 'http://localhost:3000';
-export const API = 'http://localhost:4000';
+/**
+ * The API listens on 4000, which is what CI uses and what `.env` documents. Set
+ * PERF_API_PORT when another program on the machine already holds it: the API is started
+ * on that port and the web server is pointed at it (docs/09-performance.md).
+ */
+export const API_PORT = Number(process.env.PERF_API_PORT ?? 4000);
+export const API = `http://localhost:${String(API_PORT)}`;
 export const EDGE_PORT = 3443;
 export const EDGE = `https://localhost:${EDGE_PORT}`;
 export const PAGES = ['/', '/lp/b2b-website-design/'];
@@ -209,6 +215,7 @@ export async function startStack({ log = console.log } = {}) {
   const env = {
     ...process.env,
     NODE_ENV: 'production',
+    API_PORT: String(API_PORT),
     API_INTERNAL_URL: process.env.API_INTERNAL_URL ?? API,
     // Canonical URLs must match the origin the browser loads.
     APP_ORIGIN: EDGE,
