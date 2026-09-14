@@ -1,9 +1,12 @@
 import { expect, test, type Page } from '@playwright/test';
 
 /**
- * The company family (docs/10-site-pages.md), against the placeholder database CI seeds:
- * each page's copy is a placeholder setting and no proof records exist, so every list shows
- * its empty state. Checks that depend on records hold either way, in case fixtures add some.
+ * The company family (docs/10-site-pages.md), against the database CI seeds: each page's copy
+ * is a placeholder setting and no proof records exist. The company fixtures
+ * (packages/db/src/seed/pages/company.ts) add two test questions each to /awards/ and /team/
+ * and one test team member, shown on /team/ and /about/; partners, awards, technologies and
+ * testimonials stay empty, so those lists show their empty state. Checks that depend on
+ * records hold either way.
  */
 const PAGES = [
   { path: '/about/', crumb: 'About', lists: ['team', 'recognition'] },
@@ -114,6 +117,7 @@ test.describe('company pages', () => {
 
     await page.goto('/team/');
     const people = await page.locator('[data-team-member]').count();
+    expect(people, 'the team page lists at least one person').toBeGreaterThan(0);
     expect((await jsonLd(page)).filter((node) => node['@type'] === 'Person')).toHaveLength(people);
 
     await page.goto('/about/');
@@ -131,15 +135,19 @@ test.describe('company pages', () => {
   });
 
   test('FAQ answers open from the keyboard when a page has questions', async ({ page }) => {
+    const exercised: string[] = [];
     for (const { path } of PAGES) {
       await page.goto(path);
       const summaries = page.locator('#faq summary');
       if ((await summaries.count()) < 2) continue;
       const second = summaries.nth(1);
+      await expect(second.locator('xpath=..')).not.toHaveAttribute('open', '');
       await second.focus();
       await page.keyboard.press('Enter');
       await expect(second.locator('xpath=..')).toHaveAttribute('open', '');
+      exercised.push(path);
     }
+    expect(exercised.length, 'at least one page has questions to open').toBeGreaterThan(0);
   });
 
   test('the pages are in sitemap.xml, and paths below them answer 404', async ({ request }) => {
