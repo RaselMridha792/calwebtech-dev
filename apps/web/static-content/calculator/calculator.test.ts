@@ -78,6 +78,11 @@ describe('calculator snapshot', () => {
     }
   });
 
+  it('names each question once, so the breakdown never repeats a row', () => {
+    const titles = CALCULATOR_STEP_KEYS.map((step) => view.content.calculator.steps[step].title);
+    expect(new Set(titles).size).toBe(titles.length);
+  });
+
   it('publishes the rates from the pricing model, not from the copy', () => {
     expect(view.rates).toEqual(calculatorRateTable(view.content));
     const projectType = view.rates.find((group) => group.step === 'projectType');
