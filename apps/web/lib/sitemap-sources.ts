@@ -9,4 +9,5 @@ import type { SitemapSource } from './sitemap';
 export const SITEMAP_SOURCES: readonly SitemapSource[] = [
   () => import('./sitemap-core').then((module) => module.coreSitemapEntries()),
   // Site page families: one line each, below this one.
+  () => import('@/lib/api/work').then((module) => module.sitemapEntries()),
 ];

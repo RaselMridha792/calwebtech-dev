@@ -1,0 +1,259 @@
+{
+  "slug": "verona-home",
+  "clientName": "Verona Home",
+  "title": "Verona Home: made-to-order furniture, replatformed on Shopify",
+  "answerBlock": "Verona Home is a California furniture brand selling made-to-order pieces direct to its customers, and its store was stuck on a page builder. We replatformed it on Shopify with a configurator for made-to-order pieces. The new store took $2.4M in its first year, add to cart rose 68% and the largest content on a mobile page loads in 1.4s.",
+  "summary": "A furniture brand stuck on a page builder, replatformed with a configurator for made-to-order pieces.",
+  "seo": {
+    "title": "Verona Home: Shopify replatform case study",
+    "description": "How Verona Home left a page builder for Shopify with a configurator for made-to-order furniture, and took $2.4M in its first year.",
+    "ogImage": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=900&q=70"
+  },
+  "eyebrow": "Case study",
+  "cover": {
+    "src": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=900&q=70",
+    "alt": "A warehouse floor lined with shelving, cartons and yellow crates ready for dispatch"
+  },
+  "headline": {
+    "label": "Headline result",
+    "metric": {
+      "value": "$2.4M",
+      "label": "First-year revenue"
+    }
+  },
+  "metrics": [
+    {
+      "value": "$2.4M",
+      "label": "First-year revenue"
+    },
+    {
+      "value": "+68%",
+      "label": "Add to cart"
+    },
+    {
+      "value": "1.4s",
+      "label": "Mobile LCP"
+    }
+  ],
+  "atAGlance": {
+    "industry": {
+      "slug": "ecommerce-and-d2c",
+      "name": "Retail and D2C"
+    },
+    "services": [
+      {
+        "slug": "ecommerce-development",
+        "name": "Ecommerce development"
+      },
+      {
+        "slug": "shopify-development",
+        "name": "Shopify development"
+      },
+      {
+        "slug": "website-redesign",
+        "name": "Website redesign"
+      }
+    ],
+    "platforms": [
+      {
+        "slug": "shopify",
+        "name": "Shopify"
+      }
+    ],
+    "location": "California, USA",
+    "duration": null,
+    "year": null,
+    "liveUrl": null
+  },
+  "challenge": [
+    "Verona Home sells furniture that is made to order, so a buyer has choices to make before they commit to a piece. Its store had been built with a page builder, and the page builder set the limits of what the store could do.",
+    "A page builder is designed for arranging pages, not for products that are configured before they are bought. For a made-to-order range, the choosing is the part of the purchase that matters most."
+  ],
+  "approach": [
+    "We moved the store off the page builder and onto Shopify, so the catalogue, checkout and orders sit on a platform built for commerce rather than on a layout tool.",
+    "The configurator was the centre of the brief. A customer choosing a made-to-order piece should see their choices come together before they add it to the cart, not after."
+  ],
+  "build": [
+    "The store runs on Shopify, with a configurator for made-to-order pieces built into the product pages.",
+    "Speed on a phone was treated as a requirement from the start, not a finishing touch. The largest content on a mobile page loads in 1.4s."
+  ],
+  "gallery": [
+    {
+      "src": "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1200&q=70",
+      "alt": "A green velvet sofa on a pale wooden floor against a white wall"
+    },
+    {
+      "src": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=70",
+      "alt": "A yellow armchair beside a brass floor lamp in a living room"
+    },
+    {
+      "src": "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=1200&q=70",
+      "alt": "A grey tufted sofa with teal cushions in a bright living room"
+    }
+  ],
+  "beforeAfter": null,
+  "outcome": [
+    "In its first year on the new store, Verona Home took $2.4M in revenue. Add to cart rose 68%.",
+    "Mobile largest contentful paint is 1.4s, so a shopper browsing on a phone sees the piece they tapped on without waiting for it."
+  ],
+  "measurement": "Commercial figures come from the client's own analytics, twelve months after launch, and every figure is one the client agreed to publish. Speed and accessibility results, such as load times, Lighthouse scores and WCAG conformance, are measured on the live site.",
+  "quote": null,
+  "relatedServices": [
+    {
+      "slug": "ecommerce-development",
+      "name": "Ecommerce development",
+      "summary": "Shopify, WooCommerce or custom, including B2B pricing rules, quoting and ERP integration."
+    },
+    {
+      "slug": "shopify-development",
+      "name": "Shopify development",
+      "summary": "Shopify stores built around how your products are really chosen and bought, from configurable pieces to repeat orders."
+    },
+    {
+      "slug": "website-redesign",
+      "name": "Website redesign",
+      "summary": "Rebuilds for sites that have stopped converting, slowed down or become hard to change, planned around the traffic they already earn."
+    }
+  ],
+  "relatedCaseStudies": [
+    {
+      "slug": "northmark-supply",
+      "clientName": "Northmark Supply",
+      "summary": "A catalogue of 40,000 parts behind a contact form. We rebuilt it as a searchable, account-priced quoting platform tied into their ERP.",
+      "tags": [
+        "Ohio, USA",
+        "B2B",
+        "Distribution",
+        "Next.js"
+      ],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=70",
+        "alt": "Two colleagues reviewing printed figures beside their laptops"
+      },
+      "metrics": [
+        {
+          "value": "+312%",
+          "label": "Quote requests"
+        },
+        {
+          "value": "12 min",
+          "label": "Quote turnaround, from 3 days"
+        },
+        {
+          "value": "−41%",
+          "label": "Support calls"
+        }
+      ],
+      "industry": "distribution",
+      "services": [
+        "ecommerce-development",
+        "web-application-development",
+        "nextjs-development"
+      ],
+      "platforms": [
+        "nextjs"
+      ]
+    },
+    {
+      "slug": "cascadia-health",
+      "clientName": "Cascadia Health",
+      "summary": "Fourteen clinic sites merged into one accessible platform with location-aware appointment booking.",
+      "tags": [
+        "Oregon, USA",
+        "Healthcare",
+        "WordPress"
+      ],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=900&q=70",
+        "alt": "Hands typing on a laptop beside a stethoscope"
+      },
+      "metrics": [
+        {
+          "value": "+91%",
+          "label": "Online bookings"
+        },
+        {
+          "value": "14→1",
+          "label": "Sites to maintain"
+        },
+        {
+          "value": "AA",
+          "label": "WCAG 2.2 verified"
+        }
+      ],
+      "industry": "healthcare",
+      "services": [
+        "website-redesign",
+        "wordpress-development"
+      ],
+      "platforms": [
+        "wordpress"
+      ]
+    },
+    {
+      "slug": "meridian-parts",
+      "clientName": "Meridian Parts",
+      "summary": "Fitment search across 90,000 SKUs, so a technician finds the right part on a phone in a workshop.",
+      "tags": [
+        "Michigan, USA",
+        "Manufacturing",
+        "Headless CMS"
+      ],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=900&q=70",
+        "alt": "A developer reviewing code across two monitors"
+      },
+      "metrics": [
+        {
+          "value": "+207%",
+          "label": "Organic traffic"
+        },
+        {
+          "value": "−63%",
+          "label": "Wrong-part returns"
+        },
+        {
+          "value": "4.2x",
+          "label": "Repeat orders"
+        }
+      ],
+      "industry": "manufacturing",
+      "services": [
+        "ecommerce-development",
+        "nextjs-development",
+        "ai-search-visibility"
+      ],
+      "platforms": [
+        "headless-cms"
+      ]
+    }
+  ],
+  "headings": {
+    "metrics": "What results did Verona Home get?",
+    "atAGlance": "What did the Verona Home project involve?",
+    "challenge": "What problem did Verona Home need to solve?",
+    "approach": "How did we approach the Verona Home project?",
+    "build": "What did we build for Verona Home?",
+    "gallery": "What does this kind of work look like in practice?",
+    "beforeAfter": "What did the Verona Home site look like before and after?",
+    "outcome": "What changed for Verona Home after launch?",
+    "quote": "What does Verona Home say about working with us?",
+    "relatedServices": "Which services did this project use?",
+    "relatedCaseStudies": "Which other projects are like this one?"
+  },
+  "labels": {
+    "industry": "Industry",
+    "services": "Services",
+    "platform": "Platform",
+    "location": "Location",
+    "duration": "Duration",
+    "year": "Year",
+    "liveSite": "Live site",
+    "visitSite": "Visit the site",
+    "measurement": "How we measured",
+    "serviceLink": "See the service",
+    "caseStudyLink": "Read the case study"
+  },
+  "publishedAt": "2026-09-14T00:00:00.000Z",
+  "updatedAt": "2026-09-14T00:00:00.000Z"
+}

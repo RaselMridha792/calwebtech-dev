@@ -1,0 +1,260 @@
+{
+  "slug": "cascadia-health",
+  "clientName": "Cascadia Health",
+  "title": "Cascadia Health: fourteen clinic websites merged into one",
+  "answerBlock": "Cascadia Health, a healthcare provider in Oregon, was running fourteen separate clinic websites. We merged them into one accessible WordPress platform with location-aware appointment booking, verified against WCAG 2.2 AA. Online bookings rose 91% and the team now maintains one site instead of fourteen.",
+  "summary": "Fourteen clinic sites merged into one accessible platform with location-aware appointment booking.",
+  "seo": {
+    "title": "Cascadia Health: multi-clinic website case study",
+    "description": "How Cascadia Health merged fourteen clinic websites into one accessible WordPress platform with location-aware booking: online bookings up 91%.",
+    "ogImage": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=900&q=70"
+  },
+  "eyebrow": "Case study",
+  "cover": {
+    "src": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=900&q=70",
+    "alt": "Hands typing on a laptop beside a stethoscope"
+  },
+  "headline": {
+    "label": "Headline result",
+    "metric": {
+      "value": "+91%",
+      "label": "Online bookings"
+    }
+  },
+  "metrics": [
+    {
+      "value": "+91%",
+      "label": "Online bookings"
+    },
+    {
+      "value": "14→1",
+      "label": "Sites to maintain"
+    },
+    {
+      "value": "AA",
+      "label": "WCAG 2.2 verified"
+    }
+  ],
+  "atAGlance": {
+    "industry": {
+      "slug": "healthcare",
+      "name": "Healthcare"
+    },
+    "services": [
+      {
+        "slug": "website-redesign",
+        "name": "Website redesign"
+      },
+      {
+        "slug": "wordpress-development",
+        "name": "WordPress development"
+      }
+    ],
+    "platforms": [
+      {
+        "slug": "wordpress",
+        "name": "WordPress"
+      }
+    ],
+    "location": "Oregon, USA",
+    "duration": null,
+    "year": null,
+    "liveUrl": null
+  },
+  "challenge": [
+    "Each of Cascadia Health's fourteen clinics had a website of its own. That meant fourteen places to update, and a patient looking for an appointment had to find the right clinic's site before they could book.",
+    "Small changes were slow. Staff could not publish their own updates, so something as simple as a new phone number waited on someone else to make it."
+  ],
+  "approach": [
+    "We brought the fourteen clinics onto one platform instead of redesigning fourteen sites. Every clinic is a location within one website, so there is one design, one set of templates and one place to maintain.",
+    "Accessibility was a requirement from the first design rather than an audit at the end, because a healthcare website has to work for every patient who needs it."
+  ],
+  "build": [
+    "The platform runs on WordPress, so Cascadia's own staff publish their updates without a developer.",
+    "Appointment booking is location-aware: a patient books with the clinic that suits them from one website. The platform is verified against WCAG 2.2 at level AA."
+  ],
+  "gallery": [
+    {
+      "src": "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=70",
+      "alt": "The reception desk of a bright, modern clinic lobby"
+    },
+    {
+      "src": "https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?auto=format&fit=crop&w=1200&q=70",
+      "alt": "A clinician in a white coat talking with a patient"
+    },
+    {
+      "src": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=70",
+      "alt": "A clinician in a white coat holding a smartphone"
+    }
+  ],
+  "beforeAfter": null,
+  "outcome": [
+    "Online bookings rose 91% after the clinics moved onto one platform. Fourteen sites became one to maintain, and staff publish their own updates instead of waiting for a change to be made for them."
+  ],
+  "measurement": "Commercial figures come from the client's own analytics, twelve months after launch, and every figure is one the client agreed to publish. Speed and accessibility results, such as load times, Lighthouse scores and WCAG conformance, are measured on the live site.",
+  "quote": {
+    "id": "testimonial-marcus-bell",
+    "quote": "Fourteen clinic websites became one. Our staff publish their own updates now, which sounds small until you remember we used to wait nine days for a phone number change.",
+    "clientName": "Marcus Bell",
+    "role": "Communications Director",
+    "company": "Cascadia Health",
+    "rating": 5,
+    "avatar": {
+      "src": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=70"
+    }
+  },
+  "relatedServices": [
+    {
+      "slug": "website-redesign",
+      "name": "Website redesign",
+      "summary": "Rebuilds for sites that have stopped converting, slowed down or become hard to change, planned around the traffic they already earn."
+    },
+    {
+      "slug": "wordpress-development",
+      "name": "WordPress development",
+      "summary": "WordPress and WooCommerce builds with editing your staff can use, accessible templates and a clean upgrade path."
+    }
+  ],
+  "relatedCaseStudies": [
+    {
+      "slug": "verona-home",
+      "clientName": "Verona Home",
+      "summary": "A furniture brand stuck on a page builder, replatformed with a configurator for made-to-order pieces.",
+      "tags": [
+        "California, USA",
+        "D2C",
+        "Shopify"
+      ],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=900&q=70",
+        "alt": "A warehouse floor lined with shelving, cartons and yellow crates ready for dispatch"
+      },
+      "metrics": [
+        {
+          "value": "$2.4M",
+          "label": "First-year revenue"
+        },
+        {
+          "value": "+68%",
+          "label": "Add to cart"
+        },
+        {
+          "value": "1.4s",
+          "label": "Mobile LCP"
+        }
+      ],
+      "industry": "ecommerce-and-d2c",
+      "services": [
+        "ecommerce-development",
+        "shopify-development",
+        "website-redesign"
+      ],
+      "platforms": [
+        "shopify"
+      ]
+    },
+    {
+      "slug": "northmark-supply",
+      "clientName": "Northmark Supply",
+      "summary": "A catalogue of 40,000 parts behind a contact form. We rebuilt it as a searchable, account-priced quoting platform tied into their ERP.",
+      "tags": [
+        "Ohio, USA",
+        "B2B",
+        "Distribution",
+        "Next.js"
+      ],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=70",
+        "alt": "Two colleagues reviewing printed figures beside their laptops"
+      },
+      "metrics": [
+        {
+          "value": "+312%",
+          "label": "Quote requests"
+        },
+        {
+          "value": "12 min",
+          "label": "Quote turnaround, from 3 days"
+        },
+        {
+          "value": "−41%",
+          "label": "Support calls"
+        }
+      ],
+      "industry": "distribution",
+      "services": [
+        "ecommerce-development",
+        "web-application-development",
+        "nextjs-development"
+      ],
+      "platforms": [
+        "nextjs"
+      ]
+    },
+    {
+      "slug": "truvia-labs",
+      "clientName": "Truvia Labs",
+      "summary": "Marketing site, docs and in-app onboarding rebuilt on one design system so releases stopped breaking the brand.",
+      "tags": [
+        "Texas, USA",
+        "SaaS",
+        "Next.js"
+      ],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=70",
+        "alt": "Overhead view of a shared desk with several laptops and phones in use"
+      },
+      "metrics": [
+        {
+          "value": "+140%",
+          "label": "Demo bookings"
+        },
+        {
+          "value": "3.1x",
+          "label": "Organic sessions"
+        },
+        {
+          "value": "98",
+          "label": "Lighthouse mobile"
+        }
+      ],
+      "industry": "saas",
+      "services": [
+        "custom-website-development",
+        "nextjs-development",
+        "ai-search-visibility"
+      ],
+      "platforms": [
+        "nextjs"
+      ]
+    }
+  ],
+  "headings": {
+    "metrics": "What results did Cascadia Health get?",
+    "atAGlance": "What did the Cascadia Health project involve?",
+    "challenge": "What problem did Cascadia Health need to solve?",
+    "approach": "How did we approach the Cascadia Health project?",
+    "build": "What did we build for Cascadia Health?",
+    "gallery": "What does this kind of work look like in practice?",
+    "beforeAfter": "What did the Cascadia Health site look like before and after?",
+    "outcome": "What changed for Cascadia Health after launch?",
+    "quote": "What does Cascadia Health say about working with us?",
+    "relatedServices": "Which services did this project use?",
+    "relatedCaseStudies": "Which other projects are like this one?"
+  },
+  "labels": {
+    "industry": "Industry",
+    "services": "Services",
+    "platform": "Platform",
+    "location": "Location",
+    "duration": "Duration",
+    "year": "Year",
+    "liveSite": "Live site",
+    "visitSite": "Visit the site",
+    "measurement": "How we measured",
+    "serviceLink": "See the service",
+    "caseStudyLink": "Read the case study"
+  },
+  "publishedAt": "2026-09-14T00:00:00.000Z",
+  "updatedAt": "2026-09-14T00:00:00.000Z"
+}
