@@ -6,7 +6,7 @@
       "ogImage": null
     },
     "title": "Industries we build websites for",
-    "answerBlock": "Calwebtech designs and builds websites, ecommerce platforms and web applications for manufacturers, distributors, retail and D2C brands, SaaS companies, healthcare providers, real estate firms, hospitality businesses, professional services firms and education providers. Each industry page covers the problems a website in that sector has to solve, the systems it connects to and the work we have delivered there.",
+    "answerBlock": "Calwebtech designs and builds websites, ecommerce platforms and web applications for manufacturers, distributors, retail and D2C brands, SaaS companies, healthcare providers, real estate firms, hospitality businesses, professional services firms and education providers. Each industry page covers the problems a website in that sector has to solve, the systems it connects to and, where we have published it, the work we delivered there.",
     "intro": "Tiered pricing, fitment data, compliance copy, multi-location booking. The parts that break generic builds are the parts we have shipped before.",
     "primaryCta": {
       "label": "Discuss your project",
@@ -17,7 +17,7 @@
     },
     "list": {
       "heading": "Which industries do we build websites for?",
-      "intro": "Each page starts with the problems buyers in that sector run into, then shows the services, integrations and results that fit.",
+      "intro": "Each page starts with the problems buyers in that sector run into, then shows the services and integrations that fit, and the results where we have published them.",
       "empty": "No industry pages are published right now. Tell us about your sector and we will walk you through the most relevant work.",
       "cardLinkLabel": "See the industry"
     },

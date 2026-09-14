@@ -1,5 +1,12 @@
 import type { Faq, Testimonial } from '@calwebtech/db';
-import { INDUSTRY_FAQ_LIMIT, type IndustriesIndexContentInput, type IndustryContentInput } from '@calwebtech/shared';
+import {
+  INDUSTRY_FAQ_LIMIT,
+  INDUSTRY_INTEGRATION_LIMIT,
+  INDUSTRY_INTEGRATION_NAME_MAX,
+  INDUSTRY_PAIN_POINT_TITLE_MAX,
+  type IndustriesIndexContentInput,
+  type IndustryContentInput,
+} from '@calwebtech/shared';
 import { describe, expect, it } from 'vitest';
 import { ZodError } from 'zod';
 import { CONSENTED } from '../common/published';
@@ -181,6 +188,24 @@ describe('toIndustryDetailView', () => {
       ],
     });
     expect(view.integrations?.items).toEqual([{ name: 'Test system', body: null }]);
+  });
+
+  it('caps the columns and drops entries too long to show, so a long legacy list cannot fail the page', () => {
+    const systems = Array.from({ length: INDUSTRY_INTEGRATION_LIMIT + 1 }, (_, position) => `Test system ${String(position)}`);
+    const view = toIndustryDetailView(
+      industry({
+        painPoints: ['x'.repeat(INDUSTRY_PAIN_POINT_TITLE_MAX + 1), 'Test pain one', 'Test pain two', 'Test pain three', 'Test pain four', 'Test pain five'],
+        integrations: ['y'.repeat(INDUSTRY_INTEGRATION_NAME_MAX + 1), ...systems],
+      }),
+    );
+    expect(view.painPoints?.items.map((item) => item.title)).toEqual([
+      'Test pain one',
+      'Test pain two',
+      'Test pain three',
+      'Test pain four',
+    ]);
+    expect(view.integrations?.items).toHaveLength(INDUSTRY_INTEGRATION_LIMIT);
+    expect(view.integrations?.items[0]).toEqual({ name: 'Test system 0', body: null });
   });
 
   it('describes matched services for the industry, falling back to the service summary', () => {

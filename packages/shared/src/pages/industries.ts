@@ -32,7 +32,13 @@ export const INDUSTRY_METRIC_LIMIT = 6;
 /** Most matched services on an industry page. */
 export const INDUSTRY_SERVICE_LIMIT = 6;
 /** Most FAQs on an industry page; docs/03 asks for five or six. */
-export const INDUSTRY_FAQ_LIMIT = 8;
+export const INDUSTRY_FAQ_LIMIT = 6;
+/** Most systems in an industry's integrations section. */
+export const INDUSTRY_INTEGRATION_LIMIT = 12;
+/** Longest integration name an industry page shows. */
+export const INDUSTRY_INTEGRATION_NAME_MAX = 120;
+/** Longest pain point title an industry page shows. */
+export const INDUSTRY_PAIN_POINT_TITLE_MAX = 200;
 
 const industryPointSchema = z.object({ title: requiredText(80), body: requiredText(400) });
 
@@ -93,7 +99,10 @@ export const industryContentSchema = z.object({
   integrations: z.object({
     heading: questionSchema(),
     intro: sectionIntroSchema,
-    items: z.array(z.object({ name: requiredText(80), body: requiredText(300) })).min(1).max(12),
+    items: z
+      .array(z.object({ name: requiredText(80), body: requiredText(300) }))
+      .min(1)
+      .max(INDUSTRY_INTEGRATION_LIMIT),
   }),
   faq: z.object({ heading: questionSchema(), intro: sectionIntroSchema }),
 });
@@ -171,7 +180,10 @@ export const industryDetailViewSchema = z.object({
     .object({
       heading: questionSchema(),
       intro: requiredText(400).nullable(),
-      items: z.array(z.object({ title: requiredText(200), body: requiredText(400).nullable() })).min(1).max(4),
+      items: z
+        .array(z.object({ title: requiredText(INDUSTRY_PAIN_POINT_TITLE_MAX), body: requiredText(400).nullable() }))
+        .min(1)
+        .max(4),
     })
     .nullable(),
   services: z
@@ -214,7 +226,10 @@ export const industryDetailViewSchema = z.object({
     .object({
       heading: questionSchema(),
       intro: requiredText(400).nullable(),
-      items: z.array(z.object({ name: requiredText(120), body: requiredText(300).nullable() })).min(1).max(12),
+      items: z
+        .array(z.object({ name: requiredText(INDUSTRY_INTEGRATION_NAME_MAX), body: requiredText(300).nullable() }))
+        .min(1)
+        .max(INDUSTRY_INTEGRATION_LIMIT),
     })
     .nullable(),
   faq: z

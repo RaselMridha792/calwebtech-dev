@@ -2,7 +2,10 @@ import type { Prisma, Testimonial } from '@calwebtech/db';
 import {
   INDUSTRY_CASE_STUDY_LIMIT,
   INDUSTRY_FAQ_LIMIT,
+  INDUSTRY_INTEGRATION_LIMIT,
+  INDUSTRY_INTEGRATION_NAME_MAX,
   INDUSTRY_METRIC_LIMIT,
+  INDUSTRY_PAIN_POINT_TITLE_MAX,
   INDUSTRY_SERVICE_LIMIT,
   SEO_DESCRIPTION_MAX,
   SEO_TITLE_MAX,
@@ -81,6 +84,14 @@ export interface IndustriesIndexSources {
 
 const stringListSchema = z.array(z.string().trim().min(1)).nullable();
 const cardImageSchema = z.object({ image: imageSchema.nullable().catch(null).default(null) });
+
+/**
+ * A legacy string column (pain points, integrations) as page items: entries longer than the
+ * view allows are dropped and the rest capped, so one bad entry cannot fail the whole page.
+ */
+function columnList(value: unknown, maxLength: number, limit: number): string[] {
+  return (stringListSchema.parse(value) ?? []).filter((entry) => entry.length <= maxLength).slice(0, limit);
+}
 
 function present(value: string | null | undefined): value is string {
   return typeof value === 'string' && value.trim().length > 0;
@@ -178,14 +189,14 @@ export function toIndustryDetailView(industry: IndustryDetailRecord): IndustryDe
   const seo = seoSchema.nullable().parse(industry.seo);
   const title = content?.title ?? industry.name;
 
-  const columnPainPoints = stringListSchema.parse(industry.painPoints) ?? [];
+  const columnPainPoints = columnList(industry.painPoints, INDUSTRY_PAIN_POINT_TITLE_MAX, 4);
   const painPoints = content
     ? { heading: content.painPoints.heading, intro: content.painPoints.intro, items: content.painPoints.items }
     : columnPainPoints.length > 0
       ? {
           heading: INDUSTRY_FALLBACK_HEADINGS.painPoints,
           intro: null,
-          items: columnPainPoints.slice(0, 4).map((point) => ({ title: point, body: null })),
+          items: columnPainPoints.map((point) => ({ title: point, body: null })),
         }
       : null;
 
@@ -202,7 +213,7 @@ export function toIndustryDetailView(industry: IndustryDetailRecord): IndustryDe
     .slice(0, INDUSTRY_CASE_STUDY_LIMIT);
   const quote = studies.find((study) => study.testimonial !== null)?.testimonial ?? null;
 
-  const columnIntegrations = stringListSchema.parse(industry.integrations) ?? [];
+  const columnIntegrations = columnList(industry.integrations, INDUSTRY_INTEGRATION_NAME_MAX, INDUSTRY_INTEGRATION_LIMIT);
   const integrationItems = content
     ? content.integrations.items
     : columnIntegrations.map((name) => ({ name, body: null }));
