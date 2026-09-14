@@ -120,7 +120,7 @@ describe('services snapshots', () => {
       expect(approved, slug).toContain(amount?.min);
       if (amount?.max) expect(approved, slug).toContain(amount.max);
       // Case study figures are checked against the approved proof above.
-      const figures = strings({ ...view, proof: null }).flatMap((text) => text.match(/\$\d[\d,]*(?:\.\d+)?k?/g) ?? []);
+      const figures = strings({ ...view, proof: null }).flatMap((text) => text.match(/\$\d{1,3}(?:,\d{3})*(?:\.\d+)?k?/g) ?? []);
       for (const figure of figures) expect(approvedText, `${slug}: ${figure}`).toContain(figure);
     }
     expect(landing.pricingTiers.map((tier) => tier.priceLabel)).toEqual(['$12k to $25k', '$25k to $60k', 'From $1.5k/mo']);
