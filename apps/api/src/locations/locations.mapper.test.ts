@@ -258,6 +258,18 @@ describe('toLocationDetailView', () => {
     expect(view.nearby?.items.map((item) => item.slug)).toEqual(['nearby-7', 'nearby-6', 'nearby-5', 'nearby-4', 'nearby-3', 'nearby-2']);
   });
 
+  it('treats a blank state or service area as unset, on the page and on a nearby record', () => {
+    const self = location({ state: '', serviceArea: '   ', nearbyIds: ['blank-nearby'] });
+    const view = toLocationDetailView(
+      sources({
+        location: self,
+        nearby: [{ id: 'blank-nearby', slug: 'blank-nearby', city: 'Blank Nearby', state: ' ', serviceArea: '' }],
+      }),
+    );
+    expect([view.state, view.serviceArea]).toEqual([null, null]);
+    expect(view.nearby?.items).toEqual([{ slug: 'blank-nearby', city: 'Blank Nearby', state: null, serviceArea: null }]);
+  });
+
   it('keeps five FAQs at most and uses the default heading', () => {
     const view = toLocationDetailView(sources({ location: location({ faqs: Array.from({ length: 7 }, () => faq()) }) }));
     expect(view.faq?.items).toHaveLength(5);
@@ -326,6 +338,15 @@ describe('toLocationsIndexView', () => {
     expect(toLocationsIndexView({ contentSetting: INDEX_CONTENT, locations: [] }).groups).toEqual([]);
     const view = toLocationsIndexView({ contentSetting: INDEX_CONTENT, locations: [published({ content: { image: 'not an image' } })] });
     expect(view.groups[0]?.locations[0]?.image).toBeNull();
+  });
+
+  it('treats a blank state, service area or address on a card as unset', () => {
+    const view = toLocationsIndexView({
+      contentSetting: INDEX_CONTENT,
+      locations: [published({ state: ' ', serviceArea: '', address: '  ' })],
+    });
+    const card = view.groups[0]?.locations[0];
+    expect([card?.state, card?.serviceArea, card?.address]).toEqual([null, null, null]);
   });
 
   it('fails the contract without its copy', () => {

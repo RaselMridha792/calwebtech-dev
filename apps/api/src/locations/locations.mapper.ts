@@ -68,6 +68,14 @@ function present(value: string | null | undefined): value is string {
   return typeof value === 'string' && value.trim().length > 0;
 }
 
+/**
+ * An optional column as the contract wants it: null when an editor left it blank, so a
+ * cleared State or service area never fails a page, least of all another city's page.
+ */
+function optionalText(value: string | null | undefined): string | null {
+  return present(value) ? value : null;
+}
+
 /** Copy shortened to `max` characters at a word boundary, for SEO fallbacks. */
 function clamp(value: string, max: number): string {
   const text = value.replace(/\s+/g, ' ').trim();
@@ -176,7 +184,12 @@ export function toLocationDetailView(sources: LocationDetailSources): LocationDe
     .map((id) => nearbyById.get(id))
     .filter((record): record is NearbyLocationRecord => record !== undefined)
     .slice(0, LOCATION_NEARBY_MAX)
-    .map((record) => ({ slug: record.slug, city: record.city, state: record.state, serviceArea: record.serviceArea }));
+    .map((record) => ({
+      slug: record.slug,
+      city: record.city,
+      state: optionalText(record.state),
+      serviceArea: optionalText(record.serviceArea),
+    }));
 
   const clients = stringList(location.localClients);
   const faqs = location.faqs
@@ -186,7 +199,7 @@ export function toLocationDetailView(sources: LocationDetailSources): LocationDe
   return locationDetailViewSchema.parse({
     slug: location.slug,
     city: location.city,
-    state: location.state,
+    state: optionalText(location.state),
     tier: location.tier,
     seo: {
       title: seo?.title ?? clamp(`Web design and development in ${location.city}`, SEO_TITLE_MAX),
@@ -195,10 +208,10 @@ export function toLocationDetailView(sources: LocationDetailSources): LocationDe
     },
     updatedAt: location.updatedAt.toISOString(),
     answerBlock: location.answerBlock,
-    serviceArea: present(location.serviceArea) ? location.serviceArea : null,
+    serviceArea: optionalText(location.serviceArea),
     heroIntro: content.heroIntro,
     image: content.image,
-    address: present(location.address) ? location.address : null,
+    address: optionalText(location.address),
     contact: phoneE164 && location.phone ? { ...siteContact, phone: location.phone.trim(), phoneE164 } : siteContact,
     localContext: {
       heading: content.localContext?.heading ?? defaults.localContext,
@@ -258,10 +271,10 @@ export function toLocationsIndexView(sources: LocationsIndexSources): LocationsI
       .map((location) => ({
         slug: location.slug,
         city: location.city,
-        state: location.state,
+        state: optionalText(location.state),
         tier: location.tier,
-        serviceArea: present(location.serviceArea) ? location.serviceArea : null,
-        address: present(location.address) ? location.address : null,
+        serviceArea: optionalText(location.serviceArea),
+        address: optionalText(location.address),
         image: cardImage(location),
         updatedAt: location.updatedAt.toISOString(),
       })),
