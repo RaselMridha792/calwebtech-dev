@@ -1,4 +1,5 @@
-import { SITE_ROUTES, type StaticNotFoundView } from '@calwebtech/shared';
+import { SITE_ROUTES } from '@calwebtech/shared';
+import type { StaticNotFoundPageView } from '@/lib/api/static';
 import { seoTitle } from '@/lib/seo/metadata';
 import { CardGrid, LinkCard } from '../site/cards';
 import { Section } from '../site/section';
@@ -7,7 +8,7 @@ import { ContactLinks } from './parts';
 import { SiteSearch } from './site-search';
 
 /** Shown only when the stored copy cannot be read, so a 404 never becomes an error page. */
-const PLAIN_NOT_FOUND: Omit<StaticNotFoundView, 'contact'> & { contact: null } = {
+const PLAIN_NOT_FOUND: StaticNotFoundPageView = {
   eyebrow: 'Error 404',
   title: 'Page not found',
   intro: 'The address may be mistyped, or the page may have moved.',
@@ -26,7 +27,11 @@ const PLAIN_NOT_FOUND: Omit<StaticNotFoundView, 'contact'> & { contact: null } =
       { title: 'Contact', body: 'Ask a person where to find something.', href: SITE_ROUTES.contact },
     ],
   },
-  help: { heading: 'Need a hand?', body: 'The contact page reaches a person.' },
+  // Also the help text whenever the contact is left out, since the stored copy may offer a call.
+  help: {
+    heading: 'Need a hand?',
+    body: 'Send us a message from the contact page and a person will help you find what you were looking for.',
+  },
   contact: null,
 };
 
@@ -38,8 +43,9 @@ const PLAIN_NOT_FOUND: Omit<StaticNotFoundView, 'contact'> & { contact: null } =
  *
  * Keep it lean: the not-found boundary is serialised into every page's payload.
  */
-export function NotFoundPage({ view: stored }: { view: StaticNotFoundView | null }) {
+export function NotFoundPage({ view: stored }: { view: StaticNotFoundPageView | null }) {
   const view = stored ?? PLAIN_NOT_FOUND;
+  const help = view.contact ? view.help : PLAIN_NOT_FOUND.help;
   return (
     <>
       <title>{seoTitle(view.title)}</title>
@@ -56,8 +62,8 @@ export function NotFoundPage({ view: stored }: { view: StaticNotFoundView | null
           </div>
           <div className="self-end lg:col-span-5">
             <div className="rounded-2xl border border-line bg-white p-7 shadow-panel sm:p-8">
-              <h2 className="font-display text-[22px] font-extrabold text-ink">{view.help.heading}</h2>
-              <p className="mt-3 text-[15.5px] leading-relaxed">{view.help.body}</p>
+              <h2 className="font-display text-[22px] font-extrabold text-ink">{help.heading}</h2>
+              <p className="mt-3 text-[15.5px] leading-relaxed">{help.body}</p>
               {view.contact ? (
                 <div className="mt-6 border-t border-line pt-5">
                   <ContactLinks contact={view.contact} phoneLabel="Phone" emailLabel="Email" />

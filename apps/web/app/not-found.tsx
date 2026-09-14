@@ -6,6 +6,16 @@ import { Wordmark } from '@/components/ui/brand';
 import { getStaticNotFound } from '@/lib/api/static';
 
 /**
+ * Regenerates the 404 served for unmatched URLs (STATIC_NOT_FOUND_REVALIDATE_SECONDS, a
+ * literal because segment config must be statically readable). For the `/_not-found` route
+ * this file is the page module, so the interval applies there. Without it `next build`,
+ * which runs without the API, would prerender that page once from the snapshot and serve it
+ * until the next deploy, ignoring the `static.not-found` and `site.contact` settings. As a
+ * boundary inside other routes Next.js reads no segment config from this file.
+ */
+export const revalidate = 300;
+
+/**
  * A URL that matches no route: the same designed 404 in a slim frame of its own, since no
  * layout below the root applies. Next.js serialises the root not-found boundary into the
  * payload of every page, the homepage and campaign pages included, so it stays lean on

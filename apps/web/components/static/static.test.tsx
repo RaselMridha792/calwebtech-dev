@@ -205,6 +205,18 @@ describe('static family pages rendered from their snapshots', () => {
     for (const item of view.destinations.items) expect(html).toContain(`href="${item.href}"`);
   });
 
+  it('not found: without the contact (a build made without the API), no call is offered or linked', () => {
+    const view = staticNotFoundViewSchema.parse(staticNotFoundSnapshot);
+    const html = render(<NotFoundPage view={{ ...view, contact: null }} />);
+    expectHeadingOrder(html);
+    expect(html).not.toContain('href="tel:');
+    expect(html).not.toContain('href="mailto:');
+    expect(html).not.toContain(view.contact.phone);
+    expect(html).not.toContain(view.help.body);
+    expect(html).toContain(view.title);
+    for (const item of view.destinations.items) expect(html).toContain(`href="${item.href}"`);
+  });
+
   it('not found: still a working 404, with search and a way on, when the stored copy cannot be read', () => {
     const html = render(<NotFoundPage view={null} />);
     expectHeadingOrder(html);

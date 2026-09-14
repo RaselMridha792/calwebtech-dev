@@ -12,6 +12,7 @@ import {
   type StaticLegalSlug,
   type StaticNotFoundView,
 } from '@calwebtech/shared';
+import { PHASE_PRODUCTION_BUILD } from 'next/constants';
 import { cache } from 'react';
 import type { SitemapEntry } from '@/lib/sitemap';
 import {
@@ -44,16 +45,29 @@ export const getStaticFaq = cache(() => getView('/pages/faq', staticFaqViewSchem
  * root not-found boundary is rendered into the payload of every page, the statically
  * regenerated campaign pages included, so its data must be cacheable: a per-request fetch
  * there would turn those pages dynamic. A changed `static.not-found` setting shows within this.
+ * `app/not-found.tsx` exports the same interval as `revalidate`, so the prerendered 404 for
+ * unmatched URLs is regenerated at runtime too.
  */
 export const STATIC_NOT_FOUND_REVALIDATE_SECONDS = 300;
 
+/** The 404's copy as the page renders it: the business's contact is left out where it cannot be trusted. */
+export type StaticNotFoundPageView = Omit<StaticNotFoundView, 'contact'> & { contact: StaticNotFoundView['contact'] | null };
+
 /**
- * The designed 404's copy, or null when it cannot be read (a missing or malformed setting, or
- * no API during the build). A 404 must never become an error page, so the page then falls
- * back to a plain version, and the failure is logged.
+ * The designed 404's copy, or null when it cannot be read (a missing or malformed setting).
+ * A 404 must never become an error page, so the page then falls back to a plain version, and
+ * the failure is logged.
+ *
+ * `next build` runs without the API and prerenders the 404 for unmatched URLs into the image
+ * the server pulls, so the build renders the snapshot's copy without its demo telephone and
+ * email. The first regeneration at runtime replaces it with the stored copy and the
+ * `site.contact` setting, or, without the API (the Vercel demo), with the full snapshot.
  */
-export const getStaticNotFound = cache(async (): Promise<StaticNotFoundView | null> => {
-  if (!hasApi()) return staticNotFoundViewSchema.parse(staticNotFoundSnapshot);
+export const getStaticNotFound = cache(async (): Promise<StaticNotFoundPageView | null> => {
+  if (!hasApi()) {
+    const view = staticNotFoundViewSchema.parse(staticNotFoundSnapshot);
+    return process.env.NEXT_PHASE === PHASE_PRODUCTION_BUILD ? { ...view, contact: null } : view;
+  }
   try {
     const response = await fetch(apiUrl('/pages/not-found'), {
       next: { revalidate: STATIC_NOT_FOUND_REVALIDATE_SECONDS },
