@@ -198,34 +198,6 @@
             "label": "Support calls"
           }
         ]
-      },
-      {
-        "slug": "cascadia-health",
-        "clientName": "Cascadia Health",
-        "summary": "Fourteen clinic sites merged into one accessible platform with location-aware appointment booking.",
-        "tags": [
-          "Oregon, USA",
-          "Healthcare",
-          "WordPress"
-        ],
-        "image": {
-          "src": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=900&q=70",
-          "alt": "Clinician working at a healthcare facility"
-        },
-        "metrics": [
-          {
-            "value": "+91%",
-            "label": "Online bookings"
-          },
-          {
-            "value": "14→1",
-            "label": "Sites to maintain"
-          },
-          {
-            "value": "AA",
-            "label": "WCAG 2.2 verified"
-          }
-        ]
       }
     ],
     "link": {
@@ -317,7 +289,7 @@
       {
         "slug": "distribution",
         "name": "Distribution and supply",
-        "line": "Account pricing, quoting and order history for trade buyers."
+        "line": "Account pricing, fast reordering and quotes tied into your ERP."
       },
       {
         "slug": "manufacturing",
@@ -342,7 +314,7 @@
       {
         "slug": "professional-services",
         "name": "Professional services",
-        "line": "Expertise pages, consultation booking and client portals."
+        "line": "Expertise pages, adviser profiles and confidential intake."
       }
     ]
   },

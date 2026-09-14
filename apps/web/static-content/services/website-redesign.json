@@ -204,34 +204,6 @@
             "label": "WCAG 2.2 verified"
           }
         ]
-      },
-      {
-        "slug": "truvia-labs",
-        "clientName": "Truvia Labs",
-        "summary": "Marketing site, docs and in-app onboarding rebuilt on one design system so releases stopped breaking the brand.",
-        "tags": [
-          "Texas, USA",
-          "SaaS",
-          "Next.js"
-        ],
-        "image": {
-          "src": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=70",
-          "alt": "Product team working on a software platform"
-        },
-        "metrics": [
-          {
-            "value": "+140%",
-            "label": "Demo bookings"
-          },
-          {
-            "value": "3.1x",
-            "label": "Organic sessions"
-          },
-          {
-            "value": "98",
-            "label": "Lighthouse mobile"
-          }
-        ]
       }
     ],
     "link": {
@@ -329,7 +301,7 @@
       {
         "slug": "professional-services",
         "name": "Professional services",
-        "line": "Expertise pages, consultation booking and client portals."
+        "line": "Expertise pages, adviser profiles and confidential intake."
       },
       {
         "slug": "hospitality",

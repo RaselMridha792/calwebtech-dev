@@ -182,63 +182,6 @@
             "label": "Lighthouse mobile"
           }
         ]
-      },
-      {
-        "slug": "cascadia-health",
-        "clientName": "Cascadia Health",
-        "summary": "Fourteen clinic sites merged into one accessible platform with location-aware appointment booking.",
-        "tags": [
-          "Oregon, USA",
-          "Healthcare",
-          "WordPress"
-        ],
-        "image": {
-          "src": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=900&q=70",
-          "alt": "Clinician working at a healthcare facility"
-        },
-        "metrics": [
-          {
-            "value": "+91%",
-            "label": "Online bookings"
-          },
-          {
-            "value": "14→1",
-            "label": "Sites to maintain"
-          },
-          {
-            "value": "AA",
-            "label": "WCAG 2.2 verified"
-          }
-        ]
-      },
-      {
-        "slug": "northmark-supply",
-        "clientName": "Northmark Supply",
-        "summary": "A catalogue of 40,000 parts behind a contact form. We rebuilt it as a searchable, account-priced quoting platform tied into their ERP.",
-        "tags": [
-          "Ohio, USA",
-          "B2B",
-          "Distribution",
-          "Next.js"
-        ],
-        "image": {
-          "src": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=70",
-          "alt": "Sales team reviewing performance figures"
-        },
-        "metrics": [
-          {
-            "value": "+312%",
-            "label": "Quote requests"
-          },
-          {
-            "value": "12 min",
-            "label": "Quote turnaround, from 3 days"
-          },
-          {
-            "value": "−41%",
-            "label": "Support calls"
-          }
-        ]
       }
     ],
     "link": {
@@ -342,7 +285,7 @@
       {
         "slug": "distribution",
         "name": "Distribution and supply",
-        "line": "Account pricing, quoting and order history for trade buyers."
+        "line": "Account pricing, fast reordering and quotes tied into your ERP."
       },
       {
         "slug": "saas",
@@ -362,7 +305,7 @@
       {
         "slug": "professional-services",
         "name": "Professional services",
-        "line": "Expertise pages, consultation booking and client portals."
+        "line": "Expertise pages, adviser profiles and confidential intake."
       }
     ]
   },
