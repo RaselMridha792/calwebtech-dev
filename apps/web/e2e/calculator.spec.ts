@@ -114,6 +114,8 @@ test.describe('cost calculator page', () => {
     const progress = tool.locator('[role="progressbar"]');
 
     await expect(progress).toHaveAttribute('aria-valuenow', '1');
+    // The bar says what is progressing; the visible label beside it is never its name.
+    await expect(progress).toHaveAttribute('aria-label', /\S/);
     // A question cannot be skipped: pressing next without an answer describes the problem.
     await tool.locator('form button[type="submit"]').click();
     await expect(tool.locator('form [role="alert"]')).toBeVisible();
@@ -140,6 +142,13 @@ test.describe('cost calculator page', () => {
     // The email step is the last card: labelled fields, and no ninth question.
     await expect(tool.getByLabel('Work email')).toBeVisible();
     await expect(progress).toHaveAttribute('aria-valuenow', String(STEPS + 1));
+
+    // Back from the email step and forward again. The bot check lives inside that card, so
+    // leaving has to drop it: a widget left behind would hold the next submission open.
+    await tool.locator('form button[type="button"]').click();
+    await expect(progress).toHaveAttribute('aria-valuenow', String(STEPS));
+    await tool.locator('form button[type="submit"]').click();
+    await expect(tool.getByLabel('Work email')).toBeVisible();
 
     const events = await trackedEvents(page);
     expect(events.filter((name) => name.startsWith('calculator-step-'))).toContain('calculator-step-3-page-count');
@@ -196,6 +205,11 @@ test.describe('cost calculator page', () => {
     expect(events).toContain('calculator-email-submit');
     // Written as a pattern: the lint rule reads a bare "<word>-result" string as a Tailwind class.
     expect(events.some((name) => /^calculator-result(-unsent)?$/.test(name))).toBe(true);
+
+    // Starting again returns to the first question rather than leaving the result on screen.
+    await result.getByRole('button', { name: /again/i }).click();
+    await expect(result).toHaveCount(0);
+    await expect(tool.locator('[role="progressbar"]')).toHaveAttribute('aria-valuenow', '1');
   });
 
   test('publishes the rates the range is worked out from', async ({ page }) => {
