@@ -10,6 +10,7 @@ import { PrismaModule } from './prisma/prisma.service';
 import { SiteChromeModule } from './site/site-chrome.controller';
 // Site page families (docs/10-site-pages.md): one import each, below this line.
 import { IndustriesModule } from './industries/industries.controller';
+import { WorkModule } from './work/work.controller';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { IndustriesModule } from './industries/industries.controller';
     SiteChromeModule,
     // Site page families: one module each, below this line.
     IndustriesModule,
+    WorkModule,
   ],
   controllers: [HealthController],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],

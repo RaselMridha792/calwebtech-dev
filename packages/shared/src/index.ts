@@ -12,3 +12,4 @@ export * from './validation';
 // Site page families (docs/10-site-pages.md): one line each, below this one.
 export * from './pages/common';
 export * from './pages/industries';
+export * from './pages/work';
