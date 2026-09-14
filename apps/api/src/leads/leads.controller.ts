@@ -1,4 +1,9 @@
-import { leadSubmissionSchema, type LeadReceived, type LeadSubmission } from '@calwebtech/shared';
+import {
+  leadSubmissionSchema,
+  type CalculatorLeadReceived,
+  type LeadReceived,
+  type LeadSubmission,
+} from '@calwebtech/shared';
 import { Body, Controller, HttpCode, HttpStatus, Ip, Module, Post } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import { ZodValidationPipe } from '../common/zod-validation.pipe';
@@ -15,6 +20,9 @@ export class LeadsController {
   /**
    * Five submissions a minute per visitor IP. 202 when stored, 400 with field errors,
    * 403 `bot_check_failed` when Turnstile rejects the submission.
+   *
+   * A calculator lead (`type: "CALCULATOR"`) answers with the estimate the API computed
+   * from its answers and stored, so the page shows the same figures it emails.
    */
   @Post()
   @HttpCode(HttpStatus.ACCEPTED)
@@ -23,7 +31,7 @@ export class LeadsController {
     @Body(new ZodValidationPipe(leadSubmissionSchema)) body: LeadSubmission,
     // The web app forwards the visitor's address; `trust proxy` makes this that address.
     @Ip() visitorIp: string,
-  ): Promise<LeadReceived> {
+  ): Promise<LeadReceived | CalculatorLeadReceived> {
     return this.leads.create(body, visitorIp);
   }
 }

@@ -4,12 +4,14 @@ import {
   acknowledgementSchema,
   type Acknowledgement,
   type BotCheckFailedResponse,
+  type CalculatorLeadReceived,
   type EmailJob,
   type LeadReceived,
   type LeadSubmission,
   type LeadSummary,
 } from '@calwebtech/shared';
 import { ForbiddenException, Injectable, Logger } from '@nestjs/common';
+import { calculatorLeadOutcome, type CalculatorLeadOutcome } from '../calculator/calculator-lead';
 import { PrismaService } from '../prisma/prisma.service';
 import { EmailQueue } from '../queue/email-queue';
 import { SettingsService } from '../settings/settings.service';
@@ -51,10 +53,18 @@ export class LeadsService {
    * A Turnstile rejection writes nothing. Once the lead is stored it is never lost: a
    * queue failure is recorded on the lead instead of failing the request.
    */
-  async create(input: LeadSubmission, visitorIp: string | undefined): Promise<LeadReceived> {
+  async create(input: LeadSubmission, visitorIp: string | undefined): Promise<LeadReceived | CalculatorLeadReceived> {
+    // The cost calculator's range is recomputed from the answers here and never taken from
+    // the browser (calculator/calculator-lead.ts). It is worked out before anything is
+    // stored, so a submission with answers the model does not recognise is a 400.
+    const db = this.prisma.client;
+    const calculator = input.type === 'CALCULATOR' ? await calculatorLeadOutcome(db, input) : null;
+    const received = (): LeadReceived | CalculatorLeadReceived =>
+      calculator ? { status: 'received', estimate: calculator.estimate } : { status: 'received' };
+
     if (input.referenceCode) {
       this.logger.warn(`Honeypot filled on form "${input.formId}"; submission discarded`);
-      return { status: 'received' };
+      return received();
     }
 
     const botCheck = await this.turnstile.verify(input.turnstileToken, visitorIp);
@@ -63,7 +73,6 @@ export class LeadsService {
       throw new ForbiddenException(body);
     }
 
-    const db = this.prisma.client;
     const landingPage = input.landingPageSlug
       ? await db.landingPage.findUnique({
           where: { slug: input.landingPageSlug },
@@ -100,8 +109,12 @@ export class LeadsService {
           phone: input.phone,
           company: input.company,
           message: input.message,
-          budgetBand: input.budgetBand,
+          // A calculator lead's band is the one its own estimate falls in, so the inbox can
+          // be filtered on a figure we calculated rather than one the visitor guessed.
+          budgetBand: calculator ? calculator.estimate.budgetBand : input.budgetBand,
           timeline: input.timeline,
+          projectType: calculator?.answers.projectType,
+          answers: calculator?.stored,
           referralSource: input.referralSource,
           siteUrl: input.siteUrl,
           serviceInterest: input.serviceInterest,
@@ -131,14 +144,15 @@ export class LeadsService {
       this.logger.warn(`Lead ${lead.id} stored without a Turnstile verdict`);
     }
 
-    await this.queueEmails(input, lead, acknowledgementFrom(landingPage?.content ?? homeContent?.value));
-    return { status: 'received' };
+    await this.queueEmails(input, lead, acknowledgementFrom(landingPage?.content ?? homeContent?.value), calculator);
+    return received();
   }
 
   private async queueEmails(
     input: LeadSubmission,
     lead: { id: string; createdAt: Date },
     acknowledgement: Acknowledgement,
+    calculator: CalculatorLeadOutcome | null,
   ): Promise<void> {
     const summary: LeadSummary = {
       leadId: lead.id,
@@ -154,10 +168,16 @@ export class LeadsService {
       serviceInterest: input.serviceInterest,
       message: input.message,
       landingPageSlug: input.landingPageSlug,
+      answers: calculator?.stored,
       attribution: input.attribution,
       submittedAt: lead.createdAt.toISOString(),
     };
-    const jobs: EmailJob[] = [{ template: 'lead-confirmation', to: [input.email], lead: summary, acknowledgement }];
+    // A calculator lead gets its result instead of the standard confirmation, so the
+    // visitor's copy carries the same figures the page showed them.
+    const jobs: EmailJob[] =
+      calculator?.email
+        ? [{ template: 'calculator-result', to: [input.email], lead: summary, result: calculator.email }]
+        : [{ template: 'lead-confirmation', to: [input.email], lead: summary, acknowledgement }];
 
     try {
       const recipients = await this.settings.leadNotificationRecipients();
