@@ -50,7 +50,7 @@
     },
     "secondaryCta": {
       "label": "Instant estimate",
-      "href": "/#estimate"
+      "href": "/cost-calculator/"
     },
     "links": [
       {
@@ -159,7 +159,7 @@
         "body": "Answer eight questions and get an indicative price range in under three minutes.",
         "cta": {
           "label": "Get an instant estimate",
-          "href": "/#estimate"
+          "href": "/cost-calculator/"
         }
       }
     },
@@ -294,7 +294,7 @@
           "links": [
             {
               "label": "Website cost calculator",
-              "href": "/#estimate"
+              "href": "/cost-calculator/"
             },
             {
               "label": "Free website audit",
@@ -315,7 +315,7 @@
           "links": [
             {
               "label": "Insights and blog",
-              "href": "/#insights"
+              "href": "/insights/"
             },
             {
               "label": "Guides and white papers",
@@ -352,7 +352,7 @@
             },
             {
               "label": "News",
-              "href": "/#insights"
+              "href": "/insights/"
             }
           ]
         }
@@ -468,11 +468,11 @@
           },
           {
             "label": "Insights",
-            "href": "/#insights"
+            "href": "/insights/"
           },
           {
             "label": "Cost calculator",
-            "href": "/#estimate"
+            "href": "/cost-calculator/"
           },
           {
             "label": "Awards",
@@ -564,7 +564,7 @@
         "links": [
           {
             "label": "Cost calculator",
-            "href": "/#estimate"
+            "href": "/cost-calculator/"
           },
           {
             "label": "Free website audit",
@@ -576,7 +576,7 @@
           },
           {
             "label": "Insights",
-            "href": "/#insights"
+            "href": "/insights/"
           },
           {
             "label": "Guides and reports",
@@ -625,7 +625,7 @@
           },
           {
             "label": "News",
-            "href": "/#insights"
+            "href": "/insights/"
           },
           {
             "label": "Contact",
@@ -704,7 +704,7 @@
     },
     "secondaryCta": {
       "label": "Instant estimate",
-      "href": "/#estimate"
+      "href": "/cost-calculator/"
     },
     "backgroundImage": {
       "src": "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1800&q=65"

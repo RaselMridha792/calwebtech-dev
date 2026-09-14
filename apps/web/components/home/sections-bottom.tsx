@@ -11,8 +11,8 @@ type Content = HomePageContent;
 type Home = HomePageView;
 
 /**
- * The cost estimate band. Until the calculator ships (Task 4.1) the card is a static
- * preview of one question, and its button goes to a person rather than a next step.
+ * The cost estimate band. The card is a static preview of one question, so the homepage
+ * ships no calculator JavaScript; its button opens the tool itself at /cost-calculator/.
  */
 export function EstimateBand({ estimate }: { estimate: Content['estimate'] }) {
   const { preview } = estimate;

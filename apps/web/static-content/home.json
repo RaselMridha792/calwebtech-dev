@@ -14,13 +14,13 @@
     },
     "header": {
       "primaryCta": { "label": "Book a consultation", "href": "#book" },
-      "secondaryCta": { "label": "Instant estimate", "href": "#estimate" }
+      "secondaryCta": { "label": "Instant estimate", "href": "/cost-calculator/" }
     },
     "megaMenu": {
       "servicesPromo": {
         "heading": "Not sure what your project costs?",
         "body": "Answer eight questions and get an indicative price range in under three minutes.",
-        "cta": { "label": "Get an instant estimate", "href": "#estimate" }
+        "cta": { "label": "Get an instant estimate", "href": "/cost-calculator/" }
       },
       "serviceColumns": [
         {
@@ -98,7 +98,7 @@
         {
           "title": "Free tools",
           "links": [
-            { "label": "Website cost calculator", "href": "#estimate" },
+            { "label": "Website cost calculator", "href": "/cost-calculator/" },
             { "label": "Free website audit", "href": "/contact/" },
             { "label": "AI search visibility check", "href": "/services/ai-search-visibility/" },
             { "label": "Which website do you need? Quiz", "href": "#estimate" }
@@ -107,7 +107,7 @@
         {
           "title": "Learn",
           "links": [
-            { "label": "Insights and blog", "href": "#insights" },
+            { "label": "Insights and blog", "href": "/insights/" },
             { "label": "Guides and white papers", "href": "/guides/" },
             { "label": "Glossary", "href": "/glossary/" },
             { "label": "Our playbook", "href": "#process" }
@@ -120,7 +120,7 @@
             { "label": "Team", "href": "/team/" },
             { "label": "Awards and recognition", "href": "#awards" },
             { "label": "Careers", "href": "/careers/" },
-            { "label": "News", "href": "#insights" }
+            { "label": "News", "href": "/insights/" }
           ]
         }
       ],
@@ -166,8 +166,8 @@
             { "label": "Technology", "href": "#tech" },
             { "label": "Process", "href": "#process" },
             { "label": "Pricing", "href": "#pricing" },
-            { "label": "Insights", "href": "#insights" },
-            { "label": "Cost calculator", "href": "#estimate" },
+            { "label": "Insights", "href": "/insights/" },
+            { "label": "Cost calculator", "href": "/cost-calculator/" },
             { "label": "Awards", "href": "#awards" }
           ]
         }
@@ -282,7 +282,7 @@
         "question": "How many pages will the new site need?",
         "options": ["Under 10", "10 to 50", "50 to 150", "More than 150"]
       },
-      "cta": { "label": "Talk to us about cost", "href": "#book" },
+      "cta": { "label": "Start the estimate", "href": "/cost-calculator/" },
       "backgroundImage": {
         "src": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1800&q=65"
       }
@@ -432,10 +432,10 @@
         { "label": "Education", "href": "/industries/" }
       ],
       "resources": [
-        { "label": "Cost calculator", "href": "#estimate" },
+        { "label": "Cost calculator", "href": "/cost-calculator/" },
         { "label": "Free website audit", "href": "/contact/" },
         { "label": "AI visibility check", "href": "/services/ai-search-visibility/" },
-        { "label": "Insights", "href": "#insights" },
+        { "label": "Insights", "href": "/insights/" },
         { "label": "Guides and reports", "href": "/guides/" },
         { "label": "Glossary", "href": "/glossary/" },
         { "label": "Our playbook", "href": "#process" },
@@ -448,7 +448,7 @@
         { "label": "Client feedback", "href": "#testimonials" },
         { "label": "Pricing", "href": "#pricing" },
         { "label": "Careers", "href": "/careers/" },
-        { "label": "News", "href": "#insights" },
+        { "label": "News", "href": "/insights/" },
         { "label": "Contact", "href": "#book" }
       ],
       "legal": [

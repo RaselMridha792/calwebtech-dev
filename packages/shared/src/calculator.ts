@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import type { BudgetBand } from './lead';
+import { SITE_ROUTES } from './site-paths';
 
 /*
  * The cost calculator (docs/03-page-specs.md, "Cost calculator"; docs/06-build-plan.md,
@@ -15,7 +16,7 @@ import type { BudgetBand } from './lead';
  * email-jobs.ts can import it without a cycle.
  */
 
-export const CALCULATOR_PATH = '/cost-calculator/';
+export const CALCULATOR_PATH = SITE_ROUTES.costCalculator;
 /** Where the result's next action goes; the booking family owns the page. */
 export const CONSULTATION_PATH = '/book-a-consultation/';
 /** `formId` of the calculator's lead, and the `source` it passes to the booking page. */

@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { linkSchema } from '../home-page';
 import { imageSchema } from '../media';
 import { slugSchema } from '../seo';
+import { SITE_ROUTES } from '../site-paths';
 import {
   answerBlockSchema,
   countSentences,
@@ -22,9 +23,9 @@ import {
  * bullets, a glossary term is paragraphs. Nothing here needs a Markdown or MDX renderer.
  */
 
-/** Routes of this family. `SITE_ROUTES` is the foundation's and does not carry them yet. */
-export const GUIDES_ROUTE = '/guides/';
-export const GLOSSARY_ROUTE = '/glossary/';
+/** Routes of this family, named here as well so the pages read the family's own constant. */
+export const GUIDES_ROUTE = SITE_ROUTES.guides;
+export const GLOSSARY_ROUTE = SITE_ROUTES.glossary;
 
 export const guidePath = (slug: string): string => `/guides/${slug}/`;
 export const glossaryTermPath = (slug: string): string => `/glossary/${slug}/`;

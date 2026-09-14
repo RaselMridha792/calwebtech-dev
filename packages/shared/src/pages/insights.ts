@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { linkSchema } from '../home-page';
 import { decorativeImageSchema, imageSchema } from '../media';
 import { SEO_DESCRIPTION_MAX, SEO_TITLE_MAX, slugSchema } from '../seo';
+import { SITE_ROUTES } from '../site-paths';
 import { answerBlockSchema, caseStudyCardSchema, pageSeoSchema, questionSchema, requiredText } from './common';
 
 /**
@@ -45,7 +46,7 @@ export const INSIGHTS_TAKEAWAYS_HEADING = 'Key takeaways';
 /** `formId` of the inline subscribe block; the API answers it with this family's copy. */
 export const INSIGHTS_NEWSLETTER_FORM_ID = 'insights-newsletter';
 
-export const INSIGHTS_ROUTE = '/insights/';
+export const INSIGHTS_ROUTE = SITE_ROUTES.insights;
 
 /** `/insights/<slug>/`: an article, or a topic. One slug space, so the two never collide. */
 export const insightsArticlePath = (slug: string): string => `${INSIGHTS_ROUTE}${slug}/`;
