@@ -192,12 +192,12 @@ const NOT_FOUND: StaticNotFoundContentInput = {
 /** Every setting the family seeds, validated by its schema. */
 function settings(): [string, Prisma.InputJsonValue][] {
   return [
-    [STATIC_SETTING_KEYS.pricing, staticPricingContentSchema.parse(PRICING) as Prisma.InputJsonObject],
-    [STATIC_SETTING_KEYS.process, staticProcessContentSchema.parse(PROCESS) as Prisma.InputJsonObject],
-    [STATIC_SETTING_KEYS.contact, staticContactContentSchema.parse(CONTACT) as Prisma.InputJsonObject],
-    [STATIC_SETTING_KEYS.faq, staticFaqContentSchema.parse(FAQ) as Prisma.InputJsonObject],
-    [STATIC_SETTING_KEYS.thankYou, staticThankYouContentSchema.parse(THANK_YOU) as Prisma.InputJsonObject],
-    [STATIC_SETTING_KEYS.notFound, staticNotFoundContentSchema.parse(NOT_FOUND) as Prisma.InputJsonObject],
+    [STATIC_SETTING_KEYS.pricing, staticPricingContentSchema.parse(PRICING)],
+    [STATIC_SETTING_KEYS.process, staticProcessContentSchema.parse(PROCESS)],
+    [STATIC_SETTING_KEYS.contact, staticContactContentSchema.parse(CONTACT)],
+    [STATIC_SETTING_KEYS.faq, staticFaqContentSchema.parse(FAQ)],
+    [STATIC_SETTING_KEYS.thankYou, staticThankYouContentSchema.parse(THANK_YOU)],
+    [STATIC_SETTING_KEYS.notFound, staticNotFoundContentSchema.parse(NOT_FOUND)],
     ...STATIC_LEGAL_SLUGS.map((slug): [string, Prisma.InputJsonValue] => [
       STATIC_SETTING_KEYS.legal[slug],
       staticLegalContentSchema.parse(LEGAL[slug]) as Prisma.InputJsonObject,
