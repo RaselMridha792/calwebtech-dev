@@ -90,13 +90,13 @@ export function FeaturedArticle({ article, copy }: { article: InsightsArticleCar
     <article className="lift relative mt-10 grid overflow-hidden rounded-2xl border border-line bg-white lg:grid-cols-2" {...reveal()}>
       {article.image ? (
         <div className="relative aspect-video bg-mist lg:h-full">
+          {/* Not preloaded: the hero backdrop above it is the listing's LCP element (docs/09). */}
           <ResponsiveImage
             src={article.image.src}
             alt={article.image.alt}
             fill
             sizes="(min-width: 1024px) 50vw, 100vw"
             className="object-cover"
-            priority
           />
         </div>
       ) : null}
