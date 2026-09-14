@@ -1,0 +1,156 @@
+{
+  "slug": "information-security",
+  "lastUpdated": "2026-09-14",
+  "seo": {
+    "title": "Information security",
+    "description": "How Calwebtech protects the data this website collects: private database, encrypted transport, credential handling, access control and encrypted backups.",
+    "ogImage": null
+  },
+  "title": "Information security",
+  "intro": "This page describes how the data you send through this website is protected: where it is stored, how it travels, who can reach it, how credentials are handled and how it is backed up. The same practices apply to the platforms we build for clients.",
+  "sections": [
+    {
+      "id": "where-data-lives",
+      "heading": "Where the data lives",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Enquiries, bookings and subscribers are stored in a PostgreSQL database we run ourselves, not in a third-party form or mailing list service. The database and the queue that holds outgoing emails run on a private network inside the server. Neither is published to the internet: the only public entry point is the web proxy, which accepts HTTPS traffic for the website."
+        }
+      ]
+    },
+    {
+      "id": "in-transit",
+      "heading": "Data in transit",
+      "blocks": [
+        {
+          "type": "list",
+          "items": [
+            "Every page and form is served over HTTPS, with certificates issued and renewed automatically.",
+            "The website’s API is served from the same address as the site, so no other website is allowed to call it from a visitor’s browser.",
+            "Traffic between the website, the API and the database stays on the server’s private network."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "forms",
+      "heading": "How forms are protected",
+      "blocks": [
+        {
+          "type": "list",
+          "items": [
+            "Every submission is validated on the server against a strict schema. The browser never decides what is valid.",
+            "Cloudflare Turnstile checks that a submission comes from a person before anything is stored.",
+            "A hidden field catches automated form fillers, whose submissions are discarded.",
+            "Submissions are rate limited for each visitor address."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "access",
+      "heading": "Access and credentials",
+      "blocks": [
+        {
+          "type": "list",
+          "items": [
+            "Staff sign in to the administration area through our own system, not an external login service. Passwords are stored only as Argon2id hashes.",
+            "Sessions use first-party cookies that scripts cannot read, that are sent only over HTTPS and never with requests started by other websites. Every change is protected against cross-site request forgery.",
+            "Permissions are checked on the server for every administrative action, according to each person’s role.",
+            "Sign-ins, content changes, changes to an enquiry’s status, data exports and email campaign sends are written to an audit log.",
+            "Keys and passwords for the services the site uses are kept in environment files on the server, never in the source code.",
+            "When we hand a project over, every account and credential is transferred into the client’s name through a password manager."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "email",
+      "heading": "Email",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Emails are sent through Resend, which acts only as the delivery service. Resend receives the recipient’s address and the content of each email so it can deliver it. Contact lists, segments and campaign history stay in our own database."
+        }
+      ]
+    },
+    {
+      "id": "releases",
+      "heading": "How changes are released",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "New versions of the site are built and tested automatically before they reach the server, including type checks, automated tests, accessibility and performance gates. The server only pulls finished images, each tagged with the change it contains. If a release fails its health checks, the previous version is brought back automatically."
+        }
+      ]
+    },
+    {
+      "id": "backups",
+      "heading": "Backups and recovery",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "The database is backed up every night. Nightly, weekly and monthly copies are encrypted before they leave the server and stored with a separate storage provider, under an account that is not the one the server runs on."
+        },
+        {
+          "type": "table",
+          "caption": "Backup schedule and recovery targets",
+          "columns": [
+            "Measure",
+            "Commitment"
+          ],
+          "rows": [
+            [
+              "Nightly backups kept",
+              "7 days"
+            ],
+            [
+              "Weekly backups kept",
+              "4 weeks"
+            ],
+            [
+              "Monthly backups kept",
+              "6 months"
+            ],
+            [
+              "Most data that could be lost in a failure",
+              "Up to 24 hours"
+            ],
+            [
+              "Time to restore the service after a failure",
+              "Within 4 hours"
+            ]
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A restore is tested in full before a platform goes live, rather than assumed to work."
+        }
+      ]
+    },
+    {
+      "id": "report-issue",
+      "heading": "Reporting a security issue",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "If you believe you have found a vulnerability in this website, please email us with the word \"Security\" in the subject line and enough detail for us to reproduce it. Give us a reasonable chance to fix it before you tell anyone else, and do not access, change or delete data that is not yours while testing. A person will reply, usually within one business day."
+        },
+        {
+          "type": "paragraph",
+          "text": "How we use personal data is explained in the [privacy policy](/privacy-policy/)."
+        }
+      ]
+    }
+  ],
+  "contactSection": {
+    "heading": "Contact us about security",
+    "body": "Email or call us. For a vulnerability report, put \"Security\" in the subject line so it reaches the right person first."
+  },
+  "contact": {
+    "phone": "+1 (800) 555-0188",
+    "phoneE164": "+18005550188",
+    "email": "hello@calwebtech.com"
+  }
+}

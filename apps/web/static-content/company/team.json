@@ -1,0 +1,128 @@
+{
+  "content": {
+    "seo": {
+      "title": "Our team",
+      "description": "Meet the Calwebtech team: the founder, technical lead, design lead and delivery manager who run your project from the first call to launch.",
+      "ogImage": null
+    },
+    "hero": {
+      "eyebrow": "Team",
+      "title": "The people who build your website",
+      "answerBlock": "Every Calwebtech project is led by the same senior people from the first call to launch: a founder who joins every proposal, a chief technology officer who writes the technical plan, a design lead who runs the design system and a delivery manager who is your weekly contact. Nobody hands your project to a junior team once the contract is signed.",
+      "intro": "This is who you would be working with, and what each of them is responsible for.",
+      "primaryCta": { "label": "Book a consultation", "href": "/contact/" },
+      "secondaryCta": { "label": "How a project runs", "href": "/process/" },
+      "backdrop": {
+        "src": "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1800&q=65"
+      }
+    },
+    "members": {
+      "heading": "Who will I be working with?",
+      "intro": "The people in the pitch are the people who build it. No handover to a junior team once the contract is signed.",
+      "empty": "Team profiles appear here once they are published."
+    },
+    "roles": {
+      "heading": "Who is responsible for what on a project?",
+      "intro": "One team owns the outcome, from discovery to the release after launch. You always know who to ask.",
+      "items": [
+        {
+          "title": "Who joins the first call?",
+          "body": "The founder, on every first call and every proposal, with the people who would run your project. You hear what we would do, roughly what it costs, and whether we are the wrong fit."
+        },
+        {
+          "title": "Who decides how it is built?",
+          "body": "The chief technology officer owns architecture and delivery, and writes the technical plan behind your quote, so the price reflects how the work will actually be done."
+        },
+        {
+          "title": "Who designs the screens I approve?",
+          "body": "The design lead runs the design system and every high-fidelity screen you sign off, starting with the pages that carry the money. Everything else is assembled from approved patterns."
+        },
+        {
+          "title": "Who do I talk to every week?",
+          "body": "The delivery manager is your weekly point of contact. They send a written update every week and keep the staging URL and the schedule honest."
+        }
+      ]
+    },
+    "faq": {
+      "heading": "What do people ask about the team?",
+      "intro": null
+    }
+  },
+  "members": [
+    {
+      "slug": "sawkat-hasan",
+      "name": "Sawkat Hasan",
+      "role": "Founder",
+      "bio": "Joins every first call and every proposal. Twelve years in B2B commerce.",
+      "photo": {
+        "src": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=70",
+        "alt": "Sawkat Hasan, Founder"
+      },
+      "skills": ["B2B commerce", "Discovery", "Proposals"],
+      "socials": []
+    },
+    {
+      "slug": "rasel-mridha",
+      "name": "Rasel Mridha",
+      "role": "Chief Technology Officer",
+      "bio": "Owns architecture and delivery. Writes the technical plan behind your quote.",
+      "photo": {
+        "src": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=500&q=70",
+        "alt": "Rasel Mridha, Chief Technology Officer"
+      },
+      "skills": ["Architecture", "Delivery", "Technical planning"],
+      "socials": []
+    },
+    {
+      "slug": "priya-raman",
+      "name": "Priya Raman",
+      "role": "Design Lead",
+      "bio": "Runs the design system and every high-fidelity screen you approve.",
+      "photo": {
+        "src": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=70",
+        "alt": "Priya Raman, Design Lead"
+      },
+      "skills": ["Design systems", "Interface design"],
+      "socials": []
+    },
+    {
+      "slug": "dana-whitfield",
+      "name": "Dana Whitfield",
+      "role": "Delivery Manager",
+      "bio": "Your weekly point of contact. Keeps the staging URL and the schedule honest.",
+      "photo": {
+        "src": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=500&q=70",
+        "alt": "Dana Whitfield, Delivery Manager"
+      },
+      "skills": ["Delivery management", "Scheduling", "Staging reviews"],
+      "socials": []
+    }
+  ],
+  "faqs": [
+    {
+      "id": "faq-team-senior",
+      "question": "Will senior people work on our project, or a junior team?",
+      "answer": "Senior people. The people you meet in the pitch are the people who design, build and launch the site. There is no handover to a junior team once the contract is signed."
+    },
+    {
+      "id": "faq-team-meet",
+      "question": "Can we meet the team before we sign anything?",
+      "answer": "Yes. The first call is a thirty minute conversation with the people who would run your project, and we sign your NDA before it. After the call you get a written proposal with scope, timeline and a fixed price."
+    },
+    {
+      "id": "faq-team-communication",
+      "question": "How does the team keep us updated during a project?",
+      "answer": "With a weekly call, a shared project board, a written update every week and a staging URL you can open any day. The delivery manager is your single point of contact, so nothing depends on chasing the right person."
+    },
+    {
+      "id": "faq-team-feedback",
+      "question": "What does the team need from us, and when?",
+      "answer": "Ninety minutes of your team and a named decision maker in discovery, feedback on designs within two days, content and integration credentials during the build, and two people at the training sessions. Most projects stall on content, not code, so the proposal names the dates."
+    },
+    {
+      "id": "faq-team-after-launch",
+      "question": "Who looks after the site once it is live?",
+      "answer": "The same team, on a month-to-month care plan: patching, backups with a tested restore, monitoring and a fixed allowance of development hours, with a four-hour response on anything critical."
+    }
+  ]
+}

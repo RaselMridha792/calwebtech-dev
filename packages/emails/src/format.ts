@@ -35,6 +35,7 @@ export function submissionRows(lead: LeadSummary): DetailRow[] {
   const rows: (DetailRow | null)[] = [
     ['Name', lead.name],
     ['Email', lead.email],
+    lead.enquiry ? ['Enquiry', lead.enquiry] : null,
     lead.company ? ['Company', lead.company] : null,
     lead.phone ? ['Phone', lead.phone] : null,
     lead.siteUrl ? ['Website', lead.siteUrl] : null,

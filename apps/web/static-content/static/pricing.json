@@ -1,0 +1,159 @@
+{
+  "content": {
+    "seo": {
+      "title": "Website pricing: what a project costs",
+      "description": "Published price bands for Calwebtech websites and platforms, what moves the number, how a fixed quote is set, and answers to common pricing questions.",
+      "ogImage": null
+    },
+    "hero": {
+      "title": "Website and platform pricing",
+      "answer": "A Calwebtech marketing website costs $12,000 to $25,000, and a platform build with booking, a dashboard, campaigns and integrations costs $25,000 to $60,000. Ongoing care and development starts from $1,500 a month. Every project is quoted as a fixed price after discovery, with the change process written down before work starts.",
+      "intro": "These are the bands we quote from on first calls. They are published so you can tell in ninety seconds whether we are in your range, before anyone books a meeting."
+    },
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1800&q=65"
+    },
+    "tiers": {
+      "heading": "How much does a custom website cost?",
+      "intro": "Three engagement shapes cover the work we take on. Your fixed quote lands inside one of them once discovery has pinned down the scope.",
+      "highlightLabel": "Most common",
+      "note": "Prices are in US dollars. Hosting, domains and platform licences are billed to you directly, so every account stays in your name.",
+      "empty": "Our price bands are being updated. Ask us for a quote and we will reply with the range for your project."
+    },
+    "included": {
+      "heading": "What does every project include?",
+      "intro": "Whichever band you are in, these come as standard rather than as extras on the invoice.",
+      "items": [
+        "A fixed price and scope in writing before work starts",
+        "Custom design built from a token-based component library",
+        "A content management system your team publishes from without a developer",
+        "Lead capture that stores every enquiry in a database you own",
+        "A written performance budget, checked on every release",
+        "A WCAG 2.2 AA accessibility audit before launch",
+        "Permanent redirects for every existing URL that earns traffic",
+        "Two recorded training sessions and a written operations manual",
+        "Code, database, design files and accounts transferred to you at handover",
+        "A 60 day warranty on anything that does not behave as specified"
+      ]
+    },
+    "factors": {
+      "heading": "What makes a website project cost more or less?",
+      "intro": "Price follows effort, and effort follows a handful of decisions. These are the ones that move a quote the most.",
+      "items": [
+        {
+          "title": "Integrations",
+          "body": "Connecting a CRM, ERP, booking system or payment provider is usually the biggest variable. A documented API is quick to work with; an older system without one can take as long as the website itself."
+        },
+        {
+          "title": "Unique templates, not page count",
+          "body": "Fifty service pages built from one template cost far less than ten pages that each need their own layout. We price the number of distinct templates and components, not the number of URLs."
+        },
+        {
+          "title": "Content and copywriting",
+          "body": "If your team supplies finished copy and images, the budget goes on design and build. If we write, source or restructure content, that time is quoted as its own line so you can see it."
+        },
+        {
+          "title": "Design depth",
+          "body": "A site assembled from an approved component library moves quickly. Illustration, bespoke motion, photography direction or a new brand system add design weeks."
+        },
+        {
+          "title": "Migration from an existing site",
+          "body": "Moving hundreds of posts, products or case studies, mapping every URL and keeping rankings intact is careful work, and it is priced by volume."
+        },
+        {
+          "title": "Commerce, accounts and dashboards",
+          "body": "A catalogue with variants, customer accounts, a booking flow or a reporting dashboard moves a project from the Focused build band into the Platform build band."
+        },
+        {
+          "title": "Approvals and compliance",
+          "body": "Regulated claims, legal review cycles and several stakeholders signing off each stage add time to the schedule, so they add to the price."
+        }
+      ]
+    },
+    "quoting": {
+      "heading": "How do you arrive at a fixed price?",
+      "intro": "No discovery retainer and no phased quotes that grow. The number is set before design work starts.",
+      "steps": [
+        {
+          "title": "A thirty minute call",
+          "body": "We talk through what is broken, who the site is for and what it has to connect to. If we are the wrong fit, we say so on the call."
+        },
+        {
+          "title": "A written proposal in two business days",
+          "body": "Scope, timeline, price and exclusions in writing. The first call and the proposal cost nothing and commit you to nothing."
+        },
+        {
+          "title": "The price fixed in discovery",
+          "body": "The first week confirms the sitemap, the content inventory and the fixed price in writing, before anyone opens a design tool."
+        },
+        {
+          "title": "Changes quoted before they happen",
+          "body": "If the scope moves during the project, the change is priced and approved before the work starts. The number in the proposal is the number you pay."
+        }
+      ]
+    },
+    "faq": {
+      "heading": "What else do buyers ask about pricing?",
+      "intro": "Straight answers to the questions that come up on first calls about budget, payment and ongoing costs."
+    },
+    "cta": {
+      "heading": "Want a number for your own project?",
+      "body": "Tell us what you need. We reply within one business day with the band your project falls into and what would move it.",
+      "primaryCta": {
+        "label": "Ask for a quote",
+        "href": "/contact/?enquiry=new-project"
+      },
+      "secondaryCta": {
+        "label": "Get an instant estimate",
+        "href": "/#estimate"
+      }
+    }
+  },
+  "tiers": [
+    {
+      "name": "Focused build",
+      "priceLabel": "$12k to $25k",
+      "summary": "Marketing site, custom design, CMS and lead capture. Six to eight weeks.",
+      "highlighted": false
+    },
+    {
+      "name": "Platform build",
+      "priceLabel": "$25k to $60k",
+      "summary": "Everything above plus booking, dashboard, campaigns and integrations. Nine to fourteen weeks.",
+      "highlighted": true
+    },
+    {
+      "name": "Ongoing partner",
+      "priceLabel": "From $1.5k/mo",
+      "summary": "Care, monitoring, a fixed development allowance and quarterly funnel review. Month to month.",
+      "highlighted": false
+    }
+  ],
+  "faqs": [
+    {
+      "id": "faq-pricing-cost",
+      "question": "How much does a website cost with Calwebtech?",
+      "answer": "A marketing website with custom design, a content management system and lead capture costs $12,000 to $25,000 and takes six to eight weeks. A platform build that adds booking, a dashboard, campaigns and integrations costs $25,000 to $60,000 over nine to fourteen weeks. Ongoing care and development starts from $1,500 a month."
+    },
+    {
+      "id": "faq-pricing-fixed",
+      "question": "Is the price fixed once we agree it?",
+      "answer": "Yes. The proposal sets a fixed price for a fixed scope, and that is the number you pay. If you want to add or change something during the project, we quote the change and wait for your approval before any work starts on it."
+    },
+    {
+      "id": "faq-pricing-proposal",
+      "question": "Do you charge for the first call or the proposal?",
+      "answer": "No. The first call and the written proposal are free, with no obligation and no drip sequence afterwards. If we are not the right fit for the project, we will tell you and point you somewhere better."
+    },
+    {
+      "id": "faq-pricing-partner",
+      "question": "What does the Ongoing partner plan cover?",
+      "answer": "Care, monitoring, a fixed development allowance each month and a quarterly review of your enquiry funnel, from $1,500 a month. It runs month to month, so you can stop when it stops being useful and take the code with you."
+    },
+    {
+      "id": "faq-pricing-subscriptions",
+      "question": "Are hosting and software subscriptions included in the price?",
+      "answer": "No. Hosting, domains, paid plugins and platform licences are billed to you directly and registered in your name, so you never depend on us to renew them. The proposal lists each one in its exclusions before you sign."
+    }
+  ]
+}

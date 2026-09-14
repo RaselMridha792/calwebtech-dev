@@ -1,0 +1,228 @@
+{
+  "content": {
+    "seo": {
+      "title": "Web design process: how a project runs",
+      "description": "The five stages of a Calwebtech project, from discovery to handover: what happens each week, what you receive and what we need from your team.",
+      "ogImage": null
+    },
+    "hero": {
+      "title": "How a website project runs",
+      "answer": "A Calwebtech project runs in five stages: discovery, design, build, prove and launch. A marketing site takes six to eight weeks from start to handover and a platform build nine to fourteen, with the price fixed in writing in the first week. Each stage below lists what you get and what we need from you, because most projects stall on content, not code.",
+      "intro": "Published in full, including what we need from you and when. The dates are shared dates: we hold ours, and the plan shows exactly where yours fall."
+    },
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1800&q=65"
+    },
+    "steps": {
+      "heading": "What happens at each stage of a project?",
+      "intro": "Five stages, each with a clear output. From the build stage onwards there is a staging site you can open on any day.",
+      "youGetLabel": "What you get",
+      "weNeedLabel": "What we need from you",
+      "empty": "The stages of our process are being updated. Ask us and we will walk you through how your project would run."
+    },
+    "principles": {
+      "heading": "Why does the timeline hold?",
+      "intro": "Schedules slip when decisions are left open. These habits close them early.",
+      "items": [
+        {
+          "title": "The price is fixed before design starts",
+          "body": "Scope, timeline and exclusions are agreed in writing in the first week, so nobody discovers the real budget halfway through the build."
+        },
+        {
+          "title": "Patterns before pages",
+          "body": "Design tokens and a component library come first. Most pages are then assembled from approved patterns, which is why design takes two weeks rather than two months."
+        },
+        {
+          "title": "Work happens in the open",
+          "body": "A staging URL you can open any day, a weekly progress call and early access to the dashboard. Nothing only works on a demo day."
+        },
+        {
+          "title": "The people in the pitch build it",
+          "body": "Senior people stay on your project from discovery to handover. There is no handover to a junior team after the contract is signed."
+        }
+      ]
+    },
+    "delays": {
+      "heading": "What usually slows a website project down?",
+      "intro": "The cause is rarely code. These are the delays we plan around from the first week.",
+      "items": [
+        {
+          "title": "Content arriving late",
+          "body": "Copy, product data and images are the most common blocker. The plan names the date each piece is needed, and we can draft copy for your approval if writing is the bottleneck."
+        },
+        {
+          "title": "Feedback spread across people",
+          "body": "Five sets of comments that contradict each other cost a week. We ask for one consolidated review per stage from a named decision maker."
+        },
+        {
+          "title": "Waiting for integration access",
+          "body": "API keys, test accounts and documentation for your CRM or ERP take time to arrange internally. We ask for them in discovery so they are ready for the build."
+        },
+        {
+          "title": "Legal sign-off left to the end",
+          "body": "Privacy policies, terms and regulated claims need approval before launch. We flag them in week one so approval never holds up the cutover."
+        }
+      ]
+    },
+    "afterLaunch": {
+      "heading": "What happens after launch?",
+      "body": "Launch is the start of the site’s working life, not the end of the project. For 60 days anything that does not behave as specified is fixed free, with a four hour response on critical issues, and after that you decide whether to keep us on.",
+      "items": [
+        "Monitoring switched on at DNS cutover",
+        "Two recorded training sessions for your team",
+        "A written operations manual",
+        "Every account transferred into your name through a password manager",
+        "Month-to-month care plans with no lock-in"
+      ],
+      "link": {
+        "label": "See care plan pricing",
+        "href": "/pricing/"
+      }
+    },
+    "faq": {
+      "heading": "What else do people ask about the process?",
+      "intro": "Timelines, working alongside your existing developer and what we need from you."
+    },
+    "cta": {
+      "heading": "Ready to see how your project would run?",
+      "body": "Tell us what you need. We reply within one business day and map the five stages onto your own dates on a thirty minute call.",
+      "primaryCta": {
+        "label": "Start a project",
+        "href": "/contact/?enquiry=new-project"
+      },
+      "secondaryCta": {
+        "label": "See pricing",
+        "href": "/pricing/"
+      }
+    }
+  },
+  "steps": [
+    {
+      "title": "Discovery",
+      "timing": "Week 1",
+      "summary": "Positioning, audience, service catalogue, sitemap and a conversion map for every page.",
+      "heading": "We work out what is actually wrong",
+      "body": "A working session on positioning, buyers and the service catalogue. We map the primary action for every page and agree the sitemap before anyone opens a design tool.",
+      "youGet": [
+        "Sitemap and conversion map",
+        "Content inventory",
+        "A fixed price, in writing"
+      ],
+      "weNeed": [
+        "90 minutes of your team",
+        "Your service list",
+        "A named decision maker"
+      ],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=72",
+        "alt": "Discovery workshop with the client team"
+      }
+    },
+    {
+      "title": "Design",
+      "timing": "Weeks 2 to 3",
+      "summary": "Tokens, component library and high-fidelity screens for the pages that carry the money.",
+      "heading": "You see real screens, not a mood board",
+      "body": "Design tokens and a component library first, then high-fidelity screens for the pages that carry the money. Everything else is assembled from approved patterns, which is why this stage does not drag.",
+      "youGet": [
+        "Figma file with edit access",
+        "7 high-fidelity screens",
+        "One revision round included"
+      ],
+      "weNeed": [
+        "Logo and brand assets",
+        "Copy, or approval to draft",
+        "Feedback within 2 days"
+      ],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=900&q=72",
+        "alt": "Interface design work in progress"
+      }
+    },
+    {
+      "title": "Build",
+      "timing": "Weeks 3 to 7",
+      "summary": "Front end, API, dashboard and integrations, reviewed on a staging URL you can open any day.",
+      "heading": "A staging URL you can open any day",
+      "body": "Front end, API, dashboard and integrations, built in the open. Weekly progress notes, no black box, and nothing that only works on a demo day.",
+      "youGet": [
+        "Live staging environment",
+        "Weekly progress call",
+        "Dashboard access early"
+      ],
+      "weNeed": [
+        "Project content and images",
+        "Integration credentials",
+        "One consolidated review"
+      ],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=72",
+        "alt": "Developer building the platform"
+      }
+    },
+    {
+      "title": "Prove",
+      "timing": "Week 8",
+      "summary": "Cross-browser QA, accessibility audit, performance pass and a tested backup restore.",
+      "heading": "We try to break it before your customers do",
+      "body": "Cross-browser and cross-device QA, an accessibility audit, a performance pass against the written budget, structured data validation, redirect verification, and one tested backup restore.",
+      "youGet": [
+        "Lighthouse 90+ on mobile",
+        "WCAG 2.2 AA audit report",
+        "A restore proven in front of you"
+      ],
+      "weNeed": [
+        "Final copy sign-off",
+        "Legal page approval",
+        "A test run of your own"
+      ],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=72",
+        "alt": "Performance and analytics review before launch"
+      }
+    },
+    {
+      "title": "Launch",
+      "timing": "Week 9",
+      "summary": "DNS cutover, monitoring, two training sessions and the full documentation set.",
+      "heading": "You leave owning all of it",
+      "body": "DNS cutover, monitoring switched on, two recorded training sessions, a written operations manual, and every account transferred into your name through a password manager.",
+      "youGet": [
+        "Code, database, design files",
+        "Two recorded training sessions",
+        "60 day warranty"
+      ],
+      "weNeed": [
+        "DNS access",
+        "Two people at training",
+        "Final acceptance sign-off"
+      ],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=900&q=72",
+        "alt": "Handover and training session with the client team"
+      }
+    }
+  ],
+  "faqs": [
+    {
+      "id": "faq-process-duration",
+      "question": "How long does a project take?",
+      "answer": "Six to eight weeks for a marketing site, nine to fourteen for a platform build with booking, a dashboard and integrations. The most common cause of delay is content, not code, which is why the proposal names the dates we need things from you."
+    },
+    {
+      "id": "faq-process-developer",
+      "question": "What if we already have a developer?",
+      "answer": "That is common and usually fine. We can take design and front end and leave the back end with your team, or work the other way round. The proposal will say exactly where the boundary sits so nobody is guessing."
+    },
+    {
+      "id": "faq-process-inputs",
+      "question": "What do you need from us during a project?",
+      "answer": "A named decision maker, about ninety minutes of your team in discovery, your brand assets and service list, and feedback on designs within two days. Content is the most common cause of delay, so the proposal names the dates we need copy, images and integration credentials."
+    },
+    {
+      "id": "faq-process-first-reply",
+      "question": "What happens after I get in touch?",
+      "answer": "We read your message, look at your current site and email you within one business day to book a thirty minute call. After that call you get a written proposal with scope, timeline and a fixed price within two business days. If we are not the right fit we will say so and point you somewhere better."
+    }
+  ]
+}

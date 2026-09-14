@@ -12,6 +12,9 @@ import { SiteChromeModule } from './site/site-chrome.controller';
 import { IndustriesModule } from './industries/industries.controller';
 import { WorkModule } from './work/work.controller';
 import { ServicesModule } from './services/services.controller';
+import { CompanyModule } from './company/company.controller';
+import { LocationsModule } from './locations/locations.controller';
+import { StaticPagesModule } from './static/static.controller';
 
 @Module({
   imports: [
@@ -27,6 +30,9 @@ import { ServicesModule } from './services/services.controller';
     IndustriesModule,
     WorkModule,
     ServicesModule,
+    CompanyModule,
+    LocationsModule,
+    StaticPagesModule,
   ],
   controllers: [HealthController],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
