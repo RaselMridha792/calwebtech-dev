@@ -68,10 +68,15 @@ test.describe('cost calculator page', () => {
     await expect(page.locator('main#main')).toBeVisible();
     await expect(page.locator('main [data-answer-block]')).toHaveCount(1);
 
+    // The breadcrumbs sit above the answer block on every template and are not a call to
+    // action, so they are excluded here as they are in the other page suites.
     const order = await page.evaluate(() => {
       const answer = document.querySelector('main [data-answer-block]');
-      const cta = document.querySelector('main a[href^="#"], main a[href^="/"]');
-      if (!answer || !cta) return null;
+      if (!answer) return null;
+      const cta = [...document.querySelectorAll('main a[href^="#"], main a[href^="/"]')].find(
+        (link) => !link.closest('nav[aria-label="Breadcrumb"]'),
+      );
+      if (!cta) return null;
       return Boolean(answer.compareDocumentPosition(cta) & Node.DOCUMENT_POSITION_FOLLOWING);
     });
     expect(order, 'the answer block comes before the first call to action').toBe(true);

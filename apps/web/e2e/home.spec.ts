@@ -124,9 +124,11 @@ test.describe('homepage', () => {
   test('a mega menu closes after a link to a section of this page is followed', async ({ page }, testInfo) => {
     test.skip(testInfo.project.name !== 'desktop-1440', 'The mega menus are desktop only; small screens use the menu disclosure.');
     await page.goto(PAGE);
-    const button = page.getByRole('navigation', { name: 'Main', exact: true }).getByRole('button', { name: 'Resources', exact: true });
-    const panel = page.locator('#menu-resources');
-    const estimate = panel.getByRole('link', { name: 'Cost estimate', exact: true });
+    // The resources menu now reaches real pages, so the same-page link left in a mega menu
+    // is the services promotion; it is what proves the panel closes on an in-page jump.
+    const button = page.getByRole('navigation', { name: 'Main', exact: true }).getByRole('button', { name: 'Services', exact: true });
+    const panel = page.locator('#menu-services');
+    const estimate = panel.getByRole('link', { name: 'Get an instant estimate', exact: true });
 
     // A closed panel is hidden from the accessibility tree, so open it before finding the link.
     await button.focus();
@@ -149,7 +151,13 @@ test.describe('homepage', () => {
     await expect(menu).toHaveAttribute('open', '');
 
     await expect(menu.getByRole('link', { name: 'Pricing', exact: true })).toHaveAttribute('href', '/pricing/');
-    const estimate = menu.getByRole('link', { name: 'Cost estimate', exact: true });
+    await expect(menu.getByRole('link', { name: 'Cost calculator', exact: true })).toHaveAttribute(
+      'href',
+      '/cost-calculator/',
+    );
+    // The menu's own links are all pages now; the secondary call to action is the same-page
+    // jump that proves the disclosure closes when one is followed.
+    const estimate = menu.getByRole('link', { name: 'Instant estimate', exact: true });
     await expect(estimate).toHaveAttribute('href', '/#estimate');
     await estimate.click();
     await expect(menu).not.toHaveAttribute('open', '');
