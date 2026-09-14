@@ -1,5 +1,6 @@
 import {
   workBeforeAndAfterViewSchema,
+  workCaseStudyViewSchema,
   workIndexViewSchema,
   type WorkCaseStudyCard,
   type WorkIndexView,
@@ -11,6 +12,7 @@ import BeforeAndAfterPage from '@/app/(marketing)/(site)/before-and-after/page';
 import CaseStudyPage, { generateMetadata as caseStudyMetadata } from '@/app/(marketing)/(site)/work/[slug]/page';
 import WorkIndexPage, { generateMetadata as workIndexMetadata } from '@/app/(marketing)/(site)/work/page';
 import { workBeforeAndAfterSnapshot, workCaseStudySnapshots, workIndexSnapshot } from '@/static-content/work';
+import { QuoteSection } from './case-study';
 import { WorkResults } from './work-index';
 
 vi.mock('server-only', () => ({}));
@@ -196,6 +198,39 @@ describe('/work/<slug>/', () => {
     expect((metadata.title as { absolute: string }).absolute.length).toBeLessThanOrEqual(60);
     expect(String(metadata.description).length).toBeLessThanOrEqual(155);
     expect(metadata.alternates?.canonical).toBe('https://www.calwebtech.com/work/cascadia-health/');
+  });
+});
+
+describe('QuoteSection', () => {
+  const view = workCaseStudyViewSchema.parse(workCaseStudySnapshots['northmark-supply']);
+  const quote = view.quote;
+  const video = {
+    clientName: quote?.clientName ?? view.clientName,
+    role: quote?.role ?? null,
+    company: quote?.company ?? null,
+    poster: view.cover,
+    videoUrl: '/media/northmark-supply-testimonial.mp4',
+  };
+
+  it('shows the video testimonial beside the quote, with a play button that opens a dialog', () => {
+    const markup = renderToStaticMarkup(<QuoteSection view={{ ...view, videoTestimonial: video }} tone="white" />);
+    expect(quote).not.toBeNull();
+    expect(markup).toContain('<blockquote');
+    expect(markup).toContain(`aria-label="Play video testimonial from ${video.clientName}, ${String(video.company)}"`);
+    expect(markup).toContain('<dialog');
+    expect(markup).toContain('src="/media/northmark-supply-testimonial.mp4"');
+    expect(markup).toContain('preload="none"');
+    expectNoTealOnHeadingsOrLinks(markup);
+  });
+
+  it('shows a video testimonial on its own when there is no written quote, and nothing with neither', () => {
+    const videoOnly = renderToStaticMarkup(
+      <QuoteSection view={{ ...view, quote: null, videoTestimonial: { ...video, poster: null } }} tone="tint" />,
+    );
+    expect(videoOnly).toContain('id="quote-heading"');
+    expect(videoOnly).not.toContain('<blockquote');
+    expect(videoOnly).toContain('<dialog');
+    expect(renderToStaticMarkup(<QuoteSection view={{ ...view, quote: null, videoTestimonial: null }} tone="white" />)).toBe('');
   });
 });
 

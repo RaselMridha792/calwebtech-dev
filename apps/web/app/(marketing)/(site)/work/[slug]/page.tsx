@@ -17,6 +17,7 @@ import {
   RelatedCaseStudies,
   RelatedServices,
   hasAtAGlance,
+  hasClientWords,
   type LightTone,
 } from '@/components/work/case-study';
 import { caseStudyArticleJsonLd, caseStudyReviewJsonLd } from '@/components/work/json-ld';
@@ -100,7 +101,7 @@ function caseStudyParts(view: WorkCaseStudyView): Part[] {
       ),
     });
   }
-  if (view.quote) parts.push({ key: 'quote', render: (tone) => <QuoteSection view={view} tone={tone} /> });
+  if (hasClientWords(view)) parts.push({ key: 'quote', render: (tone) => <QuoteSection view={view} tone={tone} /> });
   if (view.relatedServices.length > 0) {
     parts.push({ key: 'related-services', render: (tone) => <RelatedServices view={view} tone={tone} /> });
   }

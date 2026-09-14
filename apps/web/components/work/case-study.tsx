@@ -3,8 +3,11 @@ import {
   servicePath,
   workFilterPath,
   type WorkCaseStudyView,
+  type WorkVideoTestimonial,
 } from '@calwebtech/shared';
 import type { ReactNode } from 'react';
+import { byline } from '@/lib/text';
+import { Showreel } from '../home/showreel';
 import { CardGrid, CaseStudyCard, LinkCard, TestimonialCard } from '../site/cards';
 import { Section, type SectionTone } from '../site/section';
 import { SectionHeading } from '../site/section-heading';
@@ -225,9 +228,46 @@ export function CaseStudyBeforeAfter({ view }: { view: View }) {
   );
 }
 
-/** The client's quote, from a testimonial they consented to publish. */
+/**
+ * The client on camera: the cover as the poster, and a play button that opens the video in
+ * a dialog. The video downloads only when it is played.
+ */
+export function VideoTestimonialCard({ video }: { video: WorkVideoTestimonial }) {
+  const detail = byline(video.role, video.company);
+  const who = [video.clientName, video.company].filter((part): part is string => Boolean(part)).join(', ');
+  return (
+    <figure className="relative h-full min-h-[280px] overflow-hidden rounded-2xl bg-ink">
+      {video.poster ? (
+        <ResponsiveImage
+          src={video.poster.src}
+          alt={video.poster.alt}
+          fill
+          sizes="(min-width: 1024px) 30vw, 100vw"
+          className="object-cover"
+        />
+      ) : null}
+      <div className="absolute inset-0 bg-linear-to-t from-ink via-ink/50 to-ink/10" aria-hidden="true" />
+      <Showreel variant="overlay" label={`Play video testimonial from ${who}`} videoUrl={video.videoUrl} poster={null} />
+      <figcaption className="pointer-events-none absolute inset-x-0 bottom-0 p-6">
+        <b className="block text-white">{video.clientName}</b>
+        {detail ? <span className="text-[14px] text-white/75">{detail}</span> : null}
+      </figcaption>
+    </figure>
+  );
+}
+
+/** Whether the client's words section has anything to show. */
+export function hasClientWords(view: View): boolean {
+  return view.quote !== null || view.videoTestimonial !== null;
+}
+
+/**
+ * The client's words: the quote and the video testimonial, each from a testimonial they
+ * consented to publish. Either may be missing; with neither, nothing renders.
+ */
 export function QuoteSection({ view, tone }: { view: View; tone: LightTone }) {
-  if (!view.quote) return null;
+  if (!hasClientWords(view)) return null;
+  const { quote, videoTestimonial } = view;
   const headingId = 'quote-heading';
   return (
     <Section id="client-quote" tone={tone} labelledBy={headingId}>
@@ -235,8 +275,9 @@ export function QuoteSection({ view, tone }: { view: View; tone: LightTone }) {
         <div className="lg:col-span-5">
           <SectionHeading id={headingId} title={view.headings.quote} size="medium" className="mb-0" />
         </div>
-        <div className="lg:col-span-7" {...reveal(1)}>
-          <TestimonialCard testimonial={view.quote} showRating />
+        <div className={`grid gap-6 lg:col-span-7 ${quote && videoTestimonial ? 'sm:grid-cols-2' : ''}`} {...reveal(1)}>
+          {quote ? <TestimonialCard testimonial={quote} showRating /> : null}
+          {videoTestimonial ? <VideoTestimonialCard video={videoTestimonial} /> : null}
         </div>
       </div>
     </Section>
