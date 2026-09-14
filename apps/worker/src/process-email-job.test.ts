@@ -112,3 +112,56 @@ describe('email job processor', () => {
     expect(deliveries).toHaveLength(0);
   });
 });
+
+/** The cost calculator's emailed copy of the result (packages/emails/src/calculator-result.tsx). */
+const calculatorResult: EmailJob = {
+  template: 'calculator-result',
+  to: ['dana@company.com'],
+  lead: { ...lead, type: 'CALCULATOR', formId: 'cost-calculator' },
+  result: {
+    heading: 'Your website cost estimate',
+    intro: 'Here is the range your answers describe.',
+    rangeHeading: 'Your indicative range',
+    rangeLabel: '$18,500 to $29,000',
+    tierName: 'Focused build',
+    tierSummary: 'Marketing site, custom design, a CMS and lead capture.',
+    monthly: 'No ongoing plan chosen.',
+    monthlyHeading: 'After launch',
+    breakdownHeading: 'Where the number comes from',
+    breakdown: [{ label: 'Project type', detail: 'Marketing website', value: '$12,000 to $16,000' }],
+    moversHeading: 'What would move it',
+    movers: [],
+    noMovers: 'Nothing here would lower the range.',
+    answersHeading: 'What you told us',
+    answers: [{ label: 'Project type', detail: null, value: 'Marketing website' }],
+    note: 'Indicative only. A fixed price follows discovery.',
+    bookingPath: '/book-a-consultation/?source=cost-calculator',
+    bookingLabel: 'Book a consultation',
+    methodologyPath: '/cost-calculator/#methodology',
+    methodologyLabel: 'How we work this out',
+  },
+};
+
+describe('cost calculator result', () => {
+  it('goes to the visitor with replies to the team, and one id per lead', async () => {
+    const { sent, deliveries, transport, store } = fakes();
+    await createEmailJobProcessor({ transport, store, from: FROM, siteOrigin: 'https://calwebtech.com' })({
+      data: calculatorResult,
+    });
+    expect(sent[0]).toMatchObject({
+      to: ['dana@company.com'],
+      replyTo: 'hello@calwebtech.com',
+      subject: 'Your website cost estimate: $18,500 to $29,000',
+      idempotencyKey: 'calculator-result-cmf0lead0000abc',
+    });
+    expect(sent[0]?.html).toContain('https://calwebtech.com/book-a-consultation/?source=cost-calculator');
+    expect(deliveries[0]?.record.template).toBe('calculator-result');
+  });
+
+  it('sends the result without its links when the worker has no origin configured', async () => {
+    const { sent, transport, store } = fakes();
+    await createEmailJobProcessor({ transport, store, from: FROM })({ data: calculatorResult });
+    expect(sent[0]?.html).toContain('$18,500 to $29,000');
+    expect(sent[0]?.html).not.toContain('book-a-consultation');
+  });
+});
