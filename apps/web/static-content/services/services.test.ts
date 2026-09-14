@@ -1,12 +1,15 @@
 import {
+  SERVICE_CASE_STUDY_LIMIT,
   SERVICE_ENQUIRY_ANCHOR,
   answerBlockSchema,
   serviceDetailViewSchema,
   servicesIndexViewSchema,
   type ServiceDetailView,
 } from '@calwebtech/shared';
-import { readdirSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
+import { z } from 'zod';
 import { unfinishedCopy } from '../copy-rules';
 import home from '../home.json';
 import landing from '../landing-b2b-website-design.json';
@@ -30,6 +33,26 @@ const details: [string, ServiceDetailView][] = Object.entries(serviceSnapshots).
   serviceDetailViewSchema.parse(view),
 ]);
 const index = servicesIndexViewSchema.parse(servicesIndexSnapshot);
+
+/**
+ * A sibling family's snapshot, or null while it is not on this branch. The work family's
+ * case study links (Project.services) and the industries family's lines (Industry.heroCopy)
+ * are the same records the service pages read, so once the families are merged the checks
+ * below hold every page to one answer.
+ */
+function siblingSnapshot<T>(file: string, schema: z.ZodType<T>): T | null {
+  const path = join(import.meta.dirname, '..', file);
+  return existsSync(path) ? schema.parse(JSON.parse(readFileSync(path, 'utf8'))) : null;
+}
+
+const workIndex = siblingSnapshot(
+  'work/index.json',
+  z.object({ caseStudies: z.array(z.object({ slug: z.string(), services: z.array(z.string()) })) }),
+);
+const industriesIndex = siblingSnapshot(
+  'industries/index.json',
+  z.object({ industries: z.array(z.object({ slug: z.string(), name: z.string(), line: z.string().nullable() })) }),
+);
 
 /** Every string anywhere in a view, for the proof checks. */
 function strings(value: unknown): string[] {
@@ -109,6 +132,37 @@ describe('services snapshots', () => {
         expect(study.metrics, `${slug}: ${study.slug}`).toEqual(approved?.metrics.slice(0, 3));
       }
       if (view.testimonial) expect(approvedQuotes, slug).toContainEqual(view.testimonial.quote);
+    }
+  });
+
+  it('quote a client whose case study the page shows, as the API takes quotes from the linked projects', () => {
+    for (const [slug, view] of details) {
+      if (!view.testimonial) continue;
+      const clients = view.proof?.caseStudies.map((study) => study.clientName) ?? [];
+      expect(clients, slug).toContain(view.testimonial.quote.company);
+    }
+  });
+
+  it.skipIf(workIndex === null)('show as proof the case studies the work family links to each service', () => {
+    for (const [slug, view] of details) {
+      const linked = (workIndex?.caseStudies ?? []).filter((study) => study.services.includes(slug)).map((study) => study.slug);
+      const shown = view.proof?.caseStudies.map((study) => study.slug) ?? [];
+      if (linked.length <= SERVICE_CASE_STUDY_LIMIT) {
+        expect([...shown].sort(), slug).toEqual([...linked].sort());
+      } else {
+        expect(shown, slug).toHaveLength(SERVICE_CASE_STUDY_LIMIT);
+        for (const study of shown) expect(linked, `${slug}: ${study}`).toContain(study);
+      }
+    }
+  });
+
+  it.skipIf(industriesIndex === null)('name and describe each industry as the industries family does', () => {
+    const industries = new Map((industriesIndex?.industries ?? []).map((industry) => [industry.slug, industry]));
+    for (const [slug, view] of details) {
+      for (const item of view.industries?.items ?? []) {
+        const listed = industries.get(item.slug);
+        expect({ name: item.name, line: item.line }, `${slug}: ${item.slug}`).toEqual({ name: listed?.name, line: listed?.line });
+      }
     }
   });
 
