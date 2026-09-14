@@ -110,6 +110,8 @@ function FilterChip({
     <li>
       <a href={href} aria-current={active ? 'true' : undefined} className={active ? chipActive : chipIdle}>
         {label}
+        {/* A space for the accessible name; flex layout ignores it. */}
+        {count === undefined ? null : ' '}
         {count === undefined ? null : (
           <span className={`font-normal ${active ? 'text-white/75' : 'text-body'}`}>{`(${String(count)})`}</span>
         )}
