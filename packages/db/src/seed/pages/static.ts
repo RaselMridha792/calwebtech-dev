@@ -5,6 +5,7 @@ import {
   staticContactContentSchema,
   staticFaqContentSchema,
   staticLegalContentSchema,
+  staticNotFoundContentSchema,
   staticPricingContentSchema,
   staticProcessContentSchema,
   staticThankYouContentSchema,
@@ -12,6 +13,7 @@ import {
   type StaticFaqContentInput,
   type StaticLegalContentInput,
   type StaticLegalSlug,
+  type StaticNotFoundContentInput,
   type StaticPricingContentInput,
   type StaticProcessContentInput,
   type StaticThankYouContentInput,
@@ -131,6 +133,8 @@ const THANK_YOU: StaticThankYouContentInput = {
     eyebrow: 'Request received',
     title: 'Thanks. Your request is with us.',
     intro: note,
+    received: { heading: 'Placeholder received heading', items: ['Placeholder received item'] },
+    response: { label: 'Placeholder label', value: 'Placeholder window', detail: note },
     nextSteps: { heading: 'Placeholder next steps heading', steps: items(2) },
     secondary: { heading: 'Placeholder secondary heading', body: note, cta: { label: 'Back to the homepage', href: '/' } },
     links: [],
@@ -153,14 +157,33 @@ const LEGAL: Record<StaticLegalSlug, StaticLegalContentInput> = Object.fromEntri
       seo: { title: `Placeholder: ${LEGAL_TITLES[slug].toLowerCase()}`, description: 'Placeholder description for a legal page.' },
       title: LEGAL_TITLES[slug],
       intro: note,
-      reviewStatus: 'draft',
-      draftNotice: 'Placeholder notice. This page is a draft pending legal review.',
       lastUpdated: '2026-09-14',
       sections: [{ id: 'placeholder', heading: 'Placeholder section', blocks: [{ type: 'paragraph', text: note }] }],
       contactSection: { heading: 'Placeholder contact heading', body: note },
     } satisfies StaticLegalContentInput,
   ]),
 ) as Record<StaticLegalSlug, StaticLegalContentInput>;
+
+const NOT_FOUND: StaticNotFoundContentInput = {
+  eyebrow: 'Page not found',
+  title: 'Placeholder: page not found',
+  intro: note,
+  search: {
+    label: 'Search this site',
+    placeholder: 'Placeholder hint',
+    submitLabel: 'Search',
+    resultsLabel: 'matching pages',
+    noResults: note,
+  },
+  destinations: {
+    heading: 'Placeholder destinations heading',
+    items: [
+      { title: 'Home', body: note, href: '/' },
+      { title: 'Contact', body: note, href: '/contact/' },
+    ],
+  },
+  help: { heading: 'Placeholder help heading', body: note },
+};
 
 /** Every setting the family seeds, validated by its schema. */
 function settings(): [string, Prisma.InputJsonValue][] {
@@ -170,6 +193,7 @@ function settings(): [string, Prisma.InputJsonValue][] {
     [STATIC_SETTING_KEYS.contact, staticContactContentSchema.parse(CONTACT) as Prisma.InputJsonObject],
     [STATIC_SETTING_KEYS.faq, staticFaqContentSchema.parse(FAQ) as Prisma.InputJsonObject],
     [STATIC_SETTING_KEYS.thankYou, staticThankYouContentSchema.parse(THANK_YOU) as Prisma.InputJsonObject],
+    [STATIC_SETTING_KEYS.notFound, staticNotFoundContentSchema.parse(NOT_FOUND) as Prisma.InputJsonObject],
     ...STATIC_LEGAL_SLUGS.map((slug): [string, Prisma.InputJsonValue] => [
       STATIC_SETTING_KEYS.legal[slug],
       staticLegalContentSchema.parse(LEGAL[slug]) as Prisma.InputJsonObject,
@@ -179,7 +203,7 @@ function settings(): [string, Prisma.InputJsonValue][] {
 
 export const staticSeed: PageSeed = {
   family: 'static',
-  content: { PRICING, PROCESS, CONTACT, FAQ, THANK_YOU, LEGAL, STATIC_ENQUIRY_TYPES },
+  content: { PRICING, PROCESS, CONTACT, FAQ, THANK_YOU, NOT_FOUND, LEGAL, STATIC_ENQUIRY_TYPES },
   async seed(db: PrismaClient) {
     // Created once: copy or enquiry routing a person set since is never overwritten.
     for (const [key, value] of settings()) {

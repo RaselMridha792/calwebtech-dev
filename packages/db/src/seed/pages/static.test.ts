@@ -49,6 +49,7 @@ describe('static family placeholder seed', () => {
         STATIC_SETTING_KEYS.contact,
         STATIC_SETTING_KEYS.faq,
         STATIC_SETTING_KEYS.thankYou,
+        STATIC_SETTING_KEYS.notFound,
         ...STATIC_LEGAL_SLUGS.map((slug) => STATIC_SETTING_KEYS.legal[slug]),
       ].sort(),
     );
