@@ -36,4 +36,9 @@ export interface CalculatorViewProps {
   permalink: string;
   /** Cloudflare Turnstile site key; without one the API refuses the submission. */
   turnstileSiteKey?: string;
+  /**
+   * True when the loader replaced the server-rendered card while something inside it held
+   * focus, so the first question takes it rather than letting it fall back to the body.
+   */
+  autoFocus?: boolean;
 }

@@ -40,13 +40,19 @@ const QUIET_BUTTON =
   'inline-flex h-12 items-center justify-center rounded-xl border border-line px-6 text-[15.5px] font-semibold text-ink hover:border-ink hover:bg-mist2';
 const CONTROL = 'h-12 w-full rounded-lg border border-line bg-white px-4 text-ink focus:border-primary aria-invalid:border-danger';
 
-export function Calculator({ copy, steps, events, permalink, turnstileSiteKey }: CalculatorViewProps) {
+export function Calculator({ copy, steps, events, permalink, turnstileSiteKey, autoFocus }: CalculatorViewProps) {
   const [state, formAction, pending] = useActionState(submitCalculator, initialState, permalink);
   const [index, setIndex] = useState(0);
   const [chosen, setChosen] = useState<Record<string, string[]>>({});
   const [missing, setMissing] = useState<string | null>(null);
   const [verifying, setVerifying] = useState(false);
   const [checkProblem, setCheckProblem] = useState<string | null>(null);
+  /**
+   * The result state `useActionState` last returned that the visitor has dismissed with
+   * "Start again". There is no way to reset an action's state, so the result is hidden by
+   * remembering the object it came from; the next submission returns a new one.
+   */
+  const [dismissed, setDismissed] = useState<CalculatorFormState | null>(null);
 
   const questionRef = useRef<HTMLHeadingElement>(null);
   const optionsRef = useRef<HTMLFieldSetElement>(null);
@@ -65,7 +71,8 @@ export function Calculator({ copy, steps, events, permalink, turnstileSiteKey }:
 
   const total = steps.length;
   const atGate = index === total;
-  const done = state.status === 'sent' || state.status === 'unsent';
+  const settled = state.status === 'sent' || state.status === 'unsent' ? state : null;
+  const done = settled !== null && settled !== dismissed;
   const step: CalculatorStepView | undefined = steps[index];
 
   /** Every question shown, and the email step, dispatches its documented event. */
@@ -91,10 +98,13 @@ export function Calculator({ copy, steps, events, permalink, turnstileSiteKey }:
   useEffect(() => {
     if (!mounted.current) {
       mounted.current = true;
+      // The loader replaced the server-rendered card while its start button held focus, so
+      // the browser has dropped focus to the body. Put it on the question the card showed.
+      if (autoFocus) questionRef.current?.focus();
       return;
     }
     questionRef.current?.focus();
-  }, [index]);
+  }, [index, autoFocus]);
 
   const answersJson = JSON.stringify(
     Object.fromEntries(
@@ -122,6 +132,13 @@ export function Calculator({ copy, steps, events, permalink, turnstileSiteKey }:
   };
 
   const goTo = (next: number, way: 'next' | 'back') => {
+    if (atGate) {
+      // The Turnstile container lives inside the email step, so leaving unmounts the widget
+      // with it. Drop it while the container is still attached, or the hook would hold a
+      // reference to a widget that no longer exists and never render a new one.
+      removeTurnstile();
+      setCheckProblem(null);
+    }
     direction.current = way;
     setMissing(null);
     setIndex(next);
@@ -145,10 +162,21 @@ export function Calculator({ copy, steps, events, permalink, turnstileSiteKey }:
   /** Holds the first submit until Turnstile has put a token in the form, then submits again. */
   const onGateSubmit: NonNullable<ComponentProps<'form'>['onSubmit']> = (event) => {
     if (attributionRef.current) attributionRef.current.value = JSON.stringify(captureAttribution());
-    track(events.submit, { step: total + 1, direction: 'next' });
-    if (!turnstileSiteKey) return;
+    // Only the pass that lets the submission through reports it. The held pass below submits
+    // the form again, and that second pass finds the token and reports it then: one event
+    // per submission, whether or not Turnstile made the visitor wait.
+    const proceed = () => {
+      track(events.submit, { step: total + 1, direction: 'next' });
+    };
+    if (!turnstileSiteKey) {
+      proceed();
+      return;
+    }
     const form = event.currentTarget;
-    if (form.querySelector<HTMLInputElement>(`input[name="${TURNSTILE_FIELD}"]`)?.value) return;
+    if (form.querySelector<HTMLInputElement>(`input[name="${TURNSTILE_FIELD}"]`)?.value) {
+      proceed();
+      return;
+    }
 
     event.preventDefault();
     setCheckProblem(null);
@@ -168,14 +196,15 @@ export function Calculator({ copy, steps, events, permalink, turnstileSiteKey }:
   const restart = () => {
     track(events.restart, { step: 1, direction: 'back' });
     setChosen({});
+    setCheckProblem(null);
+    setDismissed(settled);
     direction.current = 'back';
-    mounted.current = false;
     setIndex(0);
   };
 
-  if (done) {
+  if (settled && done) {
     return (
-      <Result copy={copy} state={state} events={events} panelRef={resultRef} onRestart={restart} />
+      <Result copy={copy} state={settled} events={events} panelRef={resultRef} onRestart={restart} />
     );
   }
 
@@ -205,6 +234,7 @@ export function Calculator({ copy, steps, events, permalink, turnstileSiteKey }:
       <div
         className="mt-3 h-1.5 overflow-hidden rounded-full bg-mist"
         role="progressbar"
+        aria-label={copy.labels.progressName}
         aria-valuemin={1}
         aria-valuemax={total + 1}
         aria-valuenow={stepNumber}

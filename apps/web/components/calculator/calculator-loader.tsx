@@ -15,6 +15,7 @@ import type { CalculatorViewProps } from './types';
  */
 export function CalculatorLoader({ children, ...props }: CalculatorViewProps & { children: ReactNode }) {
   const [Calculator, setCalculator] = useState<ComponentType<CalculatorViewProps> | null>(null);
+  const [hadFocus, setHadFocus] = useState(false);
   const requested = useRef(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -22,6 +23,9 @@ export function CalculatorLoader({ children, ...props }: CalculatorViewProps & {
     if (requested.current) return;
     requested.current = true;
     void import('./calculator').then((module) => {
+      // Read it here, before the swap: a keyboard visitor reaches this through the start
+      // button's own focus, and once the card is replaced that focus is already on the body.
+      setHadFocus(cardRef.current?.contains(document.activeElement) ?? false);
       setCalculator(() => module.Calculator);
     });
   }, []);
@@ -48,7 +52,7 @@ export function CalculatorLoader({ children, ...props }: CalculatorViewProps & {
     };
   }, [load]);
 
-  if (Calculator) return <Calculator {...props} />;
+  if (Calculator) return <Calculator {...props} autoFocus={hadFocus} />;
   return (
     <div ref={cardRef} onPointerDown={load} onFocusCapture={load}>
       {children}
