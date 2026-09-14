@@ -270,6 +270,8 @@ export const staticContactContentSchema = z.object({
   routing: z.object({
     heading: questionSchema(120),
     intro: requiredText(300),
+    /** The link on each topic that opens the form with it chosen, e.g. "Choose this topic". */
+    linkLabel: requiredText(40),
     /** What happens to each enquiry type, keyed by `EnquiryType.slug`. */
     descriptions: z.array(z.object({ slug: slugSchema, body: requiredText(300) })).max(12),
   }),
@@ -415,7 +417,7 @@ export const staticNotFoundContentSchema = z.object({
     label: requiredText(60),
     placeholder: requiredText(80),
     submitLabel: requiredText(30),
-    /** Announced with the number of matches, e.g. "3 pages match". */
+    /** Announced before the number of matches, e.g. "Matching pages:" reads "Matching pages: 3". */
     resultsLabel: requiredText(60),
     noResults: requiredText(200),
   }),

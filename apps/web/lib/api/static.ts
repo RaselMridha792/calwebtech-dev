@@ -5,6 +5,7 @@ import {
   staticContactViewSchema,
   staticFaqViewSchema,
   staticLegalViewSchema,
+  staticNotFoundViewSchema,
   staticPricingViewSchema,
   staticProcessViewSchema,
   staticThankYouViewSchema,
@@ -16,6 +17,7 @@ import {
   staticContactSnapshot,
   staticFaqSnapshot,
   staticLegalSnapshots,
+  staticNotFoundSnapshot,
   staticPricingSnapshot,
   staticProcessSnapshot,
   staticThankYouSnapshots,
@@ -24,8 +26,8 @@ import { findView, getView } from './core';
 
 /*
  * The static page family (docs/10-site-pages.md): pricing, process, contact, FAQ, the
- * thank-you pages and the legal set. Without API_INTERNAL_URL each getter returns its
- * snapshot from static-content/static, validated by the same schema.
+ * thank-you pages, the legal set and the designed 404. Without API_INTERNAL_URL each getter
+ * returns its snapshot from static-content/static, validated by the same schema.
  */
 
 export const getStaticPricing = cache(() => getView('/pages/pricing', staticPricingViewSchema, staticPricingSnapshot));
@@ -36,15 +38,22 @@ export const getStaticContact = cache(() => getView('/pages/contact', staticCont
 
 export const getStaticFaq = cache(() => getView('/pages/faq', staticFaqViewSchema, staticFaqSnapshot));
 
-/** A conversion type's thank-you page, or null for a type that has none. */
+export const getStaticNotFound = cache(() => getView('/pages/not-found', staticNotFoundViewSchema, staticNotFoundSnapshot));
+
+/** A conversion type's thank-you page, or null for a type that has none (the page answers 404). */
 export const getStaticThankYou = cache((type: string) =>
-  findView(`/pages/thank-you/${encodeURIComponent(type)}`, staticThankYouViewSchema, Object.hasOwn(staticThankYouSnapshots, type) ? staticThankYouSnapshots[type] : null),
+  findView(
+    `/pages/thank-you/${encodeURIComponent(type)}`,
+    staticThankYouViewSchema,
+    Object.hasOwn(staticThankYouSnapshots, type) ? staticThankYouSnapshots[type] : null,
+  ),
 );
 
 export const getStaticLegal = cache((slug: StaticLegalSlug) =>
   getView(`/pages/legal/${slug}`, staticLegalViewSchema, staticLegalSnapshots[slug]),
 );
 
+/** Names of the legal pages in the sitemap, the footer's labels. */
 const LEGAL_TITLES: Record<StaticLegalSlug, string> = {
   'privacy-policy': 'Privacy policy',
   terms: 'Terms of use',

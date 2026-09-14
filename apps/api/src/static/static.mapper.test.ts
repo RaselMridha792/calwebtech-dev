@@ -77,7 +77,7 @@ const contactContent = {
     success: { heading: 'Thanks', body: note },
   },
   details: { heading: 'Details', phoneLabel: 'Phone', emailLabel: 'Email', officesLabel: 'Offices', response: note },
-  routing: { heading: 'Who reads it?', intro: note, descriptions: [{ slug: 'support', body: 'Goes to support.' }] },
+  routing: { heading: 'Who reads it?', intro: note, linkLabel: 'Choose', descriptions: [{ slug: 'support', body: 'Goes to support.' }] },
   nextSteps: { heading: 'What happens next?', steps: titled },
 };
 

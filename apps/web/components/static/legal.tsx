@@ -63,20 +63,14 @@ function Block({ block }: { block: StaticLegalBlock }) {
 const dateFormat = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 
 /**
- * A page of the legal set: the draft notice while counsel has not reviewed it, a table of
- * contents, the sections and the contact details. Legal pages may use plain headings.
+ * A page of the legal set: when it last changed, a table of contents, the sections and the
+ * contact details. Legal pages may use plain headings (docs/10-site-pages.md).
  */
 export function LegalPage({ page, path }: { page: StaticLegalView; path: string }) {
   return (
     <>
       <PageHero ground="light" crumbs={[{ name: page.title, path }]} title={page.title} intro={page.intro}>
-        {page.reviewStatus === 'draft' && page.draftNotice ? (
-          <p role="note" className="mt-8 max-w-[68ch] rounded-xl border border-line bg-white px-5 py-4 text-[15px] leading-relaxed text-ink">
-            <b className="mr-1.5">Draft.</b>
-            {page.draftNotice}
-          </p>
-        ) : null}
-        <p className="mt-5 text-[14.5px]">
+        <p className="mt-6 text-[14.5px]">
           {'Last updated '}
           <time dateTime={page.lastUpdated}>{dateFormat.format(new Date(`${page.lastUpdated}T00:00:00Z`))}</time>
         </p>

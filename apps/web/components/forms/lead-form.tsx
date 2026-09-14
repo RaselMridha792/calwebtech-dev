@@ -34,6 +34,8 @@ export interface LeadFormProps {
   enquiry?: { label: string; options: readonly Option[]; defaultValue?: string };
   /** The free-text question, where the default does not fit the form. */
   message?: { label: string; placeholder: string };
+  /** Where the visitor goes once the lead is stored, e.g. `/thank-you/contact/`. Without script the success message shows in place. */
+  thankYouPath?: string;
   assurances?: readonly string[];
   footnote?: string;
   className?: string;
@@ -95,7 +97,7 @@ function Field({ formId, name, label, errors, labelClass, children }: FieldProps
  * validation and storage rules live in one place.
  */
 export function LeadForm(props: LeadFormProps) {
-  const { variant, formId, success } = props;
+  const { variant, formId, success, thankYouPath } = props;
   const [state, formAction, pending] = useActionState(submitLead, initialState, props.permalink);
   const attributionRef = useRef<HTMLInputElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
@@ -148,12 +150,13 @@ export function LeadForm(props: LeadFormProps) {
     if (state.status === 'success') {
       removeTurnstile();
       successRef.current?.focus();
+      if (thankYouPath) window.location.assign(thankYouPath);
     }
     if (state.status === 'error') {
       resetTurnstile();
       formRef.current?.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
     }
-  }, [state, removeTurnstile, resetTurnstile]);
+  }, [state, removeTurnstile, resetTurnstile, thankYouPath]);
 
   if (state.status === 'success') {
     return (

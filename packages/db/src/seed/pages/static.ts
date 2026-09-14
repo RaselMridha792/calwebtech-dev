@@ -107,7 +107,7 @@ const CONTACT: StaticContactContentInput = {
     officesLabel: 'Offices',
     response: note,
   },
-  routing: { heading: 'Placeholder routing heading?', intro: note, descriptions: [] },
+  routing: { heading: 'Placeholder routing heading?', intro: note, linkLabel: 'Choose this topic', descriptions: [] },
   nextSteps: { heading: 'Placeholder next steps heading?', steps: items(3) },
 };
 
@@ -172,7 +172,7 @@ const NOT_FOUND: StaticNotFoundContentInput = {
     label: 'Search this site',
     placeholder: 'Placeholder hint',
     submitLabel: 'Search',
-    resultsLabel: 'matching pages',
+    resultsLabel: 'Matching pages:',
     noResults: note,
   },
   destinations: {

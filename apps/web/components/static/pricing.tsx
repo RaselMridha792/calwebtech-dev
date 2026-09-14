@@ -1,4 +1,4 @@
-import type { StaticPricingContent, StaticPricingTier } from '@calwebtech/shared';
+import type { Link, StaticPricingContent, StaticPricingTier } from '@calwebtech/shared';
 import { CheckList, EmptyState } from '../site/lists';
 import { Section } from '../site/section';
 import { SectionHeading } from '../site/section-heading';
@@ -6,7 +6,16 @@ import { reveal } from '../ui/primitives';
 import { PointGrid } from './parts';
 
 /** The published engagement shapes, the most common one marked. */
-export function PricingTiers({ copy, tiers }: { copy: StaticPricingContent['tiers']; tiers: readonly StaticPricingTier[] }) {
+export function PricingTiers({
+  copy,
+  tiers,
+  action,
+}: {
+  copy: StaticPricingContent['tiers'];
+  tiers: readonly StaticPricingTier[];
+  /** Where to go while no tiers are published. */
+  action: Link;
+}) {
   return (
     <Section id="tiers" tone="white" labelledBy="tiers-heading">
       <SectionHeading id="tiers-heading" title={copy.heading} intro={copy.intro} />
@@ -35,7 +44,7 @@ export function PricingTiers({ copy, tiers }: { copy: StaticPricingContent['tier
           <p className="mt-8 max-w-[72ch] text-[14.5px]">{copy.note}</p>
         </>
       ) : (
-        <EmptyState action={{ label: 'Ask for a quote', href: '/contact/' }}>{copy.empty}</EmptyState>
+        <EmptyState action={action}>{copy.empty}</EmptyState>
       )}
     </Section>
   );

@@ -36,6 +36,7 @@
     "routing": {
       "heading": "Where does my message go?",
       "intro": "Each topic has its own inbox, so a support request never waits behind a sales conversation.",
+      "linkLabel": "Choose this topic",
       "descriptions": [
         {
           "slug": "new-project",

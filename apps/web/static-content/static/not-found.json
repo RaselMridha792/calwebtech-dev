@@ -6,7 +6,7 @@
     "label": "Search the site",
     "placeholder": "For example: pricing, Shopify, redesign",
     "submitLabel": "Search",
-    "resultsLabel": "matching pages",
+    "resultsLabel": "Matching pages:",
     "noResults": "No page title matches that. Try a shorter word, or browse the full list of pages on the sitemap."
   },
   "destinations": {
