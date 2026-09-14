@@ -1,0 +1,176 @@
+{
+  "slug": "real-estate",
+  "name": "Real estate",
+  "title": "Real estate website design and development",
+  "seo": {
+    "title": "Real estate website design and development",
+    "description": "Real estate websites with fast IDX listing search, agent profiles and lead routing that sends each enquiry to the right agent, kept in a database you own.",
+    "ogImage": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1200&h=630&q=75"
+  },
+  "answerBlock": "A real estate website has to let buyers and renters search current listings quickly, save what they like and reach the right agent while they are still interested. Calwebtech builds brokerage and property websites with MLS listing search through IDX, agent and office profiles, and lead routing that assigns every enquiry to the right person. Every lead is stored in a database you own, not only in a portal.",
+  "updatedAt": "2026-09-14T00:00:00.000Z",
+  "hero": {
+    "intro": "The portals own the search traffic, so your own site has to win on what they cannot offer: local knowledge, your agents and a faster reply. We build listing search, neighbourhood pages and lead routing around that.",
+    "primaryCta": {
+      "label": "Discuss your project",
+      "href": "/contact/"
+    },
+    "secondaryCta": {
+      "label": "See what it costs",
+      "href": "/pricing/"
+    },
+    "highlights": [
+      "IDX listing search with saved searches and alerts",
+      "Agent and office profiles your team maintains",
+      "Enquiries routed to the right agent as they arrive",
+      "Neighbourhood pages written for local search"
+    ],
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1600&q=60"
+    },
+    "line": "Listing search, agent tools and lead routing."
+  },
+  "painPoints": {
+    "heading": "Why do real estate websites lose leads to the portals?",
+    "intro": "Buyers start on the big portals. Your website gets one visit to earn the second.",
+    "items": [
+      {
+        "title": "Listing search slower than the portals",
+        "body": "Framed IDX widgets load slowly, break on phones and hide listings from search engines, so buyers go back to the portal that shows the same homes faster."
+      },
+      {
+        "title": "Leads that sit unassigned",
+        "body": "Enquiries land in a shared inbox or a CRM queue nobody owns, and a buyer who asked about a viewing at lunchtime hears back the next day, from the third agent they contacted."
+      },
+      {
+        "title": "Agent pages nobody updates",
+        "body": "Profiles, sold listings and reviews go stale because every change goes through the office manager or an outside vendor."
+      },
+      {
+        "title": "No local reason to visit",
+        "body": "Without neighbourhood, school and market pages, the site gives search engines and buyers nothing the portals do not already have."
+      }
+    ]
+  },
+  "services": {
+    "heading": "Which services does a brokerage or property business need from a web partner?",
+    "intro": "Real estate projects combine a fast public site with the tools agents use every day.",
+    "items": [
+      {
+        "slug": "custom-website-development",
+        "title": "Custom website development",
+        "body": "Brokerage and development websites designed around search, agent profiles and neighbourhood guides, with a CMS your office can run."
+      },
+      {
+        "slug": "web-application-development",
+        "title": "Web application development",
+        "body": "Agent dashboards, lead routing rules, viewing requests and owner or tenant portals for property managers."
+      },
+      {
+        "slug": "nextjs-development",
+        "title": "Next.js development",
+        "body": "Listing search built on Next.js, so thousands of listings load fast and each one can be indexed by search engines."
+      },
+      {
+        "slug": "ai-search-visibility",
+        "title": "AI search visibility",
+        "body": "Local and neighbourhood content with structured data, so search engines and AI assistants recommend your agents for the areas you cover."
+      },
+      {
+        "slug": "care-plans",
+        "title": "Website care plans",
+        "body": "Monitoring of listing feeds and lead routing, security patching and a monthly development allowance, month to month."
+      }
+    ]
+  },
+  "compliance": {
+    "heading": "What compliance details does a real estate website have to get right?",
+    "intro": "Listing data, advertising and consent rules all affect what the site may show and how it may contact people.",
+    "notes": [
+      {
+        "title": "MLS and IDX display rules",
+        "body": "Each MLS sets rules for listing attribution, disclaimers, refresh frequency and which fields may be shown. Templates carry those rules per feed, so a listing never appears without its required notices."
+      },
+      {
+        "title": "Fair housing in advertising",
+        "body": "Listing copy, neighbourhood pages and ad targeting must not state or imply a preference based on protected characteristics. We include the Equal Housing Opportunity notice and give editors guidance on descriptive language."
+      },
+      {
+        "title": "Consent to call and text",
+        "body": "Forms that lead to calls or text messages record the exact consent wording a person agreed to, with a timestamp, in your own database."
+      },
+      {
+        "title": "Brokerage and licence details",
+        "body": "The brokerage name, licence numbers and office addresses your state requires appear where its rules expect them, managed as data rather than typed into footers."
+      }
+    ]
+  },
+  "caseStudies": null,
+  "results": null,
+  "integrations": {
+    "heading": "Which systems does a real estate website usually connect to?",
+    "intro": "Listing data and lead data change constantly, so every connection is monitored after launch.",
+    "items": [
+      {
+        "name": "MLS data through IDX or the RESO Web API",
+        "body": "Listing data from your MLS, refreshed on the schedule the MLS requires and stored for fast search."
+      },
+      {
+        "name": "Real estate CRM",
+        "body": "Follow Up Boss, Lofty, BoldTrail or Salesforce, with each lead assigned to the right agent and its source recorded."
+      },
+      {
+        "name": "Maps and location data",
+        "body": "Map search, commute times and school boundaries from established map and data providers."
+      },
+      {
+        "name": "Viewing requests",
+        "body": "Viewing and tour requests that check agent availability and confirm by email or text."
+      },
+      {
+        "name": "Text alerts and call tracking",
+        "body": "Instant lead alerts to agents by text, and call tracking by source, with consent records kept in your database."
+      },
+      {
+        "name": "Transaction and property management",
+        "body": "Links into transaction management or tenant portals for clients who are already under contract or renting."
+      }
+    ]
+  },
+  "faq": {
+    "heading": "What do brokerages ask before a new website?",
+    "intro": "The questions brokers, team leads and property managers raise before they commit.",
+    "items": [
+      {
+        "id": "real-estate-faq-idx",
+        "question": "Can our website show MLS listings through IDX?",
+        "answer": "Yes. We connect to your MLS through IDX or the RESO Web API, depending on what your MLS offers, and follow its display rules. Listings are rendered as pages on your own domain rather than a framed widget, so they load quickly and can be indexed."
+      },
+      {
+        "id": "real-estate-faq-routing",
+        "question": "How do leads reach the right agent?",
+        "answer": "Routing rules assign each enquiry by listing agent, office, area or rotation, and alert the agent straight away. Every lead is stored in your own database and synced to your CRM, so a lead is never lost when an agent leaves."
+      },
+      {
+        "id": "real-estate-faq-agents",
+        "question": "Can agents update their own profiles?",
+        "answer": "Yes. Each agent has a role that lets them edit their profile, photo and biography and see their own leads, while brokerage settings stay with office managers."
+      },
+      {
+        "id": "real-estate-faq-portals",
+        "question": "How can a brokerage compete with the big portals in search?",
+        "answer": "Not on listing volume. We build neighbourhood, market and buyer guide pages with local detail the portals do not have, add structured data, and make agent expertise visible. That gives search engines and AI assistants a reason to send local searches to you."
+      },
+      {
+        "id": "real-estate-faq-cost",
+        "question": "How much does a real estate website cost?",
+        "answer": "A brokerage website with custom design, IDX search and lead capture usually sits in our focused build range of $12k to $25k. Agent dashboards, custom routing, owner or tenant portals and CRM integration make it a platform build, usually $25k to $60k. MLS and IDX data fees are paid to the provider separately."
+      },
+      {
+        "id": "real-estate-faq-developments",
+        "question": "Can property developers use the website to sell new homes?",
+        "answer": "Yes. Each development gets its own pages with units, availability, floor plans and registration of interest, updated by your sales team from the dashboard as units are reserved."
+      }
+    ]
+  }
+}

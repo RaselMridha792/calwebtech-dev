@@ -1,0 +1,245 @@
+{
+  "slug": "distribution",
+  "name": "Distribution and supply",
+  "title": "Distributor website design and B2B ordering",
+  "seo": {
+    "title": "Distributor website design and B2B ordering",
+    "description": "Websites for distributors and wholesalers: searchable catalogues, account pricing, quick reorders and quotes that flow into your ERP, not a shared inbox.",
+    "ogImage": "https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=1200&h=630&q=75"
+  },
+  "answerBlock": "A distributor website has to show a trade buyer their own price, confirm stock and take a reorder or quote request in minutes, at any hour. Calwebtech builds distribution websites with searchable catalogues, account-specific pricing, quick order pads and quoting tied into your ERP. Orders and enquiries land in a database you own instead of a shared inbox.",
+  "updatedAt": "2026-09-14T00:00:00.000Z",
+  "hero": {
+    "intro": "Your counter staff should not be retyping orders from email. We build the catalogue, account area and quote flow your buyers use late in the evening, and connect them to the ERP your branches already trust.",
+    "primaryCta": {
+      "label": "Discuss your project",
+      "href": "/contact/"
+    },
+    "secondaryCta": {
+      "label": "See what it costs",
+      "href": "/pricing/"
+    },
+    "highlights": [
+      "Account pricing and terms after sign-in",
+      "Quick order by part number or past invoice",
+      "Quote requests that reach the right branch with the basket attached",
+      "Punchout for customers who buy through procurement systems"
+    ],
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=1600&q=60"
+    },
+    "line": "Account pricing, fast reordering and quotes tied into your ERP."
+  },
+  "painPoints": {
+    "heading": "Why do distributors lose orders on their own website?",
+    "intro": "A trade buyer comparing suppliers on a phone picks the one that makes reordering easy. These are the usual reasons that is not you.",
+    "items": [
+      {
+        "title": "List prices for account customers",
+        "body": "Contract customers see the same list price as a stranger, so they phone or email for their real number, and the website becomes a catalogue they browse before calling a competitor."
+      },
+      {
+        "title": "Quotes sit in a shared inbox",
+        "body": "Requests arrive as free text with no part numbers, get retyped into the ERP by counter staff and go back days later. Buyers who needed an answer that afternoon have already ordered elsewhere."
+      },
+      {
+        "title": "Reordering is slower online than by phone",
+        "body": "A buyer who orders the same forty lines every month should not search for each one. Without order pads, saved lists or reorder from invoice, the phone stays faster."
+      },
+      {
+        "title": "Stock on the site is not stock on the shelf",
+        "body": "Availability that refreshes overnight, or not at all, sends buyers to a branch that sold out at noon. Every wrong answer is a call your team takes and an order at risk."
+      }
+    ]
+  },
+  "services": {
+    "heading": "Which services does a distributor need from a web partner?",
+    "intro": "Distribution projects are usually a rebuild of an existing site that has outgrown its catalogue.",
+    "items": [
+      {
+        "slug": "ecommerce-development",
+        "title": "Ecommerce development",
+        "body": "B2B ordering with account pricing, credit terms, minimum quantities, quick order pads and reorder from past invoices, synced with your ERP."
+      },
+      {
+        "slug": "website-redesign",
+        "title": "Website redesign",
+        "body": "A rebuild of an ageing catalogue site that keeps the search rankings you have earned while the structure changes underneath."
+      },
+      {
+        "slug": "web-application-development",
+        "title": "Web application development",
+        "body": "Customer portals for order history, invoices, proof of delivery and returns, so account managers stop emailing PDFs."
+      },
+      {
+        "slug": "ai-integration",
+        "title": "AI integration",
+        "body": "Quote assistants that read a pasted parts list, match it to your catalogue and hand the basket to a salesperson with the conversation attached."
+      },
+      {
+        "slug": "care-plans",
+        "title": "Website care plans",
+        "body": "Monitoring of ERP syncs and order flows, security patching and a fixed development allowance, month to month."
+      }
+    ]
+  },
+  "compliance": {
+    "heading": "What compliance details does a distribution website have to get right?",
+    "intro": "Trade selling carries rules a retail checkout never meets, and each one needs a place in the data model.",
+    "notes": [
+      {
+        "title": "Sales tax exemption certificates",
+        "body": "Resale and exemption certificates are collected, stored against the account and applied at checkout, so exempt buyers are not charged tax and everyone else is."
+      },
+      {
+        "title": "Safety data sheets and restricted items",
+        "body": "Products that need a safety data sheet show the current version, and items restricted by region or licence are hidden or held for review before an order is accepted."
+      },
+      {
+        "title": "Credit terms and approvals",
+        "body": "Orders on account respect the credit limits and approval rules held in the ERP, with a purchase order number captured on every order."
+      },
+      {
+        "title": "Procurement punchout",
+        "body": "Large customers buying through platforms such as Coupa or SAP Ariba need punchout catalogues over cXML or OCI, so their buyers shop your site from inside their own purchasing system."
+      }
+    ]
+  },
+  "caseStudies": {
+    "heading": "Which distribution websites have we built?",
+    "intro": "Catalogues, account pricing and quoting for distributors whose counter staff were retyping orders.",
+    "items": [
+      {
+        "slug": "northmark-supply",
+        "clientName": "Northmark Supply",
+        "summary": "A catalogue of 40,000 parts behind a contact form. We rebuilt it as a searchable, account-priced quoting platform tied into their ERP.",
+        "tags": [
+          "Ohio, USA",
+          "B2B",
+          "Next.js"
+        ],
+        "image": {
+          "src": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=70",
+          "alt": "Two colleagues marking up printed reports beside their laptops"
+        },
+        "metrics": [
+          {
+            "value": "+312%",
+            "label": "Quote requests"
+          },
+          {
+            "value": "12 min",
+            "label": "Quote turnaround, from 3 days"
+          },
+          {
+            "value": "−41%",
+            "label": "Support calls"
+          }
+        ]
+      }
+    ],
+    "link": {
+      "label": "See all distribution work",
+      "href": "/work/?industry=distribution"
+    }
+  },
+  "results": {
+    "heading": "What changed for distribution clients after launch?",
+    "intro": null,
+    "note": "Measured in the client's own analytics after launch. Every figure here is one the client agreed to publish.",
+    "metrics": [
+      {
+        "value": "+312%",
+        "label": "Quote requests",
+        "clientName": "Northmark Supply"
+      },
+      {
+        "value": "12 min",
+        "label": "Quote turnaround, from 3 days",
+        "clientName": "Northmark Supply"
+      },
+      {
+        "value": "−41%",
+        "label": "Support calls",
+        "clientName": "Northmark Supply"
+      }
+    ],
+    "testimonial": {
+      "id": "testimonial-dale-ferris",
+      "quote": "Our counter staff stopped retyping orders. That is the whole story. Calwebtech understood the ERP side better than the vendor who sold it to us.",
+      "clientName": "Dale Ferris",
+      "role": "Director of Ecommerce",
+      "company": "Northmark Supply",
+      "rating": 5,
+      "avatar": {
+        "src": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=120&q=70"
+      }
+    }
+  },
+  "integrations": {
+    "heading": "Which systems does a distributor website usually connect to?",
+    "intro": "We check what each system allows during discovery, so the proposal only promises connections that can be built.",
+    "items": [
+      {
+        "name": "ERP",
+        "body": "Epicor Prophet 21, Infor, Acumatica, NetSuite or SAP Business One for stock by branch, customer pricing, credit and order status."
+      },
+      {
+        "name": "Punchout and EDI",
+        "body": "cXML and OCI punchout for procurement platforms, and EDI documents where large accounts still order that way."
+      },
+      {
+        "name": "Sales tax",
+        "body": "Avalara or TaxJar for rates and exemption certificate management at checkout."
+      },
+      {
+        "name": "Payments and credit",
+        "body": "Card payments through a hosted payment provider, alongside orders on account against ERP credit limits."
+      },
+      {
+        "name": "Shipping and freight",
+        "body": "Carrier rates and tracking for parcels, and freight quotes captured for review on pallet orders."
+      },
+      {
+        "name": "CRM",
+        "body": "HubSpot or Salesforce, with quotes and abandoned baskets attached to the account for the rep who owns it."
+      }
+    ]
+  },
+  "faq": {
+    "heading": "What do distributors ask before starting a website project?",
+    "intro": "The questions operations, sales and finance teams raise before they commit.",
+    "items": [
+      {
+        "id": "distribution-faq-cost",
+        "question": "How much does a distributor ecommerce website cost?",
+        "answer": "A catalogue and quoting site starts in our focused build range of $12k to $25k. B2B ordering with account pricing, ERP sync and a customer portal is a platform build, usually $25k to $60k. The size of the catalogue matters less than how many pricing rules and systems are involved."
+      },
+      {
+        "id": "distribution-faq-pricing",
+        "question": "Can customers see their contract pricing after they sign in?",
+        "answer": "Yes. Price lists, discounts, minimum quantities and terms are read from your ERP for each account, and a signed-in buyer sees their own price on every product, in search results and in the basket."
+      },
+      {
+        "id": "distribution-faq-erp",
+        "question": "Will the website work with our ERP?",
+        "answer": "Most distribution ERPs can exchange stock, pricing and orders through an API or scheduled files. We confirm which applies in discovery by looking at your ERP version and hosting, and the proposal names exactly what data flows each way and how often."
+      },
+      {
+        "id": "distribution-faq-reorder",
+        "question": "Can buyers reorder quickly from past orders?",
+        "answer": "Yes. Buyers can reorder from an invoice, keep saved lists for regular orders and paste part numbers into a quick order pad. For customers who order the same lines every month, that is usually faster than a phone call."
+      },
+      {
+        "id": "distribution-faq-rankings",
+        "question": "Will we lose our search rankings when the catalogue moves?",
+        "answer": "Not if the migration is done properly. We map every existing product and category URL to its new address with permanent redirects before launch and keep the pages that earn traffic. Rankings normally recover within two to three weeks and then improve on the faster site."
+      },
+      {
+        "id": "distribution-faq-punchout",
+        "question": "Can large customers order through their procurement system?",
+        "answer": "Yes, where they need to. We add punchout catalogues for procurement platforms that support cXML or OCI, so a buyer builds a basket on your site and returns it to their own system for approval. The order then arrives in your ERP like any other."
+      }
+    ]
+  }
+}
