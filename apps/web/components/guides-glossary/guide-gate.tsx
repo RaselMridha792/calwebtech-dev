@@ -8,8 +8,8 @@ import { submitLead, type LeadFormState } from '@/lib/lead-actions';
 
 /**
  * The email gate in front of a guide's download. It asks for a name and a work email only,
- * posts a RESOURCE lead naming the guide through the same server action as every other form,
- * and then reveals the file on the page. The summary above it is never hidden (docs/03).
+ * posts a RESOURCE lead through the same server action as every other form, and then reveals
+ * the file on the page. The summary above it is never hidden (docs/03).
  *
  * Without the API the server action answers that it could not send, and the download stays
  * behind the gate rather than pretending the request was stored.
@@ -148,6 +148,11 @@ export function GuideGate({
     >
       <input type="hidden" name="type" value="RESOURCE" />
       <input type="hidden" name="formId" value={GUIDE_GATE_FORM_ID} />
+      {/*
+        Which guide was asked for. The shared lead contract has no field for it yet, so the
+        foundation drops it today; the family's report asks for `guideSlug` on
+        `leadSubmissionSchema` rather than widening it from a page branch.
+      */}
       <input type="hidden" name="guideSlug" value={slug} />
       <input ref={attributionRef} type="hidden" name="attribution" defaultValue="" />
       <div className="absolute left-[-10000px] h-px w-px overflow-hidden" aria-hidden="true">

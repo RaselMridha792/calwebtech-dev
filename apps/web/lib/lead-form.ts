@@ -46,7 +46,6 @@ export function leadSubmissionFromForm(
     enquiryType: field(form, 'enquiryType'),
     landingPageSlug: field(form, 'landingPageSlug'),
     serviceSlug: field(form, 'serviceSlug'),
-    guideSlug: field(form, 'guideSlug'),
     attribution: attributionFromForm(form, referer),
     referenceCode: field(form, 'referenceCode'),
     turnstileToken: field(form, 'cf-turnstile-response'),

@@ -98,10 +98,6 @@ export class LeadsService {
             select: { id: true, title: true, content: true },
           })
         : null;
-    // A download gate names the guide it stood in front of, so the lead says what was asked for.
-    const guide = input.guideSlug
-      ? await db.guide.findFirst({ where: { slug: input.guideSlug, status: 'PUBLISHED' }, select: { slug: true, title: true } })
-      : null;
     // Homepage forms have no campaign page; their success copy lives in the homepage setting.
     const homeContent =
       !landingPage && !service && input.formId.startsWith('home-')
@@ -109,11 +105,6 @@ export class LeadsService {
         : null;
 
     const serviceInterest = service ? withServiceInterest(input.serviceInterest, service.title) : input.serviceInterest;
-    // Structured, queryable answers: which enquiry type was chosen, which guide was asked for.
-    const answers = {
-      ...(enquiryType ? { enquiryType: enquiryType.slug } : {}),
-      ...(guide ? { guide: guide.slug } : {}),
-    };
 
     const lead = await db.$transaction(async (tx) => {
       const contact = await tx.contact.upsert({
@@ -144,7 +135,7 @@ export class LeadsService {
           referralSource: input.referralSource,
           siteUrl: input.siteUrl,
           serviceInterest,
-          ...(Object.keys(answers).length > 0 ? { answers } : {}),
+          ...(enquiryType ? { answers: { enquiryType: enquiryType.slug } } : {}),
           contactId: contact.id,
           serviceId: service?.id,
           attribution: {
@@ -180,7 +171,6 @@ export class LeadsService {
       lead,
       acknowledgementFrom(landingPage?.content ?? service?.content ?? homeContent?.value),
       enquiryType,
-      guide,
     );
     return { status: 'received' };
   }
@@ -190,7 +180,6 @@ export class LeadsService {
     lead: { id: string; createdAt: Date },
     acknowledgement: Acknowledgement,
     enquiryType: { name: string; mailbox: string } | null,
-    guide: { title: string } | null,
   ): Promise<void> {
     const summary: LeadSummary = {
       leadId: lead.id,
@@ -206,7 +195,6 @@ export class LeadsService {
       serviceInterest: input.serviceInterest,
       message: input.message,
       enquiry: enquiryType?.name,
-      guide: guide?.title,
       landingPageSlug: input.landingPageSlug,
       attribution: input.attribution,
       submittedAt: lead.createdAt.toISOString(),
