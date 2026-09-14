@@ -365,9 +365,11 @@ function contentRows(content: CalculatorPageContent, included: string): Calculat
   const template = content.methodology.rateContentRow;
   return CALCULATOR_OPTIONS.content.flatMap((option) => {
     const label = optionLabel(content, 'content', option);
-    const [baseLow, baseHigh] = CALCULATOR_RATES.content[option];
-    // An answer that adds nothing adds nothing at any page count: one row says it once.
-    if (baseLow === 0 && baseHigh === 0) return [{ label, value: included }];
+    // An answer whose top figure is zero adds nothing at any page count: one row says it once.
+    // Only the high figure is tested: with `as const` rates, a zero low narrows the pair to
+    // [0, 0], so checking both is a comparison TypeScript already knows the answer to.
+    const [, baseHigh] = CALCULATOR_RATES.content[option];
+    if (baseHigh === 0) return [{ label, value: included }];
     return CALCULATOR_OPTIONS.pageCount.map((pages) => {
       const [low, high] = calculatorContentRate(option, pages);
       return {
