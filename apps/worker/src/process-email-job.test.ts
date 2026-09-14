@@ -123,6 +123,8 @@ const calculatorResult: EmailJob = {
     intro: 'Here is the range your answers describe.',
     rangeHeading: 'Your indicative range',
     rangeLabel: '$18,500 to $29,000',
+    tier: 'focused',
+    budgetBand: '12k-25k',
     tierName: 'Focused build',
     tierSummary: 'Marketing site, custom design, a CMS and lead capture.',
     monthly: 'No ongoing plan chosen.',
