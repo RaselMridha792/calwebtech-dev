@@ -48,7 +48,11 @@ export const industriesSeed: PageSeed = {
   },
 };
 
-/** A published industry with every section filled, for end-to-end tests. Development only. */
+/**
+ * A published industry with every copy section filled, for end-to-end tests. Development only.
+ * It links no services or projects, so no other family's pages change; the mapper tests
+ * cover those sections.
+ */
 export const FIXTURE_INDUSTRY_SLUG = 'e2e-fixture-industry';
 
 const fixturePoint = (title: string) => ({ title, body: `Test fixture body for ${title.toLowerCase()}.` });
@@ -77,7 +81,7 @@ export const industriesFixtures: PageSeed = {
   async seed(db) {
     const data = {
       name: 'Test fixture industry',
-      answerBlock: 'This is a test fixture industry for end-to-end tests. It fills every section of the industry template.',
+      answerBlock: 'This is a test fixture industry for end-to-end tests. It fills the copy sections of the industry template.',
       heroCopy: 'Test fixture card line.',
       content: industryContentSchema.parse(FIXTURE_CONTENT) as Prisma.InputJsonObject,
       order: 999,
