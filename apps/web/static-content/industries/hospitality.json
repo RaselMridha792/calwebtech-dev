@@ -1,0 +1,176 @@
+{
+  "slug": "hospitality",
+  "name": "Hospitality",
+  "title": "Hotel and hospitality website design",
+  "seo": {
+    "title": "Hotel and hospitality website design",
+    "description": "Hotel, resort and restaurant websites that win direct bookings back from commission sites, with fast room pages, total pricing and a clear booking path.",
+    "ogImage": "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&h=630&q=75"
+  },
+  "answerBlock": "A hotel or hospitality website has to persuade guests to book direct instead of through an online travel agency, with fast room pages, honest total prices and a booking step as easy as the big travel sites. Calwebtech designs and builds hotel, resort and restaurant websites connected to your booking engine and property management system. Guest enquiries and event leads are stored in a database you own.",
+  "updatedAt": "2026-09-14T00:00:00.000Z",
+  "hero": {
+    "intro": "Every booking through a travel agency costs commission, and every guest who books direct is one you can welcome back. We build the site that gives them a reason to: better photography, clearer rates, direct offers and a booking step that works on a phone.",
+    "primaryCta": {
+      "label": "Discuss your project",
+      "href": "/contact/"
+    },
+    "secondaryCta": {
+      "label": "See what it costs",
+      "href": "/pricing/"
+    },
+    "highlights": [
+      "Room and rate pages connected to your booking engine",
+      "Total price, taxes and fees shown up front",
+      "Direct-booking offers the travel sites cannot show",
+      "Event, wedding and group enquiries routed to sales"
+    ],
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1600&q=60"
+    },
+    "line": "Direct booking that beats the commission sites."
+  },
+  "painPoints": {
+    "heading": "Why do hotel websites lose bookings to the travel agencies?",
+    "intro": "Guests often find you on a travel site, then check your own website before deciding where to book.",
+    "items": [
+      {
+        "title": "A slow, dated site next to a polished listing",
+        "body": "The travel agency listing loads instantly with strong photography. Your own site takes seconds on hotel wifi, so guests go back and book where it felt easier."
+      },
+      {
+        "title": "A booking engine that feels like another company",
+        "body": "The jump from your site to a generic booking screen with different branding makes guests hesitate at the moment they were ready to pay."
+      },
+      {
+        "title": "Prices that change at the last step",
+        "body": "Resort fees, cleaning fees and taxes that appear only at checkout feel like a trick, and guests compare the final total, not the headline rate."
+      },
+      {
+        "title": "Event and group enquiries lost in email",
+        "body": "Weddings, meetings and group stays are often the most valuable enquiries, yet they arrive through a generic form with no dates, numbers or budget."
+      }
+    ]
+  },
+  "services": {
+    "heading": "Which services does a hotel or hospitality business need from a web partner?",
+    "intro": "Most hospitality projects are redesigns built around the booking engine the property already uses.",
+    "items": [
+      {
+        "slug": "custom-website-development",
+        "title": "Custom website development",
+        "body": "Photography-led design for rooms, dining, spa and local experiences, with rates and availability one tap away on every page."
+      },
+      {
+        "slug": "website-redesign",
+        "title": "Website redesign",
+        "body": "A redesign aimed at direct bookings that keeps the search rankings and booking engine links you already have."
+      },
+      {
+        "slug": "web-application-development",
+        "title": "Web application development",
+        "body": "Event, wedding and group enquiry flows, gift voucher sales and member areas connected to your systems."
+      },
+      {
+        "slug": "ai-search-visibility",
+        "title": "AI search visibility",
+        "body": "Structured data for hotels, restaurants and events, and content that answers the questions travellers now ask AI assistants."
+      },
+      {
+        "slug": "care-plans",
+        "title": "Website care plans",
+        "body": "Seasonal offer updates, monitoring of booking links and a fixed development allowance, month to month."
+      }
+    ]
+  },
+  "compliance": {
+    "heading": "What pricing, payment and accessibility rules does a hotel website have to meet?",
+    "intro": "Guests pay online and arrive in person, so prices, payments and accessibility details have to be right before they book.",
+    "notes": [
+      {
+        "title": "Total price shown up front",
+        "body": "US rules on short-term lodging expect the total price, including mandatory resort, cleaning or service fees, to be shown up front. Rate displays on the site are built to show the full amount."
+      },
+      {
+        "title": "Card payments",
+        "body": "Deposits, vouchers and prepaid rates use hosted payment fields from your booking engine or payment provider, so card details never touch the website and PCI DSS scope stays small."
+      },
+      {
+        "title": "Accessible rooms and facilities",
+        "body": "The ADA expects hotels to describe accessible rooms and features in enough detail for guests to judge whether they meet their needs, and to let those rooms be booked online like any other."
+      },
+      {
+        "title": "Rate parity and direct offers",
+        "body": "Contracts with travel agencies can limit how public rates are advertised. We build member rates and packages that respect those terms while still giving guests a reason to book direct."
+      }
+    ]
+  },
+  "caseStudies": null,
+  "results": null,
+  "integrations": {
+    "heading": "Which systems does a hotel website usually connect to?",
+    "intro": "The website sits in front of systems your front desk and sales team already run, so bookings flow straight into them.",
+    "items": [
+      {
+        "name": "Booking engines",
+        "body": "SynXis, SiteMinder, Cloudbeds or your property's booking engine, styled and linked so the handover feels like one site."
+      },
+      {
+        "name": "Property management systems",
+        "body": "Oracle OPERA Cloud, Mews or Cloudbeds for room types, rates and availability."
+      },
+      {
+        "name": "Restaurant reservations",
+        "body": "OpenTable, SevenRooms or Resy for tables, with dining pages that show current menus."
+      },
+      {
+        "name": "Payments and vouchers",
+        "body": "Hosted payment pages for deposits, packages and gift vouchers, reconciled with your finance system."
+      },
+      {
+        "name": "Guest email and CRM",
+        "body": "Pre-arrival and post-stay email and a guest list you own, fed by bookings and enquiries."
+      },
+      {
+        "name": "Listings and reviews",
+        "body": "Consistent property details across Google Business Profile and travel listings, with review highlights on the site."
+      }
+    ]
+  },
+  "faq": {
+    "heading": "What do hotels and restaurants ask before a new website?",
+    "intro": "The questions general managers, revenue managers and marketing leads raise first.",
+    "items": [
+      {
+        "id": "hospitality-faq-direct",
+        "question": "Can a new website increase our direct bookings?",
+        "answer": "That is what the build is for. We make rooms, rates and offers easier to understand than on the travel sites, show the total price clearly, shorten the path to your booking engine and give guests a reason to book direct, then measure booking engine conversions from the site."
+      },
+      {
+        "id": "hospitality-faq-engine",
+        "question": "Will the website work with our booking engine?",
+        "answer": "Almost certainly. Most booking engines support deep links for dates, room types and offers, and many offer an API for live rates. We confirm what yours supports in discovery and design around it."
+      },
+      {
+        "id": "hospitality-faq-vouchers",
+        "question": "Can we sell gift vouchers and packages online?",
+        "answer": "Yes. Vouchers, spa days and packages can be sold through your booking engine, a voucher platform or a custom checkout with hosted payment fields, depending on how your finance team reconciles them."
+      },
+      {
+        "id": "hospitality-faq-events",
+        "question": "How do you handle events, weddings and group enquiries?",
+        "answer": "Each type gets its own enquiry form asking for dates, guest numbers, room needs and budget, and routes to the right person on your sales team. Every enquiry is stored in your own database with its source."
+      },
+      {
+        "id": "hospitality-faq-cost",
+        "question": "How much does a hotel website cost?",
+        "answer": "A single-property website with custom design, booking engine links and enquiry forms usually sits in our focused build range of $12k to $25k. Multi-property groups, live rate integration, voucher sales and event platforms are platform builds, usually $25k to $60k."
+      },
+      {
+        "id": "hospitality-faq-editing",
+        "question": "Can our staff update offers and menus themselves?",
+        "answer": "Yes. Offers, menus, events and room details are content types with their own editors, so your team publishes a new package or seasonal menu from the dashboard without a developer."
+      }
+    ]
+  }
+}

@@ -1,0 +1,234 @@
+{
+  "slug": "manufacturing",
+  "name": "Manufacturing",
+  "title": "Manufacturing website design and development",
+  "seo": {
+    "title": "Manufacturing website design and development",
+    "description": "Websites for manufacturers: searchable spec sheets, product configurators, dealer portals and ERP-accurate stock and pricing, in a database you own.",
+    "ogImage": "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=1200&h=630&q=75"
+  },
+  "answerBlock": "A manufacturing website has to let an engineer find the right part, check the specification and request a quote without phoning the sales desk. Calwebtech builds manufacturer websites with searchable catalogues, spec sheet and CAD downloads, product configurators and quote requests that reach your ERP or CRM. Every enquiry is stored in a database you own.",
+  "updatedAt": "2026-09-14T00:00:00.000Z",
+  "hero": {
+    "intro": "Your buyers are engineers, purchasing managers and distributors, and each arrives with a part number, a tolerance or a drawing to check. We build the catalogue, the configurator and the quote flow around those questions, then connect them to the systems your plant already runs.",
+    "primaryCta": {
+      "label": "Discuss your project",
+      "href": "/contact/"
+    },
+    "secondaryCta": {
+      "label": "See what it costs",
+      "href": "/pricing/"
+    },
+    "highlights": [
+      "Search by part number, attribute and application",
+      "Spec sheets and CAD files kept current from one source",
+      "Configure-to-order products priced by your rules",
+      "Quote requests routed to the right territory"
+    ],
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=1600&q=60"
+    },
+    "line": "Spec sheets, configurators and ERP-accurate inventory."
+  },
+  "painPoints": {
+    "heading": "Why do manufacturing websites lose engineers and buyers?",
+    "intro": "The site usually fails at the moment a technical buyer needs detail, not on the homepage.",
+    "items": [
+      {
+        "title": "Spec sheets live in a PDF folder",
+        "body": "Datasheets are uploaded by whoever has the login, so the website shows last year's tolerances next to this year's part numbers. An engineer who finds one wrong figure stops trusting the rest."
+      },
+      {
+        "title": "Configurable products end in a contact form",
+        "body": "Options, dimensions and materials multiply into thousands of variants. Without a configurator that applies your rules, every custom order becomes an email chain with an applications engineer."
+      },
+      {
+        "title": "Stock and lead times are guesses",
+        "body": "When the website cannot read inventory and lead times from the ERP, sales staff answer the same availability question by phone all day, and buyers order from whoever answers first."
+      },
+      {
+        "title": "Distributors and direct buyers get the same site",
+        "body": "Dealers need their pricing, marketing assets and order history, while direct buyers need the catalogue and a quote path. One public brochure serves neither, so both go back to email."
+      }
+    ]
+  },
+  "services": {
+    "heading": "Which services does a manufacturer need from a web partner?",
+    "intro": "Most manufacturing projects combine a new catalogue site with one or two of these, scoped in discovery.",
+    "items": [
+      {
+        "slug": "custom-website-development",
+        "title": "Custom website development",
+        "body": "A catalogue-led site designed around how engineers search: by part number, attribute, industry and application, with spec sheets and drawings on every product page."
+      },
+      {
+        "slug": "ecommerce-development",
+        "title": "Ecommerce development",
+        "body": "Trade ordering for known accounts, with customer-specific price lists, minimum order quantities and repeat orders from past invoices."
+      },
+      {
+        "slug": "web-application-development",
+        "title": "Web application development",
+        "body": "Dealer and distributor portals with role-based access to pricing, warranty claims, marketing assets and order status."
+      },
+      {
+        "slug": "nextjs-development",
+        "title": "Next.js development",
+        "body": "A headless build that keeps a large product catalogue fast on a phone on the shop floor, with content edited in a CMS your team controls."
+      },
+      {
+        "slug": "ai-search-visibility",
+        "title": "AI search visibility",
+        "body": "Structured product data and technical content that search engines and AI assistants can cite when a buyer asks who makes the part they need."
+      }
+    ]
+  },
+  "compliance": {
+    "heading": "What compliance details does a manufacturing website have to get right?",
+    "intro": "These rarely appear in a design brief, and each one changes how templates, downloads and forms are built.",
+    "notes": [
+      {
+        "title": "Controlled technical data",
+        "body": "Drawings and specifications covered by export controls such as ITAR or the EAR cannot sit in a public download folder. We put them behind approved accounts and log who downloaded what."
+      },
+      {
+        "title": "Certificates and declarations",
+        "body": "Product pages carry the current certificates, declarations of conformity and safety data sheets, managed as records with revision dates rather than loose files."
+      },
+      {
+        "title": "California Proposition 65 warnings",
+        "body": "Where a product sold into California needs a warning, the template shows it on the product page and in the quote flow, driven by a field on the product rather than typed by hand."
+      },
+      {
+        "title": "One source for product data",
+        "body": "Part numbers, attributes and prices come from the ERP or a product information system. The website reads them on a schedule, so nobody retypes a catalogue."
+      }
+    ]
+  },
+  "caseStudies": {
+    "heading": "Which manufacturing websites have we built?",
+    "intro": "Fitment data, large catalogues and technical buyers on a phone: the parts that break generic builds.",
+    "items": [
+      {
+        "slug": "meridian-parts",
+        "clientName": "Meridian Parts",
+        "summary": "Fitment search across 90,000 SKUs, so a technician finds the right part on a phone in a workshop.",
+        "tags": [
+          "Michigan, USA",
+          "Headless"
+        ],
+        "image": {
+          "src": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=900&q=70",
+          "alt": "A developer reviewing code on a monitor in a bright open-plan office"
+        },
+        "metrics": [
+          {
+            "value": "+207%",
+            "label": "Organic traffic"
+          },
+          {
+            "value": "−63%",
+            "label": "Wrong-part returns"
+          },
+          {
+            "value": "4.2x",
+            "label": "Repeat orders"
+          }
+        ]
+      }
+    ],
+    "link": {
+      "label": "See all manufacturing work",
+      "href": "/work/?industry=manufacturing"
+    }
+  },
+  "results": {
+    "heading": "What changed for manufacturing clients after launch?",
+    "intro": null,
+    "note": "Each figure comes from the case study above and is shown with the client it was measured for.",
+    "metrics": [
+      {
+        "value": "+207%",
+        "label": "Organic traffic",
+        "clientName": "Meridian Parts"
+      },
+      {
+        "value": "−63%",
+        "label": "Wrong-part returns",
+        "clientName": "Meridian Parts"
+      },
+      {
+        "value": "4.2x",
+        "label": "Repeat orders",
+        "clientName": "Meridian Parts"
+      }
+    ],
+    "testimonial": null
+  },
+  "integrations": {
+    "heading": "Which systems does a manufacturing website usually connect to?",
+    "intro": "We confirm what each system allows during discovery, before any design is signed off.",
+    "items": [
+      {
+        "name": "ERP",
+        "body": "Epicor, SAP Business One, Microsoft Dynamics 365 or NetSuite for stock, lead times, customer pricing and order status."
+      },
+      {
+        "name": "Product information management",
+        "body": "Akeneo, Salsify or a structured spreadsheet as the single source for attributes, descriptions and datasheets."
+      },
+      {
+        "name": "Configure, price, quote",
+        "body": "Configuration and pricing rules from your existing CPQ tool, or built into the site when the rules are yours to own."
+      },
+      {
+        "name": "CRM",
+        "body": "Salesforce or HubSpot, with every quote request and download attached to the right account and territory."
+      },
+      {
+        "name": "CAD and drawing libraries",
+        "body": "Versioned STEP, DWG and PDF files served from managed storage, with access rules for controlled drawings."
+      },
+      {
+        "name": "Dealer and distributor locator",
+        "body": "A finder with territories and contact details, maintained in the dashboard rather than a separate map plugin."
+      }
+    ]
+  },
+  "faq": {
+    "heading": "What do manufacturers ask before starting a website project?",
+    "intro": "Straight answers to the questions engineering and sales leaders raise on the first call.",
+    "items": [
+      {
+        "id": "manufacturing-faq-cost",
+        "question": "How much does a manufacturing website cost?",
+        "answer": "A catalogue site with custom design, a CMS and quote capture usually sits in our focused build range of $12k to $25k. Adding a configurator, a dealer portal or ERP integration moves it into the platform build range of $25k to $60k. The biggest factor is how clean your product data is, which is why we look at it before we price."
+      },
+      {
+        "id": "manufacturing-faq-erp",
+        "question": "Can the website pull part data and stock levels from our ERP?",
+        "answer": "Usually, yes. Most modern ERPs offer an API or a scheduled export, and we sync part numbers, attributes, stock and customer pricing into the site on a schedule you choose. Where the ERP has no usable interface, we agree a file-based sync in discovery rather than promising a live connection it cannot support."
+      },
+      {
+        "id": "manufacturing-faq-access",
+        "question": "Can we restrict some drawings and prices to approved accounts?",
+        "answer": "Yes. Role-based access is part of the build: public visitors see the catalogue, approved customers and distributors see their prices and controlled downloads, and every download of a restricted file is logged against the account."
+      },
+      {
+        "id": "manufacturing-faq-configurator",
+        "question": "Do we need a product configurator, or will a quote form do?",
+        "answer": "If most orders are standard parts, a good quote form with the part number filled in is enough. If buyers regularly choose dimensions, materials or options that change the price or feasibility, a configurator that applies your rules saves your applications engineers hours each week. We decide with you from your actual order history."
+      },
+      {
+        "id": "manufacturing-faq-timeline",
+        "question": "How long does a manufacturing website project take?",
+        "answer": "Six to eight weeks for a catalogue site, and nine to fourteen weeks for a platform build with a configurator, portal or ERP integration. Preparing product data is usually the critical path, so the proposal names the dates we need exports and datasheets from your team."
+      },
+      {
+        "id": "manufacturing-faq-editing",
+        "question": "Can our team update products without a developer?",
+        "answer": "Yes. Products, categories, datasheets and certificates are content types with their own editors, so your marketing or product team publishes changes from the dashboard with no deployment. Data owned by the ERP stays in the ERP and flows to the site automatically."
+      }
+    ]
+  }
+}

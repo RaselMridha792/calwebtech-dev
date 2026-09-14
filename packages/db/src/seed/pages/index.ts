@@ -25,6 +25,7 @@ export type PageSeedLoader = () => Promise<PageSeed>;
  */
 export const PAGE_SEEDS: readonly PageSeedLoader[] = [
   // Site page families: one line each, below this one.
+  () => import('./industries.js').then((module) => module.industriesSeed),
 ];
 
 /**
@@ -33,6 +34,7 @@ export const PAGE_SEEDS: readonly PageSeedLoader[] = [
  */
 export const PAGE_FIXTURES: readonly PageSeedLoader[] = [
   // Site page families: one line each, below this one.
+  () => import('./industries.js').then((module) => module.industriesFixtures),
 ];
 
 export async function runPageSeeds(db: PrismaClient, loaders: readonly PageSeedLoader[]): Promise<void> {
