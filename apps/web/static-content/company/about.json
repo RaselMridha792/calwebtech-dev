@@ -1,0 +1,248 @@
+{
+  "content": {
+    "seo": {
+      "title": "About Calwebtech",
+      "description": "Calwebtech is a web engineering studio building custom websites, ecommerce platforms and web applications since 2014, for companies that want to own them.",
+      "ogImage": null
+    },
+    "hero": {
+      "eyebrow": "Building on the web since 2014",
+      "title": "About Calwebtech",
+      "answerBlock": "Calwebtech is a web engineering studio that designs and builds custom websites, ecommerce platforms and web applications for B2B and D2C companies. We have been building on the web since 2014 and have shipped more than 240 projects. Every lead, booking and subscriber our sites capture lands in a database the client owns.",
+      "intro": "The people who pitch your project are the people who build it, and when it launches you own the code, the data and the server it runs on.",
+      "primaryCta": { "label": "Book a consultation", "href": "/contact/" },
+      "secondaryCta": { "label": "See our work", "href": "/work/" },
+      "backdrop": {
+        "src": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1800&q=65"
+      }
+    },
+    "story": {
+      "heading": "Why do companies hire Calwebtech?",
+      "intro": null,
+      "paragraphs": [
+        "Most companies that come to us do not need more traffic. They need a website that does something with the traffic they already have: answers the questions buyers ask, puts proof in front of every request, and hands a qualified enquiry to the right person. Most of our work is a rescue, not a launch.",
+        "Since 2014 we have shipped more than 240 projects in 31 industries, from a distributor quoting against a 40,000-part catalogue to a healthcare network merging fourteen clinic sites into one. The pattern repeats. The parts that break generic builds, such as tiered pricing, ERP data and multi-location booking, are the parts that decide whether a website earns its keep.",
+        "So we build differently. Everything repeatable becomes a content type your team can publish without a developer. Every lead, booking and subscriber is stored in your own database, not in a form vendor's account. Performance is a written budget that fails our own release when it is breached, not a promise made in a pitch deck.",
+        "Our head office is in Sacramento, with a second office in Austin, and we work with clients across the United States. When a project finishes you leave owning all of it. Care plans run month to month, so the clients who stay with us do so because the work is useful, not because a contract says they must."
+      ],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1100&q=75",
+        "alt": "A project team planning a website around a meeting table, with sticky notes arranged on the wall behind them"
+      }
+    },
+    "statistics": {
+      "heading": "What has Calwebtech delivered since 2014?",
+      "intro": "The figures we are asked about most, from our own project records and our clients' analytics."
+    },
+    "team": {
+      "heading": "Who will work on your project?",
+      "intro": "The people in the pitch are the people who build it. No handover to a junior team once the contract is signed.",
+      "empty": "Team profiles appear here once they are published.",
+      "linkLabel": "Meet the whole team"
+    },
+    "values": {
+      "heading": "What does Calwebtech hold itself to?",
+      "intro": "Six commitments that shape how every project is priced, built and handed over. Each one answers a question buyers ask us before they sign.",
+      "items": [
+        {
+          "title": "Who owns the website when it is finished?",
+          "body": "You do. The code, the database, the design files and every third-party account are registered in your name and transferred at handover. No per-contact billing, and no vendor holding the export button."
+        },
+        {
+          "title": "Who actually does the work?",
+          "body": "Senior people, from the first call to launch. The founder joins every first call and every proposal, and the people you meet are the people who design, build and ship the site."
+        },
+        {
+          "title": "When do we talk about price?",
+          "body": "On the first call. Our engagement shapes are published openly, and every project is quoted at a fixed price after discovery, with the change process written down before any work starts."
+        },
+        {
+          "title": "How do we prove a site is fast and accessible?",
+          "body": "With a written performance budget and WCAG 2.2 AA as the working standard, both checked on every release. A release that breaches the budget does not ship, whatever the deadline."
+        },
+        {
+          "title": "What happens if we are the wrong fit?",
+          "body": "We say so on the first call and point you somewhere better. We would rather lose a project early than win one we cannot deliver well."
+        },
+        {
+          "title": "What happens after launch?",
+          "body": "Two recorded training sessions and a written operations manual, so publishing a page never depends on our availability. Care plans are month to month, so you can leave and take the code with you."
+        }
+      ]
+    },
+    "recognition": {
+      "heading": "How has Calwebtech's work been recognised?",
+      "intro": "Awards judged by people outside the studio, and partnerships with the platforms we build on.",
+      "empty": "Awards and partnerships appear here once they are published.",
+      "awardsLinkLabel": "All awards and recognition",
+      "partnersLinkLabel": "What our partnerships mean for you"
+    },
+    "faq": {
+      "heading": "What do people ask about Calwebtech?",
+      "intro": "Short answers to the questions we hear before a first call. If yours is not here, ask it on the call."
+    }
+  },
+  "statistics": [
+    { "value": "240", "suffix": "+", "label": "Projects shipped since 2014" },
+    { "value": "187", "suffix": "%", "label": "Average uplift in qualified leads" },
+    { "value": "94", "suffix": "%", "label": "Clients still with us after a year" },
+    { "value": "31", "suffix": "", "label": "Industries we have shipped in" }
+  ],
+  "team": [
+    {
+      "slug": "sawkat-hasan",
+      "name": "Sawkat Hasan",
+      "role": "Founder",
+      "bio": "Joins every first call and every proposal. Twelve years in B2B commerce.",
+      "photo": {
+        "src": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=70",
+        "alt": "Sawkat Hasan, Founder"
+      },
+      "skills": ["B2B commerce", "Discovery", "Proposals"],
+      "socials": []
+    },
+    {
+      "slug": "rasel-mridha",
+      "name": "Rasel Mridha",
+      "role": "Chief Technology Officer",
+      "bio": "Owns architecture and delivery. Writes the technical plan behind your quote.",
+      "photo": {
+        "src": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=500&q=70",
+        "alt": "Rasel Mridha, Chief Technology Officer"
+      },
+      "skills": ["Architecture", "Delivery", "Technical planning"],
+      "socials": []
+    },
+    {
+      "slug": "priya-raman",
+      "name": "Priya Raman",
+      "role": "Design Lead",
+      "bio": "Runs the design system and every high-fidelity screen you approve.",
+      "photo": {
+        "src": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=70",
+        "alt": "Priya Raman, Design Lead"
+      },
+      "skills": ["Design systems", "Interface design"],
+      "socials": []
+    },
+    {
+      "slug": "dana-whitfield",
+      "name": "Dana Whitfield",
+      "role": "Delivery Manager",
+      "bio": "Your weekly point of contact. Keeps the staging URL and the schedule honest.",
+      "photo": {
+        "src": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=500&q=70",
+        "alt": "Dana Whitfield, Delivery Manager"
+      },
+      "skills": ["Delivery management", "Scheduling", "Staging reviews"],
+      "socials": []
+    }
+  ],
+  "awards": [
+    {
+      "id": "award-awwwards-verona-home-2026",
+      "name": "Awwwards Honourable Mention",
+      "year": 2026,
+      "category": "Website design",
+      "awardingBody": "Awwwards",
+      "projectName": "Verona Home storefront",
+      "description": "For the Verona Home storefront: a furniture brand moved off a page builder and replatformed on Shopify, with a configurator for made-to-order pieces.",
+      "badge": null
+    },
+    {
+      "id": "award-clutch-top-b2b-2026",
+      "name": "Clutch Top B2B Developer",
+      "year": 2026,
+      "category": "California",
+      "awardingBody": "Clutch",
+      "projectName": null,
+      "description": "Listed among the top B2B development companies in California by Clutch, the B2B review platform, for the second year running.",
+      "badge": null
+    },
+    {
+      "id": "award-w3-silver-cascadia-health-2026",
+      "name": "W3 Silver, Accessibility",
+      "year": 2026,
+      "category": "Accessibility",
+      "awardingBody": "W3 Awards",
+      "projectName": "Cascadia Health platform",
+      "description": "For the Cascadia Health platform: fourteen clinic sites merged into one accessible website with location-aware appointment booking, verified against WCAG 2.2 AA.",
+      "badge": null
+    },
+    {
+      "id": "award-horizon-gold-northmark-supply-2025",
+      "name": "Horizon Interactive, Gold",
+      "year": 2025,
+      "category": "Gold",
+      "awardingBody": "Horizon Interactive Awards",
+      "projectName": "Northmark Supply quoting platform",
+      "description": "For the Northmark Supply quoting platform: a catalogue of 40,000 parts rebuilt as a searchable, account-priced quoting system tied into the client's ERP.",
+      "badge": null
+    }
+  ],
+  "partners": [
+    {
+      "id": "partner-shopify",
+      "name": "Shopify",
+      "logo": null,
+      "tier": null,
+      "certification": "Partner since 2019",
+      "meaningForClient": "Your store is designed, built and extended by a team that has worked in Shopify's partner programme since 2019. Themes and apps are chosen for what your catalogue needs, and the store is transferred into your ownership at launch.",
+      "quote": null
+    },
+    {
+      "id": "partner-google",
+      "name": "Google",
+      "logo": null,
+      "tier": null,
+      "certification": "Partner, Ads & Analytics",
+      "meaningForClient": "Analytics, Search Console and advertising accounts are set up by people who work with Google's measurement tools every week. Conversion tracking is tested before launch, so the enquiries in your reports are the enquiries in your inbox.",
+      "quote": null
+    },
+    {
+      "id": "partner-vercel",
+      "name": "Vercel",
+      "logo": null,
+      "tier": null,
+      "certification": "Agency partner",
+      "meaningForClient": "When managed hosting suits a Next.js project, we deploy it on Vercel with previews for every change. When a server in your own name suits it better, we build for Docker instead, and the proposal explains the choice.",
+      "quote": null
+    },
+    {
+      "id": "partner-cloudflare",
+      "name": "Cloudflare",
+      "logo": null,
+      "tier": null,
+      "certification": "Certified deployment",
+      "meaningForClient": "DNS, TLS, caching and bot protection are configured to a written checklist before launch. Public forms are checked with Cloudflare Turnstile, which filters spam without making real visitors solve a puzzle.",
+      "quote": null
+    }
+  ],
+  "faqs": [
+    {
+      "id": "faq-about-location",
+      "question": "Where is Calwebtech based?",
+      "answer": "Our head office is in Sacramento, California, and we have a second office in Austin, Texas. Most of our clients are outside both cities. We work across US time zones with a weekly call, a shared project board and a staging URL you can open at any hour."
+    },
+    {
+      "id": "faq-about-clients",
+      "question": "What kind of companies does Calwebtech work with?",
+      "answer": "B2B and D2C companies whose website has to do real sales work: distributors and manufacturers with large catalogues, SaaS teams, healthcare networks, and consumer brands selling online. We have shipped projects in 31 industries, and the awkward parts of a sector are usually the parts we have built before."
+    },
+    {
+      "id": "faq-about-project-size",
+      "question": "How much does a Calwebtech project cost?",
+      "answer": "Most projects run between $12,000 and $60,000. A focused marketing site with custom design, a CMS and lead capture takes six to eight weeks. A platform build with booking, a dashboard, campaigns and integrations takes nine to fourteen. Every project is quoted at a fixed price after discovery."
+    },
+    {
+      "id": "faq-about-nda",
+      "question": "Will you sign an NDA before the first call?",
+      "answer": "Yes. Send yours, or use ours, and we sign it before the first discovery call rather than after. If you are describing something that has not launched yet, that should not be a negotiation."
+    },
+    {
+      "id": "faq-about-after-launch",
+      "question": "Can we keep working with Calwebtech after launch?",
+      "answer": "Yes. Care plans cover patching, backups with a tested restore, monitoring and a fixed allowance of development hours, with a four-hour response on anything critical. They run month to month, with no twelve-month lock-in."
+    }
+  ]
+}

@@ -1,0 +1,147 @@
+{
+  "content": {
+    "seo": {
+      "title": "Awards and recognition",
+      "description": "Awards for Calwebtech's work from Awwwards, Clutch, the W3 Awards and Horizon Interactive, with the client project behind each one.",
+      "ogImage": null
+    },
+    "hero": {
+      "eyebrow": "Recognition",
+      "title": "Awards and recognition",
+      "answerBlock": "Calwebtech's work has been recognised by Awwwards, Clutch, the W3 Awards and the Horizon Interactive Awards, for ecommerce design, accessibility and B2B development. Each award below names the year and the client project it was given for.",
+      "intro": "Awards are a second opinion, not a substitute for results. We list each one with the project behind it, so you can read the case study and judge the work yourself.",
+      "primaryCta": { "label": "See the case studies", "href": "/work/" },
+      "secondaryCta": { "label": "Book a consultation", "href": "/contact/" },
+      "backdrop": {
+        "src": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1800&q=65"
+      }
+    },
+    "recognition": {
+      "heading": "Which awards has Calwebtech won?",
+      "intro": "Newest first, with the awarding body and the project each one recognised.",
+      "empty": "Awards appear here once they are published."
+    },
+    "partners": {
+      "heading": "Which partnerships does Calwebtech hold?",
+      "intro": "Partnerships mean direct support channels and early access when something breaks on a Friday afternoon.",
+      "empty": "Partnerships appear here once they are published.",
+      "linkLabel": "What each partnership means for you"
+    },
+    "faq": {
+      "heading": "What do people ask about our awards?",
+      "intro": null
+    }
+  },
+  "awards": [
+    {
+      "id": "award-awwwards-verona-home-2026",
+      "name": "Awwwards Honourable Mention",
+      "year": 2026,
+      "category": "Website design",
+      "awardingBody": "Awwwards",
+      "projectName": "Verona Home storefront",
+      "description": "For the Verona Home storefront: a furniture brand moved off a page builder and replatformed on Shopify, with a configurator for made-to-order pieces.",
+      "badge": null
+    },
+    {
+      "id": "award-clutch-top-b2b-2026",
+      "name": "Clutch Top B2B Developer",
+      "year": 2026,
+      "category": "California",
+      "awardingBody": "Clutch",
+      "projectName": null,
+      "description": "Listed among the top B2B development companies in California by Clutch, the B2B review platform, for the second year running.",
+      "badge": null
+    },
+    {
+      "id": "award-w3-silver-cascadia-health-2026",
+      "name": "W3 Silver, Accessibility",
+      "year": 2026,
+      "category": "Accessibility",
+      "awardingBody": "W3 Awards",
+      "projectName": "Cascadia Health platform",
+      "description": "For the Cascadia Health platform: fourteen clinic sites merged into one accessible website with location-aware appointment booking, verified against WCAG 2.2 AA.",
+      "badge": null
+    },
+    {
+      "id": "award-horizon-gold-northmark-supply-2025",
+      "name": "Horizon Interactive, Gold",
+      "year": 2025,
+      "category": "Gold",
+      "awardingBody": "Horizon Interactive Awards",
+      "projectName": "Northmark Supply quoting platform",
+      "description": "For the Northmark Supply quoting platform: a catalogue of 40,000 parts rebuilt as a searchable, account-priced quoting system tied into the client's ERP.",
+      "badge": null
+    },
+    {
+      "id": "award-clutch-top-b2b-2025",
+      "name": "Clutch Top B2B Developer",
+      "year": 2025,
+      "category": "California",
+      "awardingBody": "Clutch",
+      "projectName": null,
+      "description": "Listed among the top B2B development companies in California by Clutch, the B2B review platform.",
+      "badge": null
+    }
+  ],
+  "partners": [
+    {
+      "id": "partner-shopify",
+      "name": "Shopify",
+      "logo": null,
+      "tier": null,
+      "certification": "Partner since 2019",
+      "meaningForClient": "Your store is designed, built and extended by a team that has worked in Shopify's partner programme since 2019. Themes and apps are chosen for what your catalogue needs, and the store is transferred into your ownership at launch.",
+      "quote": null
+    },
+    {
+      "id": "partner-google",
+      "name": "Google",
+      "logo": null,
+      "tier": null,
+      "certification": "Partner, Ads & Analytics",
+      "meaningForClient": "Analytics, Search Console and advertising accounts are set up by people who work with Google's measurement tools every week. Conversion tracking is tested before launch, so the enquiries in your reports are the enquiries in your inbox.",
+      "quote": null
+    },
+    {
+      "id": "partner-vercel",
+      "name": "Vercel",
+      "logo": null,
+      "tier": null,
+      "certification": "Agency partner",
+      "meaningForClient": "When managed hosting suits a Next.js project, we deploy it on Vercel with previews for every change. When a server in your own name suits it better, we build for Docker instead, and the proposal explains the choice.",
+      "quote": null
+    },
+    {
+      "id": "partner-cloudflare",
+      "name": "Cloudflare",
+      "logo": null,
+      "tier": null,
+      "certification": "Certified deployment",
+      "meaningForClient": "DNS, TLS, caching and bot protection are configured to a written checklist before launch. Public forms are checked with Cloudflare Turnstile, which filters spam without making real visitors solve a puzzle.",
+      "quote": null
+    }
+  ],
+  "faqs": [
+    {
+      "id": "faq-awards-matter",
+      "question": "Do awards matter when choosing a web development agency?",
+      "answer": "Less than results do. An award tells you that people outside the studio rated the work; a case study tells you what the work did for the client. Use awards to build a shortlist, and case studies with measured figures to decide."
+    },
+    {
+      "id": "faq-awards-clutch",
+      "question": "What is the Clutch Top B2B Developer listing?",
+      "answer": "A regional listing published by Clutch, the B2B review platform, which draws largely on verified client reviews on its site. Calwebtech was listed among B2B development companies in California in 2025 and again in 2026."
+    },
+    {
+      "id": "faq-awards-accessibility",
+      "question": "What did the W3 Silver award for accessibility recognise?",
+      "answer": "The Cascadia Health platform, which merged fourteen clinic websites into one accessible site with location-aware appointment booking. The platform was verified against WCAG 2.2 AA, the standard we work to on every project."
+    },
+    {
+      "id": "faq-awards-projects",
+      "question": "Can I read about the projects behind these awards?",
+      "answer": "Yes. The Verona Home, Cascadia Health and Northmark Supply projects are published as case studies, with the brief, the build and the figures each client agreed to publish."
+    }
+  ]
+}

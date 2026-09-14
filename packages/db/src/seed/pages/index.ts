@@ -25,6 +25,7 @@ export type PageSeedLoader = () => Promise<PageSeed>;
  */
 export const PAGE_SEEDS: readonly PageSeedLoader[] = [
   // Site page families: one line each, below this one.
+  () => import('./company.js').then((module) => module.companySeed),
 ];
 
 /**

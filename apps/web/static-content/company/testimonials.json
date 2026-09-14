@@ -1,0 +1,132 @@
+{
+  "content": {
+    "seo": {
+      "title": "Client testimonials and reviews",
+      "description": "What Calwebtech clients say about working with us, in their own words, with our ratings on Google, Clutch, DesignRush and GoodFirms.",
+      "ogImage": null
+    },
+    "hero": {
+      "eyebrow": "Client feedback",
+      "title": "What our clients say",
+      "answerBlock": "Calwebtech is reviewed by clients on Google, Clutch, DesignRush and GoodFirms, and the overall rating below is weighted by how many reviews each platform holds. Every quote on this page comes from a named client who agreed to publish it.",
+      "intro": "What clients say when we are not in the room, and how the rating is worked out.",
+      "primaryCta": { "label": "Book a consultation", "href": "/contact/" },
+      "secondaryCta": { "label": "Read the case studies", "href": "/work/" },
+      "backdrop": {
+        "src": "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1800&q=65"
+      }
+    },
+    "quotes": {
+      "heading": "What do clients say about working with Calwebtech?",
+      "intro": "In their own words, with their name, role and company. Where the project is published, its case study is one click away, so you can check the quote against the result.",
+      "empty": "No client quotes are published yet.",
+      "caseStudyLabel": "Read the case study"
+    },
+    "ratings": {
+      "heading": "How is Calwebtech rated on review platforms?",
+      "intro": "The overall figure is weighted by review count, so a perfect score from a handful of reviews cannot outweigh a large sample.",
+      "empty": "Platform ratings appear here once they are published.",
+      "method": "Each platform's rating and review count is copied from its public profile on a schedule and stored in our own database, so this page never depends on a third-party widget. Reviews stay on the platforms where clients wrote them, and we cannot edit or remove them. The Net Promoter Score is measured across client projects, separately from public reviews."
+    },
+    "faq": {
+      "heading": "What do people ask about our reviews?",
+      "intro": null
+    }
+  },
+  "reviews": {
+    "averageRating": 4.9,
+    "totalReviews": 217,
+    "sources": [
+      { "platform": "Google", "rating": 4.9, "reviewCount": 96, "profileUrl": null },
+      { "platform": "Clutch", "rating": 4.9, "reviewCount": 71, "profileUrl": null },
+      { "platform": "DesignRush", "rating": 5, "reviewCount": 34, "profileUrl": null },
+      { "platform": "GoodFirms", "rating": 4.8, "reviewCount": 16, "profileUrl": null }
+    ],
+    "npsScore": 9.6,
+    "npsProjectCount": 41
+  },
+  "testimonials": [
+    {
+      "id": "testimonial-elena-marsh",
+      "quote": "They rebuilt a site three agencies had failed on, and they did it without a single schedule slip. We have gone back to them twice since.",
+      "clientName": "Elena Marsh",
+      "role": "Chief Marketing Officer",
+      "company": "Bridgeline Industrial",
+      "rating": 5,
+      "avatar": {
+        "src": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=120&q=70"
+      },
+      "source": null,
+      "date": null,
+      "featured": true,
+      "caseStudySlug": null
+    },
+    {
+      "id": "testimonial-dale-ferris",
+      "quote": "Our counter staff stopped retyping orders. That is the whole story. Calwebtech understood the ERP side better than the vendor who sold it to us.",
+      "clientName": "Dale Ferris",
+      "role": "Director of Ecommerce",
+      "company": "Northmark Supply",
+      "rating": 5,
+      "avatar": {
+        "src": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=120&q=70"
+      },
+      "source": null,
+      "date": null,
+      "featured": false,
+      "caseStudySlug": "northmark-supply"
+    },
+    {
+      "id": "testimonial-priya-raman",
+      "quote": "They pushed back on half of what we asked for and were right about most of it. The site does one job on every page now, and our enquiry quality went up before the volume did.",
+      "clientName": "Priya Raman",
+      "role": "VP Marketing",
+      "company": "Truvia Labs",
+      "rating": 5,
+      "avatar": {
+        "src": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=70"
+      },
+      "source": null,
+      "date": null,
+      "featured": false,
+      "caseStudySlug": "truvia-labs"
+    },
+    {
+      "id": "testimonial-marcus-bell",
+      "quote": "Fourteen clinic websites became one. Our staff publish their own updates now, which sounds small until you remember we used to wait nine days for a phone number change.",
+      "clientName": "Marcus Bell",
+      "role": "Communications Director",
+      "company": "Cascadia Health",
+      "rating": 5,
+      "avatar": {
+        "src": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=70"
+      },
+      "source": null,
+      "date": null,
+      "featured": false,
+      "caseStudySlug": "cascadia-health"
+    }
+  ],
+  "faqs": [
+    {
+      "id": "faq-testimonials-genuine",
+      "question": "Are Calwebtech's reviews and testimonials genuine?",
+      "answer": "Every quote on this page comes from a named client, and none is published until their permission is on record. Platform ratings are copied from our public profiles on Google, Clutch, DesignRush and GoodFirms, where the full reviews can be read in context."
+    },
+    {
+      "id": "faq-testimonials-weighted",
+      "question": "Why is the overall rating weighted by review count?",
+      "answer": "Because the platforms hold very different numbers of reviews. Weighting by count means a perfect score from a few reviews on one platform cannot outweigh a slightly lower score from nearly a hundred on another."
+    },
+    {
+      "id": "faq-testimonials-negative",
+      "question": "Do you remove negative reviews?",
+      "answer": "No. We cannot remove or edit reviews on Google, Clutch, DesignRush or GoodFirms, and the ratings on this page are copied as they stand, including every review that is not five stars."
+    },
+    {
+      "id": "faq-testimonials-case-studies",
+      "question": "Why do some quotes link to a case study?",
+      "answer": "Because the quote belongs to a published project. The case study shows the brief, the build and the figures the client agreed to publish, measured in their own analytics, so you can judge the quote against the result."
+    }
+  ]
+}
