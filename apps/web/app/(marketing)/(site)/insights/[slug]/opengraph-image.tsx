@@ -1,5 +1,5 @@
 import { ImageResponse } from 'next/og';
-import { getInsightsArticle, getInsightsTopic } from '@/lib/api/insights';
+import { getInsightsArticle, getInsightsIndex, getInsightsTopic } from '@/lib/api/insights';
 
 export const alt = 'Calwebtech insights';
 export const size = { width: 1200, height: 630 };
@@ -13,17 +13,30 @@ const INK = 'rgb(10, 29, 55)';
 const COBALT = 'rgb(18, 58, 143)';
 const PRIMARY = 'rgb(21, 80, 224)';
 
+/** Shortens a line to fit under the title, at a word boundary. */
+function clamp(value: string, max: number): string {
+  const text = value.replace(/\s+/g, ' ').trim();
+  if (text.length <= max) return text;
+  const window = text.slice(0, max + 1);
+  const boundary = window.lastIndexOf(' ');
+  return `${(boundary > max * 0.6 ? window.slice(0, boundary) : text.slice(0, max)).replace(/[\s,;:.–-]+$/u, '')}…`;
+}
+
 /** The generated social preview of an article, or of a topic listing (docs/03-page-specs.md). */
 export default async function InsightsOpengraphImage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  const { copy } = await getInsightsIndex();
   const topic = await getInsightsTopic(slug);
   const article = topic ? null : await getInsightsArticle(slug);
 
-  const eyebrow = article?.category?.name ?? (topic ? 'Insights' : 'Insights');
-  const title = article?.title ?? topic?.copy.title ?? 'Insights';
+  const eyebrow = article?.category?.name ?? copy.eyebrow ?? 'Insights';
+  const title = article?.title ?? topic?.copy.title ?? copy.title;
+  // The line under the title: who wrote it and how long it takes, or the listing's own words.
   const footer = article
-    ? [article.author?.name, `${String(article.readingTime)} min read`].filter(Boolean).join(' · ')
-    : 'Articles for people buying a website';
+    ? [article.author?.name, `${String(article.readingTime)} ${copy.readingTimeLabel}`]
+        .filter((part): part is string => Boolean(part))
+        .join(' · ')
+    : clamp(topic?.copy.intro ?? copy.intro ?? copy.listHeading, 90);
 
   return new ImageResponse(
     (

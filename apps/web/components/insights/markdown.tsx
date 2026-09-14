@@ -92,8 +92,8 @@ function Inline({ tokens }: { tokens: readonly Token[] | undefined }): ReactNode
         switch (token.type) {
           case 'text':
           case 'escape': {
-            const nested = (token as Tokens.Text).tokens;
-            return nested ? <Inline key={key} tokens={nested} /> : token.text;
+            const item = token as Tokens.Text;
+            return item.tokens ? <Inline key={key} tokens={item.tokens} /> : item.text;
           }
           case 'strong':
             return (
