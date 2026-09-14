@@ -8,6 +8,7 @@ import {
   companyHeroSchema,
   companyTeamContentSchema,
   companyTestimonialSchema,
+  companyWebUrlSchema,
 } from './company';
 
 const hero = {
@@ -84,5 +85,15 @@ describe('companyTestimonialSchema', () => {
     expect(companyTestimonialSchema.safeParse(testimonial).success).toBe(true);
     expect(companyTestimonialSchema.safeParse({ ...testimonial, date: '2026-01-31T00:00:00Z' }).success).toBe(false);
     expect(companyTestimonialSchema.safeParse({ ...testimonial, caseStudySlug: 'Not A Slug' }).success).toBe(false);
+  });
+});
+
+describe('companyWebUrlSchema', () => {
+  it('takes web addresses only, so a profile link can never run a script', () => {
+    expect(companyWebUrlSchema.safeParse('https://www.example.com/profile').success).toBe(true);
+    expect(companyWebUrlSchema.safeParse('http://example.com/').success).toBe(true);
+    for (const unsafe of ['javascript:alert(1)', 'data:text/html,test', 'mailto:test@example.com', 'not a url']) {
+      expect(companyWebUrlSchema.safeParse(unsafe).success, unsafe).toBe(false);
+    }
   });
 });

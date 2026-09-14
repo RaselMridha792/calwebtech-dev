@@ -240,6 +240,13 @@ describe('toCompanyTeamView', () => {
           socials: [{ label: 'Profile', href: 'https://example.com/person' }],
         }),
         member({ skills: 'not a list', socials: [{ label: 'Broken', href: 'not a url' }] }),
+        member({
+          skills: ['Kept skill', 42],
+          socials: [
+            { label: 'Script', href: 'javascript:alert(1)' },
+            { label: 'Kept profile', href: 'https://example.com/kept' },
+          ],
+        }),
       ],
       faqs: [faqRecord('Test question?')],
     });
@@ -250,6 +257,10 @@ describe('toCompanyTeamView', () => {
       socials: [{ label: 'Profile', href: 'https://example.com/person' }],
     });
     expect(view.members[1]).toMatchObject({ photo: null, skills: [], socials: [] });
+    expect(view.members[2]).toMatchObject({
+      skills: ['Kept skill'],
+      socials: [{ label: 'Kept profile', href: 'https://example.com/kept' }],
+    });
     expect(view.faqs).toHaveLength(1);
   });
 });
@@ -287,7 +298,10 @@ describe('toCompanyTestimonialsView', () => {
     const view = toCompanyTestimonialsView({
       ...base,
       proofSetting: { npsScore: 70, npsProjectCount: 9 },
-      reviewSources: [review('Test platform A', 5, 3), review('Test platform B', 4, 97, 'https://example.com/profile')],
+      reviewSources: [
+        review('Test platform A', 5, 3, 'javascript:alert(1)'),
+        review('Test platform B', 4, 97, 'https://example.com/profile'),
+      ],
       testimonials: [],
     });
     expect(view.reviews.averageRating).toBe(4);

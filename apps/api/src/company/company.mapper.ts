@@ -7,6 +7,7 @@ import {
   companyTechnologyContentSchema,
   companyTechnologyViewSchema,
   companyTestimonialsViewSchema,
+  companyWebUrlSchema,
   siteProofSchema,
   type CompanyAboutView,
   type CompanyAward,
@@ -39,8 +40,19 @@ export const companyTestimonialInclude = {
 } satisfies Prisma.TestimonialInclude;
 export type CompanyTestimonialRecord = Prisma.TestimonialGetPayload<{ include: typeof companyTestimonialInclude }>;
 
-const skillsSchema = z.array(z.string().trim().min(1).max(60)).max(12);
-const socialsSchema = z.array(z.object({ label: z.string().trim().min(1).max(40), href: z.url() })).max(6);
+const skillSchema = z.string().trim().min(1).max(60);
+const socialSchema = z.object({ label: z.string().trim().min(1).max(40), href: companyWebUrlSchema });
+
+/** The entries of a JSON list that match their shape, up to `max`; anything else is left out. */
+function validEntries<T>(value: unknown, schema: z.ZodType<T>, max: number): T[] {
+  if (!Array.isArray(value)) return [];
+  return value
+    .flatMap((entry: unknown) => {
+      const parsed = schema.safeParse(entry);
+      return parsed.success ? [parsed.data] : [];
+    })
+    .slice(0, max);
+}
 
 const present = (value: string | null | undefined): string | null =>
   typeof value === 'string' && value.trim().length > 0 ? value.trim() : null;
@@ -49,18 +61,19 @@ export function statisticView(statistic: Statistic): CompanyStatistic {
   return { value: statistic.value, suffix: statistic.suffix ?? '', label: statistic.label };
 }
 
-/** A team member's profile. Skills and socials that do not match their shape are left out. */
+/**
+ * A team member's profile. Skills and profile links that do not match their shape, including
+ * links that are not http or https, are left out one by one.
+ */
 export function teamMemberView(member: TeamMember): CompanyTeamMember {
-  const skills = skillsSchema.safeParse(member.skills ?? []);
-  const socials = socialsSchema.safeParse(member.socials ?? []);
   return {
     slug: member.slug,
     name: member.name,
     role: member.role,
     bio: present(member.bio),
     photo: image(member.photo, `${member.name}, ${member.role}`),
-    skills: skills.success ? skills.data : [],
-    socials: socials.success ? socials.data : [],
+    skills: validEntries(member.skills, skillSchema, 12),
+    socials: validEntries(member.socials, socialSchema, 6),
   };
 }
 
@@ -125,7 +138,7 @@ export function reviewSummary(reviewSources: readonly ReviewSource[], proofSetti
     totalReviews: summary.totalReviews,
     sources: summary.sources.map((source) => {
       const record = byPlatform.get(source.platform);
-      const profile = z.url().safeParse(record?.profileUrl);
+      const profile = companyWebUrlSchema.safeParse(record?.profileUrl);
       return {
         platform: source.platform,
         rating: source.rating,

@@ -99,7 +99,7 @@
         { "slug": "postgresql", "name": "PostgreSQL", "logo": null, "proficiencyNote": "Holds every lead, booking, subscriber and page record in one database you own, exportable any day without asking a vendor." },
         { "slug": "redis", "name": "Redis", "logo": null, "proficiencyNote": "Caching and the job queue, kept on the internal network and never exposed to the internet." },
         { "slug": "bullmq", "name": "BullMQ queues", "logo": null, "proficiencyNote": "Emails and slow integrations run as retried background jobs, so a slow provider never keeps a visitor waiting after they submit a form." },
-        { "slug": "encrypted-backups", "name": "Nightly encrypted backups", "logo": null, "proficiencyNote": "The database is dumped every night, encrypted and stored off-site, and a restore is tested in front of you before launch rather than assumed." }
+        { "slug": "encrypted-backups", "name": "Nightly encrypted backups", "logo": null, "proficiencyNote": "The database is dumped every night, encrypted and stored off-site, and restores are tested rather than assumed, so a backup is known to work before it is needed." }
       ]
     },
     {

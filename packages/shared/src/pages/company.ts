@@ -67,6 +67,9 @@ const listSectionSchema = sectionSchema.extend({ empty: requiredText(200) });
 /** A question and its answer rendered as a card (values, roles, how a stack is chosen). */
 const questionCardSchema = z.object({ title: questionSchema(120), body: requiredText(600) });
 
+/** A web address people follow from these pages: http or https only, never a script URL. */
+export const companyWebUrlSchema = z.url({ protocol: /^https?$/, hostname: z.regexes.domain });
+
 // ---------------------------------------------------------------- proof views
 
 export const companyStatisticSchema = z.object({
@@ -82,7 +85,7 @@ export const companyTeamMemberSchema = z.object({
   bio: requiredText(800).nullable(),
   photo: imageSchema.nullable(),
   skills: z.array(requiredText(60)).max(12),
-  socials: z.array(z.object({ label: requiredText(40), href: z.url() })).max(6),
+  socials: z.array(z.object({ label: requiredText(40), href: companyWebUrlSchema })).max(6),
 });
 
 export const companyAwardSchema = z.object({
@@ -125,7 +128,7 @@ export const companyReviewSummarySchema = z.object({
       platform: requiredText(60),
       rating: z.number().min(0).max(5),
       reviewCount: z.number().int().nonnegative(),
-      profileUrl: z.url().nullable(),
+      profileUrl: companyWebUrlSchema.nullable(),
     }),
   ),
   npsScore: z.number().nullable(),
