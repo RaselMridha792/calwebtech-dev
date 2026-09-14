@@ -21,7 +21,7 @@ export type PageSeedLoader = () => Promise<PageSeed>;
  * Placeholder rows, run by `pnpm db:seed` after the homepage and landing page. Safe on a URL
  * someone can open, so placeholder-only (content.ts rules), for example:
  *
- *   () => import('./services').then((module) => module.servicesSeed),
+ *   () => import('./services.js').then((module) => module.servicesSeed),
  */
 export const PAGE_SEEDS: readonly PageSeedLoader[] = [
   // Site page families: one line each, below this one.
