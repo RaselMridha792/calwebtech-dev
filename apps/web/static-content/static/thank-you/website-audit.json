@@ -1,0 +1,55 @@
+{
+  "type": "website-audit",
+  "seo": {
+    "title": "Thank you: website audit request received",
+    "description": "Your free website audit request has reached Calwebtech. Here is what we check and how you receive the findings."
+  },
+  "eyebrow": "Audit request received",
+  "title": "Thanks. Your website audit request is with us.",
+  "intro": "We have your website address and what you asked us to look at. A confirmation email is on its way to the address you gave.",
+  "nextSteps": {
+    "heading": "What happens next",
+    "steps": [
+      {
+        "title": "A person reviews your site",
+        "body": "We check mobile speed, accessibility, search visibility, structured data and how the site asks visitors to get in touch."
+      },
+      {
+        "title": "We send you what we found",
+        "body": "A plain summary by email of the problems worth fixing, starting with the ones that cost you the most enquiries."
+      },
+      {
+        "title": "The findings are yours",
+        "body": "Act on them with any team you like. If you want us to fix them, we will quote a fixed price."
+      }
+    ]
+  },
+  "secondary": {
+    "heading": "While you wait",
+    "body": "See how a redesign is run, from mapping every URL to launch day, so rankings survive the move.",
+    "cta": {
+      "label": "Read how a project runs",
+      "href": "/process/"
+    }
+  },
+  "links": [
+    {
+      "label": "Pricing",
+      "href": "/pricing/"
+    },
+    {
+      "label": "Questions and answers",
+      "href": "/faq/"
+    }
+  ],
+  "image": {
+    "src": "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=72",
+    "alt": "A project team planning a website with sticky notes on a whiteboard"
+  },
+  "callLabel": "Prefer to talk? Call us",
+  "contact": {
+    "phone": "+1 (800) 555-0188",
+    "phoneE164": "+18005550188",
+    "email": "hello@calwebtech.com"
+  }
+}

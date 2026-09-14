@@ -1,0 +1,108 @@
+{
+  "slug": "cookie-policy",
+  "reviewStatus": "draft",
+  "draftNotice": "Draft pending legal review. This page describes how the website handles data by design, but a lawyer has not yet reviewed the wording, so it may change before it is final.",
+  "lastUpdated": "2026-09-14",
+  "seo": {
+    "title": "Cookie policy",
+    "description": "The Calwebtech website sets no analytics or advertising cookies. See exactly what is stored in your browser, why, for how long and how to clear it.",
+    "ogImage": null
+  },
+  "title": "Cookie policy",
+  "intro": "The short version: this website sets no analytics or advertising cookies, and nothing is stored in your browser to follow you around the web. This page lists everything that is stored, why and for how long.",
+  "sections": [
+    {
+      "id": "summary",
+      "heading": "What this site stores",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "A cookie is a small file a website saves in your browser. Local storage is a similar space that a site can use to remember something between visits. This site uses one item of local storage for every visitor, a bot check that runs only when you use a form, and a sign-in cookie that only our own staff receive."
+        },
+        {
+          "type": "table",
+          "caption": "Everything the website stores in your browser",
+          "columns": [
+            "Name",
+            "Type",
+            "Why it is used",
+            "How long it lasts",
+            "Set by"
+          ],
+          "rows": [
+            [
+              "cwt:first-touch",
+              "Local storage",
+              "Remembers the first page you arrived on, the site that referred you and any campaign tags, so an enquiry on a later visit is credited to the campaign that brought you",
+              "Until you clear your browser’s site data",
+              "Calwebtech"
+            ],
+            [
+              "Cloudflare Turnstile",
+              "Script running in its own frame",
+              "Checks that a form submission comes from a person. It loads only when you start filling in a form, and Cloudflare does not use it for advertising",
+              "For the check itself",
+              "Cloudflare"
+            ],
+            [
+              "Session cookie",
+              "First-party cookie, httpOnly, Secure, SameSite=Strict",
+              "Keeps a member of our staff signed in to the administration area. Visitors to the public site never receive it",
+              "Until the staff member signs out or the session expires",
+              "Calwebtech"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "analytics",
+      "heading": "Analytics and advertising",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "We do not use analytics or advertising cookies, and we do not load tracking pixels from social networks or advertising platforms. If we add analytics that needs your consent, the site will ask before anything is stored, and this page will list it first."
+        }
+      ]
+    },
+    {
+      "id": "other-content",
+      "heading": "Content loaded from elsewhere",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Fonts are served from our own site, and images are optimised and served by our own server, so reading a page does not send requests to font or image libraries. One campaign page plays a background video from Pexels, a stock video library; your browser requests that file from Pexels’ servers, which receive your IP address as part of the request."
+        }
+      ]
+    },
+    {
+      "id": "control",
+      "heading": "How to control it",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "You can clear local storage and cookies at any time in your browser’s settings, usually under privacy or site data. Clearing them does not stop the site from working: forms still send, but an enquiry may no longer be linked to the campaign that first brought you."
+        }
+      ]
+    },
+    {
+      "id": "changes",
+      "heading": "Changes to this policy",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "If we start storing anything new in your browser, we add it to the table above and update the date at the top of this page before it goes live. How we use the information you send us is covered by the [privacy policy](/privacy-policy/)."
+        }
+      ]
+    }
+  ],
+  "contactSection": {
+    "heading": "Questions about cookies",
+    "body": "If something in your browser does not match this page, tell us and we will look into it."
+  },
+  "contact": {
+    "phone": "+1 (800) 555-0188",
+    "phoneE164": "+18005550188",
+    "email": "hello@calwebtech.com"
+  }
+}

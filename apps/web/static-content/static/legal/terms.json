@@ -1,0 +1,138 @@
+{
+  "slug": "terms",
+  "reviewStatus": "draft",
+  "draftNotice": "Draft pending legal review. This page describes how the website handles data by design, but a lawyer has not yet reviewed the wording, so it may change before it is final.",
+  "lastUpdated": "2026-09-14",
+  "seo": {
+    "title": "Terms of use",
+    "description": "The terms that apply when you use the Calwebtech website: acceptable use, content ownership, published prices, links, liability and governing law.",
+    "ogImage": null
+  },
+  "title": "Terms of use",
+  "intro": "These terms apply to anyone who uses this website. By using it you accept them. Project work is never governed by these terms: it is covered by the written proposal and contract you sign with us.",
+  "sections": [
+    {
+      "id": "about",
+      "heading": "About these terms",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "This website is operated by Calwebtech (\"we\", \"us\"). These terms cover browsing the site, using its tools and sending us an enquiry. How we handle personal data is explained in the [privacy policy](/privacy-policy/), and the [cookie policy](/cookie-policy/) explains what is stored in your browser."
+        }
+      ]
+    },
+    {
+      "id": "using-the-site",
+      "heading": "Using the site",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "You may use the site to learn about our services and to contact us. You must not:"
+        },
+        {
+          "type": "list",
+          "items": [
+            "use it in a way that breaks the law or infringes anyone’s rights;",
+            "try to gain access to parts of the site, its servers or its database that are not public;",
+            "interfere with its operation, including by overloading it, probing it for weaknesses or getting round its bot checks and rate limits;",
+            "send enquiries in someone else’s name, or send spam or harmful code through its forms;",
+            "copy the site’s content in bulk with automated tools."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "If you find a security weakness, please report it as described on the [information security page](/information-security/) rather than testing it further."
+        }
+      ]
+    },
+    {
+      "id": "content",
+      "heading": "Our content",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "The text, design, code and graphics on this site belong to Calwebtech or to the people who licensed them to us. You may view and share pages for your own reference, but you may not republish or reuse our content commercially without written permission. Photographs from stock libraries are used under their licences, and other companies’ names and trademarks belong to their owners."
+        }
+      ]
+    },
+    {
+      "id": "prices",
+      "heading": "Prices, estimates and descriptions",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Price bands, estimates and timelines on this site describe typical projects so you can judge whether we fit your budget. They are not offers. The only price that binds either of us is the fixed price in a proposal we have both signed, and the scope of any project is the scope written in that proposal."
+        }
+      ]
+    },
+    {
+      "id": "what-you-send",
+      "heading": "What you send us",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "When you send an enquiry, make sure the information is accurate and that you are allowed to share it. Please do not send confidential material through a website form: if you need a non-disclosure agreement before describing your project, ask for one and we will sign it before we talk."
+        }
+      ]
+    },
+    {
+      "id": "links",
+      "heading": "Links to other websites",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Some pages link to websites we do not control, such as client sites or technical references. We are not responsible for their content or how they handle your data."
+        }
+      ]
+    },
+    {
+      "id": "availability",
+      "heading": "Availability and changes",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "We work to keep the site available and accurate, but we do not guarantee that it will always be available, uninterrupted or free of errors. We may change or remove any part of it at any time."
+        }
+      ]
+    },
+    {
+      "id": "liability",
+      "heading": "Liability",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "The site is provided for information. As far as the law allows, we are not liable for any indirect or consequential loss arising from your use of it, or for loss caused by relying on general information published here rather than on advice given for your project. Nothing in these terms limits liability that cannot be limited by law."
+        }
+      ]
+    },
+    {
+      "id": "law",
+      "heading": "Governing law",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "These terms are governed by the laws of the State of California, and disputes about them are for the courts located in California, unless the law where you live gives you the right to bring a claim there."
+        }
+      ]
+    },
+    {
+      "id": "changes",
+      "heading": "Changes to these terms",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "We may update these terms. The date at the top of the page shows when they last changed, and the version published here is the one that applies."
+        }
+      ]
+    }
+  ],
+  "contactSection": {
+    "heading": "Questions about these terms",
+    "body": "Email or call us and a person will answer. For anything about a project, the [contact page](/contact/) routes your message to the right inbox."
+  },
+  "contact": {
+    "phone": "+1 (800) 555-0188",
+    "phoneE164": "+18005550188",
+    "email": "hello@calwebtech.com"
+  }
+}

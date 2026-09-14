@@ -1,0 +1,131 @@
+{
+  "content": {
+    "seo": {
+      "title": "Contact us: start a project or ask a question",
+      "description": "Send a project enquiry, ask for a free website audit or get support. Every message reaches the right person, with a reply usually within one business day.",
+      "ogImage": null
+    },
+    "hero": {
+      "title": "Contact Calwebtech",
+      "intro": "Tell us what you need and your message goes straight to the people who handle it. Every enquiry gets a reply from a person, usually within one business day."
+    },
+    "image": {
+      "src": "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=900&q=72",
+      "alt": "A small project team working together at shared desks in an open-plan studio"
+    },
+    "form": {
+      "heading": "Send us a message",
+      "intro": "Choose what it is about so it reaches the right person first time. Only your name and email are required.",
+      "enquiryLabel": "What is it about?",
+      "messageLabel": "How can we help?",
+      "messagePlaceholder": "A few sentences about what you need is plenty.",
+      "submitLabel": "Send my message",
+      "footnote": "Protected by bot filtering. We never sell or share your details, and you can ask us to delete them at any time.",
+      "success": {
+        "heading": "Thanks. Your message is with us.",
+        "body": "It has gone to the person who handles this kind of enquiry. You will get a reply by email, usually within one business day."
+      }
+    },
+    "details": {
+      "heading": "Talk to a person",
+      "phoneLabel": "Call",
+      "emailLabel": "Email",
+      "officesLabel": "Offices",
+      "response": "Usually within one business day, from a person rather than an autoresponder. We sign your NDA before we talk if you need one."
+    },
+    "routing": {
+      "heading": "Where does my message go?",
+      "intro": "Each topic has its own inbox, so a support request never waits behind a sales conversation.",
+      "descriptions": [
+        {
+          "slug": "new-project",
+          "body": "Read by the people who scope and price projects. Expect a reply to book a thirty minute call, then a written proposal within two business days of it."
+        },
+        {
+          "slug": "free-website-audit",
+          "body": "Add your current website address. We review speed, accessibility, search and how the site asks for enquiries, and reply with the problems worth fixing first."
+        },
+        {
+          "slug": "support",
+          "body": "For existing clients. Critical issues on a site under warranty get a response within four hours; everything else joins your care plan queue."
+        },
+        {
+          "slug": "partnership",
+          "body": "For agencies, freelancers and technology companies who want to work with us on client projects."
+        },
+        {
+          "slug": "careers",
+          "body": "Tell us about your experience and the kind of work you want to do. Your message goes to a separate inbox and never into sales or marketing."
+        },
+        {
+          "slug": "press",
+          "body": "For journalists and event organisers. Tell us your deadline and the questions you have."
+        }
+      ]
+    },
+    "nextSteps": {
+      "heading": "What happens after I send a message?",
+      "steps": [
+        {
+          "title": "A person reads it",
+          "body": "Your message lands in the inbox for its topic. Nothing is added to a mailing list and no automated sequence starts."
+        },
+        {
+          "title": "We reply, usually within one business day",
+          "body": "You get an answer by email from someone who can help, or a time for a short call if that is quicker."
+        },
+        {
+          "title": "You decide what happens next",
+          "body": "For a project, a written proposal follows the call. If we are not the right fit, we say so and point you somewhere better."
+        }
+      ]
+    }
+  },
+  "contact": {
+    "phone": "+1 (800) 555-0188",
+    "phoneE164": "+18005550188",
+    "email": "hello@calwebtech.com"
+  },
+  "offices": [
+    {
+      "city": "Sacramento",
+      "address": "1201 J Street, Suite 200\nSacramento, CA 95814"
+    },
+    {
+      "city": "Austin",
+      "address": "98 San Jacinto Blvd, Suite 400\nAustin, TX 78701"
+    }
+  ],
+  "enquiryTypes": [
+    {
+      "slug": "new-project",
+      "name": "New project",
+      "description": "Read by the people who scope and price projects. Expect a reply to book a thirty minute call, then a written proposal within two business days of it."
+    },
+    {
+      "slug": "free-website-audit",
+      "name": "Free website audit",
+      "description": "Add your current website address. We review speed, accessibility, search and how the site asks for enquiries, and reply with the problems worth fixing first."
+    },
+    {
+      "slug": "support",
+      "name": "Support",
+      "description": "For existing clients. Critical issues on a site under warranty get a response within four hours; everything else joins your care plan queue."
+    },
+    {
+      "slug": "partnership",
+      "name": "Partnership",
+      "description": "For agencies, freelancers and technology companies who want to work with us on client projects."
+    },
+    {
+      "slug": "careers",
+      "name": "Careers",
+      "description": "Tell us about your experience and the kind of work you want to do. Your message goes to a separate inbox and never into sales or marketing."
+    },
+    {
+      "slug": "press",
+      "name": "Press",
+      "description": "For journalists and event organisers. Tell us your deadline and the questions you have."
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "type": "resource",
+  "seo": {
+    "title": "Thank you: guide request received",
+    "description": "Your request for a Calwebtech guide has been recorded. Here is what arrives in your inbox and what does not."
+  },
+  "eyebrow": "Request received",
+  "title": "Thanks. Your guide request is with us.",
+  "intro": "Your request is recorded against the email address you gave, and a confirmation is on its way. Asking for a guide does not sign you up to a sales sequence.",
+  "nextSteps": {
+    "heading": "What happens next",
+    "steps": [
+      {
+        "title": "Check your inbox",
+        "body": "The confirmation comes from our own address. If it has not arrived, look in your spam or promotions folder."
+      },
+      {
+        "title": "Ask about your own site",
+        "body": "If the guide raises a question about your website, send it through the contact page and a person will answer."
+      }
+    ]
+  },
+  "secondary": {
+    "heading": "Keep reading",
+    "body": "Our published answers cover pricing, timelines, ownership and search visibility.",
+    "cta": {
+      "label": "Read the answers",
+      "href": "/faq/"
+    }
+  },
+  "links": [
+    {
+      "label": "Pricing",
+      "href": "/pricing/"
+    },
+    {
+      "label": "How a project runs",
+      "href": "/process/"
+    }
+  ],
+  "image": {
+    "src": "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=72",
+    "alt": "A project team planning a website with sticky notes on a whiteboard"
+  },
+  "callLabel": "Prefer to talk? Call us",
+  "contact": {
+    "phone": "+1 (800) 555-0188",
+    "phoneE164": "+18005550188",
+    "email": "hello@calwebtech.com"
+  }
+}

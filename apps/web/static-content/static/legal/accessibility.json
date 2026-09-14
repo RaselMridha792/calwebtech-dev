@@ -1,0 +1,110 @@
+{
+  "slug": "accessibility",
+  "reviewStatus": "draft",
+  "draftNotice": "Draft pending legal review. This page describes how the website handles data by design, but a lawyer has not yet reviewed the wording, so it may change before it is final.",
+  "lastUpdated": "2026-09-14",
+  "seo": {
+    "title": "Accessibility statement",
+    "description": "The Calwebtech website is built to WCAG 2.2 level AA. See how it is tested, the known limitations and how to report a barrier so we can fix it.",
+    "ogImage": null
+  },
+  "title": "Accessibility statement",
+  "intro": "We want everyone to be able to use this website, whatever device, browser or assistive technology they rely on. This statement explains the standard we build to, how we check it and how to tell us when something gets in your way.",
+  "sections": [
+    {
+      "id": "standard",
+      "heading": "The standard we work to",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "This website is designed and built to meet the [Web Content Accessibility Guidelines (WCAG) 2.2](https://www.w3.org/TR/WCAG22/) at level AA. That is our working standard for every page, form and component, not a target for later."
+        }
+      ]
+    },
+    {
+      "id": "what-we-do",
+      "heading": "What that means in practice",
+      "blocks": [
+        {
+          "type": "list",
+          "items": [
+            "Text and interface colours meet AA contrast ratios, and colour is never the only way information is given.",
+            "Every link, button and form field shows a clear focus outline, and the whole site works with a keyboard alone.",
+            "A skip link at the top of each page goes straight to the main content, and pages use landmarks and headings in a logical order.",
+            "Menus open and close from the keyboard, and Escape closes an open menu.",
+            "Every form field has a visible label. Errors are described in words, linked to the field and announced, and focus moves to the first field that needs attention.",
+            "Tap and click targets are at least 24 by 24 pixels.",
+            "Pages work from narrow phone screens upwards and reflow when text is enlarged, without scrolling sideways.",
+            "Animation uses fading and movement only, never flashing, and it is switched off when your device asks for reduced motion.",
+            "Background video has no sound, a still poster image and a pause button.",
+            "Meaningful images have text alternatives, and decorative images are hidden from screen readers."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "testing",
+      "heading": "How we check it",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Accessibility is tested before a change goes live, not after a complaint. Every release runs automated end-to-end tests at a 360 pixel phone width and a 1440 pixel desktop width, including keyboard use and heading structure, and must score at least 90 in Lighthouse’s accessibility audit to be released. Pages are also reviewed by hand with a keyboard before launch."
+        }
+      ]
+    },
+    {
+      "id": "limitations",
+      "heading": "Known limitations",
+      "blocks": [
+        {
+          "type": "list",
+          "items": [
+            "Forms are protected by Cloudflare Turnstile, which usually runs without any interaction. If it ever asks you to complete a check you cannot manage, call or email us instead and we will take your enquiry directly.",
+            "Some client work shown on the site includes screenshots of other websites. We describe them in text, but the websites themselves are not ours to change."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "report",
+      "heading": "How to report a barrier",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "If anything on this site is hard or impossible for you to use, please tell us. It helps to include:"
+        },
+        {
+          "type": "list",
+          "items": [
+            "the address of the page;",
+            "what you were trying to do;",
+            "the device, browser and any assistive technology you were using."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Use the email address or phone number at the end of this page, or the [contact form](/contact/?enquiry=support). A person will reply, usually within one business day, to say how and when we will fix it. If you need information from the site in another format in the meantime, ask and we will send it to you."
+        }
+      ]
+    },
+    {
+      "id": "changes",
+      "heading": "Updates to this statement",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "We review this statement whenever the site changes in a way that affects accessibility. The date at the top of the page shows when it was last updated."
+        }
+      ]
+    }
+  ],
+  "contactSection": {
+    "heading": "Report an accessibility barrier",
+    "body": "Email or call us, whichever is easier for you. Tell us the page and what got in your way, and we will reply with how we will fix it."
+  },
+  "contact": {
+    "phone": "+1 (800) 555-0188",
+    "phoneE164": "+18005550188",
+    "email": "hello@calwebtech.com"
+  }
+}

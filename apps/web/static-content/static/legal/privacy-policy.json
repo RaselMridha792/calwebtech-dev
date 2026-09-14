@@ -1,0 +1,194 @@
+{
+  "slug": "privacy-policy",
+  "reviewStatus": "draft",
+  "draftNotice": "Draft pending legal review. This page describes how the website handles data by design, but a lawyer has not yet reviewed the wording, so it may change before it is final.",
+  "lastUpdated": "2026-09-14",
+  "seo": {
+    "title": "Privacy policy",
+    "description": "What personal data the Calwebtech website collects, why, where it is stored, who processes it, how long it is kept and how to use your rights.",
+    "ogImage": null
+  },
+  "title": "Privacy policy",
+  "intro": "This policy explains what we collect when you use this website or send us an enquiry, what we do with it and the choices you have. We keep it short and specific, and we describe the system as it actually works.",
+  "sections": [
+    {
+      "id": "who-we-are",
+      "heading": "Who we are",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Calwebtech is a web engineering studio with offices in Sacramento, Austin and Dhaka. In this policy \"we\", \"us\" and \"our\" mean Calwebtech. We decide how the personal data collected through this website is used, which makes us responsible for it."
+        }
+      ]
+    },
+    {
+      "id": "what-we-collect",
+      "heading": "What we collect",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "We collect only what you give us and a small amount of information about how you reached the site."
+        },
+        {
+          "type": "list",
+          "items": [
+            "What you type into a form: your name and email address, and anything else you choose to add, such as your company, phone number, website address, budget range, preferred start date, the services you are interested in, how you found us, the topic of your enquiry and your message.",
+            "Where the enquiry came from: the page you first arrived on, the site that referred you, any campaign tags in the link you followed, whether you were on a mobile, tablet or desktop screen, and which form you used.",
+            "A note in your browser: the first page you visited and any campaign tags are kept in your browser’s local storage, so an enquiry made on a later visit is still credited to the campaign that brought you. The [cookie policy](/cookie-policy/) lists it."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Your IP address is used at the moment you submit a form, to limit repeated submissions and to check that the submission comes from a person. It is not stored with your enquiry. We do not collect payment details through this website, and we do not use advertising or cross-site tracking."
+        }
+      ]
+    },
+    {
+      "id": "how-we-use-it",
+      "heading": "How we use it",
+      "blocks": [
+        {
+          "type": "list",
+          "items": [
+            "To reply to your enquiry, arrange a call and prepare a proposal.",
+            "To route your message to the inbox for the topic you chose.",
+            "To send you a confirmation that we received your enquiry, and to notify the people who will answer it.",
+            "To understand which pages and campaigns lead to enquiries, so we can improve the site.",
+            "To protect our forms from spam and abuse.",
+            "To keep a record of the work we have discussed or agreed with you."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "We never sell your personal information, share it for advertising or add you to a marketing list because you sent an enquiry."
+        }
+      ]
+    },
+    {
+      "id": "legal-bases",
+      "heading": "Our legal bases",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "If you are in the United Kingdom or the European Economic Area, we rely on these legal bases: taking steps you ask for before entering a contract, such as preparing a proposal; our legitimate interest in answering enquiries, attributing them to campaigns and keeping the forms free of spam; and your consent, where we ask for it."
+        }
+      ]
+    },
+    {
+      "id": "where-it-is-stored",
+      "heading": "Where your data is stored",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Enquiries, bookings and subscribers are stored in our own PostgreSQL database. It runs on a server rented in our name, inside a private network that cannot be reached from the internet. We do not keep your enquiry in a third-party form, booking or mailing list service."
+        },
+        {
+          "type": "paragraph",
+          "text": "Emails about your enquiry are placed in a short-lived queue on the same private network until they are sent. Encrypted backups of the database are kept off the server, with a separate storage provider. The [information security page](/information-security/) explains how all of this is protected."
+        }
+      ]
+    },
+    {
+      "id": "who-processes-it",
+      "heading": "Who else processes it",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "A small number of service providers handle personal data on our behalf, only to provide their service to us:"
+        },
+        {
+          "type": "table",
+          "caption": "Service providers that process personal data for this website",
+          "columns": [
+            "Provider",
+            "What they do",
+            "What they receive"
+          ],
+          "rows": [
+            [
+              "Our hosting provider",
+              "Runs the server the website and database live on",
+              "Everything stored in the database, encrypted in transit"
+            ],
+            [
+              "Our backup storage provider",
+              "Keeps encrypted copies of the database off the server",
+              "Encrypted backup files they cannot read"
+            ],
+            [
+              "Resend",
+              "Delivers the emails our system sends, such as your confirmation",
+              "Your email address and the content of each email, to deliver it"
+            ],
+            [
+              "Cloudflare Turnstile",
+              "Checks that a form submission comes from a person",
+              "Your IP address and technical signals from your browser when you use a form"
+            ]
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Resend is used only to send email. Our contact lists, segments and campaign history stay in our own database. We may also disclose information where the law requires it."
+        }
+      ]
+    },
+    {
+      "id": "how-long-we-keep-it",
+      "heading": "How long we keep it",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "We keep an enquiry while we are discussing work with you, and for as long as we need records of work we agreed. You can ask us to delete an enquiry at any time, and we will unless we must keep it by law."
+        },
+        {
+          "type": "paragraph",
+          "text": "Deleted data can remain in encrypted backups until those backups expire. Backups are kept for up to seven days, four weeks or six months depending on their type, so a deletion reaches every copy within six months."
+        }
+      ]
+    },
+    {
+      "id": "your-rights",
+      "heading": "Your rights",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "You can ask us to show you the personal data we hold about you, correct it, delete it, send it to you in a portable format, or stop using it for a particular purpose. If you are in California, you also have the right to know what we collect and to ask us to delete it, and we do not sell or share personal information as the California Consumer Privacy Act defines those terms."
+        },
+        {
+          "type": "paragraph",
+          "text": "To use any of these rights, contact us with the details at the end of this page. We will reply within one month, and we will not treat you differently for asking. If you are unhappy with how we handle your data, you can also complain to your local data protection authority."
+        }
+      ]
+    },
+    {
+      "id": "children",
+      "heading": "Children",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "This website is for businesses and is not directed at children under 16. We do not knowingly collect their personal data."
+        }
+      ]
+    },
+    {
+      "id": "changes",
+      "heading": "Changes to this policy",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "When the way we handle data changes, we update this page and the date at the top of it. Significant changes are summarised at the start of the policy."
+        }
+      ]
+    }
+  ],
+  "contactSection": {
+    "heading": "Questions about your data",
+    "body": "Email or call us to ask what we hold about you, to correct it or to have it deleted. You can also use the [contact page](/contact/)."
+  },
+  "contact": {
+    "phone": "+1 (800) 555-0188",
+    "phoneE164": "+18005550188",
+    "email": "hello@calwebtech.com"
+  }
+}

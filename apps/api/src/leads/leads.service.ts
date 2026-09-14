@@ -8,8 +8,9 @@ import {
   type LeadReceived,
   type LeadSubmission,
   type LeadSummary,
+  type ValidationErrorResponse,
 } from '@calwebtech/shared';
-import { ForbiddenException, Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { EmailQueue } from '../queue/email-queue';
 import { SettingsService } from '../settings/settings.service';
@@ -64,6 +65,17 @@ export class LeadsService {
     }
 
     const db = this.prisma.client;
+    // A routed enquiry must name a type that exists, since its mailbox receives the notification.
+    const enquiryType = input.enquiryType
+      ? await db.enquiryType.findUnique({ where: { slug: input.enquiryType }, select: { slug: true, name: true, mailbox: true } })
+      : null;
+    if (input.enquiryType && !enquiryType) {
+      const body: ValidationErrorResponse = {
+        error: 'validation_failed',
+        fieldErrors: { enquiryType: ['Choose one of the listed enquiry types'] },
+      };
+      throw new BadRequestException(body);
+    }
     const landingPage = input.landingPageSlug
       ? await db.landingPage.findUnique({
           where: { slug: input.landingPageSlug },
@@ -105,6 +117,7 @@ export class LeadsService {
           referralSource: input.referralSource,
           siteUrl: input.siteUrl,
           serviceInterest: input.serviceInterest,
+          ...(enquiryType ? { answers: { enquiryType: enquiryType.slug } } : {}),
           contactId: contact.id,
           attribution: {
             create: {
@@ -119,7 +132,10 @@ export class LeadsService {
           },
           activities: {
             create: [
-              { type: 'form_submitted', detail: { formId: input.formId } },
+              {
+                type: 'form_submitted',
+                detail: { formId: input.formId, ...(enquiryType ? { enquiryType: enquiryType.slug } : {}) },
+              },
               ...(botCheck === 'unavailable' ? [{ type: 'bot_check_unavailable', detail: { formId: input.formId } }] : []),
             ],
           },
@@ -131,7 +147,7 @@ export class LeadsService {
       this.logger.warn(`Lead ${lead.id} stored without a Turnstile verdict`);
     }
 
-    await this.queueEmails(input, lead, acknowledgementFrom(landingPage?.content ?? homeContent?.value));
+    await this.queueEmails(input, lead, acknowledgementFrom(landingPage?.content ?? homeContent?.value), enquiryType);
     return { status: 'received' };
   }
 
@@ -139,6 +155,7 @@ export class LeadsService {
     input: LeadSubmission,
     lead: { id: string; createdAt: Date },
     acknowledgement: Acknowledgement,
+    enquiryType: { name: string; mailbox: string } | null,
   ): Promise<void> {
     const summary: LeadSummary = {
       leadId: lead.id,
@@ -153,6 +170,7 @@ export class LeadsService {
       timeline: input.timeline,
       serviceInterest: input.serviceInterest,
       message: input.message,
+      enquiry: enquiryType?.name,
       landingPageSlug: input.landingPageSlug,
       attribution: input.attribution,
       submittedAt: lead.createdAt.toISOString(),
@@ -160,7 +178,10 @@ export class LeadsService {
     const jobs: EmailJob[] = [{ template: 'lead-confirmation', to: [input.email], lead: summary, acknowledgement }];
 
     try {
-      const recipients = await this.settings.leadNotificationRecipients();
+      // The enquiry type's own mailbox joins the usual recipients, which is how enquiries are routed.
+      const configured = await this.settings.leadNotificationRecipients();
+      const mailbox = enquiryType?.mailbox.trim().toLowerCase();
+      const recipients = [...new Set([...configured, ...(mailbox && mailbox.includes('@') ? [mailbox] : [])])];
       if (recipients.length > 0) {
         jobs.push({ template: 'lead-notification', to: recipients, lead: summary });
       } else {
