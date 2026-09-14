@@ -47,12 +47,12 @@ function expectNoTealOnHeadingsOrLinks(markup: string) {
   expect(markup).not.toMatch(/<(h[1-6]|a|button)\b[^>]*\b(text|bg)-result\b/);
 }
 
-const jsonLd = (markup: string) =>
+const jsonLd = (markup: string): Record<string, unknown>[] =>
   [...markup.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/g)].flatMap((match) => {
-    const parsed = JSON.parse(
+    const parsed: unknown = JSON.parse(
       (match[1] ?? 'null').replaceAll('\\u003c', '<').replaceAll('\\u003e', '>').replaceAll('\\u0026', '&'),
-    ) as unknown;
-    return Array.isArray(parsed) ? (parsed as Record<string, unknown>[]) : [parsed as Record<string, unknown>];
+    );
+    return (Array.isArray(parsed) ? parsed : [parsed]) as Record<string, unknown>[];
   });
 
 /** The answer block precedes every link in the page except the breadcrumbs. */
@@ -63,7 +63,7 @@ function expectAnswerLeads(markup: string) {
   const links = [...body.matchAll(/<a\s/g)];
   // Only the breadcrumb trail may appear before the answer.
   const breadcrumbEnd = markup.indexOf('</nav>');
-  expect(links.every((link) => (link.index ?? 0) < breadcrumbEnd)).toBe(true);
+  expect(links.every((link) => link.index < breadcrumbEnd)).toBe(true);
 }
 
 describe('/guides/', () => {

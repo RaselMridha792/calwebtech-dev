@@ -5,7 +5,7 @@ import {
   type GlossaryIndexContentInput,
   type GuidesIndexContentInput,
 } from '@calwebtech/shared';
-import type { Prisma, PrismaClient } from '../../generated/prisma/client';
+import type { PrismaClient } from '../../generated/prisma/client';
 import type { PageSeed } from './index';
 
 /**
@@ -76,7 +76,7 @@ export const guidesGlossarySeed: PageSeed = {
     for (const [key, value] of rows) {
       await db.setting.upsert({
         where: { key },
-        create: { key, value: value as Prisma.InputJsonObject },
+        create: { key, value },
         update: {},
       });
     }
