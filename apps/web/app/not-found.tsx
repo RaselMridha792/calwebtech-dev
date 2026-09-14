@@ -7,9 +7,11 @@ import { getStaticNotFound } from '@/lib/api/static';
 
 /**
  * A URL that matches no route: the same designed 404 in a slim frame of its own, since no
- * layout below the root applies. It deliberately does not render the full `SiteShell`: Next.js
- * serialises the root not-found boundary into the payload of every page, the homepage and
- * campaign pages included, so the whole header and footer would be sent twice on each of them.
+ * layout below the root applies. Next.js serialises the root not-found boundary into the
+ * payload of every page, the homepage and campaign pages included, so it stays lean on
+ * purpose: no full `SiteShell` (the header and footer would be sent twice on every site page)
+ * and no per-request data (its copy is fetched with a revalidate interval, which keeps the
+ * statically regenerated campaign pages static).
  */
 export default async function NotFound() {
   const view = await getStaticNotFound();

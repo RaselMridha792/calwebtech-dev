@@ -23,7 +23,7 @@ import {
   staticProcessSnapshot,
   staticThankYouSnapshots,
 } from '@/static-content/static';
-import { findView, getView } from './core';
+import { apiUrl, findView, getView, hasApi } from './core';
 
 /*
  * The static page family (docs/10-site-pages.md): pricing, process, contact, FAQ, the
@@ -40,15 +40,28 @@ export const getStaticContact = cache(() => getView('/pages/contact', staticCont
 export const getStaticFaq = cache(() => getView('/pages/faq', staticFaqViewSchema, staticFaqSnapshot));
 
 /**
- * The designed 404's copy, or null when it cannot be read. Next.js renders not-found
- * boundaries into every page's payload, so a missing or malformed `static.not-found` setting
- * must not throw there: the page falls back to a plain 404 and the failure is logged.
+ * How long the 404 copy is reused, matching the campaign pages' regeneration interval. The
+ * root not-found boundary is rendered into the payload of every page, the statically
+ * regenerated campaign pages included, so its data must be cacheable: a per-request fetch
+ * there would turn those pages dynamic. A changed `static.not-found` setting shows within this.
+ */
+export const STATIC_NOT_FOUND_REVALIDATE_SECONDS = 300;
+
+/**
+ * The designed 404's copy, or null when it cannot be read (a missing or malformed setting, or
+ * no API during the build). A 404 must never become an error page, so the page then falls
+ * back to a plain version, and the failure is logged.
  */
 export const getStaticNotFound = cache(async (): Promise<StaticNotFoundView | null> => {
+  if (!hasApi()) return staticNotFoundViewSchema.parse(staticNotFoundSnapshot);
   try {
-    return await getView('/pages/not-found', staticNotFoundViewSchema, staticNotFoundSnapshot);
+    const response = await fetch(apiUrl('/pages/not-found'), {
+      next: { revalidate: STATIC_NOT_FOUND_REVALIDATE_SECONDS },
+    });
+    if (!response.ok) throw new Error(`API responded ${String(response.status)} for /pages/not-found`);
+    return staticNotFoundViewSchema.parse(await response.json());
   } catch (error) {
-    console.error('The not-found page copy could not be loaded; showing the plain 404.', error);
+    console.warn('The not-found page copy could not be loaded; showing the plain 404.', error);
     return null;
   }
 });
