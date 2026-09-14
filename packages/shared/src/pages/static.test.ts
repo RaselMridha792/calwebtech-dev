@@ -1,11 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import { LEAD_TYPES, leadSubmissionSchema } from '../lead';
+import { thankYouPath } from '../site-paths';
 import {
   STATIC_SETTING_KEYS,
   STATIC_LEGAL_SLUGS,
   STATIC_THANK_YOU_BY_LEAD_TYPE,
   STATIC_THANK_YOU_TYPES,
   isStaticInlineHref,
+  staticNotFoundContentSchema,
+  staticThankYouPathForLead,
   staticFaqContentSchema,
   staticLegalContentSchema,
   staticTextParts,
@@ -19,8 +22,6 @@ function legalPage(overrides: Record<string, unknown> = {}) {
     seo,
     title: 'Terms of service',
     intro: 'These terms apply to anyone who uses this website.',
-    reviewStatus: 'draft',
-    draftNotice: 'This page is a draft pending legal review.',
     lastUpdated: '2026-09-14',
     sections: [{ id: 'use', heading: 'Using the site', blocks: [{ type: 'paragraph', text: 'Read the [privacy policy](/privacy-policy/).' }] }],
     contactSection: { heading: 'Questions about these terms', body: 'Write to us and a person will reply.' },
@@ -29,10 +30,12 @@ function legalPage(overrides: Record<string, unknown> = {}) {
 }
 
 describe('static family constants', () => {
-  it('gives every lead type exactly one thank-you page with a lowercase, hyphenated slug', () => {
+  it('sends every lead type to a thank-you page that exists, at a lowercase, hyphenated path', () => {
     expect(Object.keys(STATIC_THANK_YOU_BY_LEAD_TYPE).sort()).toEqual([...LEAD_TYPES].sort());
-    expect(new Set(STATIC_THANK_YOU_TYPES).size).toBe(LEAD_TYPES.length);
+    for (const type of LEAD_TYPES) expect(STATIC_THANK_YOU_TYPES).toContain(STATIC_THANK_YOU_BY_LEAD_TYPE[type]);
     for (const type of STATIC_THANK_YOU_TYPES) expect(type).toMatch(/^[a-z]+(?:-[a-z]+)*$/);
+    expect(staticThankYouPathForLead('CONTACT')).toBe(thankYouPath('contact'));
+    expect(staticThankYouPathForLead('CONSULTATION')).toBe('/thank-you/booking/');
   });
 
   it('keys each legal page in its own setting under the family prefix', () => {
@@ -65,15 +68,34 @@ describe('staticTextParts', () => {
 });
 
 describe('staticLegalContentSchema', () => {
-  it('accepts a draft page with its notice', () => {
+  it('accepts a page with inline links a visitor can follow', () => {
     expect(staticLegalContentSchema.safeParse(legalPage()).success).toBe(true);
   });
 
-  it('rejects a draft without a visible notice, and links a visitor cannot follow', () => {
-    expect(staticLegalContentSchema.safeParse(legalPage({ draftNotice: null })).success).toBe(false);
-    expect(staticLegalContentSchema.safeParse(legalPage({ reviewStatus: 'reviewed', draftNotice: null })).success).toBe(true);
+  it('rejects links a visitor cannot follow, and two sections with the same id', () => {
     const unsafe = [{ id: 'use', heading: 'Using the site', blocks: [{ type: 'paragraph', text: '[Click](javascript:alert(1))' }] }];
     expect(staticLegalContentSchema.safeParse(legalPage({ sections: unsafe })).success).toBe(false);
+    const section = { id: 'use', heading: 'Using the site', blocks: [{ type: 'paragraph', text: 'Text.' }] };
+    expect(staticLegalContentSchema.safeParse(legalPage({ sections: [section, section] })).success).toBe(false);
+  });
+});
+
+describe('staticNotFoundContentSchema', () => {
+  const content = {
+    eyebrow: 'Error 404',
+    title: 'That page is not here',
+    intro: 'It may have moved.',
+    search: { label: 'Search', placeholder: 'Pricing', submitLabel: 'Search', resultsLabel: 'matching pages', noResults: 'Nothing matches.' },
+    destinations: { heading: 'Popular pages', items: [{ title: 'Pricing', body: 'What it costs.', href: '/pricing/' }] },
+    help: { heading: 'Still lost?', body: 'Call us.' },
+  };
+
+  it('lists at most six destinations, each a site path or URL rather than an anchor', () => {
+    expect(staticNotFoundContentSchema.safeParse(content).success).toBe(true);
+    const seven = Array.from({ length: 7 }, (_, index) => ({ title: `Page ${String(index)}`, body: 'Body.', href: '/' }));
+    expect(staticNotFoundContentSchema.safeParse({ ...content, destinations: { heading: 'Popular', items: seven } }).success).toBe(false);
+    const anchor = [{ title: 'Pricing', body: 'Body.', href: '#pricing' }];
+    expect(staticNotFoundContentSchema.safeParse({ ...content, destinations: { heading: 'Popular', items: anchor } }).success).toBe(false);
   });
 });
 

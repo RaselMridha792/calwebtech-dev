@@ -1,9 +1,10 @@
 import { z } from 'zod';
-import { LEAD_TYPES, type LeadType } from '../lead';
+import type { LeadType } from '../lead';
 import { decorativeImageSchema, imageSchema } from '../media';
 import { slugSchema } from '../seo';
 import { siteContactSchema } from '../site';
-import { siteLinkSchema } from '../site-chrome';
+import { siteHrefSchema, siteLinkSchema } from '../site-chrome';
+import { thankYouPath } from '../site-paths';
 import { answerBlockSchema, faqItemSchema, pageSeoSchema, questionSchema, requiredText } from './common';
 
 /**
@@ -32,6 +33,7 @@ export const STATIC_SETTING_KEYS = {
   contact: 'static.contact',
   faq: 'static.faq',
   thankYou: 'static.thank-you',
+  notFound: 'static.not-found',
   legal: {
     'privacy-policy': 'static.legal.privacy-policy',
     terms: 'static.legal.terms',
@@ -45,6 +47,7 @@ export const STATIC_SETTING_KEYS = {
   contact: string;
   faq: string;
   thankYou: string;
+  notFound: string;
   legal: Record<StaticLegalSlug, string>;
 };
 
@@ -52,24 +55,36 @@ export const STATIC_SETTING_KEYS = {
 export const STATIC_PRICING_FAQ_GROUP = 'pricing';
 export const STATIC_PROCESS_FAQ_GROUP = 'process';
 
-/** The thank-you page of each conversion type, at `/thank-you/<type>/`. */
+/** The conversion types with a thank-you page, at `/thank-you/<type>/`. */
+export const STATIC_THANK_YOU_TYPES = [
+  'contact',
+  'project',
+  'audit',
+  'calculator',
+  'booking',
+  'resource',
+  'careers',
+] as const;
+export type StaticThankYouType = (typeof STATIC_THANK_YOU_TYPES)[number];
+export const staticThankYouTypeSchema = z.enum(STATIC_THANK_YOU_TYPES);
+
+/**
+ * Where a form of each lead type sends the visitor once the lead is stored. A service
+ * enquiry is a project enquiry; a consultation is confirmed on the booking page.
+ */
 export const STATIC_THANK_YOU_BY_LEAD_TYPE = {
   PROJECT: 'project',
-  SERVICE_ENQUIRY: 'service-enquiry',
-  CONSULTATION: 'consultation',
+  SERVICE_ENQUIRY: 'project',
+  CONSULTATION: 'booking',
   CONTACT: 'contact',
-  CALCULATOR: 'cost-estimate',
-  AUDIT: 'website-audit',
+  CALCULATOR: 'calculator',
+  AUDIT: 'audit',
   RESOURCE: 'resource',
   CAREERS: 'careers',
-} as const satisfies Record<LeadType, string>;
+} as const satisfies Record<LeadType, StaticThankYouType>;
 
-export const STATIC_THANK_YOU_TYPES = LEAD_TYPES.map((type) => STATIC_THANK_YOU_BY_LEAD_TYPE[type]) as [
-  StaticThankYouType,
-  ...StaticThankYouType[],
-];
-export type StaticThankYouType = (typeof STATIC_THANK_YOU_BY_LEAD_TYPE)[LeadType];
-export const staticThankYouTypeSchema = z.enum(STATIC_THANK_YOU_TYPES);
+/** The thank-you page path for a lead type, e.g. `/thank-you/contact/`. */
+export const staticThankYouPathForLead = (type: LeadType): string => thankYouPath(STATIC_THANK_YOU_BY_LEAD_TYPE[type]);
 
 /** The contact form's `formId`, so leads from it are recognisable in the inbox. */
 export const STATIC_CONTACT_FORM_ID = 'contact-page';
@@ -322,6 +337,10 @@ export const staticThankYouPageSchema = z.object({
   title: requiredText(90),
   /** What was received and what it is used for. */
   intro: requiredText(400),
+  /** What the form sent, in the visitor's words, e.g. "Your name and work email". */
+  received: z.object({ heading: requiredText(90), items: z.array(requiredText(160)).min(1).max(6) }),
+  /** When to expect to hear back, e.g. "Within one business day". */
+  response: z.object({ label: requiredText(40), value: requiredText(60), detail: requiredText(200) }),
   nextSteps: z.object({
     heading: requiredText(90),
     steps: z.array(titledItemSchema).min(1).max(4),
@@ -364,9 +383,6 @@ const legalContentShape = {
   seo: pageSeoSchema,
   title: requiredText(80),
   intro: requiredText(600),
-  /** Draft pages carry a visible notice until counsel has reviewed them. */
-  reviewStatus: z.enum(['draft', 'reviewed']),
-  draftNotice: requiredText(300).nullable(),
   /** ISO date the policy text last changed. */
   lastUpdated: z.iso.date(),
   sections: z
@@ -376,17 +392,45 @@ const legalContentShape = {
   contactSection: z.object({ heading: requiredText(120), body: requiredText(400) }),
 };
 
-const draftNeedsNotice = (page: { reviewStatus: 'draft' | 'reviewed'; draftNotice: string | null }) =>
-  page.reviewStatus !== 'draft' || page.draftNotice !== null;
+const uniqueSectionIds = (page: { sections: readonly { id: string }[] }) =>
+  new Set(page.sections.map((section) => section.id)).size === page.sections.length;
 
 export const staticLegalContentSchema = z
   .object(legalContentShape)
-  .refine(draftNeedsNotice, { message: 'A draft page shows its draft notice', path: ['draftNotice'] });
+  .refine(uniqueSectionIds, { message: 'Each section has its own id', path: ['sections'] });
 
 /** `GET /pages/legal/:slug`. */
 export const staticLegalViewSchema = z
   .object({ ...legalContentShape, contact: siteContactSchema })
-  .refine(draftNeedsNotice, { message: 'A draft page shows its draft notice', path: ['draftNotice'] });
+  .refine(uniqueSectionIds, { message: 'Each section has its own id', path: ['sections'] });
+
+// ---------------------------------------------------------------- not found
+
+/** The designed 404: a site search, the most useful destinations and a way to reach a person. */
+export const staticNotFoundContentSchema = z.object({
+  eyebrow: requiredText(40),
+  title: requiredText(80),
+  intro: requiredText(300),
+  search: z.object({
+    label: requiredText(60),
+    placeholder: requiredText(80),
+    submitLabel: requiredText(30),
+    /** Announced with the number of matches, e.g. "3 pages match". */
+    resultsLabel: requiredText(60),
+    noResults: requiredText(200),
+  }),
+  destinations: z.object({
+    heading: requiredText(90),
+    items: z
+      .array(z.object({ title: requiredText(60), body: requiredText(160), href: siteHrefSchema }))
+      .min(1)
+      .max(6),
+  }),
+  help: z.object({ heading: requiredText(90), body: requiredText(300) }),
+});
+
+/** `GET /pages/not-found`. */
+export const staticNotFoundViewSchema = staticNotFoundContentSchema.extend({ contact: siteContactSchema });
 
 // ---------------------------------------------------------------- types
 
@@ -414,3 +458,5 @@ export type StaticLegalContent = z.output<typeof staticLegalContentSchema>;
 export type StaticLegalContentInput = z.input<typeof staticLegalContentSchema>;
 export type StaticLegalView = z.output<typeof staticLegalViewSchema>;
 export type StaticLegalBlock = z.output<typeof legalBlockSchema>;
+export type StaticNotFoundContentInput = z.input<typeof staticNotFoundContentSchema>;
+export type StaticNotFoundView = z.output<typeof staticNotFoundViewSchema>;
