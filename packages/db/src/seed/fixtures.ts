@@ -2,6 +2,7 @@ import { landingPageContentSchema } from '@calwebtech/shared';
 import type { Prisma, PrismaClient } from '../generated/prisma/client';
 import { LANDING_CONTENT } from './content';
 import { assertSeedAllowed } from './guard';
+import { PAGE_FIXTURES, runPageSeeds } from './pages';
 
 /** A hidden landing page for end-to-end tests of components the launch seed leaves empty. */
 export const FIXTURE_LANDING_SLUG = 'e2e-fixtures';
@@ -54,5 +55,6 @@ export async function seedTestFixtures(db: PrismaClient): Promise<{ landingPageS
     create: { slug: FIXTURE_LANDING_SLUG, ...data },
     update: data,
   });
+  await runPageSeeds(db, PAGE_FIXTURES);
   return { landingPageSlug: FIXTURE_LANDING_SLUG };
 }

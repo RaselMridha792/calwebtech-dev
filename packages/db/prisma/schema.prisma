@@ -153,6 +153,9 @@ model Service {
   deliverables      Json? // string[]
   processSteps      Json? // { title, body, duration }[]
   startingPriceBand String?
+  /// Page copy beyond the columns above, validated by the services family schema
+  /// (packages/shared/src/pages/services.ts). Null leaves those sections out.
+  content           Json?
   order             Int       @default(0)
   status            Status    @default(DRAFT)
   publishedAt       DateTime?
@@ -181,6 +184,9 @@ model Industry {
   heroCopy     String?
   painPoints   Json? // string[]
   integrations Json? // string[]
+  /// Page copy beyond the columns above, validated by the industries family schema
+  /// (packages/shared/src/pages/industries.ts). Null leaves those sections out.
+  content      Json?
   order        Int      @default(0)
   status       Status   @default(DRAFT)
   seo          Json? // seoSchema, packages/shared
@@ -534,6 +540,9 @@ model Location {
   phone           String?
   latitude        Float?
   longitude       Float?
+  /// Page copy beyond the columns above, validated by the locations family schema
+  /// (packages/shared/src/pages/locations.ts). Null leaves those sections out.
+  content         Json?
   status          Status       @default(DRAFT)
   seo             Json? // seoSchema, packages/shared
   createdAt       DateTime     @default(now())

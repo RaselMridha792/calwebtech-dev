@@ -87,12 +87,17 @@ for (const path of PAGES) {
         test(`every in-page link lands on its section, from the ${start}, motion ${reducedMotion}`, async ({ page }) => {
           await page.emulateMedia({ reducedMotion });
           await page.goto(path);
+          // Bare anchors, and links to a section of this page written as a path: the site
+          // chrome's `/#estimate` on the homepage.
           const hrefs = await page
-            .locator('a[href^="#"]')
-            .evaluateAll((links) => [...new Set(links.map((link) => link.getAttribute('href') ?? ''))].filter((h) => h.length > 1));
+            .locator(`a[href^="#"], a[href^="${path}#"]`)
+            .evaluateAll((links) =>
+              [...new Set(links.map((link) => link.getAttribute('href') ?? ''))].filter((h) => h.split('#')[1]),
+            );
           expect(hrefs.length, 'the page has in-page links').toBeGreaterThan(0);
 
           for (const href of hrefs) {
+            const id = href.slice(href.indexOf('#') + 1);
             await page.evaluate((y) => {
               window.history.replaceState(null, '', window.location.pathname);
               window.scrollTo({ top: y, behavior: 'instant' });
@@ -118,8 +123,8 @@ for (const path of PAGES) {
               });
             }
             await settle(page);
-            await expect(page).toHaveURL(new RegExp(`${href}$`));
-            expectLandedOn(href.slice(1), await placementOf(page, href.slice(1)));
+            await expect(page).toHaveURL(new RegExp(`#${id}$`));
+            expectLandedOn(id, await placementOf(page, id));
           }
         });
       }

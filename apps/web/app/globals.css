@@ -56,6 +56,15 @@
   }
 }
 
+/*
+ * A site page that is itself the conversion point (the contact form, thank-you pages)
+ * renders <PageHasOwnForm />, which removes the closing band and the floating call to
+ * action from the layout without script (components/site/conversion-band.tsx).
+ */
+:root:has([data-page-has-own-form]) :is([data-conversion-band], [data-floating-cta]) {
+  display: none;
+}
+
 /* The site header gains its shadow once the page scrolls: scroll-driven, no script. */
 @supports (animation-timeline: scroll()) {
   @keyframes header-shadow {

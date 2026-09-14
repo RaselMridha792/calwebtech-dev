@@ -44,6 +44,7 @@ export function leadSubmissionFromForm(
     serviceInterest: form.getAll('serviceInterest').filter((value) => typeof value === 'string'),
     message: field(form, 'message'),
     landingPageSlug: field(form, 'landingPageSlug'),
+    serviceSlug: field(form, 'serviceSlug'),
     attribution: attributionFromForm(form, referer),
     referenceCode: field(form, 'referenceCode'),
     turnstileToken: field(form, 'cf-turnstile-response'),

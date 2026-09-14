@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import * as content from './content';
+import { PAGE_SEEDS } from './pages';
 
 /**
  * The proof the reference mockups invented, and the shapes it came in. None of it may
@@ -45,6 +46,11 @@ describe('placeholder seed content', () => {
     expect(content.HOME_CONTENT.capability.showreel).toBeNull();
     expect(content.HOME_CONTENT.estimate.bullets).toEqual([]);
     expect(content.HOME_CONTENT.book.points).toEqual([]);
+  });
+
+  it.each(FORBIDDEN)('gives the site page families no %s either', async (_what, pattern) => {
+    const pages = await Promise.all(PAGE_SEEDS.map((load) => load()));
+    expect(JSON.stringify(pages.map((page) => page.content))).not.toMatch(pattern);
   });
 
   it('points every homepage anchor at a section the template always renders', () => {

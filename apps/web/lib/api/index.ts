@@ -9,26 +9,15 @@ import {
   type LeadSubmission,
 } from '@calwebtech/shared';
 import { cache } from 'react';
-import { z } from 'zod';
 import staticHome from '@/static-content/home.json';
 import staticLanding from '@/static-content/landing-b2b-website-design.json';
+import { apiUrl, getView, hasApi } from './core';
 
-const apiEnvSchema = z.object({ API_INTERNAL_URL: z.url() });
-
-function apiUrl(path: string): string {
-  const { API_INTERNAL_URL } = apiEnvSchema.parse(process.env);
-  return `${API_INTERNAL_URL.replace(/\/$/, '')}${path}`;
-}
-
-/**
- * Until the API is hosted, the web app can deploy on its own (docs/08-decisions.md, 33).
- * With API_INTERNAL_URL unset, pages render from a snapshot of the placeholder content the
- * API serves, validated with the same schemas, and lead forms report that they cannot
- * send. Setting API_INTERNAL_URL switches everything back to live data.
+/*
+ * The homepage, campaign landing pages and lead submissions. Site page families keep
+ * their getters in their own module beside this one (lib/api/<family>.ts), built on
+ * getView and findView from ./core (docs/10-site-pages.md).
  */
-function hasApi(): boolean {
-  return Boolean(process.env.API_INTERNAL_URL?.trim());
-}
 
 export const landingPageTag = (slug: string) => `landing-page:${slug}`;
 
@@ -55,14 +44,9 @@ export async function getLandingPage(slug: string): Promise<LandingPageView | nu
  * deduplicated within a request (metadata and page share one call) and never cached
  * across requests: a changed setting, such as homepage.indexing, applies at once.
  */
-export const getHomePage = cache(async (): Promise<HomePageView> => {
-  if (!hasApi()) return homePageViewSchema.parse(staticHome);
-  const response = await fetch(apiUrl('/pages/home'), { cache: 'no-store' });
-  if (!response.ok) {
-    throw new Error(`API responded ${String(response.status)} for the homepage`);
-  }
-  return homePageViewSchema.parse(await response.json());
-});
+export const getHomePage = cache(
+  (): Promise<HomePageView> => getView('/pages/home', homePageViewSchema, staticHome),
+);
 
 export type LeadPostResult =
   | { ok: true }

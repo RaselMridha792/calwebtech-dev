@@ -1,7 +1,6 @@
 import { BUDGET_BANDS } from '@calwebtech/shared';
 import type { Metadata } from 'next';
 import { LeadForm } from '@/components/forms/lead-form';
-import { FloatingCta, SiteFooter, SiteHeader, UtilityBar } from '@/components/home/chrome';
 import { HomeHero } from '@/components/home/hero';
 import {
   BookSection,
@@ -29,7 +28,13 @@ import {
 } from '@/components/home/sections-top';
 import { AnchorScroll } from '@/components/motion/anchor-scroll';
 import { RevealObserver } from '@/components/motion/reveal-observer';
+import { FloatingCta } from '@/components/site/floating-cta';
+import { SiteFooter } from '@/components/site/site-footer';
+import { SiteHeader } from '@/components/site/site-header';
+import { SkipLink } from '@/components/site/skip-link';
+import { UtilityBar } from '@/components/site/utility-bar';
 import { getHomePage } from '@/lib/api';
+import { getSiteChrome } from '@/lib/api/site';
 
 // Rendered per request. The CI build cannot reach the API to prerender, and a changed
 // record or setting (homepage.indexing) must apply without a redeploy. The API caches
@@ -50,21 +55,17 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function HomePage() {
-  const home = await getHomePage();
+  const [home, chrome] = await Promise.all([getHomePage(), getSiteChrome()]);
   const { content } = home;
   const turnstileSiteKey = process.env.TURNSTILE_SITE_KEY;
 
   return (
     <>
-      <a
-        href="#main"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-999 focus:rounded focus:bg-ink focus:px-4 focus:py-2 focus:text-white"
-      >
-        Skip to content
-      </a>
+      <SkipLink />
 
-      <UtilityBar contact={home.contact} reviews={home.reviews} utilityBar={content.utilityBar} />
-      <SiteHeader home={home} />
+      <UtilityBar chrome={chrome} />
+      {/* The site chrome, with the homepage's own calls to action: its forms are on this page. */}
+      <SiteHeader chrome={chrome} ctas={content.header} />
 
       <main id="main">
         <HomeHero
@@ -138,7 +139,7 @@ export default async function HomePage() {
         />
       </main>
 
-      <SiteFooter home={home} />
+      <SiteFooter chrome={chrome} />
       <FloatingCta link={content.floatingCta} />
       <RevealObserver />
       <AnchorScroll />

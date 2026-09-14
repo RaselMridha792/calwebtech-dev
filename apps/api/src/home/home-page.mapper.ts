@@ -108,8 +108,8 @@ function testimonialView(testimonial: Testimonial): TestimonialView {
   };
 }
 
-/** A project card, or nothing when the record has no outcome figures to show. */
-function projectView(project: HomeProjectRecord): HomeProject | null {
+/** A project card, or nothing when the record has no outcome figures to show. Also the chrome's Work menu. */
+export function projectView(project: HomeProjectRecord): HomeProject | null {
   const metrics = outcomeMetricsSchema.safeParse(project.outcomeMetrics);
   if (!metrics.success || metrics.data.length === 0) return null;
   const quote = project.testimonials[0];
@@ -150,12 +150,26 @@ function technologyGroups(technologies: readonly Technology[]): HomePageView['te
 }
 
 /**
+ * The weighted rating with each platform's review count and the NPS sample size. Shared by
+ * the homepage and the site chrome's rating badge.
+ */
+export function homeReviewSummary(reviewSources: readonly ReviewSource[], proofSetting: unknown): HomePageView['reviews'] {
+  const proof = siteProofSchema.nullable().catch(null).parse(proofSetting);
+  const reviews = summariseReviews(reviewSources, proof?.npsScore ?? null);
+  const reviewCounts = new Map(reviewSources.map((source) => [source.platform, source.reviewCount]));
+  return {
+    ...reviews,
+    sources: reviews.sources.map((source) => ({ ...source, reviewCount: reviewCounts.get(source.platform) ?? null })),
+    npsProjectCount: proof?.npsProjectCount ?? null,
+  };
+}
+
+/**
  * Builds the public homepage and validates it against the shared contract, so malformed
  * copy or a malformed record fails here rather than rendering half a page. The homepage
  * is noindex unless the `homepage.indexing` setting says otherwise.
  */
 export function toHomePageView(sources: HomePageSources): HomePageView {
-  const proof = siteProofSchema.nullable().catch(null).parse(sources.proofSetting);
   const indexing = homepageIndexingSchema.safeParse(sources.indexingSetting);
 
   const projects = sources.projects
@@ -178,21 +192,11 @@ export function toHomePageView(sources: HomePageSources): HomePageView {
     };
   });
 
-  const reviews = summariseReviews(sources.reviewSources, proof?.npsScore ?? null);
-  const reviewCounts = new Map(sources.reviewSources.map((source) => [source.platform, source.reviewCount]));
-
   return homePageViewSchema.parse({
     indexable: indexing.success && indexing.data.index,
     content: sources.contentSetting,
     contact: sources.contactSetting,
-    reviews: {
-      ...reviews,
-      sources: reviews.sources.map((source) => ({
-        ...source,
-        reviewCount: reviewCounts.get(source.platform) ?? null,
-      })),
-      npsProjectCount: proof?.npsProjectCount ?? null,
-    },
+    reviews: homeReviewSummary(sources.reviewSources, sources.proofSetting),
     statistics: sources.statistics
       .slice(0, 4)
       .map((statistic) => ({ label: statistic.label, value: statistic.value, suffix: statistic.suffix ?? '' })),

@@ -6,6 +6,8 @@ export const SETTING_KEYS = {
   proof: 'site.proof',
   leadNotificationRecipients: 'leads.notificationRecipients',
   homepageIndexing: 'homepage.indexing',
+  /** Every page under the site layout, plus robots.txt (docs/10-site-pages.md). */
+  siteIndexing: 'site.indexing',
   /** Homepage copy, validated by homePageContentSchema (home-page.ts). */
   homeContent: 'home.content',
 } as const;
@@ -17,6 +19,15 @@ export const SETTING_KEYS = {
  */
 export const homepageIndexingSchema = z.object({ index: z.boolean() });
 export type HomepageIndexing = z.infer<typeof homepageIndexingSchema>;
+
+/**
+ * Whether search engines may index the site pages (services, industries, work, company,
+ * locations, pricing, legal and the rest). Same shape and rule as homepage.indexing: a
+ * missing row or `index: false` means every site page is noindex and robots.txt disallows
+ * all crawling. The seed creates it as false and never overwrites it.
+ */
+export const siteIndexingSchema = z.object({ index: z.boolean() });
+export type SiteIndexing = z.infer<typeof siteIndexingSchema>;
 
 export const siteContactSchema = z.object({
   /** Display form, e.g. "+1 (800) 555-0188". */

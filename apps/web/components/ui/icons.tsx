@@ -67,6 +67,14 @@ export function PhoneIcon(props: IconProps) {
   );
 }
 
+export function ChevronIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 12 8" {...base} {...props}>
+      <path d="M1 1.5 6 6.5l5-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 export function PlusIcon(props: IconProps) {
   return (
     <svg viewBox="0 0 14 14" {...base} {...props}>

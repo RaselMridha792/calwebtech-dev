@@ -79,7 +79,7 @@ test.describe('homepage', () => {
     await expect(page.locator('#book [role="status"]')).toContainText('Thanks', { timeout: 20_000 });
   });
 
-  test('the mega menus open from the keyboard, dismiss with Escape and close after a link is followed', async ({ page }, testInfo) => {
+  test('the mega menus open from the keyboard, dismiss with Escape and close when focus leaves', async ({ page }, testInfo) => {
     test.skip(testInfo.project.name !== 'desktop-1440', 'The mega menus are desktop only; small screens use the menu disclosure.');
     await page.goto(PAGE);
     const nav = page.getByRole('navigation', { name: 'Main', exact: true });
@@ -101,6 +101,8 @@ test.describe('homepage', () => {
       await expect(button).toHaveAttribute('aria-expanded', 'true');
       await page.keyboard.press('Tab');
       await expect(firstLink, `Tab moves into the ${name} panel`).toBeFocused();
+      // The chrome renders on every page, so its links are pages or homepage sections, never bare anchors.
+      await expect(firstLink, `${name} links work from any page`).toHaveAttribute('href', /^\//);
 
       // Escape dismisses the panel without moving focus out of the menu (WCAG 1.4.13).
       await page.keyboard.press('Escape');
@@ -111,17 +113,34 @@ test.describe('homepage', () => {
       await page.keyboard.press('Enter');
       await expect(panel, `the ${name} button reopens its panel`).toBeVisible();
       await expect(button).toHaveAttribute('aria-expanded', 'true');
-      await page.keyboard.press('Tab');
-      await expect(firstLink).toBeFocused();
 
-      // Following the link moves focus out of the menu (AnchorScroll), which closes it.
-      await page.keyboard.press('Enter');
-      await expect(panel, `${name} closes after a link is followed`).toBeHidden();
+      // Moving focus out of the menu closes it.
+      await page.keyboard.press('Shift+Tab');
+      await expect(panel, `${name} closes when focus leaves it`).toBeHidden();
       await expect(button).toHaveAttribute('aria-expanded', 'false');
     }
   });
 
-  test('the small-screen menu closes when a link is followed', async ({ page }, testInfo) => {
+  test('a mega menu closes after a link to a section of this page is followed', async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name !== 'desktop-1440', 'The mega menus are desktop only; small screens use the menu disclosure.');
+    await page.goto(PAGE);
+    const button = page.getByRole('navigation', { name: 'Main', exact: true }).getByRole('button', { name: 'Resources', exact: true });
+    const panel = page.locator('#menu-resources');
+    const estimate = panel.getByRole('link', { name: 'Cost estimate', exact: true });
+
+    // A closed panel is hidden from the accessibility tree, so open it before finding the link.
+    await button.focus();
+    await expect(panel).toBeVisible();
+    await expect(estimate).toHaveAttribute('href', '/#estimate');
+    await estimate.focus();
+    // Following it moves focus out of the menu (AnchorScroll), which closes it.
+    await page.keyboard.press('Enter');
+    await expect(panel).toBeHidden();
+    await expect(button).toHaveAttribute('aria-expanded', 'false');
+    await expect(page).toHaveURL(/\/#estimate$/);
+  });
+
+  test('the small-screen menu closes when a link to a section of this page is followed', async ({ page }, testInfo) => {
     test.skip(testInfo.project.name !== 'mobile-360', 'The menu disclosure is for small screens; desktop uses the mega menus.');
     await page.goto(PAGE);
     const menu = page.locator('header details');
@@ -129,11 +148,12 @@ test.describe('homepage', () => {
     await menu.getByLabel('Menu', { exact: true }).click();
     await expect(menu).toHaveAttribute('open', '');
 
-    const pricing = menu.getByRole('link', { name: 'Pricing', exact: true });
-    await expect(pricing).toHaveAttribute('href', '#pricing');
-    await pricing.click();
+    await expect(menu.getByRole('link', { name: 'Pricing', exact: true })).toHaveAttribute('href', '/pricing/');
+    const estimate = menu.getByRole('link', { name: 'Cost estimate', exact: true });
+    await expect(estimate).toHaveAttribute('href', '/#estimate');
+    await estimate.click();
     await expect(menu).not.toHaveAttribute('open', '');
-    await expect(page).toHaveURL(/#pricing$/);
+    await expect(page).toHaveURL(/\/#estimate$/);
   });
 
   test('the recognition tabs switch with the arrow keys', async ({ page }) => {

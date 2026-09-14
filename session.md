@@ -122,7 +122,7 @@ pnpm dev                             # web on 3000, API on 4000
 | `pnpm --filter @calwebtech/web analyze /` | bytes per module for a route |
 | `pnpm --filter @calwebtech/web e2e` | Playwright at 360px and 1440px. Needs a built app and a seeded database; uses ports 3000, 4000 and 3443 |
 | `pnpm lh` | Lighthouse gate. Needs a built app; uses the same ports |
-| `node apps/api/dist/settings-cli.js get\|set <key> ['<json>']` | read or change a setting without a redeploy. Keys: `site.contact`, `site.proof`, `leads.notificationRecipients`, `homepage.indexing` |
+| `node apps/api/dist/settings-cli.js get\|set <key> ['<json>']` | read or change a setting without a redeploy. Keys: `site.contact`, `site.proof`, `leads.notificationRecipients`, `homepage.indexing`, `site.indexing` |
 
 Notes on the machine this session used:
 - Docker runs inside WSL2, so Postgres is on `127.0.0.1:55432` and Redis on `127.0.0.1:56379`.
@@ -161,6 +161,13 @@ Notes on the machine this session used:
    - Replace the demo proof with verified content (`docs/06` "Content dependencies").
    - Move the hero video into our own media storage; it currently shows a third-party website on a laptop screen.
    - Flip `homepage.indexing` once the content is real.
+
+### Site pages foundation (branch `feat/site-pages-batch-1`, 2026-09-14)
+
+- `GET /site/chrome` and the `(site)` route group: every site page shares the homepage's header, mega menus, footer and a closing conversion band, with breadcrumbs (decisions 34 to 36).
+- `site.indexing` keeps site pages noindex and `robots.txt` closed until it is switched on (decision 37).
+- Metadata builder, structured data helpers, `sitemap.xml`, `/sitemap/` and a generated default preview image (decision 38).
+- Six page families (services, industries, work, company, static, locations) build on it in parallel under the ownership rules in `docs/10-site-pages.md`.
 
 ### Build plan status (`docs/06-build-plan.md`)
 

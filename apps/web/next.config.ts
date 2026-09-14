@@ -16,9 +16,11 @@ const nextConfig: NextConfig = {
     // 50 is for decorative backdrops under heavy overlays; 75 is the default.
     qualities: [50, 75],
     remotePatterns: [
-      // Placeholder photography used by the seed. Remove once client imagery is
-      // served from the media library.
+      // Stock photography in the demo snapshots (Unsplash and Pexels licences allow
+      // commercial use without attribution). Remove once client imagery is served from the
+      // media library.
       { protocol: 'https', hostname: 'images.unsplash.com' },
+      { protocol: 'https', hostname: 'images.pexels.com' },
     ],
   },
   ...(analyze

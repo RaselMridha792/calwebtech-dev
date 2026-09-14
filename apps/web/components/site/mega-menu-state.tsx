@@ -20,7 +20,7 @@ function sync(group: HTMLElement): void {
 }
 
 /**
- * The mega menus in chrome.tsx open with CSS, on hover and while focus is inside them.
+ * The mega menus in site-header.tsx open with CSS, on hover and while focus is inside them.
  * This adds what CSS cannot: Escape dismisses an open panel without moving focus out of
  * the menu or the pointer (WCAG 1.4.13), the button reopens a dismissed panel, and each
  * button's `aria-expanded` follows what is on screen (4.1.2). Renders nothing.

@@ -80,15 +80,21 @@ export function AnchorScroll() {
       if (event.defaultPrevented || event.button !== 0) return;
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       if (!(event.target instanceof Element)) return;
-      const link = event.target.closest('a[href^="#"]');
-      const hash = link?.getAttribute('href') ?? '';
-      const target = hash.length > 1 ? document.getElementById(hash.slice(1)) : null;
+      // In-page links: `#pricing`, and links to a section of this same page written as a
+      // path, such as the site chrome's `/#estimate` on the homepage.
+      const link = event.target.closest('a[href*="#"]');
+      if (!(link instanceof HTMLAnchorElement)) return;
+      const url = new URL(link.href);
+      const here = window.location;
+      if (url.origin !== here.origin || url.pathname !== here.pathname || url.search !== here.search) return;
+      const hash = url.hash;
+      const target = hash.length > 1 ? document.getElementById(decodeURIComponent(hash.slice(1))) : null;
       if (!target) return;
 
       // Following a link closes the menu it sits in: the small-screen menu (<details>), and
       // the mega menus, which stay open while focus is inside them.
-      link?.closest('details[open]')?.removeAttribute('open');
-      if (link instanceof HTMLElement && link.closest('[data-menu]')) link.blur();
+      link.closest('details[open]')?.removeAttribute('open');
+      if (link.closest('[data-menu]')) link.blur();
 
       if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
         // The browser's instant jump runs straight after this handler.

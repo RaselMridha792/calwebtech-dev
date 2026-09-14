@@ -10,6 +10,7 @@ import {
   type LeadSummary,
 } from '@calwebtech/shared';
 import { ForbiddenException, Injectable, Logger } from '@nestjs/common';
+import { publishedAsOf } from '../common/published';
 import { PrismaService } from '../prisma/prisma.service';
 import { EmailQueue } from '../queue/email-queue';
 import { SettingsService } from '../settings/settings.service';
@@ -30,6 +31,13 @@ function acknowledgementFrom(content: unknown): Acknowledgement {
     typeof content === 'object' && content !== null && 'formSuccess' in content ? content.formSuccess : undefined;
   const parsed = acknowledgementSchema.safeParse(formSuccess);
   return parsed.success ? parsed.data : DEFAULT_ACKNOWLEDGEMENT;
+}
+
+/** The enquiry's services with the service page's own title added once, so the team sees the context. */
+export function withServiceInterest(serviceInterest: readonly string[], serviceTitle: string): string[] {
+  const title = serviceTitle.trim().slice(0, 80);
+  const known = serviceInterest.some((item) => item.toLowerCase() === title.toLowerCase());
+  return known || title.length === 0 ? [...serviceInterest] : [...serviceInterest, title];
 }
 
 @Injectable()
@@ -70,11 +78,21 @@ export class LeadsService {
           select: { id: true, content: true },
         })
       : null;
+    // A service page enquiry is linked to the service while it is published, and gets its success copy.
+    const service =
+      !landingPage && input.serviceSlug
+        ? await db.service.findFirst({
+            where: { slug: input.serviceSlug, deletedAt: null, ...publishedAsOf(new Date()) },
+            select: { id: true, title: true, content: true },
+          })
+        : null;
     // Homepage forms have no campaign page; their success copy lives in the homepage setting.
     const homeContent =
-      !landingPage && input.formId.startsWith('home-')
+      !landingPage && !service && input.formId.startsWith('home-')
         ? await db.setting.findUnique({ where: { key: SETTING_KEYS.homeContent }, select: { value: true } })
         : null;
+
+    const serviceInterest = service ? withServiceInterest(input.serviceInterest, service.title) : input.serviceInterest;
 
     const lead = await db.$transaction(async (tx) => {
       const contact = await tx.contact.upsert({
@@ -104,8 +122,9 @@ export class LeadsService {
           timeline: input.timeline,
           referralSource: input.referralSource,
           siteUrl: input.siteUrl,
-          serviceInterest: input.serviceInterest,
+          serviceInterest,
           contactId: contact.id,
+          serviceId: service?.id,
           attribution: {
             create: {
               firstTouchUtm: input.attribution.firstTouch,
@@ -131,7 +150,11 @@ export class LeadsService {
       this.logger.warn(`Lead ${lead.id} stored without a Turnstile verdict`);
     }
 
-    await this.queueEmails(input, lead, acknowledgementFrom(landingPage?.content ?? homeContent?.value));
+    await this.queueEmails(
+      { ...input, serviceInterest },
+      lead,
+      acknowledgementFrom(landingPage?.content ?? service?.content ?? homeContent?.value),
+    );
     return { status: 'received' };
   }
 

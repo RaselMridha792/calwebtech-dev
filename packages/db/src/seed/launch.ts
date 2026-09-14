@@ -6,6 +6,7 @@ import {
   landingPageContentSchema,
   leadNotificationRecipientsSchema,
   siteContactSchema,
+  siteIndexingSchema,
   siteProofSchema,
 } from '@calwebtech/shared';
 import type { Prisma, PrismaClient } from '../generated/prisma/client';
@@ -25,6 +26,7 @@ import {
   PROCESS_STEPS,
 } from './content';
 import { assertSeedAllowed } from './guard';
+import { PAGE_SEEDS, runPageSeeds } from './pages';
 
 /**
  * Proof-shaped rows written by earlier versions of this seed, copied from the reference
@@ -90,6 +92,8 @@ async function seedSettings(db: PrismaClient): Promise<void> {
   );
   // Out of search until real content replaces the placeholders.
   await seedSetting(db, SETTING_KEYS.homepageIndexing, homepageIndexingSchema.parse({ index: false }));
+  // Every site page and robots.txt stay out of search until the owner switches this on.
+  await seedSetting(db, SETTING_KEYS.siteIndexing, siteIndexingSchema.parse({ index: false }));
 }
 
 async function seedProcessAndPricing(db: PrismaClient): Promise<void> {
@@ -183,5 +187,6 @@ export async function seedLaunchContent(db: PrismaClient): Promise<{ landingPage
   await seedProcessAndPricing(db);
   await seedHomepage(db);
   const page = await seedLandingPage(db);
+  await runPageSeeds(db, PAGE_SEEDS);
   return { landingPageSlug: page.slug };
 }
