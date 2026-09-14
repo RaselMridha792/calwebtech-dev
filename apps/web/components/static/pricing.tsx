@@ -24,7 +24,7 @@ export function PricingTiers({
           <ul className="grid gap-6 md:grid-cols-3">
             {tiers.map((tier, index) => (
               <li
-                key={tier.name}
+                key={`${String(index)}-${tier.name}`}
                 className={`relative flex flex-col rounded-2xl p-8 ${tier.highlighted ? 'border-2 border-ink shadow-card' : 'border border-line bg-white'}`}
                 {...reveal(index)}
               >

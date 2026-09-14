@@ -92,7 +92,7 @@ export function ProcessStages({
         <>
           <ol className="mb-16 flex flex-wrap gap-2 text-[14px]" aria-label="Stages at a glance">
             {steps.map((step, index) => (
-              <li key={step.title} className="rounded-full border border-line bg-white px-4 py-2">
+              <li key={`${String(index)}-${step.title}`} className="rounded-full border border-line bg-white px-4 py-2">
                 <span className="font-semibold text-ink">{`${String(index + 1)}. ${step.title}`}</span>
                 <span className="text-body">{` · ${step.timing}`}</span>
               </li>
@@ -100,7 +100,7 @@ export function ProcessStages({
           </ol>
           <ol className="space-y-20 lg:space-y-28">
             {steps.map((step, index) => (
-              <ProcessStage key={step.title} step={step} index={index} copy={copy} />
+              <ProcessStage key={`${String(index)}-${step.title}`} step={step} index={index} copy={copy} />
             ))}
           </ol>
         </>
