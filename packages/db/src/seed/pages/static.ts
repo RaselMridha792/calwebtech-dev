@@ -76,7 +76,11 @@ const PROCESS: StaticProcessContentInput = {
   cta,
 };
 
-/** Generic topics; the mailboxes are reserved for documentation until the client confirms them. */
+/**
+ * Generic topics without a mailbox of their own: until the client names one, a topic's
+ * notification goes only to `leads.notificationRecipients` (the API ignores an empty mailbox),
+ * so a staging server never sends to an address nobody reads.
+ */
 export const STATIC_ENQUIRY_TYPES = [
   { slug: 'new-project', name: 'New project' },
   { slug: 'free-website-audit', name: 'Free website audit' },
@@ -84,7 +88,7 @@ export const STATIC_ENQUIRY_TYPES = [
   { slug: 'partnership', name: 'Partnership' },
   { slug: 'careers', name: 'Careers' },
   { slug: 'press', name: 'Press' },
-].map((type, order) => ({ ...type, order, mailbox: 'hello@example.com' }));
+].map((type, order) => ({ ...type, order, mailbox: '' }));
 
 const CONTACT: StaticContactContentInput = {
   seo: { title: 'Placeholder: contact', description: 'Placeholder description for the contact page.' },

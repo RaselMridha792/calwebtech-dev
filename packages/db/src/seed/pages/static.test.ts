@@ -39,7 +39,7 @@ describe('static family placeholder seed', () => {
     expect(seeds.map((seed) => seed.family)).toContain('static');
   });
 
-  it('creates every page setting, validated, and routes enquiries to a documentation mailbox', async () => {
+  it('creates every page setting, validated, and enquiry types without a mailbox until the client names one', async () => {
     const { db, calls, createdKeys } = recordingClient();
     await staticSeed.seed(db);
     expect(createdKeys().sort()).toEqual(
@@ -54,7 +54,8 @@ describe('static family placeholder seed', () => {
       ].sort(),
     );
     expect(calls.filter((call) => call.model === 'enquiryType')).toHaveLength(STATIC_ENQUIRY_TYPES.length);
-    for (const type of STATIC_ENQUIRY_TYPES) expect(type.mailbox.endsWith('@example.com')).toBe(true);
+    for (const type of STATIC_ENQUIRY_TYPES) expect(type.mailbox).toBe('');
+    expect(STATIC_ENQUIRY_TYPES.map((type) => type.slug)).toContain('free-website-audit');
   });
 
   it('never overwrites a setting that already exists', async () => {
