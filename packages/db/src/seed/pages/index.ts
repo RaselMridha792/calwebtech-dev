@@ -34,6 +34,7 @@ export const PAGE_SEEDS: readonly PageSeedLoader[] = [
  */
 export const PAGE_FIXTURES: readonly PageSeedLoader[] = [
   // Site page families: one line each, below this one.
+  () => import('./company.js').then((module) => module.companyFixtures),
 ];
 
 export async function runPageSeeds(db: PrismaClient, loaders: readonly PageSeedLoader[]): Promise<void> {

@@ -1,5 +1,6 @@
 import {
   COMPANY_CONTENT_SCHEMAS,
+  COMPANY_FAQ_GROUPS,
   COMPANY_PAGES,
   COMPANY_SETTING_KEYS,
   type CompanyAboutContentInput,
@@ -10,6 +11,7 @@ import {
   type CompanyTestimonialsContentInput,
 } from '@calwebtech/shared';
 import type { Prisma } from '../../generated/prisma/client';
+import { assertSeedAllowed } from '../guard';
 import type { PageSeed } from './index';
 
 /**
@@ -130,5 +132,71 @@ export const companySeed: PageSeed = {
       const existing = await db.setting.findUnique({ where: { key }, select: { id: true } });
       if (!existing) await db.setting.create({ data: { key, value } });
     }
+  },
+};
+
+/**
+ * End-to-end fixtures for the company pages (`pnpm db:seed:fixtures`, development and CI
+ * only), labelled as test fixtures like ../fixtures.ts. They give apps/web/e2e/company.spec.ts
+ * something to exercise: two questions each on /awards/ and /team/ for the keyboard check, and
+ * one active team member for the populated team list on /team/ and /about/ and its Person
+ * node. Partners, awards, technologies and testimonials stay empty, so /partners/, /awards/
+ * and /technology/ keep their empty-state and no-claims checks, and the homepage sections
+ * apps/web/e2e/home.spec.ts expects to be empty stay empty.
+ */
+export const COMPANY_FIXTURE_FAQS = [
+  {
+    id: 'e2e-fixture-company-awards-1',
+    group: COMPANY_FAQ_GROUPS.awards,
+    order: 0,
+    question: 'Test fixture question one?',
+    answer: 'Test fixture answer one, for the keyboard check on the questions list.',
+  },
+  {
+    id: 'e2e-fixture-company-awards-2',
+    group: COMPANY_FAQ_GROUPS.awards,
+    order: 1,
+    question: 'Test fixture question two?',
+    answer: 'Test fixture answer two, for the keyboard check on the questions list.',
+  },
+  {
+    id: 'e2e-fixture-company-team-1',
+    group: COMPANY_FAQ_GROUPS.team,
+    order: 0,
+    question: 'Test fixture question one?',
+    answer: 'Test fixture answer one, for the keyboard check on the questions list.',
+  },
+  {
+    id: 'e2e-fixture-company-team-2',
+    group: COMPANY_FAQ_GROUPS.team,
+    order: 1,
+    question: 'Test fixture question two?',
+    answer: 'Test fixture answer two, for the keyboard check on the questions list.',
+  },
+] as const;
+
+export const COMPANY_FIXTURE_TEAM_MEMBER = {
+  slug: 'e2e-fixture-team-member',
+  name: 'Test fixture team member',
+  role: 'Test fixture role',
+  bio: 'Test fixture profile, for the team list and its Person node.',
+  photo: null,
+  skills: ['Test fixture skill'],
+  socials: [],
+  order: 0,
+  active: true,
+};
+
+export const companyFixtures: PageSeed = {
+  family: 'company',
+  content: { faqs: COMPANY_FIXTURE_FAQS, teamMembers: [COMPANY_FIXTURE_TEAM_MEMBER] },
+  /** Upserts by fixed id and slug, so running it again leaves one copy of each row. */
+  seed: async (db) => {
+    assertSeedAllowed('fixtures');
+    for (const { id, ...faq } of COMPANY_FIXTURE_FAQS) {
+      await db.faq.upsert({ where: { id }, create: { id, ...faq }, update: faq });
+    }
+    const { slug, ...member } = COMPANY_FIXTURE_TEAM_MEMBER;
+    await db.teamMember.upsert({ where: { slug }, create: { slug, ...member }, update: member });
   },
 };
