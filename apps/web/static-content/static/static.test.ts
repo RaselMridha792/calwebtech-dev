@@ -116,6 +116,17 @@ describe('static family snapshots', () => {
     expect(JSON.stringify(staticContactSnapshot)).not.toMatch(/mailbox/i);
   });
 
+  it('promises no separate inbox per topic, which the routing does not provide', () => {
+    // A routed enquiry's mailbox joins the usual lead recipients rather than replacing them, and
+    // every topic is stored as a contact lead, so no copy may say a message is kept apart.
+    const copy = [
+      JSON.stringify(staticContactSnapshot),
+      ...STATIC_THANK_YOU_TYPES.map((type) => JSON.stringify(staticThankYouSnapshots[type])),
+      ...STATIC_LEGAL_SLUGS.map((slug) => JSON.stringify(staticLegalSnapshots[slug])),
+    ].join('\n');
+    expect(copy).not.toMatch(/(own|separate|careers|right) inbox|inbox for (its|the) topic|kept apart|never into sales/i);
+  });
+
   it('keeps one FAQ question per id and no question twice across groups', () => {
     const faq = staticFaqViewSchema.parse(staticFaqSnapshot);
     const items = faq.groups.flatMap((group) => group.items);

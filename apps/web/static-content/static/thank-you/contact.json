@@ -7,7 +7,7 @@
   },
   "eyebrow": "Message received",
   "title": "Thanks. Your message is with us.",
-  "intro": "It has gone to the inbox for the topic you chose, so the right person reads it first. A confirmation email is on its way to the address you gave.",
+  "intro": "It is saved with the topic you chose, and a person on our team will read it. A confirmation email is on its way to the address you gave.",
   "received": {
     "heading": "What you sent us",
     "items": [

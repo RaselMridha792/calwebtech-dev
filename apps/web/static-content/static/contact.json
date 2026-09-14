@@ -35,7 +35,7 @@
     },
     "routing": {
       "heading": "Where does my message go?",
-      "intro": "Each topic has its own inbox, so a support request never waits behind a sales conversation.",
+      "intro": "The topic you choose is saved with your message and shown to the team that handles it, so the right person can pick it up.",
       "linkLabel": "Choose this topic",
       "descriptions": [
         {
@@ -56,7 +56,7 @@
         },
         {
           "slug": "careers",
-          "body": "Tell us about your experience and the kind of work you want to do. Your message goes to a separate inbox and never into sales or marketing."
+          "body": "Tell us about your experience and the kind of work you want to do. A person who handles hiring reads it, and writing to us does not add you to any mailing list."
         },
         {
           "slug": "press",
@@ -69,7 +69,7 @@
       "steps": [
         {
           "title": "A person reads it",
-          "body": "Your message lands in the inbox for its topic. Nothing is added to a mailing list and no automated sequence starts."
+          "body": "Your message is saved with the topic you chose and shared with our team. Nothing is added to a mailing list and no automated sequence starts."
         },
         {
           "title": "We reply, usually within one business day",
@@ -121,7 +121,7 @@
     {
       "slug": "careers",
       "name": "Careers",
-      "description": "Tell us about your experience and the kind of work you want to do. Your message goes to a separate inbox and never into sales or marketing."
+      "description": "Tell us about your experience and the kind of work you want to do. A person who handles hiring reads it, and writing to us does not add you to any mailing list."
     },
     {
       "slug": "press",

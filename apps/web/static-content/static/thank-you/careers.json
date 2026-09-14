@@ -2,12 +2,12 @@
   "type": "careers",
   "seo": {
     "title": "Thank you: application received",
-    "description": "Your application has reached the Calwebtech careers inbox. Here is what happens next and how your details are handled.",
+    "description": "Your application has reached Calwebtech. Here is what happens next and how your details are handled.",
     "ogImage": null
   },
   "eyebrow": "Application received",
   "title": "Thanks. Your application is with us.",
-  "intro": "Your details have gone to the careers inbox, which is kept apart from sales and marketing. We use what you send only to consider your application.",
+  "intro": "Your details are with our team, and a person who handles hiring will read them. Applying does not add you to any mailing list.",
   "received": {
     "heading": "What you sent us",
     "items": [
