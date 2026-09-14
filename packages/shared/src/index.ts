@@ -14,3 +14,4 @@ export * from './pages/common';
 export * from './pages/industries';
 export * from './pages/work';
 export * from './pages/services';
+export * from './pages/company';
