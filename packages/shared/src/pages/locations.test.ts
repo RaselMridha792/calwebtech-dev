@@ -1,10 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import {
+  LOCATION_FAQ_MIN,
   LOCATION_UNIQUE_SHARE_MIN,
+  locationCompleteness,
   locationContentSchema,
+  locationDetailViewSchema,
   locationSectionDefaults,
   locationUniqueShare,
   locationsIndexContentSchema,
+  type LocationDetailView,
 } from './locations';
 
 const ANSWER =
@@ -85,5 +89,78 @@ describe('locationUniqueShare', () => {
     const west = 'West Southport grew around its river port, and most of the firms here still move goods by water.';
     expect(locationUniqueShare(west, [northtown], places)).toBe(0);
     expect(locationUniqueShare('', [northtown], places)).toBe(0);
+  });
+});
+
+describe('locationCompleteness', () => {
+  /** A page whose every line comes from `paragraph`, so two pages share copy only where their paragraphs do. */
+  function page(slug: string, city: string, paragraph: string, faqCount: number): LocationDetailView {
+    const words = paragraph.split(/\W+/).filter(Boolean);
+    return locationDetailViewSchema.parse({
+      slug,
+      city,
+      state: null,
+      tier: 'TIER_1',
+      seo: { title: `Test ${city}`, description: 'Test description.' },
+      updatedAt: '2026-09-01T00:00:00.000Z',
+      answerBlock: paragraph,
+      serviceArea: null,
+      heroIntro: null,
+      image: null,
+      address: null,
+      contact: { phone: '+1 (555) 010-0199', phoneE164: '+15550100199', email: 'test@example.com' },
+      localContext: { heading: `What is ${city} like?`, intro: null, paragraphs: [paragraph], industries: [] },
+      clients: null,
+      caseStudies: null,
+      services: null,
+      workingModel: null,
+      serviceAreaSection: null,
+      testimonial: null,
+      nearby: null,
+      faq:
+        faqCount > 0
+          ? {
+              heading: `What do ${city} businesses ask?`,
+              intro: null,
+              items: Array.from({ length: faqCount }, (_, index) => ({
+                id: `${slug}-faq-${String(index)}`,
+                question: `${words.slice(index * 2, index * 2 + 2).join(' ')}?`,
+                answer: `${words[index * 2 + 2] ?? city}.`,
+              })),
+            }
+          : null,
+      cta: { heading: `Planning a project in ${city}?`, body: null },
+    });
+  }
+
+  const northtown =
+    'Northtown grew around its river port, and most of the firms here still move goods by water. Buyers search by vessel class and berth length before they call anyone.';
+  const southport =
+    'Southport is a university town where research groups spin out small software companies. They hire locally and need recruiting pages as much as sales pages.';
+
+  it('needs four FAQs, and renders fewer as incomplete rather than failing', () => {
+    expect(locationCompleteness(page('northtown', 'Northtown', northtown, LOCATION_FAQ_MIN))).toEqual({
+      complete: true,
+      faqCount: 4,
+      uniqueShare: null,
+      issues: [],
+    });
+    const short = locationCompleteness(page('northtown', 'Northtown', northtown, 3));
+    expect([short.complete, short.faqCount, short.issues.length]).toEqual([false, 3, 1]);
+    expect(locationCompleteness(page('northtown', 'Northtown', northtown, 0)).faqCount).toBe(0);
+  });
+
+  it('checks the unique share against the other pages when they are given, never against itself', () => {
+    const north = page('northtown', 'Northtown', northtown, 4);
+    const south = page('southport', 'Southport', southport, 4);
+    const unique = locationCompleteness(north, { others: [north, south] });
+    expect(unique.complete).toBe(true);
+    expect(unique.uniqueShare).toBeGreaterThanOrEqual(LOCATION_UNIQUE_SHARE_MIN);
+
+    const cloned = page('clonetown', 'Clonetown', northtown.replaceAll('Northtown', 'Clonetown'), 4);
+    const copy = locationCompleteness(cloned, { others: [north] });
+    expect(copy.complete).toBe(false);
+    expect(copy.uniqueShare).toBeLessThan(LOCATION_UNIQUE_SHARE_MIN);
+    expect(copy.issues).toHaveLength(1);
   });
 });

@@ -33,7 +33,12 @@ export const LOCATIONS_SETTING_KEYS = {
 
 /** Location pages link to at most six other locations (docs/04, "Internal linking"). */
 export const LOCATION_NEARBY_MAX = 6;
-/** Four to five genuinely local questions (docs/03). */
+/**
+ * Four to five genuinely local questions (docs/03). The view contract accepts fewer, so an
+ * already published page never turns into an error; `locationCompleteness` holds the
+ * minimum for publishing, the editor and the API's warning.
+ */
+export const LOCATION_FAQ_MIN = 4;
 export const LOCATION_FAQ_MAX = 5;
 export const LOCATION_CASE_STUDY_MAX = 3;
 export const LOCATION_SERVICE_MAX = 6;
@@ -278,6 +283,57 @@ export function locationBodyCopy(view: LocationDetailView): string {
   ]
     .filter((part): part is string => typeof part === 'string')
     .join('\n');
+}
+
+/** What a city page still lacks before it counts as complete (docs/06-build-plan.md, 3.1). */
+export interface LocationCompleteness {
+  complete: boolean;
+  faqCount: number;
+  /** Null when no other city page was given to compare with. */
+  uniqueShare: number | null;
+  /** One plain sentence per shortfall, for the editor and the API log. */
+  issues: string[];
+}
+
+export interface LocationCompletenessOptions {
+  /** The other city pages, for the unique share. Without them only the FAQs are checked. */
+  others?: readonly LocationDetailView[];
+  /**
+   * Place names beyond each page's city and service area places, such as state names.
+   * Whole names only: a short code like "CA" would also match inside ordinary words.
+   */
+  places?: readonly string[];
+}
+
+/**
+ * Whether a city page meets the location rules beyond its contract: four to five local
+ * FAQs, and at least sixty per cent of its body its own when other pages are given. The
+ * location publish endpoint rejects a record that fails it, the editor warns with it, the
+ * API logs a warning when a published record falls short, and the snapshot test gates on it.
+ */
+export function locationCompleteness(view: LocationDetailView, options: LocationCompletenessOptions = {}): LocationCompleteness {
+  const issues: string[] = [];
+  const faqCount = view.faq?.items.length ?? 0;
+  if (faqCount < LOCATION_FAQ_MIN) {
+    issues.push(`It has ${String(faqCount)} FAQs; a city page needs ${String(LOCATION_FAQ_MIN)} to ${String(LOCATION_FAQ_MAX)} local questions.`);
+  }
+
+  let uniqueShare: number | null = null;
+  const others = (options.others ?? []).filter((other) => other.slug !== view.slug);
+  if (others.length > 0) {
+    const places = [
+      ...[view, ...others].flatMap((page) => [page.city, ...(page.serviceAreaSection?.places ?? [])]),
+      ...(options.places ?? []),
+    ];
+    uniqueShare = locationUniqueShare(locationBodyCopy(view), others.map(locationBodyCopy), places);
+    if (uniqueShare < LOCATION_UNIQUE_SHARE_MIN) {
+      issues.push(
+        `Only ${String(Math.round(uniqueShare * 100))}% of its body copy is its own; a city page needs ${String(LOCATION_UNIQUE_SHARE_MIN * 100)}%.`,
+      );
+    }
+  }
+
+  return { complete: issues.length === 0, faqCount, uniqueShare, issues };
 }
 
 export type LocationCard = z.output<typeof locationCardSchema>;
