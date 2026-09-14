@@ -8,7 +8,13 @@
     "title": "Web design and development services",
     "answerBlock": "Calwebtech designs, builds and looks after websites, online stores and web applications for B2B and growing businesses. Every build has a fixed price, runs on a platform your team can maintain, and is handed over with the code, data and accounts in your name. Most projects cost $12,000 to $60,000, and care plans start at $1,500 a month.",
     "intro": "Ten services, grouped by what you need: a new site or application, a particular platform, or growth and upkeep after launch.",
+    "groupHeadings": {
+      "design-and-build": "Do you need a new website, a redesign or a web application?",
+      "platforms": "Which platform should your website be built on?",
+      "growth-and-care": "How do you keep a website found, useful and secure after launch?"
+    },
     "otherGroupName": "More services",
+    "otherGroupHeading": "Which other services do you offer?",
     "empty": "No services are published yet. Tell us what you need and we will reply by email.",
     "cardLinkLabel": "See the service",
     "guidance": {
@@ -28,6 +34,7 @@
     {
       "slug": "design-and-build",
       "name": "Design & build",
+      "heading": "Do you need a new website, a redesign or a web application?",
       "description": "Websites and web applications designed around how your buyers decide, then built so your own team can run them.",
       "services": [
         {
@@ -63,6 +70,7 @@
     {
       "slug": "platforms",
       "name": "Platforms",
+      "heading": "Which platform should your website be built on?",
       "description": "The platform follows what your team needs to maintain and what the business has to connect to, not what we prefer to sell.",
       "services": [
         {
@@ -91,6 +99,7 @@
     {
       "slug": "growth-and-care",
       "name": "Growth & care",
+      "heading": "How do you keep a website found, useful and secure after launch?",
       "description": "Search and AI visibility, AI features wired into your own data, and the upkeep that keeps a site earning after launch.",
       "services": [
         {

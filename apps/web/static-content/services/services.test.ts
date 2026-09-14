@@ -74,6 +74,11 @@ describe('services snapshots', () => {
     const listed = index.groups.flatMap((group) => group.services.map((service) => service.slug));
     expect([...listed].sort()).toEqual([...LAUNCH_SLUGS].sort());
     expect(index.groups.map((group) => group.name)).toEqual(['Design & build', 'Platforms', 'Growth & care']);
+    // The API takes each heading from the copy, so the copy holds one for every category shown.
+    for (const group of index.groups) {
+      const copy = group.slug === null ? index.content.otherGroupHeading : index.content.groupHeadings[group.slug];
+      expect(group.heading, group.name).toBe(copy);
+    }
     for (const group of index.groups) {
       for (const card of group.services) {
         const view = details.find(([slug]) => slug === card.slug)?.[1];

@@ -71,7 +71,8 @@ test.describe('services index', () => {
     }
     const groups = page.locator('main section[id^="services-"]');
     expect(await groups.count()).toBeGreaterThan(0);
-    for (const heading of await groups.locator('h2').allTextContents()) expect(heading.trim()).not.toBe('');
+    // Section headings on a content page are the questions buyers type.
+    for (const heading of await page.locator('main h2').allTextContents()) expect(heading.trim()).toMatch(/\S\?$/);
     // A card is one target named by its title.
     await expect(cards.first()).toHaveAccessibleName(/\S/);
   });

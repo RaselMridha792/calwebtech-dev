@@ -100,6 +100,11 @@ describe('services index sections', () => {
   it('renders one section per category with a link card per service, then the guidance band', () => {
     const html = renderToStaticMarkup(<ServiceGroups view={view} />);
     for (const group of view.groups) expect(html).toContain(`id="services-${group.slug ?? 'other'}"`);
+    const h2s = [...html.matchAll(/<h2[^>]*>([^<]*)<\/h2>/g)].map((match) => match[1] ?? '');
+    expect(h2s).toHaveLength(view.groups.length + 1);
+    for (const heading of h2s) expect(heading.endsWith('?'), heading).toBe(true);
+    // Card titles sit one level below their section's question.
+    expect(html.match(/<h3[\s>]/g)).toHaveLength(10);
     expect(html.match(/href="\/services\/[a-z-]+\/"/g)).toHaveLength(10);
     expect(html).toContain(view.content.guidance.heading);
   });
