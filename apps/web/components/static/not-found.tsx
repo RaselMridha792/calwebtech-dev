@@ -1,10 +1,34 @@
-import type { StaticNotFoundView } from '@calwebtech/shared';
+import { SITE_ROUTES, type StaticNotFoundView } from '@calwebtech/shared';
 import { seoTitle } from '@/lib/seo/metadata';
 import { CardGrid, LinkCard } from '../site/cards';
 import { Section } from '../site/section';
 import { SectionHeading } from '../site/section-heading';
 import { ContactLinks } from './parts';
 import { SiteSearch } from './site-search';
+
+/** Shown only when the stored copy cannot be read, so a 404 never becomes an error page. */
+const PLAIN_NOT_FOUND: Omit<StaticNotFoundView, 'contact'> & { contact: null } = {
+  eyebrow: 'Error 404',
+  title: 'Page not found',
+  intro: 'The address may be mistyped, or the page may have moved.',
+  search: {
+    label: 'Search the site',
+    placeholder: 'Search by page name',
+    submitLabel: 'Search',
+    resultsLabel: 'Matching pages:',
+    noResults: 'No page title matches that. The sitemap lists every page.',
+  },
+  destinations: {
+    heading: 'Start from here',
+    items: [
+      { title: 'Home', body: 'The overview of what we build.', href: SITE_ROUTES.home },
+      { title: 'Sitemap', body: 'Every page on the site in one list.', href: SITE_ROUTES.sitemap },
+      { title: 'Contact', body: 'Ask a person where to find something.', href: SITE_ROUTES.contact },
+    ],
+  },
+  help: { heading: 'Need a hand?', body: 'The contact page reaches a person.' },
+  contact: null,
+};
 
 /**
  * The designed 404 (docs/03-page-specs.md, Utility pages): what happened, a search across the
@@ -14,7 +38,8 @@ import { SiteSearch } from './site-search';
  *
  * Keep it lean: the not-found boundary is serialised into every page's payload.
  */
-export function NotFoundPage({ view }: { view: StaticNotFoundView }) {
+export function NotFoundPage({ view: stored }: { view: StaticNotFoundView | null }) {
+  const view = stored ?? PLAIN_NOT_FOUND;
   return (
     <>
       <title>{seoTitle(view.title)}</title>
@@ -33,9 +58,11 @@ export function NotFoundPage({ view }: { view: StaticNotFoundView }) {
             <div className="rounded-2xl border border-line bg-white p-7 shadow-panel sm:p-8">
               <h2 className="font-display text-[22px] font-extrabold text-ink">{view.help.heading}</h2>
               <p className="mt-3 text-[15.5px] leading-relaxed">{view.help.body}</p>
-              <div className="mt-6 border-t border-line pt-5">
-                <ContactLinks contact={view.contact} phoneLabel="Phone" emailLabel="Email" />
-              </div>
+              {view.contact ? (
+                <div className="mt-6 border-t border-line pt-5">
+                  <ContactLinks contact={view.contact} phoneLabel="Phone" emailLabel="Email" />
+                </div>
+              ) : null}
             </div>
           </div>
         </div>

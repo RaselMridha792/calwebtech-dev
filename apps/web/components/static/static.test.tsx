@@ -175,4 +175,12 @@ describe('static family pages rendered from their snapshots', () => {
     expect(html).toContain('document.currentScript');
     for (const item of view.destinations.items) expect(html).toContain(`href="${item.href}"`);
   });
+
+  it('not found: still a working 404, with search and a way on, when the stored copy cannot be read', () => {
+    const html = render(<NotFoundPage view={null} />);
+    expectHeadingOrder(html);
+    expect(html).toContain('<form role="search"');
+    expect(html).toContain('href="/contact/"');
+    expect(html).not.toContain('href="tel:');
+  });
 });

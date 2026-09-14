@@ -10,6 +10,7 @@ import {
   staticProcessViewSchema,
   staticThankYouViewSchema,
   type StaticLegalSlug,
+  type StaticNotFoundView,
 } from '@calwebtech/shared';
 import { cache } from 'react';
 import type { SitemapEntry } from '@/lib/sitemap';
@@ -38,7 +39,19 @@ export const getStaticContact = cache(() => getView('/pages/contact', staticCont
 
 export const getStaticFaq = cache(() => getView('/pages/faq', staticFaqViewSchema, staticFaqSnapshot));
 
-export const getStaticNotFound = cache(() => getView('/pages/not-found', staticNotFoundViewSchema, staticNotFoundSnapshot));
+/**
+ * The designed 404's copy, or null when it cannot be read. Next.js renders not-found
+ * boundaries into every page's payload, so a missing or malformed `static.not-found` setting
+ * must not throw there: the page falls back to a plain 404 and the failure is logged.
+ */
+export const getStaticNotFound = cache(async (): Promise<StaticNotFoundView | null> => {
+  try {
+    return await getView('/pages/not-found', staticNotFoundViewSchema, staticNotFoundSnapshot);
+  } catch (error) {
+    console.error('The not-found page copy could not be loaded; showing the plain 404.', error);
+    return null;
+  }
+});
 
 /** A conversion type's thank-you page, or null for a type that has none (the page answers 404). */
 export const getStaticThankYou = cache((type: string) =>
