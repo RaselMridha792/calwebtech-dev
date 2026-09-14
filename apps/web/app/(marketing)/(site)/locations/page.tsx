@@ -29,9 +29,10 @@ export default async function LocationsPage() {
       {groups.length > 0 ? (
         groups.map((group, index) => {
           const tone: LightTone = index % 2 === 0 ? 'white' : 'tint';
-          const headingId = `tier-${group.tier.toLowerCase().replace('_', '-')}-heading`;
+          const sectionId = group.tier.toLowerCase().replace('_', '-');
+          const headingId = `${sectionId}-heading`;
           return (
-            <Section key={group.tier} tone={tone} labelledBy={headingId}>
+            <Section key={group.tier} id={sectionId} tone={tone} labelledBy={headingId} deferred={index > 0}>
               <SectionHeading id={headingId} title={group.heading} intro={group.intro} />
               <CardGrid columns={3}>
                 {group.locations.map((location, step) => (
@@ -42,7 +43,7 @@ export default async function LocationsPage() {
           );
         })
       ) : (
-        <Section tone="white" deferred={false}>
+        <Section id="no-locations" tone="white" deferred={false}>
           <EmptyState action={{ label: 'Contact us', href: SITE_ROUTES.contact }}>{content.empty}</EmptyState>
         </Section>
       )}
