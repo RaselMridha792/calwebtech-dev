@@ -1,0 +1,263 @@
+{
+  "slug": "meridian-parts",
+  "clientName": "Meridian Parts",
+  "title": "Meridian Parts: fitment search across 90,000 SKUs, built for the workshop",
+  "answerBlock": "Meridian Parts is a Michigan manufacturer with a catalogue of 90,000 SKUs, and its buyers are often technicians looking for a part on a phone in a workshop. We built a headless platform with fitment search across the whole catalogue. Organic traffic rose 207%, wrong-part returns fell 63% and repeat orders grew 4.2x.",
+  "summary": "Fitment search across 90,000 SKUs, so a technician finds the right part on a phone in a workshop.",
+  "seo": {
+    "title": "Meridian Parts: fitment search case study",
+    "description": "How Meridian Parts gave technicians fitment search across 90,000 SKUs on a phone: wrong-part returns down 63% and repeat orders up 4.2x.",
+    "ogImage": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=900&q=70"
+  },
+  "eyebrow": "Case study",
+  "cover": {
+    "src": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=900&q=70",
+    "alt": "A developer reviewing code across two monitors"
+  },
+  "headline": {
+    "label": "Headline result",
+    "metric": {
+      "value": "+207%",
+      "label": "Organic traffic"
+    }
+  },
+  "metrics": [
+    {
+      "value": "+207%",
+      "label": "Organic traffic"
+    },
+    {
+      "value": "−63%",
+      "label": "Wrong-part returns"
+    },
+    {
+      "value": "4.2x",
+      "label": "Repeat orders"
+    }
+  ],
+  "atAGlance": {
+    "industry": {
+      "slug": "manufacturing",
+      "name": "Manufacturing"
+    },
+    "services": [
+      {
+        "slug": "ecommerce-development",
+        "name": "Ecommerce development"
+      },
+      {
+        "slug": "nextjs-development",
+        "name": "Next.js development"
+      },
+      {
+        "slug": "ai-search-visibility",
+        "name": "AI search visibility"
+      }
+    ],
+    "platforms": [
+      {
+        "slug": "headless-cms",
+        "name": "Headless CMS"
+      }
+    ],
+    "location": "Michigan, USA",
+    "duration": null,
+    "year": null,
+    "liveUrl": null
+  },
+  "challenge": [
+    "With 90,000 SKUs, the hard part of buying from Meridian is not paying, it is being sure a part fits. A technician standing at a job needs that answer quickly, and usually on a phone.",
+    "When the right part is hard to find, the wrong part gets ordered, and every wrong part becomes a return."
+  ],
+  "approach": [
+    "We put fitment at the centre of the catalogue. The question a technician asks is whether a part fits what is in front of them, so search starts from that question instead of from a product name.",
+    "The workshop set the design constraints: pages are designed for a phone first, and the path from search to the right part is kept short."
+  ],
+  "build": [
+    "The platform is headless, with fitment search across all 90,000 SKUs.",
+    "Catalogue pages are built to be found in search as well as used in the workshop, so the same pages that answer a technician also answer a search engine."
+  ],
+  "gallery": [
+    {
+      "src": "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?auto=format&fit=crop&w=1200&q=70",
+      "alt": "Rows of pliers and hand tools in a workshop tool rack"
+    },
+    {
+      "src": "https://images.unsplash.com/photo-1487754180451-c456f719a1fc?auto=format&fit=crop&w=1200&q=70",
+      "alt": "A mechanic pouring oil into a car engine"
+    },
+    {
+      "src": "https://images.unsplash.com/photo-1537462715879-360eeb61a0ad?auto=format&fit=crop&w=1200&q=70",
+      "alt": "Close-up of suspension and engine components"
+    }
+  ],
+  "beforeAfter": null,
+  "outcome": [
+    "Wrong-part returns fell 63%, the clearest sign that fitment search is doing its job. Repeat orders grew 4.2x and organic traffic rose 207%."
+  ],
+  "measurement": "Commercial figures come from the client's own analytics, twelve months after launch, and every figure is one the client agreed to publish. Speed and accessibility results, such as load times, Lighthouse scores and WCAG conformance, are measured on the live site.",
+  "quote": null,
+  "videoTestimonial": null,
+  "relatedServices": [
+    {
+      "slug": "ecommerce-development",
+      "name": "Ecommerce development",
+      "summary": "Shopify, WooCommerce or custom, including B2B pricing rules, quoting and ERP integration."
+    },
+    {
+      "slug": "nextjs-development",
+      "name": "Next.js development",
+      "summary": "Fast, typed Next.js and React builds, including headless CMS setups your team can publish from without a developer."
+    },
+    {
+      "slug": "ai-search-visibility",
+      "name": "AI search visibility",
+      "summary": "Technical SEO plus the newer work of being cited by ChatGPT, Perplexity, Gemini and AI overviews."
+    }
+  ],
+  "relatedCaseStudies": [
+    {
+      "slug": "northmark-supply",
+      "clientName": "Northmark Supply",
+      "summary": "A catalogue of 40,000 parts behind a contact form. We rebuilt it as a searchable, account-priced quoting platform tied into their ERP.",
+      "tags": [
+        "Ohio, USA",
+        "B2B",
+        "Distribution",
+        "Next.js"
+      ],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=70",
+        "alt": "Two colleagues reviewing printed figures beside their laptops"
+      },
+      "metrics": [
+        {
+          "value": "+312%",
+          "label": "Quote requests"
+        },
+        {
+          "value": "12 min",
+          "label": "Quote turnaround, from 3 days"
+        },
+        {
+          "value": "−41%",
+          "label": "Support calls"
+        }
+      ],
+      "industry": "distribution",
+      "services": [
+        "ecommerce-development",
+        "web-application-development",
+        "nextjs-development"
+      ],
+      "platforms": [
+        "nextjs"
+      ]
+    },
+    {
+      "slug": "truvia-labs",
+      "clientName": "Truvia Labs",
+      "summary": "Marketing site, docs and in-app onboarding rebuilt on one design system so releases stopped breaking the brand.",
+      "tags": [
+        "Texas, USA",
+        "SaaS",
+        "Next.js"
+      ],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=70",
+        "alt": "Overhead view of a shared desk with several laptops and phones in use"
+      },
+      "metrics": [
+        {
+          "value": "+140%",
+          "label": "Demo bookings"
+        },
+        {
+          "value": "3.1x",
+          "label": "Organic sessions"
+        },
+        {
+          "value": "98",
+          "label": "Lighthouse mobile"
+        }
+      ],
+      "industry": "saas",
+      "services": [
+        "custom-website-development",
+        "nextjs-development",
+        "ai-search-visibility"
+      ],
+      "platforms": [
+        "nextjs"
+      ]
+    },
+    {
+      "slug": "verona-home",
+      "clientName": "Verona Home",
+      "summary": "A furniture brand stuck on a page builder, replatformed with a configurator for made-to-order pieces.",
+      "tags": [
+        "California, USA",
+        "D2C",
+        "Shopify"
+      ],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=900&q=70",
+        "alt": "A warehouse floor lined with shelving, cartons and yellow crates ready for dispatch"
+      },
+      "metrics": [
+        {
+          "value": "$2.4M",
+          "label": "First-year revenue"
+        },
+        {
+          "value": "+68%",
+          "label": "Add to cart"
+        },
+        {
+          "value": "1.4s",
+          "label": "Mobile LCP"
+        }
+      ],
+      "industry": "ecommerce-and-d2c",
+      "services": [
+        "ecommerce-development",
+        "shopify-development",
+        "website-redesign"
+      ],
+      "platforms": [
+        "shopify"
+      ]
+    }
+  ],
+  "headings": {
+    "metrics": "What results did Meridian Parts get?",
+    "atAGlance": "What did the Meridian Parts project involve?",
+    "challenge": "What problem did Meridian Parts need to solve?",
+    "approach": "How did we approach the Meridian Parts project?",
+    "build": "What did we build for Meridian Parts?",
+    "gallery": "What does this kind of work look like in practice?",
+    "beforeAfter": "What did the Meridian Parts site look like before and after?",
+    "outcome": "What changed for Meridian Parts after launch?",
+    "quote": "What does Meridian Parts say about working with us?",
+    "relatedServices": "Which services did this project use?",
+    "relatedCaseStudies": "Which other projects are like this one?"
+  },
+  "labels": {
+    "industry": "Industry",
+    "services": "Services",
+    "platform": "Platform",
+    "location": "Location",
+    "duration": "Duration",
+    "year": "Year",
+    "liveSite": "Live site",
+    "visitSite": "Visit the site",
+    "measurement": "How we measured",
+    "serviceLink": "See the service",
+    "caseStudyLink": "Read the case study",
+    "comparison": "Measured before and after",
+    "before": "Before",
+    "after": "After"
+  },
+  "publishedAt": "2026-09-14T00:00:00.000Z",
+  "updatedAt": "2026-09-14T00:00:00.000Z"
+}

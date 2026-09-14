@@ -21,10 +21,16 @@ export type PageSeedLoader = () => Promise<PageSeed>;
  * Placeholder rows, run by `pnpm db:seed` after the homepage and landing page. Safe on a URL
  * someone can open, so placeholder-only (content.ts rules), for example:
  *
- *   () => import('./services').then((module) => module.servicesSeed),
+ *   () => import('./services.js').then((module) => module.servicesSeed),
  */
 export const PAGE_SEEDS: readonly PageSeedLoader[] = [
   // Site page families: one line each, below this one.
+  () => import('./industries.js').then((module) => module.industriesSeed),
+  () => import('./work.js').then((module) => module.workSeed),
+  () => import('./services.js').then((module) => module.servicesSeed),
+  () => import('./company.js').then((module) => module.companySeed),
+  () => import('./locations.js').then((module) => module.locationsSeed),
+  () => import('./static.js').then((module) => module.staticSeed),
   () => import('./calculator.js').then((module) => module.calculatorSeed),
 ];
 
@@ -34,6 +40,9 @@ export const PAGE_SEEDS: readonly PageSeedLoader[] = [
  */
 export const PAGE_FIXTURES: readonly PageSeedLoader[] = [
   // Site page families: one line each, below this one.
+  () => import('./industries.js').then((module) => module.industriesFixtures),
+  () => import('./work.js').then((module) => module.workFixtures),
+  () => import('./company.js').then((module) => module.companyFixtures),
 ];
 
 export async function runPageSeeds(db: PrismaClient, loaders: readonly PageSeedLoader[]): Promise<void> {

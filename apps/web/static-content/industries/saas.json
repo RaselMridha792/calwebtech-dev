@@ -1,0 +1,244 @@
+{
+  "slug": "saas",
+  "name": "SaaS and technology",
+  "title": "SaaS website design and development",
+  "seo": {
+    "title": "SaaS website design and development",
+    "description": "Marketing sites, documentation and onboarding for SaaS companies, built on one design system with Next.js so releases stop breaking the brand.",
+    "ogImage": "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&h=630&q=75"
+  },
+  "answerBlock": "A SaaS website has to explain the product to buyers who compare several tools in an afternoon, then turn that interest into demo bookings or trial sign-ups. Calwebtech designs and builds SaaS marketing sites, documentation and onboarding on one Next.js design system, so the site, the docs and the product look and read as one. Your marketing team publishes pages without waiting for an engineering sprint.",
+  "updatedAt": "2026-09-14T00:00:00.000Z",
+  "hero": {
+    "intro": "Engineering owns the product, marketing owns the site, and the docs belong to whoever edited them last. We put all three on one design system and one content model, so a release never breaks the brand and a new landing page never needs a ticket.",
+    "primaryCta": {
+      "label": "Discuss your project",
+      "href": "/contact/"
+    },
+    "secondaryCta": {
+      "label": "See what it costs",
+      "href": "/pricing/"
+    },
+    "highlights": [
+      "One design system across site, docs and app",
+      "Pages marketing can publish without engineers",
+      "Demo and trial flows tied to your CRM",
+      "Pricing and comparison pages that answer objections"
+    ],
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1600&q=60"
+    },
+    "line": "Marketing site, docs and product on one system."
+  },
+  "painPoints": {
+    "heading": "Why do SaaS websites stop converting as the product grows?",
+    "intro": "Growth adds features, audiences and pricing tiers faster than a site built for launch can absorb.",
+    "items": [
+      {
+        "title": "Every page change waits for a sprint",
+        "body": "The site lives in the product repository, so a new landing page competes with roadmap work and campaigns launch weeks late or not at all."
+      },
+      {
+        "title": "The site, docs and app look like three companies",
+        "body": "Marketing, documentation and the product drifted apart one release at a time. Buyers notice the inconsistency and read it as immaturity."
+      },
+      {
+        "title": "Pricing that raises more questions than it answers",
+        "body": "Seats, usage limits and feature gates are hard to compare on one page, so qualified buyers leave to ask sales, or leave for a competitor with a clearer table."
+      },
+      {
+        "title": "Demo requests that go nowhere",
+        "body": "Forms that are not routed by company size or region leave good leads waiting, while self-serve trials never reach a salesperson who could help."
+      }
+    ]
+  },
+  "services": {
+    "heading": "Which services does a SaaS company need from a web partner?",
+    "intro": "Most SaaS projects start with the marketing site and extend into docs and onboarding once the system exists.",
+    "items": [
+      {
+        "slug": "nextjs-development",
+        "title": "Next.js development",
+        "body": "A Next.js marketing site and documentation hub on the same component library as your product, with content in a headless CMS."
+      },
+      {
+        "slug": "custom-website-development",
+        "title": "Custom website development",
+        "body": "Positioning-led design for product, pricing, comparison and use-case pages, built on a design system your product team can adopt."
+      },
+      {
+        "slug": "website-redesign",
+        "title": "Website redesign",
+        "body": "A rebuild when the current site cannot keep up with the product, carried out without losing the search traffic behind your trials."
+      },
+      {
+        "slug": "ai-search-visibility",
+        "title": "AI search visibility",
+        "body": "Comparison content, documentation structure and structured data, so AI assistants cite your product when buyers ask for tools in your category."
+      },
+      {
+        "slug": "ai-integration",
+        "title": "AI integration",
+        "body": "On-site and in-product assistants trained on your documentation, with conversations saved against the lead or account."
+      }
+    ]
+  },
+  "compliance": {
+    "heading": "What security and compliance details does a SaaS website have to get right?",
+    "intro": "Enterprise buyers review the website as part of due diligence, long before they send a security questionnaire.",
+    "notes": [
+      {
+        "title": "A trust page security teams can use",
+        "body": "Security practices, subprocessors, data residency and the status of audits such as SOC 2 are published in one maintained place, so sales stops answering the same questions by email."
+      },
+      {
+        "title": "Consent-aware analytics",
+        "body": "Product analytics and advertising tags respect consent choices for visitors from regions that require it, without breaking attribution for demo and trial sign-ups."
+      },
+      {
+        "title": "Accessibility for procurement",
+        "body": "Enterprise and public sector buyers ask for accessibility conformance reports. Building to WCAG 2.2 AA from the start keeps that report short and honest."
+      },
+      {
+        "title": "Single sign-on for docs and portals",
+        "body": "Customer documentation, partner portals and beta areas use the same identity provider as the product, rather than a separate set of passwords."
+      }
+    ]
+  },
+  "caseStudies": {
+    "heading": "Which SaaS websites have we built?",
+    "intro": "Marketing sites, documentation and onboarding rebuilt on one design system.",
+    "items": [
+      {
+        "slug": "truvia-labs",
+        "clientName": "Truvia Labs",
+        "summary": "Marketing site, docs and in-app onboarding rebuilt on one design system so releases stopped breaking the brand.",
+        "tags": [
+          "Texas, USA",
+          "Next.js"
+        ],
+        "image": {
+          "src": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=70",
+          "alt": "A product team working on laptops around a shared table, seen from above"
+        },
+        "metrics": [
+          {
+            "value": "+140%",
+            "label": "Demo bookings"
+          },
+          {
+            "value": "3.1x",
+            "label": "Organic sessions"
+          },
+          {
+            "value": "98",
+            "label": "Lighthouse mobile"
+          }
+        ]
+      }
+    ],
+    "link": {
+      "label": "See all SaaS work",
+      "href": "/work/?industry=saas"
+    }
+  },
+  "results": {
+    "heading": "What changed for SaaS clients after launch?",
+    "intro": null,
+    "note": "Each figure comes from the case study above and is shown with the client it was measured for.",
+    "metrics": [
+      {
+        "value": "+140%",
+        "label": "Demo bookings",
+        "clientName": "Truvia Labs"
+      },
+      {
+        "value": "3.1x",
+        "label": "Organic sessions",
+        "clientName": "Truvia Labs"
+      },
+      {
+        "value": "98",
+        "label": "Lighthouse mobile",
+        "clientName": "Truvia Labs"
+      }
+    ],
+    "testimonial": {
+      "id": "testimonial-priya-raman",
+      "quote": "They pushed back on half of what we asked for and were right about most of it. The site does one job on every page now, and our enquiry quality went up before the volume did.",
+      "clientName": "Priya Raman",
+      "role": "VP Marketing",
+      "company": "Truvia Labs",
+      "rating": 5,
+      "avatar": {
+        "src": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=70"
+      }
+    }
+  },
+  "integrations": {
+    "heading": "Which systems does a SaaS website usually connect to?",
+    "intro": "The site shares data with the tools your revenue team already uses, so no lead is copied by hand.",
+    "items": [
+      {
+        "name": "CRM and marketing automation",
+        "body": "HubSpot, Salesforce or Marketo, with demo requests routed by company size, region and plan interest."
+      },
+      {
+        "name": "Meeting scheduling",
+        "body": "Chili Piper, Calendly or HubSpot meetings, so a qualified buyer books a demo on the page instead of waiting for a reply."
+      },
+      {
+        "name": "Product analytics",
+        "body": "Segment, PostHog or Amplitude events that connect a website visit to a trial and the trial to revenue."
+      },
+      {
+        "name": "Headless CMS",
+        "body": "Sanity, Contentful or a Postgres-backed CMS for pages, docs and the changelog, edited without a deployment."
+      },
+      {
+        "name": "Billing and plans",
+        "body": "Stripe or your billing system as the source for the plan names and prices shown on the pricing page."
+      },
+      {
+        "name": "Identity provider",
+        "body": "Okta, Auth0 or your own identity service for single sign-on to docs, portals and beta programmes."
+      }
+    ]
+  },
+  "faq": {
+    "heading": "What do SaaS teams ask before rebuilding their website?",
+    "intro": "The questions marketing, product and engineering leads raise together on the first call.",
+    "items": [
+      {
+        "id": "saas-faq-codebase",
+        "question": "Should our marketing site live in the same codebase as the product?",
+        "answer": "Usually not the same deployment, but ideally the same design system. We build the marketing site and docs as their own Next.js application that shares your component library, so marketing can publish independently while the brand stays consistent with the product."
+      },
+      {
+        "id": "saas-faq-cost",
+        "question": "How much does a SaaS website redesign cost?",
+        "answer": "A focused marketing site rebuild with custom design and a CMS usually sits in our focused build range of $12k to $25k. Adding documentation, a shared design system, integrations and signed-in areas moves it into the platform build range of $25k to $60k."
+      },
+      {
+        "id": "saas-faq-publishing",
+        "question": "Can our marketing team publish pages without engineers?",
+        "answer": "Yes. Pages, case studies, integrations and changelog entries are content types with their own editors, and landing pages are assembled from approved sections. Publishing needs no deployment and no ticket."
+      },
+      {
+        "id": "saas-faq-docs",
+        "question": "Can you migrate our documentation as well?",
+        "answer": "Yes. We move existing docs from tools such as GitBook, ReadMe or a static site generator into the new system, keep every URL with permanent redirects, and add search, versioning and code samples where they help."
+      },
+      {
+        "id": "saas-faq-pricing-page",
+        "question": "How do you make a SaaS pricing page clearer?",
+        "answer": "We start from the questions sales and support hear most, then design a comparison that answers them: what each plan includes, where limits apply and what happens when a customer grows. The most common pricing questions are answered on the page, not in a sales call."
+      },
+      {
+        "id": "saas-faq-ai-answers",
+        "question": "Will the new site help us appear in AI assistant answers?",
+        "answer": "It removes the usual obstacles. We structure product, comparison and documentation pages so assistants can extract clear answers, add structured data, and track referrals from AI assistants so you can see whether it is working."
+      }
+    ]
+  }
+}

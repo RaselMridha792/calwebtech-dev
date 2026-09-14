@@ -1,0 +1,235 @@
+{
+  "slug": "ecommerce-and-d2c",
+  "name": "Retail and D2C",
+  "title": "Ecommerce website design for retail and D2C brands",
+  "seo": {
+    "title": "Retail and D2C ecommerce website design",
+    "description": "Shopify and custom storefronts for retail and D2C brands: fast product pages, configurators, subscriptions and checkout tuned against real drop-off.",
+    "ogImage": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&h=630&q=75"
+  },
+  "answerBlock": "A retail or direct-to-consumer ecommerce website has to load fast on a phone, answer product questions on the page and get a shopper through checkout without friction. Calwebtech designs and builds storefronts on Shopify or a custom stack, with product configurators, subscriptions and checkout tuned against your real drop-off data. The store, the code and every account are registered in your name.",
+  "updatedAt": "2026-09-14T00:00:00.000Z",
+  "hero": {
+    "intro": "Most stores do not have a traffic problem. They lose shoppers on slow product pages, unclear delivery costs and a checkout that asks for too much. We find where your customers actually leave, then design and build the fix.",
+    "primaryCta": {
+      "label": "Discuss your project",
+      "href": "/contact/"
+    },
+    "secondaryCta": {
+      "label": "See what it costs",
+      "href": "/pricing/"
+    },
+    "highlights": [
+      "Product pages that load fast on mobile",
+      "Configurators for made-to-order products",
+      "Subscriptions and bundles without plugin sprawl",
+      "Checkout changes measured against real drop-off"
+    ],
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1600&q=60"
+    },
+    "line": "Storefronts tuned against real checkout drop-off."
+  },
+  "painPoints": {
+    "heading": "Why do retail and D2C stores lose shoppers before checkout?",
+    "intro": "The patterns repeat across categories, from furniture to skincare.",
+    "items": [
+      {
+        "title": "Slow product pages on mobile",
+        "body": "Apps, review widgets and tracking scripts pile up until a product page takes seconds to become usable on a phone. Shoppers arriving from a social ad leave before the gallery loads."
+      },
+      {
+        "title": "Made-to-order products sold like stock items",
+        "body": "Fabric, finish, size and engraving options crammed into dropdowns leave shoppers unsure what they are buying, so they email to ask, or buy elsewhere."
+      },
+      {
+        "title": "Surprises at checkout",
+        "body": "Delivery costs, lead times and return terms that appear only at the last step are among the most common reasons a full basket is abandoned."
+      },
+      {
+        "title": "A page builder the team has outgrown",
+        "body": "Every campaign landing page needs another app or another workaround, and the theme now depends on code nobody on the team understands."
+      }
+    ]
+  },
+  "services": {
+    "heading": "Which services does a retail or D2C brand need from a web partner?",
+    "intro": "We recommend Shopify for most brands, and a custom build only when the product or the margin needs one.",
+    "items": [
+      {
+        "slug": "shopify-development",
+        "title": "Shopify development",
+        "body": "Custom Shopify themes and apps built for your catalogue, with fewer third-party apps and faster product pages as a result."
+      },
+      {
+        "slug": "ecommerce-development",
+        "title": "Ecommerce development",
+        "body": "Headless or custom commerce when a product configurator, pricing or fulfilment rules outgrow what a theme can do."
+      },
+      {
+        "slug": "website-redesign",
+        "title": "Website redesign",
+        "body": "Replatforming from a page builder or an ageing theme without losing product URLs, reviews or search rankings."
+      },
+      {
+        "slug": "ai-search-visibility",
+        "title": "AI search visibility",
+        "body": "Product structured data and answer-shaped buying guides, so search engines and AI assistants can recommend the right product."
+      },
+      {
+        "slug": "care-plans",
+        "title": "Website care plans",
+        "body": "Theme and app updates, uptime monitoring and a monthly development allowance for campaigns, month to month."
+      }
+    ]
+  },
+  "compliance": {
+    "heading": "What compliance details does an online store have to get right?",
+    "intro": "Consumer selling comes with rules on accessibility, tracking, subscriptions and reviews that shape the build from the first template.",
+    "notes": [
+      {
+        "title": "Accessible storefronts",
+        "body": "Online stores are a frequent target of accessibility complaints in the US. We build product, cart and checkout templates to WCAG 2.2 AA and test them with a keyboard and a screen reader before launch."
+      },
+      {
+        "title": "Consent before tracking",
+        "body": "Advertising pixels and analytics wait for consent where state privacy laws require it, and the choice is recorded, so marketing data is collected on a basis you can defend."
+      },
+      {
+        "title": "Subscriptions and automatic renewal",
+        "body": "Subscription offers show the renewal terms clearly before purchase and give customers a simple way to cancel online, as state automatic renewal laws expect."
+      },
+      {
+        "title": "Genuine reviews",
+        "body": "Review widgets show real customer reviews only, with any incentives disclosed, in line with the Federal Trade Commission rule on fake reviews and testimonials."
+      }
+    ]
+  },
+  "caseStudies": {
+    "heading": "Which retail and D2C stores have we built?",
+    "intro": "Replatforming, configurators and faster product pages for brands that sell direct.",
+    "items": [
+      {
+        "slug": "verona-home",
+        "clientName": "Verona Home",
+        "summary": "A furniture brand stuck on a page builder, replatformed with a configurator for made-to-order pieces.",
+        "tags": [
+          "California, USA",
+          "D2C",
+          "Shopify"
+        ],
+        "image": {
+          "src": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=900&q=70",
+          "alt": "Orders picked into crates on the racking of a busy warehouse"
+        },
+        "metrics": [
+          {
+            "value": "$2.4M",
+            "label": "First-year revenue"
+          },
+          {
+            "value": "+68%",
+            "label": "Add to cart"
+          },
+          {
+            "value": "1.4s",
+            "label": "Mobile LCP"
+          }
+        ]
+      }
+    ],
+    "link": {
+      "label": "See all retail and D2C work",
+      "href": "/work/?industry=ecommerce-and-d2c"
+    }
+  },
+  "results": {
+    "heading": "What changed for retail and D2C clients after launch?",
+    "intro": null,
+    "note": "Each figure comes from the case study above and is shown with the client it was measured for.",
+    "metrics": [
+      {
+        "value": "$2.4M",
+        "label": "First-year revenue",
+        "clientName": "Verona Home"
+      },
+      {
+        "value": "+68%",
+        "label": "Add to cart",
+        "clientName": "Verona Home"
+      },
+      {
+        "value": "1.4s",
+        "label": "Mobile LCP",
+        "clientName": "Verona Home"
+      }
+    ],
+    "testimonial": null
+  },
+  "integrations": {
+    "heading": "Which systems does a retail or D2C store usually connect to?",
+    "intro": "Every app added to a store costs speed, so we connect only what earns its place.",
+    "items": [
+      {
+        "name": "Shopify and Shopify Plus",
+        "body": "The store platform for most brands, extended with custom theme code and private apps rather than a long list of plugins."
+      },
+      {
+        "name": "Payments",
+        "body": "Shop Pay, PayPal, Apple Pay and buy now, pay later options, configured in the platform's own checkout."
+      },
+      {
+        "name": "Email and SMS marketing",
+        "body": "Klaviyo or a similar platform, with browse, basket and post-purchase flows fed by clean event data."
+      },
+      {
+        "name": "Reviews and customer photos",
+        "body": "A reviews platform that loads after the product gallery, so social proof never delays the page."
+      },
+      {
+        "name": "Subscriptions",
+        "body": "Recharge or Shopify's own subscriptions for replenishment products, with renewal terms shown before purchase."
+      },
+      {
+        "name": "Fulfilment and inventory",
+        "body": "Warehouse, 3PL and ERP connections for stock levels, split shipments and delivery estimates on the product page."
+      }
+    ]
+  },
+  "faq": {
+    "heading": "What do retail and D2C brands ask before a new store?",
+    "intro": "The questions founders and ecommerce managers raise before replatforming.",
+    "items": [
+      {
+        "id": "ecommerce-and-d2c-faq-platform",
+        "question": "Should our brand use Shopify or a custom ecommerce build?",
+        "answer": "Shopify suits most direct-to-consumer brands: it is reliable, handles payments and tax well, and your team probably knows it already. A custom or headless build earns its cost when you sell configurable products, need pricing rules Shopify cannot express, or run content-heavy experiences where speed makes the difference. We recommend one after looking at your catalogue and margins, not before."
+      },
+      {
+        "id": "ecommerce-and-d2c-faq-cost",
+        "question": "How much does an ecommerce website for a D2C brand cost?",
+        "answer": "A custom Shopify theme with a considered product page and checkout set-up usually falls in our focused build range of $12k to $25k. Configurators, subscriptions, headless builds and ERP or 3PL integrations move it into the platform build range of $25k to $60k."
+      },
+      {
+        "id": "ecommerce-and-d2c-faq-migration",
+        "question": "Can you migrate our store without losing products, reviews and rankings?",
+        "answer": "Yes. Products, customers, order history and reviews are migrated with scripts and checked against record counts before launch, and every old product and collection URL gets a permanent redirect. We watch search traffic after launch and fix any gaps quickly."
+      },
+      {
+        "id": "ecommerce-and-d2c-faq-configurator",
+        "question": "Can shoppers configure made-to-order products online?",
+        "answer": "Yes. We build configurators that show the chosen fabric, finish or size, update the price and lead time as options change, and send a clean specification to your workshop or supplier with the order."
+      },
+      {
+        "id": "ecommerce-and-d2c-faq-checkout",
+        "question": "How do you improve checkout conversion?",
+        "answer": "We start with your analytics: where shoppers leave, on which devices and after which step. Then we fix the causes, usually delivery costs shown too late, slow pages and unnecessary fields, and measure each change against the same drop-off data."
+      },
+      {
+        "id": "ecommerce-and-d2c-faq-speed",
+        "question": "Will the store stay fast with our marketing apps installed?",
+        "answer": "We audit every app and script, remove what nothing depends on, and load the rest after the content a shopper needs. Speed is checked against a written performance budget before each release, so a new app cannot quietly slow the store down."
+      }
+    ]
+  }
+}

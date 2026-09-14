@@ -1,0 +1,166 @@
+{
+  "content": {
+    "seo": {
+      "title": "Our technology stack",
+      "description": "The technology Calwebtech builds with, from Next.js and a typed Node API to PostgreSQL, Docker, WordPress and Shopify, with how we use each tool.",
+      "ogImage": null
+    },
+    "hero": {
+      "eyebrow": "Technology",
+      "title": "The technology we build with",
+      "answerBlock": "Calwebtech builds on Next.js, React and TypeScript at the front end, a typed Node.js API with NestJS and Prisma, and PostgreSQL and Redis for data, all running in Docker. We use WordPress and Shopify when they fit the job better than a custom build.",
+      "intro": "Nothing here depends on a platform that can change its pricing next quarter, and this site runs on the same stack we sell.",
+      "primaryCta": { "label": "Talk to us about your stack", "href": "/contact/" },
+      "secondaryCta": { "label": "How a project runs", "href": "/process/" },
+      "backdrop": {
+        "src": "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=1800&q=65"
+      }
+    },
+    "stack": {
+      "heading": "Which technologies does Calwebtech use?",
+      "intro": "Grouped by the part of the platform they run, with a note on how we use each one.",
+      "empty": "Technologies appear here once they are published.",
+      "categories": [
+        { "key": "frontend", "label": "Front end", "summary": "What visitors load: fast, accessible pages that ship only the JavaScript a page needs." },
+        { "key": "backend", "label": "Back end", "summary": "The typed API that keeps business rules, validation and integrations in one place." },
+        { "key": "data", "label": "Data", "summary": "Where your leads, bookings, subscribers and content live, in a database registered to you." },
+        { "key": "cms", "label": "Content", "summary": "How your team publishes, on the platform that suits the way it already works." },
+        { "key": "infrastructure", "label": "Infrastructure", "summary": "How the site is deployed, secured and kept running, on hosting you control." },
+        { "key": "mobile-and-ai", "label": "Mobile and AI", "summary": "Companion apps and AI features that work from the same data as the website." }
+      ]
+    },
+    "proof": {
+      "heading": "Does Calwebtech use this stack on its own site?",
+      "intro": "Yes. Calwebtech.com runs on a Next.js front end, a typed Node API, PostgreSQL and Redis, all in Docker containers on a server we control.",
+      "stats": [
+        { "value": "98", "label": "Lighthouse, mobile" },
+        { "value": "1.2s", "label": "Largest contentful paint" },
+        { "value": "99.9%", "label": "Uptime, last 12 months" },
+        { "value": "0", "label": "Platform licence fees" }
+      ]
+    },
+    "choosing": {
+      "heading": "How do we choose the stack for your project?",
+      "intro": "The proposal names every technology and why it was chosen. These are the questions that decide it.",
+      "items": [
+        {
+          "title": "Does your team already run a platform it knows?",
+          "body": "Then we start there. Moving a team off WordPress or Shopify costs retraining and content migration, so a new platform has to earn its place against what the current one cannot do."
+        },
+        {
+          "title": "Does the site need to do more than publish pages?",
+          "body": "Quoting, account pricing, booking, dashboards and ERP or CRM integrations usually point to a custom Next.js front end with a typed API, because that is where page builders and plugins start to break."
+        },
+        {
+          "title": "Who will run the site after launch?",
+          "body": "If you want hosting handled for you, a managed platform makes sense. If you want the server in your own name, we build for Docker, so the whole stack can move between providers without a rebuild."
+        },
+        {
+          "title": "How much does speed matter to your revenue?",
+          "body": "For most buyers it matters a great deal. Every build has a written performance budget, and the stack is chosen so that budget can be met on a mid-range phone, not only on a fast laptop."
+        }
+      ]
+    },
+    "faq": {
+      "heading": "What do people ask about our technology?",
+      "intro": null
+    }
+  },
+  "groups": [
+    {
+      "key": "frontend",
+      "label": "Front end",
+      "summary": "What visitors load: fast, accessible pages that ship only the JavaScript a page needs.",
+      "technologies": [
+        { "slug": "nextjs", "name": "Next.js", "logo": null, "proficiencyNote": "Our default for marketing sites and web applications. Pages render on the server, so visitors and crawlers get the full content without waiting for scripts." },
+        { "slug": "react", "name": "React", "logo": null, "proficiencyNote": "Used for the interactive parts of a page only, kept small and loaded where they are needed, so pages stay quick on mid-range phones." },
+        { "slug": "typescript", "name": "TypeScript", "logo": null, "proficiencyNote": "Strict mode on every project, with types shared by the front end and the API, so a renamed field fails the build instead of a live form." },
+        { "slug": "tailwind-css", "name": "Tailwind CSS", "logo": null, "proficiencyNote": "The design tokens from the approved design become the only colours, spacing and type sizes the code is allowed to use." },
+        { "slug": "framer-motion", "name": "Framer Motion", "logo": null, "proficiencyNote": "Reserved for motion that needs orchestration. Everything that moves respects reduced-motion settings and never shifts the layout." }
+      ]
+    },
+    {
+      "key": "backend",
+      "label": "Back end",
+      "summary": "The typed API that keeps business rules, validation and integrations in one place.",
+      "technologies": [
+        { "slug": "nodejs", "name": "Node.js", "logo": null, "proficiencyNote": "The runtime behind every API we build, on a long-term support release that is patched through the care plan." },
+        { "slug": "nestjs", "name": "NestJS", "logo": null, "proficiencyNote": "Organises the API into a module per domain, such as leads, bookings and content, so rules live in one place however many pages use them." },
+        { "slug": "prisma", "name": "Prisma", "logo": null, "proficiencyNote": "Typed database access, with versioned, forward-only migrations committed alongside the code, so the schema's history is never lost." },
+        { "slug": "zod", "name": "Zod", "logo": null, "proficiencyNote": "One schema validates a form in the browser, the request at the API and the record before it is rendered, so the rules cannot drift apart." },
+        { "slug": "rest-with-openapi", "name": "REST with OpenAPI", "logo": null, "proficiencyNote": "Documented endpoints that your own developers, or another supplier, can build on without reading our code first." }
+      ]
+    },
+    {
+      "key": "data",
+      "label": "Data",
+      "summary": "Where your leads, bookings, subscribers and content live, in a database registered to you.",
+      "technologies": [
+        { "slug": "postgresql", "name": "PostgreSQL", "logo": null, "proficiencyNote": "Holds every lead, booking, subscriber and page record in one database you own, exportable any day without asking a vendor." },
+        { "slug": "redis", "name": "Redis", "logo": null, "proficiencyNote": "Caching and the job queue, kept on the internal network and never exposed to the internet." },
+        { "slug": "bullmq", "name": "BullMQ queues", "logo": null, "proficiencyNote": "Emails and slow integrations run as retried background jobs, so a slow provider never keeps a visitor waiting after they submit a form." },
+        { "slug": "encrypted-backups", "name": "Nightly encrypted backups", "logo": null, "proficiencyNote": "The database is dumped every night, encrypted and stored off-site, and restores are tested rather than assumed, so a backup is known to work before it is needed." }
+      ]
+    },
+    {
+      "key": "cms",
+      "label": "Content",
+      "summary": "How your team publishes, on the platform that suits the way it already works.",
+      "technologies": [
+        { "slug": "wordpress", "name": "WordPress", "logo": null, "proficiencyNote": "Chosen when a team already knows it or needs its plugin ecosystem, built with custom blocks rather than a page builder so pages stay fast and consistent." },
+        { "slug": "shopify", "name": "Shopify", "logo": null, "proficiencyNote": "For stores that want hosted checkout and a large app ecosystem, extended with custom themes and apps where the catalogue needs more." },
+        { "slug": "headless-cms", "name": "Headless CMS", "logo": null, "proficiencyNote": "Content edited in a CMS and rendered by a Next.js front end, for teams that publish often and cannot trade away speed." },
+        { "slug": "custom-dashboards", "name": "Custom dashboards", "logo": null, "proficiencyNote": "Admin screens built around your own records, for when a CMS would force services, projects or locations into the wrong shape." }
+      ]
+    },
+    {
+      "key": "infrastructure",
+      "label": "Infrastructure",
+      "summary": "How the site is deployed, secured and kept running, on hosting you control.",
+      "technologies": [
+        { "slug": "docker", "name": "Docker", "logo": null, "proficiencyNote": "Every service runs in a container, so staging and production behave the same and the whole stack can move to another server." },
+        { "slug": "traefik", "name": "Traefik", "logo": null, "proficiencyNote": "Routes traffic to the right container, and rolls a new release in without taking the site down." },
+        { "slug": "cloudflare", "name": "Cloudflare", "logo": null, "proficiencyNote": "DNS, caching and bot protection in front of the server, including Turnstile on every public form." },
+        { "slug": "github-actions", "name": "GitHub Actions", "logo": null, "proficiencyNote": "Type checks, tests and the performance budget run on every change, and the release is built there, never on the production server." },
+        { "slug": "automatic-tls", "name": "Automatic TLS", "logo": null, "proficiencyNote": "Certificates are issued and renewed automatically, so a site never goes insecure because somebody forgot a date." }
+      ]
+    },
+    {
+      "key": "mobile-and-ai",
+      "label": "Mobile and AI",
+      "summary": "Companion apps and AI features that work from the same data as the website.",
+      "technologies": [
+        { "slug": "react-native", "name": "React Native", "logo": null, "proficiencyNote": "Companion mobile apps that share types and business rules with the web application, instead of a second codebase that drifts." },
+        { "slug": "openai-and-anthropic-apis", "name": "OpenAI and Anthropic APIs", "logo": null, "proficiencyNote": "Qualification assistants, search and content tooling wired into your own data, with transcripts saved against the lead and a human handover when it matters." },
+        { "slug": "vector-search", "name": "Vector search", "logo": null, "proficiencyNote": "Finds answers by meaning rather than exact keywords, across your knowledge base, documentation or catalogue." }
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "id": "faq-technology-lock-in",
+      "question": "Will we be locked into Calwebtech's technology?",
+      "answer": "No. The code, the database and the accounts are yours, built on open, widely used tools such as Next.js, PostgreSQL and Docker, so any competent team can pick them up. There is no proprietary platform and no licence fee."
+    },
+    {
+      "id": "faq-technology-seo",
+      "question": "Is Next.js good for SEO?",
+      "answer": "Yes, when it is built properly. Pages render on the server, so search engines and AI crawlers read the full content, and titles, canonical tags, structured data and sitemaps are generated from the same records as the pages."
+    },
+    {
+      "id": "faq-technology-existing",
+      "question": "Can you work with our existing developers and systems?",
+      "answer": "Usually, yes. We can take design and front end and leave the back end with your team, or work the other way round, and we integrate with the ERP, CRM and booking systems you already run. The proposal says exactly where the boundary sits."
+    },
+    {
+      "id": "faq-technology-self-host",
+      "question": "Why self-host instead of using a website builder?",
+      "answer": "Because the data and the platform should belong to you. A stack on a server in your name replaces the page builder, the form vendor and the email platform subscription, and there is no per-contact billing as your list grows."
+    },
+    {
+      "id": "faq-technology-speed",
+      "question": "How do you keep a site fast after launch?",
+      "answer": "The performance budget stays in the release pipeline, so every change is measured before it ships. Care plans add monitoring, patching and a fixed allowance of development hours for fixes and improvements."
+    }
+  ]
+}

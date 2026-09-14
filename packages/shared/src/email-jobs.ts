@@ -23,6 +23,8 @@ export const leadSummarySchema = z.object({
   timeline: z.string().optional(),
   serviceInterest: z.array(z.string()),
   message: z.string().optional(),
+  /** The name of the routed enquiry type, when the form asked for one. */
+  enquiry: z.string().optional(),
   landingPageSlug: z.string().optional(),
   /** A calculator lead's eight answers and the estimate the API computed from them. */
   answers: calculatorLeadAnswersSchema.optional(),

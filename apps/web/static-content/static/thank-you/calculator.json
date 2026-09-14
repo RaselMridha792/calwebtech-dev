@@ -1,0 +1,69 @@
+{
+  "type": "calculator",
+  "seo": {
+    "title": "Thank you: cost estimate received",
+    "description": "Your cost estimate answers have reached Calwebtech. Here is what we do with them, when you hear from us and how the range becomes a fixed price.",
+    "ogImage": null
+  },
+  "eyebrow": "Estimate received",
+  "title": "Thanks. Your estimate is on its way.",
+  "intro": "Your answers are stored with your enquiry, so nobody asks you the same questions twice. A copy of your estimate is on its way to the address you gave.",
+  "received": {
+    "heading": "What you sent us",
+    "items": [
+      "Your answers about project type, timeline, page count and design depth",
+      "Your answers about content, integrations, the content management system and ongoing support",
+      "Your name and email address, so we can send you a copy"
+    ]
+  },
+  "response": {
+    "label": "Expect a reply",
+    "value": "Within one business day",
+    "detail": "A person checks your range against projects of a similar shape and emails you anything that would move it."
+  },
+  "nextSteps": {
+    "heading": "What happens next",
+    "steps": [
+      {
+        "title": "A person checks the range",
+        "body": "We read your answers and note the decisions that would move the number most, such as integrations or content."
+      },
+      {
+        "title": "We email you",
+        "body": "You hear whether the range holds for your project and what would change it, in plain terms."
+      },
+      {
+        "title": "A call if you want one",
+        "body": "If the range works for you, a thirty minute call turns it into a written proposal with a fixed price."
+      }
+    ]
+  },
+  "secondary": {
+    "heading": "Understand the number",
+    "body": "See what moves a website quote up or down, and what every project includes as standard.",
+    "cta": {
+      "label": "See pricing",
+      "href": "/pricing/"
+    }
+  },
+  "links": [
+    {
+      "label": "How a project runs",
+      "href": "/process/"
+    },
+    {
+      "label": "Questions and answers",
+      "href": "/faq/"
+    }
+  ],
+  "image": {
+    "src": "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=72",
+    "alt": "A project team planning a website with sticky notes on a whiteboard"
+  },
+  "callLabel": "Prefer to talk? Call us",
+  "contact": {
+    "phone": "+1 (800) 555-0188",
+    "phoneE164": "+18005550188",
+    "email": "hello@calwebtech.com"
+  }
+}

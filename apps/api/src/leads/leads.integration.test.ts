@@ -11,7 +11,7 @@ import {
   type LeadSubmission,
   type LeadSummary,
 } from '@calwebtech/shared';
-import { ForbiddenException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException } from '@nestjs/common';
 import { Queue } from 'bullmq';
 import { Redis } from 'ioredis';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
@@ -86,6 +86,7 @@ afterAll(async () => {
   const testEmails = { startsWith: `integration+${run}-` };
   await db.lead.deleteMany({ where: { email: testEmails } });
   await db.contact.deleteMany({ where: { email: testEmails } });
+  await db.enquiryType.deleteMany({ where: { slug: { startsWith: `integration-${run}-` } } });
   await inspect.obliterate({ force: true });
   await inspect.close();
   await inspectConnection.quit();
@@ -200,5 +201,42 @@ describe('LeadsService against Postgres, Redis and Turnstile test keys', () => {
     const acknowledgement = acknowledgementSchema.parse(homePageContentSchema.parse(home.value).formSuccess);
     const confirmation = await inspect.getJob(`lead-confirmation-${lead.id}`);
     expect(confirmation?.data).toMatchObject({ template: 'lead-confirmation', to: [input.email], acknowledgement });
+  });
+
+  it('stores the routed enquiry type of a contact lead and notifies its mailbox as well', async () => {
+    await setRecipients(['leads@example.com']);
+    const slug = `integration-${run}-support`;
+    await db.enquiryType.create({ data: { slug, name: 'Support', mailbox: 'Support@Example.com', order: 99 } });
+    const input = submission({
+      type: 'CONTACT',
+      formId: 'contact-page',
+      enquiryType: slug,
+      budgetBand: undefined,
+      serviceInterest: [],
+      landingPageSlug: undefined,
+      message: 'A question about our care plan.',
+    });
+    await leadsWith(TURNSTILE_TEST.alwaysPassesSecret).create(input, undefined);
+
+    const lead = await storedLead(input.email);
+    expect(lead.type).toBe('CONTACT');
+    expect(lead.answers).toEqual({ enquiryType: slug });
+    expect(lead.activities.find((activity) => activity.type === 'form_submitted')?.detail).toEqual({
+      formId: 'contact-page',
+      enquiryType: slug,
+    });
+    const notification = await inspect.getJob(`lead-notification-${lead.id}`);
+    expect(notification?.data).toMatchObject({
+      to: ['leads@example.com', 'support@example.com'],
+      lead: { enquiry: 'Support', message: 'A question about our care plan.' },
+    });
+  });
+
+  it('refuses an enquiry type that does not exist and stores nothing', async () => {
+    const input = submission({ type: 'CONTACT', formId: 'contact-page', enquiryType: `integration-${run}-missing` });
+    await expect(leadsWith(TURNSTILE_TEST.alwaysPassesSecret).create(input, undefined)).rejects.toBeInstanceOf(
+      BadRequestException,
+    );
+    expect(await db.lead.count({ where: { email: input.email } })).toBe(0);
   });
 });

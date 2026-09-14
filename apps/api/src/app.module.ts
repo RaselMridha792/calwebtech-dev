@@ -9,6 +9,12 @@ import { LeadsModule } from './leads/leads.controller';
 import { PrismaModule } from './prisma/prisma.service';
 import { SiteChromeModule } from './site/site-chrome.controller';
 // Site page families (docs/10-site-pages.md): one import each, below this line.
+import { IndustriesModule } from './industries/industries.controller';
+import { WorkModule } from './work/work.controller';
+import { ServicesModule } from './services/services.controller';
+import { CompanyModule } from './company/company.controller';
+import { LocationsModule } from './locations/locations.controller';
+import { StaticPagesModule } from './static/static.controller';
 import { CalculatorPageModule } from './calculator/calculator.controller';
 
 @Module({
@@ -22,6 +28,12 @@ import { CalculatorPageModule } from './calculator/calculator.controller';
     LeadsModule,
     SiteChromeModule,
     // Site page families: one module each, below this line.
+    IndustriesModule,
+    WorkModule,
+    ServicesModule,
+    CompanyModule,
+    LocationsModule,
+    StaticPagesModule,
     CalculatorPageModule,
   ],
   controllers: [HealthController],

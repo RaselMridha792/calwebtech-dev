@@ -26,6 +26,7 @@ const ECHOED_FIELDS = [
   'timeline',
   'referralSource',
   'message',
+  'enquiryType',
 ];
 
 function submittedValues(form: FormData): Record<string, string | string[]> {

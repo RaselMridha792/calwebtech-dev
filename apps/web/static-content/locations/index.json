@@ -1,0 +1,84 @@
+{
+  "content": {
+    "seo": {
+      "title": "Locations: our Sacramento and Austin offices",
+      "description": "Calwebtech works from offices in Sacramento and Austin and builds websites for businesses across the United States. See what each office covers.",
+      "ogImage": null
+    },
+    "title": "Where we work",
+    "answerBlock": "Calwebtech has two offices: the head office at 1201 J Street in Sacramento, California, and a second office on San Jacinto Boulevard in Austin, Texas. Both design and build custom websites, ecommerce platforms and web applications, and most of our clients work with us remotely from across the United States.",
+    "intro": "We publish a page for a city only when we can say something specific and true about working there, and we do not pretend to have an office where we do not.",
+    "tiers": {
+      "TIER_1": {
+        "heading": "Where are Calwebtech's offices?",
+        "intro": "Each office page covers the local market, the clients we can name there, how meetings work in that time zone and the areas we reach in person."
+      },
+      "TIER_2": {
+        "heading": "Which other cities do we serve regularly?",
+        "intro": "Markets we serve from our offices without a local address, each with a page because we have real work to point to there."
+      },
+      "TIER_3": {
+        "heading": "Where else in the United States do we work?",
+        "intro": "Markets further from our offices, published once there is a client in that market we can name."
+      }
+    },
+    "empty": "No location pages are published yet. We work with clients across the United States, so get in touch wherever you are.",
+    "approach": {
+      "heading": "How do we work with clients outside Sacramento and Austin?",
+      "intro": "Most of our clients are outside our home metro, so the way we run a project never depends on sitting in the same room.",
+      "points": [
+        {
+          "title": "A weekly call with the people doing the work",
+          "body": "The designer, developer and delivery lead on your project join the same call every week, so decisions never wait for a message to be passed along."
+        },
+        {
+          "title": "A staging site you can open at any hour",
+          "body": "Every page is built on a staging URL you can click through and comment on, whatever time zone your team works in."
+        },
+        {
+          "title": "One project board for every question",
+          "body": "Questions, feedback and decisions live on a shared project board your whole team can see, so nothing agreed on a call depends on someone's inbox."
+        },
+        {
+          "title": "In person when it genuinely helps",
+          "body": "Discovery workshops and launch training can happen at one of our offices or at yours. If travel would not change the outcome, we will say so on the first call."
+        }
+      ]
+    }
+  },
+  "groups": [
+    {
+      "tier": "TIER_1",
+      "heading": "Where are Calwebtech's offices?",
+      "intro": "Each office page covers the local market, the clients we can name there, how meetings work in that time zone and the areas we reach in person.",
+      "locations": [
+        {
+          "slug": "austin",
+          "city": "Austin",
+          "state": "TX",
+          "tier": "TIER_1",
+          "serviceArea": null,
+          "address": "98 San Jacinto Blvd, Suite 400\nAustin, TX 78701",
+          "image": {
+            "src": "https://images.unsplash.com/photo-1607305080638-ec3afec8e28d?auto=format&fit=crop&w=1800&q=60",
+            "alt": "Downtown Austin skyline seen across Lady Bird Lake"
+          },
+          "updatedAt": "2026-09-14T00:00:00.000Z"
+        },
+        {
+          "slug": "sacramento",
+          "city": "Sacramento",
+          "state": "CA",
+          "tier": "TIER_1",
+          "serviceArea": "Head office. Agriculture technology, public sector suppliers and healthcare networks across the Central Valley.",
+          "address": "1201 J Street, Suite 200\nSacramento, CA 95814",
+          "image": {
+            "src": "https://images.unsplash.com/photo-1681342288049-3c20cf1da7d7?auto=format&fit=crop&w=1800&q=60",
+            "alt": "Sacramento's gold Tower Bridge in front of downtown office towers at dusk"
+          },
+          "updatedAt": "2026-09-14T00:00:00.000Z"
+        }
+      ]
+    }
+  ]
+}

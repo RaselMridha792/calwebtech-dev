@@ -9,5 +9,11 @@ import type { SitemapSource } from './sitemap';
 export const SITEMAP_SOURCES: readonly SitemapSource[] = [
   () => import('./sitemap-core').then((module) => module.coreSitemapEntries()),
   // Site page families: one line each, below this one.
+  () => import('@/lib/api/industries').then((module) => module.sitemapEntries()),
+  () => import('@/lib/api/work').then((module) => module.sitemapEntries()),
+  () => import('@/lib/api/services').then((module) => module.sitemapEntries()),
+  () => import('@/lib/api/company').then((module) => module.sitemapEntries()),
+  () => import('@/lib/api/locations').then((module) => module.sitemapEntries()),
+  () => import('@/lib/api/static').then((module) => module.sitemapEntries()),
   () => import('@/lib/api/calculator').then((module) => module.sitemapEntries()),
 ];

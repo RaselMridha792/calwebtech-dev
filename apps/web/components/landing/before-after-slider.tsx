@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, type ReactNode } from 'react';
+import { useId, useRef, useState, type ReactNode } from 'react';
 import { DragIcon } from '../ui/icons';
 
 const clamp = (value: number) => Math.max(2, Math.min(98, value));
@@ -18,6 +18,8 @@ interface BeforeAfterSliderProps {
  * transform only, so nothing reflows while dragging.
  */
 export function BeforeAfterSlider({ before, after, clientName }: BeforeAfterSliderProps) {
+  // Unique per slider, so several on one page keep their own label.
+  const inputId = useId();
   const [position, setPosition] = useState(50);
   const boxRef = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
@@ -74,11 +76,11 @@ export function BeforeAfterSlider({ before, after, clientName }: BeforeAfterSlid
         </span>
       </div>
 
-      <label className="sr-only" htmlFor="before-after-range">
+      <label className="sr-only" htmlFor={inputId}>
         {`Reveal the redesigned ${clientName} website`}
       </label>
       <input
-        id="before-after-range"
+        id={inputId}
         type="range"
         min={2}
         max={98}

@@ -4,6 +4,36 @@ Last updated 2026-09-13. Written so another developer can pick up the work witho
 chat history. Everything described here is merged into `main` on
 https://github.com/RaselMridha792/calwebtech-dev (PRs #1 to #5, plus this file).
 
+## Update, 2026-09-15
+
+Live on `main` (and on Vercel) since the last handoff:
+
+- The shared site foundation: chrome on every page, the `(site)` layout, breadcrumbs, metadata and JSON-LD helpers, `robots.txt`, `sitemap.xml`, an HTML `/sitemap/`, the `site.indexing` switch (still off, so the pages are noindex) and the page data pattern with a static snapshot fallback. Conventions live in `docs/10-site-pages.md`.
+- `/services/` and ten service pages; `/industries/` and nine industry pages; `/work/` with URL filters, the case studies and `/before-and-after/` (PR #7).
+- `/about/`, `/team/`, `/testimonials/`, `/awards/`, `/partners/`, `/technology/`, `/pricing/`, `/process/`, `/contact/` with routed enquiry types, `/faq/`, `/thank-you/<type>/`, the legal set, a designed not-found and error page, `/locations/` and the city pages (PR #8).
+- Every page ships written content with free stock imagery and no placeholder copy. Proof reuses the approved demo proof only, and the database seed stays placeholder-only.
+
+Still to build, in this order:
+
+1. Insights (index, category, article), guides and glossary.
+2. The cost calculator, start a project, the free website audit.
+3. Booking, careers and demos.
+4. `/search/` and the service-by-city pages.
+5. Then the admin dashboard and auth, and hosting the API (see "What is left").
+
+That work was being built by parallel agents, one git worktree per family, and stopped on a weekly usage limit. The branches are pushed:
+
+| Branch | State |
+|---|---|
+| `pages2/insights` | part built, committed, not reviewed |
+| `pages2/calculator` | part built, committed, not reviewed |
+| `pages2/guides-glossary`, `pages2/forms`, `pages2/booking`, `pages2/careers-demos` | not started |
+| `pages/*` | merged into `main`, safe to delete |
+
+To continue: build each family in its own worktree from `main`, follow `docs/10-site-pages.md`, commit as you go, review, then merge into a release branch. Conflicts at the registration points (`packages/shared/src/index.ts`, `apps/api/src/app.module.ts`, `apps/web/lib/sitemap-sources.ts`, `packages/db/src/seed/pages/index.ts`) are resolved by keeping every line. Two families extending the same lead code path conflict for real: keep both sides, as `serviceSlug` and `enquiryType` were merged in `apps/api/src/leads/leads.service.ts`.
+
+Open points from this work: the legal pages need a lawyer's review before launch; the demo proof still uses two names as both team members and client contacts; and on this machine the local Lighthouse and end-to-end stack need `PERF_API_PORT`, because port 4000 is held by another app.
+
 ## Read first
 
 1. `CLAUDE.md`, the contract: stack, conventions, budgets, security rules.

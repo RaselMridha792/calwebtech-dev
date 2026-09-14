@@ -1,0 +1,98 @@
+{
+  "content": {
+    "seo": {
+      "title": "Technology partners",
+      "description": "Calwebtech's partnerships with Shopify, Google, Vercel and Cloudflare, and what each one changes for the website we build and hand over to you.",
+      "ogImage": null
+    },
+    "hero": {
+      "eyebrow": "Partners",
+      "title": "Our technology partners",
+      "answerBlock": "Calwebtech is a partner of Shopify, Google, Vercel and Cloudflare, the platforms most of our builds run on. For clients that means direct support channels when something breaks and setups done by people who use these tools every week. The accounts are still registered in your name, not ours.",
+      "intro": "A partnership is only worth listing if it changes something for you. Here is what each one does.",
+      "primaryCta": { "label": "Book a consultation", "href": "/contact/" },
+      "secondaryCta": { "label": "See the technology we use", "href": "/technology/" },
+      "backdrop": {
+        "src": "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1800&q=65"
+      }
+    },
+    "partners": {
+      "heading": "What does each partnership mean for your project?",
+      "intro": "Partnerships mean direct support channels and early access when something breaks on a Friday afternoon.",
+      "empty": "Partnerships appear here once they are published.",
+      "meaningLabel": "What it means for you"
+    },
+    "independence": {
+      "heading": "Do partnerships decide which platform we recommend?",
+      "intro": null,
+      "paragraphs": [
+        "No. We recommend the platform that fits the work: Shopify for stores that want hosted checkout and a large app ecosystem, WordPress when a team already knows it, and a custom Next.js build when the site has to carry quoting, booking or integrations. The reasoning is written into the proposal, so you can check it.",
+        "Whichever platform we choose, the accounts are registered to you and transferred at handover through a password manager. If you ever leave, nothing about a partnership stops you taking the code and the data with you."
+      ]
+    },
+    "faq": {
+      "heading": "What do people ask about our partnerships?",
+      "intro": null
+    }
+  },
+  "partners": [
+    {
+      "id": "partner-shopify",
+      "name": "Shopify",
+      "logo": null,
+      "tier": null,
+      "certification": "Partner since 2019",
+      "meaningForClient": "Your store is designed, built and extended by a team that has worked in Shopify's partner programme since 2019. Themes and apps are chosen for what your catalogue needs, and the store is transferred into your ownership at launch.",
+      "quote": null
+    },
+    {
+      "id": "partner-google",
+      "name": "Google",
+      "logo": null,
+      "tier": null,
+      "certification": "Partner, Ads & Analytics",
+      "meaningForClient": "Analytics, Search Console and advertising accounts are set up by people who work with Google's measurement tools every week. Conversion tracking is tested before launch, so the enquiries in your reports are the enquiries in your inbox.",
+      "quote": null
+    },
+    {
+      "id": "partner-vercel",
+      "name": "Vercel",
+      "logo": null,
+      "tier": null,
+      "certification": "Agency partner",
+      "meaningForClient": "When managed hosting suits a Next.js project, we deploy it on Vercel with previews for every change. When a server in your own name suits it better, we build for Docker instead, and the proposal explains the choice.",
+      "quote": null
+    },
+    {
+      "id": "partner-cloudflare",
+      "name": "Cloudflare",
+      "logo": null,
+      "tier": null,
+      "certification": "Certified deployment",
+      "meaningForClient": "DNS, TLS, caching and bot protection are configured to a written checklist before launch. Public forms are checked with Cloudflare Turnstile, which filters spam without making real visitors solve a puzzle.",
+      "quote": null
+    }
+  ],
+  "faqs": [
+    {
+      "id": "faq-partners-shopify",
+      "question": "Is Calwebtech a Shopify Partner?",
+      "answer": "Yes, since 2019. We design, build and extend Shopify stores, including custom themes and apps, and transfer the store into your ownership at launch. For B2B catalogues with account pricing or ERP integration, we will also tell you where Shopify stops and a custom build starts."
+    },
+    {
+      "id": "faq-partners-vercel",
+      "question": "Do we have to host on Vercel if you build our site in Next.js?",
+      "answer": "No. Next.js runs well on Vercel, and it also runs in Docker on a server you own, which is how Calwebtech.com is deployed. The proposal recommends one or the other based on traffic, budget and who will run the site after launch."
+    },
+    {
+      "id": "faq-partners-cloudflare",
+      "question": "Why does Cloudflare sit in front of the sites you build?",
+      "answer": "It handles DNS, caching and bot protection close to your visitors, and its Turnstile check filters spam on public forms without making real people solve a puzzle. Form submissions themselves are stored in your own database, not with Cloudflare."
+    },
+    {
+      "id": "faq-partners-ownership",
+      "question": "Who owns the accounts on partner platforms?",
+      "answer": "You do. Shopify stores, analytics properties, hosting and DNS accounts are registered in your name and transferred at handover through a password manager, so no partnership ever sits between you and your own data."
+    }
+  ]
+}
