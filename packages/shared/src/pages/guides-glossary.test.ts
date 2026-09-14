@@ -51,6 +51,7 @@ const GUIDE_VIEW = {
   faq: null,
   service: null,
   related: null,
+  sources: { heading: 'Where do these figures come from?', items: [{ label: 'web.dev', href: 'https://web.dev/articles/vitals' }] },
 };
 
 const TERM_VIEW = {
@@ -67,6 +68,7 @@ const TERM_VIEW = {
   example: null,
   service: null,
   related: null,
+  sources: [],
 };
 
 describe('guides and glossary routes', () => {
