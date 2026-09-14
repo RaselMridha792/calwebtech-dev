@@ -61,6 +61,7 @@ export const CALCULATOR_PAGE_PLACEHOLDER: CalculatorPageContentInput = {
     labels: {
       progress: 'Question {current} of {total}',
       gateProgress: 'Last step: where to send it',
+      progressName: 'Your progress through the estimate',
       timeLeft: 'About {minutes} minutes left',
       timeLeftOne: 'About a minute left',
       timeLeftShort: 'Under a minute left',
@@ -136,6 +137,7 @@ export const CALCULATOR_PAGE_PLACEHOLDER: CalculatorPageContentInput = {
     rateHeading: 'Placeholder rate table question?',
     rateIntro: 'Placeholder. The approved copy introduces the published rates.',
     rateNote: 'Placeholder. The approved copy explains the schedule and the ongoing plans.',
+    rateContentRow: '{option} ({pages})',
     rateColumns: { option: 'Answer', amount: 'Adds' },
   },
   faq: {

@@ -41,7 +41,8 @@
         "start": "Start the estimate",
         "methodology": "How we work this out",
         "loading": "Loading the calculator",
-        "noScript": "The calculator needs JavaScript to run. Every rate it uses is published further down this page, so you can work the range out by hand, or call us and we will do it with you."
+        "noScript": "The calculator needs JavaScript to run. Every rate it uses is published further down this page, so you can work the range out by hand, or call us and we will do it with you.",
+        "progressName": "Your progress through the estimate"
       },
       "steps": {
         "projectType": {
@@ -331,17 +332,18 @@
         {
           "heading": "Can I check the arithmetic myself?",
           "paragraphs": [
-            "Yes, and that is what the table below is for. Take the starting figure for your project type, add the amount for each answer you gave, then add the schedule uplift if you chose a launch inside eight weeks. Each line is rounded to the nearest $500 and the total is the sum of the lines, so the breakdown on screen always adds up to the range above it."
+            "Yes, and that is what the table below is for. Take the starting figure for your project type, add the amount for each answer you gave, reading the content row at the page band you chose, then add the schedule uplift if you chose a launch inside eight weeks. Each line is rounded to the nearest $500 and the total is the sum of the lines, so the breakdown on screen always adds up to the range above it."
           ]
         }
       ],
       "rateHeading": "What does each answer add?",
-      "rateIntro": "Every figure the calculator can add, in one table. The starting figure for your project type is the beginning; everything else is added to it. Content is priced for a site under ten pages and scales with the page count you choose.",
+      "rateIntro": "Every figure the calculator can add, in one table. The starting figure for your project type is the beginning; everything else is added to it. Writing is the one line that scales with the size of the site, so it is published at every page band.",
       "rateNote": "A launch inside eight weeks adds 15 to 20 per cent to the total, because design and build have to overlap and more of the team is on the project at once. Choosing Shopify for an online store, or a dashboard for a web application, adds nothing, because the starting figure for that project type already covers it. Care plans and the Ongoing partner plan start at $1,500 a month and are quoted separately from the build.",
       "rateColumns": {
         "option": "Answer",
         "amount": "Adds to the build"
-      }
+      },
+      "rateContentRow": "{option} ({pages} pages)"
     },
     "faq": {
       "heading": "What else do people ask about cost?",
@@ -352,7 +354,7 @@
       "body": "Book thirty minutes with the person who would run the project. Bring your range, hear what would move it, and leave with a clear idea of what the written proposal would say.",
       "primaryCta": {
         "label": "Book a consultation",
-        "href": "/book-a-consultation/"
+        "href": "/contact/"
       },
       "secondaryCta": {
         "label": "See pricing in full",
@@ -452,12 +454,36 @@
           "value": "Included"
         },
         {
-          "label": "We have it, but it needs editing",
+          "label": "We have it, but it needs editing (Under 10 pages)",
           "value": "$1,000 to $2,000"
         },
         {
-          "label": "Write it for us",
+          "label": "We have it, but it needs editing (10 to 50 pages)",
+          "value": "$1,500 to $3,000"
+        },
+        {
+          "label": "We have it, but it needs editing (50 to 150 pages)",
+          "value": "$2,500 to $5,000"
+        },
+        {
+          "label": "We have it, but it needs editing (More than 150 pages)",
+          "value": "$3,500 to $7,000"
+        },
+        {
+          "label": "Write it for us (Under 10 pages)",
           "value": "$2,500 to $4,500"
+        },
+        {
+          "label": "Write it for us (10 to 50 pages)",
+          "value": "$4,000 to $7,000"
+        },
+        {
+          "label": "Write it for us (50 to 150 pages)",
+          "value": "$6,500 to $11,500"
+        },
+        {
+          "label": "Write it for us (More than 150 pages)",
+          "value": "$9,000 to $16,000"
         }
       ]
     },

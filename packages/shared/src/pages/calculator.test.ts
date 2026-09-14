@@ -42,6 +42,7 @@ const CONTENT_INPUT: CalculatorPageContentInput = {
     labels: {
       progress: 'Question {current} of {total}',
       gateProgress: 'Last step: where to send it',
+      progressName: 'Your progress through the estimate',
       timeLeft: 'About {minutes} minutes left',
       timeLeftOne: 'About a minute left',
       timeLeftShort: 'Under a minute left',
@@ -109,6 +110,7 @@ const CONTENT_INPUT: CalculatorPageContentInput = {
     rateHeading: 'What does each answer add?',
     rateIntro: 'Every line published.',
     rateNote: 'A compressed schedule adds a share of the build.',
+    rateContentRow: '{option} ({pages})',
     rateColumns: { option: 'Answer', amount: 'Adds' },
   },
   faq: { heading: 'What else do buyers ask?', intro: 'Straight answers.' },
@@ -230,6 +232,32 @@ describe('calculatorRateTable', () => {
     expect(pages?.rows[0]).toEqual({ label: 'pageCount: under-10', value: 'Included' });
     expect(pages?.rows[1]?.value).toBe('$2,000 to $4,000');
     expect(table.find((group) => group.step === 'integrations')?.rows.some((row) => row.label.endsWith('none'))).toBe(false);
+  });
+
+  it('publishes the content rows per page band, because that line is multiplied', () => {
+    const rows = calculatorRateTable(content).find((group) => group.step === 'content')?.rows ?? [];
+    // The answer that adds nothing is one row; the other two are published at every band.
+    expect(rows).toHaveLength(1 + 2 * CALCULATOR_OPTIONS.pageCount.length);
+    expect(rows[0]).toEqual({ label: 'content: ready', value: 'Included' });
+    expect(rows).toContainEqual({ label: 'content: write-it-for-us (pageCount: 50-150)', value: '$6,500 to $11,500' });
+  });
+
+  it('publishes a content row that matches the breakdown line for the same answers', () => {
+    const rows = calculatorRateTable(content).find((group) => group.step === 'content')?.rows ?? [];
+    for (const option of CALCULATOR_OPTIONS.content) {
+      for (const pageCount of CALCULATOR_OPTIONS.pageCount) {
+        const priced: CalculatorAnswers = { ...answers, content: option, pageCount };
+        const line = estimateProject(priced).lines.find((entry) => entry.step === 'content');
+        const shown = presentCalculatorResult(estimateProject(priced), priced, content).breakdown.find(
+          (row) => row.label === 'content',
+        );
+        const published = rows.find(
+          (row) => row.label === `content: ${option}` || row.label === `content: ${option} (pageCount: ${pageCount})`,
+        );
+        expect(line, `${option}/${pageCount}`).toBeDefined();
+        expect(published?.value, `${option}/${pageCount}`).toBe(shown?.value);
+      }
+    }
   });
 });
 

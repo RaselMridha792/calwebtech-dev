@@ -8,6 +8,7 @@ import {
   CALCULATOR_STEP_KEYS,
   CALCULATOR_TIERS,
   calculatorBookingPath,
+  calculatorContentRate,
   calculatorEventsSchema,
   calculatorPresentedResultSchema,
   calculatorResultEmailSchema,
@@ -79,6 +80,8 @@ const labelsSchema = z.object({
   progress: requiredText(60),
   /** The progress label of the email step, which is not one of the eight questions. */
   gateProgress: requiredText(60),
+  /** The accessible name of the progress bar, which the visible label never gives it. */
+  progressName: requiredText(80),
   /** "About {minutes} minutes left". */
   timeLeft: requiredText(60),
   timeLeftOne: requiredText(60),
@@ -196,6 +199,8 @@ export const calculatorPageContentSchema = z.object({
     rateHeading: questionSchema(140),
     rateIntro: requiredText(500),
     rateNote: requiredText(600),
+    /** "{option} ({pages})", the content rows, which are published per page band. */
+    rateContentRow: requiredText(60),
     /** Column headings of the rate table. */
     rateColumns: z.object({ option: requiredText(40), amount: requiredText(40) }),
   }),
@@ -351,6 +356,29 @@ const RATE_TABLES: Record<(typeof RATE_STEPS)[number], Readonly<Record<string, r
 };
 
 /**
+ * The content rows, one per page band. Writing is the only line the model multiplies (by
+ * `contentPageFactor`), so publishing the flat rate alone would leave the figure in the
+ * breakdown impossible to reproduce, which is what the methodology promises the reader.
+ * The rows come from the same function that prices the line.
+ */
+function contentRows(content: CalculatorPageContent, included: string): CalculatorRateGroup['rows'] {
+  const template = content.methodology.rateContentRow;
+  return CALCULATOR_OPTIONS.content.flatMap((option) => {
+    const label = optionLabel(content, 'content', option);
+    const [baseLow, baseHigh] = CALCULATOR_RATES.content[option];
+    // An answer that adds nothing adds nothing at any page count: one row says it once.
+    if (baseLow === 0 && baseHigh === 0) return [{ label, value: included }];
+    return CALCULATOR_OPTIONS.pageCount.map((pages) => {
+      const [low, high] = calculatorContentRate(option, pages);
+      return {
+        label: fillTemplate(template, { option: label, pages: optionLabel(content, 'pageCount', pages) }),
+        value: formatUsdRange(low, high),
+      };
+    });
+  });
+}
+
+/**
  * What every answer adds, published in the methodology section so the number on screen can
  * be checked by hand. The figures come from the model, the words from the page copy.
  */
@@ -359,15 +387,18 @@ export function calculatorRateTable(content: CalculatorPageContent): CalculatorR
   return RATE_STEPS.map((step) => ({
     step,
     title: content.calculator.steps[step].title,
-    rows: CALCULATOR_OPTIONS[step]
-      .filter((option) => !(step === 'integrations' && option === CALCULATOR_NO_INTEGRATIONS))
-      .map((option) => {
-        const [low, high] = RATE_TABLES[step][option] ?? [0, 0];
-        return {
-          label: optionLabel(content, step, option),
-          value: low === 0 && high === 0 ? included : formatUsdRange(low, high),
-        };
-      }),
+    rows:
+      step === 'content'
+        ? contentRows(content, included)
+        : CALCULATOR_OPTIONS[step]
+            .filter((option) => !(step === 'integrations' && option === CALCULATOR_NO_INTEGRATIONS))
+            .map((option) => {
+              const [low, high] = RATE_TABLES[step][option] ?? [0, 0];
+              return {
+                label: optionLabel(content, step, option),
+                value: low === 0 && high === 0 ? included : formatUsdRange(low, high),
+              };
+            }),
   }));
 }
 

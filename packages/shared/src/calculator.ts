@@ -236,11 +236,24 @@ function lineFor(step: CalculatorLineStep, range: Money): CalculatorLine {
   return { step, low: roundTo500(range[0]), high: roundTo500(range[1]) };
 }
 
+/**
+ * What the content answer adds, at the page count chosen. It is the one line that is not a
+ * flat rate: writing scales with the number of pages (`contentPageFactor`), so the figure a
+ * visitor sees in the breakdown is the rate multiplied and rounded. The methodology table
+ * publishes the same function, so the row on screen can still be reproduced by hand.
+ */
+export function calculatorContentRate(
+  content: CalculatorOption<'content'>,
+  pageCount: CalculatorOption<'pageCount'>,
+): [low: number, high: number] {
+  const [low, high] = CALCULATOR_RATES.content[content];
+  const factor = CALCULATOR_RATES.contentPageFactor[pageCount];
+  return [roundTo500(low * factor), roundTo500(high * factor)];
+}
+
 /** The lines and totals, without the movers (which are computed from this). */
 function priceLines(answers: CalculatorAnswers): { lines: CalculatorLine[]; low: number; high: number } {
   const rates = CALCULATOR_RATES;
-  const factor = rates.contentPageFactor[answers.pageCount];
-  const content = rates.content[answers.content];
   const integrations = answers.integrations.reduce<[number, number]>(
     (sum, integration) => {
       const [low, high] = rates.integrations[integration];
@@ -253,7 +266,7 @@ function priceLines(answers: CalculatorAnswers): { lines: CalculatorLine[]; low:
     lineFor('projectType', rates.projectType[answers.projectType]),
     lineFor('pageCount', rates.pageCount[answers.pageCount]),
     lineFor('designDepth', rates.designDepth[answers.designDepth]),
-    lineFor('content', [content[0] * factor, content[1] * factor]),
+    lineFor('content', calculatorContentRate(answers.content, answers.pageCount)),
     lineFor('integrations', integrations),
     lineFor('cms', cmsRange(answers)),
   ];

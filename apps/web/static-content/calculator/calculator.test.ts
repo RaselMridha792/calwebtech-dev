@@ -8,6 +8,7 @@ import {
   calculatorRateTable,
   countSentences,
   estimateProject,
+  fillTemplate,
   presentCalculatorResult,
   type CalculatorAnswers,
 } from '@calwebtech/shared';
@@ -87,6 +88,24 @@ describe('calculator snapshot', () => {
     expect(view.rates).toEqual(calculatorRateTable(view.content));
     const projectType = view.rates.find((group) => group.step === 'projectType');
     expect(projectType?.rows[0]?.value).toBe('$12,000 to $16,000');
+  });
+
+  it('publishes a content rate the breakdown line can be checked against by hand', () => {
+    // Content is the one line the model multiplies, by the page count. The methodology
+    // promises the arithmetic can be reproduced, so the table has to publish it per band.
+    const copy = view.content.calculator.steps;
+    const options: Record<string, { label: string }> = copy.content.options;
+    const pageOptions: Record<string, { label: string }> = copy.pageCount.options;
+    const label = fillTemplate(view.content.methodology.rateContentRow, {
+      option: options[answers.content]?.label ?? '',
+      pages: pageOptions[answers.pageCount]?.label ?? '',
+    });
+    const published = view.rates.find((group) => group.step === 'content')?.rows.find((row) => row.label === label);
+    const line = presentCalculatorResult(estimateProject(answers), answers, view.content).breakdown.find(
+      (row) => row.label === copy.content.title,
+    );
+    expect(published?.value).toBe('$6,500 to $11,500');
+    expect(line?.value).toBe(published?.value);
   });
 
   it('documents one measurable event per question, in the order they are answered', () => {
