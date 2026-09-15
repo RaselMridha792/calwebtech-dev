@@ -1,0 +1,153 @@
+{
+  "slug": "self-hosting-is-cheaper-than-you-think",
+  "title": "Self-hosting your site is cheaper than you think",
+  "excerpt": "What a Docker stack on a $20 server replaces, and the two jobs somebody still has to own.",
+  "answerBlock": "A small virtual server running Docker can carry the website, its database, its queue and its proxy for less than the subscriptions it replaces, and every lead and subscriber record stays in a database you own. The saving is real, but the reason to do it is ownership. Two jobs never go away: somebody has to patch the machine, and somebody has to prove the backups restore.",
+  "seo": {
+    "title": "Self-hosting your site: the real cost",
+    "description": "What a Docker stack on a small server replaces, what the stack looks like, and the two operational jobs somebody still has to own.",
+    "ogImage": null
+  },
+  "category": {
+    "slug": "engineering",
+    "name": "Engineering"
+  },
+  "author": {
+    "slug": "rasel-mridha",
+    "name": "Rasel Mridha",
+    "role": "Chief Technology Officer",
+    "bio": "Owns architecture and delivery. Writes the technical plan behind your quote.",
+    "photo": {
+      "src": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=500&q=70",
+      "alt": "Rasel Mridha, Chief Technology Officer"
+    },
+    "credentials": [
+      "Architecture",
+      "Delivery",
+      "Technical planning"
+    ]
+  },
+  "publishedAt": "2026-07-08T09:00:00.000Z",
+  "updatedAt": "2026-07-08T09:00:00.000Z",
+  "readingTime": 6,
+  "wordCount": 1264,
+  "cover": {
+    "src": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=70",
+    "alt": "Workspace with a laptop"
+  },
+  "takeaways": [
+    "A small virtual server running Docker can carry the site, the database, the queue and the proxy that most B2B companies currently rent as four separate subscriptions.",
+    "The saving is real but secondary. The point is that the lead data, the subscriber list and the booking records sit in a database you own and can export in full.",
+    "Two jobs never go away: somebody has to patch the machine, and somebody has to prove the backups restore. Budget for both or do not do it.",
+    "Build the container images somewhere else. A four-gigabyte box is fine for running a Next.js site and hopeless at compiling one.",
+    "Rent instead when you have no operational owner, when compliance demands a certified platform, or when traffic is genuinely spiky."
+  ],
+  "body": "## What does self-hosting actually mean here?\n\nIt means your website, its database and its background jobs run in containers on a server that is rented in your company's name, rather than spread across four vendors' platforms. Nothing exotic: a virtual machine, Docker, a reverse proxy that handles certificates, and a deploy step that pulls a new image and restarts.\n\nIt does not mean a cupboard in the office. It does not mean giving up managed infrastructure entirely. And it is not a purity argument. It is a decision about where your customer records live and how much of your monthly cost is rent on data you generated.\n\n## What does a $20 server replace?\n\nMore than most people expect, because the subscriptions add up quietly and none of them is individually large enough to review.\n\n| What you rent now | What it does | What replaces it |\n|---|---|---|\n| Page builder or site platform | Hosting, editing, templates | Next.js with your own content types |\n| Form vendor | Capturing and forwarding enquiries | A form endpoint writing to your database |\n| Email marketing platform | Lists, segments, campaigns | Your own tables plus a sending transport |\n| Managed database add-on | Storing the records above | PostgreSQL in a container |\n| Uptime and certificate services | Availability and HTTPS | The proxy and a monitor you configure once |\n\nThe subscription total is the visible saving. The invisible one is the export fee, the API limit and the migration project you would otherwise face the day one of those vendors changes its pricing or its terms.\n\n## What does the stack look like?\n\nFive containers, and none of them is unusual.\n\nA [Next.js application](/services/nextjs-development/) serving the public site and the admin. A separate API process that owns every write, so business rules live in one place. PostgreSQL for the data. Redis for the queue that sends email and processes background work. And a reverse proxy in front, which routes requests and obtains certificates automatically; Let's Encrypt issues those free of charge, and renewal is a scheduled job rather than a purchase ([Let's Encrypt's FAQ](https://letsencrypt.org/docs/faq/)).\n\nThe database and the cache are published only to the internal container network, never to the host, which removes the single most common way small deployments get compromised. Docker's own installation documentation is the right starting point for the host itself ([Docker Engine install](https://docs.docker.com/engine/install/)).\n\nThe one rule worth writing on the wall: never build on the server. Compiling a production Next.js bundle on a four-gigabyte box is the classic failure, and it fails at the worst moment, halfway through a deploy. Build the image in continuous integration, push it to a registry, and have the server pull and restart. That is a fifteen-line script and it turns deployment into something reversible.\n\n## Which two jobs does somebody still have to own?\n\nThis is the honest part of the argument, and where most self-hosting projects fail eighteen months later.\n\n### Who patches it?\n\nOperating system updates, container base images, the language runtime and the database all have their own lifecycles. Node.js major releases follow a published long-term support schedule ([Node.js release history](https://endoflife.date/nodejs)), and PostgreSQL supports a major version for five years from release before it stops getting fixes ([PostgreSQL versioning policy](https://www.postgresql.org/support/versioning/)).\n\nNone of that is difficult. All of it needs a named owner and a recurring calendar entry. Unattended security updates on the host and a monthly dependency review take under an hour a month, and skipping them is how a working server becomes an incident.\n\n### Who proves the backups restore?\n\nTaking backups is easy and almost meaningless on its own. Restoring them is the job.\n\nAn encrypted dump every night, shipped off the machine, kept to a published retention schedule, and restored into a scratch environment on a schedule so you know the file is readable and the restore takes as long as you claim. A recovery plan nobody has rehearsed is a hope, not a plan. If your team will not own this, a [care plan](/services/care-plans/) exists precisely to.\n\n## How do you move without losing anything?\n\nIn four steps, run in this order, with the old platform still live throughout.\n\nExport everything first, while you still have an account in good standing. Contacts, form submissions, subscriber lists, unsubscribes, bounce history, content and media. Check the export actually contains what the interface shows, because it often does not: consent dates and unsubscribe records are the fields most commonly left out, and they are the fields you cannot legally reconstruct.\n\nModel the data before you import it. A subscriber is a contact with a consent timestamp and a source page, not a row in a spreadsheet. Getting that shape right once saves you rebuilding segments later.\n\nRun both in parallel for a fortnight. Point a fraction of traffic at the new stack, compare what each system captured, and only then move the domain. Anything that arrives in one and not the other is a bug you want to find before you are relying on it.\n\nKeep the old account open for a month after the switch. It is cheap insurance, and it is the difference between noticing a missing field and losing it.\n\n## When is renting the right answer?\n\nThree cases, and we say so on the call rather than selling a stack nobody can run.\n\nWhen there is no operational owner. If nobody in the business will take the patching and the restore drill, a managed platform is the correct choice, and the premium buys you the absence of that responsibility.\n\nWhen compliance requires a certified platform. Some sectors need an attested hosting environment with the paperwork to match, and reproducing that on your own server is neither cheap nor quick.\n\nWhen traffic is genuinely spiky. A campaign that goes from a hundred visits to a hundred thousand in an hour wants a platform that scales sideways without you being awake. Steady business-to-business traffic, which is what most of our clients have, does not.\n\n## What do you actually gain?\n\nThree things, in order of how much they matter a year later.\n\nYour data. Every lead, subscriber and booking is a row in a database you can query, export and keep. No plan tier gates a report; no vendor holds the list.\n\nYour costs. The monthly total stops scaling with contacts, form submissions or page views, and starts being a server bill plus whatever you actually send.\n\nYour options. Because everything is a container and a database, moving to a bigger machine, a different provider or a managed database later is a migration you can plan rather than a rebuild you are forced into. That optionality is the real return, and it is the reason we build on [Next.js with a typed API behind it](/services/nextjs-development/) rather than on whichever platform is convenient this year.\n\nNone of this is a weekend project, and it is not free. It is a deliberate trade: a little more operational responsibility in exchange for owning the part of the business your marketing actually produces.\n\n## Where should you start?\n\nNot with the server. Start by writing down every subscription that touches customer data, what it costs a month, and what you would lose if the account were closed tomorrow. That list is usually longer than anyone expects and it makes the decision for you.\n\nThen decide who owns the two jobs. If you have a name for the patching and a name for the restore drill, self-hosting is a sensible engineering choice and the saving is a bonus. If you do not, either hire the responsibility in or keep renting, and be at peace with it. The wrong answer is the one where everybody assumes somebody else is watching.",
+  "services": [
+    {
+      "slug": "nextjs-development",
+      "title": "Next.js development",
+      "summary": "Fast, maintainable sites and applications on Next.js and React, including headless CMS builds, with a typed API and hosting in your name."
+    },
+    {
+      "slug": "care-plans",
+      "title": "Website care plans",
+      "summary": "Patching, backups with a tested restore, monitoring and a fixed allowance of development hours."
+    }
+  ],
+  "caseStudy": null,
+  "relatedArticles": [
+    {
+      "slug": "core-web-vitals-in-plain-english",
+      "title": "Core Web Vitals in plain English",
+      "excerpt": "The three published thresholds, what each one really measures, and why the lab score and the field report never agree.",
+      "category": {
+        "slug": "engineering",
+        "name": "Engineering"
+      },
+      "authorName": "Rasel Mridha",
+      "readingTime": 6,
+      "publishedAt": "2026-07-22T09:00:00.000Z",
+      "updatedAt": "2026-08-26T11:30:00.000Z",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=70",
+        "alt": "Performance and analytics review before launch"
+      },
+      "featured": false
+    },
+    {
+      "slug": "wcag-22-what-changed",
+      "title": "WCAG 2.2 AA: what changed and what it costs to meet it",
+      "excerpt": "Nine new success criteria, four that matter at AA, and the two that break most existing sites.",
+      "category": {
+        "slug": "engineering",
+        "name": "Engineering"
+      },
+      "authorName": "Priya Raman",
+      "readingTime": 7,
+      "publishedAt": "2026-06-10T09:00:00.000Z",
+      "updatedAt": "2026-06-10T09:00:00.000Z",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1558655146-9f40138edfeb?auto=format&fit=crop&w=1200&q=70",
+        "alt": "A designer drawing on a tablet with a stylus beside a keyboard"
+      },
+      "featured": false
+    },
+    {
+      "slug": "why-chatgpt-recommends-your-competitor",
+      "title": "Why ChatGPT recommends your competitor",
+      "excerpt": "Language models cite structured, corroborated sources. Here is how to become one of them.",
+      "category": {
+        "slug": "ai-search",
+        "name": "AI search"
+      },
+      "authorName": "Rasel Mridha",
+      "readingTime": 9,
+      "publishedAt": "2026-09-02T09:00:00.000Z",
+      "updatedAt": "2026-09-10T11:30:00.000Z",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?auto=format&fit=crop&w=1200&q=70",
+        "alt": "Analytics charts on a screen"
+      },
+      "featured": false
+    }
+  ],
+  "copy": {
+    "byLabel": "By",
+    "publishedLabel": "Published",
+    "updatedLabel": "Updated",
+    "readingTimeLabel": "min read",
+    "tocLabel": "On this page",
+    "takeawaysLabel": "Key takeaways",
+    "authorLabel": "About the author",
+    "serviceCta": {
+      "eyebrow": "The service behind this article",
+      "body": "If you would rather not run this yourself, this is the work we do and the way we price it. The first call is thirty minutes and costs nothing.",
+      "linkLabel": "See the service",
+      "contactCta": {
+        "label": "Tell us what you need",
+        "href": "/contact/"
+      }
+    },
+    "servicesHeading": "Which services put this into practice?",
+    "caseStudyLinkLabel": "Read the case study",
+    "relatedHeading": "What should you read next?",
+    "relatedLink": {
+      "label": "All insights",
+      "href": "/insights/"
+    },
+    "newsletter": {
+      "heading": "Would you like the next article by email?",
+      "body": "One article a fortnight, on what B2B websites cost, what breaks and what to ask for. No sequences, no upsells, and one click to stop.",
+      "nameLabel": "Full name",
+      "emailLabel": "Work email",
+      "submitLabel": "Subscribe",
+      "privacyNote": "Your name and email are stored in our own database, never sold or passed to a list vendor. Unsubscribe from any email and the record is removed.",
+      "success": {
+        "heading": "You are subscribed.",
+        "body": "A confirmation is on its way. The next article lands in your inbox within a fortnight, and every email carries a one-click unsubscribe."
+      },
+      "unavailable": "We could not send that just now, so nothing has been stored. Please try again in a moment, or email us and we will add you by hand."
+    }
+  }
+}

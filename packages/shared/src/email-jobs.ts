@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { calculatorLeadAnswersSchema, calculatorResultEmailSchema } from './calculator';
 import { attributionSchema, leadTypeSchema } from './lead';
 
 /** The BullMQ queue the API adds email jobs to and the worker consumes. */
@@ -25,6 +26,8 @@ export const leadSummarySchema = z.object({
   /** The name of the routed enquiry type, when the form asked for one. */
   enquiry: z.string().optional(),
   landingPageSlug: z.string().optional(),
+  /** A calculator lead's eight answers and the estimate the API computed from them. */
+  answers: calculatorLeadAnswersSchema.optional(),
   attribution: attributionSchema,
   submittedAt: z.iso.datetime(),
 });
@@ -56,6 +59,17 @@ export const emailJobSchema = z.discriminatedUnion('template', [
     template: z.literal('lead-notification'),
     to: recipientsSchema,
     lead: leadSummarySchema,
+  }),
+  /**
+   * The cost calculator's emailed copy of the result (docs/03, "Cost calculator"). The
+   * figures and the words are built by the API from the estimate it stored and the page's
+   * copy, so the email repeats exactly what the visitor saw.
+   */
+  z.object({
+    template: z.literal('calculator-result'),
+    to: recipientsSchema,
+    lead: leadSummarySchema,
+    result: calculatorResultEmailSchema,
   }),
 ]);
 export type EmailJob = z.infer<typeof emailJobSchema>;

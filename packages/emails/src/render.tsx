@@ -1,12 +1,19 @@
 import type { EmailJob, SiteContact } from '@calwebtech/shared';
 import { render } from 'react-email';
 import type { ReactElement } from 'react';
+import { CalculatorResultEmailTemplate, calculatorResultSubject } from './calculator-result';
 import { LeadConfirmationEmail, leadConfirmationSubject } from './lead-confirmation';
 import { LeadNotificationEmail, leadNotificationSubject } from './lead-notification';
 
 /** Data the worker loads at send time rather than carrying in the job. */
 export interface EmailContext {
   contact: SiteContact | null;
+  /**
+   * The site's public origin (APP_ORIGIN), for emails that link back to a page. Jobs carry
+   * site paths, never a host, so nothing a form is submitted with can put another domain in
+   * an email. Null leaves those links out.
+   */
+  siteOrigin?: string | null;
 }
 
 export interface RenderedEmail {
@@ -28,6 +35,13 @@ function compose(job: EmailJob, context: EmailContext): { subject: string; eleme
       return {
         subject: leadNotificationSubject(job.lead),
         element: <LeadNotificationEmail lead={job.lead} />,
+      };
+    case 'calculator-result':
+      return {
+        subject: calculatorResultSubject(job.result),
+        element: (
+          <CalculatorResultEmailTemplate lead={job.lead} result={job.result} siteOrigin={context.siteOrigin ?? null} />
+        ),
       };
   }
 }

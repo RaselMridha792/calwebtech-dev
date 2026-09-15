@@ -1,0 +1,66 @@
+{
+  "slug": "page-builder",
+  "term": "Page builder",
+  "letter": "P",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What is a page builder?",
+    "description": "A page builder is a drag-and-drop editor that lets someone assemble a web page from blocks without writing code.",
+    "ogImage": null
+  },
+  "definition": "A page builder is a drag-and-drop editor that lets someone assemble a web page from blocks without writing code.",
+  "answerBlock": "A page builder is a drag-and-drop editor that lets someone assemble a web page from blocks without writing code. It is quick for the first page and expensive by the fiftieth. The output is usually heavy, inconsistent and awkward to move anywhere else.",
+  "body": {
+    "heading": "Why do page builders become a problem?",
+    "paragraphs": [
+      "Because every page becomes a one-off. A change to the brand means opening every page and editing it by hand, and two people building the same kind of page will produce two different results.",
+      "The output carries a performance cost: extra markup, extra stylesheets, and scripts loaded on pages that do not use them. That shows up directly in Largest Contentful Paint and in layout shift while the page settles.",
+      "It also ties the content to the tool. The words live inside builder-specific markup, so moving to anything else means rebuilding rather than migrating."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "The alternative is not \"developers for every change\". It is content types: a service, a location, a case study, each with its own fields and its own template, so publishing is quick and the layout stays consistent.",
+      "That is the trade we make deliberately. Editors get an editor for the fields that should vary, and the template owns everything that should not."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "Verona Home was stuck on a page builder before replatforming, which is the usual pattern: fast to start, slow to load, and impossible to change the brand across without touching every page.",
+    "caseStudy": {
+      "slug": "verona-home",
+      "clientName": "Verona Home",
+      "metric": {
+        "value": "+68%",
+        "label": "Add to cart"
+      }
+    }
+  },
+  "service": {
+    "slug": "wordpress-development",
+    "title": "WordPress development",
+    "line": "Custom WordPress themes and WooCommerce stores without page-builder bloat, with structured content your editors can manage safely."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "content-management-system",
+        "term": "Content management system (CMS)",
+        "definition": "A content management system is the software your team uses to add and edit website content without a developer."
+      },
+      {
+        "slug": "plugin",
+        "term": "Plugin",
+        "definition": "A plugin is a package of code that adds a feature to a content management system without changing the system itself."
+      }
+    ]
+  },
+  "sources": [
+    {
+      "label": "Largest Contentful Paint on web.dev",
+      "href": "https://web.dev/articles/lcp"
+    }
+  ]
+}

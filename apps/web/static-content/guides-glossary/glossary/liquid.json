@@ -1,0 +1,54 @@
+{
+  "slug": "liquid",
+  "term": "Liquid",
+  "letter": "L",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What is Liquid in Shopify?",
+    "description": "Liquid is the templating language Shopify themes are written in, which puts store data into the HTML a visitor receives.",
+    "ogImage": null
+  },
+  "definition": "Liquid is the templating language Shopify themes are written in, which puts store data into the HTML a visitor receives.",
+  "answerBlock": "Liquid is the templating language Shopify themes are written in, which puts store data into the HTML a visitor receives. It renders on Shopify's servers, so a Liquid storefront needs no JavaScript to show a product. Sections and blocks written in Liquid are what merchandisers rearrange in the theme editor.",
+  "body": {
+    "heading": "What does working in Liquid involve?",
+    "paragraphs": [
+      "Building sections, which are the rearrangeable pieces of a page, and schemas, which decide what a merchandiser may change: a heading, an image, the number of columns, which collection to show. A good theme gives the store team real control without letting them break the layout.",
+      "It also means being careful about apps. Many apps install scripts into the theme, and a storefront that started fast can collect a dozen of them within a year. Each one is a decision with a performance cost.",
+      "Liquid has limits: it cannot hold complex application logic, and anything genuinely interactive still needs JavaScript or a headless approach."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "A well-built Liquid theme is the cheapest path to a fast, editable shop, and it keeps the store team independent of developers for everyday merchandising.",
+      "The commercial trap is the app drawer: every convenience app is a recurring fee and a page-weight cost, and both compound."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "A furniture storefront exposes its collection layout, hero and proof band as editable sections, so a merchandiser can rebuild a seasonal landing page without a deployment.",
+    "caseStudy": null
+  },
+  "service": {
+    "slug": "shopify-development",
+    "title": "Shopify development",
+    "line": "Custom Shopify storefronts, configurators and replatforming for brands that have outgrown a stock theme or a page builder."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "headless-commerce",
+        "term": "Headless commerce",
+        "definition": "Headless commerce keeps the shop engine for products, checkout and payments, but builds the storefront separately on top of its API."
+      },
+      {
+        "slug": "replatforming",
+        "term": "Replatforming",
+        "definition": "Replatforming is moving a shop or website from one platform to another, taking the data, the addresses and the rankings with it."
+      }
+    ]
+  },
+  "sources": []
+}

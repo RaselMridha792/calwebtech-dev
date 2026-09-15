@@ -25,6 +25,9 @@ function log(line: string): void {
 
 function main(): void {
   const env = loadWorkerEnv(process.env);
+  if (!env.APP_ORIGIN) {
+    log('warning: APP_ORIGIN is not set; emails that link back to a page are sent without those links');
+  }
   if (env.NODE_ENV === 'production' && env.EMAIL_REDIRECT_TO) {
     log(`warning: EMAIL_REDIRECT_TO is set in production; every email goes to ${env.EMAIL_REDIRECT_TO}`);
   }
@@ -44,6 +47,7 @@ function main(): void {
       store: prismaDeliveryStore(db),
       from: env.EMAIL_FROM,
       ...(env.EMAIL_REDIRECT_TO ? { redirectTo: env.EMAIL_REDIRECT_TO } : {}),
+      ...(env.APP_ORIGIN ? { siteOrigin: env.APP_ORIGIN } : {}),
     }),
     { connection, concurrency: env.EMAIL_CONCURRENCY },
   );

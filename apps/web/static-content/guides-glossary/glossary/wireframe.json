@@ -1,0 +1,64 @@
+{
+  "slug": "wireframe",
+  "term": "Wireframe",
+  "letter": "W",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What is a wireframe?",
+    "description": "A wireframe is a deliberately plain layout of a page that settles what is on it and in what order, before anyone decides how it looks.",
+    "ogImage": null
+  },
+  "definition": "A wireframe is a deliberately plain layout of a page that settles what is on it and in what order, before anyone decides how it looks.",
+  "answerBlock": "A wireframe is a deliberately plain layout of a page that settles what is on it and in what order, before anyone decides how it looks. It is usually grey boxes and real headings. Arguing about content order in a wireframe costs minutes; arguing about it in a finished design costs days.",
+  "body": {
+    "heading": "What should a wireframe decide?",
+    "paragraphs": [
+      "The sequence of the page: what a buyer needs to read first, what they need next, and where the call to action belongs. It should carry real headings and real first lines, because filler text hides the fact that nobody has written the argument yet.",
+      "It should also settle the responsive behaviour: what stacks, what is hidden behind a control, and what the page looks like on a phone, which is where most of the traffic is.",
+      "What it should not decide is colour, photography or type. Mixing those in too early moves the conversation to taste, and the structural questions never get answered."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "Wireframes are the cheapest place to change your mind, and they expose missing content early, which is the single most common cause of a delayed launch.",
+      "They also make approval honest: a stakeholder who signs off a wireframe is agreeing to the argument, not to a colour."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "A service page wireframe fixes the order: answer first, then the problem it solves, what is included, how the work runs, proof, price band and the enquiry form, before anything is designed.",
+    "caseStudy": null
+  },
+  "service": {
+    "slug": "custom-website-development",
+    "title": "Custom website development",
+    "line": "Research-led design built around how your buyers actually decide, not around a template's section order."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "accessibility-wcag",
+        "term": "Accessibility (WCAG)",
+        "definition": "Accessibility means a website can be used by people with disabilities, and WCAG is the published standard that defines what that requires."
+      },
+      {
+        "slug": "design-system",
+        "term": "Design system",
+        "definition": "A design system is the agreed set of colours, type, spacing and components that every page of a product is built from."
+      },
+      {
+        "slug": "information-architecture",
+        "term": "Information architecture",
+        "definition": "Information architecture is how a site is organised: what pages exist, how they are grouped, and what each one is called."
+      },
+      {
+        "slug": "responsive-design",
+        "term": "Responsive design",
+        "definition": "Responsive design means one website that rearranges itself to work on any screen, from a phone to a wide monitor."
+      }
+    ]
+  },
+  "sources": []
+}

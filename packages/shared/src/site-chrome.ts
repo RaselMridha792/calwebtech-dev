@@ -132,11 +132,13 @@ export const CHROME_DEFAULTS = {
     },
   ],
   resourceColumns: [
-    { title: 'Tools', links: [{ label: 'Cost estimate', href: '/#estimate' }] },
+    { title: 'Tools', links: [{ label: 'Cost calculator', href: SITE_ROUTES.costCalculator }] },
     {
       title: 'Learn',
       links: [
-        { label: 'Insights', href: '/#insights' },
+        { label: 'Insights', href: SITE_ROUTES.insights },
+        { label: 'Guides', href: SITE_ROUTES.guides },
+        { label: 'Glossary', href: SITE_ROUTES.glossary },
         { label: 'How a project runs', href: SITE_ROUTES.process },
       ],
     },
@@ -155,8 +157,8 @@ export const CHROME_DEFAULTS = {
     { label: 'Technology', href: SITE_ROUTES.technology },
     { label: 'Process', href: SITE_ROUTES.process },
     { label: 'Pricing', href: SITE_ROUTES.pricing },
-    { label: 'Insights', href: '/#insights' },
-    { label: 'Cost estimate', href: '/#estimate' },
+    { label: 'Insights', href: SITE_ROUTES.insights },
+    { label: 'Cost calculator', href: SITE_ROUTES.costCalculator },
     { label: 'Recognition', href: SITE_ROUTES.awards },
     { label: 'Locations', href: SITE_ROUTES.locations },
   ],

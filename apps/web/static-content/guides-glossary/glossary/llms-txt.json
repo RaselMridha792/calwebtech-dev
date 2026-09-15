@@ -1,0 +1,69 @@
+{
+  "slug": "llms-txt",
+  "term": "llms.txt",
+  "letter": "L",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What is llms.txt?",
+    "description": "llms.txt is a plain text file at the root of a website that describes the site and points to its most useful pages for AI assistants.",
+    "ogImage": null
+  },
+  "definition": "llms.txt is a plain text file at the root of a website that describes the site and points to its most useful pages for AI assistants.",
+  "answerBlock": "llms.txt is a plain text file at the root of a website that describes the site and points to its most useful pages for AI assistants. It is a proposed convention rather than a standard anyone enforces. It costs almost nothing to publish and gives an assistant a curated map instead of a guess.",
+  "body": {
+    "heading": "What goes in an llms.txt file?",
+    "paragraphs": [
+      "A short description of the company, what it does and where it works, then a list of the pages that answer the questions people actually ask: services, pricing, process, locations, the glossary and the guides.",
+      "It is not a substitute for accessible HTML. An assistant that follows the file still reads the pages, so the pages still need to open with a direct answer and state specifics in plain text.",
+      "It sits alongside robots.txt, which decides who may crawl at all. Permitting the major AI crawlers is a deliberate business decision: it means accepting that your content will be summarised, in exchange for being the source that gets named."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "Being cited by an assistant is becoming a first impression in its own right. A file that costs an hour to write and maintain is a cheap way to influence which of your pages that impression is built from.",
+      "The measurable version of the question is simple: ask the assistants your buyers use, and see whether you are named."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "Our own file names the services, the pricing page, the process page and this glossary, so an assistant asked about B2B website costs is pointed at the page that states a band rather than at a blog post.",
+    "caseStudy": null
+  },
+  "service": {
+    "slug": "ai-search-visibility",
+    "title": "AI search visibility",
+    "line": "Technical SEO plus the newer work of being cited by ChatGPT, Perplexity, Gemini and AI overviews."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "answer-engine-optimisation",
+        "term": "Answer engine optimisation",
+        "definition": "Answer engine optimisation is the work of getting a company cited in the answers that AI assistants write, rather than only ranked in a list of blue links."
+      },
+      {
+        "slug": "canonical-tag",
+        "term": "Canonical tag",
+        "definition": "A canonical tag tells search engines which address is the official one for a page that can be reached at several addresses."
+      },
+      {
+        "slug": "core-web-vitals",
+        "term": "Core Web Vitals",
+        "definition": "Core Web Vitals are three measurements Google publishes to describe how a page feels to the people using it: loading, responsiveness and visual stability."
+      },
+      {
+        "slug": "structured-data",
+        "term": "Structured data",
+        "definition": "Structured data is machine-readable markup added to a page that states what it is about in a vocabulary search engines understand."
+      }
+    ]
+  },
+  "sources": [
+    {
+      "label": "The llms.txt proposal",
+      "href": "https://llmstxt.org/"
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { calculatorAnswersSchema } from './calculator';
 import { slugSchema } from './seo';
 
 /** Mirrors the `LeadType` enum in packages/db/prisma/schema.prisma. */
@@ -109,6 +110,12 @@ export const leadSubmissionSchema = z.object({
   landingPageSlug: z.preprocess(blankToUndefined, slugSchema.optional()),
   /** The service page the enquiry came from. The API links the lead to it when it is published. */
   serviceSlug: z.preprocess(blankToUndefined, slugSchema.optional()),
+  /**
+   * Structured answers stored on `Lead.answers`. The cost calculator sends its eight
+   * answers here; the API validates them, recomputes the estimate itself and never trusts a
+   * figure from the browser (calculator.ts).
+   */
+  answers: calculatorAnswersSchema.optional(),
   attribution: attributionSchema.default({}),
   /** Honeypot. Hidden from people; a value here means a bot filled the form. */
   referenceCode: z.string().max(500).optional(),

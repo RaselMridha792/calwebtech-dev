@@ -26,6 +26,10 @@ export const SITE_ROUTES = {
   accessibility: '/accessibility/',
   informationSecurity: '/information-security/',
   sitemap: '/sitemap/',
+  insights: '/insights/',
+  guides: '/guides/',
+  glossary: '/glossary/',
+  costCalculator: '/cost-calculator/',
 } as const;
 
 export const servicePath = (slug: string): string => `/services/${slug}/`;

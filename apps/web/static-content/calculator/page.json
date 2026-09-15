@@ -1,0 +1,602 @@
+{
+  "content": {
+    "seo": {
+      "title": "Website cost calculator",
+      "description": "Answer eight questions and see an indicative range for your website or platform in under three minutes, with the breakdown and what would move it.",
+      "ogImage": null
+    },
+    "hero": {
+      "title": "Website cost calculator",
+      "answer": "Most Calwebtech projects run between $12,000 and $60,000: a focused marketing site is $12,000 to $25,000, and a platform build with booking, a dashboard and integrations is $25,000 to $60,000. This calculator asks eight questions about your project and gives you an indicative range in under three minutes, with the breakdown behind it. Ongoing care and development starts from $1,500 a month.",
+      "intro": "There is no sales call attached to it. Answer the eight questions, see your range on this page, and we will email you a copy with the breakdown so you can share it internally. If the number works, the next step books a consultation with your answers already attached.",
+      "backdrop": {
+        "src": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1800&q=65"
+      },
+      "points": [
+        "No sales call needed to see the range",
+        "Based on 240 projects we have actually delivered",
+        "Every answer is stored with your enquiry, so nobody asks you twice",
+        "The rates behind every figure are published further down this page"
+      ],
+      "bandsHeading": "The bands we quote from",
+      "bandsNote": "Published so you can tell in ninety seconds whether we are in your range. Every project is quoted as a fixed price for a fixed scope, with the change process written down before work starts.",
+      "bandsEmpty": "Our published bands are being updated. The calculator below still gives you a range for your own project."
+    },
+    "calculator": {
+      "heading": "What will your website cost?",
+      "intro": "Eight questions about scope, schedule and what you want the site to do. Nothing is stored until the last step, where you decide whether to have the range emailed to you. The figures come from the rates published on this page, not from a guess in your browser.",
+      "secondsPerStep": 20,
+      "labels": {
+        "progress": "Question {current} of {total}",
+        "gateProgress": "Last step: where to send it",
+        "timeLeft": "About {minutes} minutes left",
+        "timeLeftOne": "About a minute left",
+        "timeLeftShort": "Under a minute left",
+        "back": "Back",
+        "next": "Next",
+        "toResult": "See my range",
+        "restart": "Start again",
+        "chooseOne": "Choose an answer to continue.",
+        "chooseAtLeastOne": "Choose at least one answer, or \"none of these\", to continue.",
+        "start": "Start the estimate",
+        "methodology": "How we work this out",
+        "loading": "Loading the calculator",
+        "noScript": "The calculator needs JavaScript to run. Every rate it uses is published further down this page, so you can work the range out by hand, or call us and we will do it with you.",
+        "progressName": "Your progress through the estimate"
+      },
+      "steps": {
+        "projectType": {
+          "title": "Project type",
+          "question": "What kind of project is this?",
+          "help": "The starting figure covers discovery, design from our component library, the content management system, lead capture, up to ten pages, testing and launch.",
+          "options": {
+            "marketing-site": {
+              "label": "A new marketing website",
+              "description": "Pages that explain what you do and turn visitors into enquiries."
+            },
+            "redesign": {
+              "label": "A redesign of the site we have",
+              "description": "Same business, new site: structure, design and performance rebuilt, content carried across."
+            },
+            "ecommerce": {
+              "label": "An online store",
+              "description": "Products, checkout, payments and the operational side of selling online."
+            },
+            "web-application": {
+              "label": "A web application or portal",
+              "description": "Accounts, dashboards, workflows and data that belong to your business."
+            }
+          }
+        },
+        "timeline": {
+          "title": "Schedule",
+          "question": "When do you need it live?",
+          "help": "A launch inside eight weeks means design and build overlap and more of the team is on the project at once, which costs more.",
+          "options": {
+            "flexible": {
+              "label": "No fixed date",
+              "description": "We plan it around a sensible schedule and your content."
+            },
+            "within-4-months": {
+              "label": "Within about four months",
+              "description": "The usual pace: six to eight weeks for a site, nine to fourteen for a platform."
+            },
+            "within-8-weeks": {
+              "label": "Inside eight weeks",
+              "description": "A fixed date to hit, such as an event, a campaign or a contract."
+            }
+          }
+        },
+        "pageCount": {
+          "title": "Page count",
+          "question": "How many pages will the new site need?",
+          "help": "Count templates and unique pages, not every product or article. A hundred location pages built from one template count as one template and the pages it fills.",
+          "options": {
+            "under-10": {
+              "label": "Under 10",
+              "description": "A focused site: what you do, who it is for, proof and a way to get in touch."
+            },
+            "10-50": {
+              "label": "10 to 50",
+              "description": "Services, industries, locations and the supporting pages around them."
+            },
+            "50-150": {
+              "label": "50 to 150",
+              "description": "A full content programme, or a catalogue with a structure of its own."
+            },
+            "over-150": {
+              "label": "More than 150",
+              "description": "A large catalogue or library that needs its own navigation and search."
+            }
+          }
+        },
+        "designDepth": {
+          "title": "Design depth",
+          "question": "How much design does it need?",
+          "help": "Everything we build is designed rather than assembled, so this is about how much of it is drawn from scratch for you.",
+          "options": {
+            "component-library": {
+              "label": "Our component library, styled to your brand",
+              "description": "Proven layouts and components carrying your colours, type and photography."
+            },
+            "custom-design": {
+              "label": "A custom design for this site",
+              "description": "Key pages drawn from scratch, then a component set built out from them."
+            },
+            "custom-design-and-brand": {
+              "label": "A custom design and brand work",
+              "description": "Logo, palette, type, photography direction and the guidelines that keep them consistent."
+            }
+          }
+        },
+        "content": {
+          "title": "Content",
+          "question": "Who is writing the content?",
+          "help": "Copy is the part most projects underestimate. The last two answers put a writer on the team for the pages you have.",
+          "options": {
+            "ready": {
+              "label": "We have it ready",
+              "description": "Final copy and images, signed off and ready to load."
+            },
+            "needs-editing": {
+              "label": "We have it, but it needs editing",
+              "description": "You supply drafts; we edit them for structure, search and tone."
+            },
+            "write-it-for-us": {
+              "label": "Write it for us",
+              "description": "Interviews, research and writing page by page, with you approving each one."
+            }
+          }
+        },
+        "integrations": {
+          "title": "Integrations",
+          "question": "What does the site need to connect to?",
+          "help": "Choose everything that applies. Each connection is scoped, built and tested against the real system rather than a demo account.",
+          "options": {
+            "crm": {
+              "label": "A CRM",
+              "description": "Leads, contacts and deal stages kept in step with your sales system."
+            },
+            "email-marketing": {
+              "label": "Email marketing",
+              "description": "Subscribers, segments and campaigns, on our own platform or the one you use."
+            },
+            "booking": {
+              "label": "Booking or scheduling",
+              "description": "Availability, appointments and reminders tied to the team's calendars."
+            },
+            "payments": {
+              "label": "Payments",
+              "description": "Checkout, subscriptions or deposits, with reconciliation that adds up."
+            },
+            "erp-inventory": {
+              "label": "An ERP or inventory system",
+              "description": "Stock, pricing and orders moving both ways, under the rules your business runs on."
+            },
+            "custom-system": {
+              "label": "Something you built yourselves",
+              "description": "An in-house system or a supplier feed that needs an interface designed for it."
+            },
+            "none": {
+              "label": "None of these",
+              "description": "The site stands on its own for now."
+            }
+          }
+        },
+        "cms": {
+          "title": "Platform",
+          "question": "Which platform should it run on?",
+          "help": "If you are not sure, leave it to us. The recommendation follows from your other answers and costs nothing extra.",
+          "options": {
+            "recommend": {
+              "label": "Recommend one for us",
+              "description": "We choose from your answers and explain the trade-offs before anything is built."
+            },
+            "headless": {
+              "label": "A headless content management system",
+              "description": "Editors work in a modern interface and the site itself is rendered by Next.js."
+            },
+            "wordpress": {
+              "label": "WordPress",
+              "description": "Familiar editing, built properly, without a page builder slowing the site down."
+            },
+            "shopify": {
+              "label": "Shopify",
+              "description": "The platform handles checkout and payments while we build the storefront."
+            },
+            "custom-dashboard": {
+              "label": "A dashboard we build for you",
+              "description": "An editor built around your own content, for teams no off-the-shelf tool fits."
+            }
+          }
+        },
+        "support": {
+          "title": "After launch",
+          "question": "What should happen after launch?",
+          "help": "Care plans and the Ongoing partner plan are monthly and priced separately from the build. They can start at launch or later.",
+          "options": {
+            "none": {
+              "label": "Nothing for now",
+              "description": "We hand over the site, the code and the documentation, and you take it from there."
+            },
+            "care-plan": {
+              "label": "A care plan",
+              "description": "Hosting, monitoring, updates, backups and a response time you can hold us to."
+            },
+            "ongoing-partner": {
+              "label": "An ongoing partner",
+              "description": "A care plan plus a fixed monthly development allowance and a quarterly funnel review."
+            }
+          }
+        }
+      },
+      "gate": {
+        "heading": "Where shall we send your estimate?",
+        "body": "Your range appears on this page as soon as you submit, and a copy goes to your inbox with the breakdown so you can share it internally. Your answers are stored with the enquiry, so nobody asks you the same eight questions on a call.",
+        "nameLabel": "Full name",
+        "emailLabel": "Work email",
+        "companyLabel": "Company",
+        "submitLabel": "Show my range",
+        "sendingLabel": "Working it out…",
+        "privacy": "Your answers and your address are stored in our own database, never with a form vendor or a mailing list platform. We send you the copy and nothing else unless you ask for it.",
+        "privacyLink": {
+          "label": "Privacy policy",
+          "href": "/privacy-policy/"
+        }
+      },
+      "result": {
+        "heading": "Here is your range",
+        "rangeHeading": "Indicative project cost",
+        "breakdownHeading": "Where the number comes from",
+        "moversHeading": "What would move it",
+        "monthlyHeading": "After launch",
+        "answersHeading": "What you told us",
+        "tiers": {
+          "focused": {
+            "name": "Focused build",
+            "summary": "A marketing site with custom design, a content management system and lead capture, usually six to eight weeks from kick-off."
+          },
+          "platform": {
+            "name": "Platform build",
+            "summary": "Everything in a focused build plus booking, a dashboard, campaigns and integrations, usually nine to fourteen weeks."
+          },
+          "beyond": {
+            "name": "Above our published bands",
+            "summary": "Your answers describe more than a platform build. That is work we do, and it is scoped and quoted on its own rather than from a band."
+          }
+        },
+        "included": "Included",
+        "monthlyFrom": "{plan}: from {amount} a month",
+        "monthlyNone": "You chose nothing ongoing, so there is no monthly figure here. A care plan can start later.",
+        "moverChoose": "{question}: {option}",
+        "moverDrop": "Without {option}",
+        "saving": "About {range} less",
+        "noMovers": "Nothing in your answers would bring the range down without changing what the site does, which usually means the scope is already tight.",
+        "note": "This is an indicative range, not a quote. It is worked out from the answers you gave and the rates published below, and it assumes the scope holds. A fixed price for a fixed scope comes with the written proposal, and the change process is agreed before any build work starts.",
+        "emailed": "A copy is on its way to {email}.",
+        "unsent": "We could not store your answers or email a copy just now, so nothing was sent. The range below is still worked out from the same published rates. Please try again in a moment, or send us your answers from the contact page.",
+        "bookHeading": "Talk it through with the person who would run it",
+        "bookBody": "Thirty minutes, no slide deck. We check your range against projects of a similar shape, tell you what would move it, and you leave knowing what a written proposal would say. Your answers travel with the link, so you do not repeat them.",
+        "bookLabel": "Book a consultation"
+      },
+      "errors": {
+        "invalid": "Please check the highlighted fields and try again.",
+        "botCheck": "We could not confirm this came from a person. Please try once more.",
+        "rateLimited": "That is several requests in a row. Please wait a minute and try again.",
+        "unavailable": "We could not send that just now. Please try again, or use the contact page."
+      },
+      "email": {
+        "heading": "Your website cost estimate",
+        "intro": "Thanks for using the calculator. Here is the range your answers describe, the breakdown behind it and the changes that would move it. Every rate it uses is published on the page, so each line can be checked by hand."
+      }
+    },
+    "methodology": {
+      "heading": "How do we work the number out?",
+      "intro": "The calculator is a published price list, not a black box. Each answer adds a figure from the table below, every line is rounded to the nearest $500, and the lines are added up. The same code produces the range on this page, the copy in your inbox and the figure our own team sees.",
+      "sections": [
+        {
+          "heading": "Where do the figures come from?",
+          "paragraphs": [
+            "They come from what our projects have cost to deliver, grouped into the two bands we publish: a focused build at $12,000 to $25,000 and a platform build at $25,000 to $60,000. The starting figure for each project type covers discovery, design from our component library, the content management system, lead capture, up to ten pages, testing and launch, so the leanest marketing site begins at the bottom of the focused band. Everything after that is an addition you can see and check.",
+            "The rates are versioned. Every estimate is stored with the version of the model that produced it, so a range given today can still be read back against the rates that were in force when it was given."
+          ]
+        },
+        {
+          "heading": "Why is it a range and not a single price?",
+          "paragraphs": [
+            "Two projects that answer these eight questions identically can still differ by a third once you know how many people have to approve a page, how clean the data in the old system is, or how many edge cases the checkout has. The range is honest about that spread rather than hiding it behind one number.",
+            "The low end assumes decisions arrive when we need them and the content is broadly ready. The high end assumes more review rounds, more stakeholders and more to work out along the way. Most projects land between the two."
+          ]
+        },
+        {
+          "heading": "What is not included in the range?",
+          "paragraphs": [
+            "Hosting, domains, paid plugins and platform licences are billed to you directly and registered in your name, so they are outside the figure here. Paid advertising, photography and video shoots are outside it too. Ongoing care and development is monthly and priced separately, from $1,500 a month.",
+            "Nor does it cover work eight questions cannot see: migrating a system nobody has looked at yet, connecting to software with no documented interface, or running the site in several languages. Those are scoped properly and quoted on their own."
+          ]
+        },
+        {
+          "heading": "How does a range become a fixed price?",
+          "paragraphs": [
+            "On a call and in the proposal that follows it. We go through your answers, look at the parts that carry the risk, which are usually the content structure, the integrations, the data to migrate and the pages that have to convert, and set a fixed price for a fixed scope. The first call and the written proposal are free.",
+            "The discovery stage in the first week of the project confirms that scope in writing. After that the price does not move unless the scope does: a change is quoted and waits for your approval before any work starts on it."
+          ]
+        },
+        {
+          "heading": "What happens to the answers I give?",
+          "paragraphs": [
+            "They are stored in our own PostgreSQL database alongside your enquiry, as eight separate fields rather than a paragraph of notes, so the team can see the shape of your project before the first call. Cloudflare Turnstile checks the form to keep automated submissions out, and Resend is used only to deliver the copy to your inbox.",
+            "There is no form vendor, no mailing list platform and no advertising pixel on this page. You can ask us to delete the record at any time, as the privacy policy explains."
+          ]
+        },
+        {
+          "heading": "Can I check the arithmetic myself?",
+          "paragraphs": [
+            "Yes, and that is what the table below is for. Take the starting figure for your project type, add the amount for each answer you gave, reading the content row at the page band you chose, then add the schedule uplift if you chose a launch inside eight weeks. Each line is rounded to the nearest $500 and the total is the sum of the lines, so the breakdown on screen always adds up to the range above it."
+          ]
+        }
+      ],
+      "rateHeading": "What does each answer add?",
+      "rateIntro": "Every figure the calculator can add, in one table. The starting figure for your project type is the beginning; everything else is added to it. Writing is the one line that scales with the size of the site, so it is published at every page band.",
+      "rateNote": "A launch inside eight weeks adds 15 to 20 per cent to the total, because design and build have to overlap and more of the team is on the project at once. Choosing Shopify for an online store, or a dashboard for a web application, adds nothing, because the starting figure for that project type already covers it. Care plans and the Ongoing partner plan start at $1,500 a month and are quoted separately from the build.",
+      "rateColumns": {
+        "option": "Answer",
+        "amount": "Adds to the build"
+      },
+      "rateContentRow": "{option} ({pages} pages)"
+    },
+    "faq": {
+      "heading": "What else do people ask about cost?",
+      "intro": "The questions that come up most often once someone has a range, answered plainly."
+    },
+    "cta": {
+      "heading": "Ready to turn the range into a fixed price?",
+      "body": "Book thirty minutes with the person who would run the project. Bring your range, hear what would move it, and leave with a clear idea of what the written proposal would say.",
+      "primaryCta": {
+        "label": "Book a consultation",
+        "href": "/contact/"
+      },
+      "secondaryCta": {
+        "label": "See pricing in full",
+        "href": "/pricing/"
+      }
+    }
+  },
+  "tiers": [
+    {
+      "name": "Focused build",
+      "priceLabel": "$12k to $25k",
+      "summary": "Marketing site, custom design, CMS and lead capture. Six to eight weeks.",
+      "highlighted": false
+    },
+    {
+      "name": "Platform build",
+      "priceLabel": "$25k to $60k",
+      "summary": "Everything above plus booking, dashboard, campaigns and integrations. Nine to fourteen weeks.",
+      "highlighted": true
+    },
+    {
+      "name": "Ongoing partner",
+      "priceLabel": "From $1.5k/mo",
+      "summary": "Care, monitoring, a fixed development allowance and quarterly funnel review. Month to month.",
+      "highlighted": false
+    }
+  ],
+  "rates": [
+    {
+      "step": "projectType",
+      "title": "Project type",
+      "rows": [
+        {
+          "label": "A new marketing website",
+          "value": "$12,000 to $16,000"
+        },
+        {
+          "label": "A redesign of the site we have",
+          "value": "$13,000 to $18,000"
+        },
+        {
+          "label": "An online store",
+          "value": "$22,000 to $30,000"
+        },
+        {
+          "label": "A web application or portal",
+          "value": "$28,000 to $40,000"
+        }
+      ]
+    },
+    {
+      "step": "pageCount",
+      "title": "Page count",
+      "rows": [
+        {
+          "label": "Under 10",
+          "value": "Included"
+        },
+        {
+          "label": "10 to 50",
+          "value": "$2,000 to $4,000"
+        },
+        {
+          "label": "50 to 150",
+          "value": "$5,000 to $9,000"
+        },
+        {
+          "label": "More than 150",
+          "value": "$9,000 to $16,000"
+        }
+      ]
+    },
+    {
+      "step": "designDepth",
+      "title": "Design depth",
+      "rows": [
+        {
+          "label": "Our component library, styled to your brand",
+          "value": "Included"
+        },
+        {
+          "label": "A custom design for this site",
+          "value": "$3,000 to $6,000"
+        },
+        {
+          "label": "A custom design and brand work",
+          "value": "$7,000 to $12,000"
+        }
+      ]
+    },
+    {
+      "step": "content",
+      "title": "Content",
+      "rows": [
+        {
+          "label": "We have it ready",
+          "value": "Included"
+        },
+        {
+          "label": "We have it, but it needs editing (Under 10 pages)",
+          "value": "$1,000 to $2,000"
+        },
+        {
+          "label": "We have it, but it needs editing (10 to 50 pages)",
+          "value": "$1,500 to $3,000"
+        },
+        {
+          "label": "We have it, but it needs editing (50 to 150 pages)",
+          "value": "$2,500 to $5,000"
+        },
+        {
+          "label": "We have it, but it needs editing (More than 150 pages)",
+          "value": "$3,500 to $7,000"
+        },
+        {
+          "label": "Write it for us (Under 10 pages)",
+          "value": "$2,500 to $4,500"
+        },
+        {
+          "label": "Write it for us (10 to 50 pages)",
+          "value": "$4,000 to $7,000"
+        },
+        {
+          "label": "Write it for us (50 to 150 pages)",
+          "value": "$6,500 to $11,500"
+        },
+        {
+          "label": "Write it for us (More than 150 pages)",
+          "value": "$9,000 to $16,000"
+        }
+      ]
+    },
+    {
+      "step": "integrations",
+      "title": "Integrations",
+      "rows": [
+        {
+          "label": "A CRM",
+          "value": "$2,000 to $4,000"
+        },
+        {
+          "label": "Email marketing",
+          "value": "$1,500 to $3,000"
+        },
+        {
+          "label": "Booking or scheduling",
+          "value": "$3,000 to $5,000"
+        },
+        {
+          "label": "Payments",
+          "value": "$3,000 to $6,000"
+        },
+        {
+          "label": "An ERP or inventory system",
+          "value": "$6,000 to $12,000"
+        },
+        {
+          "label": "Something you built yourselves",
+          "value": "$5,000 to $10,000"
+        }
+      ]
+    },
+    {
+      "step": "cms",
+      "title": "Platform",
+      "rows": [
+        {
+          "label": "Recommend one for us",
+          "value": "Included"
+        },
+        {
+          "label": "A headless content management system",
+          "value": "Included"
+        },
+        {
+          "label": "WordPress",
+          "value": "Included"
+        },
+        {
+          "label": "Shopify",
+          "value": "$2,000 to $4,000"
+        },
+        {
+          "label": "A dashboard we build for you",
+          "value": "$6,000 to $12,000"
+        }
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "id": "calculator-accuracy",
+      "question": "How accurate is a website cost calculator?",
+      "answer": "This one is as accurate as eight questions allow, which is enough to tell you whether we are in your range and not enough to sign a contract on. It uses the rates published on this page and the same code our own system uses, so the figure is not a marketing number. Once we have been through your content, your integrations and the data to migrate, the range becomes a fixed price for a fixed scope in the written proposal."
+    },
+    {
+      "id": "calculator-price-variation",
+      "question": "Why do website prices vary so much between agencies?",
+      "answer": "Because the word website covers everything from a template filled in over a weekend to a platform with a dashboard, a booking system and a live connection to an inventory system. Rates differ too, and so does what is included: design, content structure, testing, accessibility and performance work are part of the price here rather than extras added later. Comparing quotes is easier when you compare what each scope says it will deliver instead of the number on the front page."
+    },
+    {
+      "id": "calculator-phases",
+      "question": "Can we build the site in phases to spread the cost?",
+      "answer": "Often, yes. The usual approach is to launch the pages that earn their keep first, then add the sections and integrations that need more working out. Phasing costs a little more in total than one continuous build, because each phase carries its own testing and release, but it moves the spend into a schedule you can plan around."
+    },
+    {
+      "id": "calculator-smallest-project",
+      "question": "What is the smallest project you take on?",
+      "answer": "Around $12,000, the bottom of the focused band. Below that we cannot do the discovery, design, build, testing and launch properly, and a project done at half attention is worse value than one not started. If your budget is under that figure we will say so on the first call rather than stretch the scope to fit."
+    },
+    {
+      "id": "calculator-sales-call",
+      "question": "Will I get a sales call after using the calculator?",
+      "answer": "No. You get the range on this page and a copy by email, and nothing else follows unless you ask for it. If you do book a consultation from the result, the person you talk to is the one who would run the project, and your answers arrive with the booking so the thirty minutes goes on your project rather than on the same eight questions."
+    },
+    {
+      "id": "calculator-fast-launch",
+      "question": "Does a faster launch always cost more?",
+      "answer": "Only when it compresses the schedule. A launch inside eight weeks adds 15 to 20 per cent, because design and build have to overlap and more of the team is on the project at once. About four months or longer adds nothing, because that is the pace a focused build or a platform build runs at anyway."
+    },
+    {
+      "id": "calculator-store-vs-site",
+      "question": "What makes an online store cost more than a marketing site?",
+      "answer": "Checkout, payments, stock and the operational work behind them. A marketing site has to explain and convert; a store also has to take money reliably, keep prices and stock in step with whatever system runs the business, and handle returns and reconciliation without anyone re-keying an order. That is why the starting figure for a store is higher, and why connecting an inventory or ERP system is the largest single addition in the table above."
+    }
+  ],
+  "events": {
+    "steps": [
+      "calculator-step-1-project-type",
+      "calculator-step-2-timeline",
+      "calculator-step-3-page-count",
+      "calculator-step-4-design-depth",
+      "calculator-step-5-content",
+      "calculator-step-6-integrations",
+      "calculator-step-7-cms",
+      "calculator-step-8-support"
+    ],
+    "gate": "calculator-email-gate",
+    "submit": "calculator-email-submit",
+    "result": "calculator-result",
+    "unsent": "calculator-result-unsent",
+    "book": "calculator-book-consultation",
+    "restart": "calculator-restart"
+  }
+}

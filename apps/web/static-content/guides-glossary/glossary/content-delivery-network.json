@@ -1,0 +1,69 @@
+{
+  "slug": "content-delivery-network",
+  "term": "Content delivery network (CDN)",
+  "letter": "C",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What is a content delivery network?",
+    "description": "A content delivery network is a set of servers spread around the world that serve copies of your files from somewhere near each visitor.",
+    "ogImage": null
+  },
+  "definition": "A content delivery network is a set of servers spread around the world that serve copies of your files from somewhere near each visitor.",
+  "answerBlock": "A content delivery network is a set of servers spread around the world that serve copies of your files from somewhere near each visitor. Distance costs time, so a file travelling from the same city arrives sooner than one crossing a continent. Images, stylesheets and scripts are the usual candidates.",
+  "body": {
+    "heading": "What does a CDN change in practice?",
+    "paragraphs": [
+      "Two things: the distance a file travels, and how often your own server is asked for it at all. A cached copy near the visitor answers immediately, and your server handles only the requests that genuinely need it.",
+      "A CDN does not fix a slow page on its own. If the largest element on the page is a hero image that is four times larger than it needs to be, delivering that image from nearby only makes it slightly less slow. Caching rules matter too: a poorly configured cache can serve yesterday's price list.",
+      "Most CDNs also absorb traffic spikes and filter obvious abuse before it reaches your infrastructure, which is worth as much as the speed on the day a campaign lands."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "For a business selling in more than one region, the difference between a local and a transcontinental round trip is visible in Largest Contentful Paint, which is one of the measures Google uses to describe page experience.",
+      "It also makes launches less frightening: the expensive part of a traffic spike is served from cache rather than from your database."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "A campaign landing page with a background video serves the poster image and the video from a nearby edge, so a visitor on a hotel connection sees the hero immediately rather than waiting for a file from another continent.",
+    "caseStudy": null
+  },
+  "service": {
+    "slug": "care-plans",
+    "title": "Website care plans",
+    "line": "Patching, backups with a tested restore, monitoring and a fixed allowance of development hours."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "backup-and-restore",
+        "term": "Backup and restore",
+        "definition": "A backup is a copy of the site and its database held somewhere else, and a restore is the rehearsed process of putting that copy back."
+      },
+      {
+        "slug": "dns",
+        "term": "DNS",
+        "definition": "DNS is the system that turns a domain name someone types into the address of the server that answers for it."
+      },
+      {
+        "slug": "staging-environment",
+        "term": "Staging environment",
+        "definition": "A staging environment is a private copy of the live site where changes are tested before anyone outside the company sees them."
+      },
+      {
+        "slug": "tls-certificate",
+        "term": "TLS certificate",
+        "definition": "A TLS certificate is the file that lets a website prove who it is and encrypt the traffic between it and the visitor."
+      }
+    ]
+  },
+  "sources": [
+    {
+      "label": "Largest Contentful Paint on web.dev",
+      "href": "https://web.dev/articles/lcp"
+    }
+  ]
+}

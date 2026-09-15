@@ -1,0 +1,232 @@
+{
+  "slug": "core-web-vitals-guide",
+  "title": "The Core Web Vitals guide for business websites",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "Core Web Vitals guide",
+    "description": "What LCP, INP and CLS measure, the thresholds published on web.dev, what breaks them on a business site, and how to fix it.",
+    "ogImage": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=72"
+  },
+  "answerBlock": "Core Web Vitals are three measurements Google publishes to describe how a page feels: loading, responsiveness and visual stability. A site passes when the seventy-fifth percentile of real visits meets each threshold, which web.dev gives as 2.5 seconds for Largest Contentful Paint, 200 milliseconds for Interaction to Next Paint and 0.1 for Cumulative Layout Shift. This guide explains what breaks each one on an ordinary business website and what to do about it.",
+  "hero": {
+    "intro": "Written for the person who has been handed a failing report and asked what it will cost to fix, and for anyone about to sign off a build.",
+    "pageCountLabel": "10 pages",
+    "formatLabel": "PDF",
+    "ctaLabel": "Get the guide",
+    "cover": {
+      "src": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=72",
+      "alt": "Performance and analytics review before launch"
+    }
+  },
+  "summary": {
+    "heading": "What does this guide cover?",
+    "intro": "The whole argument is below. The download adds the diagnostic order we work in, a vendor question list and the wording we use in contracts.",
+    "sections": [
+      {
+        "id": "section-1",
+        "heading": null,
+        "paragraphs": [
+          "The reason to care is not mainly the ranking signal. A page that takes six seconds on a phone loses the buyer before it has made its argument, and nobody ever sees the enquiry that did not happen."
+        ],
+        "bullets": []
+      },
+      {
+        "id": "section-2",
+        "heading": "What do the three metrics measure?",
+        "paragraphs": [
+          "Largest Contentful Paint records when the biggest thing in the viewport has rendered, which is usually a hero image, a video poster or a large heading. It answers the question \"when did this page appear to be here\". web.dev gives 2.5 seconds or less as good.",
+          "Interaction to Next Paint records how long the page takes to show a visible response after a tap, a click or a key press, across the whole visit rather than only the first interaction. It answers \"does this page respond when I touch it\". The good threshold is 200 milliseconds or less.",
+          "Cumulative Layout Shift records how much content moves about while the page settles. It answers \"did the button move as I reached for it\". The good threshold is 0.1 or less."
+        ],
+        "bullets": []
+      },
+      {
+        "id": "section-3",
+        "heading": "Why does the report in Search Console disagree with my Lighthouse score?",
+        "paragraphs": [
+          "Because they measure different populations. Lighthouse runs one simulated visit on a chosen device; field data aggregates real visits at the seventy-fifth percentile, so the slowest quarter of your visitors are not averaged away. Use field data to decide whether there is a problem, and laboratory data to find its cause."
+        ],
+        "bullets": []
+      },
+      {
+        "id": "section-4",
+        "heading": "What usually breaks Largest Contentful Paint?",
+        "paragraphs": [
+          "Images, almost always. A hero photograph served at desktop size to a phone, in an old format, without a width and height and without priority, will dominate this measurement. Serving a correctly sized modern format and marking the hero image as high priority is frequently the single biggest improvement available.",
+          "Fonts are second. A web font that blocks rendering hides the heading until it arrives; a font that swaps late causes a shift as well. Third is the server itself: if the response takes a second before a byte of HTML arrives, nothing downstream can recover it, which is where caching and a content delivery network earn their keep."
+        ],
+        "bullets": [
+          "Size and prioritise the hero image; never lazy-load it",
+          "Give background video a poster image and never let it block the first paint",
+          "Preload the fonts the first screen needs, and let text show immediately",
+          "Cache the HTML, and serve static files from an edge near the visitor"
+        ]
+      },
+      {
+        "id": "section-5",
+        "heading": "What usually breaks Interaction to Next Paint?",
+        "paragraphs": [
+          "JavaScript competing for the main thread. Every script the page loads has to be parsed and executed, and while that is happening the browser cannot respond to a tap. Marketing tags, chat widgets, carousels, cookie banners and analytics all add to the same queue, and each one is usually added by a different department.",
+          "The durable fix is architectural: render on the server and send less JavaScript in the first place. Components that only display information do not need to run in the browser at all. What has to be interactive should be small, loaded when it is needed, and measured.",
+          "The practical version on an existing site is an audit of third-party scripts. Every tag has an owner and a reason, or it is removed. A heat-mapping tool nobody has opened in a year is a permanent tax on every visitor."
+        ],
+        "bullets": []
+      },
+      {
+        "id": "section-6",
+        "heading": "What usually breaks Cumulative Layout Shift?",
+        "paragraphs": [
+          "Something arriving late into space that was not reserved for it. An image without dimensions, an advertisement slot that sizes itself on arrival, a banner inserted above the content, a font swapping to a different metric, or a component that appears after its data loads.",
+          "The fixes are mechanical: give every image and embed an explicit aspect ratio, reserve the height of anything that loads late, insert banners in space that already exists rather than pushing content down, and never animate a property that affects layout. Motion should be opacity and transform only, which is also what keeps it smooth."
+        ],
+        "bullets": []
+      },
+      {
+        "id": "section-7",
+        "heading": "How do you keep a site fast after it launches?",
+        "paragraphs": [
+          "By making the thresholds a release gate rather than a goal. On this platform the build fails when a marketing route exceeds its JavaScript budget, and the performance checks run on every pull request, so a regression is a conversation before release rather than a discovery in a quarterly report.",
+          "Then watch the field data continuously, because the laboratory cannot see what real visitors have: older phones, congested networks, and the tag somebody added to the tag manager on Friday afternoon."
+        ],
+        "bullets": []
+      },
+      {
+        "id": "section-8",
+        "heading": "What should you require from a supplier?",
+        "paragraphs": [
+          "Ask for the thresholds in writing, measured in the field at the seventy-fifth percentile, on named templates. Ask how they are checked on every release rather than at launch, and what the JavaScript budget is for a marketing page.",
+          "A supplier who answers with a laboratory score from a laptop is describing a photograph of a good day. The measurement that matters is taken from your buyers’ phones."
+        ],
+        "bullets": []
+      }
+    ]
+  },
+  "takeaways": {
+    "heading": "What should I take away from it?",
+    "items": [
+      "Judge the site on field data at the seventy-fifth percentile, not on a laboratory score from a fast laptop.",
+      "Largest Contentful Paint is usually an image or font problem, and it is usually the cheapest to fix.",
+      "Interaction to Next Paint is a JavaScript problem, and it is the one that needs architectural change.",
+      "Cumulative Layout Shift is almost always missing reserved space for something that arrives late.",
+      "Put the thresholds in the contract and in continuous integration, so they are a gate rather than a goal."
+    ]
+  },
+  "gate": {
+    "heading": "How do I get the full guide?",
+    "intro": "Tell us where to send it. The PDF opens on this page as soon as you press send, and everything above stays free to read.",
+    "submitLabel": "Send me the guide",
+    "footnote": "Your name and email are stored in our own database, never sold or passed on, and you can ask us to delete them at any time.",
+    "fileUrl": "/guides/core-web-vitals-guide.pdf",
+    "fileLabel": "PDF, 10 pages",
+    "success": {
+      "heading": "Your guide is ready.",
+      "body": "The download is below. We have your request on file, and nobody will telephone you about it.",
+      "downloadLabel": "Download the guide"
+    }
+  },
+  "faq": {
+    "heading": "What do people ask about site speed?",
+    "intro": null,
+    "items": [
+      {
+        "id": "core-web-vitals-guide-faq-1",
+        "question": "What are the Core Web Vitals thresholds?",
+        "answer": "web.dev publishes good as 2.5 seconds or less for Largest Contentful Paint, 200 milliseconds or less for Interaction to Next Paint, and 0.1 or less for Cumulative Layout Shift, measured at the seventy-fifth percentile of real visits. Anything above those needs improvement, and there is a second, worse band beyond it."
+      },
+      {
+        "id": "core-web-vitals-guide-faq-2",
+        "question": "Why does my Lighthouse score differ from the report in Search Console?",
+        "answer": "They measure different things. Lighthouse is a laboratory test on one simulated device and connection, useful for diagnosing causes. Search Console reports field data: real visits from real people on real devices, aggregated at the seventy-fifth percentile. A site can score well in the laboratory and fail in the field, usually because real visitors are on slower phones and worse networks than the test."
+      },
+      {
+        "id": "core-web-vitals-guide-faq-3",
+        "question": "Do Core Web Vitals actually affect rankings?",
+        "answer": "Page experience is one of many signals, and content relevance matters far more. The stronger argument is commercial rather than algorithmic: a page that takes six seconds on a phone loses buyers before it has said anything, whatever its ranking."
+      },
+      {
+        "id": "core-web-vitals-guide-faq-4",
+        "question": "How long does it take to fix a failing site?",
+        "answer": "Image handling, font loading and reserved space for late-loading elements are usually days of work and account for most of the improvement. Cutting JavaScript enough to fix a bad Interaction to Next Paint is deeper work, because it usually means changing how much of the page is rendered in the browser at all."
+      },
+      {
+        "id": "core-web-vitals-guide-faq-5",
+        "question": "What should we ask a supplier to guarantee?",
+        "answer": "Thresholds measured in the field at the seventy-fifth percentile, on named key templates, on a mid-range phone, checked in continuous integration on every release rather than once at launch. A promise about a laboratory score on a laptop is not worth writing down."
+      }
+    ]
+  },
+  "service": {
+    "heading": "Who does this work?",
+    "intro": null,
+    "item": {
+      "slug": "website-redesign",
+      "title": "Website redesign",
+      "line": "Rebuild a site that stopped working for the business, keep the rankings and pages that earn, and fix conversion, speed or a stalled project on the way."
+    }
+  },
+  "related": {
+    "heading": "What else should I read?",
+    "guides": [
+      {
+        "slug": "b2b-website-planning-guide",
+        "title": "The B2B website planning guide",
+        "summary": "What to decide before you brief anyone: the one job the site has to do, the content you already have, the integrations that carry the risk, and what actually moves the price.",
+        "pageCountLabel": "11 pages",
+        "cover": {
+          "src": "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=800&q=72",
+          "alt": "Two colleagues talking across a meeting table, one taking notes beside an open laptop"
+        },
+        "topics": [
+          "Scope",
+          "Budget",
+          "Content",
+          "Launch"
+        ],
+        "updatedAt": "2026-09-15T00:00:00.000Z"
+      }
+    ],
+    "terms": [
+      {
+        "slug": "core-web-vitals",
+        "term": "Core Web Vitals",
+        "definition": "Core Web Vitals are three measurements Google publishes to describe how a page feels to the people using it: loading, responsiveness and visual stability."
+      },
+      {
+        "slug": "content-delivery-network",
+        "term": "Content delivery network (CDN)",
+        "definition": "A content delivery network is a set of servers spread around the world that serve copies of your files from somewhere near each visitor."
+      },
+      {
+        "slug": "server-side-rendering",
+        "term": "Server-side rendering",
+        "definition": "Server-side rendering means the server builds the finished HTML for a page and sends it, rather than sending an empty shell for the browser to fill in."
+      },
+      {
+        "slug": "page-builder",
+        "term": "Page builder",
+        "definition": "A page builder is a drag-and-drop editor that lets someone assemble a web page from blocks without writing code."
+      }
+    ]
+  },
+  "sources": {
+    "heading": "Where do these figures come from?",
+    "items": [
+      {
+        "label": "Core Web Vitals on web.dev",
+        "href": "https://web.dev/articles/vitals"
+      },
+      {
+        "label": "Largest Contentful Paint",
+        "href": "https://web.dev/articles/lcp"
+      },
+      {
+        "label": "Interaction to Next Paint",
+        "href": "https://web.dev/articles/inp"
+      },
+      {
+        "label": "Cumulative Layout Shift",
+        "href": "https://web.dev/articles/cls"
+      }
+    ]
+  }
+}

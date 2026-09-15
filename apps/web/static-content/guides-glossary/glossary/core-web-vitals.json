@@ -1,0 +1,88 @@
+{
+  "slug": "core-web-vitals",
+  "term": "Core Web Vitals",
+  "letter": "C",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What are Core Web Vitals?",
+    "description": "Core Web Vitals are three measurements Google publishes to describe how a page feels to the people using it: loading, responsiveness and visual stability.",
+    "ogImage": null
+  },
+  "definition": "Core Web Vitals are three measurements Google publishes to describe how a page feels to the people using it: loading, responsiveness and visual stability.",
+  "answerBlock": "Core Web Vitals are three measurements Google publishes to describe how a page feels to the people using it: loading, responsiveness and visual stability. They are Largest Contentful Paint, Interaction to Next Paint and Cumulative Layout Shift. A page passes when the seventy-fifth percentile of real visits meets each threshold.",
+  "body": {
+    "heading": "What are the three metrics and their thresholds?",
+    "paragraphs": [
+      "Largest Contentful Paint measures when the biggest thing on screen has rendered, and web.dev gives 2.5 seconds or less as good. Interaction to Next Paint measures how long the page takes to respond visibly after a tap or a click, and the good threshold is 200 milliseconds or less. Cumulative Layout Shift measures how much the page jumps about while it loads, and the good threshold is 0.1 or less.",
+      "The figures that count are field data: measurements from real visits on real devices and connections, taken at the seventy-fifth percentile so the slowest quarter of your visitors are not hidden by the average. A laboratory score on a fast laptop can look excellent while the field data fails.",
+      "The usual culprits are predictable. A hero image or video that is not sized and prioritised delays Largest Contentful Paint. Heavy JavaScript on the main thread ruins Interaction to Next Paint. Images, advertisements and late-loading fonts without reserved space cause layout shift."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "Page experience is one of the signals Google uses, but the harder commercial argument is simpler: a page that takes six seconds on a phone loses buyers before it says anything. Speed is a conversion feature that happens to be a ranking one.",
+      "It is also a contractual lever. Writing thresholds into an agreement with a supplier turns \"fast\" into something you can check, which is why we run them as a release gate rather than a goal."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "Verona Home replatformed onto a build that reaches a 1.4 second mobile Largest Contentful Paint, comfortably inside the 2.5 second threshold web.dev publishes as good.",
+    "caseStudy": {
+      "slug": "verona-home",
+      "clientName": "Verona Home",
+      "metric": {
+        "value": "1.4s",
+        "label": "Mobile LCP"
+      }
+    }
+  },
+  "service": {
+    "slug": "ai-search-visibility",
+    "title": "AI search visibility",
+    "line": "Technical SEO plus the newer work of being cited by ChatGPT, Perplexity, Gemini and AI overviews."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "answer-engine-optimisation",
+        "term": "Answer engine optimisation",
+        "definition": "Answer engine optimisation is the work of getting a company cited in the answers that AI assistants write, rather than only ranked in a list of blue links."
+      },
+      {
+        "slug": "canonical-tag",
+        "term": "Canonical tag",
+        "definition": "A canonical tag tells search engines which address is the official one for a page that can be reached at several addresses."
+      },
+      {
+        "slug": "llms-txt",
+        "term": "llms.txt",
+        "definition": "llms.txt is a plain text file at the root of a website that describes the site and points to its most useful pages for AI assistants."
+      },
+      {
+        "slug": "structured-data",
+        "term": "Structured data",
+        "definition": "Structured data is machine-readable markup added to a page that states what it is about in a vocabulary search engines understand."
+      }
+    ]
+  },
+  "sources": [
+    {
+      "label": "Core Web Vitals on web.dev",
+      "href": "https://web.dev/articles/vitals"
+    },
+    {
+      "label": "Largest Contentful Paint",
+      "href": "https://web.dev/articles/lcp"
+    },
+    {
+      "label": "Interaction to Next Paint",
+      "href": "https://web.dev/articles/inp"
+    },
+    {
+      "label": "Cumulative Layout Shift",
+      "href": "https://web.dev/articles/cls"
+    }
+  ]
+}

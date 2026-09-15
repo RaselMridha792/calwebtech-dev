@@ -1,0 +1,175 @@
+{
+  "slug": "why-chatgpt-recommends-your-competitor",
+  "title": "Why ChatGPT recommends your competitor",
+  "excerpt": "Language models cite structured, corroborated sources. Here is how to become one of them.",
+  "answerBlock": "An AI assistant names the companies whose pages it can reach, read and corroborate, not the ones that rank highest. Winning that citation means opening each page with a direct answer, publishing figures with their conditions attached, and making sure the same claims appear somewhere other than your own website. It is an editorial and technical job rather than a keyword one.",
+  "seo": {
+    "title": "Why ChatGPT recommends your competitor",
+    "description": "Why an AI assistant names one supplier and not another, what makes a page citable, and how to measure whether the work landed.",
+    "ogImage": null
+  },
+  "category": {
+    "slug": "ai-search",
+    "name": "AI search"
+  },
+  "author": {
+    "slug": "rasel-mridha",
+    "name": "Rasel Mridha",
+    "role": "Chief Technology Officer",
+    "bio": "Owns architecture and delivery. Writes the technical plan behind your quote.",
+    "photo": {
+      "src": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=500&q=70",
+      "alt": "Rasel Mridha, Chief Technology Officer"
+    },
+    "credentials": [
+      "Architecture",
+      "Delivery",
+      "Technical planning"
+    ]
+  },
+  "publishedAt": "2026-09-02T09:00:00.000Z",
+  "updatedAt": "2026-09-10T11:30:00.000Z",
+  "readingTime": 9,
+  "wordCount": 1786,
+  "cover": {
+    "src": "https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?auto=format&fit=crop&w=1200&q=70",
+    "alt": "Analytics charts on a screen"
+  },
+  "takeaways": [
+    "Assistants answer from a handful of sources they can read, corroborate and attribute. Being one of them is an editorial and technical job, not a keyword job.",
+    "Write the direct answer first. The two or three sentences under your heading are what gets lifted; the marketing paragraph underneath is not.",
+    "Corroboration decides ties. A claim that appears only on your own site is weaker than the same claim repeated on a directory, a review site, a partner page and a press mention.",
+    "Let the crawlers in deliberately. OpenAI, Google and Perplexity all publish the user agents they use and the robots.txt tokens that control them.",
+    "Measure referrals from assistant hostnames in your own analytics, then judge the work on qualified enquiries rather than on ranking positions."
+  ],
+  "body": "## Why does an AI assistant name one supplier and not another?\n\nBecause it was given something to quote. When a buyer types \"best B2B ecommerce agency for distributors\" into ChatGPT, the assistant does not consult a ranking table. It retrieves a small set of pages it can reach, reads them, and writes an answer out of the parts it can attribute. Three or four companies get named. Everybody else is invisible, and the invisibility is silent: there is no position eleven to look up, no report telling you that you were nearly chosen.\n\nThat changes what the work is. Classic search rewarded a page that matched a query well enough to rank. Retrieval rewards a page that answers a question completely enough to be quoted, and a company whose claims can be checked somewhere other than its own homepage. Those are two different jobs, and the second one is mostly editing.\n\n## What does a language model actually read?\n\nThree things, in roughly this order.\n\nThe first is its training data, which is old, broad, and out of your hands. The second is what it fetches at the moment of the question. Assistants with browsing pull live pages through a search index and read them. The third is structure: the headings, lists, tables and schema markup that make a page easy to segment into quotable pieces.\n\nYou can influence the second and third. Both are ordinary web work. OpenAI publishes the user agents it uses and how to allow or block each one in robots.txt: `GPTBot` for training, `OAI-SearchBot` for the search index behind ChatGPT, and `ChatGPT-User` for the fetch that happens when a person's question needs a live page ([OpenAI's bot documentation](https://platform.openai.com/docs/bots)). Google documents `Google-Extended`, a robots.txt token that controls whether your pages are used to ground Gemini answers, separately from normal Googlebot crawling ([Google's crawler documentation](https://developers.google.com/search/docs/crawling-indexing/google-common-crawlers)). Perplexity documents `PerplexityBot` for its index and a separate user-triggered fetcher ([Perplexity's bot documentation](https://docs.perplexity.ai/guides/bots)).\n\nMost sites we audit block one of these by accident, usually through a security product or a stale robots.txt rule copied between projects. It is worth ten minutes to check.\n\n### Does it read your site, or somebody else's page about you?\n\nOften somebody else's. Assistants prefer sources that look independent, and a directory entry, a review profile, a partner listing or a trade publication mention all read as corroboration in a way that your own \"why choose us\" page never will.\n\nThis is the part agencies skip, because it is not a deliverable you can screenshot. If your capability claim appears in exactly one place on the internet, and that place is your own site, the model has nothing to cross-check it against, and a competitor whose claim appears in five places wins the tie.\n\n## Which pages get quoted, and which get skipped?\n\nA page gets quoted when a specific question can be answered from a small, self-contained part of it. It gets skipped when the answer is spread across a hero, three testimonials and a call to action.\n\nHere is the pattern, page by page:\n\n| Page shape | What happens |\n|---|---|\n| Heading is a question, answer is the next two sentences | Lifted almost verbatim |\n| Heading is a slogan, answer is four paragraphs down | Skipped for something clearer |\n| Comparison written as prose | Rarely used |\n| The same comparison as a table | Used, and often reproduced |\n| Prices behind a form | Replaced by a competitor's published range |\n| Prices published with what changes them | Quoted, with your conditions attached |\n\nThe last row is the one that costs the most money. When a buyer asks what a redesign costs and your pricing is gated, the assistant answers from whoever published a number. Your competitor's range becomes the anchor the buyer arrives with.\n\n## What does a citable page look like?\n\nIt opens with the answer. Under the heading, before any persuasion, two or three plain sentences that a stranger could read aloud and be correct. Then the detail, then the argument, then the offer.\n\nIt uses headings that are the questions buyers type, not internal category names. \"How long does a B2B website build take?\" is a heading. \"Our process\" is a filing label.\n\nIt puts comparable facts in tables, because a table survives being pulled out of its page. It gives figures with their conditions attached, so a number cannot be quoted in a way you would not stand behind. It marks the page up with schema.org types that match what the page is, following Google's structured data guidelines, which are explicit that the markup must describe content visible on the page ([structured data policies](https://developers.google.com/search/docs/appearance/structured-data/sd-policies)). Invented markup is the fastest way to get ignored.\n\nAnd it says who wrote it, what they do, and when it was last checked. An `Article` with a named `author` and a `dateModified` is easier to attribute than an unsigned page with no date ([schema.org Article](https://schema.org/Article)).\n\n## How do you find out what the assistants say about you now?\n\nAsk them, systematically, and write the answers down.\n\nTake the fifteen questions your sales team hears most. Put each one into ChatGPT, Gemini, Perplexity and Google's AI overviews. Record which companies are named, which sources are cited, and what claim each citation supports. An afternoon produces a spreadsheet that is more useful than most keyword reports, because it tells you exactly which pages are being read and which competitor claim you are being measured against.\n\nTwo patterns show up almost every time. You are absent from questions you are genuinely good at, because nobody has written the page. And you are present but described wrongly, because the only text about you is three years old.\n\n## What should you fix first?\n\nOrder the work by how much of the answer you already own.\n\n### What can you fix this month without a rebuild?\n\nRewrite the top ten commercial pages so each opens with a direct answer. Convert the internal headings into buyer questions. Publish a price range with the conditions that move it. Add a short, honest \"who this is not for\" section, which assistants quote surprisingly often because it is specific.\n\nNone of this needs a rebuild. It is editing, and it is the half of the work that moves fastest.\n\n### What has to happen off your own site?\n\nClaim and complete the directory and review profiles that already exist for your company. Make sure the description in each one matches the description on your site, word for word where you can. Get the partner and technology listings updated. Write one piece of genuinely new, checkable material a month, with data you actually hold.\n\nIf the site itself is slow, unstructured or hard to crawl, that becomes the third month, and it is the point where this stops being editing and becomes a build. Our [AI search visibility](/services/ai-search-visibility/) work is the technical half of exactly this: crawlability, structure, schema and the measurement that tells you whether it landed.\n\n## How do you measure whether it worked?\n\nNot with rankings, because there are none. Three measures work.\n\nReferral traffic from assistant hostnames, which appears in ordinary analytics as visits from `chatgpt.com`, `perplexity.ai` and similar. The volume is small compared with search, and the intent is much higher, because the person arrives having already been told you are a candidate.\n\nCitation share, from the spreadsheet above, re-run monthly. Count how many of the fifteen questions name you, and whether the claim attached to your name is the one you want.\n\nEnquiry quality, which is the only one that matters. Assistant-referred enquiries tend to arrive later in the decision, with the budget and the timeline already settled, because the buyer did their shortlisting in the chat window. Tag them at the point of capture so you can tell.\n\nThe [Truvia Labs rebuild](/work/truvia-labs/) is the clearest example we have of the compounding effect. Marketing site, documentation and in-app onboarding were rebuilt on one design system, which meant every product claim finally read the same wherever a model found it. The organic numbers moved, and so did the demo bookings, because the pages a buyer was sent to actually answered the question that sent them.\n\n## Which shortcuts make this worse?\n\nFour, and we see all of them.\n\nPublishing volume. Thirty thin pages about the same topic dilute the one good page you had, and none of them is complete enough to quote. One thorough page beats ten shallow ones, and it is cheaper to maintain.\n\nMarking up claims the page does not make. Structured data that describes ratings, prices or authors that a reader cannot see on the page is against Google's published guidelines, and it is the sort of thing that gets a site quietly demoted rather than warned.\n\nWriting for the model instead of the buyer. Text stuffed with question headings and no substance underneath reads badly to a person and adds nothing for a model, which is looking for an answer rather than a shape.\n\nBlocking everything out of caution. Some companies block every AI user agent by default, then wonder why they never appear. There is a real decision to make about training crawlers, which take your text without sending anyone back. There is much less of a decision about the search and user-triggered fetchers, which are how a buyer reaches you at all.\n\n## Is this worth doing before the site is fixed?\n\nUsually yes, and this is the honest caveat. If your pages are already reachable and reasonably fast, the editing work above is cheap and pays back within a quarter. If the site is a page-builder assembly that takes eight seconds to load and has one heading per page, retrieval is not your first problem, and no amount of schema will fix it. Rebuild first, then do this.\n\nThere is also a limit worth stating plainly. Nobody can promise placement in an assistant's answer, and anybody who does is selling something they do not control. What you can control is whether a model that wants to name you has something clear, current and corroborated to quote. That is the whole discipline, and it looks a great deal like good publishing.\n\n## What does this cost, and who owns it?\n\nIt is a marketing and content job with a technical floor. Someone has to own the fifteen questions, the monthly re-test and the profile housekeeping, and that someone is usually in-house. The technical floor, which is crawlability, structure, schema, speed and the analytics tagging, is a one-off piece of engineering that sits under everything else.\n\nIf you want the technical half handled and the editorial half taught to your team, that is the shape of the engagement. [Tell us the fifteen questions](/contact/) and we will run the first audit against them, so you can see where you stand before committing to anything.",
+  "services": [
+    {
+      "slug": "ai-search-visibility",
+      "title": "AI search visibility",
+      "summary": "Technical SEO plus the newer work of being cited by ChatGPT, Perplexity, Gemini and AI overviews."
+    }
+  ],
+  "caseStudy": {
+    "slug": "truvia-labs",
+    "clientName": "Truvia Labs",
+    "summary": "Marketing site, docs and in-app onboarding rebuilt on one design system so releases stopped breaking the brand.",
+    "tags": [
+      "Texas, USA",
+      "SaaS",
+      "Next.js"
+    ],
+    "image": {
+      "src": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=70",
+      "alt": "Overhead view of a shared desk with several laptops and phones in use"
+    },
+    "metrics": [
+      {
+        "value": "+140%",
+        "label": "Demo bookings"
+      },
+      {
+        "value": "3.1x",
+        "label": "Organic sessions"
+      },
+      {
+        "value": "98",
+        "label": "Lighthouse mobile"
+      }
+    ]
+  },
+  "relatedArticles": [
+    {
+      "slug": "website-redesign-cost-2026",
+      "title": "What a website redesign should actually cost in 2026",
+      "excerpt": "A line-by-line breakdown of where the money goes, and the three items that quietly double most quotes.",
+      "category": {
+        "slug": "strategy",
+        "name": "Strategy"
+      },
+      "authorName": "Sawkat Hasan",
+      "readingTime": 7,
+      "publishedAt": "2026-08-19T09:00:00.000Z",
+      "updatedAt": "2026-09-08T11:30:00.000Z",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1200&q=70",
+        "alt": "Notebook and laptop on a desk"
+      },
+      "featured": true
+    },
+    {
+      "slug": "b2b-ecommerce-what-a-stock-theme-cannot-do",
+      "title": "What B2B buyers need that a stock ecommerce theme cannot do",
+      "excerpt": "Contract pricing, customer catalogues, minimum quantities and quoting are not theme settings. What actually changes when the buyer has an account.",
+      "category": {
+        "slug": "ecommerce",
+        "name": "Ecommerce"
+      },
+      "authorName": "Sawkat Hasan",
+      "readingTime": 7,
+      "publishedAt": "2026-08-05T09:00:00.000Z",
+      "updatedAt": "2026-08-05T09:00:00.000Z",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=1200&q=70",
+        "alt": "Tall racking stacked with boxed stock along a distribution warehouse aisle"
+      },
+      "featured": false
+    },
+    {
+      "slug": "core-web-vitals-in-plain-english",
+      "title": "Core Web Vitals in plain English",
+      "excerpt": "The three published thresholds, what each one really measures, and why the lab score and the field report never agree.",
+      "category": {
+        "slug": "engineering",
+        "name": "Engineering"
+      },
+      "authorName": "Rasel Mridha",
+      "readingTime": 6,
+      "publishedAt": "2026-07-22T09:00:00.000Z",
+      "updatedAt": "2026-08-26T11:30:00.000Z",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=70",
+        "alt": "Performance and analytics review before launch"
+      },
+      "featured": false
+    }
+  ],
+  "copy": {
+    "byLabel": "By",
+    "publishedLabel": "Published",
+    "updatedLabel": "Updated",
+    "readingTimeLabel": "min read",
+    "tocLabel": "On this page",
+    "takeawaysLabel": "Key takeaways",
+    "authorLabel": "About the author",
+    "serviceCta": {
+      "eyebrow": "The service behind this article",
+      "body": "If you would rather not run this yourself, this is the work we do and the way we price it. The first call is thirty minutes and costs nothing.",
+      "linkLabel": "See the service",
+      "contactCta": {
+        "label": "Tell us what you need",
+        "href": "/contact/"
+      }
+    },
+    "servicesHeading": "Which services put this into practice?",
+    "caseStudyLinkLabel": "Read the case study",
+    "relatedHeading": "What should you read next?",
+    "relatedLink": {
+      "label": "All insights",
+      "href": "/insights/"
+    },
+    "newsletter": {
+      "heading": "Would you like the next article by email?",
+      "body": "One article a fortnight, on what B2B websites cost, what breaks and what to ask for. No sequences, no upsells, and one click to stop.",
+      "nameLabel": "Full name",
+      "emailLabel": "Work email",
+      "submitLabel": "Subscribe",
+      "privacyNote": "Your name and email are stored in our own database, never sold or passed to a list vendor. Unsubscribe from any email and the record is removed.",
+      "success": {
+        "heading": "You are subscribed.",
+        "body": "A confirmation is on its way. The next article lands in your inbox within a fortnight, and every email carries a one-click unsubscribe."
+      },
+      "unavailable": "We could not send that just now, so nothing has been stored. Please try again in a moment, or email us and we will add you by hand."
+    }
+  }
+}

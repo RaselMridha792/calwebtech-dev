@@ -137,6 +137,18 @@ Two known properties of the simulation:
 - **The transport matters.** Measuring over HTTP/1.1 instead of production's HTTP/2
   made LCP about 370ms worse for the same build.
 
+## Ports the gate uses
+
+`packages/perf/src/serve.mjs` starts the built API on 4000 and the web app on 3000, and
+puts the edge proxy on 3443. CI is the reference, so those stay the defaults. When another
+program on a development machine already holds 4000, set `PERF_API_PORT`: the API listens
+on it and the web server's `API_INTERNAL_URL` follows.
+
+```
+PERF_API_PORT=4100 pnpm lh
+PERF_API_PORT=4100 pnpm --filter @calwebtech/web e2e
+```
+
 ## Checking the lab against real Traefik
 
 Once staging exists, run the gate once behind the real Traefik and compare. Repeat

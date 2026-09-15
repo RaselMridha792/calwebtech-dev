@@ -1,0 +1,179 @@
+{
+  "slug": "wcag-22-what-changed",
+  "title": "WCAG 2.2 AA: what changed and what it costs to meet it",
+  "excerpt": "Nine new success criteria, four that matter at AA, and the two that break most existing sites.",
+  "answerBlock": "WCAG 2.2 became a W3C Recommendation in October 2023, adding nine success criteria and making one older rule obsolete. Four of the new criteria apply at Level AA, and the two that break existing sites most often are minimum target size and focus hidden behind a sticky header. Building to the standard from the start costs almost nothing; retrofitting it is design rework.",
+  "seo": {
+    "title": "WCAG 2.2 AA: what changed",
+    "description": "What WCAG 2.2 added at Level AA, which criteria break existing sites, and what an audit and a contract clause should actually say.",
+    "ogImage": null
+  },
+  "category": {
+    "slug": "engineering",
+    "name": "Engineering"
+  },
+  "author": {
+    "slug": "priya-raman",
+    "name": "Priya Raman",
+    "role": "Design Lead",
+    "bio": "Runs the design system and every high-fidelity screen you approve.",
+    "photo": {
+      "src": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=70",
+      "alt": "Priya Raman, Design Lead"
+    },
+    "credentials": [
+      "Design systems",
+      "Interface design"
+    ]
+  },
+  "publishedAt": "2026-06-10T09:00:00.000Z",
+  "updatedAt": "2026-06-10T09:00:00.000Z",
+  "readingTime": 7,
+  "wordCount": 1339,
+  "cover": {
+    "src": "https://images.unsplash.com/photo-1558655146-9f40138edfeb?auto=format&fit=crop&w=1200&q=70",
+    "alt": "A designer drawing on a tablet with a stylus beside a keyboard"
+  },
+  "takeaways": [
+    "WCAG 2.2 became a W3C Recommendation in October 2023. It adds nine success criteria and makes one old one obsolete, so it is an extension of 2.1 rather than a rewrite.",
+    "Four of the new criteria apply at AA, and two more sit at Level A, which AA conformance also requires.",
+    "The two that break the most existing sites are minimum target size and focus that a sticky header hides.",
+    "Fixing these late is design work. Building them in from the start costs close to nothing, because the rules describe things a careful designer was doing anyway.",
+    "Ask for a written standard in the contract. \"Accessible\" is not a specification; \"WCAG 2.2 AA, audited before launch\" is."
+  ],
+  "body": "## What is WCAG 2.2, and when did it land?\n\nThe Web Content Accessibility Guidelines are the standard almost every accessibility requirement points at, and version 2.2 became a W3C Recommendation on 5 October 2023 ([WCAG 2.2](https://www.w3.org/TR/WCAG22/)). It is backwards compatible: a site that meets 2.2 also meets 2.1 and 2.0, so nothing you did before has been invalidated.\n\nWhat it adds is nine success criteria, mostly about things that got harder as interfaces became more dynamic. Sticky headers. Drag interactions. Sign-in flows that expect you to remember a code. The W3C publishes a plain summary of what changed ([what's new in WCAG 2.2](https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/)).\n\n## Which new rules apply at AA?\n\nSix, once you include the two at Level A that AA conformance depends on.\n\n| Criterion | Level | What it asks for |\n|---|---|---|\n| 2.4.11 Focus Not Obscured (Minimum) | AA | The focused element is not entirely hidden by other content |\n| 2.5.7 Dragging Movements | AA | Anything done by dragging can also be done with a single tap or click |\n| 2.5.8 Target Size (Minimum) | AA | Targets are at least 24 by 24 CSS pixels, or spaced as if they were |\n| 3.3.8 Accessible Authentication (Minimum) | AA | No cognitive test, such as recalling a code, without an alternative |\n| 3.2.6 Consistent Help | A | Help is in the same place on every page that offers it |\n| 3.3.7 Redundant Entry | A | Do not make someone retype information they already gave you |\n\nThe remaining three, Focus Not Obscured (Enhanced), Focus Appearance and Accessible Authentication (Enhanced), are AAA. Worth reading, not required.\n\n## Which of these actually break existing sites?\n\nTwo, overwhelmingly. The other four are usually already satisfied by a site built with any care.\n\n### Do your tap targets pass?\n\nTarget Size (Minimum) asks that interactive controls are at least 24 by 24 CSS pixels, with exceptions where there is enough spacing around a smaller target, or where the control is inline in a sentence ([understanding target size](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)).\n\nThe usual offenders are a row of social icons in a footer, a close button on a dialog, a pagination strip of tightly packed numbers, and a table of icon-only actions. They are small because a designer sized them on a 27-inch monitor with a mouse.\n\nThe fix is rarely visual. You can keep an icon at sixteen pixels and give its hit area padding out to twenty-four, which nobody sees and everybody benefits from.\n\n### Does your sticky header hide the focused element?\n\nFocus Not Obscured (Minimum) is the one modern sites fail most often, and it is a direct consequence of a fashion. A sticky header, a cookie bar pinned to the bottom, or a floating action button will sooner or later sit exactly where a keyboard user's focus has just landed.\n\nTab through your own site from the top and watch. If a focused link disappears under the header after the page scrolls, you fail. The usual remedy is scroll padding sized to the header, plus making sure the header shrinks or moves out of the way rather than staying at full height.\n\nBoth of these are ten-minute fixes at design time and a week of retrofitting later, which is the whole argument for building to the standard from the start.\n\n## What did WCAG 2.2 remove?\n\nOne criterion: 4.1.1 Parsing, which required markup to be well formed. It is now obsolete, because browsers and assistive technology handle malformed markup consistently enough that the rule no longer described a real barrier.\n\nPractically, that means an audit report from 2022 that flagged duplicate identifiers as an accessibility failure would not flag them today. It is still a bug; it is no longer a conformance failure.\n\n## Does this apply to a private company?\n\nLegally, it depends where you are and who you serve, and we are not the people to give you that advice. What we can tell you is what the standards landscape looks like.\n\nIn the United States, federal agencies and their suppliers work to Section 508, which references WCAG ([Section 508 laws and policies](https://www.section508.gov/manage/laws-and-policies/)). The Department of Justice published a rule in 2024 setting a technical standard for the web content and mobile apps of state and local government ([the 2024 web rule](https://www.ada.gov/resources/2024-03-08-web-rule/)). Private companies face a less settled picture, and a great deal of litigation.\n\nCommercially, the calculation is simpler. If you sell to healthcare, education, finance or government, the question appears in procurement, and a site that cannot answer it loses the deal on paper before anyone reads the proposal. Cascadia Health's platform was audited to AA before launch for exactly that reason; the [case study](/work/cascadia-health/) shows what merging fourteen clinic sites into one accessible platform involved.\n\n## What does an audit actually involve?\n\nThree passes, and only one of them is automated.\n\nAutomated testing catches contrast failures, missing labels, missing alternative text and broken landmark structure. It is fast, and it finds a minority of real problems. Anyone selling an audit that is only this is selling you a report.\n\nManual keyboard testing is the second pass, and it is where the real findings are. Tab through every flow with no mouse. Can you reach everything? Can you tell where you are? Can you escape a dialog? Can you complete the form and understand the error?\n\nAssistive technology testing is the third: a screen reader through the same flows, checking that headings describe the structure, that form errors are announced, and that a change on the page is not silent.\n\nBudget for the fixes as well as the audit. A report nobody acts on is the most expensive kind.\n\n## What does it cost to build in from the start?\n\nClose to nothing, and that is not a sales line. Colour contrast is a decision you make once when you choose the palette. Focus states are a component style. Heading order comes free if the page is structured rather than arranged. Labelled inputs with described errors are how forms should be built regardless.\n\nThe cost only appears when accessibility arrives at the end, as a list of defects against a design that was approved without it. Then it is rework, and rework is charged at the same rate as work.\n\n## How do you write this into a contract?\n\nIn one sentence, and it is worth insisting on: the site will meet WCAG 2.2 Level AA, verified by an audit before launch, with any failures fixed at the supplier's cost.\n\nThree details make that sentence enforceable. Name the version and the level, because \"accessible\" and \"accessibility compliant\" mean nothing on their own. Say who audits and when, because an audit after go-live is a report rather than a gate. And say what happens to findings, because the argument is never about whether a problem exists; it is about who pays to fix it.\n\nAsk for the audit output as part of handover, alongside the code and the accounts. If procurement asks you for an accessibility statement next year, you will have the evidence rather than an opinion.\n\n## What can you check yourself this afternoon?\n\nFive things, no tools beyond a browser.\n\nUnplug the mouse and complete your main enquiry form using only the keyboard. Note anywhere you get stuck or lose track of where you are.\n\nScroll down a long page using only the Tab key, and watch whether the focused element ever disappears under the header.\n\nZoom the browser to 200 per cent and check that nothing is cut off and nothing needs sideways scrolling to read.\n\nSubmit the form with a deliberately wrong email address, and check the error says what is wrong and is attached to the field rather than floating at the top.\n\nLook at your smallest buttons and icons, and ask whether you would hit them reliably on a phone with cold hands.\n\nIf any of those fail, they are the first four hours of work, and they are the same four hours whether you fix them now or after a procurement questionnaire asks. Building to the standard is part of every [custom build](/services/custom-website-development/) we do, and it is one of the first things a [redesign](/services/website-redesign/) puts right.",
+  "services": [
+    {
+      "slug": "custom-website-development",
+      "title": "Custom website development",
+      "summary": "Research-led design built around how your buyers actually decide, not around a template's section order."
+    },
+    {
+      "slug": "website-redesign",
+      "title": "Website redesign",
+      "summary": "Rebuild a site that stopped working for the business, keep the rankings and pages that earn, and fix conversion, speed or a stalled project on the way."
+    }
+  ],
+  "caseStudy": {
+    "slug": "cascadia-health",
+    "clientName": "Cascadia Health",
+    "summary": "Fourteen clinic sites merged into one accessible platform with location-aware appointment booking.",
+    "tags": [
+      "Oregon, USA",
+      "Healthcare",
+      "WordPress"
+    ],
+    "image": {
+      "src": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=900&q=70",
+      "alt": "Hands typing on a laptop beside a stethoscope"
+    },
+    "metrics": [
+      {
+        "value": "+91%",
+        "label": "Online bookings"
+      },
+      {
+        "value": "14→1",
+        "label": "Sites to maintain"
+      },
+      {
+        "value": "AA",
+        "label": "WCAG 2.2 verified"
+      }
+    ]
+  },
+  "relatedArticles": [
+    {
+      "slug": "core-web-vitals-in-plain-english",
+      "title": "Core Web Vitals in plain English",
+      "excerpt": "The three published thresholds, what each one really measures, and why the lab score and the field report never agree.",
+      "category": {
+        "slug": "engineering",
+        "name": "Engineering"
+      },
+      "authorName": "Rasel Mridha",
+      "readingTime": 6,
+      "publishedAt": "2026-07-22T09:00:00.000Z",
+      "updatedAt": "2026-08-26T11:30:00.000Z",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=70",
+        "alt": "Performance and analytics review before launch"
+      },
+      "featured": false
+    },
+    {
+      "slug": "self-hosting-is-cheaper-than-you-think",
+      "title": "Self-hosting your site is cheaper than you think",
+      "excerpt": "What a Docker stack on a $20 server replaces, and the two jobs somebody still has to own.",
+      "category": {
+        "slug": "engineering",
+        "name": "Engineering"
+      },
+      "authorName": "Rasel Mridha",
+      "readingTime": 6,
+      "publishedAt": "2026-07-08T09:00:00.000Z",
+      "updatedAt": "2026-07-08T09:00:00.000Z",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=70",
+        "alt": "Workspace with a laptop"
+      },
+      "featured": false
+    },
+    {
+      "slug": "why-chatgpt-recommends-your-competitor",
+      "title": "Why ChatGPT recommends your competitor",
+      "excerpt": "Language models cite structured, corroborated sources. Here is how to become one of them.",
+      "category": {
+        "slug": "ai-search",
+        "name": "AI search"
+      },
+      "authorName": "Rasel Mridha",
+      "readingTime": 9,
+      "publishedAt": "2026-09-02T09:00:00.000Z",
+      "updatedAt": "2026-09-10T11:30:00.000Z",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?auto=format&fit=crop&w=1200&q=70",
+        "alt": "Analytics charts on a screen"
+      },
+      "featured": false
+    }
+  ],
+  "copy": {
+    "byLabel": "By",
+    "publishedLabel": "Published",
+    "updatedLabel": "Updated",
+    "readingTimeLabel": "min read",
+    "tocLabel": "On this page",
+    "takeawaysLabel": "Key takeaways",
+    "authorLabel": "About the author",
+    "serviceCta": {
+      "eyebrow": "The service behind this article",
+      "body": "If you would rather not run this yourself, this is the work we do and the way we price it. The first call is thirty minutes and costs nothing.",
+      "linkLabel": "See the service",
+      "contactCta": {
+        "label": "Tell us what you need",
+        "href": "/contact/"
+      }
+    },
+    "servicesHeading": "Which services put this into practice?",
+    "caseStudyLinkLabel": "Read the case study",
+    "relatedHeading": "What should you read next?",
+    "relatedLink": {
+      "label": "All insights",
+      "href": "/insights/"
+    },
+    "newsletter": {
+      "heading": "Would you like the next article by email?",
+      "body": "One article a fortnight, on what B2B websites cost, what breaks and what to ask for. No sequences, no upsells, and one click to stop.",
+      "nameLabel": "Full name",
+      "emailLabel": "Work email",
+      "submitLabel": "Subscribe",
+      "privacyNote": "Your name and email are stored in our own database, never sold or passed to a list vendor. Unsubscribe from any email and the record is removed.",
+      "success": {
+        "heading": "You are subscribed.",
+        "body": "A confirmation is on its way. The next article lands in your inbox within a fortnight, and every email carries a one-click unsubscribe."
+      },
+      "unavailable": "We could not send that just now, so nothing has been stored. Please try again in a moment, or email us and we will add you by hand."
+    }
+  }
+}

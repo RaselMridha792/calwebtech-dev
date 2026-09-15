@@ -1,0 +1,64 @@
+{
+  "slug": "ab-testing",
+  "term": "A/B testing",
+  "letter": "A",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What is A/B testing?",
+    "description": "A/B testing splits live traffic between two versions of a page to see which one produces more of the outcome you care about.",
+    "ogImage": null
+  },
+  "definition": "A/B testing splits live traffic between two versions of a page to see which one produces more of the outcome you care about.",
+  "answerBlock": "A/B testing splits live traffic between two versions of a page to see which one produces more of the outcome you care about. Half the visitors see the current page and half see the variant, and the difference in conversions is measured rather than argued about. It is the only way to know whether a design change helped or simply looked better.",
+  "body": {
+    "heading": "How does an A/B test actually work?",
+    "paragraphs": [
+      "A test needs one clear outcome, one change, and enough traffic to tell a real difference from noise. The outcome is usually a form submission, a quote request or a checkout, not a click. The change is one thing: a headline, the position of the form, the number of fields, the price presentation. Changing five things at once tells you that something worked, but not what.",
+      "The result is a comparison of conversion rates with a confidence level attached. Low-traffic B2B sites often cannot reach a reliable result on a single page, which is why testing is usually run across a template rather than one URL, or replaced with qualitative research: session recordings, sales-call notes and asking the people who did not convert.",
+      "Tests that run in the browser by swapping content after the page loads carry a cost: the swap can shift layout, which shows up as a worse Cumulative Layout Shift score, and the extra script delays the largest element. Server-side tests avoid that, because the visitor is served the variant directly."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "A/B testing turns redesign decisions into measured ones, which matters most when a change is expensive to reverse. It also settles internal arguments cheaply: the version that wins is the version that wins, whoever proposed it.",
+      "It is worth saying plainly that most B2B sites do not have the traffic for continuous testing. When they do not, the money is better spent fixing the things that are known to hurt: slow pages, forms that ask for too much, pricing nobody can find."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "On a quoting page, one test replaced a nine-field form with three fields and a follow-up email, and measured completed quote requests rather than clicks on the button. The comparison was run for a full sales cycle, because B2B buying does not fit inside a week.",
+    "caseStudy": null
+  },
+  "service": {
+    "slug": "website-redesign",
+    "title": "Website redesign",
+    "line": "Rebuild a site that stopped working for the business, keep the rankings and pages that earn, and fix conversion, speed or a stalled project on the way."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "301-redirect",
+        "term": "301 redirect",
+        "definition": "A 301 redirect is a permanent instruction that a page has moved to a new address, sending both visitors and search engines to it."
+      },
+      {
+        "slug": "bounce-rate",
+        "term": "Bounce rate",
+        "definition": "Bounce rate is the share of visits where someone looked at one page and left without doing anything else."
+      },
+      {
+        "slug": "conversion-rate-optimisation",
+        "term": "Conversion rate optimisation",
+        "definition": "Conversion rate optimisation is the work of increasing the share of visitors who do the thing the page exists for."
+      }
+    ]
+  },
+  "sources": [
+    {
+      "label": "Cumulative Layout Shift on web.dev",
+      "href": "https://web.dev/articles/cls"
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "slug": "canonical-tag",
+  "term": "Canonical tag",
+  "letter": "C",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What is a canonical tag?",
+    "description": "A canonical tag tells search engines which address is the official one for a page that can be reached at several addresses.",
+    "ogImage": null
+  },
+  "definition": "A canonical tag tells search engines which address is the official one for a page that can be reached at several addresses.",
+  "answerBlock": "A canonical tag tells search engines which address is the official one for a page that can be reached at several addresses. Filters, tracking parameters and printer-friendly versions all create duplicates of the same content. The canonical points them at the single address you want indexed.",
+  "body": {
+    "heading": "When does a site need canonical tags?",
+    "paragraphs": [
+      "Any site with filtering or sorting creates them without meaning to. A case study list filtered by industry, by service and by platform can produce dozens of addresses holding the same records in a different order. Left alone, search engines have to guess which one to show, and the ranking signals are split between them.",
+      "The rule we follow is simple: a filtered address that is a deliberate target, such as ecommerce work for distributors, canonicalises to itself and is allowed to rank. Every other combination canonicalises to the unfiltered parent and is kept out of the index.",
+      "A canonical is a strong hint rather than a command, so it works best alongside consistent internal linking: link to the address you want indexed, everywhere."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "Duplicate addresses waste the crawling effort a search engine is willing to spend on your site and dilute the authority of the page you actually want ranked.",
+      "They also produce embarrassments in search results, such as a tracking-parameter address from a newsletter outranking the page it was copied from."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "On our own work listing, a filter combination that we target deliberately canonicalises to itself, while anything else points back at the unfiltered listing and is marked as not for indexing.",
+    "caseStudy": null
+  },
+  "service": {
+    "slug": "ai-search-visibility",
+    "title": "AI search visibility",
+    "line": "Technical SEO plus the newer work of being cited by ChatGPT, Perplexity, Gemini and AI overviews."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "answer-engine-optimisation",
+        "term": "Answer engine optimisation",
+        "definition": "Answer engine optimisation is the work of getting a company cited in the answers that AI assistants write, rather than only ranked in a list of blue links."
+      },
+      {
+        "slug": "core-web-vitals",
+        "term": "Core Web Vitals",
+        "definition": "Core Web Vitals are three measurements Google publishes to describe how a page feels to the people using it: loading, responsiveness and visual stability."
+      },
+      {
+        "slug": "llms-txt",
+        "term": "llms.txt",
+        "definition": "llms.txt is a plain text file at the root of a website that describes the site and points to its most useful pages for AI assistants."
+      },
+      {
+        "slug": "structured-data",
+        "term": "Structured data",
+        "definition": "Structured data is machine-readable markup added to a page that states what it is about in a vocabulary search engines understand."
+      }
+    ]
+  },
+  "sources": [
+    {
+      "label": "Google on consolidating duplicate URLs",
+      "href": "https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls"
+    }
+  ]
+}

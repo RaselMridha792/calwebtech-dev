@@ -1,0 +1,54 @@
+{
+  "slug": "static-site-generation",
+  "term": "Static site generation",
+  "letter": "S",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What is static site generation?",
+    "description": "Static site generation builds pages into finished files ahead of time, so a request is answered by handing over a file that already exists.",
+    "ogImage": null
+  },
+  "definition": "Static site generation builds pages into finished files ahead of time, so a request is answered by handing over a file that already exists.",
+  "answerBlock": "Static site generation builds pages into finished files ahead of time, so a request is answered by handing over a file that already exists. It is the fastest way to serve a page and the cheapest to host. The cost is that a change to the content requires the affected pages to be rebuilt.",
+  "body": {
+    "heading": "When is a static page the right answer?",
+    "paragraphs": [
+      "When the content is the same for everyone and does not change by the minute: service pages, articles, glossary entries, documentation. These can be built once and served from a cache near the visitor.",
+      "It is the wrong answer when a page depends on who is asking. Account pricing, stock levels, a dashboard or anything behind a login has to be rendered per request, because a cached copy would be someone else's data.",
+      "Modern frameworks mix the two, so most of a site can be static while the pages that must be live are rendered per request, and pages can be rebuilt on publish rather than on a deployment."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "Static pages are hard to make slow, which protects the parts of the site that earn search traffic from whatever the rest of the platform is doing.",
+      "The operational question to ask a supplier is how long publishing takes: if a typo fix means a full rebuild and a deployment, editors will stop fixing typos."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "A glossary like this one is the textbook candidate: every entry is identical for every visitor, so the pages could be built once and served from a cache near the reader. We render them per request from our own API instead, because an edit made in the dashboard should be live at once rather than after a rebuild. That is the trade the technique asks you to make.",
+    "caseStudy": null
+  },
+  "service": {
+    "slug": "nextjs-development",
+    "title": "Next.js development",
+    "line": "Fast, maintainable sites and applications on Next.js and React, including headless CMS builds, with a typed API and hosting in your name."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "headless-cms",
+        "term": "Headless CMS",
+        "definition": "A headless CMS stores and edits content but does not render the pages that display it."
+      },
+      {
+        "slug": "server-side-rendering",
+        "term": "Server-side rendering",
+        "definition": "Server-side rendering means the server builds the finished HTML for a page and sends it, rather than sending an empty shell for the browser to fill in."
+      }
+    ]
+  },
+  "sources": []
+}

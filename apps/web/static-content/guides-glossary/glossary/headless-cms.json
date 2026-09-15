@@ -1,0 +1,61 @@
+{
+  "slug": "headless-cms",
+  "term": "Headless CMS",
+  "letter": "H",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What is a headless CMS?",
+    "description": "A headless CMS stores and edits content but does not render the pages that display it.",
+    "ogImage": null
+  },
+  "definition": "A headless CMS stores and edits content but does not render the pages that display it.",
+  "answerBlock": "A headless CMS stores and edits content but does not render the pages that display it. The website reads that content over an API and decides how it looks. That separation is what lets one set of records feed a website, a mobile app and a shop at the same time.",
+  "body": {
+    "heading": "When is headless the right choice?",
+    "paragraphs": [
+      "When the same content has more than one destination, or when the front end needs to be faster and more flexible than the CMS theme allows. A product description that appears on the website, in a sales application and in a partner feed should exist once.",
+      "It costs more moving parts. There are now two systems to run, two sets of permissions, and a preview experience that has to be built rather than assumed. For a brochure site edited twice a year, that is a poor trade.",
+      "The editing experience is the deciding factor. Editors need to see what they are publishing, which means preview has to be wired up properly, not left as a promise."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "Headless buys independence. The content is yours in a database with an API, so the front end can be rebuilt without a content migration, and a second channel does not mean a second copy of everything.",
+      "It also removes the page-builder tax: performance stops being a fight against a theme that loads twelve scripts nobody chose."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "Truvia Labs feeds its marketing site, documentation and in-app onboarding from one content store, which is why a release stopped meaning three separate content updates.",
+    "caseStudy": {
+      "slug": "truvia-labs",
+      "clientName": "Truvia Labs",
+      "metric": {
+        "value": "+140%",
+        "label": "Demo bookings"
+      }
+    }
+  },
+  "service": {
+    "slug": "nextjs-development",
+    "title": "Next.js development",
+    "line": "Fast, maintainable sites and applications on Next.js and React, including headless CMS builds, with a typed API and hosting in your name."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "server-side-rendering",
+        "term": "Server-side rendering",
+        "definition": "Server-side rendering means the server builds the finished HTML for a page and sends it, rather than sending an empty shell for the browser to fill in."
+      },
+      {
+        "slug": "static-site-generation",
+        "term": "Static site generation",
+        "definition": "Static site generation builds pages into finished files ahead of time, so a request is answered by handing over a file that already exists."
+      }
+    ]
+  },
+  "sources": []
+}

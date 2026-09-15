@@ -1,0 +1,66 @@
+{
+  "slug": "server-side-rendering",
+  "term": "Server-side rendering",
+  "letter": "S",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What is server-side rendering?",
+    "description": "Server-side rendering means the server builds the finished HTML for a page and sends it, rather than sending an empty shell for the browser to fill in.",
+    "ogImage": null
+  },
+  "definition": "Server-side rendering means the server builds the finished HTML for a page and sends it, rather than sending an empty shell for the browser to fill in.",
+  "answerBlock": "Server-side rendering means the server builds the finished HTML for a page and sends it, rather than sending an empty shell for the browser to fill in. The visitor sees content on the first response, and crawlers read a complete page without executing JavaScript. The page becomes interactive once its script has loaded.",
+  "body": {
+    "heading": "Why does rendering on the server matter?",
+    "paragraphs": [
+      "Because the first thing a visitor receives is the content. A page that renders in the browser must download a script, run it, request the data, and only then show anything, and each of those steps is a chance to be slow on a phone.",
+      "It also decides how much JavaScript a page needs at all. Components that only display data can be rendered once on the server and shipped as HTML, leaving the browser to run code only for the parts that genuinely react to a person.",
+      "The trade is that the server does more work per request, which is handled with short-lived caching rather than by pushing the work back to the browser."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "Server rendering is usually the cheapest single improvement to Largest Contentful Paint, which is one of the Core Web Vitals thresholds Google publishes.",
+      "It also removes a class of search problem: content that depends on script executing correctly can simply be missing when it is crawled."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "Truvia Labs' marketing site and documentation render on the server, which is part of how the site reaches a mobile Lighthouse score of 98.",
+    "caseStudy": {
+      "slug": "truvia-labs",
+      "clientName": "Truvia Labs",
+      "metric": {
+        "value": "98",
+        "label": "Lighthouse mobile"
+      }
+    }
+  },
+  "service": {
+    "slug": "nextjs-development",
+    "title": "Next.js development",
+    "line": "Fast, maintainable sites and applications on Next.js and React, including headless CMS builds, with a typed API and hosting in your name."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "headless-cms",
+        "term": "Headless CMS",
+        "definition": "A headless CMS stores and edits content but does not render the pages that display it."
+      },
+      {
+        "slug": "static-site-generation",
+        "term": "Static site generation",
+        "definition": "Static site generation builds pages into finished files ahead of time, so a request is answered by handing over a file that already exists."
+      }
+    ]
+  },
+  "sources": [
+    {
+      "label": "Largest Contentful Paint on web.dev",
+      "href": "https://web.dev/articles/lcp"
+    }
+  ]
+}

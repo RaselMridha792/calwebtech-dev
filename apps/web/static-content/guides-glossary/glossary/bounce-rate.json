@@ -1,0 +1,59 @@
+{
+  "slug": "bounce-rate",
+  "term": "Bounce rate",
+  "letter": "B",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "seo": {
+    "title": "What is bounce rate?",
+    "description": "Bounce rate is the share of visits where someone looked at one page and left without doing anything else.",
+    "ogImage": null
+  },
+  "definition": "Bounce rate is the share of visits where someone looked at one page and left without doing anything else.",
+  "answerBlock": "Bounce rate is the share of visits where someone looked at one page and left without doing anything else. It is easy to measure and easy to misread. A high bounce rate on a page that answers a question completely can be a success, while a low one on a pricing page can mean people are lost.",
+  "body": {
+    "heading": "Is a high bounce rate actually bad?",
+    "paragraphs": [
+      "It depends entirely on what the page is for. Someone who searches for your opening hours, reads them and leaves has been served perfectly. Someone who lands on a product page, scrolls once and leaves has not.",
+      "The number is also sensitive to how it is measured. Analytics tools differ on whether scrolling, watching a video or spending a long time on the page counts as engagement, so comparing your figure with an industry average tells you very little.",
+      "Read it next to other measures: time on the page, how far people scroll, whether the page ever leads to an enquiry, and what visitors search for after leaving. The useful question is never \"is this number high\", it is \"did this page do its job\"."
+    ]
+  },
+  "commercial": {
+    "heading": "Why does it matter commercially?",
+    "paragraphs": [
+      "Bounce rate is most useful as a change signal on a page you have just altered, and as a symptom detector on paid traffic, where a high figure usually means the advertisement promised something the page does not deliver.",
+      "Treating it as a target in itself leads to bad decisions, such as splitting a clear answer across three pages to lift the page count."
+    ]
+  },
+  "example": {
+    "heading": "What does it look like in practice?",
+    "body": "A glossary entry that answers the question in the first two sentences will show a high bounce rate and still be doing its job, because the visitor left satisfied and returns later by name.",
+    "caseStudy": null
+  },
+  "service": {
+    "slug": "website-redesign",
+    "title": "Website redesign",
+    "line": "Rebuild a site that stopped working for the business, keep the rankings and pages that earn, and fix conversion, speed or a stalled project on the way."
+  },
+  "related": {
+    "heading": "Which terms are related?",
+    "terms": [
+      {
+        "slug": "301-redirect",
+        "term": "301 redirect",
+        "definition": "A 301 redirect is a permanent instruction that a page has moved to a new address, sending both visitors and search engines to it."
+      },
+      {
+        "slug": "ab-testing",
+        "term": "A/B testing",
+        "definition": "A/B testing splits live traffic between two versions of a page to see which one produces more of the outcome you care about."
+      },
+      {
+        "slug": "conversion-rate-optimisation",
+        "term": "Conversion rate optimisation",
+        "definition": "Conversion rate optimisation is the work of increasing the share of visitors who do the thing the page exists for."
+      }
+    ]
+  },
+  "sources": []
+}
