@@ -80,8 +80,13 @@ const labelsSchema = z.object({
   progress: requiredText(60),
   /** The progress label of the email step, which is not one of the eight questions. */
   gateProgress: requiredText(60),
-  /** The accessible name of the progress bar, which the visible label never gives it. */
-  progressName: requiredText(80),
+  /**
+   * The accessible name of the progress bar, which the visible label never gives it. It
+   * carries a default because the seed upserts this setting with an empty update, so a copy
+   * field added after a database was first seeded would otherwise fail the contract and
+   * take the whole page down until someone edited the record by hand.
+   */
+  progressName: requiredText(80).default('Your progress through the estimate'),
   /** "About {minutes} minutes left". */
   timeLeft: requiredText(60),
   timeLeftOne: requiredText(60),
@@ -199,8 +204,12 @@ export const calculatorPageContentSchema = z.object({
     rateHeading: questionSchema(140),
     rateIntro: requiredText(500),
     rateNote: requiredText(600),
-    /** "{option} ({pages})", the content rows, which are published per page band. */
-    rateContentRow: requiredText(60),
+    /**
+     * "{option} ({pages})", the content rows, which are published per page band. Defaulted
+     * for the same reason as `progressName`: the seed upserts this setting with an empty
+     * update, so copy added after a database was first seeded never reaches an existing row.
+     */
+    rateContentRow: requiredText(60).default('{option} ({pages})'),
     /** Column headings of the rate table. */
     rateColumns: z.object({ option: requiredText(40), amount: requiredText(40) }),
   }),

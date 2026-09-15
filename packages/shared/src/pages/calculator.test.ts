@@ -267,3 +267,22 @@ describe('fillTemplate', () => {
     expect(fillTemplate('About {minutes} minutes left', {})).toBe('About {minutes} minutes left');
   });
 });
+
+describe('copy added after a database was seeded', () => {
+  it('renders with the default accessible name when the stored setting predates the field', () => {
+    // The seed upserts calculator.page with an empty update, so a record written before
+    // progressName existed keeps its old shape for good. It must still render.
+    const older = structuredClone(calculatorPageContentSchema.parse(CONTENT_INPUT)) as Record<string, unknown>;
+    const calculator = older.calculator as Record<string, unknown>;
+    const labels = { ...(calculator.labels as Record<string, unknown>) };
+    delete labels.progressName;
+    calculator.labels = labels;
+
+    const methodology = older.methodology as Record<string, unknown>;
+    delete methodology.rateContentRow;
+
+    const parsed = calculatorPageContentSchema.parse(older);
+    expect(parsed.calculator.labels.progressName).toBe('Your progress through the estimate');
+    expect(parsed.methodology.rateContentRow).toBe('{option} ({pages})');
+  });
+});
