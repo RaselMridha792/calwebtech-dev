@@ -156,9 +156,10 @@ test.describe('homepage', () => {
       '/cost-calculator/',
     );
     // The menu's own links are all pages now; the secondary call to action is the same-page
-    // jump that proves the disclosure closes when one is followed.
+    // jump that proves the disclosure closes when one is followed. The homepage passes its own
+    // header copy to SiteHeader rather than the chrome's, so this href is the bare anchor.
     const estimate = menu.getByRole('link', { name: 'Instant estimate', exact: true });
-    await expect(estimate).toHaveAttribute('href', '/#estimate');
+    await expect(estimate).toHaveAttribute('href', '#estimate');
     await estimate.click();
     await expect(menu).not.toHaveAttribute('open', '');
     await expect(page).toHaveURL(/\/#estimate$/);
