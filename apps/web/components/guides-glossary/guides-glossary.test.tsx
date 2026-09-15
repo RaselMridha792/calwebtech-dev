@@ -1,7 +1,7 @@
 import { GUIDE_GATE_FORM_ID } from '@calwebtech/shared';
 import type { ReactElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import GlossaryIndexPage from '@/app/(marketing)/(site)/glossary/page';
 import GlossaryTermRoute, { generateMetadata as termMetadata } from '@/app/(marketing)/(site)/glossary/[term]/page';
 import GuidesIndexPage from '@/app/(marketing)/(site)/guides/page';
@@ -16,6 +16,16 @@ vi.mock('server-only', () => ({}));
  * serves them (API_INTERNAL_URL unset). The end-to-end spec covers the same pages against
  * the database.
  */
+
+// CI exports API_INTERNAL_URL for the integration and end-to-end steps, and these render
+// the real route modules, which would then reach for an API that is not running during
+// `pnpm test`. Clearing it here is what makes the snapshots the subject, as above.
+beforeEach(() => {
+  vi.stubEnv('API_INTERNAL_URL', '');
+});
+afterEach(() => {
+  vi.unstubAllEnvs();
+});
 
 const guideProps = (slug: string) =>
   ({ params: Promise.resolve({ slug }), searchParams: Promise.resolve({}) }) as unknown as PageProps<'/guides/[slug]'>;
