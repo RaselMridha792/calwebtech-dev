@@ -1,0 +1,166 @@
+# Security response headers for every stack. A stack opts in through EDGE_MIDDLEWARES in its
+# env file, the same way as access.yml. Order matters: auth first, then headers, compression
+# last.
+#
+#   staging:     EDGE_MIDDLEWARES=staging-auth@file,noindex@file,security-headers@file,edge-compress@file
+#   production:  EDGE_MIDDLEWARES=security-headers@file,edge-compress@file
+#
+# EDGE_MIDDLEWARES sits in front of the web router and the /api router alike
+# (infra/docker-compose.yml), so the API's JSON answers carry HSTS too; a CSP on a JSON
+# response is inert. noindex and security-headers are both `headers` middlewares and both
+# survive, in the order listed.
+#
+# Kept apart from edge.yml, which the Lighthouse gate's proxy (packages/perf/src/edge.mjs,
+# EDGE_CONFIG) mirrors setting by setting and refuses anything it cannot reproduce. That
+# proxy reads edge.yml only, so nothing here changes what the lab measures. X-Robots-Tag is
+# not set here either: access.yml owns it, for staging only.
+#
+# Every CSP source below names the file that needs it, so a change to the app can be traced
+# to this policy and a violation report can be traced to the app.
+http:
+  middlewares:
+    security-headers:
+      headers:
+        # ---- Strict-Transport-Security: two years, subdomains included. Traefik adds it to
+        # TLS responses only, which every router here is (entrypoint websecure).
+        # includeSubdomains covers every host under SITE_HOST, including the ops routers
+        # analytics.<SITE_HOST> and status.<SITE_HOST> (infra/docker-compose.yml); all of them
+        # terminate TLS at this Traefik. Before production goes live, confirm no subdomain of
+        # the production host is served over plain HTTP anywhere else.
+        # Preload is a one-way registration in the browsers' built-in lists that takes months
+        # to undo. Set stsPreload to true only when the owner submits the domain to
+        # https://hstspreload.org, and not before.
+        stsSeconds: 63072000
+        stsIncludeSubdomains: true
+        stsPreload: false
+
+        # ---- X-Content-Type-Options: nosniff. Responses carry the type Next and the API
+        # declare; the browser must not guess a script out of something else.
+        contentTypeNosniff: true
+
+        # ---- Referrer-Policy. Full URL within our origin, origin only to other sites,
+        # nothing on a downgrade. Umami (Task 6.3) needs the origin to attribute referrals.
+        referrerPolicy: strict-origin-when-cross-origin
+
+        # ---- X-Frame-Options: DENY, with frame-ancestors 'none' in the CSP for browsers
+        # that honour the newer directive. Nothing on the site is meant to be embedded. If the
+        # admin ever previews a page in an iframe, both must become same-origin.
+        frameDeny: true
+
+        # ---- Permissions-Policy. None of these APIs is used anywhere in apps/web (no
+        # geolocation, getUserMedia, PaymentRequest or navigator.usb), so a script that slipped
+        # in cannot use them either. interest-cohort opts out of cohort-based ad targeting.
+        permissionsPolicy: "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()"
+
+        # ---- Content-Security-Policy, REPORT ONLY. Nothing is blocked yet. This is the
+        # policy to enforce once two things exist:
+        #   1. A report collector. There is none; Task 6.3 adds Sentry. Then set report-uri
+        #      and report-to (placeholders at the end of this comment).
+        #   2. Nonce plumbing in apps/web. Next.js emits inline scripts for hydration
+        #      (self.__next_f.push(...)) on every page. Their content changes per page, so
+        #      they cannot be hashed, and enforcing script-src today would need
+        #      'unsafe-inline', which defeats the point. Nonces need apps/web/proxy.ts to
+        #      generate one per request and put it in the CSP request header Next reads
+        #      (nextjs.org/docs/app/guides/content-security-policy). That moves the enforced
+        #      CSP from Traefik into the web app and makes every nonced route render
+        #      dynamically. Decide that in 6.3; keep this file for the other headers.
+        # Until then violations show in the browser console on staging. Expect one kind on
+        # every page, the Next inline scripts above. Anything else is real.
+        #
+        # One directive per line below, in this order, and the file that needs each source:
+        #   default-src 'self'
+        #     Everything not named below comes from our origin only.
+        #   script-src
+        #     'self': Next's chunks under /_next/static.
+        #     challenges.cloudflare.com: Turnstile api.js, appended on first form interaction
+        #       (apps/web/lib/turnstile-client.ts, SCRIPT_URL); it loads its own challenge
+        #       scripts from the same host.
+        #     Two sha256 hashes: the app's only static inline scripts, MOTION_BOOTSTRAP in
+        #       apps/web/app/layout.tsx and SEARCH_SCRIPT in
+        #       apps/web/components/static/site-search.tsx. The hash is sha256 of the script
+        #       text as rendered, base64; the browser's violation message prints the expected
+        #       value, so recompute from there after editing either script. A stale hash only
+        #       produces a report.
+        #     JSON-LD blocks (apps/web/components/seo/json-ld.tsx) are type=application/ld+json,
+        #       never executed, and outside script-src.
+        #   style-src
+        #     'self': the Tailwind build under /_next/static/css.
+        #     'unsafe-inline': server-rendered style attributes (bar heights in
+        #       apps/web/components/home/hero.tsx, progress widths in components/calculator/
+        #       calculator.tsx and calculator-section.tsx, transforms in components/landing/
+        #       before-after-slider.tsx and process-stepper.tsx, components/landing/proof.tsx)
+        #       and two <style> elements (WorkFilters in components/home/sections-top.tsx,
+        #       generated per filter count; calculator-section.tsx inside <noscript>).
+        #       Turnstile's widget sets style attributes on its container as well. Attributes
+        #       cannot be hashed or nonced; the tightening path is style-src-elem with nonces
+        #       plus style-src-attr 'unsafe-inline'.
+        #   img-src
+        #     'self': every <img> goes through /_next/image (apps/web/components/ui/
+        #       responsive-image.tsx and lib/image-props.ts; responsive-image.test.tsx proves
+        #       it), plus icons and apps/web/public/media.
+        #     images.unsplash.com and images.pexels.com: a <video poster> reaches the browser
+        #       unproxied. components/home/showreel.tsx passes poster= from
+        #       static-content/home.json (capability.showreel.poster.src, an Unsplash URL).
+        #       Pexels is the other host next.config.ts remotePatterns allows, and the schema
+        #       (packages/shared/src/media.ts, mediaSrcSchema) accepts any URL, so content can
+        #       use either. No data: or blob: URL anywhere in apps/web today.
+        #   media-src
+        #     'self' and videos.pexels.com: the landing hero loop,
+        #       static-content/landing-b2b-website-design.json backgroundVideoUrl, set as
+        #       video.src by components/ui/background-video.tsx. docs/08-decisions.md records
+        #       moving it to our own media storage; drop the host then.
+        #   font-src 'self'
+        #     next/font/google self-hosts at build time (apps/web/app/layout.tsx, IBM_Plex_Sans
+        #     and Plus_Jakarta_Sans); the browser never contacts Google Fonts.
+        #   connect-src 'self'
+        #     Server actions post to the page's own URL; the 404 search fetches /sitemap/
+        #     (components/static/site-search.tsx); Next prefetches its own routes. Turnstile
+        #     tokens are verified server-side (apps/api/src/turnstile/turnstile.service.ts) and
+        #     Cloudflare documents no connect-src for the widget. Umami
+        #     (components/calculator/events.ts, window.umami) is not loaded yet; when Task 6.3
+        #     adds it, add https://analytics.<SITE_HOST> here and to script-src.
+        #   frame-src
+        #     challenges.cloudflare.com: the Turnstile widget is an iframe rendered by api.js
+        #     (components/forms/use-turnstile.ts, api.render). No other iframe, embed or object
+        #     in apps/web.
+        #   frame-ancestors 'none'   See frameDeny above.
+        #   object-src 'none'        No plugins.
+        #   base-uri 'self'          No <base> tag; an injected one cannot redirect relative URLs.
+        #   form-action 'self'
+        #     Every form posts to our origin: server actions, and the sitemap search
+        #     (site-search.tsx, action=/sitemap/). Nothing posts to a third party; the form
+        #     vendor is what this platform replaced.
+        #   upgrade-insecure-requests
+        #     An http:// subresource left in content is fetched as https://.
+        #
+        # Reporting, once Task 6.3 has a collector. Append to the value below:
+        #   report-uri https://<org>.ingest.sentry.io/api/<project>/security/?sentry_key=<key>;
+        #   report-to csp
+        # and add under customResponseHeaders:
+        #   Reporting-Endpoints: csp="https://<org>.ingest.sentry.io/api/<project>/security/?sentry_key=<key>"
+        contentSecurityPolicyReportOnly: >-
+          default-src 'self';
+          script-src 'self' https://challenges.cloudflare.com
+          'sha256-rRODfk5j3YsvhoBjPfeb6Da7wCBXbFIxcryVd1UvbRc='
+          'sha256-f6CX4+0hJ7bowPrGBMQ1z0BmIXyLACsynK8d/WjCCJI=';
+          style-src 'self' 'unsafe-inline';
+          img-src 'self' https://images.unsplash.com https://images.pexels.com;
+          media-src 'self' https://videos.pexels.com;
+          font-src 'self';
+          connect-src 'self';
+          frame-src https://challenges.cloudflare.com;
+          frame-ancestors 'none';
+          object-src 'none';
+          base-uri 'self';
+          form-action 'self';
+          upgrade-insecure-requests
+
+        # Headers Traefik has no dedicated option for.
+        customResponseHeaders:
+          # Cuts the window.opener link between this site and any window it opens or is
+          # opened from, so a cross-origin page cannot script or time this one. Nothing in
+          # apps/web calls window.open, reads window.opener or uses postMessage (checked
+          # 2026-09-18); Turnstile is an iframe, which COOP does not affect; an admin login
+          # that redirects (Auth.js) is unaffected. A popup-based OAuth flow would be: revisit
+          # then.
+          Cross-Origin-Opener-Policy: same-origin

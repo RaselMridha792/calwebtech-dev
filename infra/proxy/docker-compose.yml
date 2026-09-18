@@ -21,7 +21,8 @@ services:
       - --certificatesresolvers.le.acme.storage=/letsencrypt/acme.json
       - --certificatesresolvers.le.acme.httpchallenge.entrypoint=web
       # TLS options and compression (edge.yml, which the Lighthouse gate's proxy also
-      # reads) and access rules for non-production stacks (access.yml).
+      # reads), access rules for non-production stacks (access.yml) and the security
+      # response headers every stack opts into (security.yml).
       - --providers.file.directory=/etc/traefik/dynamic
       - --providers.file.watch=true
       # For the container health check below; served on the internal entrypoint only.

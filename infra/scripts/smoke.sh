@@ -8,6 +8,9 @@
 #                     checks that a request without credentials is refused.
 #   EXPECT_NOINDEX    true on a host that must never be indexed: every route must answer
 #                     with an X-Robots-Tag containing noindex.
+#   EXPECT_HSTS       true on a stack whose EDGE_MIDDLEWARES include security-headers@file
+#                     (infra/traefik/dynamic/security.yml): every route must answer with
+#                     Strict-Transport-Security, or the middleware is not in front of it.
 #   SMOKE_INSECURE    true to accept a self-signed certificate. Local rehearsal only.
 #   SMOKE_RESOLVE     host:port:address for curl --resolve. Local rehearsal only.
 #
@@ -45,6 +48,9 @@ for route in "${ROUTES[@]}"; do
   [ "$code" = "200" ] || fail "$route returned ${code:-no response}"
   if [ "${EXPECT_NOINDEX:-}" = "true" ]; then
     printf '%s' "$response" | grep -qiE '^x-robots-tag:.*noindex' || fail "$route has no X-Robots-Tag noindex"
+  fi
+  if [ "${EXPECT_HSTS:-}" = "true" ]; then
+    printf '%s' "$response" | grep -qiE '^strict-transport-security:' || fail "$route has no Strict-Transport-Security header"
   fi
   echo "ok   $route"
 done

@@ -120,20 +120,38 @@ services:
       retries: 5
     networks: [internal]
 
-  # ---- operations (Tasks 6.3 and 6.4). Not started by deploys yet: the backup entrypoint
-  # script does not exist and Umami needs its own database. Start with `--profile ops`
-  # once they are ready.
+  # ---- operations (Tasks 6.3 and 6.4). Not started by deploys: the profile is opt-in,
+  # started by hand with `--profile ops` once the env file has its backup values. Umami
+  # still needs its own database before `analytics` can run.
+
+  # Nightly encrypted off-site backup (docs/01 "Backup and recovery"). The image carries
+  # pg_dump at db's major version, restic and the scripts: infra/scripts/backup-entrypoint.sh
+  # for the schedule, infra/scripts/restore.sh for the drill. Deploys do not move this
+  # service to the new tag; `up -d backup` after a release does.
   backup:
-    image: alpine:3.20
+    image: ${GHCR_IMAGE_BACKUP:-calwebtech-backup}:${TAG:-latest}
     profiles: [ops]
     restart: unless-stopped
     env_file: ["${APP_ENV_FILE:-../.env}"]
     volumes:
-      - ./scripts:/scripts:ro
       - media:/media:ro
-    entrypoint: ["/scripts/backup-entrypoint.sh"]
-    depends_on: [db]
-    networks: [internal]
+    depends_on:
+      db: { condition: service_healthy }
+    # `internal` reaches db; `egress` reaches the off-site repository, which `internal`
+    # cannot (no route out).
+    networks: [egress, internal]
+    # Unhealthy once the last complete backup is older than 26 hours (the 24-hour RPO plus
+    # slack). A new container has that long to make its first backup; RUN_NOW=true makes
+    # it immediate.
+    healthcheck:
+      test: ["CMD", "/scripts/backup-entrypoint.sh", "healthy"]
+      interval: 10m
+      timeout: 5s
+      retries: 3
+      start_period: 26h
+    deploy:
+      resources:
+        limits: { memory: 256m }
 
   analytics:
     image: ghcr.io/umami-software/umami:postgresql-latest

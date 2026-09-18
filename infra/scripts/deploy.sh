@@ -82,9 +82,10 @@ if [ "$(env_value SEED_ON_DEPLOY)" = "true" ]; then
 fi
 "${APP[@]}" up -d --wait web api worker
 
-export SMOKE_BASIC_AUTH EXPECT_NOINDEX SMOKE_INSECURE SMOKE_RESOLVE
+export SMOKE_BASIC_AUTH EXPECT_NOINDEX EXPECT_HSTS SMOKE_INSECURE SMOKE_RESOLVE
 SMOKE_BASIC_AUTH="$(env_value SMOKE_BASIC_AUTH)"
 EXPECT_NOINDEX="$(env_value EXPECT_NOINDEX)"
+EXPECT_HSTS="$(env_value EXPECT_HSTS)"
 SMOKE_INSECURE="${SMOKE_INSECURE:-}"
 SMOKE_RESOLVE="${SMOKE_RESOLVE:-}"
 if ! bash "$INFRA/scripts/smoke.sh" "https://$(env_value SITE_HOST)"; then
