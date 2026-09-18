@@ -46,6 +46,7 @@ it here and in `CLAUDE.md` in the same commit.
 | 39 | 2026-09-14 | Decision 33's snapshot, generalised per family. `apps/web/static-content/<family>/` holds each view exactly as the family's API returns it, with an `index.ts` keyed by slug and a test that parses each view with its schema and runs `unfinishedCopy`. Getters in `lib/api/<family>.ts` use `getView` and `findView` from `lib/api/core.ts`: the API when `API_INTERNAL_URL` is set, the validated snapshot otherwise, and null for a record that does not exist. | Families never edit a shared getter, and every page works on Vercel with no API. |
 | 40 | 2026-09-14 | Where site page copy lives. Service, Industry and Location gain a nullable `content` JSON column (migration `20260914170000_page_content`), validated by the family's shared schema; null leaves those sections out. A page without a record keeps its copy in a `Setting` row keyed `<family>.<page>`. Families register placeholder seeds and end-to-end fixtures in `packages/db/src/seed/pages/index.ts` (`PAGE_SEEDS`, `PAGE_FIXTURES`), and `content.test.ts` scans every registered launch seed for invented proof. | Publishing without a deploy needs a stored place for each page's copy. An additive column loses no history, and no family edits the Prisma schema or the launch seed. |
 | 41 | 2026-09-14 | Site page content rule (owner's decision), replacing older content rules. Every page ships complete, original, publish-ready copy in the approved voice, with British spelling. Imagery comes from Unsplash and Pexels, with each URL checked with curl and descriptive alt text. Proof reuses only the approved demo proof in `home.json`, `landing-b2b-website-design.json` and `reference/*.html`: narrative may be written for existing case studies, but no new figures, clients, people, awards, certifications, partnerships, ratings or guarantees. The copy lives in the static snapshots; the database seed stays placeholder-only. | Owner's decision: the demo shows complete pages while CI and staging keep running on placeholder data. |
+| 42 | 2026-09-18 | The VPS package (docs/11-vps-deploy.md). `infra/scripts/bootstrap-server.sh` prepares a fresh Ubuntu 24.04 server once, as root: Docker Engine with log rotation, the key-only `deploy` user, `/srv/calwebtech`, the stack's env file from `infra/env/<stack>.env.example` with generated secrets, swap, UFW, fail2ban, sshd hardening, unattended security updates. `infra/env/production.env.example` exists beside staging's. Production deploys only by hand: `workflow_dispatch` on the release workflow with a stack and a full commit SHA on `main` (`deploy-manual`), which shares the SSH steps with the automatic staging job through `.github/actions/deploy-over-ssh`; rollback is the same job with the previous SHA, and nothing is rebuilt. The backup sidecar exists: `infra/backup/Dockerfile` (pg_dump 17 plus restic, built in CI as the fourth image), `backup-entrypoint.sh` streams a nightly dump into an encrypted off-site restic repository with 7/4/6 retention, `restore.sh` is the drill; the `ops` profile is still started by hand. Every stack opts into `security-headers@file` (`infra/traefik/dynamic/security.yml`: HSTS, nosniff, referrer policy, frame denial, permissions policy, COOP, and a report-only CSP derived from what the app loads), and the smoke test asserts HSTS when `EXPECT_HSTS` is set. | Owner's decision to host the whole platform, in Docker, on their own VPS. One 4 GB server runs one stack. Production never seeds, so a production deploy needs content in the database first; staging on the same server proves the stack meanwhile. The CSP stays report-only because Next's inline hydration scripts cannot be hashed, and nonces would make every route render dynamically. |
 
 ## Open
 
@@ -79,11 +80,24 @@ it here and in `CLAUDE.md` in the same commit.
 
 - `DEPLOY_ENABLED` stays off until the staging environment's secrets (`VPS_HOST`,
   `VPS_PORT`, `VPS_USER`, `VPS_SSH_KEY`, `VPS_KNOWN_HOSTS`) and GHCR pull access exist.
-  Switching it on earlier fails every push to `main`.
-- Staging and production on one 4 GB server overlap in memory limits. Confirm the server
-  size, or run staging on a second small server.
-- The `ops` Compose profile (backup, Umami, Uptime Kuma) is not deployable yet: the backup
-  entrypoint script does not exist, and Umami needs its own database (Tasks 6.3 and 6.4).
+  Switching it on earlier fails every push to `main`. The bootstrap script prints them.
+- The owner's server has 4 GB, which runs one stack. Staging and production side by side
+  need 8 GB or a second server.
+- A production deploy needs content in the database first: the seed refuses production,
+  and without the `home.content` and `site.*` settings every page answers 500 and the smoke
+  test fails the release. Either the server runs as staging first, or the one-off importer
+  that loads `apps/web/static-content` into the settings and content columns is built
+  (docs/11-vps-deploy.md, "Production needs content first").
+- The owner has no domain yet. Let's Encrypt needs a name, so the first host is a free
+  DuckDNS name (on the Public Suffix List; `sslip.io` and `nip.io` are not, and share one
+  rate limit with everyone). The real domain is a `SITE_HOST` change and a redeploy.
+- Of the `ops` Compose profile, `backup` is deployable and started by hand once the env
+  file has a restic destination (the owner deferred the choice of provider); Umami still
+  needs its own database (Task 6.3). A deploy does not move `backup` to the new tag.
+- The `media` volume is mounted only by `backup`; the API does not write uploads there
+  until the media library exists (Task 5.3), so that snapshot is empty for now.
+- Every container reads the one stack env file, so the backup credentials are visible to
+  web, api and worker too. A separate ops env file would be tighter.
 - The client confirms the internal notification address. Until then the seed sets
   Resend's test inbox (`delivered+leads@resend.dev`).
 - The client's Resend account, sending domain, SPF, DKIM and DMARC (Task 6.2). Until

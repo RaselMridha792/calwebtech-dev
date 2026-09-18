@@ -1,8 +1,49 @@
 # Session handoff: Calwebtech platform
 
-Last updated 2026-09-13. Written so another developer can pick up the work without the
+Last updated 2026-09-18. Written so another developer can pick up the work without the
 chat history. Everything described here is merged into `main` on
-https://github.com/RaselMridha792/calwebtech-dev (PRs #1 to #5, plus this file).
+https://github.com/RaselMridha792/calwebtech-dev unless a branch is named.
+
+## Update, 2026-09-18
+
+The owner's laptop SSD was replaced and the old working copy came across without its
+`.git` directory. What was on GitHub was intact; what was not pushed had to be recovered
+from the dead worktrees under the old `calwebtech/.claude/worktrees/`.
+
+- **Insights, guides, glossary and the cost calculator** were already on `main` (PR #10).
+- **The forms family** (`/start-a-project/`, `/free-website-audit/`) had been built to the
+  contract, API, getters, copy snapshots and seed but never pushed. Recovered as PR #11
+  (`recover/pages2-forms`), with the lead path merged so both the calculator's answers
+  and the brief's progressive draft survive. **Its web routes and components were never
+  built**: nothing renders those pages yet. That is the next content task.
+- **Booking** (Task 5.1) was part built in a worktree whose `packages/` did not survive.
+  Not recovered, by the owner's decision; the 900 lines of API code in the old folder are
+  a blueprint for rebuilding it, nothing more.
+- Do not delete the old `calwebtech/` folder until PR #11 is merged.
+
+**Hosting on the owner's VPS** is prepared on branch `feat/vps-deploy` (decision 42,
+`docs/11-vps-deploy.md`): a server bootstrap script, `production.env.example`, a manual
+production deploy job with rollback, the backup sidecar the compose file had only
+referenced, and the security headers middleware. The owner's answers that shaped it: the
+server has 4 GB (one stack), there is no domain yet (a DuckDNS name first), backups are
+deferred until a provider is chosen. The owner wants production first; production never
+seeds and a fresh database answers 500 on every page, so the path is staging on the same
+server first, or the snapshot importer (`What is left`, 3) before production.
+
+The whole package was rehearsed on this machine on 2026-09-18 with Docker Desktop and
+locally built images: `deploy.sh staging local` brought up the proxy, Postgres and
+Redis, applied the migrations, seeded, rolled out web, api and worker on their health
+checks, and passed the smoke test through Traefik (anonymous refused, five routes 200,
+`X-Robots-Tag` and `Strict-Transport-Security` on every one), then recorded the tag.
+Traefik loaded all three dynamic files with no errors. The four images build from a
+clean tree; the backup image's `healthy` and `once` modes fail the right way without a
+marker or a destination. Not rehearsed: Let's Encrypt (needs a public name), the
+bootstrap script itself (needs a Linux box), a real off-site backup and the restore drill.
+
+Toolchain on the new machine: Node 24.19 (the repo pins 22; `engines` allows it, CI and
+the images stay on 22), pnpm 10.32.1, Docker Desktop with WSL 2, GitHub CLI logged in.
+The Vercel demo has no `APP_ORIGIN` set, so every canonical and `og:url` there says
+`http://localhost:3000`; set it in the Vercel project before anything is shared.
 
 ## Update, 2026-09-15
 
@@ -215,15 +256,17 @@ Notes on the machine this session used:
 | 2.1 to 2.3 Work, case studies, industries, team | Not started (the API already maps projects and testimonials for the homepage) |
 | 3.1, 3.2 Locations, service-by-city | Not started |
 | 3.3 Before/after, awards, partners | Partial: accessible slider component; awards and partners appear only as page data |
-| 4.1 to 4.3 Calculator, content templates, search | Not started |
-| 5.1 Booking | Not started |
-| 5.2 Start a project and landing | Partial: landing template done; the multi-step start-a-project flow is not started |
+| 4.1 Calculator | Done (PR #10). Its result panel points at `/contact/` until the booking page exists |
+| 4.2 Free audit, guides, insights, glossary, FAQ | Done except the free audit page, which is the forms family (PR #11): contract, API and copy exist, the page does not |
+| 4.3 Search | Not started |
+| 5.1 Booking | Not started. A partial API blueprint survives in the old folder, unrecovered |
+| 5.2 Start a project and landing | Partial: landing template done; the start-a-project API with progressive saving is in PR #11, the multi-step page is not built |
 | 5.3 Admin dashboard, auth, RBAC | Not started. No login exists yet; settings change through `settings-cli` |
 | 5.4 Campaign engine | Not started (queue and email templates exist for lead emails only) |
 | 6.1 Anti-spam | Partial: Turnstile, honeypot, per-IP rate limit. Missing: timing checks, per-email limits, MX and disposable-domain checks, duplicate-lead merging |
 | 6.2 Deliverability | Not started |
-| 6.3 Hardening and observability | Partial: Traefik TLS config, staging auth and noindex. CSP, HSTS, Sentry, Uptime Kuma and Umami not set up |
-| 6.4 Backup and restore | Not started (the `ops` Compose profile has no backup entrypoint yet) |
+| 6.3 Hardening and observability | Partial: Traefik TLS config, staging auth and noindex; on `feat/vps-deploy` the server hardening (UFW, fail2ban, key-only SSH, unattended upgrades) and HSTS plus the other security headers, with a report-only CSP. Sentry, Uptime Kuma and Umami not set up |
+| 6.4 Backup and restore | Built on `feat/vps-deploy` (restic sidecar, nightly, 7/4/6, restore drill script); not running until a provider is chosen. The drill into staging has not been done |
 | 6.5 Launch | Not started |
 
 ### Known gaps and risks
@@ -246,8 +289,9 @@ Notes on the machine this session used:
 | Contracts | `packages/shared/src/{home-page,landing-page,lead,site}.ts` |
 | Schema, migrations, seeds | `packages/db/prisma/schema.prisma`, `packages/db/src/seed/*` |
 | Email templates, worker | `packages/emails`, `apps/worker` |
-| Deploy | `infra/docker-compose.yml`, `infra/proxy`, `infra/traefik/dynamic`, `infra/scripts/{deploy,smoke}.sh`, `infra/env/staging.env.example` |
-| CI | `.github/workflows/release.yml` |
+| Deploy | `infra/docker-compose.yml`, `infra/proxy`, `infra/traefik/dynamic` (`edge.yml`, `access.yml`, `security.yml`), `infra/scripts/{bootstrap-server,deploy,smoke}.sh`, `infra/env/{staging,production}.env.example`; the procedure in `docs/11-vps-deploy.md` |
+| Backups | `infra/backup/Dockerfile`, `infra/scripts/{backup-entrypoint,restore}.sh` |
+| CI | `.github/workflows/release.yml`, `.github/actions/deploy-over-ssh` |
 | Tests | unit tests beside the code; end-to-end in `apps/web/e2e`; the gate in `packages/perf` |
 
 Environment keys are documented in `.env.example` (local and API) and

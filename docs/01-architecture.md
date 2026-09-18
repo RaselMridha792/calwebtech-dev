@@ -63,8 +63,11 @@ host key pinned, and runs `infra/scripts/deploy.sh staging <sha>`:
 The new tag is written to the env file only after the smoke test passes, so a failed or
 interrupted deploy leaves it on the last release that went live. A failing step brings
 that release back, and a failed first deploy stops the new release. Images are tagged by
-SHA, never `latest`, so rollback is a tag change. Production deploys will be a separate,
-manual job, added once production keys exist.
+SHA, never `latest`, so rollback is a tag change. Production deploys only by hand:
+"Run workflow" on the release workflow with a stack and a commit SHA on `main`, whose
+images already exist; the same button with the previous SHA is the rollback. The server
+itself is prepared once by `infra/scripts/bootstrap-server.sh`; the procedure is
+`docs/11-vps-deploy.md`.
 
 ## Environments
 
@@ -96,3 +99,10 @@ Nightly logical dumps plus weekly snapshots, encrypted before leaving the server
 retained 7 daily / 4 weekly / 6 monthly, pushed to a provider account separate from
 the VPS. RPO 24 hours, RTO 4 hours. The restore procedure is tested once during
 handover, not assumed.
+
+The `backup` container (`infra/backup/Dockerfile`, the `ops` profile) does this:
+`infra/scripts/backup-entrypoint.sh` streams `pg_dump` straight into a restic
+repository off the server every night, snapshots the media volume, applies the retention
+above and checks the repository weekly; it turns unhealthy once a backup is 26 hours
+overdue. `infra/scripts/restore.sh` is the drill, into staging first. Both need a restic
+destination in the stack's env file before they run.

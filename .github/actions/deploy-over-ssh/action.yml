@@ -1,0 +1,88 @@
+# The deploy steps the release workflow's two deploy jobs share: the automatic staging
+# deploy on a push to main, and the manual deploy of either stack at a commit SHA. It
+# opens SSH with the server's host key pinned, copies infra/ for the checked-out commit,
+# lets the server pull from GHCR while the container packages are private, and runs
+# infra/scripts/deploy.sh, which pulls, migrates, rolls out, smoke tests and rolls back on
+# failure.
+#
+# The caller checks out the commit whose images it deploys before calling this, so the
+# infra/ that lands on the server matches those images.
+name: Deploy over SSH
+description: Copy infra/ to the server and run infra/scripts/deploy.sh for one stack at one image tag
+
+inputs:
+  stack:
+    description: production or staging. Must match STACK in the server's env file.
+    required: true
+  tag:
+    description: Image tag to deploy, the SHA of the commit the images were built from.
+    required: true
+  host:
+    description: The server's host name or address.
+    required: true
+  port:
+    description: SSH port. Empty also means 22, so an unset secret can be passed straight through.
+    required: false
+    default: '22'
+  user:
+    description: SSH user on the server.
+    required: true
+  ssh-key:
+    description: Private key for that user, as stored in the VPS_SSH_KEY secret.
+    required: true
+  known-hosts:
+    description: known_hosts line(s) pinning the server's host key, as stored in VPS_KNOWN_HOSTS.
+    required: true
+  ghcr-user:
+    description: User for the server's docker login to GHCR. Empty once the packages are public.
+    required: false
+    default: ''
+  ghcr-token:
+    description: Read token for that login. Empty once the packages are public.
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+    - name: Open SSH to the server, with its host key pinned
+      shell: bash
+      env:
+        STACK: ${{ inputs.stack }}
+        VPS_HOST: ${{ inputs.host }}
+        VPS_PORT: ${{ inputs.port }}
+        VPS_USER: ${{ inputs.user }}
+        VPS_SSH_KEY: ${{ inputs.ssh-key }}
+        VPS_KNOWN_HOSTS: ${{ inputs.known-hosts }}
+      run: |
+        for name in VPS_HOST VPS_USER VPS_SSH_KEY VPS_KNOWN_HOSTS; do
+          if [ -z "${!name}" ]; then
+            echo "::error::The $STACK environment has no $name secret"
+            exit 1
+          fi
+        done
+        install -m 700 -d ~/.ssh
+        printf '%s\n' "$VPS_SSH_KEY" > ~/.ssh/deploy_key
+        chmod 600 ~/.ssh/deploy_key
+        printf '%s\n' "$VPS_KNOWN_HOSTS" > ~/.ssh/known_hosts
+        printf 'Host deploy-target\n  HostName %s\n  Port %s\n  User %s\n  IdentityFile ~/.ssh/deploy_key\n  IdentitiesOnly yes\n' \
+          "$VPS_HOST" "${VPS_PORT:-22}" "$VPS_USER" > ~/.ssh/config
+    - name: Copy infra/ for this commit to the server
+      shell: bash
+      run: rsync -az --delete infra/ deploy-target:/srv/calwebtech/infra/
+    - name: Let the server pull images from GHCR
+      shell: bash
+      env:
+        GHCR_PULL_USER: ${{ inputs.ghcr-user }}
+        GHCR_PULL_TOKEN: ${{ inputs.ghcr-token }}
+      run: |
+        # Not needed once the container packages are public.
+        if [ -n "$GHCR_PULL_TOKEN" ]; then
+          printf '%s' "$GHCR_PULL_TOKEN" | ssh deploy-target docker login ghcr.io -u "$GHCR_PULL_USER" --password-stdin
+        fi
+    - name: Deploy, smoke test, roll back on failure
+      shell: bash
+      env:
+        STACK: ${{ inputs.stack }}
+        TAG: ${{ inputs.tag }}
+      run: ssh deploy-target bash /srv/calwebtech/infra/scripts/deploy.sh "$STACK" "$TAG"

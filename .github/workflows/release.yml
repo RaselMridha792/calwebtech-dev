@@ -2,7 +2,11 @@
 # known out-of-memory failure this pipeline exists to prevent.
 #
 # Pull requests run verify and build the images without pushing them.
-# Pushes to main also push the images to GHCR and, once enabled, deploy.
+# Pushes to main also push the images to GHCR, tagged by commit SHA and never latest,
+# and, once enabled, deploy that SHA to staging.
+# "Run workflow" on the Actions tab deploys production, or staging, at a SHA whose images
+# are already in GHCR; nothing is rebuilt. Rollback is the same button with the SHA that
+# was live before. The deploy steps themselves live in .github/actions/deploy-over-ssh.
 name: release
 
 on:
@@ -10,13 +14,31 @@ on:
     branches: [main]
   push:
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      stack:
+        description: Stack to deploy
+        type: choice
+        options: [production, staging]
+        default: production
+      tag:
+        description: Commit SHA whose images were pushed to GHCR from main
+        type: string
+        required: true
 
 concurrency:
-  group: release-${{ github.ref }}
+  # Pull request runs on one ref replace each other; pushes to main queue, so a deploy is
+  # never cut off. A manual deploy has its own group per stack: it neither waits for nor
+  # cancels a pull request or push run, and deploy-manual's own group below serialises it
+  # against the automatic staging deploy.
+  group: ${{ github.event_name == 'workflow_dispatch' && format('manual-{0}', inputs.stack) || format('release-{0}', github.ref) }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   verify:
+    # A manual deploy ships images that already passed this on their way to main; it runs
+    # no checks and no build.
+    if: github.event_name != 'workflow_dispatch'
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -102,6 +124,10 @@ jobs:
 
   build:
     needs: verify
+    # A skipped verify (a manual deploy) must skip the build, never fail it. GitHub already
+    # prefixes a job-level if with success(), which a skipped dependency fails; checking
+    # the result by name says so without leaning on that.
+    if: needs.verify.result == 'success'
     runs-on: ubuntu-latest
     permissions: { contents: read, packages: write }
     steps:
@@ -142,14 +168,25 @@ jobs:
           tags: ${{ env.IMAGE_PREFIX }}-worker:${{ github.sha }}
           cache-from: type=gha,scope=worker
           cache-to: type=gha,mode=max,scope=worker
+      - name: Build backup
+        # Postgres client plus restic, for the ops profile's scheduled backups.
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: infra/backup/Dockerfile
+          push: ${{ github.event_name == 'push' }}
+          tags: ${{ env.IMAGE_PREFIX }}-backup:${{ github.sha }}
+          cache-from: type=gha,scope=backup
+          cache-to: type=gha,mode=max,scope=backup
 
   deploy:
     needs: build
-    # Deploys main to staging. Off until the repository variable DEPLOY_ENABLED is true.
-    # Switch it on only once the staging environment's secrets exist, or every push to
-    # main fails here. The server's side is described in infra/env/staging.env.example
-    # and infra/scripts/deploy.sh. Production gets its own manual job once its keys exist.
-    if: github.event_name == 'push' && vars.DEPLOY_ENABLED == 'true'
+    # Deploys every push to main to staging, automatically. Off until the repository
+    # variable DEPLOY_ENABLED is true: switch it on only once the staging environment's
+    # secrets exist, or every push to main fails here. The server's side is described in
+    # infra/env/staging.env.example and infra/scripts/deploy.sh. Production, and staging at
+    # an older SHA, go through deploy-manual below.
+    if: github.event_name == 'push' && needs.build.result == 'success' && vars.DEPLOY_ENABLED == 'true'
     runs-on: ubuntu-latest
     environment:
       name: staging
@@ -157,39 +194,70 @@ jobs:
     concurrency:
       group: deploy-staging
       cancel-in-progress: false
-    env:
-      VPS_HOST: ${{ secrets.VPS_HOST }}
-      VPS_PORT: ${{ secrets.VPS_PORT || '22' }}
-      VPS_USER: ${{ secrets.VPS_USER }}
     steps:
       - uses: actions/checkout@v4
-      - name: Open SSH to the server, with its host key pinned
-        env:
-          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
-          VPS_KNOWN_HOSTS: ${{ secrets.VPS_KNOWN_HOSTS }}
+      - uses: ./.github/actions/deploy-over-ssh
+        with:
+          stack: staging
+          tag: ${{ github.sha }}
+          host: ${{ secrets.VPS_HOST }}
+          port: ${{ secrets.VPS_PORT }}
+          user: ${{ secrets.VPS_USER }}
+          ssh-key: ${{ secrets.VPS_SSH_KEY }}
+          known-hosts: ${{ secrets.VPS_KNOWN_HOSTS }}
+          ghcr-user: ${{ secrets.GHCR_PULL_USER }}
+          ghcr-token: ${{ secrets.GHCR_PULL_TOKEN }}
+
+  deploy-manual:
+    # "Run workflow" on the Actions tab, with a stack and a commit SHA. Nothing is rebuilt:
+    # the images for a SHA were pushed when it landed on main, and there is no needs, so an
+    # older SHA deploys as readily as the newest. That is the rollback path. Secrets and
+    # the deployment link come from the GitHub environment named after the stack, so
+    # production and staging use the same secret names with their own values; required
+    # reviewers on the production environment need no change here.
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ inputs.stack }}
+      url: ${{ inputs.stack == 'production' && vars.PRODUCTION_URL || vars.STAGING_URL }}
+    concurrency:
+      # The same group as the automatic job for staging, so two deploys of one stack never
+      # overlap; deploy.sh's rollback assumes it has the stack to itself.
+      group: deploy-${{ inputs.stack }}
+      cancel-in-progress: false
+    env:
+      TAG: ${{ inputs.tag }}
+    steps:
+      - name: Refuse anything but a full commit SHA
+        # Images are tagged by the full lowercase SHA. An abbreviated or upper-case one would
+        # fail at pull time on the server, after infra/ had already been replaced.
         run: |
-          for name in VPS_HOST VPS_USER VPS_SSH_KEY VPS_KNOWN_HOSTS; do
-            if [ -z "${!name}" ]; then
-              echo "::error::The staging environment has no $name secret"
-              exit 1
-            fi
-          done
-          install -m 700 -d ~/.ssh
-          printf '%s\n' "$VPS_SSH_KEY" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          printf '%s\n' "$VPS_KNOWN_HOSTS" > ~/.ssh/known_hosts
-          printf 'Host deploy-target\n  HostName %s\n  Port %s\n  User %s\n  IdentityFile ~/.ssh/deploy_key\n  IdentitiesOnly yes\n' \
-            "$VPS_HOST" "$VPS_PORT" "$VPS_USER" > ~/.ssh/config
-      - name: Copy infra/ for this commit to the server
-        run: rsync -az --delete infra/ deploy-target:/srv/calwebtech/infra/
-      - name: Let the server pull images from GHCR
-        env:
-          GHCR_PULL_USER: ${{ secrets.GHCR_PULL_USER }}
-          GHCR_PULL_TOKEN: ${{ secrets.GHCR_PULL_TOKEN }}
-        run: |
-          # Not needed once the container packages are public.
-          if [ -n "$GHCR_PULL_TOKEN" ]; then
-            printf '%s' "$GHCR_PULL_TOKEN" | ssh deploy-target docker login ghcr.io -u "$GHCR_PULL_USER" --password-stdin
+          if ! [[ "$TAG" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "::error::tag must be a full 40-character commit SHA, not '$TAG'"
+            exit 1
           fi
-      - name: Deploy staging, smoke test, roll back on failure
-        run: ssh deploy-target bash /srv/calwebtech/infra/scripts/deploy.sh staging ${{ github.sha }}
+      - uses: actions/checkout@v4
+        with:
+          # The commit itself, so the infra/ copied to the server matches the images. Full
+          # history, with every branch, for the ancestry check.
+          ref: ${{ inputs.tag }}
+          fetch-depth: 0
+      - name: Refuse a commit that is not on main
+        # Images are pushed only from main, so nothing else has any, and an unmerged branch
+        # never reaches production by this route.
+        run: |
+          if ! git merge-base --is-ancestor "$TAG" origin/main; then
+            echo "::error::$TAG is not on main. Only commits merged to main have images in GHCR."
+            exit 1
+          fi
+      - uses: ./.github/actions/deploy-over-ssh
+        with:
+          stack: ${{ inputs.stack }}
+          tag: ${{ inputs.tag }}
+          host: ${{ secrets.VPS_HOST }}
+          port: ${{ secrets.VPS_PORT }}
+          user: ${{ secrets.VPS_USER }}
+          ssh-key: ${{ secrets.VPS_SSH_KEY }}
+          known-hosts: ${{ secrets.VPS_KNOWN_HOSTS }}
+          ghcr-user: ${{ secrets.GHCR_PULL_USER }}
+          ghcr-token: ${{ secrets.GHCR_PULL_TOKEN }}
