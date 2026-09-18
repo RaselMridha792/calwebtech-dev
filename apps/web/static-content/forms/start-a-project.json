@@ -1,0 +1,201 @@
+{
+  "content": {
+    "seo": {
+      "title": "Start a project",
+      "description": "Send us a project brief in six short steps. Your answers are saved as you go, and you get a reply within one business day.",
+      "ogImage": null
+    },
+    "hero": {
+      "eyebrow": "Start a project",
+      "title": "Start a project",
+      "answer": "This is a project brief: six short steps covering what you are building, what you need from us, and roughly what the budget and timing look like. Your answers are saved as you go, so you can leave the page and come back to it. A person reads every brief and replies within one business day.",
+      "intro": "Nothing here is binding and nothing is priced automatically. The brief exists so the first conversation starts from your situation instead of a script."
+    },
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1800&q=65"
+    },
+    "assurances": [
+      "Your details stay in our own database",
+      "No mailing list from this form",
+      "A person replies, not an automation"
+    ],
+    "form": {
+      "heading": "What are you planning to build?",
+      "intro": "Six steps, a few minutes. Only your name and email are required; everything else helps us quote accurately, and you can change any answer before you send the brief.",
+      "stepLabel": "Step",
+      "ofLabel": "of",
+      "backLabel": "Back",
+      "nextLabel": "Next step",
+      "submitLabel": "Send the brief",
+      "savedLabel": "Saved. You can close this tab and finish the brief later.",
+      "saveNote": "We ask for your email on the second step because it is what lets us save the brief. From then on the unfinished brief is stored on our own server so you can come back to it, and you can ask us to delete it at any time.",
+      "uploadNote": "There is no file upload here yet. We would rather say so than accept documents we cannot look after properly, so paste a link instead: a shared folder, a design file, a specification, a competitor you admire. Check that anyone with the link can open it.",
+      "footnote": "We reply to every brief. Your details go into our own database, never to a third-party form service, and this form does not add you to a mailing list.",
+      "servicesEmpty": "The service list is not published yet, so describe what you need in the last step instead.",
+      "success": {
+        "heading": "Your brief is with us.",
+        "body": "A person reads it and replies within one business day, with the questions we still have and what a proposal would cover."
+      },
+      "steps": [
+        {
+          "key": "project-type",
+          "legend": "What kind of project is this?",
+          "hint": "Pick the closest description. If it turns out to be something else once we talk, that is normal."
+        },
+        {
+          "key": "contact",
+          "legend": "Who should we reply to?",
+          "hint": "Your email is what saves the brief, so you can leave this page and pick it up again later."
+        },
+        {
+          "key": "services",
+          "legend": "What do you need from us?",
+          "hint": "Tick everything that applies. This tells us who should read the brief; nothing is priced from it."
+        },
+        {
+          "key": "budget",
+          "legend": "What budget range are you working with?",
+          "hint": "A range is enough. It tells us what is worth proposing, and we would rather say early if the work does not fit it."
+        },
+        {
+          "key": "timeline",
+          "legend": "When do you want to start?",
+          "hint": "If there is a date you have to hit, say so in the last step and we will tell you honestly whether it is realistic."
+        },
+        {
+          "key": "brief",
+          "legend": "What are you trying to fix or build?",
+          "hint": "A few sentences is plenty. What is going wrong now, or what has to be true when this is finished?"
+        }
+      ],
+      "fields": {
+        "projectType": { "label": "Project type", "hint": null, "placeholder": null },
+        "name": { "label": "Full name", "hint": null, "placeholder": null },
+        "email": {
+          "label": "Work email",
+          "hint": "We reply here, and your brief is saved against this address.",
+          "placeholder": "you@company.com"
+        },
+        "company": { "label": "Company", "hint": null, "placeholder": null },
+        "phone": { "label": "Phone", "hint": "Only if you would rather we called.", "placeholder": "Optional" },
+        "siteUrl": { "label": "Current website", "hint": "Leave it empty if there is not one yet.", "placeholder": "company.com" },
+        "serviceInterest": { "label": "What you need", "hint": null, "placeholder": null },
+        "budgetBand": { "label": "Budget range", "hint": null, "placeholder": null },
+        "timeline": { "label": "When you want to start", "hint": null, "placeholder": null },
+        "description": {
+          "label": "The project in your own words",
+          "hint": null,
+          "placeholder": "What is going wrong now, or what has to be true when this is finished?"
+        },
+        "projectLinks": {
+          "label": "Links we should read",
+          "hint": "A shared folder, a design file, a specification, a site you like. One per line.",
+          "placeholder": "https://"
+        }
+      }
+    },
+    "whatHappens": {
+      "heading": "What happens after you send the brief?",
+      "intro": "The same sequence every time, whatever the size of the project. Nothing is charged for until you have a written proposal in front of you.",
+      "steps": [
+        {
+          "title": "A person reads the brief",
+          "duration": "Within one business day",
+          "body": "Someone who scopes and prices projects reads it, looks at your current site and replies by email with the questions we still have."
+        },
+        {
+          "title": "A thirty minute call",
+          "duration": "At a time that suits you",
+          "body": "We talk through what the site has to do, who has to use it and what has already been tried. Send your NDA beforehand if you need one and we will sign it before we talk."
+        },
+        {
+          "title": "A written proposal",
+          "duration": "Within two business days of the call",
+          "body": "Scope, timeline, a fixed price and what is excluded, in writing and with no obligation. If we are not the right fit for this project, we say so."
+        }
+      ]
+    },
+    "whatWeNeed": {
+      "heading": "What do we need to quote accurately?",
+      "intro": "A proposal is only as good as what it is based on. These are the things that change a number most, so tell us what you know and say plainly what you do not.",
+      "items": [
+        "What the site has to achieve, in your words rather than in features",
+        "Roughly how many pages and templates you expect to need",
+        "Whether the content and images exist or have to be written",
+        "The systems it has to connect to, such as a CRM, an ERP or a payment provider",
+        "Who signs it off, and how quickly they can review work",
+        "A budget range, even a wide one, and any date you have to hit"
+      ],
+      "note": "If you do not know some of these yet, send the brief anyway. Working out the unknowns is part of the first call."
+    },
+    "alternatives": {
+      "heading": "Would you rather talk before writing anything?",
+      "intro": "A brief is the fastest route to a price, but it is not the only way in. Any of these reach the same people.",
+      "items": [
+        {
+          "title": "Send a short message instead",
+          "body": "A sentence about what is going wrong is enough to start. The contact form routes your message to whoever handles that kind of enquiry.",
+          "link": { "label": "Go to the contact form", "href": "/contact/" }
+        },
+        {
+          "title": "Ask for a free website audit",
+          "body": "If you already have a site and want evidence before you commit to anything, we review it and send you what we find in writing.",
+          "link": { "label": "Request a website audit", "href": "/free-website-audit/" }
+        },
+        {
+          "title": "See what projects cost first",
+          "body": "Price bands for each kind of project, what is included in every one, and the things that move the number up or down.",
+          "link": { "label": "See pricing", "href": "/pricing/" }
+        }
+      ]
+    },
+    "faq": {
+      "heading": "What do people ask before sending a brief?",
+      "intro": "The questions that come up most often in the first email."
+    }
+  },
+  "services": [
+    { "slug": "custom-website-development", "title": "Custom website development" },
+    { "slug": "website-redesign", "title": "Website redesign" },
+    { "slug": "web-application-development", "title": "Web application development" },
+    { "slug": "ecommerce-development", "title": "Ecommerce development" },
+    { "slug": "nextjs-development", "title": "Next.js development" },
+    { "slug": "wordpress-development", "title": "WordPress development" },
+    { "slug": "shopify-development", "title": "Shopify development" },
+    { "slug": "ai-search-visibility", "title": "AI search visibility" },
+    { "slug": "ai-integration", "title": "AI integration" },
+    { "slug": "care-plans", "title": "Website care plans" }
+  ],
+  "faqs": [
+    {
+      "id": "brief-binding",
+      "question": "Does sending a brief commit me to anything?",
+      "answer": "No. It starts a conversation and gets you a written proposal with a fixed price. You are free to take that proposal to anyone else, or to do nothing with it."
+    },
+    {
+      "id": "brief-budget-unknown",
+      "question": "What if I do not know my budget yet?",
+      "answer": "Choose “Not sure yet”. We will send price bands for the kind of work you have described so you can see where it lands, and we will say plainly if what you want costs more than you expected."
+    },
+    {
+      "id": "brief-saved",
+      "question": "Can I finish the brief later?",
+      "answer": "Yes. Once you have given us your email, the brief is saved on our own server and in this browser, so you can close the tab and come back to it. Ask us and we will delete an unfinished brief."
+    },
+    {
+      "id": "brief-files",
+      "question": "How do I send you files?",
+      "answer": "Paste a link to them in the last step, to a shared folder or a design file that anyone with the link can open. We do not accept uploads on this form yet, because storing files properly is part of the media library we are still building."
+    },
+    {
+      "id": "brief-nda",
+      "question": "Will you sign an NDA before we talk?",
+      "answer": "Yes. Say so in the brief and send yours over, or ask for ours. We sign it before the first call rather than after it."
+    },
+    {
+      "id": "brief-who-reads",
+      "question": "Who reads the brief?",
+      "answer": "The people who would run the project: the developer and the person who scopes and prices the work. It does not go to a call centre or a sales sequence, and your details are stored in our own database."
+    }
+  ]
+}

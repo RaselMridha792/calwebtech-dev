@@ -14,6 +14,7 @@ import {
 import { BadRequestException, ForbiddenException, Injectable, Logger } from '@nestjs/common';
 import { calculatorLeadOutcome, type CalculatorLeadOutcome } from '../calculator/calculator-lead';
 import { publishedAsOf } from '../common/published';
+import { completedDraftAnswers, openProjectDraft } from '../forms/forms.draft';
 import { PrismaService } from '../prisma/prisma.service';
 import { EmailQueue } from '../queue/email-queue';
 import { SettingsService } from '../settings/settings.service';
@@ -114,6 +115,41 @@ export class LeadsService {
         : null;
 
     const serviceInterest = service ? withServiceInterest(input.serviceInterest, service.title) : input.serviceInterest;
+    // Structured answers without a column of their own, kept queryable beside the lead. The
+    // calculator brings its own set, recomputed here, and takes the column when it does.
+    const formAnswers: Prisma.InputJsonObject = {
+      ...(enquiryType ? { enquiryType: enquiryType.slug } : {}),
+      ...(input.projectLinks ? { projectLinks: input.projectLinks } : {}),
+      ...(input.mainConcern ? { mainConcern: input.mainConcern } : {}),
+      ...(input.competitorUrl ? { competitorUrl: input.competitorUrl } : {}),
+    };
+    const answers = calculator?.stored ?? (Object.keys(formAnswers).length > 0 ? formAnswers : undefined);
+    // An unfinished brief that progressive saving stored (apps/api/src/forms): this submit
+    // completes that same lead, so one brief is one row and the drop-off counts stay honest.
+    const draftLead = input.draftId
+      ? await db.lead.findFirst({
+          where: { id: input.draftId, email: input.email, type: input.type, deletedAt: null },
+          select: { id: true, answers: true },
+        })
+      : null;
+    const draft = draftLead ? openProjectDraft(draftLead.answers, input.draftToken) : null;
+    const now = new Date();
+    const attribution = {
+      firstTouchUtm: input.attribution.firstTouch,
+      lastTouchUtm: input.attribution.lastTouch,
+      referrer: input.attribution.referrer,
+      landingPage: input.attribution.landingPage,
+      device: input.attribution.device,
+      formId: input.formId,
+      landingPageId: landingPage?.id,
+    };
+    const activities = [
+      {
+        type: 'form_submitted',
+        detail: { formId: input.formId, ...(enquiryType ? { enquiryType: enquiryType.slug } : {}) },
+      },
+      ...(botCheck === 'unavailable' ? [{ type: 'bot_check_unavailable', detail: { formId: input.formId } }] : []),
+    ];
 
     const lead = await db.$transaction(async (tx) => {
       const contact = await tx.contact.upsert({
@@ -131,46 +167,48 @@ export class LeadsService {
         },
       });
 
+      const fields = {
+        type: input.type,
+        name: input.name,
+        email: input.email,
+        phone: input.phone,
+        company: input.company,
+        message: input.message,
+        // A calculator lead's band is the one its own estimate falls in, so the inbox can
+        // be filtered on a figure we calculated rather than one the visitor guessed.
+        budgetBand: calculator ? calculator.estimate.budgetBand : input.budgetBand,
+        timeline: input.timeline,
+        projectType: calculator?.answers.projectType ?? input.projectType,
+        referralSource: input.referralSource,
+        siteUrl: input.siteUrl,
+        serviceInterest,
+      };
+
+      if (draftLead && draft) {
+        // The row already exists with this brief's attribution, so it is completed in place.
+        return tx.lead.update({
+          where: { id: draftLead.id },
+          data: {
+            ...fields,
+            answers: completedDraftAnswers(draft, answers ?? {}, now),
+            contactId: contact.id,
+            serviceId: service?.id,
+            attribution: { upsert: { create: attribution, update: attribution } },
+            activities: { create: activities },
+          },
+          select: { id: true, createdAt: true },
+        });
+      }
+
       return tx.lead.create({
         data: {
-          type: input.type,
-          name: input.name,
-          email: input.email,
-          phone: input.phone,
-          company: input.company,
-          message: input.message,
-          // A calculator lead's band is the one its own estimate falls in, so the inbox can
-          // be filtered on a figure we calculated rather than one the visitor guessed.
-          budgetBand: calculator ? calculator.estimate.budgetBand : input.budgetBand,
-          timeline: input.timeline,
-          projectType: calculator?.answers.projectType,
+          ...fields,
           // One `answers` column holds whichever structured answers the form produced.
-          answers: calculator?.stored ?? (enquiryType ? { enquiryType: enquiryType.slug } : undefined),
-          referralSource: input.referralSource,
-          siteUrl: input.siteUrl,
-          serviceInterest,
+          answers,
           contactId: contact.id,
           serviceId: service?.id,
-          attribution: {
-            create: {
-              firstTouchUtm: input.attribution.firstTouch,
-              lastTouchUtm: input.attribution.lastTouch,
-              referrer: input.attribution.referrer,
-              landingPage: input.attribution.landingPage,
-              device: input.attribution.device,
-              formId: input.formId,
-              landingPageId: landingPage?.id,
-            },
-          },
-          activities: {
-            create: [
-              {
-                type: 'form_submitted',
-                detail: { formId: input.formId, ...(enquiryType ? { enquiryType: enquiryType.slug } : {}) },
-              },
-              ...(botCheck === 'unavailable' ? [{ type: 'bot_check_unavailable', detail: { formId: input.formId } }] : []),
-            ],
-          },
+          attribution: { create: attribution },
+          activities: { create: activities },
         },
         select: { id: true, createdAt: true },
       });
