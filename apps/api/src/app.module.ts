@@ -18,6 +18,7 @@ import { StaticPagesModule } from './static/static.controller';
 import { GuidesGlossaryModule } from './guides-glossary/guides-glossary.controller';
 import { CalculatorPageModule } from './calculator/calculator.controller';
 import { InsightsModule } from './insights/insights.controller';
+import { FormsModule } from './forms/forms.controller';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { InsightsModule } from './insights/insights.controller';
     GuidesGlossaryModule,
     CalculatorPageModule,
     InsightsModule,
+    FormsModule,
   ],
   controllers: [HealthController],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],

@@ -1,0 +1,156 @@
+{
+  "content": {
+    "seo": {
+      "title": "Free website audit",
+      "description": "Send us your website address and a developer reviews speed, accessibility, search visibility and how the site asks for enquiries. Findings in writing.",
+      "ogImage": null
+    },
+    "hero": {
+      "eyebrow": "Free website audit",
+      "title": "Free website audit",
+      "answer": "A free website audit is a manual review of your site by a developer, not an automated score out of a hundred. We look at how fast it is on a phone, whether people can actually use it, whether search engines and AI assistants can read it, and how it asks visitors to get in touch. You get the findings in writing, with no charge and no obligation to work with us afterwards.",
+      "intro": "One site per request. Tell us what worries you about it and we will start there, rather than sending you a list of everything a tool can measure."
+    },
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1800&q=65"
+    },
+    "assurances": [
+      "Reviewed by a developer, not a tool",
+      "Written findings you can act on",
+      "No obligation to hire us"
+    ],
+    "covers": {
+      "heading": "What does the audit cover?",
+      "intro": "The things that decide whether the traffic you already have turns into enquiries. We start with whatever you tell us worries you, then work through the rest.",
+      "items": [
+        {
+          "title": "How fast it is on a phone",
+          "body": "We load the site on a throttled mobile connection and look at what holds up the first meaningful paint: images, fonts, third-party scripts and layout that shifts under the reader. Core Web Vitals are the measure, but the useful part is which of your files cause the delay."
+        },
+        {
+          "title": "Whether people can use it",
+          "body": "Keyboard operation, focus that stays visible, colour contrast, labelled form fields, heading order and landmarks, against WCAG 2.2 AA. Most of what we find here is also what stops a phone user or a screen reader completing an enquiry."
+        },
+        {
+          "title": "Whether search engines and AI assistants can read it",
+          "body": "Titles and descriptions, heading structure, indexable URLs, canonical tags, structured data, and whether each page answers the question it targets in the first paragraph. Assistants quote pages that answer plainly; most sites bury the answer under a marketing introduction."
+        },
+        {
+          "title": "How the site asks for enquiries",
+          "body": "Where the calls to action sit, how many fields the forms ask for, what happens after a submission, and whether the pages that carry commercial intent give a visitor anything to do other than read."
+        },
+        {
+          "title": "What the site is built on",
+          "body": "Platform, plugin count, hosting and how updates reach production, so you know what maintenance you are carrying and where an outage or a security problem would come from."
+        },
+        {
+          "title": "How it compares to one competitor",
+          "body": "Give us a competitor and we look at how they handle the same job: what they lead with, what they make easy, and where your site is genuinely stronger."
+        }
+      ]
+    },
+    "delivery": {
+      "heading": "How is the audit delivered?",
+      "intro": "By email, in plain words, ordered by what it is costing you. No dashboard to log into and nobody calling you to talk you through a PDF.",
+      "steps": [
+        {
+          "title": "We confirm the request",
+          "duration": "Within one business day",
+          "body": "A person emails to say the review has started, asks anything that was not clear from your request, and tells you when the findings will reach you."
+        },
+        {
+          "title": "A developer goes through the site",
+          "duration": "By hand, not by script",
+          "body": "We use measurement tools where a number is the honest answer, but a person decides what matters. Automated reports flag hundreds of things; almost none of them change how many enquiries you get."
+        },
+        {
+          "title": "You get the findings in writing",
+          "duration": "By email",
+          "body": "What is worth fixing, in the order that costs you the most, with what each one involves and whether it needs a developer at all. The findings are yours to act on with any team you like."
+        }
+      ],
+      "image": {
+        "src": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=72",
+        "alt": "A laptop showing website analytics beside a notebook of handwritten findings"
+      }
+    },
+    "limits": {
+      "heading": "What is the audit not?",
+      "intro": "It is deliberately narrow. Saying what it does not include is how we keep it free and still useful.",
+      "items": [
+        "It is not a full content or brand strategy, which needs your team in the room",
+        "It is not a keyword plan or a link building proposal",
+        "It is not a formal accessibility conformance report, which needs assistive technology testing and a signed statement",
+        "It is not a penetration test or a security assessment of your servers",
+        "We change nothing on your site, and we need no logins to carry it out"
+      ]
+    },
+    "form": {
+      "heading": "Which site should we look at?",
+      "intro": "Four short answers. The more specific you are about what worries you, the more useful the findings will be.",
+      "submitLabel": "Request the audit",
+      "footnote": "One site per request. Your details go into our own database, never to a third-party form service, and asking for an audit does not add you to a mailing list.",
+      "success": {
+        "heading": "Your audit request is with us.",
+        "body": "A person confirms within one business day and tells you when the written findings will reach you."
+      },
+      "fields": {
+        "siteUrl": {
+          "label": "Website address",
+          "hint": "The site you want reviewed.",
+          "placeholder": "company.com"
+        },
+        "mainConcern": { "label": "What worries you most about it?", "hint": null, "placeholder": null },
+        "competitorUrl": {
+          "label": "A competitor to compare it against",
+          "hint": "Optional. We look at how they handle the same job.",
+          "placeholder": "competitor.com"
+        },
+        "name": { "label": "Full name", "hint": null, "placeholder": null },
+        "email": { "label": "Work email", "hint": "The findings go to this address.", "placeholder": "you@company.com" },
+        "company": { "label": "Company", "hint": null, "placeholder": null },
+        "description": {
+          "label": "Anything else we should look at?",
+          "hint": null,
+          "placeholder": "A page that never converts, a complaint you keep hearing, a platform you feel stuck with."
+        }
+      }
+    },
+    "faq": {
+      "heading": "What do people ask about the audit?",
+      "intro": "The questions that come up before a request is sent."
+    }
+  },
+  "faqs": [
+    {
+      "id": "audit-free",
+      "question": "Is the website audit really free?",
+      "answer": "Yes, for one site per request. It takes a few hours of a developer's time, and it is the most honest sales conversation we know: you see how we think before you spend anything, and we see whether the work is something we would be good at."
+    },
+    {
+      "id": "audit-hire",
+      "question": "Do I have to hire you afterwards?",
+      "answer": "No. The findings are written so your own team, or any agency, can act on them. If you want us to fix what we found, we quote a fixed price for it, and you are free to say no."
+    },
+    {
+      "id": "audit-automated",
+      "question": "Is this an automated report?",
+      "answer": "No. We use measurement tools where a number is the honest answer, but a person decides what is worth your attention. An automated report lists everything it can detect; this one tells you the few things that are costing you enquiries."
+    },
+    {
+      "id": "audit-access",
+      "question": "Do you need access to our website?",
+      "answer": "No. We review what is public, which is what your customers and search engines see. If you want the admin, the hosting or the analytics looked at as well, say so and we will ask for the access we need separately."
+    },
+    {
+      "id": "audit-not-live",
+      "question": "What if the site is behind a login or not live yet?",
+      "answer": "Tell us in the form. We can review a staging URL if you can share one, and if there is nothing to look at yet, a project brief is the better starting point."
+    },
+    {
+      "id": "audit-how-long",
+      "question": "How long does the audit take?",
+      "answer": "We confirm the request within one business day and tell you then when the findings will reach you. A developer has to go through the site properly, so we give you a date rather than a promise we would have to break."
+    }
+  ]
+}

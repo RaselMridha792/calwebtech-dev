@@ -34,6 +34,7 @@ export const PAGE_SEEDS: readonly PageSeedLoader[] = [
   () => import('./guides-glossary.js').then((module) => module.guidesGlossarySeed),
   () => import('./calculator.js').then((module) => module.calculatorSeed),
   () => import('./insights.js').then((module) => module.insightsSeed),
+  () => import('./forms.js').then((module) => module.formsSeed),
 ];
 
 /**
