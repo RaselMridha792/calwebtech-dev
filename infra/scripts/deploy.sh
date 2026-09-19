@@ -41,6 +41,12 @@ if [ "$(env_value STACK)" != "$STACK" ]; then
   echo "deploy: STACK in $ENV_FILE is not $STACK" >&2
   exit 1
 fi
+# The seed replaces the imported content with placeholders on every deploy, so a stack
+# carries one or the other, never both.
+if [ "$(env_value SEED_ON_DEPLOY)" = "true" ] && [ "$(env_value IMPORT_CONTENT_ON_DEPLOY)" = "true" ]; then
+  echo "deploy: SEED_ON_DEPLOY and IMPORT_CONTENT_ON_DEPLOY are both true in $ENV_FILE; choose one" >&2
+  exit 1
+fi
 
 PROXY=(docker compose -p calwebtech-proxy --env-file "$ENV_FILE" -f "$INFRA/proxy/docker-compose.yml")
 APP=(docker compose -p "calwebtech-$STACK" --env-file "$ENV_FILE" -f "$INFRA/docker-compose.yml")
@@ -79,6 +85,12 @@ fi
 if [ "$(env_value SEED_ON_DEPLOY)" = "true" ]; then
   echo "deploy: seeding placeholder content"
   "${APP[@]}" run --rm api node dist/seed.js
+fi
+# One-off: the marker it writes makes every later deploy skip it, so content the owner has
+# edited since is never overwritten (packages/db/src/import).
+if [ "$(env_value IMPORT_CONTENT_ON_DEPLOY)" = "true" ]; then
+  echo "deploy: importing the content snapshots, unless already done"
+  "${APP[@]}" run --rm api node dist/import-content.js
 fi
 "${APP[@]}" up -d --wait web api worker
 

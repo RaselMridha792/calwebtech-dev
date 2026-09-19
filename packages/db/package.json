@@ -13,9 +13,15 @@
     "./seed": {
       "types": "./dist/seed/index.d.ts",
       "default": "./dist/seed/index.js"
+    },
+    "./import": {
+      "types": "./dist/import/index.d.ts",
+      "default": "./dist/import/index.js"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "generate": "prisma generate",
     "build": "node -e \"fs.rmSync('dist',{recursive:true,force:true})\" && prisma generate && tsc -p tsconfig.build.json",
