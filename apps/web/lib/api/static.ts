@@ -24,7 +24,7 @@ import {
   staticProcessSnapshot,
   staticThankYouSnapshots,
 } from '@/static-content/static';
-import { apiUrl, findView, getView, hasApi } from './core';
+import { apiUrl, findView, getView, usesSnapshots } from './core';
 
 /*
  * The static page family (docs/10-site-pages.md): pricing, process, contact, FAQ, the
@@ -64,7 +64,7 @@ export type StaticNotFoundPageView = Omit<StaticNotFoundView, 'contact'> & { con
  * `site.contact` setting, or, without the API (the Vercel demo), with the full snapshot.
  */
 export const getStaticNotFound = cache(async (): Promise<StaticNotFoundPageView | null> => {
-  if (!hasApi()) {
+  if (usesSnapshots()) {
     const view = staticNotFoundViewSchema.parse(staticNotFoundSnapshot);
     return process.env.NEXT_PHASE === PHASE_PRODUCTION_BUILD ? { ...view, contact: null } : view;
   }

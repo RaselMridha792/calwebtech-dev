@@ -4,13 +4,13 @@ import { createPrismaClient } from '@calwebtech/db';
 import { importSnapshots } from '@calwebtech/db/import';
 
 /**
- * `node dist/import-content.js [--dir <snapshots>] [--force]`: loads the demo content
- * snapshots into the database, once (packages/db/src/import, decision 43).
+ * `node dist/import-snapshots.js [--dir <snapshots>] [--force]`: writes the rows the API
+ * needs from the content snapshots, once (packages/db/src/import, decision 43).
  *
  * The API image carries a copy of apps/web/static-content next to dist/, so on the server
- * infra/scripts/deploy.sh runs this with no arguments when IMPORT_CONTENT_ON_DEPLOY is
+ * infra/scripts/deploy.sh runs this with no arguments when IMPORT_SNAPSHOTS_ON_DEPLOY is
  * true. On a checkout the snapshots are found in apps/web. A marker setting makes a second
- * run a no-op unless --force is passed, so the owner's later edits survive every deploy.
+ * run a no-op unless --force is passed, so what a person changed since survives every deploy.
  */
 
 for (const candidate of ['.env', '../../.env']) {

@@ -13,6 +13,17 @@ export function hasApi(): boolean {
   return Boolean(process.env.API_INTERNAL_URL?.trim());
 }
 
+/**
+ * Where page content comes from once the API is reachable (docs/08-decisions.md, 43).
+ * `api`, the default, reads every view from the API. `snapshot` keeps rendering the
+ * committed snapshots while leads, the calculator's estimate and brief drafts still go to
+ * the API: the launch mode, until the content families move into the database. Without the
+ * API there is nothing else to read, whatever this says.
+ */
+export function usesSnapshots(): boolean {
+  return !hasApi() || process.env.CONTENT_SOURCE?.trim() === 'snapshot';
+}
+
 export function apiUrl(path: string): string {
   const { API_INTERNAL_URL } = apiEnvSchema.parse(process.env);
   return `${API_INTERNAL_URL.replace(/\/$/, '')}${path}`;
@@ -20,7 +31,8 @@ export function apiUrl(path: string): string {
 
 /**
  * A view the page cannot render without, such as the site chrome or an index page:
- * `GET path` validated by `schema`, or `snapshot` when API_INTERNAL_URL is unset.
+ * `GET path` validated by `schema`, or `snapshot` when pages render from snapshots
+ * (API_INTERNAL_URL unset, or CONTENT_SOURCE=snapshot).
  *
  * Never cached across requests: site pages render per request and the API caches each
  * view for a few seconds (docs/10-site-pages.md). Wrap a getter in React's `cache` so a
@@ -31,7 +43,7 @@ export async function getView<Schema extends z.ZodType>(
   schema: Schema,
   snapshot: unknown,
 ): Promise<z.output<Schema>> {
-  if (!hasApi()) return schema.parse(snapshot);
+  if (usesSnapshots()) return schema.parse(snapshot);
   const response = await fetch(apiUrl(path), { cache: 'no-store' });
   if (!response.ok) {
     throw new Error(`API responded ${String(response.status)} for ${path}`);
@@ -49,7 +61,7 @@ export async function findView<Schema extends z.ZodType>(
   schema: Schema,
   snapshot: unknown,
 ): Promise<z.output<Schema> | null> {
-  if (!hasApi()) return snapshot === null || snapshot === undefined ? null : schema.parse(snapshot);
+  if (usesSnapshots()) return snapshot === null || snapshot === undefined ? null : schema.parse(snapshot);
   const response = await fetch(apiUrl(path), { cache: 'no-store' });
   if (response.status === 404 || response.status === 400) return null;
   if (!response.ok) {

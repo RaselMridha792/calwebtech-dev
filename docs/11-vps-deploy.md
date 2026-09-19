@@ -50,8 +50,9 @@ Staging and production side by side need 8 GB or two servers.
    for the host name in the Cloudflare dashboard (Turnstile is free and needs no DNS
    change) and keep the site key and secret for the env file. Staging runs on
    Cloudflare's always-pass test keys.
-6. **Content, for production.** See "Production needs content first" below before
-   planning a production deploy.
+6. **An address for lead notifications.** A new production database has none, so a lead
+   would be stored and nobody told; Step 5 sets it. Content needs nothing from you: see
+   "Where production's content comes from" below.
 
 ## Step 1. Bootstrap the server, once
 
@@ -138,8 +139,9 @@ copies `infra/` at that commit to the server and runs `deploy.sh`.
 
 `infra/scripts/deploy.sh` then, on the server: brings the proxy up, pulls the three
 images, starts Postgres and Redis, runs the migrations (`node dist/migrate.js`), seeds
-placeholder content on staging only, rolls out web, api and worker gated on their health
-checks, and runs `infra/scripts/smoke.sh` against `https://<SITE_HOST>`. Only when the
+placeholder content where `SEED_ON_DEPLOY` is true or runs the one-off snapshot import
+where `IMPORT_SNAPSHOTS_ON_DEPLOY` is true, rolls out web, api and worker gated on their
+health checks, and runs `infra/scripts/smoke.sh` against `https://<SITE_HOST>`. Only when the
 smoke test passes is the new tag written to the env file. A failing step rolls back to
 the previous tag; on a first deploy, with nothing to roll back to, it stops the failed
 release and leaves the database running.
@@ -167,8 +169,26 @@ curl -s  https://<host>/api/health -u preview:password
 docker ps --format '{{.Names}} {{.Status}}'     # every container (healthy)
 ```
 
-Pages stay `noindex` until the settings say otherwise, whatever the stack. When the
-content is real:
+On production, tell the API where lead notifications go, once. Until this is set a lead
+is stored and its timeline says the notification was skipped:
+
+```
+docker compose -p calwebtech-production --env-file /srv/calwebtech/env/production.env \
+  -f /srv/calwebtech/infra/docker-compose.yml exec api \
+  node dist/settings-cli.js set leads.notificationRecipients '{"emails":["you@example.com"]}'
+```
+
+Then send one enquiry through `/contact/` and look for it:
+
+```
+docker compose -p calwebtech-production --env-file /srv/calwebtech/env/production.env \
+  -f /srv/calwebtech/infra/docker-compose.yml exec db \
+  psql -U calwebtech -c 'select "createdAt", type, email from "Lead" order by "createdAt" desc limit 3'
+```
+
+Pages stay `noindex`: with `CONTENT_SOURCE=snapshot` every snapshot says so. Once a stack
+reads its content from the database (`CONTENT_SOURCE=api`), the settings decide, and when
+the content is real:
 
 ```
 docker compose -p calwebtech-production --env-file /srv/calwebtech/env/production.env \
@@ -184,29 +204,48 @@ does `TAG=` in the env file before the deploy. Images stay in GHCR, so nothing i
 Migrations are forward-only: a rollback across a migration that dropped or renamed a column
 needs a restore instead.
 
-## Production needs content first
+## Where production's content comes from
 
 Production never seeds: the launch seed replaces rows wholesale and refuses
 `APP_ENV=production` (`packages/db/src/seed/guard.ts`). On an empty database the
 `home.content` and `site.*` settings do not exist, so `GET /pages/home` and
-`GET /site/chrome` answer 500, every page errors (the site layout needs the chrome), the
-smoke test fails on `/`, and `deploy.sh` stops the release. The demo content the Vercel
-site shows lives in `apps/web/static-content` and is used only while `API_INTERNAL_URL`
-is unset; with the API live, pages render from the database.
+`GET /site/chrome` answer 500 and every page that reads them errors.
 
-Two ways through, in the order recommended:
+So production does not read its pages from the database yet (decision 43). Two keys in
+`production.env.example` set it up, and both are already on:
 
-1. **Run this server as staging first.** `SEED_ON_DEPLOY=true` gives it placeholder
-   content, so the whole stack (TLS, database, migrations, API, worker, email queue,
-   backups) proves itself end to end behind basic auth, today. Later, `STACK` and the
-   host name change and the same server becomes production; the database is dropped
-   with it (`docker compose -p calwebtech-staging down -v`), because placeholder rows
-   must never reach production.
-2. **Import the content.** A one-off importer that loads `apps/web/static-content/*`
-   into the settings and content columns (`session.md`, "What is left" 3; decision 40
-   says where each page's copy lives). That is the route to a production site with the
-   demo pages and working forms, and the next task on this path. It is not the seed,
-   which stays placeholder-only.
+- **`CONTENT_SOURCE=snapshot`.** The web app renders every page from the snapshots
+  committed in `apps/web/static-content`, the approved demo content, exactly as the
+  Vercel demo does. Forms are different from the demo: leads, calculator estimates and
+  brief drafts go to the API and are stored in this server's Postgres, and the worker
+  queues their emails.
+- **`IMPORT_SNAPSHOTS_ON_DEPLOY=true`.** After the migrations, the first deploy runs
+  `node dist/import-snapshots.js`, which writes the few rows the forms look up: the
+  enquiry types the contact page offers, and the copy the calculator's result email is
+  worded from. It records a marker (`snapshots.import`), so every later deploy skips it
+  and nothing a person has changed since (an enquiry type's mailbox, for example) is
+  overwritten. `deploy.sh` refuses a stack with both this and `SEED_ON_DEPLOY`.
+
+What follows from that, until the content families move into the database (the Open list
+in `docs/08-decisions.md`):
+
+- Editing content means editing a snapshot and deploying, as on Vercel today. The admin
+  that would edit database content does not exist yet (Task 5.3), so nothing is lost.
+- Every page is noindex, because every snapshot is. That is deliberate while the proof on
+  the pages is the demo's invented proof.
+- Leads are stored without a link to the service or campaign page they came from, and
+  confirmation emails use the standard acknowledgement. The calculator's email is complete.
+
+To run the import again on purpose, for example after resetting the database:
+
+```
+docker compose -p calwebtech-production --env-file /srv/calwebtech/env/production.env \
+  -f /srv/calwebtech/infra/docker-compose.yml run --rm api node dist/import-snapshots.js --force
+```
+
+`--force` writes the calculator copy again and keeps every mailbox. To preview on staging
+what production shows, set `CONTENT_SOURCE=snapshot`, `SEED_ON_DEPLOY=false` and
+`IMPORT_SNAPSHOTS_ON_DEPLOY=true` in the staging env file.
 
 ## Operating the server
 

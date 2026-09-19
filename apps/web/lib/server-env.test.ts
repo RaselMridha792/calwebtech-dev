@@ -42,3 +42,30 @@ describe('checkServerEnv', () => {
     expect(checkServerEnv({ APP_ENV: 'staging', API_INTERNAL_URL: 'not a url' }).ok).toBe(false);
   });
 });
+
+describe('CONTENT_SOURCE (decision 43)', () => {
+  const production = { ...base, APP_ENV: 'production', TURNSTILE_SITE_KEY: 'key' };
+
+  it('accepts snapshot content in production and says so once at startup', () => {
+    const result = checkServerEnv({ ...production, CONTENT_SOURCE: 'snapshot' });
+    expect(result.ok).toBe(true);
+    expect(result.ok ? result.warning : '').toContain('CONTENT_SOURCE=snapshot');
+  });
+
+  it('stays quiet for the default, and treats a blank value as the default', () => {
+    expect(checkServerEnv({ ...production, CONTENT_SOURCE: 'api' })).toEqual({ ok: true });
+    expect(checkServerEnv({ ...production, CONTENT_SOURCE: '' })).toEqual({ ok: true });
+  });
+
+  it('still needs the API in production: snapshot content does not store a lead', () => {
+    const result = checkServerEnv({ APP_ENV: 'production', TURNSTILE_SITE_KEY: 'key', CONTENT_SOURCE: 'snapshot' });
+    expect(result.ok).toBe(false);
+    expect(result.ok ? '' : result.error).toContain('API_INTERNAL_URL');
+  });
+
+  it('refuses a source it does not know, so a typo cannot silently mean the API', () => {
+    const result = checkServerEnv({ ...production, CONTENT_SOURCE: 'snapshots' });
+    expect(result.ok).toBe(false);
+    expect(result.ok ? '' : result.error).toContain('CONTENT_SOURCE');
+  });
+});
