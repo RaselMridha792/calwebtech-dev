@@ -84,6 +84,5 @@ export async function importSnapshots(db: PrismaClient, options: ImportOptions):
 
 function markerDate(value: unknown): string | null {
   if (typeof value !== 'object' || value === null || !('importedAt' in value)) return null;
-  const importedAt = (value as { importedAt: unknown }).importedAt;
-  return typeof importedAt === 'string' ? importedAt : null;
+  return typeof value.importedAt === 'string' ? value.importedAt : null;
 }

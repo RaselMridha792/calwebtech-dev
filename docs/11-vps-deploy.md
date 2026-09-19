@@ -138,8 +138,10 @@ copies `infra/` at that commit to the server and runs `deploy.sh`.
 
 `infra/scripts/deploy.sh` then, on the server: brings the proxy up, pulls the three
 images, starts Postgres and Redis, runs the migrations (`node dist/migrate.js`), seeds
-placeholder content on staging only, rolls out web, api and worker gated on their health
-checks, and runs `infra/scripts/smoke.sh` against `https://<SITE_HOST>`. Only when the
+placeholder content where `SEED_ON_DEPLOY` is true or imports the demo content once
+where `IMPORT_CONTENT_ON_DEPLOY` is true ("Production needs content first" below), rolls
+out web, api and worker gated on their health checks, and runs `infra/scripts/smoke.sh`
+against `https://<SITE_HOST>`. Only when the
 smoke test passes is the new tag written to the env file. A failing step rolls back to
 the previous tag; on a first deploy, with nothing to roll back to, it stops the failed
 release and leaves the database running.
@@ -194,19 +196,33 @@ smoke test fails on `/`, and `deploy.sh` stops the release. The demo content the
 site shows lives in `apps/web/static-content` and is used only while `API_INTERNAL_URL`
 is unset; with the API live, pages render from the database.
 
-Two ways through, in the order recommended:
+The content import closes that gap (decision 43). With `IMPORT_CONTENT_ON_DEPLOY=true`
+in the env file, the first deploy runs `node dist/import-content.js` after the
+migrations: it loads every snapshot into the database, so the site comes up with the
+same content the Vercel demo shows, forms included, and the smoke test passes. It writes
+a marker setting (`content.import`), and every later deploy skips it, so whatever the
+owner edits in the admin afterwards stays. `deploy.sh` refuses a stack that has both
+`SEED_ON_DEPLOY` and `IMPORT_CONTENT_ON_DEPLOY` set, because the seed would put
+placeholders back over the imported content.
 
-1. **Run this server as staging first.** `SEED_ON_DEPLOY=true` gives it placeholder
-   content, so the whole stack (TLS, database, migrations, API, worker, email queue,
-   backups) proves itself end to end behind basic auth, today. Later, `STACK` and the
-   host name change and the same server becomes production; the database is dropped
-   with it (`docker compose -p calwebtech-staging down -v`), because placeholder rows
-   must never reach production.
-2. **Import the content.** A one-off importer that loads `apps/web/static-content/*`
-   into the settings and content columns (`session.md`, "What is left" 3; decision 40
-   says where each page's copy lives). That is the route to a production site with the
-   demo pages and working forms, and the next task on this path. It is not the seed,
-   which stays placeholder-only.
+To import again on purpose (for example after resetting the database):
+
+```
+docker compose -p calwebtech-production --env-file /srv/calwebtech/env/production.env \
+  -f /srv/calwebtech/infra/docker-compose.yml run --rm api node dist/import-content.js --force
+```
+
+`--force` overwrites the rows the importer owns with the snapshot values again; edits
+made in the admin to those rows are lost. Records added in the admin that the snapshots
+do not know about are left alone.
+
+What the import proves before it ships: `apps/api/src/import/import.integration.test.ts`
+runs in CI on a database of its own and requires every API view to equal its snapshot.
+A family whose check fails there does not import correctly, whatever the page looks like.
+
+Staging can carry either the placeholder seed (`SEED_ON_DEPLOY=true`, the default) or
+the same imported content (`IMPORT_CONTENT_ON_DEPLOY=true`); a preview of the real
+content behind basic auth is the second.
 
 ## Operating the server
 

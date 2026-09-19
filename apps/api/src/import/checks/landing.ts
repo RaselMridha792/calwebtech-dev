@@ -1,4 +1,13 @@
+import { LandingPagesService } from '../../landing-pages/landing-pages.service';
 import type { FamilyChecks } from './index';
 
-/** TODO(content-import): no checks yet for the landing family. */
-export const checks: FamilyChecks = () => [];
+const SLUG = 'b2b-website-design';
+
+/** The campaign landing page. Null, which fails the comparison, until the page is published. */
+export const checks: FamilyChecks = (prisma) => [
+  {
+    title: `GET /landing-pages/${SLUG}`,
+    snapshot: `landing-${SLUG}.json`,
+    view: () => new LandingPagesService(prisma).findPublished(SLUG),
+  },
+];

@@ -68,7 +68,11 @@ export type SlugModel =
   | 'landingPage';
 
 type Data<T> = Omit<T, 'id' | 'createdAt' | 'updatedAt'>;
-export type TestimonialData = Data<Prisma.TestimonialUncheckedCreateInput>;
+/**
+ * Views show a testimonial's id (and an FAQ's, below), so a snapshot's id is part of what has
+ * to come back. It is set when the row is created; a row that already exists keeps its own.
+ */
+export type TestimonialData = Data<Prisma.TestimonialUncheckedCreateInput> & { id?: string };
 export type AwardData = Data<Prisma.AwardUncheckedCreateInput>;
 export type PartnerData = Data<Prisma.PartnerUncheckedCreateInput>;
 export type StatisticData = Data<Prisma.StatisticUncheckedCreateInput>;
@@ -76,7 +80,7 @@ export type ClientLogoData = Data<Prisma.ClientLogoUncheckedCreateInput>;
 export type PricingTierData = Data<Prisma.PricingTierUncheckedCreateInput>;
 export type ProcessStepData = Data<Prisma.ProcessStepUncheckedCreateInput>;
 export type ReviewSourceData = Data<Prisma.ReviewSourceUncheckedCreateInput>;
-export type FaqData = Omit<Prisma.FaqUncheckedCreateInput, 'id' | 'order'>;
+export type FaqData = Omit<Prisma.FaqUncheckedCreateInput, 'order'>;
 
 /** Published dates for rows whose snapshot shows none. Fixed, so a re-run changes nothing. */
 export const IMPORTED_AT = new Date('2026-09-15T00:00:00.000Z');
@@ -126,11 +130,11 @@ export function createImportContext(db: PrismaClient, dir: string, log: (line: s
       if (!id) throw new Error(`import: no ${model} with slug "${slug}" yet; the importer that owns it must run first`);
       return id;
     },
-    async upsertTestimonial(data) {
+    async upsertTestimonial({ id, ...data }) {
       const found = await db.testimonial.findFirst({ where: { clientName: data.clientName, quote: data.quote }, select: { id: true } });
       return found
         ? db.testimonial.update({ where: { id: found.id }, data, select: { id: true } })
-        : db.testimonial.create({ data, select: { id: true } });
+        : db.testimonial.create({ data: id ? { ...data, id } : data, select: { id: true } });
     },
     async upsertAward(data) {
       const found = await db.award.findFirst({ where: { name: data.name, year: data.year }, select: { id: true } });
