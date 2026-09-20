@@ -9,7 +9,12 @@ const serverEnvSchema = z.object({
   APP_ENV: z.enum(APP_ENVS).default('production'),
   API_INTERNAL_URL: z.preprocess(blankToUndefined, z.url().optional()),
   TURNSTILE_SITE_KEY: z.preprocess(blankToUndefined, z.string().optional()),
+  /** `snapshot` keeps pages on the committed snapshots while the API takes leads (decision 43). */
+  CONTENT_SOURCE: z.preprocess(blankToUndefined, z.enum(['api', 'snapshot']).default('api')),
 });
+
+const SNAPSHOT_NOTICE =
+  'CONTENT_SOURCE=snapshot: pages render from the committed snapshots; leads, calculator estimates and brief drafts go to the API';
 
 export type ServerEnvCheck = { ok: true; warning?: string } | { ok: false; error: string };
 
@@ -23,7 +28,7 @@ export function checkServerEnv(source: Readonly<Record<string, string | undefine
   if (!result.success) {
     return { ok: false, error: `Invalid web environment:\n${z.prettifyError(result.error)}` };
   }
-  const { APP_ENV, API_INTERNAL_URL, TURNSTILE_SITE_KEY } = result.data;
+  const { APP_ENV, API_INTERNAL_URL, TURNSTILE_SITE_KEY, CONTENT_SOURCE } = result.data;
   if (APP_ENV === 'production') {
     if (!API_INTERNAL_URL) {
       return {
@@ -39,7 +44,8 @@ export function checkServerEnv(source: Readonly<Record<string, string | undefine
           'Invalid web environment:\n  TURNSTILE_SITE_KEY is required when APP_ENV is production: without it the API refuses every lead form submission',
       };
     }
-    return { ok: true };
+    // A deliberate mode, said once at startup so nobody wonders why an edited record does not show.
+    return CONTENT_SOURCE === 'snapshot' ? { ok: true, warning: SNAPSHOT_NOTICE } : { ok: true };
   }
   const warnings = [
     ...(API_INTERNAL_URL
@@ -48,6 +54,7 @@ export function checkServerEnv(source: Readonly<Record<string, string | undefine
     ...(TURNSTILE_SITE_KEY
       ? []
       : [`TURNSTILE_SITE_KEY is not set (APP_ENV=${APP_ENV}): lead forms post without a Turnstile token`]),
+    ...(API_INTERNAL_URL && CONTENT_SOURCE === 'snapshot' ? [SNAPSHOT_NOTICE] : []),
   ];
   return warnings.length > 0 ? { ok: true, warning: warnings.join('\n') } : { ok: true };
 }

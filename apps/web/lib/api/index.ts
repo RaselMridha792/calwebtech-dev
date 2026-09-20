@@ -11,7 +11,7 @@ import {
 import { cache } from 'react';
 import staticHome from '@/static-content/home.json';
 import staticLanding from '@/static-content/landing-b2b-website-design.json';
-import { apiUrl, getView, hasApi } from './core';
+import { apiUrl, getView, hasApi, usesSnapshots } from './core';
 
 /*
  * The homepage, campaign landing pages and lead submissions. Site page families keep
@@ -25,7 +25,7 @@ export const landingPageTag = (slug: string) => `landing-page:${slug}`;
 export const LANDING_PAGE_REVALIDATE_SECONDS = 300;
 
 export async function getLandingPage(slug: string): Promise<LandingPageView | null> {
-  if (!hasApi()) {
+  if (usesSnapshots()) {
     const page = landingPageViewSchema.parse(staticLanding);
     return page.slug === slug ? page : null;
   }

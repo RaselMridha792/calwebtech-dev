@@ -8,7 +8,8 @@
 #   $DEPLOY_ROOT/env/<stack>.env           from infra/env/<stack>.env.example, mode 600
 #   $DEPLOY_ROOT/secrets/staging.htpasswd  staging only: htpasswd -nbB <user> <password>
 #
-# Order: proxy, pull, database, migrate, optional seed, roll out, smoke test, and only then
+# Order: proxy, pull, database, migrate, the placeholder seed or the one-off snapshot import
+# where the env file asks for one, roll out, smoke test, and only then
 # record the new tag in the env file. Until the smoke test passes the new tag lives only in
 # this shell's environment, which Compose prefers over --env-file, so a deploy that fails
 # or is cut off (a cancelled job, a dropped SSH session) leaves the file on the last tag
@@ -39,6 +40,12 @@ set_tag() {
 
 if [ "$(env_value STACK)" != "$STACK" ]; then
   echo "deploy: STACK in $ENV_FILE is not $STACK" >&2
+  exit 1
+fi
+# A stack is prepared by the placeholder seed or by the snapshot import, never both: they
+# write the same settings, and the second would undo the first.
+if [ "$(env_value SEED_ON_DEPLOY)" = "true" ] && [ "$(env_value IMPORT_SNAPSHOTS_ON_DEPLOY)" = "true" ]; then
+  echo "deploy: SEED_ON_DEPLOY and IMPORT_SNAPSHOTS_ON_DEPLOY are both true in $ENV_FILE; choose one" >&2
   exit 1
 fi
 
@@ -79,6 +86,12 @@ fi
 if [ "$(env_value SEED_ON_DEPLOY)" = "true" ]; then
   echo "deploy: seeding placeholder content"
   "${APP[@]}" run --rm api node dist/seed.js
+fi
+# One-off: the marker it writes makes every later deploy skip it, so nothing a person has
+# changed since is overwritten (packages/db/src/import).
+if [ "$(env_value IMPORT_SNAPSHOTS_ON_DEPLOY)" = "true" ]; then
+  echo "deploy: importing what the API needs from the snapshots, unless already done"
+  "${APP[@]}" run --rm api node dist/import-snapshots.js
 fi
 "${APP[@]}" up -d --wait web api worker
 

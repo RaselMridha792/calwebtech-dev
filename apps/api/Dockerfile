@@ -32,6 +32,9 @@ COPY --from=build --chown=app:app /out ./
 # Schema and committed migrations for `node dist/migrate.js`, the one-off release step.
 COPY --from=build --chown=app:app /repo/packages/db/prisma/schema.prisma ./prisma/schema.prisma
 COPY --from=build --chown=app:app /repo/packages/db/prisma/migrations ./prisma/migrations
+# The content snapshots for `node dist/import-snapshots.js`, the one-off import of the rows
+# the API needs from them (packages/db/src/import). The same files the web app renders.
+COPY --from=build --chown=app:app /repo/apps/web/static-content ./static-content
 USER app
 EXPOSE 4000
 HEALTHCHECK --interval=20s --timeout=5s --retries=5 \

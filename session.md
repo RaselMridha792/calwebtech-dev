@@ -4,6 +4,44 @@ Last updated 2026-09-18. Written so another developer can pick up the work witho
 chat history. Everything described here is merged into `main` on
 https://github.com/RaselMridha792/calwebtech-dev unless a branch is named.
 
+## Update, 2026-09-19
+
+PRs #11 (the recovered forms family) and #12 (the VPS package) are merged; `main` built
+and pushed all four images to GHCR. The old `calwebtech/` folder is deleted; the five
+unrecovered booking API files are kept outside the repo in
+`E:\codes\calwebtech-handoff\booking-blueprint\` with a README.
+
+**How production gets its content (decision 43).** The owner wants the Vercel demo's
+content on production, to edit later. Loading the snapshots into the database was tried
+first and cannot reproduce the pages: the homepage and landing snapshots are the approved
+mockups written as views, with values no mapper produces, and the snapshots disagree about
+shared records. That work, the view-equality harness and the full list of differences are
+on `wip/content-import-views` for the day the families move into the database.
+
+So production launches with `CONTENT_SOURCE=snapshot`: pages render the committed
+snapshots exactly as on Vercel, while leads, calculator estimates and brief drafts go to
+the API and the stack's own Postgres. `node dist/import-snapshots.js`, run once by
+`deploy.sh` (`IMPORT_SNAPSHOTS_ON_DEPLOY=true`), writes the few rows the forms look up:
+the contact page's enquiry types and the calculator email's copy. Its acceptance test
+submits a lead of every kind against a database of its own. What this leaves open is in
+the Open list of `docs/08-decisions.md`: content edits still need a deploy until the
+admin exists, pages stay noindex, leads carry no service or campaign link, and
+`leads.notificationRecipients` must be set by hand on a new production database.
+
+Rehearsed on this machine on 2026-09-19 with the production env example, locally built
+images and Cloudflare's test Turnstile keys: `deploy.sh production local` on an empty
+database migrated, imported (six enquiry types, the calculator copy), rolled out and
+passed the smoke test; the homepage, a service, a case study, insights, a glossary term,
+the contact page and the calculator answered 200 with the demo content and the right
+canonical; a contact enquiry posted through Traefik answered 202, was stored with its
+enquiry type and had its confirmation sent by the worker (log transport); a second deploy
+skipped the import. Not rehearsed: Let's Encrypt, the bootstrap script, real Turnstile
+keys, Resend.
+
+Left for the owner before the first deploy (`docs/11-vps-deploy.md`): a host name
+(the real domain, or a DuckDNS name), root SSH to the server, the CI's SSH key, GHCR
+access for the server, Turnstile keys, and `APP_ORIGIN` on the Vercel project.
+
 ## Update, 2026-09-18
 
 The owner's laptop SSD was replaced and the old working copy came across without its
