@@ -1,11 +1,8 @@
 import type { HomePageContent, HomePageView } from '@calwebtech/shared';
-import type { ReactNode } from 'react';
 import { CountUp } from '../motion/count-up';
 import { BackgroundVideo } from '../ui/background-video';
 import { BackdropImage } from '../ui/brand';
 import { Stars } from '../ui/primitives';
-import { ResponsiveImage } from '../ui/responsive-image';
-import { asPhrase } from './parts';
 
 type Home = HomePageView;
 type Hero = HomePageContent['hero'];
@@ -46,75 +43,6 @@ function listOf(items: string[]): string {
   return items.length === 1 ? last : `${items.slice(0, -1).join(', ')} and ${last}`;
 }
 
-/** Decorative growth bars on the result card: flat before launch, rising after it. */
-const BARS = [
-  { height: 22, className: 'bg-canvas-sunken' },
-  { height: 30, className: 'bg-canvas-sunken' },
-  { height: 27, className: 'bg-canvas-sunken' },
-  { height: 46, className: 'bg-canvas-sunken' },
-  { height: 62, className: 'bg-gold-600/30' },
-  { height: 80, className: 'bg-gold-600/60' },
-  { height: 100, className: 'bg-gold-600' },
-];
-
-/**
- * Photographs with the first featured project's headline figure, as approved.
- *
- * Square corners and no shadow: the brand lifts nothing, and the only shadow it allows is
- * on the sticky nav. The figure card sits on the raised cream so it reads against the
- * plate behind it without a border.
- */
-function HeroMedia({
-  media,
-  featured,
-}: {
-  media: NonNullable<Hero['media']>;
-  featured: Home['projects'][number] | null;
-}) {
-  const metric = featured?.metrics[0];
-  return (
-    <div className="relative lg:col-span-6">
-      <div className="relative aspect-5/4 overflow-hidden">
-        <ResponsiveImage
-          src={media.image.src}
-          alt={media.image.alt}
-          fill
-          sizes="(min-width: 1320px) 600px, (min-width: 1024px) 45vw, 100vw"
-          className="object-cover"
-        />
-      </div>
-
-      {media.secondaryImage ? (
-        <div className="absolute -top-8 -right-3 hidden w-47 overflow-hidden sm:block lg:-right-8">
-          <ResponsiveImage
-            src={media.secondaryImage.src}
-            alt={media.secondaryImage.alt}
-            width={188}
-            height={132}
-            sizes="188px"
-            className="h-33 w-full object-cover"
-          />
-        </div>
-      ) : null}
-
-      {featured && metric ? (
-        <div className="absolute -bottom-8 -left-2 w-65.5 bg-canvas-raised p-5 text-ink sm:left-4">
-          <p className="body-sm text-ink-muted">{`${featured.clientName}, ${asPhrase(metric.label)}`}</p>
-          <p className="display-md mt-1.5 text-gold-ink">{metric.value}</p>
-          <div className="mt-4 flex h-11 items-end gap-1.5" aria-hidden="true">
-            {BARS.map((bar) => (
-              <span key={bar.height} className={`flex-1 ${bar.className}`} style={{ height: `${String(bar.height)}%` }} />
-            ))}
-          </div>
-          {media.metricCaption ? (
-            <p className="body-sm mt-3 border-t border-hairline pt-3 text-ink-muted">{media.metricCaption}</p>
-          ) : null}
-        </div>
-      ) : null}
-    </div>
-  );
-}
-
 /**
  * The opening section: the photograph full width under a single strong scrim, with the
  * type over it.
@@ -127,18 +55,11 @@ export function HomeHero({
   hero,
   reviews,
   statistics,
-  featured,
-  form,
 }: {
   hero: Hero;
   reviews: Home['reviews'];
   statistics: Home['statistics'];
-  /** The first featured project; its first figure sits on the media card. */
-  featured: Home['projects'][number] | null;
-  /** The quote form, shown when the hero has no media. */
-  form: ReactNode;
 }) {
-  const { media } = hero;
   const platforms = reviews.sources.slice(0, 3).map((source) => source.platform);
   return (
     <section className="relative overflow-hidden bg-navy-900 text-ink-invert">
@@ -150,10 +71,8 @@ export function HomeHero({
       ) : null}
       <div className="absolute inset-0 bg-scrim-strong" aria-hidden="true" />
 
-      <div
-        className={`shell relative grid items-center lg:grid-cols-12 ${media ? 'gap-14 pt-16 pb-14 lg:gap-16 lg:pt-24 lg:pb-20' : 'gap-12 pt-14 pb-14 lg:gap-14 lg:pt-20 lg:pb-16'}`}
-      >
-        <div className={media ? 'lg:col-span-6' : 'lg:col-span-7'}>
+      <div className="shell relative pt-16 pb-14 lg:pt-28 lg:pb-24">
+        <div className="max-w-[62ch]">
           {hero.eyebrow ? (
             <div className="border-t border-hairline-gold pt-4">
               <p className="eyebrow flex flex-wrap items-center gap-x-3 gap-y-1 text-gold-500">
@@ -168,7 +87,7 @@ export function HomeHero({
             </div>
           ) : null}
 
-          <h1 className="display-mega mt-7">
+          <h1 className="display-xl mt-7 max-w-[17ch] text-balance">
             {hero.heading} {hero.headingEmphasis ? <span className="text-gold-500">{hero.headingEmphasis}</span> : null}
           </h1>
 
@@ -204,14 +123,6 @@ export function HomeHero({
             </p>
           ) : null}
         </div>
-
-        {media ? (
-          <HeroMedia media={media} featured={featured} />
-        ) : (
-          <div id="quote" className="w-full lg:col-span-5">
-            {form}
-          </div>
-        )}
       </div>
 
       {statistics.length > 0 ? <StatsStrip statistics={statistics} /> : null}

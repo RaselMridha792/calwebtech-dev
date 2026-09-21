@@ -68,30 +68,7 @@ export default async function HomePage() {
       <SiteHeader chrome={chrome} ctas={content.header} />
 
       <main id="main">
-        <HomeHero
-          hero={content.hero}
-          reviews={home.reviews}
-          statistics={home.statistics}
-          featured={home.projects[0] ?? null}
-          form={
-            <div className="overflow-hidden rounded-2xl bg-white text-ink shadow-form">
-              <div className="border-b border-line bg-mist px-7 py-5">
-                <h2 className="font-display text-[20px] font-extrabold">{content.hero.form.heading}</h2>
-                <p className="mt-1 text-[14px] text-body">{content.hero.form.subheading}</p>
-              </div>
-              <LeadForm
-                variant="hero"
-                formId="home-hero"
-                permalink="/"
-                submitLabel={content.hero.form.submitLabel}
-                success={content.formSuccess}
-                budgetOptions={[]}
-                footnote={content.hero.form.footnote ?? undefined}
-                turnstileSiteKey={turnstileSiteKey}
-              />
-            </div>
-          }
-        />
+        <HomeHero hero={content.hero} reviews={home.reviews} statistics={home.statistics} />
         <LogoBand label={content.clients.label} clients={home.clients} />
         <CapabilityBand capability={content.capability} />
         <ProblemRouter problemRouter={content.problemRouter} faqs={home.problemRouter} />
