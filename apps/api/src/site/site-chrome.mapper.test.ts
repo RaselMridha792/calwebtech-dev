@@ -81,7 +81,7 @@ describe('toSiteChromeView', () => {
     expect(hrefsOf(chrome).filter((href) => href.startsWith('#'))).toEqual([]);
     // The placeholder copy's header points at #book and #estimate on the homepage.
     expect(chrome.header.primaryCta.href).toBe('/contact/');
-    expect(chrome.header.secondaryCta.href).toBe('/#estimate');
+    expect(chrome.header.secondaryCta?.href).toBe('/#estimate');
   });
 
   it('lists published services and industries by their pages when the copy sets no menus', () => {

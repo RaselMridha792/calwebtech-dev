@@ -38,16 +38,18 @@ export function ConversionBand({ band }: { band: SiteChromeView['conversionBand'
           <div className="mt-8 flex flex-wrap gap-3">
             <a
               href={band.primaryCta.href}
-              className="inline-flex h-14 items-center bg-navy-900 px-7 text-[16px] font-semibold text-ink-invert  hover:bg-navy-700"
+              className="button-label inline-flex h-14 items-center bg-navy-900 px-7 text-ink-invert transition-colors duration-150 hover:bg-navy-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
             >
               {band.primaryCta.label}
             </a>
-            <a
-              href={band.secondaryCta.href}
-              className="inline-flex h-14 items-center border border-hairline bg-canvas-raised px-7 text-[16px] font-semibold text-ink hover:border-ink"
-            >
-              {band.secondaryCta.label}
-            </a>
+            {band.secondaryCta ? (
+              <a
+                href={band.secondaryCta.href}
+                className="button-label inline-flex h-14 items-center border border-hairline-strong px-7 text-ink transition-colors duration-150 hover:border-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+              >
+                {band.secondaryCta.label}
+              </a>
+            ) : null}
           </div>
         </div>
         {band.points.length > 0 ? (

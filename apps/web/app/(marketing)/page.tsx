@@ -30,9 +30,9 @@ import { AnchorScroll } from '@/components/motion/anchor-scroll';
 import { RevealObserver } from '@/components/motion/reveal-observer';
 import { FloatingCta } from '@/components/site/floating-cta';
 import { SiteFooter } from '@/components/site/site-footer';
+import { HeaderScrollState } from '@/components/site/header-scroll';
 import { SiteHeader } from '@/components/site/site-header';
 import { SkipLink } from '@/components/site/skip-link';
-import { UtilityBar } from '@/components/site/utility-bar';
 import { getHomePage } from '@/lib/api';
 import { getSiteChrome } from '@/lib/api/site';
 
@@ -63,12 +63,34 @@ export default async function HomePage() {
     <>
       <SkipLink />
 
-      <UtilityBar chrome={chrome} />
       {/* The site chrome, with the homepage's own calls to action: its forms are on this page. */}
+      <HeaderScrollState />
       <SiteHeader chrome={chrome} ctas={content.header} />
 
       <main id="main">
-        <HomeHero hero={content.hero} reviews={home.reviews} statistics={home.statistics} />
+        <HomeHero
+          hero={content.hero}
+          reviews={home.reviews}
+          statistics={home.statistics}
+          form={
+            <div className="bg-canvas-raised text-ink">
+              <div className="border-b border-hairline bg-canvas-sunken px-7 py-5">
+                <p className="heading-md">{content.hero.form.heading}</p>
+                <p className="body-sm mt-1 text-ink-muted">{content.hero.form.subheading}</p>
+              </div>
+              <LeadForm
+                variant="hero"
+                formId="home-hero"
+                permalink="/"
+                submitLabel={content.hero.form.submitLabel}
+                success={content.formSuccess}
+                budgetOptions={[]}
+                footnote={content.hero.form.footnote ?? undefined}
+                turnstileSiteKey={turnstileSiteKey}
+              />
+            </div>
+          }
+        />
         <LogoBand label={content.clients.label} clients={home.clients} />
         <CapabilityBand capability={content.capability} />
         <ProblemRouter problemRouter={content.problemRouter} faqs={home.problemRouter} />

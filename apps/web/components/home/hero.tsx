@@ -1,4 +1,5 @@
 import type { HomePageContent, HomePageView } from '@calwebtech/shared';
+import type { ReactNode } from 'react';
 import { CountUp } from '../motion/count-up';
 import { BackgroundVideo } from '../ui/background-video';
 import { BackdropImage } from '../ui/brand';
@@ -55,14 +56,21 @@ export function HomeHero({
   hero,
   reviews,
   statistics,
+  form,
 }: {
   hero: Hero;
   reviews: Home['reviews'];
   statistics: Home['statistics'];
+  /**
+   * The quote form, at `#quote`. The photographs that used to take this column are gone,
+   * but the form is not decoration: the page's own calls to action link to this anchor,
+   * and `hero.media` was only ever allowed to replace it, never to remove it.
+   */
+  form: ReactNode;
 }) {
   const platforms = reviews.sources.slice(0, 3).map((source) => source.platform);
   return (
-    <section className="relative overflow-hidden bg-navy-900 text-ink-invert">
+    <section data-hero="dark" className="relative overflow-hidden bg-navy-900 text-ink-invert">
       <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
         <BackdropImage image={hero.background.poster} className="kenburns opacity-100" priority />
       </div>
@@ -71,8 +79,8 @@ export function HomeHero({
       ) : null}
       <div className="absolute inset-0 bg-scrim-strong" aria-hidden="true" />
 
-      <div className="shell relative pt-16 pb-14 lg:pt-28 lg:pb-24">
-        <div className="max-w-[62ch]">
+      <div className="shell relative grid items-center gap-12 pt-16 pb-14 lg:grid-cols-12 lg:gap-16 lg:pt-24 lg:pb-20">
+        <div className="lg:col-span-7">
           {hero.eyebrow ? (
             <div className="border-t border-hairline-gold pt-4">
               <p className="eyebrow flex flex-wrap items-center gap-x-3 gap-y-1 text-gold-500">
@@ -122,6 +130,10 @@ export function HomeHero({
               </span>
             </p>
           ) : null}
+        </div>
+
+        <div id="quote" className="w-full lg:col-span-5">
+          {form}
         </div>
       </div>
 

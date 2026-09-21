@@ -84,13 +84,18 @@ test.describe('homepage', () => {
     await page.goto(PAGE);
     const nav = page.getByRole('navigation', { name: 'Main', exact: true });
 
-    for (const [id, name] of [
-      ['services', 'Services'],
-      ['industries', 'Industries'],
-      ['work', 'Work'],
-      ['resources', 'Resources'],
+    // Where the family has an index page the label is a link to it and the chevron beside
+    // it is the panel's control; Resources has no index page, so its label is the control.
+    for (const [id, name, indexPath] of [
+      ['services', 'Services', '/services/'],
+      ['industries', 'Industries', '/industries/'],
+      ['work', 'Work', '/work/'],
+      ['resources', 'Resources', null],
     ] as const) {
-      const button = nav.getByRole('button', { name, exact: true });
+      if (indexPath) {
+        await expect(nav.getByRole('link', { name, exact: true })).toHaveAttribute('href', indexPath);
+      }
+      const button = nav.getByRole('button', { name: indexPath ? `${name} menu` : name, exact: true });
       const panel = page.locator(`#menu-${id}`);
       const firstLink = panel.getByRole('link').first();
       await expect(panel, `${name} starts closed`).toBeHidden();
@@ -114,8 +119,14 @@ test.describe('homepage', () => {
       await expect(panel, `the ${name} button reopens its panel`).toBeVisible();
       await expect(button).toHaveAttribute('aria-expanded', 'true');
 
-      // Moving focus out of the menu closes it.
+      // Moving focus out of the menu closes it. Where the label is a link, Shift+Tab from
+      // the chevron lands on the label, which is still inside the menu and keeps it open —
+      // so it takes one more press to leave.
       await page.keyboard.press('Shift+Tab');
+      if (indexPath) {
+        await expect(panel, `${name} stays open while focus is on its label`).toBeVisible();
+        await page.keyboard.press('Shift+Tab');
+      }
       await expect(panel, `${name} closes when focus leaves it`).toBeHidden();
       await expect(button).toHaveAttribute('aria-expanded', 'false');
     }
@@ -126,7 +137,9 @@ test.describe('homepage', () => {
     await page.goto(PAGE);
     // The resources menu now reaches real pages, so the same-page link left in a mega menu
     // is the services promotion; it is what proves the panel closes on an in-page jump.
-    const button = page.getByRole('navigation', { name: 'Main', exact: true }).getByRole('button', { name: 'Services', exact: true });
+    const button = page
+      .getByRole('navigation', { name: 'Main', exact: true })
+      .getByRole('button', { name: 'Services menu', exact: true });
     const panel = page.locator('#menu-services');
     const estimate = panel.getByRole('link', { name: 'Get an instant estimate', exact: true });
 

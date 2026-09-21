@@ -49,6 +49,7 @@ export function PageHero({
   const dark = ground === 'dark';
   return (
     <section
+      data-hero={dark ? 'dark' : 'light'}
       className={`relative overflow-hidden ${dark ? 'bg-navy-900 text-ink-invert' : 'border-b border-hairline bg-canvas'}`}
     >
       {dark ? (

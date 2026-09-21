@@ -47,7 +47,8 @@ export const siteChromeViewSchema = z.object({
   }),
   header: z.object({
     primaryCta: siteLinkSchema,
-    secondaryCta: siteLinkSchema,
+    /** The one bar action is the primary; a second is optional and often not wanted. */
+    secondaryCta: siteLinkSchema.nullable(),
     /** Plain links after the mega menus. */
     links: z.array(siteLinkSchema).max(4),
   }),
@@ -87,7 +88,7 @@ export const siteChromeViewSchema = z.object({
     intro: text(600),
     points: z.array(z.object({ icon: z.enum(FINAL_POINT_ICONS), title: text(80), body: text(160) })).max(3),
     primaryCta: siteLinkSchema,
-    secondaryCta: siteLinkSchema,
+    secondaryCta: siteLinkSchema.nullable(),
     backgroundImage: decorativeImageSchema.nullable(),
   }),
 });
@@ -117,10 +118,8 @@ export interface SiteChromeSources {
 
 /** Links the template supplies where the copy sets none. */
 export const CHROME_DEFAULTS = {
-  headerLinks: [
-    { label: 'Technology', href: SITE_ROUTES.technology },
-    { label: 'Pricing', href: SITE_ROUTES.pricing },
-  ],
+  // Pricing moved into the Resources menu, where the cost calculator already lived.
+  headerLinks: [{ label: 'Technology', href: SITE_ROUTES.technology }],
   workColumns: [
     {
       title: 'Browse',
@@ -192,7 +191,11 @@ export function buildSiteChrome(sources: SiteChromeSources): SiteChromeView {
     href: industryPath(industry.slug),
   }));
   const promo = (item: HomePageContent['megaMenu']['servicesPromo']) => ({ ...item, cta: siteLink(item.cta) });
-  const header = { primaryCta: siteLink(content.header.primaryCta), secondaryCta: siteLink(content.header.secondaryCta) };
+  const header = {
+    primaryCta: siteLink(content.header.primaryCta),
+    // The bar carries one action unless the copy asks for two.
+    secondaryCta: content.header.secondaryCta ? siteLink(content.header.secondaryCta) : null,
+  };
 
   const footerColumns = [
     { title: 'Services', links: configured(siteLinks(footer.services), () => serviceLinks.slice(0, 10)) },
@@ -270,7 +273,9 @@ export function buildSiteChrome(sources: SiteChromeSources): SiteChromeView {
       heading: content.book.heading,
       intro: content.book.intro,
       points: content.book.points.map((point) => ({ ...point })),
-      ...header,
+      primaryCta: header.primaryCta,
+      // The band's own, falling back to the bar's only where the copy sets none.
+      secondaryCta: content.book.secondaryCta ? siteLink(content.book.secondaryCta) : header.secondaryCta,
       backgroundImage: content.book.backgroundImage,
     },
   };

@@ -136,3 +136,47 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/*
+ * The floating header.
+ *
+ * At the top of a page whose hero is dark, the bar has no ground of its own: it sits on
+ * the plate, in inverted ink, with the champagne underline the dark grounds use. Past
+ * 120px of scroll (HeaderScrollState marks the document) it takes the cream ground and
+ * its rule back, over the brand's standard curve.
+ *
+ * The hero says which ground it is, and `:has()` reads it, so a page that opens on cream
+ * — contact, the FAQ, an article — never gets a transparent bar with inverted type on it.
+ * Everything here is colour: the bar's height and position never change.
+ */
+body:has(#main > [data-hero='dark']:first-child) [data-site-header] {
+  background-color: transparent;
+  border-bottom-color: transparent;
+  color: var(--color-ink-invert);
+}
+
+body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, button) {
+  color: inherit;
+}
+
+/* The underline and the hover colour are champagne on a dark ground, not gold-ink. */
+body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, button):hover {
+  color: var(--color-gold-500);
+}
+body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, button)::after {
+  background-color: var(--color-gold-500);
+}
+
+/* Once the page has moved, the bar is a bar again. */
+:root[data-scrolled] body:has(#main > [data-hero='dark']:first-child) [data-site-header] {
+  background-color: var(--color-canvas);
+  border-bottom-color: var(--color-hairline);
+  color: var(--color-ink);
+  box-shadow: var(--shadow-lift);
+}
+:root[data-scrolled] body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, button):hover {
+  color: var(--color-gold-ink);
+}
+:root[data-scrolled] body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, button)::after {
+  background-color: var(--color-gold-ink);
+}
