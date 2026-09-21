@@ -1,5 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
+import type { Seo } from '@calwebtech/shared';
 import type { Prisma, PrismaClient } from '../generated/prisma/client';
 
 /**
@@ -25,6 +26,22 @@ export interface ImportContext {
   setSetting(key: string, value: unknown): Promise<void>;
   /** Creates a setting only when none exists, so a value a person set since survives. */
   setSettingOnce(key: string, value: unknown): Promise<void>;
+}
+
+/**
+ * A page's SEO as the column holds it.
+ *
+ * A rendered view gives every field a value and writes null for an image the page does not
+ * set; `seoSchema`, which validates the column, leaves a field out instead and rejects
+ * null. Writing the view's shape straight into the column therefore stores a row that fails
+ * validation the next time the page is built — a 500 on a page that looked imported.
+ */
+export function storedSeo(seo: { title: string; description: string; ogImage: string | null }): Seo {
+  return {
+    title: seo.title,
+    description: seo.description,
+    ...(seo.ogImage === null ? {} : { ogImage: seo.ogImage }),
+  };
 }
 
 export function createImportContext(db: PrismaClient, dir: string, log: (line: string) => void): ImportContext {

@@ -44,10 +44,29 @@ written to the worker's log rather than sent. The owner has no access yet to the
 that would be used for sending. Until then the team screen shows a generated first
 password once instead of sending an invitation.
 
-Every page is still `noindex`, because the proof on them is the demo's invented proof, and
-content still comes from the snapshots (`CONTENT_SOURCE=snapshot`) — the database holds no
-services, posts or projects. Moving a family across is M4, and that is what the owner
-actually asked for: publishing a service without a deploy.
+Every page is still `noindex`, because the proof on them is the demo's invented proof.
+
+**The ten approved services are importable.** Three importers read the rendered
+snapshots backwards into records — technologies and industries, case studies and their
+quotes, then the services with their page copy, FAQs and links — and an integration test
+rebuilds every service page from those rows and compares it with the snapshot it came
+from. It caught two things a review would not have: `seo` was written with the view's
+`ogImage: null`, which the column's schema rejects, so all ten pages would have returned
+500; and `Project.location` was never imported, so the card tags lost a line.
+
+Two findings needed a decision and became decision 45. A single `order` column cannot
+hold an order that differs per page, so `Service.content.order` names the slugs each
+section lists. And `Technology.category` is the vocabulary a *service* page labels a
+stack with, not the technology page's own grouping; writing the group key would have
+dropped the label from nineteen technologies. Three disagreements between snapshots —
+an industry's short and long name, a photograph described twice, and a quote from a
+client whose case study the page does not list — the owner chose to leave as they are
+and settle in the admin. The test names each one rather than hiding it.
+
+**Nothing in production has changed yet.** The import marker was written on 2026-09-20,
+and `deploy.sh` runs the importer without `--force`, so a deploy skips it. Two deliberate
+steps remain: run `node dist/import-snapshots.js --force` in the api container, then add
+`CONTENT_DATABASE_FIRST=services` to the server's env file and redeploy.
 
 ## Update, 2026-09-19
 

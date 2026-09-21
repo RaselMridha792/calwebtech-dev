@@ -69,6 +69,38 @@ This is also what makes the milestone the owner asked for reachable without firs
 every disagreement between the snapshots: a new service needs no case study, testimonial or
 technology rows, because the template omits a section it has nothing for.
 
+## 45. A page's order of its own records belongs to the page
+
+*2026-09-21.* Importing the ten approved service pages found two things a single column
+could not hold.
+
+**The order.** Every service page lists its stack, its industries and its case studies in
+its own order: the Shopify page opens with Shopify, the WordPress page with WordPress, the
+AI page with the model APIs. `Technology.order` and `Industry.order` are one number per
+record, so on nine of the ten pages the approved sequence could not be reproduced — the
+headline technology would have fallen into the middle of the list. `Service.content.order`
+now names the slugs each section lists, in order, and the mapper sorts by it. A record the
+list does not name follows the ones it does, so a technology linked in the admin appears at
+the end rather than displacing the page's sequence. Ordering is presentation, and it varies
+per page, which is what `content` is for; an explicit join table with an `order` column was
+the alternative and can still replace this if the admin ever needs to reorder links
+first-class.
+
+**The category.** `company/technology.json` groups the stack the way the technology page
+reads — data stores apart from the back end, mobile and AI together — and those group keys
+are not the vocabulary a service page labels a technology with. Writing the group key into
+`Technology.category` would have dropped the label from nineteen technologies, including
+PostgreSQL's "Back end" and Shopify's "Ecommerce". The category now comes from whichever
+service page lists the technology, and `TECHNOLOGY_CATEGORY_LABELS` moved to
+`packages/shared` so the mapper and the import cannot disagree about it. A technology no
+service page lists takes its category from its group, and one whose group maps to nothing
+stops the import rather than getting a category nobody chose.
+
+Where the two snapshots spell one name differently — `headless CMS` against `Headless CMS`,
+`vector search` against `Vector search` — the row takes the service page's spelling, so no
+approved service page changes. The technology page keeps its own until it moves, and either
+is editable in the admin. Worth settling in the snapshots.
+
 ## Open
 
 - The approved demo proof gives two names two identities. "Priya Raman" is Calwebtech's
