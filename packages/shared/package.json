@@ -13,6 +13,10 @@
     "./auth-cookies": {
       "types": "./dist/auth-cookies.d.ts",
       "default": "./dist/auth-cookies.js"
+    },
+    "./slugify": {
+      "types": "./dist/slugify.d.ts",
+      "default": "./dist/slugify.js"
     }
   },
   "files": [

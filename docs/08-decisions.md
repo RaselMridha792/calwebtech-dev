@@ -49,6 +49,26 @@ it here and in `CLAUDE.md` in the same commit.
 | 42 | 2026-09-18 | The VPS package (docs/11-vps-deploy.md). `infra/scripts/bootstrap-server.sh` prepares a fresh Ubuntu 24.04 server once, as root: Docker Engine with log rotation, the key-only `deploy` user, `/srv/calwebtech`, the stack's env file from `infra/env/<stack>.env.example` with generated secrets, swap, UFW, fail2ban, sshd hardening, unattended security updates. `infra/env/production.env.example` exists beside staging's. Production deploys only by hand: `workflow_dispatch` on the release workflow with a stack and a full commit SHA on `main` (`deploy-manual`), which shares the SSH steps with the automatic staging job through `.github/actions/deploy-over-ssh`; rollback is the same job with the previous SHA, and nothing is rebuilt. The backup sidecar exists: `infra/backup/Dockerfile` (pg_dump 17 plus restic, built in CI as the fourth image), `backup-entrypoint.sh` streams a nightly dump into an encrypted off-site restic repository with 7/4/6 retention, `restore.sh` is the drill; the `ops` profile is still started by hand. Every stack opts into `security-headers@file` (`infra/traefik/dynamic/security.yml`: HSTS, nosniff, referrer policy, frame denial, permissions policy, COOP, and a report-only CSP derived from what the app loads), and the smoke test asserts HSTS when `EXPECT_HSTS` is set. | Owner's decision to host the whole platform, in Docker, on their own VPS. One 4 GB server runs one stack. Production never seeds, so a production deploy needs content in the database first; staging on the same server proves the stack meanwhile. The CSP stays report-only because Next's inline hydration scripts cannot be hashed, and nonces would make every route render dynamically. |
 | 43 | 2026-09-19 | Production launches with `CONTENT_SOURCE=snapshot`. With the API reachable, the web app still renders every page from the committed snapshots in `apps/web/static-content`, exactly as the Vercel demo does, while `POST /leads`, the calculator's estimate and brief drafts go to the API and into the stack's own database (`usesSnapshots()` in `apps/web/lib/api/core.ts`; `api`, the default, is unchanged, and an unknown value stops the server). The database is prepared once by the snapshot import, not the seed: `packages/db/src/import` writes what the write paths look up (the enquiry types the contact page offers, with empty mailboxes, and the `calculator.page` copy the result email is worded from, which the page view carries verbatim) and a marker, `snapshots.import`, that makes every later run a no-op unless `--force`. `node dist/import-snapshots.js` runs it from the API image, which carries a copy of the snapshots; `deploy.sh` runs it when `IMPORT_SNAPSHOTS_ON_DEPLOY` is true and refuses a stack that also seeds. Its acceptance test creates a database of its own, migrates, imports, and submits a lead of every enquiry type, a calculator lead and a project lead through `LeadsService`. | Owner's decision: the content on the Vercel demo is what production launches with, to be edited later. Loading it into the database was tried first (branch `wip/content-import-views`) and cannot reproduce the pages. `home.json` and the landing snapshot are the approved mockups written as views, with values no mapper produces (`outcome`, the video testimonial, the press band, hardcoded alt text, orderings), and the snapshots disagree about shared records (7 against 8 client logos, 2 against 4 review sources, shortened quotes, different project summaries), so one row cannot satisfy two pages. Until the admin exists (Task 5.3) content in the database could not be edited anyway, so nothing is given up, and the data that matters, leads, is owned from the first request. Pages stay noindex, as every snapshot is. |
 
+## 44. A family can read the database first and fall back to its snapshot
+
+*2026-09-21.* `CONTENT_SOURCE` was all-or-nothing, so moving one family into the database
+meant moving all of them — which is what stopped the first attempt (decision 43).
+
+`CONTENT_DATABASE_FIRST` names the families that ask the API for a record and render the
+committed snapshot only when the API has none. Services is the first. The effect is that a
+service created in the admin is live at its own address immediately, while the ten that
+were never imported keep rendering exactly as they did, and the index merges both lists so a
+visitor sees one set of services rather than two.
+
+Two sources at the same time is a transition, not a destination. A family leaves the list
+when every record is in the database and `CONTENT_SOURCE=api` takes over. Until then the
+editor says which addresses the snapshot is still serving, so nobody is left wondering why
+a draft is not live.
+
+This is also what makes the milestone the owner asked for reachable without first resolving
+every disagreement between the snapshots: a new service needs no case study, testimonial or
+technology rows, because the template omits a section it has nothing for.
+
 ## Open
 
 - The approved demo proof gives two names two identities. "Priya Raman" is Calwebtech's
