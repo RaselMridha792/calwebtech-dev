@@ -2,7 +2,8 @@ import type { LandingPageView } from '@calwebtech/shared';
 import type { ReactNode } from 'react';
 import { CountUp } from '../motion/count-up';
 import { BackgroundVideo } from '../ui/background-video';
-import { BackdropImage, Wordmark } from '../ui/brand';
+import { BackdropImage } from '../ui/brand';
+import { Logo } from '../ui/logo';
 import { CheckBullet, PillBadge, Stars } from '../ui/primitives';
 import { ResponsiveImage } from '../ui/responsive-image';
 
@@ -21,7 +22,7 @@ export function LandingHeader({
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-white/95">
       <div className="shell-narrow flex h-[70px] items-center justify-between gap-4">
-        <Wordmark />
+        <Logo tone="light" height={34} priority />
         <div className="flex items-center gap-5">
           {reviews.averageRating !== null ? (
             <p className="hidden items-center gap-2 text-[14px] md:flex">

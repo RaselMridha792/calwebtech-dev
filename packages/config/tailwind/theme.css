@@ -11,6 +11,43 @@
   --color-white: #ffffff;
   --color-black: #000000;
 
+  /*
+   * The 2026 brand (F:/calwebtech-handoff/calwebtech-design-system). A cream ground, a
+   * navy core and a champagne accent, replacing the white-and-cobalt palette below it.
+   * The old tokens stay until the last marketing component has moved across; the admin
+   * keeps them for good, because its dark surfaces are built on them.
+   *
+   * Rule one of the brand book: no pure white. `canvas` is the ground of every light
+   * section, `canvas-sunken` separates two light sections, and `canvas-invert` is the
+   * dark band. White is not a background, a card or a button fill.
+   */
+  --color-canvas: #f4efe6;
+  --color-canvas-raised: #faf7f0;
+  --color-canvas-sunken: #ece4d6;
+  --color-canvas-invert: #0a1628;
+  --color-canvas-invert-soft: #13263f;
+  --color-ink-muted: #5c5648;
+  --color-ink-invert: #f6f2ea;
+  --color-ink-invert-muted: #bdb6a5;
+  --color-navy-900: #0a1628;
+  --color-navy-700: #13263f;
+  /* Decorative only: it does not carry text. */
+  --color-navy-500: #1f4067;
+  /*
+   * Champagne has two forms and they are not interchangeable. `gold-500` is for dark
+   * grounds only; on a light ground it is 1.8:1 and disappears. `gold-ink` is the same
+   * hue carried to text weight for light grounds, and `gold-600` is the logo's fill
+   * there (3.2:1 on cream) — the logo pack's own token, for artwork rather than text.
+   */
+  --color-gold-500: #cfae72;
+  --color-gold-300: #e6d3aa;
+  --color-gold-600: #a5813f;
+  --color-gold-ink: #6f5320;
+  --color-on-gold: #16120a;
+  --color-status-positive: #1f5f42;
+  --color-status-critical: #992c24;
+  --color-status-caution: #7a5410;
+
   --color-ink: #0a1d37;
   --color-ink2: #12294a;
   --color-primary: #1550e0;
@@ -62,8 +99,37 @@
   /* The second half of the wordmark, dimmer than body text so the name reads as one. */
   --color-admin-dim: #7d93b4;
 
-  --font-display: var(--font-jakarta), system-ui, sans-serif;
-  --font-sans: var(--font-plex), system-ui, sans-serif;
+  /*
+   * Separation is by rule, never by a box. `hairline` is the 1px default, `hairline-strong`
+   * its hover, and `hairline-gold` appears once per section, above the eyebrow.
+   */
+  --color-hairline: #101a2426;
+  --color-hairline-strong: #101a2480;
+  --color-hairline-gold: #cfae7266;
+  /*
+   * A plate carries the strong scrim across the whole image wherever text sits on it, not
+   * as a bottom-edge gradient: that leaves a headline's first line on raw photography,
+   * which is where contrast fails. With the full scrim `ink-invert` holds above 7.8:1.
+   */
+  --color-scrim: #050b148c;
+  --color-scrim-strong: #050b14b8;
+  --color-focus: #6f5320;
+  --color-focus-invert: #cfae72;
+
+  /* The only two shadows in the brand: a plate that overlaps, and the sticky nav. */
+  --shadow-plate: 0 40px 90px -46px #050b1499;
+  --shadow-lift: 0 18px 40px -26px #050b1473;
+
+  /* The house curve. Motion is slow, single-axis and once-only. */
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /*
+   * Archivo for display, Manrope for prose, IBM Plex Mono for the `meta` numerals only.
+   * The admin keeps the faces it was designed with; see the [data-theme='admin'] block.
+   */
+  --font-display: var(--font-archivo), Helvetica Neue, Arial, sans-serif;
+  --font-sans: var(--font-manrope), system-ui, Segoe UI, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, monospace;
 
   --radius-card: 1rem;
 
@@ -97,13 +163,194 @@
   }
 }
 
-/* Content width 1440px, 24px gutters, 56px from lg. */
+/*
+ * The brand's type scale, one utility per style, sized down at the two breakpoints the
+ * brand book names: 900px drops display a step, 600px puts the hero at display-md.
+ * Type is the ornament here — if a section looks empty the heading is too small, and the
+ * answer is a larger heading, not a graphic.
+ */
+@utility display-mega {
+  font-family: var(--font-display);
+  font-size: 44px;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-weight: 800;
+  @media (width >= 37.5rem) {
+    font-size: 80px;
+    line-height: 0.9;
+    letter-spacing: -0.035em;
+  }
+  @media (width >= 56.25rem) {
+    font-size: 112px;
+    line-height: 0.88;
+    letter-spacing: -0.04em;
+  }
+}
+
+@utility display-xl {
+  font-family: var(--font-display);
+  font-size: 40px;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-weight: 800;
+  @media (width >= 37.5rem) {
+    font-size: 56px;
+    line-height: 0.96;
+    letter-spacing: -0.03em;
+  }
+  @media (width >= 56.25rem) {
+    font-size: 80px;
+    line-height: 0.9;
+    letter-spacing: -0.035em;
+  }
+}
+
+@utility display-lg {
+  font-family: var(--font-display);
+  font-size: 34px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  @media (width >= 37.5rem) {
+    font-size: 40px;
+    line-height: 1.05;
+  }
+  @media (width >= 56.25rem) {
+    font-size: 56px;
+    line-height: 0.96;
+    letter-spacing: -0.03em;
+  }
+}
+
+@utility display-md {
+  font-family: var(--font-display);
+  font-size: 28px;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  font-weight: 700;
+  @media (width >= 56.25rem) {
+    font-size: 40px;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+}
+
+/* A pulled quote: display family, but set light enough to read as speech. */
+@utility display-quote {
+  font-family: var(--font-display);
+  font-size: 24px;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+  @media (width >= 56.25rem) {
+    font-size: 34px;
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+  }
+}
+
+@utility heading-lg {
+  font-family: var(--font-display);
+  font-size: 26px;
+  line-height: 1.2;
+  letter-spacing: -0.012em;
+  font-weight: 700;
+  @media (width >= 56.25rem) {
+    font-size: 32px;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+  }
+}
+
+@utility heading-md {
+  font-family: var(--font-display);
+  font-size: 21px;
+  line-height: 1.28;
+  letter-spacing: -0.01em;
+  font-weight: 700;
+  @media (width >= 56.25rem) {
+    font-size: 24px;
+    line-height: 1.25;
+  }
+}
+
+@utility heading-sm {
+  font-family: var(--font-display);
+  font-size: 19px;
+  line-height: 1.35;
+  letter-spacing: -0.005em;
+  font-weight: 600;
+}
+
+@utility body-lg {
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 29px;
+  font-weight: 400;
+  @media (width >= 56.25rem) {
+    font-size: 19px;
+    line-height: 32px;
+  }
+}
+
+@utility body-base {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 28px;
+  font-weight: 400;
+}
+
+@utility body-sm {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: 400;
+}
+
+/* Uppercase, and the only three styles that take positive tracking. */
+@utility eyebrow {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: 0.22em;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+@utility nav-label {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 18px;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+@utility button-label {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 16px;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* Row numerals and years: `01 — 06`, with an em dash and spaces, never a hyphen. */
+@utility meta {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+}
+
+/* The brand's grid: 1320px of content, 24px gutters, 64px from the tablet breakpoint. */
 @utility shell {
-  max-width: 1440px;
+  max-width: 1320px;
   margin-inline: auto;
   padding-inline: 1.5rem;
-  @media (width >= 64rem) {
-    padding-inline: 3.5rem;
+  @media (width >= 56.25rem) {
+    padding-inline: 4rem;
   }
 }
 
@@ -173,6 +420,13 @@
   [data-theme='admin'] {
     --color-result: #25c3a6;
     --color-danger: #ff8a80;
+    /*
+     * The dashboard was drawn in Plus Jakarta Sans and IBM Plex Sans and keeps them. The
+     * marketing brand's faces are a different voice: Archivo's tight display tracking is
+     * made for 112px headlines, not for a 13px table row.
+     */
+    --font-display: var(--font-jakarta), system-ui, sans-serif;
+    --font-sans: var(--font-plex), system-ui, sans-serif;
   }
 }
 

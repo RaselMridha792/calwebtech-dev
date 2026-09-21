@@ -102,20 +102,41 @@ Tokens are defined in `packages/config/tailwind/theme.css` (Tailwind v4 `@theme`
 imported by `apps/web/app/globals.css`. Use the token names, never raw hex; lint rejects
 arbitrary hex values in `apps/web`.
 
+The brand is being rebuilt to the 2026 system in `F:/calwebtech-handoff/calwebtech-design-system`
+(its `README.md` is the brand book; read it before touching a marketing component). Its
+five rules, in short:
+
 ```
-ink #0A1D37   primary #1550E0   result #0E9F87
-mist #EEF3F9  mist2 #F7FAFD     line #DCE4EE   body #41536B
---glow-teal #0E9F87   ambient glow only, via `glow-teal` and `bg-glow-teal-*`
+canvas #F4EFE6   canvas-raised #FAF7F0   canvas-sunken #ECE4D6
+navy-900 #0A1628  ink #101A24   ink-muted #5C5648   ink-invert #F6F2EA
+gold-500 #CFAE72 (dark grounds)   gold-ink #6F5320 (light)   gold-600 #A5813F (logo art)
+hairline / hairline-strong / hairline-gold   scrim / scrim-strong
 ```
 
-- `result` (teal) is reserved for outcome figures and affirmative marks (check icons,
-  status dots). Ambient glows use the separate `--glow-teal` token. Teal is banned from
-  headings, body text, buttons, links, borders and card backgrounds. The
-  `calwebtech/teal-usage` lint rule enforces this in `apps/web`.
-- Display face: Plus Jakarta Sans. Body face: IBM Plex Sans.
-- Content width 1440px with 24px gutters, 56px from the large breakpoint.
-- Section rhythm alternates: white, tinted gradient, image with overlay, colour band.
-  See `reference/homepage.html` for the approved sequence.
+1. **No pure white.** `canvas` is the ground of every light section — not a page
+   background, not a card, not a button fill.
+2. **No boxes.** A list of things is editorial rows on hairlines, never bordered cards.
+   `shadow-lift` is for the sticky nav and nothing else.
+3. **Every section is cream, invert or plate**, alternating. Two cream sections in a row
+   need `canvas-sunken` between them, not a border.
+4. **Type is the ornament.** `display-mega` to `display-md`, Archivo at 700–800 with
+   negative tracking. A section that looks empty needs a bigger heading, not a graphic.
+5. **Air before decoration.** Section padding starts at 128px on desktop.
+
+- Champagne has two forms and they are not interchangeable: `gold-500` only on dark
+  grounds (it is 1.8:1 on cream), `gold-ink` on light ones. Never a gold gradient, never
+  gold behind text, never more than three gold elements in one viewport.
+- Display face: Archivo. Body face: Manrope. `meta` numerals: IBM Plex Mono. The admin
+  keeps Plus Jakarta Sans and IBM Plex Sans, resolved inside `[data-theme='admin']`.
+- Content width 1320px with the `shell` utility: 24px gutters, 64px from 900px.
+- The logo is in `apps/web/public/brand` and rendered by `components/ui/logo.tsx`. Pick the
+  file by the ground it sits on; never re-type the wordmark in a live font.
+- **Still on the old palette:** the tokens below `--color-ink` in `theme.css` (`primary`,
+  `result`, `mist`, `line`, `body` and the glows) belong to the white-and-cobalt site and
+  are being removed family by family. The admin's `--color-admin-*` set stays for good.
+  `reference/homepage.html` and `reference/landing-page.html` record the design this
+  replaces; they are history now, not the target (docs/08-decisions.md, 46).
+
 - Motion: opacity and transform only. Nothing that shifts layout. All motion respects
   `prefers-reduced-motion`. In-page links are smoothed by `AnchorScroll`, never by CSS
   `scroll-behavior: smooth`, which lands anchors in the wrong place once sections use
