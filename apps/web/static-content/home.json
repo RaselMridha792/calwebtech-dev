@@ -79,7 +79,6 @@
           "links": [
             { "label": "All case studies", "href": "#work" },
             { "label": "Portfolio grid", "href": "/work/" },
-            { "label": "Demo showcase", "href": "/demos/" },
             { "label": "Before and after", "href": "#beforeafter" },
             { "label": "Client feedback", "href": "#testimonials" }
           ]
@@ -119,7 +118,6 @@
             { "label": "About Calwebtech", "href": "/about/" },
             { "label": "Team", "href": "/team/" },
             { "label": "Awards and recognition", "href": "#awards" },
-            { "label": "Careers", "href": "/careers/" },
             { "label": "News", "href": "/insights/" }
           ]
         }
@@ -447,7 +445,6 @@
         { "label": "Awards", "href": "#awards" },
         { "label": "Client feedback", "href": "#testimonials" },
         { "label": "Pricing", "href": "#pricing" },
-        { "label": "Careers", "href": "/careers/" },
         { "label": "News", "href": "/insights/" },
         { "label": "Contact", "href": "#book" }
       ],

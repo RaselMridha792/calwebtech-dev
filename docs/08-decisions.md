@@ -56,9 +56,11 @@ it here and in `CLAUDE.md` in the same commit.
   Whitfield" is Calwebtech's Delivery Manager and Halloway Group's Operations Lead. Several
   portrait photos are reused between a client and a team member. The owner decides which
   identity stays; until then no site page shows both (docs/10-site-pages.md).
-- The approved menus still link to routes outside the site pages batch: `/guides/`,
-  `/glossary/`, `/careers/` and `/demos/` return 404 until Tasks 4.2 and the careers and
-  demos pages exist, or the links are removed from `home.content`.
+- The approved menus linked to four routes that did not exist. `/guides/` and `/glossary/`
+  were built (PR #10). `/careers/` and `/demos/` were not, so on 2026-09-21 those three
+  entries were taken out of the chrome and homepage snapshots rather than left pointing at
+  a 404 on a live site. Put them back when the careers and demos pages are built; the
+  `JobOpening` and `Demo` models are already in the schema.
 
 - The cost calculator's result depends on the booking page. `CONSULTATION_PATH`
   (`/book-a-consultation/`) is the booking family's contract: `calculatorBookingPath`
