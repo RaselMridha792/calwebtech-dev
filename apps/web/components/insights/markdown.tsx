@@ -115,7 +115,7 @@ function Inline({ tokens }: { tokens: readonly Token[] | undefined }): ReactNode
             );
           case 'codespan':
             return (
-              <code key={key} className="rounded bg-mist px-1.5 py-0.5 font-mono text-[0.9em] text-ink">
+              <code key={key} className="rounded bg-canvas-sunken px-1.5 py-0.5 font-mono text-[0.9em] text-ink">
                 {(token as Tokens.Codespan).text}
               </code>
             );
@@ -129,7 +129,7 @@ function Inline({ tokens }: { tokens: readonly Token[] | undefined }): ReactNode
               <a
                 key={key}
                 href={href}
-                className="font-medium text-primary underline underline-offset-4 hover:text-primaryd"
+                className="font-medium text-gold-ink underline underline-offset-4 hover:text-gold-600"
               >
                 <Inline tokens={link.tokens} />
               </a>
@@ -141,7 +141,7 @@ function Inline({ tokens }: { tokens: readonly Token[] | undefined }): ReactNode
             // The media library requires alt text, so an image without it is not rendered.
             if (!src || image.text.trim() === '') return null;
             return (
-              <span key={key} className="relative mt-6 block aspect-video overflow-hidden rounded-xl bg-mist">
+              <span key={key} className="relative mt-6 block aspect-video overflow-hidden bg-canvas-sunken">
                 <ResponsiveImage src={src} alt={image.text} fill sizes="(min-width: 1024px) 45rem, 100vw" className="object-cover" />
               </span>
             );
@@ -214,13 +214,13 @@ function Block({ token, ctx }: { token: Token; ctx: ArticleBodyContext }): React
     }
     case 'blockquote':
       return (
-        <blockquote className="mt-7 border-l-4 border-line pl-5 text-[17px] leading-relaxed text-ink italic">
+        <blockquote className="mt-7 border-l-4 border-hairline pl-5 text-[17px] leading-relaxed text-ink italic">
           <Blocks tokens={(token as Tokens.Blockquote).tokens} ctx={ctx} />
         </blockquote>
       );
     case 'code':
       return (
-        <pre className="mt-6 overflow-x-auto rounded-xl border border-line bg-mist2 p-5 text-[14px] leading-relaxed text-ink">
+        <pre className="mt-6 overflow-x-auto border border-hairline bg-canvas-raised p-5 text-[14px] leading-relaxed text-ink">
           <code>{(token as Tokens.Code).text}</code>
         </pre>
       );
@@ -229,19 +229,19 @@ function Block({ token, ctx }: { token: Token; ctx: ArticleBodyContext }): React
       const label = ctx.tableLabels.get(table);
       return (
         <div
-          className="mt-7 overflow-x-auto rounded-xl border border-line"
+          className="mt-7 overflow-x-auto border border-hairline"
           role="region"
           tabIndex={0}
           {...(label ? { 'aria-labelledby': label } : { 'aria-label': 'Table' })}
         >
           <table className="w-full min-w-[32rem] border-collapse text-[15.5px]">
             <thead>
-              <tr className="bg-mist2">
+              <tr className="bg-canvas-raised">
                 {table.header.map((cell, index) => (
                   <th
                     key={String(index)}
                     scope="col"
-                    className={`border-b border-line px-4 py-3 font-semibold text-ink ${cellClass(table.align[index] ?? null)}`}
+                    className={`border-b border-hairline px-4 py-3 font-semibold text-ink ${cellClass(table.align[index] ?? null)}`}
                   >
                     <Inline tokens={cell.tokens} />
                   </th>
@@ -250,7 +250,7 @@ function Block({ token, ctx }: { token: Token; ctx: ArticleBodyContext }): React
             </thead>
             <tbody>
               {table.rows.map((row, rowIndex) => (
-                <tr key={String(rowIndex)} className="border-b border-line last:border-0">
+                <tr key={String(rowIndex)} className="border-b border-hairline last:border-0">
                   {row.map((cell, index) => (
                     <td key={String(index)} className={`px-4 py-3 align-top ${cellClass(table.align[index] ?? null)}`}>
                       <Inline tokens={cell.tokens} />
@@ -264,7 +264,7 @@ function Block({ token, ctx }: { token: Token; ctx: ArticleBodyContext }): React
       );
     }
     case 'hr':
-      return <hr className="mt-10 border-line" />;
+      return <hr className="mt-10 border-hairline" />;
     default:
       // Block HTML, link definitions and blank lines render nothing.
       return null;

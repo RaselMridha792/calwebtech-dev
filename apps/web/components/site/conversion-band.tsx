@@ -20,12 +20,11 @@ export function ConversionBand({ band }: { band: SiteChromeView['conversionBand'
     <section
       data-conversion-band=""
       aria-labelledby="conversion-band-heading"
-      className="content-auto relative overflow-hidden border-t border-line bg-mist py-20 lg:py-24"
+      className="content-auto relative overflow-hidden border-t border-hairline bg-canvas-sunken py-20 lg:py-24"
     >
       <div className="absolute inset-0" aria-hidden="true">
         <BackdropImage image={band.backgroundImage} className="opacity-[.13]" />
-        {band.backgroundImage ? <div className="absolute inset-0 bg-linear-to-r from-mist via-mist/92 to-mist/70" /> : null}
-        <div className="absolute -top-24 left-1/3 h-[520px] w-[520px] rounded-full bg-primary/9 blur-3xl" />
+        {band.backgroundImage ? <div className="absolute inset-0 bg-linear-to-r from-canvas-sunken via-canvas-sunken/92 to-canvas-sunken/70" /> : null}
       </div>
       <div className="shell relative grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-7" {...reveal()}>
@@ -39,24 +38,26 @@ export function ConversionBand({ band }: { band: SiteChromeView['conversionBand'
           <div className="mt-8 flex flex-wrap gap-3">
             <a
               href={band.primaryCta.href}
-              className="inline-flex h-14 items-center rounded-xl bg-primary px-7 text-[16px] font-semibold text-white shadow-cta hover:bg-primaryd"
+              className="button-label inline-flex h-14 items-center bg-navy-900 px-7 text-ink-invert transition-colors duration-150 hover:bg-navy-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
             >
               {band.primaryCta.label}
             </a>
-            <a
-              href={band.secondaryCta.href}
-              className="inline-flex h-14 items-center rounded-xl border border-line bg-white px-7 text-[16px] font-semibold text-ink hover:border-ink"
-            >
-              {band.secondaryCta.label}
-            </a>
+            {band.secondaryCta ? (
+              <a
+                href={band.secondaryCta.href}
+                className="button-label inline-flex h-14 items-center border border-hairline-strong px-7 text-ink transition-colors duration-150 hover:border-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+              >
+                {band.secondaryCta.label}
+              </a>
+            ) : null}
           </div>
         </div>
         {band.points.length > 0 ? (
-          <ul className="space-y-5 border-t border-line pt-8 lg:col-span-5 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-12" {...reveal(1)}>
+          <ul className="space-y-5 border-t border-hairline pt-8 lg:col-span-5 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-12" {...reveal(1)}>
             {band.points.map((point) => (
               <li key={point.title} className="flex gap-4">
                 <span
-                  className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-line bg-white text-ink"
+                  className="grid h-10 w-10 shrink-0 place-items-center border border-hairline bg-canvas-raised text-ink"
                   aria-hidden="true"
                 >
                   {POINT_ICONS[point.icon]}

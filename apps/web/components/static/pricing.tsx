@@ -25,11 +25,11 @@ export function PricingTiers({
             {tiers.map((tier, index) => (
               <li
                 key={`${String(index)}-${tier.name}`}
-                className={`relative flex flex-col rounded-2xl p-8 ${tier.highlighted ? 'border-2 border-ink shadow-card' : 'border border-line bg-white'}`}
+                className={`relative flex flex-col  p-8 ${tier.highlighted ? 'border-2 border-ink ' : 'border border-hairline bg-canvas-raised'}`}
                 {...reveal(index)}
               >
                 {tier.highlighted ? (
-                  <p className="absolute -top-3.5 left-8 rounded-md bg-ink px-3 py-1 text-[12.5px] font-semibold text-white">
+                  <p className="absolute -top-3.5 left-8 bg-navy-900 px-3 py-1 text-[12.5px] font-semibold text-ink-invert">
                     {copy.highlightLabel}
                   </p>
                 ) : null}

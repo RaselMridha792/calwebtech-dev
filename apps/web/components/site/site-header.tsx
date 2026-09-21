@@ -13,7 +13,8 @@ type MenuPromoContent = Menu['services']['promo'];
 /** The header's calls to action. The homepage points them at its own forms (`#book`). */
 export interface HeaderCtas {
   primaryCta: Link;
-  secondaryCta: Link;
+  /** Null where the bar carries one action, which is the usual case. */
+  secondaryCta: Link | null;
 }
 
 function MenuList({ title, links, className = 'col-span-3' }: { title?: string | null; links: Link[]; className?: string }) {
@@ -84,18 +85,52 @@ function MenuPromo({ promo, tone }: { promo: MenuPromoContent; tone: keyof typeo
  * dismissed panel is hidden by `data-dismissed` on the group. Desktop only; small screens
  * use MobileMenu.
  */
-function MegaMenu({ id, label, children }: { id: string; label: string; children: ReactNode }) {
+/**
+ * A mega menu and the label that opens it.
+ *
+ * Where the family has an index page the label is a link to it, not a button: a menu whose
+ * heading cannot be clicked leaves `/services/` reachable only from inside its own panel.
+ * The panel still opens on hover and on focus, so the keyboard reaches both the page and
+ * the links inside it. Resources has no index page of its own, so it stays a button.
+ */
+function MegaMenu({
+  id,
+  label,
+  href,
+  children,
+}: {
+  id: string;
+  label: string;
+  href?: string;
+  children: ReactNode;
+}) {
+  const trigger =
+    'nav-label flex h-full items-center gap-1.5 text-ink transition-colors duration-150 group-focus-within/mega:text-gold-ink hover:text-gold-ink';
   return (
     <div data-mega="" className="group/mega flex h-full items-center">
-      <button
-        type="button"
-        aria-expanded={false}
-        aria-controls={`menu-${id}`}
-        className="nav-label flex h-full items-center gap-1.5 px-4 text-ink transition-colors duration-150 group-focus-within/mega:text-gold-ink hover:text-gold-ink"
-      >
-        {label}
-        <ChevronIcon className="h-2.5 w-2.5 opacity-60" />
-      </button>
+      {href ? (
+        <>
+          <a href={href} className={`${trigger} ps-4 pe-1.5`}>
+            {label}
+          </a>
+          {/* The panel's own control, so the label can navigate and the keyboard can still
+              open, dismiss and reopen the menu (MegaMenuState reads this button). */}
+          <button
+            type="button"
+            aria-expanded={false}
+            aria-controls={`menu-${id}`}
+            className={`${trigger} pe-4 ps-0.5`}
+          >
+            <ChevronIcon className="h-2.5 w-2.5 opacity-60" />
+            <span className="sr-only">{`${label} menu`}</span>
+          </button>
+        </>
+      ) : (
+        <button type="button" aria-expanded={false} aria-controls={`menu-${id}`} className={`${trigger} px-4`}>
+          {label}
+          <ChevronIcon className="h-2.5 w-2.5 opacity-60" />
+        </button>
+      )}
       <div
         id={`menu-${id}`}
         data-menu={id}
@@ -151,12 +186,14 @@ function MobileMenu({ groups, ctas }: { groups: SiteChromeView['mobileMenu']['gr
             >
               {ctas.primaryCta.label}
             </a>
-            <a
-              href={ctas.secondaryCta.href}
-              className="button-label inline-flex h-12 flex-1 items-center justify-center border border-hairline text-ink"
-            >
-              {ctas.secondaryCta.label}
-            </a>
+            {ctas.secondaryCta ? (
+              <a
+                href={ctas.secondaryCta.href}
+                className="button-label inline-flex h-12 flex-1 items-center justify-center border border-hairline text-ink"
+              >
+                {ctas.secondaryCta.label}
+              </a>
+            ) : null}
           </div>
         </div>
       </div>
@@ -173,7 +210,7 @@ export function SiteHeader({ chrome, ctas }: { chrome: SiteChromeView; ctas?: He
   const headerCtas = ctas ?? chrome.header;
 
   return (
-    <header className="sticky top-0 z-100 border-b border-hairline bg-canvas-raised">
+    <header data-site-header="" className="sticky top-0 z-100 border-b border-hairline bg-canvas transition-colors duration-[420ms] ease-[cubic-bezier(0.4,0,0.2,1)]">
       <div className="shell flex h-[76px] items-center justify-between">
         {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- next/link would add about 4 kB of framework runtime; a full navigation home is fine. */}
         <a href="/" className="shrink-0" aria-label="Calwebtech home">
@@ -181,19 +218,19 @@ export function SiteHeader({ chrome, ctas }: { chrome: SiteChromeView; ctas?: He
         </a>
 
         <nav className="hidden h-full items-center xl:flex" aria-label="Main">
-          <MegaMenu id="services" label="Services">
+          <MegaMenu id="services" label="Services" href="/services/">
             <MenuColumns columns={menu.services.columns} />
             <MenuPromo promo={menu.services.promo} tone="mist" />
           </MegaMenu>
 
-          <MegaMenu id="industries" label="Industries">
+          <MegaMenu id="industries" label="Industries" href="/industries/">
             {columnsOf(menu.industries.links, 3).map((links) => (
               <MenuList key={links[0]?.label ?? 'industries'} links={links} />
             ))}
             {menu.industries.promo ? <MenuPromo promo={menu.industries.promo} tone="outline" /> : null}
           </MegaMenu>
 
-          <MegaMenu id="work" label="Work">
+          <MegaMenu id="work" label="Work" href="/work/">
             <MenuColumns columns={menu.work.columns} />
             {menu.work.featured.length > 0 ? (
               <div className="col-span-6 grid grid-cols-2 gap-5">
@@ -232,12 +269,14 @@ export function SiteHeader({ chrome, ctas }: { chrome: SiteChromeView; ctas?: He
         </nav>
 
         <div className="flex items-center gap-3">
-          <a
-            href={headerCtas.secondaryCta.href}
-            className="button-label hidden h-11 items-center border border-hairline px-5 text-ink transition-colors duration-150 hover:border-hairline-strong hover:bg-canvas-sunken focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus lg:inline-flex"
-          >
-            {headerCtas.secondaryCta.label}
-          </a>
+          {headerCtas.secondaryCta ? (
+            <a
+              href={headerCtas.secondaryCta.href}
+              className="button-label hidden h-11 items-center border border-hairline px-5 text-ink transition-colors duration-150 hover:border-hairline-strong hover:bg-canvas-sunken focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus lg:inline-flex"
+            >
+              {headerCtas.secondaryCta.label}
+            </a>
+          ) : null}
           <a
             href={headerCtas.primaryCta.href}
             className="button-label hidden h-11 items-center bg-navy-900 px-6 text-ink-invert transition-colors duration-150 hover:bg-navy-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus sm:inline-flex"

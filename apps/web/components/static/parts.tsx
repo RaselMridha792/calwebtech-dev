@@ -42,12 +42,12 @@ export function PointGrid({
       {items.map((item, index) => (
         <li
           key={item.title}
-          className={`flex flex-col rounded-2xl p-7 ${dark ? 'glass' : 'border border-line bg-white'}`}
+          className={`flex flex-col  p-7 ${dark ? 'glass' : 'border border-hairline bg-canvas-raised'}`}
           {...reveal(index)}
         >
           {numbered ? (
             <span
-              className={`grid h-9 w-9 place-items-center rounded-lg font-display text-[15px] font-extrabold ${dark ? 'bg-white text-ink' : 'bg-ink text-white'}`}
+              className={`grid h-9 w-9 place-items-center  font-display text-[15px] font-extrabold ${dark ? 'bg-canvas-raised text-ink' : 'bg-navy-900 text-ink-invert'}`}
               aria-hidden="true"
             >
               {String(index + 1)}
@@ -56,7 +56,7 @@ export function PointGrid({
           <h3 className={`${numbered ? 'mt-5 ' : ''}font-display text-[19px] leading-snug font-bold ${dark ? '' : 'text-ink'}`}>
             {item.title}
           </h3>
-          <p className={`mt-2.5 text-[15.5px] leading-relaxed ${dark ? 'text-white/75' : ''}`}>{item.body}</p>
+          <p className={`mt-2.5 text-[15.5px] leading-relaxed ${dark ? 'text-ink-invert-muted' : ''}`}>{item.body}</p>
         </li>
       ))}
     </List>
@@ -78,7 +78,7 @@ export function ContactLinks({
       <div>
         <dt className="text-[13.5px] font-medium">{phoneLabel}</dt>
         <dd className="mt-1">
-          <a href={`tel:${contact.phoneE164}`} className="inline-block py-1 font-display text-[19px] font-bold text-ink hover:text-primary">
+          <a href={`tel:${contact.phoneE164}`} className="inline-block py-1 font-display text-[19px] font-bold text-ink hover:text-gold-ink">
             {contact.phone}
           </a>
         </dd>
@@ -88,7 +88,7 @@ export function ContactLinks({
         <dd className="mt-1">
           <a
             href={`mailto:${contact.email}`}
-            className="inline-block py-1 font-display text-[19px] font-bold break-all text-ink hover:text-primary"
+            className="inline-block py-1 font-display text-[19px] font-bold break-all text-ink hover:text-gold-ink"
           >
             {contact.email}
           </a>

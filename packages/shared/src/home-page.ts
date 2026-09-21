@@ -69,7 +69,7 @@ export const homePageContentSchema = z.object({
     /** Small links at the right of the bar, such as support. */
     links: z.array(linkSchema).max(4).default([]),
   }),
-  header: z.object({ primaryCta: linkSchema, secondaryCta: linkSchema }),
+  header: z.object({ primaryCta: linkSchema, secondaryCta: linkSchema.nullable() }),
   megaMenu: z.object({
     servicesPromo: menuPromoSchema,
     /** Empty falls back to the published service categories. */
@@ -108,8 +108,9 @@ export const homePageContentSchema = z.object({
     background: backgroundSchema,
     /**
      * Photographs beside the copy, with the first featured project's headline figure on
-     * a card. When set they take the place of the hero quote form (and its `#quote`
-     * anchor); the consultation form at `#book` stays.
+     * a card. **No longer rendered:** the 2026 hero is the plate and the type over it, and
+     * the owner asked for the column of images to go. The quote form keeps that column and
+     * its `#quote` anchor on every page, which is what the calls to action point at.
      */
     media: z
       .object({
@@ -220,6 +221,12 @@ export const homePageContentSchema = z.object({
   book: z.object({
     heading: text(160),
     intro: text(600),
+    /**
+     * The band's own second action. It used to borrow the header's, which tied the closing
+     * call to action on every page to whatever the nav bar happened to carry; taking the
+     * estimate button out of the bar then took it off the bottom of every page too.
+     */
+    secondaryCta: linkSchema.nullable().default(null),
     points: z
       .array(z.object({ icon: z.enum(FINAL_POINT_ICONS), title: text(80), body: text(160) }))
       .max(3),

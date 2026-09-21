@@ -25,13 +25,13 @@ function Block({ block }: { block: StaticLegalBlock }) {
     case 'table':
       return (
         // A table may be wider than a phone; it scrolls inside its own box, never the page.
-        <div className="mt-6 overflow-x-auto rounded-xl border border-line" role="region" aria-label={block.caption} tabIndex={0}>
+        <div className="mt-6 overflow-x-auto border border-hairline" role="region" aria-label={block.caption} tabIndex={0}>
           <table className="w-full min-w-[34rem] border-collapse text-left text-[15px] leading-relaxed">
             <caption className="sr-only">{block.caption}</caption>
-            <thead className="bg-mist2">
+            <thead className="bg-canvas-raised">
               <tr>
                 {block.columns.map((column) => (
-                  <th key={column} scope="col" className="border-b border-line px-4 py-3 font-semibold text-ink">
+                  <th key={column} scope="col" className="border-b border-hairline px-4 py-3 font-semibold text-ink">
                     {column}
                   </th>
                 ))}
@@ -39,7 +39,7 @@ function Block({ block }: { block: StaticLegalBlock }) {
             </thead>
             <tbody>
               {block.rows.map((row) => (
-                <tr key={row.join('|')} className="border-b border-line last:border-b-0">
+                <tr key={row.join('|')} className="border-b border-hairline last:border-b-0">
                   {row.map((cell, index) =>
                     index === 0 ? (
                       <th key={`${cell}-${String(index)}`} scope="row" className="px-4 py-3 align-top font-semibold text-ink">
@@ -83,7 +83,7 @@ export function LegalPage({ page, path }: { page: StaticLegalView; path: string 
               <h2 id="legal-contents-heading" className="font-display text-[15px] font-bold text-ink">
                 On this page
               </h2>
-              <ol className="mt-3 space-y-1 border-l border-line text-[15px]">
+              <ol className="mt-3 space-y-1 border-l border-hairline text-[15px]">
                 {page.sections.map((section) => (
                   <li key={section.id}>
                     <a href={`#${section.id}`} className="-ml-px inline-block border-l-2 border-transparent py-1 pl-4 hover:border-ink hover:text-ink">
@@ -111,11 +111,11 @@ export function LegalPage({ page, path }: { page: StaticLegalView; path: string 
                 </section>
               ))}
             </Prose>
-            <section aria-labelledby="legal-contact" className="mt-14 max-w-[72ch] rounded-2xl border border-line bg-mist2 p-7">
+            <section aria-labelledby="legal-contact" className="mt-14 max-w-[72ch] border border-hairline bg-canvas-raised p-7">
               <h2 id="legal-contact" className="font-display text-[24px] leading-tight font-extrabold text-ink">
                 {page.contactSection.heading}
               </h2>
-              <p className="mt-3 text-[16.5px] leading-relaxed [&_a]:font-semibold [&_a]:text-primary [&_a]:underline [&_a]:underline-offset-4">
+              <p className="mt-3 text-[16.5px] leading-relaxed [&_a]:font-semibold [&_a]:text-gold-ink [&_a]:underline [&_a]:underline-offset-4">
                 <RichText text={page.contactSection.body} />
               </p>
               <div className="mt-6">

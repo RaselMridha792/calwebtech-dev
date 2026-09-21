@@ -9,87 +9,204 @@
       "serviceArea": "Sacramento · Austin · Dhaka",
       "reviewNoun": "verified reviews",
       "links": [
-        { "label": "Support", "href": "/contact/" }
+        {
+          "label": "Support",
+          "href": "/contact/"
+        }
       ]
     },
     "header": {
-      "primaryCta": { "label": "Book a consultation", "href": "#book" },
-      "secondaryCta": { "label": "Instant estimate", "href": "/cost-calculator/" }
+      "primaryCta": {
+        "label": "Book a consultation",
+        "href": "#book"
+      },
+      "secondaryCta": null
     },
     "megaMenu": {
       "servicesPromo": {
         "heading": "Not sure what your project costs?",
         "body": "Answer eight questions and get an indicative price range in under three minutes.",
-        "cta": { "label": "Get an instant estimate", "href": "/cost-calculator/" }
+        "cta": {
+          "label": "Get an instant estimate",
+          "href": "/cost-calculator/"
+        }
       },
       "serviceColumns": [
         {
           "title": "Design & build",
           "links": [
-            { "label": "Custom website design", "href": "/services/custom-website-development/" },
-            { "label": "Web application development", "href": "/services/web-application-development/" },
-            { "label": "Ecommerce development", "href": "/services/ecommerce-development/" },
-            { "label": "UI/UX and design systems", "href": "/services/custom-website-development/" },
-            { "label": "Website redesign", "href": "/services/website-redesign/" },
-            { "label": "Branding and identity", "href": "/services/custom-website-development/" }
+            {
+              "label": "Custom website design",
+              "href": "/services/custom-website-development/"
+            },
+            {
+              "label": "Web application development",
+              "href": "/services/web-application-development/"
+            },
+            {
+              "label": "Ecommerce development",
+              "href": "/services/ecommerce-development/"
+            },
+            {
+              "label": "UI/UX and design systems",
+              "href": "/services/custom-website-development/"
+            },
+            {
+              "label": "Website redesign",
+              "href": "/services/website-redesign/"
+            },
+            {
+              "label": "Branding and identity",
+              "href": "/services/custom-website-development/"
+            }
           ]
         },
         {
           "title": "Platforms",
           "links": [
-            { "label": "Next.js and React", "href": "/services/nextjs-development/" },
-            { "label": "WordPress", "href": "/services/wordpress-development/" },
-            { "label": "Shopify", "href": "/services/shopify-development/" },
-            { "label": "WooCommerce", "href": "/services/wordpress-development/" },
-            { "label": "Headless CMS", "href": "/services/nextjs-development/" },
-            { "label": "React Native", "href": "/services/web-application-development/" }
+            {
+              "label": "Next.js and React",
+              "href": "/services/nextjs-development/"
+            },
+            {
+              "label": "WordPress",
+              "href": "/services/wordpress-development/"
+            },
+            {
+              "label": "Shopify",
+              "href": "/services/shopify-development/"
+            },
+            {
+              "label": "WooCommerce",
+              "href": "/services/wordpress-development/"
+            },
+            {
+              "label": "Headless CMS",
+              "href": "/services/nextjs-development/"
+            },
+            {
+              "label": "React Native",
+              "href": "/services/web-application-development/"
+            }
           ]
         },
         {
           "title": "Growth & care",
           "links": [
-            { "label": "Technical SEO", "href": "/services/ai-search-visibility/" },
-            { "label": "AI search visibility (GEO)", "href": "/services/ai-search-visibility/" },
-            { "label": "Conversion optimisation", "href": "/services/website-redesign/" },
-            { "label": "Performance engineering", "href": "/services/website-redesign/" },
-            { "label": "Website care plans", "href": "/services/care-plans/" },
-            { "label": "Project rescue", "href": "/services/website-redesign/" }
+            {
+              "label": "Technical SEO",
+              "href": "/services/ai-search-visibility/"
+            },
+            {
+              "label": "AI search visibility (GEO)",
+              "href": "/services/ai-search-visibility/"
+            },
+            {
+              "label": "Conversion optimisation",
+              "href": "/services/website-redesign/"
+            },
+            {
+              "label": "Performance engineering",
+              "href": "/services/website-redesign/"
+            },
+            {
+              "label": "Website care plans",
+              "href": "/services/care-plans/"
+            },
+            {
+              "label": "Project rescue",
+              "href": "/services/website-redesign/"
+            }
           ]
         }
       ],
       "industryLinks": [
-        { "label": "Manufacturing", "href": "/industries/manufacturing/" },
-        { "label": "Distribution and supply", "href": "/industries/distribution/" },
-        { "label": "Construction", "href": "/industries/" },
-        { "label": "SaaS and technology", "href": "/industries/saas/" },
-        { "label": "Healthcare", "href": "/industries/healthcare/" },
-        { "label": "Financial services", "href": "/industries/" },
-        { "label": "Real estate", "href": "/industries/real-estate/" },
-        { "label": "Hospitality and travel", "href": "/industries/hospitality/" },
-        { "label": "Education", "href": "/industries/" }
+        {
+          "label": "Manufacturing",
+          "href": "/industries/manufacturing/"
+        },
+        {
+          "label": "Distribution and supply",
+          "href": "/industries/distribution/"
+        },
+        {
+          "label": "Construction",
+          "href": "/industries/"
+        },
+        {
+          "label": "SaaS and technology",
+          "href": "/industries/saas/"
+        },
+        {
+          "label": "Healthcare",
+          "href": "/industries/healthcare/"
+        },
+        {
+          "label": "Financial services",
+          "href": "/industries/"
+        },
+        {
+          "label": "Real estate",
+          "href": "/industries/real-estate/"
+        },
+        {
+          "label": "Hospitality and travel",
+          "href": "/industries/hospitality/"
+        },
+        {
+          "label": "Education",
+          "href": "/industries/"
+        }
       ],
       "industriesPromo": {
         "heading": "Distribution, 4x leads",
         "body": "How we cut a supplier's quote turnaround from three days to twelve minutes.",
-        "cta": { "label": "Read the case study", "href": "/work/northmark-supply/" }
+        "cta": {
+          "label": "Read the case study",
+          "href": "/work/northmark-supply/"
+        }
       },
       "workColumns": [
         {
           "title": "Browse",
           "links": [
-            { "label": "All case studies", "href": "#work" },
-            { "label": "Portfolio grid", "href": "/work/" },
-            { "label": "Before and after", "href": "#beforeafter" },
-            { "label": "Client feedback", "href": "#testimonials" }
+            {
+              "label": "All case studies",
+              "href": "#work"
+            },
+            {
+              "label": "Portfolio grid",
+              "href": "/work/"
+            },
+            {
+              "label": "Before and after",
+              "href": "#beforeafter"
+            },
+            {
+              "label": "Client feedback",
+              "href": "#testimonials"
+            }
           ]
         },
         {
           "title": "By service",
           "links": [
-            { "label": "Website design", "href": "/work/?service=custom-website-development" },
-            { "label": "Ecommerce", "href": "/work/?service=ecommerce-development" },
-            { "label": "Web applications", "href": "/work/?service=web-application-development" },
-            { "label": "SEO and growth", "href": "/work/?service=ai-search-visibility" }
+            {
+              "label": "Website design",
+              "href": "/work/?service=custom-website-development"
+            },
+            {
+              "label": "Ecommerce",
+              "href": "/work/?service=ecommerce-development"
+            },
+            {
+              "label": "Web applications",
+              "href": "/work/?service=web-application-development"
+            },
+            {
+              "label": "SEO and growth",
+              "href": "/work/?service=ai-search-visibility"
+            }
           ]
         }
       ],
@@ -97,35 +214,78 @@
         {
           "title": "Free tools",
           "links": [
-            { "label": "Website cost calculator", "href": "/cost-calculator/" },
-            { "label": "Free website audit", "href": "/contact/" },
-            { "label": "AI search visibility check", "href": "/services/ai-search-visibility/" },
-            { "label": "Which website do you need? Quiz", "href": "#estimate" }
+            {
+              "label": "Website cost calculator",
+              "href": "/cost-calculator/"
+            },
+            {
+              "label": "Free website audit",
+              "href": "/contact/"
+            },
+            {
+              "label": "AI search visibility check",
+              "href": "/services/ai-search-visibility/"
+            },
+            {
+              "label": "Which website do you need? Quiz",
+              "href": "#estimate"
+            }
           ]
         },
         {
           "title": "Learn",
           "links": [
-            { "label": "Insights and blog", "href": "/insights/" },
-            { "label": "Guides and white papers", "href": "/guides/" },
-            { "label": "Glossary", "href": "/glossary/" },
-            { "label": "Our playbook", "href": "#process" }
+            {
+              "label": "Pricing",
+              "href": "/pricing/"
+            },
+            {
+              "label": "Insights and blog",
+              "href": "/insights/"
+            },
+            {
+              "label": "Guides and white papers",
+              "href": "/guides/"
+            },
+            {
+              "label": "Glossary",
+              "href": "/glossary/"
+            },
+            {
+              "label": "Our playbook",
+              "href": "#process"
+            }
           ]
         },
         {
           "title": "Company",
           "links": [
-            { "label": "About Calwebtech", "href": "/about/" },
-            { "label": "Team", "href": "/team/" },
-            { "label": "Awards and recognition", "href": "#awards" },
-            { "label": "News", "href": "/insights/" }
+            {
+              "label": "About Calwebtech",
+              "href": "/about/"
+            },
+            {
+              "label": "Team",
+              "href": "/team/"
+            },
+            {
+              "label": "Awards and recognition",
+              "href": "#awards"
+            },
+            {
+              "label": "News",
+              "href": "/insights/"
+            }
           ]
         }
       ],
       "resourcesPromo": {
         "heading": "The 2026 B2B Website Trust Report",
         "body": "What 400 buyers said makes them leave a supplier's website.",
-        "cta": { "label": "Download the report", "href": "/guides/" }
+        "cta": {
+          "label": "Download the report",
+          "href": "/guides/"
+        }
       }
     },
     "mobileMenu": {
@@ -133,40 +293,112 @@
         {
           "title": "Services",
           "links": [
-            { "label": "Custom website design", "href": "/services/custom-website-development/" },
-            { "label": "Web applications", "href": "/services/web-application-development/" },
-            { "label": "Ecommerce", "href": "/services/ecommerce-development/" },
-            { "label": "UI/UX design", "href": "/services/custom-website-development/" },
-            { "label": "Next.js and React", "href": "/services/nextjs-development/" },
-            { "label": "WordPress", "href": "/services/wordpress-development/" },
-            { "label": "Shopify", "href": "/services/shopify-development/" },
-            { "label": "Technical SEO", "href": "/services/ai-search-visibility/" },
-            { "label": "AI search (GEO)", "href": "/services/ai-search-visibility/" },
-            { "label": "Care plans", "href": "/services/care-plans/" }
+            {
+              "label": "Custom website design",
+              "href": "/services/custom-website-development/"
+            },
+            {
+              "label": "Web applications",
+              "href": "/services/web-application-development/"
+            },
+            {
+              "label": "Ecommerce",
+              "href": "/services/ecommerce-development/"
+            },
+            {
+              "label": "UI/UX design",
+              "href": "/services/custom-website-development/"
+            },
+            {
+              "label": "Next.js and React",
+              "href": "/services/nextjs-development/"
+            },
+            {
+              "label": "WordPress",
+              "href": "/services/wordpress-development/"
+            },
+            {
+              "label": "Shopify",
+              "href": "/services/shopify-development/"
+            },
+            {
+              "label": "Technical SEO",
+              "href": "/services/ai-search-visibility/"
+            },
+            {
+              "label": "AI search (GEO)",
+              "href": "/services/ai-search-visibility/"
+            },
+            {
+              "label": "Care plans",
+              "href": "/services/care-plans/"
+            }
           ]
         },
         {
           "title": "Industries",
           "links": [
-            { "label": "Manufacturing", "href": "/industries/manufacturing/" },
-            { "label": "Distribution", "href": "/industries/distribution/" },
-            { "label": "SaaS", "href": "/industries/saas/" },
-            { "label": "Healthcare", "href": "/industries/healthcare/" },
-            { "label": "Real estate", "href": "/industries/real-estate/" },
-            { "label": "Hospitality", "href": "/industries/hospitality/" }
+            {
+              "label": "Manufacturing",
+              "href": "/industries/manufacturing/"
+            },
+            {
+              "label": "Distribution",
+              "href": "/industries/distribution/"
+            },
+            {
+              "label": "SaaS",
+              "href": "/industries/saas/"
+            },
+            {
+              "label": "Healthcare",
+              "href": "/industries/healthcare/"
+            },
+            {
+              "label": "Real estate",
+              "href": "/industries/real-estate/"
+            },
+            {
+              "label": "Hospitality",
+              "href": "/industries/hospitality/"
+            }
           ]
         },
         {
           "title": "More",
           "links": [
-            { "label": "Case studies", "href": "#work" },
-            { "label": "Before and after", "href": "#beforeafter" },
-            { "label": "Technology", "href": "#tech" },
-            { "label": "Process", "href": "#process" },
-            { "label": "Pricing", "href": "#pricing" },
-            { "label": "Insights", "href": "/insights/" },
-            { "label": "Cost calculator", "href": "/cost-calculator/" },
-            { "label": "Awards", "href": "#awards" }
+            {
+              "label": "Case studies",
+              "href": "#work"
+            },
+            {
+              "label": "Before and after",
+              "href": "#beforeafter"
+            },
+            {
+              "label": "Technology",
+              "href": "#tech"
+            },
+            {
+              "label": "Process",
+              "href": "#process"
+            },
+            {
+              "label": "Pricing",
+              "href": "#pricing"
+            },
+            {
+              "label": "Insights",
+              "href": "/insights/"
+            },
+            {
+              "label": "Cost calculator",
+              "href": "/cost-calculator/"
+            },
+            {
+              "label": "Awards",
+              "href": "#awards"
+            }
           ]
         }
       ]
@@ -177,8 +409,14 @@
       "heading": "Websites that carry the weight of your",
       "headingEmphasis": "whole sales process.",
       "intro": "Calwebtech designs and builds custom websites, ecommerce platforms and web applications for companies that are done losing enquiries to a brochure site. Every lead, booking and subscriber lands in a database you own.",
-      "primaryCta": { "label": "Book a consultation", "href": "#book" },
-      "secondaryCta": { "label": "See what it costs", "href": "#estimate" },
+      "primaryCta": {
+        "label": "Book a consultation",
+        "href": "#book"
+      },
+      "secondaryCta": {
+        "label": "See what it costs",
+        "href": "#estimate"
+      },
       "form": {
         "heading": "Request a free quote",
         "subheading": "A fixed proposal within two business days. No obligation.",
@@ -219,38 +457,62 @@
         "Search and AI visibility work that keeps the traffic coming after we leave"
       ],
       "body": "Strategy, UX, design, development, content and post-launch optimisation all sit with the same people. You get one dedicated team, a staging URL you can open any day, and a written update every week. No handoffs, no black box.",
-      "primaryCta": { "label": "See our work", "href": "#work" },
+      "primaryCta": {
+        "label": "See our work",
+        "href": "#work"
+      },
       "showreel": null,
-      "background": { "poster": null, "videoUrl": null }
+      "background": {
+        "poster": null,
+        "videoUrl": null
+      }
     },
     "problemRouter": {
       "heading": "Start where it hurts.",
       "intro": "Most people arrive here with a problem, not a service name. Pick the one that sounds like your week and we will show you what we would do about it.",
-      "cta": { "label": "Talk it through with us", "href": "#book" }
+      "cta": {
+        "label": "Talk it through with us",
+        "href": "#book"
+      }
     },
     "services": {
       "heading": "What we do, and what you get",
-      "link": { "label": "All services", "href": "/services/" }
+      "link": {
+        "label": "All services",
+        "href": "/services/"
+      }
     },
     "work": {
       "heading": "The numbers our clients kept",
       "intro": "Measured in the client's own analytics, twelve months after launch. Every figure below is one they agreed to publish.",
       "empty": "No case studies are published yet.",
-      "link": { "label": "All case studies", "href": "/work/" },
+      "link": {
+        "label": "All case studies",
+        "href": "/work/"
+      },
       "caseStudyLabel": "Read the case study"
     },
     "midCta": {
       "enabled": false,
       "eyebrow": "Your industry. Your next growth story.",
       "heading": "Let's build what comes next.",
-      "primaryCta": { "label": "Book a consultation", "href": "#book" },
-      "secondaryCta": { "label": "Get an instant estimate", "href": "#estimate" }
+      "primaryCta": {
+        "label": "Book a consultation",
+        "href": "#book"
+      },
+      "secondaryCta": {
+        "label": "Get an instant estimate",
+        "href": "#estimate"
+      }
     },
     "beforeAfter": {
       "heading": "Drag it and see the difference",
       "intro": "Most of our work is a rescue, not a launch. Here is Halloway Group's homepage before and after, at the same scroll position, on the same screen.",
       "empty": "No before and after comparison is published yet.",
-      "cta": { "label": "See more redesigns", "href": "/before-and-after/" },
+      "cta": {
+        "label": "See more redesigns",
+        "href": "/before-and-after/"
+      },
       "backgroundImage": {
         "src": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1800&q=65"
       }
@@ -261,9 +523,15 @@
       "notListed": {
         "heading": "Not listed here?",
         "body": "We have shipped in 30 more. Tell us the awkward part of yours.",
-        "cta": { "label": "Start the conversation", "href": "#book" }
+        "cta": {
+          "label": "Start the conversation",
+          "href": "#book"
+        }
       },
-      "link": { "label": "All industries", "href": "/industries/" }
+      "link": {
+        "label": "All industries",
+        "href": "/industries/"
+      }
     },
     "estimate": {
       "badge": "Free, no sales call attached",
@@ -278,9 +546,17 @@
         "progressLabel": "Question 3 of 8",
         "timeLabel": "About 2 minutes left",
         "question": "How many pages will the new site need?",
-        "options": ["Under 10", "10 to 50", "50 to 150", "More than 150"]
+        "options": [
+          "Under 10",
+          "10 to 50",
+          "50 to 150",
+          "More than 150"
+        ]
       },
-      "cta": { "label": "Start the estimate", "href": "/cost-calculator/" },
+      "cta": {
+        "label": "Start the estimate",
+        "href": "/cost-calculator/"
+      },
       "backgroundImage": {
         "src": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1800&q=65"
       }
@@ -319,17 +595,35 @@
       "intro": "Calwebtech.com runs on the same stack we sell: a Next.js front end, a typed Node API, PostgreSQL and Redis, all in Docker containers on a server we control. Nothing here depends on a platform that can change its pricing next quarter.",
       "empty": "No technology details are published yet.",
       "stats": [
-        { "value": "98", "label": "Lighthouse, mobile" },
-        { "value": "1.2s", "label": "Largest contentful paint" },
-        { "value": "99.9%", "label": "Uptime, last 12 months" },
-        { "value": "0", "label": "Platform licence fees" }
+        {
+          "value": "98",
+          "label": "Lighthouse, mobile"
+        },
+        {
+          "value": "1.2s",
+          "label": "Largest contentful paint"
+        },
+        {
+          "value": "99.9%",
+          "label": "Uptime, last 12 months"
+        },
+        {
+          "value": "0",
+          "label": "Platform licence fees"
+        }
       ],
-      "cta": { "label": "See the full stack", "href": "/technology/" }
+      "cta": {
+        "label": "See the full stack",
+        "href": "/technology/"
+      }
     },
     "process": {
       "heading": "How a project actually runs",
       "intro": "Published in full, including what we need from you and when. Most projects stall on content, not code, so the dates below are shared dates.",
-      "link": { "label": "Read the full playbook", "href": "/process/" }
+      "link": {
+        "label": "Read the full playbook",
+        "href": "/process/"
+      }
     },
     "testimonials": {
       "heading": "What clients say when we are not in the room",
@@ -343,12 +637,18 @@
       "eyebrow": null,
       "heading": "Recognition",
       "empty": "Nothing is published here yet.",
-      "link": { "label": "All awards and certifications", "href": "/awards/" }
+      "link": {
+        "label": "All awards and certifications",
+        "href": "/awards/"
+      }
     },
     "insights": {
       "heading": "Things worth knowing before you brief anyone",
       "empty": "No articles are published yet.",
-      "link": { "label": "All insights", "href": "/insights/" }
+      "link": {
+        "label": "All insights",
+        "href": "/insights/"
+      }
     },
     "whitepaper": {
       "eyebrow": "Stay ahead in 2026",
@@ -362,7 +662,10 @@
     "pricing": {
       "heading": "We will talk about money on the first call",
       "intro": "Three engagement shapes, published openly so you can tell in ninety seconds whether we are in your range. Every project is quoted fixed after discovery, with the change process written down before we start.",
-      "cta": { "label": "Estimate your project", "href": "#estimate" },
+      "cta": {
+        "label": "Estimate your project",
+        "href": "#estimate"
+      },
       "highlightLabel": "Most common"
     },
     "book": {
@@ -405,62 +708,180 @@
       ],
       "backgroundImage": {
         "src": "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1800&q=65"
+      },
+      "secondaryCta": {
+        "label": "Instant estimate",
+        "href": "/cost-calculator/"
       }
     },
     "footer": {
       "blurb": "A web engineering studio building custom websites, commerce platforms and web applications for companies that would rather own their platform than rent it.",
       "services": [
-        { "label": "Website design", "href": "/services/custom-website-development/" },
-        { "label": "Web applications", "href": "/services/web-application-development/" },
-        { "label": "Ecommerce", "href": "/services/ecommerce-development/" },
-        { "label": "Next.js and React", "href": "/services/nextjs-development/" },
-        { "label": "WordPress", "href": "/services/wordpress-development/" },
-        { "label": "Shopify", "href": "/services/shopify-development/" },
-        { "label": "SEO and GEO", "href": "/services/ai-search-visibility/" },
-        { "label": "Care plans", "href": "/services/care-plans/" }
+        {
+          "label": "Website design",
+          "href": "/services/custom-website-development/"
+        },
+        {
+          "label": "Web applications",
+          "href": "/services/web-application-development/"
+        },
+        {
+          "label": "Ecommerce",
+          "href": "/services/ecommerce-development/"
+        },
+        {
+          "label": "Next.js and React",
+          "href": "/services/nextjs-development/"
+        },
+        {
+          "label": "WordPress",
+          "href": "/services/wordpress-development/"
+        },
+        {
+          "label": "Shopify",
+          "href": "/services/shopify-development/"
+        },
+        {
+          "label": "SEO and GEO",
+          "href": "/services/ai-search-visibility/"
+        },
+        {
+          "label": "Care plans",
+          "href": "/services/care-plans/"
+        }
       ],
       "industries": [
-        { "label": "Manufacturing", "href": "/industries/manufacturing/" },
-        { "label": "Distribution", "href": "/industries/distribution/" },
-        { "label": "Retail and D2C", "href": "/industries/ecommerce-and-d2c/" },
-        { "label": "SaaS", "href": "/industries/saas/" },
-        { "label": "Healthcare", "href": "/industries/healthcare/" },
-        { "label": "Real estate", "href": "/industries/real-estate/" },
-        { "label": "Hospitality", "href": "/industries/hospitality/" },
-        { "label": "Education", "href": "/industries/" }
+        {
+          "label": "Manufacturing",
+          "href": "/industries/manufacturing/"
+        },
+        {
+          "label": "Distribution",
+          "href": "/industries/distribution/"
+        },
+        {
+          "label": "Retail and D2C",
+          "href": "/industries/ecommerce-and-d2c/"
+        },
+        {
+          "label": "SaaS",
+          "href": "/industries/saas/"
+        },
+        {
+          "label": "Healthcare",
+          "href": "/industries/healthcare/"
+        },
+        {
+          "label": "Real estate",
+          "href": "/industries/real-estate/"
+        },
+        {
+          "label": "Hospitality",
+          "href": "/industries/hospitality/"
+        },
+        {
+          "label": "Education",
+          "href": "/industries/"
+        }
       ],
       "resources": [
-        { "label": "Cost calculator", "href": "/cost-calculator/" },
-        { "label": "Free website audit", "href": "/contact/" },
-        { "label": "AI visibility check", "href": "/services/ai-search-visibility/" },
-        { "label": "Insights", "href": "/insights/" },
-        { "label": "Guides and reports", "href": "/guides/" },
-        { "label": "Glossary", "href": "/glossary/" },
-        { "label": "Our playbook", "href": "#process" },
-        { "label": "Before and after", "href": "#beforeafter" }
+        {
+          "label": "Cost calculator",
+          "href": "/cost-calculator/"
+        },
+        {
+          "label": "Free website audit",
+          "href": "/contact/"
+        },
+        {
+          "label": "AI visibility check",
+          "href": "/services/ai-search-visibility/"
+        },
+        {
+          "label": "Insights",
+          "href": "/insights/"
+        },
+        {
+          "label": "Guides and reports",
+          "href": "/guides/"
+        },
+        {
+          "label": "Glossary",
+          "href": "/glossary/"
+        },
+        {
+          "label": "Our playbook",
+          "href": "#process"
+        },
+        {
+          "label": "Before and after",
+          "href": "#beforeafter"
+        }
       ],
       "company": [
-        { "label": "About", "href": "/about/" },
-        { "label": "Team", "href": "/team/" },
-        { "label": "Awards", "href": "#awards" },
-        { "label": "Client feedback", "href": "#testimonials" },
-        { "label": "Pricing", "href": "#pricing" },
-        { "label": "News", "href": "/insights/" },
-        { "label": "Contact", "href": "#book" }
+        {
+          "label": "About",
+          "href": "/about/"
+        },
+        {
+          "label": "Team",
+          "href": "/team/"
+        },
+        {
+          "label": "Awards",
+          "href": "#awards"
+        },
+        {
+          "label": "Client feedback",
+          "href": "#testimonials"
+        },
+        {
+          "label": "Pricing",
+          "href": "#pricing"
+        },
+        {
+          "label": "News",
+          "href": "/insights/"
+        },
+        {
+          "label": "Contact",
+          "href": "#book"
+        }
       ],
       "legal": [
-        { "label": "Privacy policy", "href": "/privacy-policy/" },
-        { "label": "Terms", "href": "/terms/" },
-        { "label": "Cookie policy", "href": "/cookie-policy/" },
-        { "label": "Accessibility statement", "href": "/accessibility/" },
-        { "label": "Information security", "href": "/information-security/" },
-        { "label": "Sitemap", "href": "/sitemap/" }
+        {
+          "label": "Privacy policy",
+          "href": "/privacy-policy/"
+        },
+        {
+          "label": "Terms",
+          "href": "/terms/"
+        },
+        {
+          "label": "Cookie policy",
+          "href": "/cookie-policy/"
+        },
+        {
+          "label": "Accessibility statement",
+          "href": "/accessibility/"
+        },
+        {
+          "label": "Information security",
+          "href": "/information-security/"
+        },
+        {
+          "label": "Sitemap",
+          "href": "/sitemap/"
+        }
       ],
       "backgroundImage": {
         "src": "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=1800&q=60"
       }
     },
-    "floatingCta": { "label": "Start a project", "href": "#book" }
+    "floatingCta": {
+      "label": "Start a project",
+      "href": "#book"
+    }
   },
   "contact": {
     "phone": "+1 (800) 555-0188",
@@ -471,45 +892,123 @@
     "averageRating": 4.9,
     "totalReviews": 217,
     "sources": [
-      { "platform": "Google", "rating": 4.9, "reviewCount": 96 },
-      { "platform": "Clutch", "rating": 4.9, "reviewCount": 71 },
-      { "platform": "DesignRush", "rating": 5, "reviewCount": 34 },
-      { "platform": "GoodFirms", "rating": 4.8, "reviewCount": 16 }
+      {
+        "platform": "Google",
+        "rating": 4.9,
+        "reviewCount": 96
+      },
+      {
+        "platform": "Clutch",
+        "rating": 4.9,
+        "reviewCount": 71
+      },
+      {
+        "platform": "DesignRush",
+        "rating": 5,
+        "reviewCount": 34
+      },
+      {
+        "platform": "GoodFirms",
+        "rating": 4.8,
+        "reviewCount": 16
+      }
     ],
     "npsScore": 9.6,
     "npsProjectCount": 41
   },
   "statistics": [
-    { "label": "Projects shipped since 2014", "value": "240", "suffix": "+", "outcome": false },
-    { "label": "Average uplift in qualified leads", "value": "187", "suffix": "%", "outcome": true },
-    { "label": "Clients still with us after a year", "value": "94", "suffix": "%", "outcome": false },
-    { "label": "Industries we have shipped in", "value": "31", "suffix": "", "outcome": false }
+    {
+      "label": "Projects shipped since 2014",
+      "value": "240",
+      "suffix": "+",
+      "outcome": false
+    },
+    {
+      "label": "Average uplift in qualified leads",
+      "value": "187",
+      "suffix": "%",
+      "outcome": true
+    },
+    {
+      "label": "Clients still with us after a year",
+      "value": "94",
+      "suffix": "%",
+      "outcome": false
+    },
+    {
+      "label": "Industries we have shipped in",
+      "value": "31",
+      "suffix": "",
+      "outcome": false
+    }
   ],
   "clients": [
-    { "name": "NORTHMARK", "logo": null },
-    { "name": "Verona Home", "logo": null },
-    { "name": "HALLOWAY", "logo": null },
-    { "name": "Bridgeline", "logo": null },
-    { "name": "Cascadia Health", "logo": null },
-    { "name": "Truvia Labs", "logo": null },
-    { "name": "Ridgeway", "logo": null },
-    { "name": "Meridian Parts", "logo": null }
+    {
+      "name": "NORTHMARK",
+      "logo": null
+    },
+    {
+      "name": "Verona Home",
+      "logo": null
+    },
+    {
+      "name": "HALLOWAY",
+      "logo": null
+    },
+    {
+      "name": "Bridgeline",
+      "logo": null
+    },
+    {
+      "name": "Cascadia Health",
+      "logo": null
+    },
+    {
+      "name": "Truvia Labs",
+      "logo": null
+    },
+    {
+      "name": "Ridgeway",
+      "logo": null
+    },
+    {
+      "name": "Meridian Parts",
+      "logo": null
+    }
   ],
   "serviceGroups": [
     {
       "name": "Design & build",
       "services": [
-        { "slug": "custom-website-development", "title": "Custom website design" },
-        { "slug": "web-application-development", "title": "Web application development" },
-        { "slug": "ecommerce-development", "title": "Ecommerce development" }
+        {
+          "slug": "custom-website-development",
+          "title": "Custom website design"
+        },
+        {
+          "slug": "web-application-development",
+          "title": "Web application development"
+        },
+        {
+          "slug": "ecommerce-development",
+          "title": "Ecommerce development"
+        }
       ]
     },
     {
       "name": "Growth & care",
       "services": [
-        { "slug": "ai-integration", "title": "AI features and automation" },
-        { "slug": "ai-search-visibility", "title": "Search and AI visibility" },
-        { "slug": "care-plans", "title": "Care plans and hosting" }
+        {
+          "slug": "ai-integration",
+          "title": "AI features and automation"
+        },
+        {
+          "slug": "ai-search-visibility",
+          "title": "Search and AI visibility"
+        },
+        {
+          "slug": "care-plans",
+          "title": "Care plans and hosting"
+        }
       ]
     }
   ],
@@ -672,16 +1171,30 @@
       "slug": "northmark-supply",
       "clientName": "Northmark Supply",
       "summary": "A catalogue of 40,000 parts behind a contact form. We rebuilt it as a searchable, account-priced quoting platform tied into their ERP.",
-      "tags": ["Ohio, USA", "B2B", "Distribution", "Next.js"],
+      "tags": [
+        "Ohio, USA",
+        "B2B",
+        "Distribution",
+        "Next.js"
+      ],
       "filter": "B2B and distribution",
       "image": {
         "src": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=70",
         "alt": "Sales team reviewing performance figures"
       },
       "metrics": [
-        { "value": "+312%", "label": "Quote requests" },
-        { "value": "12 min", "label": "Quote turnaround, from 3 days" },
-        { "value": "−41%", "label": "Support calls" }
+        {
+          "value": "+312%",
+          "label": "Quote requests"
+        },
+        {
+          "value": "12 min",
+          "label": "Quote turnaround, from 3 days"
+        },
+        {
+          "value": "−41%",
+          "label": "Support calls"
+        }
       ],
       "quote": {
         "id": "testimonial-dale-ferris",
@@ -699,16 +1212,29 @@
       "slug": "verona-home",
       "clientName": "Verona Home",
       "summary": "A furniture brand stuck on a page builder, replatformed with a configurator for made-to-order pieces.",
-      "tags": ["California, USA", "D2C", "Shopify"],
+      "tags": [
+        "California, USA",
+        "D2C",
+        "Shopify"
+      ],
       "filter": "Ecommerce",
       "image": {
         "src": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=900&q=70",
         "alt": "Home furnishing retail display"
       },
       "metrics": [
-        { "value": "$2.4M", "label": "First-year revenue" },
-        { "value": "+68%", "label": "Add to cart" },
-        { "value": "1.4s", "label": "Mobile LCP" }
+        {
+          "value": "$2.4M",
+          "label": "First-year revenue"
+        },
+        {
+          "value": "+68%",
+          "label": "Add to cart"
+        },
+        {
+          "value": "1.4s",
+          "label": "Mobile LCP"
+        }
       ],
       "quote": null
     },
@@ -716,16 +1242,29 @@
       "slug": "truvia-labs",
       "clientName": "Truvia Labs",
       "summary": "Marketing site, docs and in-app onboarding rebuilt on one design system so releases stopped breaking the brand.",
-      "tags": ["Texas, USA", "SaaS", "Next.js"],
+      "tags": [
+        "Texas, USA",
+        "SaaS",
+        "Next.js"
+      ],
       "filter": "SaaS and technology",
       "image": {
         "src": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=70",
         "alt": "Product team working on a software platform"
       },
       "metrics": [
-        { "value": "+140%", "label": "Demo bookings" },
-        { "value": "3.1x", "label": "Organic sessions" },
-        { "value": "98", "label": "Lighthouse mobile" }
+        {
+          "value": "+140%",
+          "label": "Demo bookings"
+        },
+        {
+          "value": "3.1x",
+          "label": "Organic sessions"
+        },
+        {
+          "value": "98",
+          "label": "Lighthouse mobile"
+        }
       ],
       "quote": null
     },
@@ -733,16 +1272,29 @@
       "slug": "cascadia-health",
       "clientName": "Cascadia Health",
       "summary": "Fourteen clinic sites merged into one accessible platform with location-aware appointment booking.",
-      "tags": ["Oregon, USA", "Healthcare", "WordPress"],
+      "tags": [
+        "Oregon, USA",
+        "Healthcare",
+        "WordPress"
+      ],
       "filter": "Healthcare",
       "image": {
         "src": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=900&q=70",
         "alt": "Clinician working at a healthcare facility"
       },
       "metrics": [
-        { "value": "+91%", "label": "Online bookings" },
-        { "value": "14→1", "label": "Sites to maintain" },
-        { "value": "AA", "label": "WCAG 2.2 verified" }
+        {
+          "value": "+91%",
+          "label": "Online bookings"
+        },
+        {
+          "value": "14→1",
+          "label": "Sites to maintain"
+        },
+        {
+          "value": "AA",
+          "label": "WCAG 2.2 verified"
+        }
       ],
       "quote": null
     },
@@ -750,16 +1302,29 @@
       "slug": "meridian-parts",
       "clientName": "Meridian Parts",
       "summary": "Fitment search across 90,000 SKUs, so a technician finds the right part on a phone in a workshop.",
-      "tags": ["Michigan, USA", "Manufacturing", "Headless"],
+      "tags": [
+        "Michigan, USA",
+        "Manufacturing",
+        "Headless"
+      ],
       "filter": "B2B and distribution",
       "image": {
         "src": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=900&q=70",
         "alt": "Engineer inspecting equipment on a production floor"
       },
       "metrics": [
-        { "value": "+207%", "label": "Organic traffic" },
-        { "value": "−63%", "label": "Wrong-part returns" },
-        { "value": "4.2x", "label": "Repeat orders" }
+        {
+          "value": "+207%",
+          "label": "Organic traffic"
+        },
+        {
+          "value": "−63%",
+          "label": "Wrong-part returns"
+        },
+        {
+          "value": "4.2x",
+          "label": "Repeat orders"
+        }
       ],
       "quote": null
     }
@@ -776,18 +1341,80 @@
       "alt": "Halloway Group homepage after the redesign: a clean layout with a clear headline, photograph and result figures"
     },
     "metrics": [
-      { "label": "Mobile load time", "before": "6.8s", "after": "1.6s" },
-      { "label": "Bounce rate", "before": "71%", "after": "38%" },
-      { "label": "Enquiries per month", "before": "9", "after": "54" }
+      {
+        "label": "Mobile load time",
+        "before": "6.8s",
+        "after": "1.6s"
+      },
+      {
+        "label": "Bounce rate",
+        "before": "71%",
+        "after": "38%"
+      },
+      {
+        "label": "Enquiries per month",
+        "before": "9",
+        "after": "54"
+      }
     ]
   },
   "technologyGroups": [
-    { "category": "Front end", "names": ["Next.js", "React", "TypeScript", "Tailwind CSS", "Framer Motion"] },
-    { "category": "Back end", "names": ["Node.js", "NestJS", "Prisma", "Zod", "REST with OpenAPI"] },
-    { "category": "Data", "names": ["PostgreSQL", "Redis", "BullMQ queues", "nightly encrypted backups"] },
-    { "category": "Content", "names": ["WordPress", "Shopify", "headless CMS", "custom dashboards"] },
-    { "category": "Infrastructure", "names": ["Docker", "Traefik", "Cloudflare", "GitHub Actions", "automatic TLS"] },
-    { "category": "Mobile and AI", "names": ["React Native", "OpenAI and Anthropic APIs", "vector search"] }
+    {
+      "category": "Front end",
+      "names": [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Tailwind CSS",
+        "Framer Motion"
+      ]
+    },
+    {
+      "category": "Back end",
+      "names": [
+        "Node.js",
+        "NestJS",
+        "Prisma",
+        "Zod",
+        "REST with OpenAPI"
+      ]
+    },
+    {
+      "category": "Data",
+      "names": [
+        "PostgreSQL",
+        "Redis",
+        "BullMQ queues",
+        "nightly encrypted backups"
+      ]
+    },
+    {
+      "category": "Content",
+      "names": [
+        "WordPress",
+        "Shopify",
+        "headless CMS",
+        "custom dashboards"
+      ]
+    },
+    {
+      "category": "Infrastructure",
+      "names": [
+        "Docker",
+        "Traefik",
+        "Cloudflare",
+        "GitHub Actions",
+        "automatic TLS"
+      ]
+    },
+    {
+      "category": "Mobile and AI",
+      "names": [
+        "React Native",
+        "OpenAI and Anthropic APIs",
+        "vector search"
+      ]
+    }
   ],
   "processSteps": [
     {
@@ -852,17 +1479,39 @@
     "duration": "2 min"
   },
   "press": [
-    { "name": "Forbes" },
-    { "name": "TechCrunch" },
-    { "name": "Inc." },
-    { "name": "Fast Company" },
-    { "name": "Smashing Magazine" }
+    {
+      "name": "Forbes"
+    },
+    {
+      "name": "TechCrunch"
+    },
+    {
+      "name": "Inc."
+    },
+    {
+      "name": "Fast Company"
+    },
+    {
+      "name": "Smashing Magazine"
+    }
   ],
   "awards": [
-    { "name": "Awwwards Honourable Mention", "detail": "Verona Home storefront, 2026" },
-    { "name": "Clutch Top B2B Developer", "detail": "California, 2025 and 2026" },
-    { "name": "Shopify Partner", "detail": "Certified since 2019" },
-    { "name": "W3 Silver, Accessibility", "detail": "Cascadia Health platform, 2026" }
+    {
+      "name": "Awwwards Honourable Mention",
+      "detail": "Verona Home storefront, 2026"
+    },
+    {
+      "name": "Clutch Top B2B Developer",
+      "detail": "California, 2025 and 2026"
+    },
+    {
+      "name": "Shopify Partner",
+      "detail": "Certified since 2019"
+    },
+    {
+      "name": "W3 Silver, Accessibility",
+      "detail": "Cascadia Health platform, 2026"
+    }
   ],
   "expertise": [],
   "posts": [

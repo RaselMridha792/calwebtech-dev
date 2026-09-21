@@ -1,8 +1,15 @@
 /**
  * Teal (the `result` token) is reserved for outcome figures and affirmative marks
  * such as check icons and status dots. It is banned from headings, body text,
- * buttons, links, borders and card backgrounds. Ambient glows use `--glow-teal`
- * through the `glow-teal` and `bg-glow-teal-*` utilities instead.
+ * buttons, links, borders and card backgrounds.
+ *
+ * Since the 2026 brand landed (docs/08-decisions.md, 46) the marketing site has no
+ * teal at all: champagne carries proof there, and what it may carry — eyebrows,
+ * numerals, links and rules, never a heading or a price — is asserted in
+ * apps/web/components/services/sections.test.tsx rather than here, because the brand
+ * also gives gold a button fill on dark grounds and this rule bans fills outright.
+ * What is left for this rule is the dashboard, where `[data-theme='admin']` resolves
+ * `--color-result` to a colour readable on deep navy and the status dots use it.
  *
  * The rule reads Tailwind class strings, so it enforces context by heuristics:
  * - only `text-result` and `bg-result` utilities are allowed at all;

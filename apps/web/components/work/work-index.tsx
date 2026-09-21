@@ -53,27 +53,27 @@ export function WorkResultsSummary({ view }: { view: WorkIndexView }) {
   });
 
   return (
-    <div className="glass rounded-2xl p-6 sm:p-8">
+    <div className="glass p-6 sm:p-8">
       <dl className="grid grid-cols-2 gap-x-6 gap-y-6 sm:grid-cols-4 lg:grid-cols-2">
         {counts.map((count) => (
           <div key={count.label} className="flex flex-col-reverse">
-            <dt className="mt-1.5 text-[13.5px] text-white/70">{count.label}</dt>
+            <dt className="mt-1.5 text-[13.5px] text-ink-invert-muted">{count.label}</dt>
             <dd className="font-display text-[34px] leading-none font-extrabold">{count.value}</dd>
           </div>
         ))}
       </dl>
       {highlights.length > 0 ? (
-        <div className="mt-8 border-t border-white/15 pt-6">
-          <p className="text-[14px] font-semibold text-white/80">{copy.highlightsLabel}</p>
+        <div className="mt-8 border-t border-ink-invert/15 pt-6">
+          <p className="text-[14px] font-semibold text-ink-invert-muted">{copy.highlightsLabel}</p>
           <ul className="mt-4 space-y-4">
             {highlights.map(({ study, metric }) => (
               <li key={study.slug} className="flex items-baseline gap-4">
-                <span className="w-[5.5rem] shrink-0 font-display text-[26px] leading-none font-extrabold text-result">
+                <span className="w-[5.5rem] shrink-0 font-display text-[26px] leading-none font-extrabold text-gold-ink">
                   {metric.value}
                 </span>
-                <span className="text-[14.5px] leading-snug text-white/80">
+                <span className="text-[14.5px] leading-snug text-ink-invert-muted">
                   {`${asPhrase(metric.label)}, `}
-                  <b className="font-semibold text-white">{study.clientName}</b>
+                  <b className="font-semibold text-ink-invert">{study.clientName}</b>
                 </span>
               </li>
             ))}
@@ -91,9 +91,9 @@ const FACET_TERMS: Record<WorkFilterParam, keyof WorkIndexView['filters']> = {
 };
 
 const chip =
-  'inline-flex min-h-10 items-center gap-1.5 rounded-lg border px-3.5 py-1.5 text-[14px] font-semibold focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-primary';
-const chipIdle = `${chip} border-line bg-white text-ink hover:border-ink`;
-const chipActive = `${chip} border-ink bg-ink text-white`;
+  'inline-flex min-h-10 items-center gap-1.5  border px-3.5 py-1.5 text-[14px] font-semibold focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-primary';
+const chipIdle = `${chip} border-hairline bg-canvas-raised text-ink hover:border-ink`;
+const chipActive = `${chip} border-ink bg-navy-900 text-ink-invert`;
 
 function FilterChip({
   href,
@@ -113,7 +113,7 @@ function FilterChip({
         {/* A space for the accessible name; flex layout ignores it. */}
         {count === undefined ? null : ' '}
         {count === undefined ? null : (
-          <span className={`font-normal ${active ? 'text-white/75' : 'text-body'}`}>{`(${String(count)})`}</span>
+          <span className={`font-normal ${active ? 'text-ink-invert-muted' : 'text-ink-muted'}`}>{`(${String(count)})`}</span>
         )}
       </a>
     </li>
@@ -137,7 +137,7 @@ export function WorkFilterBar({
   const facets = WORK_FILTER_PARAMS.map((key) => ({ key, label: copy.filters[key], terms: view.filters[FACET_TERMS[key]] }));
 
   return (
-    <nav aria-label={copy.filters.label} className="rounded-2xl border border-line bg-mist2 p-5 sm:p-6">
+    <nav aria-label={copy.filters.label} className="border border-hairline bg-canvas-raised p-5 sm:p-6">
       <div className="grid gap-6 lg:grid-cols-[repeat(3,minmax(0,1fr))_auto] lg:gap-8">
         {facets.map((facet) => (
           <FilterFacet key={facet.key} facet={facet} filters={filters} caseStudies={caseStudies} allLabel={copy.filters.all} />
@@ -146,7 +146,7 @@ export function WorkFilterBar({
           <div className="lg:self-end">
             <a
               href={resultsHref({})}
-              className="inline-flex min-h-10 items-center py-1.5 font-semibold text-primary underline underline-offset-4 hover:text-primaryd"
+              className="inline-flex min-h-10 items-center py-1.5 font-semibold text-gold-ink underline underline-offset-4 hover:text-gold-600"
             >
               {copy.filters.clear}
             </a>
@@ -212,13 +212,13 @@ export function WorkPagination({
   if (pageCount <= 1) return null;
   const pages = Array.from({ length: pageCount }, (_, index) => index + 1);
   const box =
-    'inline-flex h-11 min-w-11 items-center justify-center rounded-lg border px-3 font-semibold focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-primary';
+    'inline-flex h-11 min-w-11 items-center justify-center  border px-3 font-semibold focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-primary';
   return (
     <nav aria-label="Pagination" className="mt-12">
       <ul className="flex flex-wrap items-center justify-center gap-2">
         {page > 1 ? (
           <li>
-            <a href={resultsHref(filters, page - 1)} rel="prev" className={`${box} border-line bg-white text-ink hover:border-ink`}>
+            <a href={resultsHref(filters, page - 1)} rel="prev" className={`${box} border-hairline bg-canvas-raised text-ink hover:border-ink`}>
               Previous
             </a>
           </li>
@@ -228,7 +228,7 @@ export function WorkPagination({
             <a
               href={resultsHref(filters, number)}
               aria-current={number === page ? 'page' : undefined}
-              className={number === page ? `${box} border-ink bg-ink text-white` : `${box} border-line bg-white text-ink hover:border-ink`}
+              className={number === page ? `${box} border-ink bg-navy-900 text-ink-invert` : `${box} border-hairline bg-canvas-raised text-ink hover:border-ink`}
             >
               <span className="sr-only">Page </span>
               {number}
@@ -237,7 +237,7 @@ export function WorkPagination({
         ))}
         {page < pageCount ? (
           <li>
-            <a href={resultsHref(filters, page + 1)} rel="next" className={`${box} border-line bg-white text-ink hover:border-ink`}>
+            <a href={resultsHref(filters, page + 1)} rel="next" className={`${box} border-hairline bg-canvas-raised text-ink hover:border-ink`}>
               Next
             </a>
           </li>

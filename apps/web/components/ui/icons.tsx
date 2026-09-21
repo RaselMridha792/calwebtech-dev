@@ -75,6 +75,18 @@ export function ChevronIcon(props: IconProps) {
   );
 }
 
+/**
+ * The trailing arrow on an editorial row or a link. It travels 6px on hover, which is the
+ * brand's one horizontal motion; the row itself never lifts.
+ */
+export function ArrowIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 16 12" {...base} {...props}>
+      <path d="M1 6h13M9.5 1.5 14 6l-4.5 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 export function PlusIcon(props: IconProps) {
   return (
     <svg viewBox="0 0 14 14" {...base} {...props}>

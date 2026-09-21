@@ -38,10 +38,10 @@ export default async function CostCalculatorPage() {
         aside={<PriceBands view={view} />}
       >
         {content.hero.points.length > 0 ? (
-          <ul className="mt-8 space-y-3 text-[15.5px] text-white/85">
+          <ul className="mt-8 space-y-3 text-[15.5px] text-ink-invert-muted">
             {content.hero.points.map((point) => (
               <li key={point} className="flex gap-3">
-                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-result" aria-hidden="true" />
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gold-ink" aria-hidden="true" />
                 {point}
               </li>
             ))}

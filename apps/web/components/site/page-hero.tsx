@@ -49,20 +49,17 @@ export function PageHero({
   const dark = ground === 'dark';
   return (
     <section
-      className={`relative overflow-hidden ${dark ? 'bg-ink text-white' : 'border-b border-line bg-linear-to-br from-white via-mist2 to-mist'}`}
+      data-hero={dark ? 'dark' : 'light'}
+      className={`relative overflow-hidden ${dark ? 'bg-navy-900 text-ink-invert' : 'border-b border-hairline bg-canvas'}`}
     >
       {dark ? (
         <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
           <BackdropImage image={backdrop} className="kenburns opacity-[.24]" priority />
-          <div className="absolute inset-0 bg-linear-to-r from-ink via-ink/95 to-ink/70" />
-          <div className="absolute inset-0 bg-linear-to-t from-ink via-transparent to-ink/60" />
-          <div className="glow-blue absolute inset-0" />
-          <div className="grid-lines-light absolute inset-0" />
+          <div className="absolute inset-0 bg-linear-to-r from-navy-900 via-navy-900/95 to-navy-900/70" />
+          <div className="absolute inset-0 bg-linear-to-t from-navy-900 via-transparent to-navy-900/60" />
         </div>
       ) : (
         <div className="absolute inset-0" aria-hidden="true">
-          <div className="grid-lines absolute inset-0 opacity-60" />
-          <div className="absolute -top-40 right-0 h-[520px] w-[520px] rounded-full bg-primary/8 blur-3xl" />
         </div>
       )}
 
@@ -71,7 +68,7 @@ export function PageHero({
           <Breadcrumbs crumbs={crumbs} ground={ground} />
           {eyebrow ? (
             <div className="mt-8">
-              {dark ? <PillBadge>{eyebrow}</PillBadge> : <p className="text-[14px] font-semibold text-primary">{eyebrow}</p>}
+              {dark ? <PillBadge>{eyebrow}</PillBadge> : <p className="text-[14px] font-semibold text-gold-ink">{eyebrow}</p>}
             </div>
           ) : null}
           <h1
@@ -85,14 +82,14 @@ export function PageHero({
             </AnswerBlock>
           ) : null}
           {intro ? (
-            <p className={`mt-6 max-w-[58ch] text-[18px] leading-relaxed ${dark ? 'text-white/75' : ''}`}>{intro}</p>
+            <p className={`mt-6 max-w-[58ch] text-[18px] leading-relaxed ${dark ? 'text-ink-invert-muted' : ''}`}>{intro}</p>
           ) : null}
           {primaryCta || secondaryCta ? (
             <div className="mt-9 flex flex-wrap gap-3">
               {primaryCta ? (
                 <a
                   href={primaryCta.href}
-                  className="inline-flex h-14 items-center rounded-xl bg-primary px-7 text-[16px] font-semibold text-white shadow-cta hover:bg-primaryd"
+                  className="inline-flex h-14 items-center bg-navy-900 px-7 text-[16px] font-semibold text-ink-invert  hover:bg-navy-700"
                 >
                   {primaryCta.label}
                 </a>
@@ -102,8 +99,8 @@ export function PageHero({
                   href={secondaryCta.href}
                   className={
                     dark
-                      ? 'glass inline-flex h-14 items-center rounded-xl px-7 text-[16px] font-semibold text-white hover:bg-white/15'
-                      : 'inline-flex h-14 items-center rounded-xl border border-line bg-white px-7 text-[16px] font-semibold text-ink hover:border-ink'
+                      ? 'glass inline-flex h-14 items-center  px-7 text-[16px] font-semibold text-ink-invert hover:bg-navy-900-invert/15'
+                      : 'inline-flex h-14 items-center  border border-hairline bg-canvas-raised px-7 text-[16px] font-semibold text-ink hover:border-ink'
                   }
                 >
                   {secondaryCta.label}

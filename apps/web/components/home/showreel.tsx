@@ -38,7 +38,7 @@ export function Showreel({
       {variant === 'overlay' ? (
         <button type="button" onClick={open} aria-label={label} className="group absolute inset-0 grid place-items-center">
           <span
-            className="grid h-16 w-16 place-items-center rounded-full bg-white text-ink transition-transform group-hover:scale-105"
+            className="grid h-16 w-16 place-items-center rounded-full bg-canvas-raised text-ink transition-transform group-hover:scale-105"
             aria-hidden="true"
           >
             <PlayIcon className="ml-1 h-6 w-6" />
@@ -48,9 +48,9 @@ export function Showreel({
         <button
           type="button"
           onClick={open}
-          className="glass inline-flex items-center gap-3 rounded-xl px-6 py-3.5 font-semibold text-white hover:bg-white/15"
+          className="glass inline-flex items-center gap-3 px-6 py-3.5 font-semibold text-ink-invert hover:bg-navy-900-invert/15"
         >
-          <span className="grid h-7 w-7 place-items-center rounded-full bg-white text-ink" aria-hidden="true">
+          <span className="grid h-7 w-7 place-items-center rounded-full bg-canvas-raised text-ink" aria-hidden="true">
             <PlayIcon className="ml-0.5 h-3 w-3" />
           </span>
           {label}
@@ -60,14 +60,14 @@ export function Showreel({
         ref={dialogRef}
         aria-label={label}
         onClose={() => videoRef.current?.pause()}
-        className="m-auto w-full max-w-4xl bg-transparent p-5 backdrop:bg-ink/90"
+        className="m-auto w-full max-w-4xl bg-transparent p-5 backdrop:bg-navy-900/90"
       >
         <div className="mb-3 flex justify-end">
-          <button type="button" onClick={close} className="text-[14.5px] font-semibold text-white/80 hover:text-white">
+          <button type="button" onClick={close} className="text-[14.5px] font-semibold text-ink-invert-muted hover:text-ink-invert">
             Close
           </button>
         </div>
-        <div className="relative aspect-video overflow-hidden rounded-2xl bg-ink ring-1 ring-white/15">
+        <div className="relative aspect-video overflow-hidden bg-navy-900 ring-1 ring-ink-invert/15">
           <video
             ref={videoRef}
             src={videoUrl}

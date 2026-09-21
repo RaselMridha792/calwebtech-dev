@@ -48,18 +48,11 @@
       "label": "Book a consultation",
       "href": "/contact/"
     },
-    "secondaryCta": {
-      "label": "Instant estimate",
-      "href": "/cost-calculator/"
-    },
+    "secondaryCta": null,
     "links": [
       {
         "label": "Technology",
         "href": "/technology/"
-      },
-      {
-        "label": "Pricing",
-        "href": "/pricing/"
       }
     ]
   },
@@ -309,6 +302,10 @@
         {
           "title": "Learn",
           "links": [
+            {
+              "label": "Pricing",
+              "href": "/pricing/"
+            },
             {
               "label": "Insights and blog",
               "href": "/insights/"

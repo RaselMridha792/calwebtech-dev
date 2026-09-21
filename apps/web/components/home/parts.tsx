@@ -1,9 +1,11 @@
 import type { Link } from '@calwebtech/shared';
 import type { ReactNode } from 'react';
+import { ArrowIcon } from '../ui/icons';
 import { reveal } from '../ui/primitives';
 
-export const h2Dark = 'font-display text-[34px] leading-[1.1] font-extrabold text-ink lg:text-[42px]';
-export const h2Light = 'font-display text-[34px] leading-[1.1] font-extrabold lg:text-[42px]';
+/** A section opener on cream, and the same on a dark ground. One display size per section. */
+export const h2Dark = 'display-lg text-ink';
+export const h2Light = 'display-lg text-ink-invert';
 
 /**
  * Shown in place of a section's records while none are published. The section itself
@@ -18,18 +20,33 @@ export function EmptyNote({
   tone?: 'light' | 'dark';
   className?: string;
 }) {
-  const colours = tone === 'dark' ? 'border-white/25 text-white/75' : 'border-line bg-white text-body';
-  return (
-    <p className={`rounded-2xl border border-dashed px-6 py-10 text-center text-[15px] ${colours} ${className}`}>
-      {children}
-    </p>
-  );
+  // A rule, not a dashed box: the brand separates with lines and never rings a group.
+  const colours = tone === 'dark' ? 'border-ink-invert/25 text-ink-invert-muted' : 'border-hairline text-ink-muted';
+  return <p className={`body-base border-t py-10 text-center ${colours} ${className}`}>{children}</p>;
 }
 
-export function TextLink({ link, className = '' }: { link: Link; className?: string }) {
+/**
+ * The brand's link form: a label and an arrow that travels 6px, over a rule that grows
+ * from the left. This is what replaces the "read more" that used to sit inside a card.
+ */
+export function TextLink({
+  link,
+  tone = 'light',
+  className = '',
+}: {
+  link: Link;
+  /** The ground it sits on. Champagne is unreadable on cream, so each has its own. */
+  tone?: 'light' | 'dark';
+  className?: string;
+}) {
+  const colour = tone === 'dark' ? 'text-gold-500 after:bg-gold-500' : 'text-gold-ink after:bg-gold-ink';
   return (
-    <a href={link.href} className={`font-semibold text-primary hover:text-primaryd ${className}`}>
+    <a
+      href={link.href}
+      className={`button-label group relative inline-flex items-center gap-2 pb-1.5 after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:origin-left after:scale-x-0 after:transition-transform after:duration-[420ms] after:ease-[cubic-bezier(0.22,1,0.36,1)] hover:after:scale-x-100 motion-reduce:after:transition-none ${colour} ${className}`}
+    >
       {link.label}
+      <ArrowIcon className="w-4 transition-transform duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-safe:group-hover:translate-x-1.5" />
     </a>
   );
 }

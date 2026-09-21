@@ -23,12 +23,12 @@ function ProcessStage({
       <div className={`lg:col-span-6 ${imageFirst ? 'lg:order-2' : ''}`}>
         <p className="flex flex-wrap items-center gap-3 text-[14px]">
           <span
-            className="grid h-9 w-9 place-items-center rounded-lg bg-ink font-display text-[15px] font-extrabold text-white"
+            className="grid h-9 w-9 place-items-center bg-navy-900 font-display text-[15px] font-extrabold text-ink-invert"
             aria-hidden="true"
           >
             {String(index + 1)}
           </span>
-          <span className="rounded-md bg-mist px-2.5 py-1 font-semibold text-ink">{step.timing}</span>
+          <span className="bg-canvas-sunken px-2.5 py-1 font-semibold text-ink">{step.timing}</span>
         </p>
         <h3 id={id} className="mt-5 font-display text-[28px] leading-tight font-extrabold text-ink lg:text-[34px]">
           <span className="sr-only">{`Stage ${String(index + 1)}: `}</span>
@@ -49,7 +49,7 @@ function ProcessStage({
               <ul className="space-y-3 text-[16px] text-ink">
                 {step.weNeed.map((item) => (
                   <li key={item} className="flex items-start gap-3.5">
-                    <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-ink" aria-hidden="true" />
+                    <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-navy-900" aria-hidden="true" />
                     <span>{item}</span>
                   </li>
                 ))}
@@ -60,7 +60,7 @@ function ProcessStage({
       </div>
       {step.image ? (
         <div className={`lg:col-span-6 ${imageFirst ? 'lg:order-1' : ''}`}>
-          <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-mist shadow-media">
+          <div className="relative aspect-[16/10] overflow-hidden bg-canvas-sunken ">
             <ResponsiveImage
               src={step.image.src}
               alt={step.image.alt}
@@ -92,9 +92,9 @@ export function ProcessStages({
         <>
           <ol className="mb-16 flex flex-wrap gap-2 text-[14px]" aria-label="Stages at a glance">
             {steps.map((step, index) => (
-              <li key={`${String(index)}-${step.title}`} className="rounded-full border border-line bg-white px-4 py-2">
+              <li key={`${String(index)}-${step.title}`} className="rounded-full border border-hairline bg-canvas-raised px-4 py-2">
                 <span className="font-semibold text-ink">{`${String(index + 1)}. ${step.title}`}</span>
-                <span className="text-body">{` · ${step.timing}`}</span>
+                <span className="text-ink-muted">{` · ${step.timing}`}</span>
               </li>
             ))}
           </ol>
@@ -145,7 +145,7 @@ export function ProcessAfterLaunch({ copy }: { copy: StaticProcessContent['after
           {copy.link ? (
             <a
               href={copy.link.href}
-              className="mt-8 inline-flex h-12 items-center rounded-xl bg-white px-6 font-semibold text-ink hover:bg-mist"
+              className="mt-8 inline-flex h-12 items-center bg-canvas-raised px-6 font-semibold text-ink hover:bg-canvas-sunken"
             >
               {copy.link.label}
             </a>

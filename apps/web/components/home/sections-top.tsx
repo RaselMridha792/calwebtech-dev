@@ -4,6 +4,7 @@ import { FaqAccordion } from '../landing/faq-accordion';
 import { CheckBullet, reveal } from '../ui/primitives';
 import { BackgroundVideo } from '../ui/background-video';
 import { BackdropImage } from '../ui/brand';
+import { ArrowIcon } from '../ui/icons';
 import { ResponsiveImage } from '../ui/responsive-image';
 import { EmptyNote, SectionHead, TextLink, byline, h2Dark, h2Light } from './parts';
 import { Showreel } from './showreel';
@@ -49,13 +50,13 @@ export function LogoBand({ label, clients }: { label: string; clients: Home['cli
   return (
     <section
       aria-label={label}
-      className="content-auto group relative overflow-hidden border-y border-line bg-white py-9"
+      className="content-auto group relative overflow-hidden border-y border-hairline bg-canvas-raised py-9"
     >
       <p className="shell mb-6 text-[13.5px]">{label}</p>
       <input id="logo-band-pause" type="checkbox" className="peer sr-only" />
       <label
         htmlFor="logo-band-pause"
-        className="sr-only peer-focus-visible:not-sr-only peer-focus-visible:absolute peer-focus-visible:top-2 peer-focus-visible:right-6 peer-focus-visible:z-10 peer-focus-visible:rounded-lg peer-focus-visible:bg-ink peer-focus-visible:px-3 peer-focus-visible:py-2 peer-focus-visible:text-[13px] peer-focus-visible:font-semibold peer-focus-visible:text-white peer-focus-visible:outline-3 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary"
+        className="sr-only peer-focus-visible:not-sr-only peer-focus-visible:absolute peer-focus-visible:top-2 peer-focus-visible:right-6 peer-focus-visible:z-10 peer-focus-visible: peer-focus-visible:bg-navy-900 peer-focus-visible:px-3 peer-focus-visible:py-2 peer-focus-visible:text-[13px] peer-focus-visible:font-semibold peer-focus-visible:text-ink-invert peer-focus-visible:outline-3 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary"
       >
         Pause the client names
       </label>
@@ -72,7 +73,7 @@ export function CapabilityBand({ capability }: { capability: Content['capability
   if (!capability.enabled) return null;
   const { showreel } = capability;
   return (
-    <section className="content-auto relative overflow-hidden bg-ink py-20 text-white lg:py-28">
+    <section className="content-auto relative overflow-hidden bg-navy-900 py-20 text-ink-invert lg:py-28">
       <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
         <BackdropImage image={capability.background.poster} className="kenburns opacity-[.22]" />
       </div>
@@ -80,8 +81,7 @@ export function CapabilityBand({ capability }: { capability: Content['capability
         <BackgroundVideo src={capability.background.videoUrl} className="opacity-100" />
       ) : null}
       <div className="absolute inset-0" aria-hidden="true">
-        <div className="absolute inset-0 bg-linear-to-r from-ink via-ink/90 to-ink/60" />
-        <div className="glow-blue absolute inset-0 opacity-70" />
+        <div className="absolute inset-0 bg-scrim-strong" />
       </div>
       <div className="shell relative" {...reveal()}>
         <h2 className={`${h2Light} max-w-[20ch]`}>{capability.heading}</h2>
@@ -92,11 +92,11 @@ export function CapabilityBand({ capability }: { capability: Content['capability
             ))}
           </ul>
         ) : null}
-        <p className="mt-8 max-w-[62ch] text-[16.5px] leading-relaxed text-white/70">{capability.body}</p>
+        <p className="mt-8 max-w-[62ch] text-[16.5px] leading-relaxed text-ink-invert-muted">{capability.body}</p>
         <div className="mt-9 flex flex-wrap gap-3">
           <a
             href={capability.primaryCta.href}
-            className="inline-flex items-center rounded-xl bg-white px-6 py-3.5 font-semibold text-ink hover:bg-mist"
+            className="inline-flex items-center bg-canvas-raised px-6 py-3.5 font-semibold text-ink hover:bg-canvas-sunken"
           >
             {capability.primaryCta.label}
           </a>
@@ -119,14 +119,14 @@ export function ProblemRouter({
 }) {
   if (faqs.length === 0) return null;
   return (
-    <section className="content-auto bg-white py-20 lg:py-28">
+    <section className="content-auto bg-canvas-raised py-20 lg:py-28">
       <div className="shell grid gap-12 lg:grid-cols-12 lg:gap-20">
         <div className="lg:col-span-4" {...reveal()}>
           <h2 className={h2Dark}>{problemRouter.heading}</h2>
           <p className="mt-5 text-[17px] leading-relaxed">{problemRouter.intro}</p>
           <a
             href={problemRouter.cta.href}
-            className="mt-7 inline-flex h-12 items-center rounded-lg bg-ink px-6 font-semibold text-white hover:bg-ink2"
+            className="mt-7 inline-flex h-12 items-center bg-navy-900 px-6 font-semibold text-ink-invert hover:bg-navy-700"
           >
             {problemRouter.cta.label}
           </a>
@@ -139,34 +139,47 @@ export function ProblemRouter({
   );
 }
 
+/**
+ * The services index: numbered editorial rows on hairlines, which is the form the brand
+ * gives a set of peers. No card, no border box, no shadow — the rule above and below each
+ * row is the only separation, and the numeral does the work an icon tile used to.
+ *
+ * Hovering indents the row and washes its ground; nothing lifts or scales. Each row is the
+ * link to its own page, with the arrow travelling 6px, so the "read more" that used to sit
+ * inside every box is the row itself.
+ */
 export function ServicesGrid({ services, items }: { services: Content['services']; items: Home['services'] }) {
   return (
-    <section
-      id="services"
-      className="content-auto relative overflow-hidden border-y border-line bg-linear-to-b from-mist2 via-mist to-mist2 py-20 lg:py-28"
-    >
-      <div className="grid-lines absolute inset-0 opacity-70" aria-hidden="true" />
-      <div className="absolute -top-32 -right-24 h-[520px] w-[520px] rounded-full bg-primary/7 blur-3xl" aria-hidden="true" />
-      <div className="shell relative">
+    <section id="services" className="content-auto bg-canvas py-20 lg:py-32">
+      <div className="shell">
         <SectionHead link={services.link} className="mb-12">
-          <h2 className={`${h2Dark} max-w-[16ch]`}>{services.heading}</h2>
+          <h2 className="display-lg max-w-[16ch] text-ink">{services.heading}</h2>
         </SectionHead>
-        <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="border-t border-hairline">
           {items.map((service, index) => (
-            <li
-              key={service.slug}
-              className="rounded-2xl border border-line bg-white p-7 transition-colors hover:border-ink"
-              {...reveal(index)}
-            >
-              <h3 className="font-display text-[20px] font-bold text-ink">{service.title}</h3>
-              <p className="mt-2.5 text-[15px] leading-relaxed">{service.summary}</p>
-              {service.deliverables.length > 0 ? (
-                <ul className="mt-5 space-y-1.5 text-[14px]">
-                  {service.deliverables.map((deliverable) => (
-                    <li key={deliverable}>{deliverable}</li>
-                  ))}
-                </ul>
-              ) : null}
+            <li key={service.slug} className="border-b border-hairline" {...reveal(index)}>
+              <a
+                href={`/services/${service.slug}/`}
+                className="group grid gap-x-8 gap-y-2 py-7 transition-[padding-inline-start,background-color] duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-canvas-raised focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus motion-safe:hover:ps-6 lg:grid-cols-12 lg:items-baseline"
+              >
+                <span className="meta text-ink-muted transition-colors duration-150 group-hover:text-gold-ink lg:col-span-1">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <h3 className="display-md text-ink lg:col-span-4">{service.title}</h3>
+                <div className="lg:col-span-6">
+                  <p className="body-base text-ink-muted">{service.summary}</p>
+                  {service.deliverables.length > 0 ? (
+                    <ul className="body-sm mt-3 flex flex-wrap gap-x-5 gap-y-1 text-ink-muted">
+                      {service.deliverables.map((deliverable) => (
+                        <li key={deliverable}>{deliverable}</li>
+                      ))}
+                    </ul>
+                  ) : null}
+                </div>
+                <span className="flex items-baseline justify-end lg:col-span-1">
+                  <ArrowIcon className="w-4 text-ink-muted transition-[transform,color] duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:text-gold-ink motion-safe:group-hover:translate-x-1.5" />
+                </span>
+              </a>
             </li>
           ))}
         </ul>
@@ -180,7 +193,7 @@ function Tags({ tags }: { tags: string[] }) {
   return (
     <ul className="flex flex-wrap gap-2 text-[12.5px] font-medium">
       {tags.map((tag) => (
-        <li key={tag} className="rounded-md bg-mist px-2.5 py-1 text-ink">
+        <li key={tag} className="bg-canvas-sunken px-2.5 py-1 text-ink">
           {tag}
         </li>
       ))}
@@ -190,12 +203,12 @@ function Tags({ tags }: { tags: string[] }) {
 
 function Metrics({ metrics, lead }: { metrics: HomeProject['metrics']; lead: boolean }) {
   return (
-    <dl className={`grid grid-cols-3 border-t border-line ${lead ? 'mt-7 gap-5 pt-6' : 'mt-6 gap-4 pt-5'}`}>
+    <dl className={`grid grid-cols-3 border-t border-hairline ${lead ? 'mt-7 gap-5 pt-6' : 'mt-6 gap-4 pt-5'}`}>
       {metrics.map((metric) => (
         <div key={metric.label} className="flex flex-col-reverse">
           <dt className={`mt-1.5 ${lead ? 'text-[13px]' : 'text-[12.5px]'}`}>{metric.label}</dt>
           <dd
-            className={`font-display leading-none font-extrabold text-result ${lead ? 'text-[26px] sm:text-[32px] lg:text-[38px]' : 'text-[26px]'}`}
+            className={`font-display leading-none font-extrabold text-gold-ink ${lead ? 'text-[26px] sm:text-[32px] lg:text-[38px]' : 'text-[26px]'}`}
           >
             {metric.value}
           </dd>
@@ -212,8 +225,8 @@ function CaseStudyLink({ project, label, lead }: { project: HomeProject; label: 
       href={`/work/${project.slug}/`}
       className={
         lead
-          ? 'mt-7 inline-flex h-12 items-center rounded-lg bg-ink px-6 font-semibold text-white hover:bg-ink2'
-          : 'mt-6 inline-block font-semibold text-primary hover:text-primaryd'
+          ? 'mt-7 inline-flex h-12 items-center  bg-navy-900 px-6 font-semibold text-ink-invert hover:bg-navy-700'
+          : 'mt-6 inline-block font-semibold text-gold-ink hover:text-gold-600'
       }
     >
       {label}
@@ -236,10 +249,10 @@ function LeadProject({
   return (
     <article
       data-work-filter={filterKey}
-      className={`overflow-hidden rounded-2xl border border-line lg:col-span-2 ${project.image ? 'grid lg:grid-cols-2' : ''}`}
+      className={`overflow-hidden  border border-hairline lg:col-span-2 ${project.image ? 'grid lg:grid-cols-2' : ''}`}
     >
       {project.image ? (
-        <div className="relative min-h-[280px] bg-mist">
+        <div className="relative min-h-[280px] bg-canvas-sunken">
           <ResponsiveImage
             src={project.image.src}
             alt={project.image.alt}
@@ -257,7 +270,7 @@ function LeadProject({
         <p className="mt-3 leading-relaxed">{project.summary}</p>
         <Metrics metrics={project.metrics} lead />
         {quote ? (
-          <figure className="mt-7 border-t border-line pt-6">
+          <figure className="mt-7 border-t border-hairline pt-6">
             <blockquote className="text-[15.5px] leading-relaxed text-ink">{`"${quote.quote}"`}</blockquote>
             <figcaption className="mt-4 flex items-center gap-3 text-[14px]">
               {quote.avatar ? (
@@ -293,9 +306,9 @@ function ProjectCard({
   caseStudyLabel: string | null;
 }) {
   return (
-    <article data-work-filter={filterKey} className="overflow-hidden rounded-2xl border border-line">
+    <article data-work-filter={filterKey} className="overflow-hidden border border-hairline">
       {project.image ? (
-        <div className="relative aspect-video bg-mist">
+        <div className="relative aspect-video bg-canvas-sunken">
           <ResponsiveImage
             src={project.image.src}
             alt={project.image.alt}
@@ -340,7 +353,7 @@ function WorkFilters({ filters }: { filters: string[] }) {
         {options.map((option, index) => (
           <label
             key={option.id}
-            className="inline-flex h-10 cursor-pointer items-center rounded-lg bg-mist px-4 text-[14.5px] font-semibold text-ink hover:bg-line has-checked:bg-ink has-checked:text-white has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-primary"
+            className="inline-flex h-10 cursor-pointer items-center bg-canvas-sunken px-4 text-[14.5px] font-semibold text-ink hover:bg-line has-checked:bg-navy-900 has-checked:text-ink-invert has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-primary"
           >
             <input type="radio" name="work-filter" id={option.id} defaultChecked={index === 0} className="sr-only" />
             {option.label}
@@ -356,14 +369,14 @@ export function FeaturedWork({ work, projects }: { work: Content['work']; projec
   const filterKey = (project: HomeProject) =>
     project.filter ? `f${String(filters.indexOf(project.filter))}` : '';
   return (
-    <section id="work" className="content-auto bg-white py-20 lg:py-28">
+    <section id="work" className="content-auto bg-canvas-raised py-20 lg:py-28">
       <div className="shell">
         <SectionHead link={work.link} className="mb-9">
           <h2 className={`${h2Dark} max-w-[20ch]`}>{work.heading}</h2>
           <p className="mt-4 max-w-[58ch] text-[17px] leading-relaxed">{work.intro}</p>
         </SectionHead>
         {projects.length === 0 ? (
-          <EmptyNote className="">{work.empty}</EmptyNote>
+          <EmptyNote>{work.empty}</EmptyNote>
         ) : (
           <>
             {filters.length > 1 ? <WorkFilters filters={filters} /> : null}
@@ -398,10 +411,9 @@ export function PullQuote({ quote }: { quote: Home['pullQuote'] }) {
   if (!quote) return null;
   const quoteByline = byline(quote.role, quote.company);
   return (
-    <section className="content-auto relative overflow-hidden bg-ink py-16 text-white lg:py-20">
+    <section className="content-auto relative overflow-hidden bg-navy-900 py-16 text-ink-invert lg:py-20">
       <div className="absolute inset-0" aria-hidden="true">
-        <div className="absolute inset-0 bg-linear-to-r from-ink via-ink/90 to-ink/75" />
-        <div className="glow-blue absolute inset-0 opacity-50" />
+        <div className="absolute inset-0 bg-scrim-strong" />
       </div>
       <div className="shell relative">
         <figure className="max-w-[58ch]" {...reveal()}>
@@ -420,8 +432,8 @@ export function PullQuote({ quote }: { quote: Home['pullQuote'] }) {
               />
             ) : null}
             <span className="text-[15px]">
-              <b className="block text-white">{quote.clientName}</b>
-              {quoteByline ? <span className="text-white/70">{quoteByline}</span> : null}
+              <b className="block text-ink-invert">{quote.clientName}</b>
+              {quoteByline ? <span className="text-ink-invert-muted">{quoteByline}</span> : null}
             </span>
           </figcaption>
         </figure>
@@ -433,7 +445,7 @@ export function PullQuote({ quote }: { quote: Home['pullQuote'] }) {
 export function MidCta({ midCta }: { midCta: Content['midCta'] }) {
   if (!midCta.enabled) return null;
   return (
-    <section className="content-auto border-y border-line bg-white py-14 lg:py-16">
+    <section className="content-auto border-y border-hairline bg-canvas-raised py-14 lg:py-16">
       <div className="shell flex flex-wrap items-center justify-between gap-8">
         <div>
           <p className="text-[14px]">{midCta.eyebrow}</p>
@@ -444,14 +456,14 @@ export function MidCta({ midCta }: { midCta: Content['midCta'] }) {
         <div className="flex flex-wrap gap-3">
           <a
             href={midCta.primaryCta.href}
-            className="inline-flex h-14 items-center rounded-xl bg-primary px-7 text-[16px] font-semibold text-white hover:bg-primaryd"
+            className="inline-flex h-14 items-center bg-navy-900 px-7 text-[16px] font-semibold text-ink-invert hover:bg-navy-700"
           >
             {midCta.primaryCta.label}
           </a>
           {midCta.secondaryCta ? (
             <a
               href={midCta.secondaryCta.href}
-              className="inline-flex h-14 items-center rounded-xl border border-line px-7 text-[16px] font-semibold text-ink hover:border-ink hover:bg-mist2"
+              className="inline-flex h-14 items-center border border-hairline px-7 text-[16px] font-semibold text-ink hover:border-ink hover:bg-canvas-raised"
             >
               {midCta.secondaryCta.label}
             </a>
@@ -480,24 +492,23 @@ export function BeforeAfterHome({
     />
   );
   return (
-    <section id="beforeafter" className="content-auto relative overflow-hidden bg-ink py-20 text-white lg:py-28">
+    <section id="beforeafter" className="content-auto relative overflow-hidden bg-navy-900 py-20 text-ink-invert lg:py-28">
       <div className="absolute inset-0" aria-hidden="true">
         <BackdropImage image={beforeAfter.backgroundImage} className="opacity-[.16]" />
-        <div className="absolute inset-0 bg-linear-to-r from-ink via-ink/92 to-ink/70" />
-        <div className="glow-blue absolute inset-0 opacity-60" />
+        <div className="absolute inset-0 bg-scrim-strong" />
       </div>
       <div className="shell relative grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-4" {...reveal()}>
           <h2 className={h2Light}>{beforeAfter.heading}</h2>
-          <p className="mt-5 text-[17px] leading-relaxed text-white/70">{beforeAfter.intro}</p>
+          <p className="mt-5 text-[17px] leading-relaxed text-ink-invert-muted">{beforeAfter.intro}</p>
           {comparison && comparison.metrics.length > 0 ? (
-            <dl className="mt-8 space-y-4 border-t border-white/15 pt-7">
+            <dl className="mt-8 space-y-4 border-t border-ink-invert/15 pt-7">
               {comparison.metrics.map((metric) => (
                 <div key={metric.label} className="flex items-baseline justify-between gap-6">
-                  <dt className="text-[14px] text-white/70">{metric.label}</dt>
+                  <dt className="text-[14px] text-ink-invert-muted">{metric.label}</dt>
                   <dd className="font-display font-bold">
-                    {metric.before} <span className="font-normal text-white/70">to</span>{' '}
-                    <span className="font-display font-bold text-result">{metric.after}</span>
+                    {metric.before} <span className="font-normal text-ink-invert-muted">to</span>{' '}
+                    <span className="font-display font-bold text-gold-ink">{metric.after}</span>
                   </dd>
                 </div>
               ))}
@@ -506,7 +517,7 @@ export function BeforeAfterHome({
           {beforeAfter.cta ? (
             <a
               href={beforeAfter.cta.href}
-              className="mt-8 inline-flex h-12 items-center rounded-lg bg-white px-6 font-semibold text-ink hover:bg-mist"
+              className="mt-8 inline-flex h-12 items-center bg-canvas-raised px-6 font-semibold text-ink hover:bg-canvas-sunken"
             >
               {beforeAfter.cta.label}
             </a>
@@ -520,7 +531,7 @@ export function BeforeAfterHome({
               clientName={comparison.clientName}
             />
           ) : (
-            <EmptyNote tone="dark" className="">
+            <EmptyNote tone="dark">
               {beforeAfter.empty}
             </EmptyNote>
           )}
@@ -530,6 +541,16 @@ export function BeforeAfterHome({
   );
 }
 
+/**
+ * The industries stack: full-bleed bands, edge to edge, which is what a bordered sector
+ * card becomes in this brand. The bands touch — no gap, no margin, no corner — so the run
+ * reads as one dark mass between the cream sections above and below it, which is what
+ * makes the page feel large.
+ *
+ * Every band carries the strong scrim across its whole image, not a gradient at one edge,
+ * because the title and its line sit on the image rather than below it. On hover the image
+ * scales a little under a scrim that holds: the copy has to stay legible throughout.
+ */
 export function IndustriesGrid({
   industries,
   items,
@@ -539,53 +560,56 @@ export function IndustriesGrid({
 }) {
   const { notListed } = industries;
   return (
-    <section id="industries" className="content-auto bg-white py-20 lg:py-28">
+    <section id="industries" className="content-auto bg-canvas py-20 lg:py-32">
       <div className="shell">
         <SectionHead link={industries.link} className="mb-12">
-          <h2 className={`${h2Dark} max-w-[18ch]`}>{industries.heading}</h2>
-          <p className="mt-4 max-w-[58ch] text-[17px] leading-relaxed">{industries.intro}</p>
+          <h2 className="display-lg max-w-[18ch] text-ink">{industries.heading}</h2>
+          <p className="body-lg mt-4 max-w-[58ch] text-ink-muted">{industries.intro}</p>
         </SectionHead>
-        <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {items.map((industry, index) => (
-            <li
-              key={industry.slug}
-              className={`relative flex flex-col justify-end overflow-hidden rounded-2xl bg-ink p-6 sm:aspect-3/4 ${industry.image ? 'min-h-60' : 'min-h-44'}`}
-              {...reveal(index)}
+      </div>
+
+      <ul className="bg-navy-900">
+        {items.map((industry, index) => (
+          <li key={industry.slug} className="border-b border-ink-invert/15 last:border-b-0" {...reveal(index)}>
+            <a
+              href={`/industries/${industry.slug}/`}
+              className="group relative flex min-h-45 items-center overflow-hidden focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-focus-invert lg:min-h-59"
             >
               {industry.image ? (
-                <>
-                  <ResponsiveImage
-                    src={industry.image.src}
-                    alt={industry.image.alt}
-                    fill
-                    sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                    className="object-cover opacity-70"
-                  />
-                  <div className="absolute inset-0 bg-linear-to-t from-ink via-ink/40 to-transparent" aria-hidden="true" />
-                </>
-              ) : (
-                <>
-                  <div className="glow-blue absolute inset-0 opacity-60" aria-hidden="true" />
-                  <div className="grid-lines-light absolute inset-0" aria-hidden="true" />
-                </>
-              )}
-              <h3 className="relative font-display text-[20px] font-bold text-white">{industry.name}</h3>
-              {industry.line ? (
-                <p className="relative mt-1.5 text-[14px] leading-snug text-white/75">{industry.line}</p>
+                <ResponsiveImage
+                  src={industry.image.src}
+                  alt={industry.image.alt}
+                  fill
+                  sizes="100vw"
+                  // A band is a short crop under a 72% scrim, so the detail a higher
+                  // quality would buy is detail nobody can see through it.
+                  quality={50}
+                  className="object-cover transition-transform duration-[1600ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-safe:group-hover:scale-105"
+                />
               ) : null}
-            </li>
-          ))}
-          <li
-            className="grid min-h-44 place-items-center rounded-2xl border border-line bg-mist p-6 text-center sm:aspect-3/4"
-            {...reveal(items.length)}
-          >
-            <div>
-              <h3 className="font-display text-[20px] font-bold text-ink">{notListed.heading}</h3>
-              <p className="mt-2 text-[14px] leading-snug">{notListed.body}</p>
-              <TextLink link={notListed.cta} className="mt-4 inline-block" />
-            </div>
+              <div className="absolute inset-0 bg-scrim-strong" aria-hidden="true" />
+
+              <div className="shell relative flex w-full flex-wrap items-baseline gap-x-8 gap-y-2">
+                <span className="meta text-gold-500">{String(index + 1).padStart(2, '0')}</span>
+                <h3 className="display-md text-ink-invert">{industry.name}</h3>
+                {industry.line ? (
+                  <p className="body-base hidden max-w-[42ch] text-ink-invert-muted lg:block">{industry.line}</p>
+                ) : null}
+                <span className="ms-auto hidden items-center gap-3 lg:flex">
+                  <ArrowIcon className="w-4 text-gold-500 transition-transform duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-safe:group-hover:translate-x-1.5" />
+                </span>
+              </div>
+            </a>
           </li>
-        </ul>
+        ))}
+      </ul>
+
+      <div className="shell">
+        <div className="mt-12 border-t border-hairline-gold pt-8">
+          <h3 className="heading-md text-ink">{notListed.heading}</h3>
+          <p className="body-base mt-2 max-w-[58ch] text-ink-muted">{notListed.body}</p>
+          <TextLink link={notListed.cta} className="mt-4 inline-block" />
+        </div>
       </div>
     </section>
   );

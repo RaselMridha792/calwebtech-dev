@@ -132,8 +132,11 @@ hairline / hairline-strong / hairline-gold   scrim / scrim-strong
 - The logo is in `apps/web/public/brand` and rendered by `components/ui/logo.tsx`. Pick the
   file by the ground it sits on; never re-type the wordmark in a live font.
 - **Still on the old palette:** the tokens below `--color-ink` in `theme.css` (`primary`,
-  `result`, `mist`, `line`, `body` and the glows) belong to the white-and-cobalt site and
-  are being removed family by family. The admin's `--color-admin-*` set stays for good.
+  `mist`, `line`, `body` and the glows) belong to the white-and-cobalt site and are being
+  removed family by family. `result` and `danger` stay for good: the dashboard resolves
+  them inside `[data-theme='admin']`, and the `calwebtech/teal-usage` rule now guards
+  them there. The brand's own rule for champagne — eyebrows, numerals, links and rules,
+  never a heading or a price — is asserted in `components/services/sections.test.tsx`.
   `reference/homepage.html` and `reference/landing-page.html` record the design this
   replaces; they are history now, not the target (docs/08-decisions.md, 46).
 

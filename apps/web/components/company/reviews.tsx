@@ -11,18 +11,18 @@ const monthYear = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numer
 export function RatingCard({ reviews }: { reviews: CompanyReviewSummary }) {
   if (reviews.averageRating === null) return null;
   return (
-    <div data-rating-card="" className="glass max-w-md rounded-2xl p-7 lg:ml-auto">
-      <p className="text-[14px] text-white/75">Average rating across review platforms</p>
+    <div data-rating-card="" className="glass max-w-md p-7 lg:ml-auto">
+      <p className="text-[14px] text-ink-invert-muted">Average rating across review platforms</p>
       <p className="mt-3 flex items-baseline gap-3">
         <span className="font-display text-[56px] leading-none font-extrabold">{reviews.averageRating.toFixed(1)}</span>
-        <span className="text-[15px] text-white/75">out of 5</span>
+        <span className="text-[15px] text-ink-invert-muted">out of 5</span>
       </p>
       <Stars rating={reviews.averageRating} announce={false} className="mt-2 block text-[20px]" />
-      <p className="mt-4 text-[15px] text-white/85">
+      <p className="mt-4 text-[15px] text-ink-invert-muted">
         {`From ${counted(reviews.totalReviews, 'review')} on ${counted(reviews.sources.length, 'platform')}.`}
       </p>
       {reviews.npsScore !== null ? (
-        <p className="mt-4 border-t border-white/15 pt-4 text-[14px] text-white/75">
+        <p className="mt-4 border-t border-ink-invert/15 pt-4 text-[14px] text-ink-invert-muted">
           {`Net Promoter Score ${reviews.npsScore.toFixed(1)}`}
           {reviews.npsProjectCount !== null ? `, measured across ${counted(reviews.npsProjectCount, 'client project')}.` : '.'}
         </p>
@@ -39,7 +39,7 @@ export function RatingBreakdown({ reviews, method }: { reviews: CompanyReviewSum
         <table data-company-list="ratings" className="w-full border-collapse text-left text-[15.5px]">
           <caption className="sr-only">Ratings by review platform</caption>
           <thead>
-            <tr className="border-b border-line text-[13.5px] text-body">
+            <tr className="border-b border-hairline text-[13.5px] text-ink-muted">
               <th scope="col" className="py-3 pr-4 font-semibold">
                 Platform
               </th>
@@ -53,10 +53,10 @@ export function RatingBreakdown({ reviews, method }: { reviews: CompanyReviewSum
           </thead>
           <tbody>
             {reviews.sources.map((source) => (
-              <tr key={source.platform} className="border-b border-line bg-white/60">
+              <tr key={source.platform} className="border-b border-hairline bg-navy-900-invert/60">
                 <th scope="row" className="py-4 pr-4 font-display font-bold text-ink">
                   {source.profileUrl ? (
-                    <a href={source.profileUrl} rel="noopener" className="inline-block py-1 text-primary hover:text-primaryd">
+                    <a href={source.profileUrl} rel="noopener" className="inline-block py-1 text-gold-ink hover:text-gold-600">
                       {source.platform}
                       <span className="sr-only"> profile</span>
                     </a>
@@ -113,14 +113,14 @@ export function TestimonialList({
         const who = byline(testimonial.role, testimonial.company);
         return (
           <li key={testimonial.id} data-testimonial="" {...reveal(index)}>
-            <figure className="flex h-full flex-col rounded-2xl border border-line bg-white p-7 lg:p-8">
+            <figure className="flex h-full flex-col border border-hairline bg-canvas-raised p-7 lg:p-8">
               <Stars rating={testimonial.rating} className="text-[15px]" />
               <blockquote
                 className={`mt-4 flex-1 leading-relaxed text-ink ${testimonial.featured ? 'font-display text-[20px] font-semibold lg:text-[22px]' : 'text-[17px]'}`}
               >
                 {`"${testimonial.quote}"`}
               </blockquote>
-              <figcaption className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-4 border-t border-line pt-5">
+              <figcaption className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-4 border-t border-hairline pt-5">
                 {testimonial.avatar ? (
                   <ResponsiveImage
                     src={testimonial.avatar.src}
@@ -147,7 +147,7 @@ export function TestimonialList({
                 {testimonial.caseStudySlug ? (
                   <a
                     href={caseStudyPath(testimonial.caseStudySlug)}
-                    className="inline-block py-1 text-[14.5px] font-semibold text-primary hover:text-primaryd sm:ml-auto"
+                    className="inline-block py-1 text-[14.5px] font-semibold text-gold-ink hover:text-gold-600 sm:ml-auto"
                   >
                     {caseStudyLabel}
                     <span className="sr-only">{`: ${testimonial.company ?? testimonial.clientName}`}</span>

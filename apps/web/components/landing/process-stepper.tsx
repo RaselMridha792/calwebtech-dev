@@ -77,9 +77,9 @@ export function ProcessStepper({ tabs, panels }: { tabs: StepTab[]; panels: Reac
   return (
     <div ref={rootRef}>
       <div className="relative">
-        <div className="absolute top-6 right-0 left-0 hidden h-px bg-white/15 md:block" aria-hidden="true" />
+        <div className="absolute top-6 right-0 left-0 hidden h-px bg-navy-900-invert/15 md:block" aria-hidden="true" />
         <div
-          className="absolute top-6 right-0 left-0 hidden h-px origin-left bg-primary transition-transform duration-500 ease-(--ease-out-soft) md:block"
+          className="absolute top-6 right-0 left-0 hidden h-px origin-left bg-navy-900 transition-transform duration-500 ease-(--ease-out-soft) md:block"
           style={{ transform: `scaleX(${progress})` }}
           aria-hidden="true"
         />
@@ -107,16 +107,16 @@ export function ProcessStepper({ tabs, panels }: { tabs: StepTab[]; panels: Reac
                 className="text-left"
               >
                 <span
-                  className={`grid h-12 w-12 place-items-center rounded-full border-2 font-display font-bold transition-colors ${selected ? 'border-primary bg-primary text-white' : 'border-white/25 bg-ink text-white/70'}`}
+                  className={`grid h-12 w-12 place-items-center rounded-full border-2 font-display font-bold transition-colors ${selected ? 'border-gold-ink bg-navy-900 text-ink-invert' : 'border-ink-invert/15 bg-navy-900 text-ink-invert-muted'}`}
                 >
                   {index + 1}
                 </span>
                 <span
-                  className={`mt-3 block font-display text-[15px] font-bold transition-colors ${selected ? 'text-white' : 'text-white/60'}`}
+                  className={`mt-3 block font-display text-[15px] font-bold transition-colors ${selected ? 'text-ink-invert' : 'text-ink-invert-muted'}`}
                 >
                   {tab.title}
                 </span>
-                <span className="mt-0.5 block text-[12.5px] text-white/60">{tab.timing}</span>
+                <span className="mt-0.5 block text-[12.5px] text-ink-invert-muted">{tab.timing}</span>
               </button>
             );
           })}
@@ -130,7 +130,7 @@ export function ProcessStepper({ tabs, panels }: { tabs: StepTab[]; panels: Reac
             setAutoplay((value) => !value);
           }}
           aria-pressed={!autoplay}
-          className="inline-flex items-center gap-2 rounded-lg px-2 py-1 text-[13px] font-medium text-white/70 hover:text-white"
+          className="inline-flex items-center gap-2 px-2 py-1 text-[13px] font-medium text-ink-invert-muted hover:text-ink-invert"
         >
           {autoplay ? <PauseIcon className="h-3 w-3" /> : <PlayIcon className="h-3 w-3" />}
           {autoplay ? 'Pause the walkthrough' : 'Play the walkthrough'}

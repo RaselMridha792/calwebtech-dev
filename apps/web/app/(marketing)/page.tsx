@@ -30,9 +30,9 @@ import { AnchorScroll } from '@/components/motion/anchor-scroll';
 import { RevealObserver } from '@/components/motion/reveal-observer';
 import { FloatingCta } from '@/components/site/floating-cta';
 import { SiteFooter } from '@/components/site/site-footer';
+import { HeaderScrollState } from '@/components/site/header-scroll';
 import { SiteHeader } from '@/components/site/site-header';
 import { SkipLink } from '@/components/site/skip-link';
-import { UtilityBar } from '@/components/site/utility-bar';
 import { getHomePage } from '@/lib/api';
 import { getSiteChrome } from '@/lib/api/site';
 
@@ -63,8 +63,8 @@ export default async function HomePage() {
     <>
       <SkipLink />
 
-      <UtilityBar chrome={chrome} />
       {/* The site chrome, with the homepage's own calls to action: its forms are on this page. */}
+      <HeaderScrollState />
       <SiteHeader chrome={chrome} ctas={content.header} />
 
       <main id="main">
@@ -72,12 +72,11 @@ export default async function HomePage() {
           hero={content.hero}
           reviews={home.reviews}
           statistics={home.statistics}
-          featured={home.projects[0] ?? null}
           form={
-            <div className="overflow-hidden rounded-2xl bg-white text-ink shadow-form">
-              <div className="border-b border-line bg-mist px-7 py-5">
-                <h2 className="font-display text-[20px] font-extrabold">{content.hero.form.heading}</h2>
-                <p className="mt-1 text-[14px] text-body">{content.hero.form.subheading}</p>
+            <div className="bg-canvas-raised text-ink">
+              <div className="border-b border-hairline bg-canvas-sunken px-7 py-5">
+                <p className="heading-md">{content.hero.form.heading}</p>
+                <p className="body-sm mt-1 text-ink-muted">{content.hero.form.subheading}</p>
               </div>
               <LeadForm
                 variant="hero"
@@ -133,7 +132,7 @@ export default async function HomePage() {
               referralOptions={content.book.referralOptions}
               footnote={content.book.footnote}
               turnstileSiteKey={turnstileSiteKey}
-              className="rounded-2xl border border-line bg-white p-7 shadow-panel sm:p-9"
+              className="border border-hairline bg-canvas-raised p-7 sm:p-9"
             />
           }
         />

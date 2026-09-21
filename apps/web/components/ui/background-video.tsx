@@ -89,7 +89,7 @@ export function BackgroundVideo({
           type="button"
           onClick={toggle}
           aria-pressed={paused}
-          className={`glass absolute z-20 grid h-10 w-10 place-items-center rounded-full text-white hover:bg-white/15 ${controlClassName}`}
+          className={`glass absolute z-20 grid h-10 w-10 place-items-center rounded-full text-ink-invert hover:bg-navy-900-invert/15 ${controlClassName}`}
         >
           {paused ? <PlayIcon className="ml-0.5 h-3.5 w-3.5" /> : <PauseIcon className="h-3.5 w-3.5" />}
           <span className="sr-only">Pause the background video</span>

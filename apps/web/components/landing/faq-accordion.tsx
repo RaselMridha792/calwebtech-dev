@@ -13,7 +13,7 @@ interface FaqItem {
  */
 export function FaqAccordion({ items, group }: { items: FaqItem[]; group: string }) {
   return (
-    <div className="divide-y divide-line border-y border-line">
+    <div className="divide-y divide-hairline border-y border-hairline">
       {items.map((item, index) => (
         <details key={item.id} name={group} open={index === 0} className="group py-6">
           <summary className="flex cursor-pointer list-none items-start justify-between gap-6 [&::-webkit-details-marker]:hidden">
@@ -21,7 +21,7 @@ export function FaqAccordion({ items, group }: { items: FaqItem[]; group: string
               {item.question}
             </h3>
             <span
-              className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-mist text-ink transition-transform duration-200 group-open:rotate-45"
+              className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-canvas-sunken text-ink transition-transform duration-200 group-open:rotate-45"
               aria-hidden="true"
             >
               <PlusIcon className="h-3.5 w-3.5" />

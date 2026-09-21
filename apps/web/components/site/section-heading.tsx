@@ -39,7 +39,7 @@ export function SectionHeading({
           {title}
         </Heading>
         {intro ? (
-          <p className={`mt-4 text-[17px] leading-relaxed ${dark ? 'text-white/75' : ''}`}>{intro}</p>
+          <p className={`mt-4 text-[17px] leading-relaxed ${dark ? 'text-ink-invert-muted' : ''}`}>{intro}</p>
         ) : null}
       </div>
       {link ? (
@@ -47,8 +47,8 @@ export function SectionHeading({
           href={link.href}
           className={
             dark
-              ? 'inline-block py-1 font-semibold text-white underline decoration-white/40 underline-offset-4 hover:decoration-white'
-              : 'inline-block py-1 font-semibold text-primary hover:text-primaryd'
+              ? 'inline-block py-1 font-semibold text-ink-invert underline decoration-white/40 underline-offset-4 hover:decoration-white'
+              : 'inline-block py-1 font-semibold text-gold-ink hover:text-gold-600'
           }
         >
           {link.label}

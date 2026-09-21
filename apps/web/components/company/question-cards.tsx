@@ -10,7 +10,7 @@ export function QuestionCards({ items }: { items: readonly { title: string; body
   return (
     <ul className={`grid gap-5 lg:gap-6 ${columns}`}>
       {items.map((item, index) => (
-        <li key={item.title} className="rounded-2xl border border-line bg-white p-7" {...reveal(index)}>
+        <li key={item.title} className="border border-hairline bg-canvas-raised p-7" {...reveal(index)}>
           <h3 className="font-display text-[19px] leading-snug font-bold text-ink">{item.title}</h3>
           <p className="mt-3 text-[15.5px] leading-relaxed">{item.body}</p>
         </li>

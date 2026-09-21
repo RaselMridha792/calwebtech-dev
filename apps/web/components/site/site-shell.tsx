@@ -5,14 +5,14 @@ import { AnchorScroll } from '../motion/anchor-scroll';
 import { RevealObserver } from '../motion/reveal-observer';
 import { JsonLd } from '../seo/json-ld';
 import { ConversionBand } from './conversion-band';
+import { HeaderScrollState } from './header-scroll';
 import { FloatingCta } from './floating-cta';
 import { SiteFooter } from './site-footer';
 import { SiteHeader } from './site-header';
 import { SkipLink } from './skip-link';
-import { UtilityBar } from './utility-bar';
 
 /**
- * Everything around a site page: skip link, utility bar, header, the page in `<main>`,
+ * Everything around a site page: skip link, header, the page in `<main>`,
  * the closing conversion band, footer, floating call to action, the Organization node and
  * the two motion helpers. Rendered by `app/(marketing)/(site)/layout.tsx`, and by pages
  * outside that layout that need the same frame, such as `app/not-found.tsx`.
@@ -21,7 +21,7 @@ export function SiteShell({ chrome, children }: { chrome: SiteChromeView; childr
   return (
     <>
       <SkipLink />
-      <UtilityBar chrome={chrome} />
+      <HeaderScrollState />
       <SiteHeader chrome={chrome} />
       <main id="main">{children}</main>
       <ConversionBand band={chrome.conversionBand} />

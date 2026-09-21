@@ -211,7 +211,7 @@ describe('buildSiteChrome', () => {
     ]);
   });
 
-  it('closes pages with the consultation copy and the header calls to action', () => {
+  it('closes pages with the consultation copy, and falls back to the bar for its second action', () => {
     const { conversionBand, header, floatingCta } = buildSiteChrome(sources());
     expect(conversionBand).toMatchObject({
       heading: 'Test book heading',
@@ -219,7 +219,22 @@ describe('buildSiteChrome', () => {
       primaryCta: { label: 'Book a call', href: '/contact/' },
       secondaryCta: { label: 'Estimate', href: '/#estimate' },
     });
-    expect(header.links.map((item) => item.href)).toEqual(['/technology/', '/pricing/']);
+    // Pricing lives in the Resources menu now, so the bar carries one plain link.
+    expect(header.links.map((item) => item.href)).toEqual(['/technology/']);
     expect(floatingCta).toEqual({ label: 'Start a project', href: '/contact/' });
+  });
+
+  it('lets the closing band set its own second action, so the bar can drop one', () => {
+    const base = sources();
+    const { conversionBand, header } = buildSiteChrome({
+      ...base,
+      content: {
+        ...base.content,
+        header: { ...base.content.header, secondaryCta: null },
+        book: { ...base.content.book, secondaryCta: { label: 'Instant estimate', href: '/cost-calculator/' } },
+      },
+    });
+    expect(header.secondaryCta).toBeNull();
+    expect(conversionBand.secondaryCta).toEqual({ label: 'Instant estimate', href: '/cost-calculator/' });
   });
 });

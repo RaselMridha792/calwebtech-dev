@@ -24,7 +24,7 @@ import { formatArticleDate, wasUpdated } from './dates';
 /** The article's cover photograph, beside the H1 and the answer block. */
 export function ArticleCover({ image }: { image: Image }) {
   return (
-    <div className="relative aspect-video overflow-hidden rounded-2xl border border-line bg-mist">
+    <div className="relative aspect-video overflow-hidden border border-hairline bg-canvas-sunken">
       <ResponsiveImage
         src={image.src}
         alt={image.alt}
@@ -85,7 +85,7 @@ export function ArticleMeta({ view }: { view: InsightsArticleView }) {
 export function ArticleTakeaways({ takeaways, label }: { takeaways: readonly string[]; label: string }) {
   if (takeaways.length === 0) return null;
   return (
-    <aside aria-labelledby="article-takeaways-label" className="rounded-2xl border border-line bg-mist2 p-7">
+    <aside aria-labelledby="article-takeaways-label" className="border border-hairline bg-canvas-raised p-7">
       <p id="article-takeaways-label" className="font-display text-[17px] font-extrabold text-ink">
         {label}
       </p>
@@ -100,7 +100,7 @@ export function ArticleTakeaways({ takeaways, label }: { takeaways: readonly str
 export function ArticleToc({ items, label }: { items: readonly ArticleHeading[]; label: string }) {
   if (items.length === 0) return null;
   return (
-    <nav aria-labelledby="article-toc-label" className="rounded-2xl border border-line bg-mist2 p-6 lg:sticky lg:top-28">
+    <nav aria-labelledby="article-toc-label" className="border border-hairline bg-canvas-raised p-6 lg:sticky lg:top-28">
       <p id="article-toc-label" className="font-display text-[15px] font-extrabold text-ink">
         {label}
       </p>
@@ -122,7 +122,7 @@ export function SubscribeBlock({ copy, children }: { copy: InsightsArticleCopy['
   return (
     <aside
       aria-labelledby="article-subscribe-label"
-      className="mt-14 rounded-2xl border border-line bg-linear-to-br from-mist2 via-white to-mist p-7 lg:p-9"
+      className="mt-14 border border-hairline bg-canvas p-7 lg:p-9"
     >
       <p id="article-subscribe-label" className="font-display text-[21px] leading-snug font-extrabold text-ink">
         {copy.heading}
@@ -139,8 +139,8 @@ export function ServiceCallToAction({ view }: { view: InsightsArticleView }) {
   if (!service) return null;
   const { serviceCta } = view.copy;
   return (
-    <aside aria-labelledby="article-service-label" className="mt-14 rounded-2xl border border-line bg-white p-7 shadow-panel lg:p-9">
-      <p className="text-[13.5px] font-semibold text-primary">{serviceCta.eyebrow}</p>
+    <aside aria-labelledby="article-service-label" className="mt-14 border border-hairline bg-canvas-raised p-7  lg:p-9">
+      <p className="text-[13.5px] font-semibold text-gold-ink">{serviceCta.eyebrow}</p>
       <p id="article-service-label" className="mt-2 font-display text-[21px] leading-snug font-extrabold text-ink">
         {service.title}
       </p>
@@ -149,14 +149,14 @@ export function ServiceCallToAction({ view }: { view: InsightsArticleView }) {
       <div className="mt-6 flex flex-wrap gap-3">
         <a
           href={servicePath(service.slug)}
-          className="inline-flex h-12 items-center rounded-xl bg-primary px-6 text-[15.5px] font-semibold text-white hover:bg-primaryd"
+          className="inline-flex h-12 items-center bg-navy-900 px-6 text-[15.5px] font-semibold text-ink-invert hover:bg-navy-700"
         >
           {serviceCta.linkLabel}
           <span className="sr-only">{`: ${service.title}`}</span>
         </a>
         <a
           href={serviceCta.contactCta.href}
-          className="inline-flex h-12 items-center rounded-xl border border-line px-6 text-[15.5px] font-semibold text-ink hover:border-ink hover:bg-mist2"
+          className="inline-flex h-12 items-center border border-hairline px-6 text-[15.5px] font-semibold text-ink hover:border-ink hover:bg-canvas-raised"
         >
           {serviceCta.contactCta.label}
         </a>
@@ -169,7 +169,7 @@ export function ServiceCallToAction({ view }: { view: InsightsArticleView }) {
 export function AuthorBlock({ author, label }: { author: InsightsAuthor | null; label: string }) {
   if (!author) return null;
   return (
-    <aside aria-labelledby="article-author-label" className="mt-14 rounded-2xl border border-line bg-mist2 p-7">
+    <aside aria-labelledby="article-author-label" className="mt-14 border border-hairline bg-canvas-raised p-7">
       <p id="article-author-label" className="font-display text-[15px] font-extrabold text-ink">
         {label}
       </p>
@@ -191,7 +191,7 @@ export function AuthorBlock({ author, label }: { author: InsightsAuthor | null; 
           {author.credentials.length > 0 ? (
             <ul className="mt-4 flex flex-wrap gap-2 text-[13.5px]">
               {author.credentials.map((credential) => (
-                <li key={credential} className="rounded-md border border-line bg-white px-2.5 py-1 text-ink">
+                <li key={credential} className="border border-hairline bg-canvas-raised px-2.5 py-1 text-ink">
                   {credential}
                 </li>
               ))}

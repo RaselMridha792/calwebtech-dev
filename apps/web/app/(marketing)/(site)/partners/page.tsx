@@ -45,7 +45,7 @@ export default async function PartnersPage() {
               id="independence-heading"
               title={content.independence.heading}
               intro={content.independence.intro}
-              className=""
+             
             />
           </div>
           <div className="space-y-5 text-[17px] leading-relaxed lg:col-span-7" {...reveal(1)}>

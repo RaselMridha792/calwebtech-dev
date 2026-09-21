@@ -20,7 +20,7 @@ export function Story({ story }: { story: CompanyAboutView['content']['story'] }
           </div>
         </div>
         {story.image ? (
-          <div className="relative aspect-[4/3] max-w-full overflow-hidden rounded-2xl bg-mist lg:col-span-5 lg:mt-3" {...reveal(1)}>
+          <div className="relative aspect-[4/3] max-w-full overflow-hidden bg-canvas-sunken lg:col-span-5 lg:mt-3" {...reveal(1)}>
             <ResponsiveImage
               src={story.image.src}
               alt={story.image.alt}

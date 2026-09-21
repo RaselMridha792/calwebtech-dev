@@ -49,11 +49,10 @@ export function NotFoundPage({ view: stored }: { view: StaticNotFoundPageView | 
   return (
     <>
       <title>{seoTitle(view.title)}</title>
-      <section className="relative overflow-hidden border-b border-line bg-linear-to-br from-white via-mist2 to-mist">
-        <div className="grid-lines absolute inset-0 opacity-60" aria-hidden="true" />
+      <section className="relative overflow-hidden border-b border-hairline bg-canvas">
         <div className="shell relative grid gap-12 pt-12 pb-16 lg:grid-cols-12 lg:gap-16 lg:pt-16 lg:pb-24">
           <div className="lg:col-span-7">
-            <p className="text-[14px] font-semibold text-primary">{view.eyebrow}</p>
+            <p className="text-[14px] font-semibold text-gold-ink">{view.eyebrow}</p>
             <h1 className="mt-5 font-display text-[38px] leading-[1.05] font-extrabold text-ink sm:text-[50px]">
               {view.title}
             </h1>
@@ -61,11 +60,11 @@ export function NotFoundPage({ view: stored }: { view: StaticNotFoundPageView | 
             <SiteSearch copy={view.search} />
           </div>
           <div className="self-end lg:col-span-5">
-            <div className="rounded-2xl border border-line bg-white p-7 shadow-panel sm:p-8">
+            <div className="border border-hairline bg-canvas-raised p-7 sm:p-8">
               <h2 className="font-display text-[22px] font-extrabold text-ink">{help.heading}</h2>
               <p className="mt-3 text-[15.5px] leading-relaxed">{help.body}</p>
               {view.contact ? (
-                <div className="mt-6 border-t border-line pt-5">
+                <div className="mt-6 border-t border-hairline pt-5">
                   <ContactLinks contact={view.contact} phoneLabel="Phone" emailLabel="Email" />
                 </div>
               ) : null}

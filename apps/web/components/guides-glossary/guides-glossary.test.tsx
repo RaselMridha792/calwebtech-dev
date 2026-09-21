@@ -183,8 +183,8 @@ describe('/glossary/<term>/', () => {
     expect(markup).toContain('id="example"');
     expect(markup).toContain('href="/services/ai-search-visibility/"');
     expect(markup).toContain('Last updated 15 September 2026');
-    // The result colour is reserved for the outcome figure.
-    expect(markup).toMatch(/text-result[^>]*>\+?1\.4s/);
+    // The accent is reserved for the outcome figure.
+    expect(markup).toMatch(/text-gold-ink[^>]*>\+?1\.4s/);
   });
 
   it('carries the DefinedTerm node inside the glossary set', async () => {

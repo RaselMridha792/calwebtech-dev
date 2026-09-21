@@ -55,7 +55,7 @@ function writeAttribution(input: HTMLInputElement | null): void {
 }
 
 const controlClass =
-  'w-full rounded-lg border border-line bg-white text-ink placeholder:text-body/60 focus:border-primary aria-invalid:border-danger';
+  'w-full  border border-hairline bg-canvas-raised text-ink placeholder:text-ink-muted/60 focus:border-gold-ink aria-invalid:border-danger';
 
 interface FieldProps {
   formId: string;
@@ -169,7 +169,7 @@ export function LeadForm(props: LeadFormProps) {
         className={variant === 'hero' ? 'p-7' : props.className}
       >
         <p className="font-display text-[22px] font-extrabold text-ink">{success.heading}</p>
-        <p className="mt-3 text-[15.5px] leading-relaxed text-body">{success.body}</p>
+        <p className="mt-3 text-[15.5px] leading-relaxed text-ink-muted">{success.body}</p>
       </div>
     );
   }
@@ -300,7 +300,7 @@ export function LeadForm(props: LeadFormProps) {
                 {props.serviceOptions.map((option) => (
                   <label
                     key={option}
-                    className="inline-flex h-10 cursor-pointer items-center rounded-lg border border-line px-4 text-[14px] hover:border-ink has-checked:border-primary has-checked:bg-primary/5 has-checked:font-semibold has-checked:text-ink has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-primary"
+                    className="inline-flex h-10 cursor-pointer items-center border border-hairline px-4 text-[14px] hover:border-ink has-checked:border-gold-ink has-checked:bg-navy-500/5 has-checked:font-semibold has-checked:text-ink has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-primary"
                   >
                     <input
                       type="checkbox"
@@ -356,15 +356,15 @@ export function LeadForm(props: LeadFormProps) {
         disabled={busy}
         className={
           hero
-            ? 'h-14 w-full rounded-xl bg-primary text-[16px] font-semibold text-white shadow-cta hover:bg-primaryd disabled:opacity-70'
-            : 'mt-7 inline-flex h-14 w-full items-center justify-center rounded-xl bg-primary px-8 text-[16px] font-semibold text-white hover:bg-primaryd disabled:opacity-70 sm:w-auto'
+            ? 'h-14 w-full  bg-navy-900 text-[16px] font-semibold text-ink-invert  hover:bg-navy-700 disabled:opacity-70'
+            : 'mt-7 inline-flex h-14 w-full items-center justify-center  bg-navy-900 px-8 text-[16px] font-semibold text-ink-invert hover:bg-navy-700 disabled:opacity-70 sm:w-auto'
         }
       >
         {busy ? 'Sending…' : props.submitLabel}
       </button>
 
       {hero && props.assurances && props.assurances.length > 0 ? (
-        <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1 pt-1 text-[12.5px] text-body">
+        <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1 pt-1 text-[12.5px] text-ink-muted">
           {props.assurances.map((assurance, index) => (
             <li key={assurance} className="flex items-center gap-1.5">
               {index === 0 ? <ShieldIcon className="h-3.5 w-3.5" /> : null}
