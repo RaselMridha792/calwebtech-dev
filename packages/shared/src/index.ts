@@ -1,5 +1,6 @@
 export * from './app-env';
 export * from './admin-leads';
+export * from './admin-ops';
 export * from './auth';
 export * from './calculator';
 export * from './email-jobs';
