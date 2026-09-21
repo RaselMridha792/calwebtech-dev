@@ -128,7 +128,7 @@ hairline / hairline-strong / hairline-gold   scrim / scrim-strong
   gold behind text, never more than three gold elements in one viewport.
 - Display face: Archivo. Body face: Manrope. `meta` numerals: IBM Plex Mono. The admin
   keeps Plus Jakarta Sans and IBM Plex Sans, resolved inside `[data-theme='admin']`.
-- Content width 1320px with the `shell-brand` utility.
+- Content width 1320px with the `shell` utility: 24px gutters, 64px from 900px.
 - The logo is in `apps/web/public/brand` and rendered by `components/ui/logo.tsx`. Pick the
   file by the ground it sits on; never re-type the wordmark in a live font.
 - **Still on the old palette:** the tokens below `--color-ink` in `theme.css` (`primary`,
