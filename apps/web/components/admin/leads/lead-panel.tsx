@@ -329,7 +329,7 @@ function submissionRows(lead: AdminLeadDetail): [string, string][] {
       ];
     case 'CONTACT':
       return [
-        ['Enquiry type', answer('enquiryType')],
+        ['Enquiry type', lead.enquiryType?.name ?? '—'],
         ['Message', lead.message ?? '—'],
         ['Services', lead.serviceInterest.join(', ') || '—'],
       ];

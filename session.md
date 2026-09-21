@@ -1,8 +1,53 @@
 # Session handoff: Calwebtech platform
 
-Last updated 2026-09-18. Written so another developer can pick up the work without the
+Last updated 2026-09-21. Written so another developer can pick up the work without the
 chat history. Everything described here is merged into `main` on
 https://github.com/RaselMridha792/calwebtech-dev unless a branch is named.
+
+## Update, 2026-09-21
+
+**Production is live** at https://calwebtech.duckdns.org on a Hostinger VPS, and the admin
+exists. Three deploys happened: the snapshot launch (PR #13), the admin's first milestone
+(PR #14) and the operations screens (PR #15).
+
+The server is much bigger than `docs/11` assumes: **32 GB, 8 vCPU, 387 GB, Ubuntu 26.04**
+with Docker preinstalled. The "4 GB runs one stack" constraint does not apply to it —
+staging and production could both live here. Bootstrap needed `ALLOW_OTHER_OS=true`, and
+`known_hosts_line()` had to be fixed: from OpenSSH 10 `ssh-keyscan` writes its banner to
+stdout, so the script had been printing a `VPS_KNOWN_HOSTS` with no host key in it.
+
+**The admin** (`docs/12-admin-dashboard.md`) covers M1 and M2: sign-in, the leads inbox,
+settings, the audit log, and team and roles. Identity is the API's — Argon2id, session
+tokens stored only as a SHA-256 digest, `__Host-` cookies, CSRF on every mutation, and a
+guard that refuses any route which has not declared its module. The inbox keeps its whole
+state in the URL, so the table is a server component and the screen costs 6.6 kB of own
+JavaScript: **the budget exemption `docs/12` asks the owner to decide is not needed.**
+
+Accounts are made with `node dist/admin-cli.js create-owner` inside the api container,
+which refuses once any user exists. There is no Node on the VPS host and there should not
+be — nothing is ever built on that box.
+
+**Backups run nightly at 03:00**, and the restore drill has been done. The repository is
+`/backups/production` on the host's `backups` volume, which is real protection against a
+bad migration or a wrong DELETE and **no protection against losing the server**. Moving it
+off-site is one env value plus the provider keys; the schedule, retention and restore path
+do not change. `RESTIC_PASSWORD` is in the server's env file and must also be kept
+somewhere else — losing it loses every backup.
+
+The drill found that the restore command documented in three places could never have
+worked: the image's entrypoint is `backup-entrypoint.sh`, so naming `restore.sh` as the
+command passed it as an argument and printed a usage line. `--entrypoint` is now in the
+docs and in the script's own error message.
+
+Still off: **email**. `EMAIL_TRANSPORT=log`, so a lead is stored and its two emails are
+written to the worker's log rather than sent. The owner has no access yet to the domain
+that would be used for sending. Until then the team screen shows a generated first
+password once instead of sending an invitation.
+
+Every page is still `noindex`, because the proof on them is the demo's invented proof, and
+content still comes from the snapshots (`CONTENT_SOURCE=snapshot`) — the database holds no
+services, posts or projects. Moving a family across is M4, and that is what the owner
+actually asked for: publishing a service without a deploy.
 
 ## Update, 2026-09-19
 

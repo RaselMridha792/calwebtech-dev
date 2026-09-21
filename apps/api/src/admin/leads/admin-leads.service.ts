@@ -171,6 +171,7 @@ export class AdminLeadsService {
 
     return {
       ...toListItem(lead),
+      enquiryType: await this.enquiryTypeOf(lead.answers),
       phone: lead.phone,
       message: lead.message,
       timeline: lead.timeline,
@@ -358,6 +359,19 @@ export class AdminLeadsService {
         .join(',');
     });
     return [header.join(','), ...lines].join('\r\n');
+  }
+
+  /**
+   * The enquiry type a contact form routed to. Only its slug is stored, beside the lead in
+   * `answers`, so the name comes from the row it points at — and null when that row has
+   * since been renamed away or removed.
+   */
+  private async enquiryTypeOf(answers: unknown): Promise<{ slug: string; name: string } | null> {
+    if (!answers || typeof answers !== 'object' || !('enquiryType' in answers)) return null;
+    const slug = (answers as { enquiryType?: unknown }).enquiryType;
+    if (typeof slug !== 'string' || slug.length === 0) return null;
+    const row = await this.prisma.client.enquiryType.findUnique({ where: { slug }, select: { slug: true, name: true } });
+    return row ?? { slug, name: slug };
   }
 
   /**

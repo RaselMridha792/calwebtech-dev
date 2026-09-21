@@ -225,10 +225,6 @@
               "href": "/work/"
             },
             {
-              "label": "Demo showcase",
-              "href": "/demos/"
-            },
-            {
               "label": "Before and after",
               "href": "/before-and-after/"
             },
@@ -345,10 +341,6 @@
             {
               "label": "Awards and recognition",
               "href": "/awards/"
-            },
-            {
-              "label": "Careers",
-              "href": "/careers/"
             },
             {
               "label": "News",
@@ -618,10 +610,6 @@
           {
             "label": "Pricing",
             "href": "/pricing/"
-          },
-          {
-            "label": "Careers",
-            "href": "/careers/"
           },
           {
             "label": "News",

@@ -135,6 +135,11 @@ services:
     env_file: ["${APP_ENV_FILE:-../.env}"]
     volumes:
       - media:/media:ro
+      # Writable so restic can keep a repository on this host while no off-site provider is
+      # chosen. An on-host repository survives a bad migration, a wrong DELETE and a
+      # corrupted table; it does not survive losing the server, which is what
+      # RESTIC_REPOSITORY pointing off-site is for. Harmless once it does.
+      - backups:/backups
     depends_on:
       db: { condition: service_healthy }
     # `internal` reaches db; `egress` reaches the off-site repository, which `internal`
@@ -191,6 +196,7 @@ volumes:
   redisdata:
   media:
   uptimedata:
+  backups:
 
 networks:
   # Created by infra/proxy and shared by every stack. Only services Traefik routes to join it.
