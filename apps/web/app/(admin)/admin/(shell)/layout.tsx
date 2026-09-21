@@ -52,7 +52,7 @@ const GROUPS: { label: string; routes: ModuleRoute[] }[] = [
   {
     label: 'Content',
     routes: [
-      { module: 'content', href: '/admin/content/', label: 'All types', icon: <ContentIcon /> },
+      { module: 'content', href: '/admin/content/', label: 'Services', icon: <ContentIcon /> },
       { module: 'media', href: '/admin/media/', label: 'Media', icon: <MediaIcon /> },
       { module: 'pageSections', href: '/admin/page-sections/', label: 'Page sections', icon: <SectionsIcon /> },
     ],
