@@ -85,6 +85,11 @@ export function CloseIcon(props: IconProps) {
   return <Glyph {...props} d="M4 4l8 8M12 4l-8 8" />;
 }
 
+/** Points down when the group it heads is open, and right when it is closed. */
+export function DisclosureIcon({ open, ...props }: IconProps & { open: boolean }) {
+  return <Glyph {...props} strokeWidth={1.6} d={open ? 'M4.5 6.5 8 10l3.5-3.5' : 'M6.5 4.5 10 8l-3.5 3.5'} />;
+}
+
 export function SortIcon({ direction, ...props }: IconProps & { direction: 'asc' | 'desc' }) {
   return <Glyph {...props} strokeWidth={1.8} d={direction === 'asc' ? 'M4.5 9.5 8 6l3.5 3.5' : 'M4.5 6.5 8 10l3.5-3.5'} />;
 }

@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useId, useState, type ReactNode } from 'react';
-import { CloseIcon, MenuIcon } from './icons';
+import { CloseIcon, DisclosureIcon, MenuIcon } from './icons';
 
 /**
  * The module navigation, and the button that opens it under 1024px.
@@ -44,7 +44,12 @@ export function Sidebar({
 }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  // Folded groups, by label. The sidebar lives in the layout, so this outlives a
+  // navigation; a reload starts everything open again, which is the honest default for a
+  // menu nobody has touched yet.
+  const [folded, setFolded] = useState<readonly string[]>([]);
   const drawerId = useId();
+  const groupId = useId();
   const close = (): void => {
     setOpen(false);
   };
@@ -90,20 +95,39 @@ export function Sidebar({
         </div>
 
         <div className="flex-1 overflow-y-auto px-2 pt-3 pb-4">
-          {groups.map((group) => (
-            <div key={group.label} className="mb-4">
-              <p className="px-3 pt-1.5 pb-2 text-[11px] font-bold tracking-[0.14em] text-admin-muted uppercase">
-                {group.label}
-              </p>
-              <ul className="flex flex-col gap-0.5">
-                {group.items.map((item) => (
-                  <li key={item.href}>
-                    <NavLink item={item} current={isCurrent(item.href)} onFollow={close} />
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {groups.map((group) => {
+            const shown = !folded.includes(group.label);
+            const listId = `${groupId}-${group.label.replace(/\s+/g, '-').toLowerCase()}`;
+            return (
+              <div key={group.label} className="mb-4">
+                <button
+                  type="button"
+                  aria-expanded={shown}
+                  aria-controls={listId}
+                  onClick={() => {
+                    setFolded((current) =>
+                      current.includes(group.label)
+                        ? current.filter((label) => label !== group.label)
+                        : [...current, group.label],
+                    );
+                  }}
+                  className="flex w-full items-center justify-between rounded-[4px] px-3 pt-1.5 pb-2 text-[11px] font-bold tracking-[0.14em] text-admin-muted uppercase hover:text-admin-navink"
+                >
+                  {group.label}
+                  <DisclosureIcon open={shown} className="size-3.5 shrink-0 opacity-70" />
+                </button>
+                {shown ? (
+                  <ul id={listId} className="flex flex-col gap-0.5">
+                    {group.items.map((item) => (
+                      <li key={item.href}>
+                        <NavLink item={item} current={isCurrent(item.href)} onFollow={close} />
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+              </div>
+            );
+          })}
         </div>
 
         <div className="shrink-0 border-t border-admin-line2 px-2 pt-2 pb-3.5">
