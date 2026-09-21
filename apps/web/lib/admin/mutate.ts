@@ -82,6 +82,31 @@ export async function adminMutate<T>(
   return (await response.json()) as T;
 }
 
+/**
+ * A file upload. Multipart, so the body is `FormData` and the content type is left to the
+ * browser — setting it by hand omits the boundary and the server sees one unparseable blob.
+ * Everything else, including the CSRF header, is the same as `adminMutate`.
+ */
+export async function adminUpload<T>(path: string, form: FormData): Promise<T> {
+  const response = await fetch(`/api${path}`, {
+    method: 'POST',
+    credentials: 'same-origin',
+    headers: { [CSRF_HEADER]: csrfToken() },
+    body: form,
+  });
+
+  if (response.status === 401) {
+    // eslint-disable-next-line @next/next/no-location-assign-relative-destination
+    window.location.assign('/admin/login/');
+    throw new MutationError(401, 'Your session has ended. Sign in again.');
+  }
+  if (!response.ok) {
+    const body = (await response.json().catch(() => ({}))) as ApiErrorBody;
+    throw new MutationError(response.status, body.message ?? messageFor(response.status, body.error), body.fieldErrors ?? {});
+  }
+  return (await response.json()) as T;
+}
+
 /** Plain words for the codes the API answers with, so no screen has to invent them. */
 function messageFor(status: number, code: string | undefined): string {
   if (code === 'csrf_failed') return 'That request could not be verified. Reload the page and try again.';

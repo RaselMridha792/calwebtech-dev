@@ -2,7 +2,9 @@ import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { AdminLeadsModule } from './admin/leads/admin-leads.controller';
+import { AdminMediaModule } from './admin/media/admin-media.controller';
 import { AdminOpsModule } from './admin/ops/admin-ops.controller';
+import { AdminServicesModule } from './admin/services/admin-services.controller';
 import { AuthModule } from './auth/auth.controller';
 import { EnvModule } from './config/env';
 import { HealthController } from './health/health.controller';
@@ -31,7 +33,9 @@ import { FormsModule } from './forms/forms.controller';
     ThrottlerModule.forRoot([{ name: 'default', ttl: 60_000, limit: 120 }]),
     AuthModule,
     AdminLeadsModule,
+    AdminMediaModule,
     AdminOpsModule,
+    AdminServicesModule,
     LandingPagesModule,
     HomePageModule,
     LeadsModule,

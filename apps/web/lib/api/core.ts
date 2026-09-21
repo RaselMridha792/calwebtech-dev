@@ -24,6 +24,33 @@ export function usesSnapshots(): boolean {
   return !hasApi() || process.env.CONTENT_SOURCE?.trim() === 'snapshot';
 }
 
+/**
+ * Families that read the database first and fall back to their snapshot (decision 44).
+ *
+ * `CONTENT_SOURCE=snapshot` is all-or-nothing, which is why moving one family across used
+ * to mean moving all of them. A family named here asks the API for a record, and renders
+ * the committed snapshot only when the API has no such record — so a service created in the
+ * admin is live at once, while the ten that were never imported keep rendering exactly as
+ * they do today.
+ *
+ * Two sources at the same time is a transition, not a destination: a family leaves this
+ * list once its records are all in the database, and `CONTENT_SOURCE=api` takes over.
+ */
+export function databaseFirstFamilies(): Set<string> {
+  const raw = process.env.CONTENT_DATABASE_FIRST?.trim();
+  if (!raw || !hasApi()) return new Set();
+  return new Set(
+    raw
+      .split(',')
+      .map((entry) => entry.trim())
+      .filter(Boolean),
+  );
+}
+
+export function isDatabaseFirst(family: string): boolean {
+  return databaseFirstFamilies().has(family);
+}
+
 export function apiUrl(path: string): string {
   const { API_INTERNAL_URL } = apiEnvSchema.parse(process.env);
   return `${API_INTERNAL_URL.replace(/\/$/, '')}${path}`;
@@ -68,4 +95,28 @@ export async function findView<Schema extends z.ZodType>(
     throw new Error(`API responded ${String(response.status)} for ${path}`);
   }
   return schema.parse(await response.json());
+}
+
+/**
+ * A record from the database, falling back to the snapshot when the database has no such
+ * one. For a family in `CONTENT_DATABASE_FIRST` only; every other family keeps the
+ * all-or-nothing behaviour of `findView`.
+ *
+ * A 404 from the API is the fallback signal, not an error: it means "the database does not
+ * have this record", which during the transition is the normal case.
+ */
+export async function findViewDatabaseFirst<Schema extends z.ZodType>(
+  family: string,
+  path: string,
+  schema: Schema,
+  snapshot: unknown,
+): Promise<z.output<Schema> | null> {
+  if (!isDatabaseFirst(family)) return findView(path, schema, snapshot);
+
+  const response = await fetch(apiUrl(path), { cache: 'no-store' });
+  if (response.ok) return schema.parse(await response.json());
+  if (response.status === 404 || response.status === 400) {
+    return snapshot === null || snapshot === undefined ? null : schema.parse(snapshot);
+  }
+  throw new Error(`API responded ${String(response.status)} for ${path}`);
 }
