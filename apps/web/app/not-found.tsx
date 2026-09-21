@@ -2,7 +2,7 @@ import { SITE_ROUTES } from '@calwebtech/shared';
 import { RevealObserver } from '@/components/motion/reveal-observer';
 import { SkipLink } from '@/components/site/skip-link';
 import { NotFoundPage } from '@/components/static/not-found';
-import { Wordmark } from '@/components/ui/brand';
+import { Logo } from '@/components/ui/logo';
 import { getStaticNotFound } from '@/lib/api/static';
 
 /**
@@ -31,7 +31,7 @@ export default async function NotFound() {
       <header className="border-b border-line bg-white">
         <div className="shell flex h-20 items-center justify-between gap-6">
           <a href={SITE_ROUTES.home} aria-label="Calwebtech home" className="inline-block">
-            <Wordmark />
+            <Logo tone="light" height={34} />
           </a>
           <a
             href={SITE_ROUTES.contact}

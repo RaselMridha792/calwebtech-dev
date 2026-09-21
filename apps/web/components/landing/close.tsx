@@ -1,6 +1,7 @@
 import type { FinalPointIcon, LandingPageView } from '@calwebtech/shared';
 import type { ReactNode } from 'react';
-import { BackdropImage, Wordmark } from '../ui/brand';
+import { BackdropImage } from '../ui/brand';
+import { Logo } from '../ui/logo';
 import { CalendarIcon, PhoneIcon, ShieldIcon, TickIcon } from '../ui/icons';
 import { reveal } from '../ui/primitives';
 import { FaqAccordion } from './faq-accordion';
@@ -163,7 +164,7 @@ export function LandingFooter({ contact }: { contact: LandingPageView['contact']
   return (
     <footer className="bg-ink py-12 text-white/60">
       <div className="shell-narrow flex flex-wrap items-center justify-between gap-8">
-        <Wordmark tone="light" />
+        <Logo tone="dark" layout="horizontal" height={46} />
         <p className="text-[14px] leading-relaxed">
           <a href={`tel:${contact.phoneE164}`} className="hover:text-white">
             {contact.phone}

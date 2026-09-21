@@ -100,6 +100,38 @@ Where the two snapshots spell one name differently — `headless CMS` against `H
 `vector search` against `Vector search` — the row takes the service page's spelling, so no
 approved service page changes. The technology page keeps its own until it moves, and either
 is editable in the admin. Worth settling in the snapshots.
+## 46. The site is being rebuilt on the 2026 brand
+
+*2026-09-22.* The owner had a full design system drawn — cream ground, navy core,
+champagne accent, full-bleed photographic plates, Archivo display type — and asked for it
+to be implemented. It replaces the white-and-cobalt palette the site was built on, and
+with it the two approved mockups in `reference/`: those record the design this supersedes.
+The words do not change. The owner's instruction was that the content stays exactly as it
+is and only the dressing moves, so no copy is rewritten by this work.
+
+The tokens are added beside the old ones rather than in place of them, because the
+dashboard is built on `primary`, `result`, `danger` and the whole `--color-admin-*` set,
+and because 88 marketing components cannot move in one commit. The old tokens go family by
+family as each one is redressed; the admin keeps its own for good, including its faces —
+Archivo's tracking is drawn for a 112px headline, not a 13px table row, so
+`[data-theme='admin']` resolves `--font-display` and `--font-sans` back to the pair the
+dashboard was designed in, the same way it already resolves two colours.
+
+The logo arrived with the system. It is outlined paths with no live text, so the wordmark
+is never re-typed in a web font, and there is a file per ground rather than one file
+recoloured by CSS: champagne is 1.8:1 on cream, so the light lockups carry a deeper
+`gold-600` that the type palette has no use for.
+
+`next/image` was the first thing tried for it and the budget refused it: the component
+costs about 12 kB of client runtime, the mark is in the header of every page, and initial
+JavaScript went from 139.9 kB to 152.1 kB against a 150 kB gate — for a vector the
+optimiser cannot improve. It is a plain `img` with its intrinsic size, which is 0 kB and
+shifts nothing.
+
+The five plates the system ships are **generated placeholders, not licensed photography**.
+They fix the grade, the crop and the contrast floor; real commissioned shots at the same
+crop and duotone are needed before launch. The system's own `assets/plates/README.md`
+briefs each one.
 
 ## Open
 

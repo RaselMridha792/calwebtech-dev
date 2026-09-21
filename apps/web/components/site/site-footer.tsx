@@ -1,5 +1,6 @@
 import type { Link, SiteChromeView } from '@calwebtech/shared';
-import { BackdropImage, Wordmark } from '../ui/brand';
+import { BackdropImage } from '../ui/brand';
+import { Logo } from '../ui/logo';
 
 function FooterColumn({ title, links }: { title: string; links: Link[] }) {
   if (links.length === 0) return null;
@@ -34,7 +35,7 @@ export function SiteFooter({ chrome }: { chrome: SiteChromeView }) {
           <div className="lg:col-span-4">
             {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- next/link would add about 4 kB of framework runtime; a full navigation home is fine. */}
             <a href="/" aria-label="Calwebtech home" className="inline-block">
-              <Wordmark tone="light" />
+              <Logo tone="dark" layout="horizontal" height={46} />
             </a>
             <p className="mt-5 max-w-[38ch] text-[15px] leading-relaxed">{footer.blurb}</p>
           </div>

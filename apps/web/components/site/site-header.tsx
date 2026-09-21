@@ -1,8 +1,8 @@
 import type { Link, SiteChromeView } from '@calwebtech/shared';
 import type { ReactNode } from 'react';
 import { asPhrase } from '@/lib/text';
-import { Wordmark } from '../ui/brand';
 import { ChevronIcon } from '../ui/icons';
+import { Logo } from '../ui/logo';
 import { ResponsiveImage } from '../ui/responsive-image';
 import { MegaMenuState } from './mega-menu-state';
 
@@ -177,7 +177,7 @@ export function SiteHeader({ chrome, ctas }: { chrome: SiteChromeView; ctas?: He
       <div className="shell flex h-[76px] items-center justify-between">
         {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- next/link would add about 4 kB of framework runtime; a full navigation home is fine. */}
         <a href="/" className="shrink-0" aria-label="Calwebtech home">
-          <Wordmark />
+          <Logo tone="light" height={34} priority />
         </a>
 
         <nav className="hidden h-full items-center xl:flex" aria-label="Main">
