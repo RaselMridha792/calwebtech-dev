@@ -20,7 +20,7 @@
 #   "${COMPOSE[@]}" up -d backup                      start the schedule
 #   "${COMPOSE[@]}" run --rm backup once              one backup now
 #   "${COMPOSE[@]}" run --rm backup restic snapshots  list what is off-site
-#   "${COMPOSE[@]}" run --rm -e RESTORE_CONFIRM=yes backup /scripts/restore.sh latest
+#   "${COMPOSE[@]}" run --rm --entrypoint /scripts/restore.sh \n#     -e RESTORE_CONFIRM=yes backup latest
 #
 # Environment (infra/env/<stack>.env.example, "backups"):
 #   DATABASE_URL            the stack's database, host `db` on the internal network

@@ -14,6 +14,10 @@ ENV RESTIC_CACHE_DIR=/tmp/restic-cache \
     GOGC=20
 # Same uid as the api image, so whatever the api writes to the media volume is readable.
 RUN addgroup -S -g 1001 app && adduser -S -u 1001 -G app app
+# Owned by `app` in the image, because Docker gives a new named volume the ownership of the
+# directory it is mounted over. Without this the `backups` volume arrives owned by root and
+# a non-root restic cannot create its repository in it.
+RUN install -d -o app -g app /backups
 USER app
 ENTRYPOINT ["/scripts/backup-entrypoint.sh"]
 # The base image's CMD ["postgres"] would otherwise arrive as the entrypoint's first argument.

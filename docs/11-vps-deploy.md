@@ -283,7 +283,7 @@ drill (Task 6.4) goes into staging, never straight into production:
 
 ```
 $C stop web api worker
-$C run --rm -e RESTORE_CONFIRM=yes backup /scripts/restore.sh latest
+$C run --rm --entrypoint /scripts/restore.sh -e RESTORE_CONFIRM=yes backup latest
 $C run --rm api node dist/migrate.js
 $C up -d --wait web api worker
 ```

@@ -5,12 +5,17 @@
 #   restore.sh [snapshot-id|latest]      does nothing unless RESTORE_CONFIRM=yes
 #
 # Runs inside the backup image (infra/backup/Dockerfile) with the service's environment,
-# so it reaches the repository and the database exactly as the nightly backup does. From
-# the server, into staging:
+# so it reaches the repository and the database exactly as the nightly backup does.
+#
+# `--entrypoint` is not optional: the image's entrypoint is backup-entrypoint.sh, so naming
+# this script as the command would pass it as an argument to that one, which answers with
+# its usage line and exits 0. The first real drill, on 2026-09-21, is what found that.
+#
+# From the server, into staging:
 #
 #   docker compose -p calwebtech-staging --env-file /srv/calwebtech/env/staging.env \
 #     -f infra/docker-compose.yml --profile ops \
-#     run --rm -e RESTORE_CONFIRM=yes backup /scripts/restore.sh latest
+#     run --rm --entrypoint /scripts/restore.sh -e RESTORE_CONFIRM=yes backup latest
 #
 # Without RESTORE_CONFIRM it prints the snapshot it would restore and stops, which is the
 # safe way to look first.
@@ -65,7 +70,7 @@ restic snapshots "$id"
 
 if [ "${RESTORE_CONFIRM:-}" != yes ]; then
   echo "restore: refusing to continue. This replaces the current database with the snapshot above." >&2
-  echo "restore: re-run with RESTORE_CONFIRM=yes (docker compose ... run --rm -e RESTORE_CONFIRM=yes backup /scripts/restore.sh $TARGET)" >&2
+  echo "restore: re-run with RESTORE_CONFIRM=yes (docker compose ... run --rm --entrypoint /scripts/restore.sh -e RESTORE_CONFIRM=yes backup $TARGET)" >&2
   exit 1
 fi
 
