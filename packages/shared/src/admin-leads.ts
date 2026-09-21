@@ -259,6 +259,12 @@ export const adminLeadDetailSchema = adminLeadListItemSchema.extend({
   /** The calculator's eight answers, the brief's fields: whatever that form captured. */
   answers: z.unknown().nullable(),
   consentAt: z.iso.datetime().nullable(),
+  /**
+   * The routed enquiry type, resolved to its name. `answers` holds only the slug the form
+   * sent, and a panel showing `free-website-audit` where a person expects "Free website
+   * audit" is the sort of thing that makes an admin feel like a database viewer.
+   */
+  enquiryType: z.object({ slug: z.string(), name: z.string() }).nullable(),
   /** The canonical person, so three forms from one human read as one contact. */
   contact: z.object({ id: z.string(), name: z.string().nullable(), submissions: z.number().int() }).nullable(),
   attribution: adminLeadAttributionSchema.nullable(),
