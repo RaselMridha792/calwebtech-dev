@@ -21,7 +21,9 @@
     "@nestjs/core": "^11.1.0",
     "@nestjs/platform-express": "^11.1.0",
     "@nestjs/throttler": "6.5.0",
+    "@node-rs/argon2": "^2.2.1",
     "bullmq": "6.3.4",
+    "cookie-parser": "^1.4.7",
     "ioredis": "6.0.0",
     "prisma": "7.10.0",
     "reflect-metadata": "^0.2.2",
@@ -31,6 +33,7 @@
   "devDependencies": {
     "@calwebtech/config": "workspace:*",
     "@nestjs/cli": "11.0.24",
+    "@types/cookie-parser": "^1.4.10",
     "@types/express": "^5.0.0",
     "@types/node": "22.20.2",
     "eslint": "9.39.5",

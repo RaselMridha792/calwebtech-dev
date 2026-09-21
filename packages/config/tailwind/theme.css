@@ -32,6 +32,36 @@
   /* Form validation messages. 6.2:1 on white. */
   --color-danger: #b42318;
 
+  /*
+   * The admin's dark deep-navy surfaces (docs/12-admin-dashboard.md). The marketing site
+   * has no counterpart for most of these, because it has one ground and these are five
+   * steps of one: ground, sidebar, surface, sunken, and the mist step that marks a
+   * selected row or a status pill. Separation is by hairline and surface step, never a
+   * shadow, so the steps have to be distinguishable on their own.
+   */
+  --color-admin-ground: #071426;
+  --color-admin-sidebar: #081527;
+  --color-admin-surface: #0f2136;
+  --color-admin-sunken: #0a1a31;
+  --color-admin-hover: #13263e;
+  --color-admin-mist: #18304d;
+  --color-admin-line: #22395c;
+  /* The sidebar's own dividers, a step darker than the rest so the column reads apart. */
+  --color-admin-line2: #1c3354;
+  --color-admin-nav: #152c4a;
+  --color-admin-ink: #e9f0fa;
+  --color-admin-body: #9db2d0;
+  --color-admin-muted: #8ca1c0;
+  --color-admin-navink: #c8d6e8;
+  /* Primary is the same hue as the marketing site; only its companions change on dark. */
+  --color-admin-primaryh: #3d6dea;
+  --color-admin-link: #9cbbf9;
+  --color-admin-dot: #6f9bf7;
+  --color-admin-focus: #7fa5f5;
+  --color-admin-edge: #4e77e8;
+  /* The second half of the wordmark, dimmer than body text so the name reads as one. */
+  --color-admin-dim: #7d93b4;
+
   --font-display: var(--font-jakarta), system-ui, sans-serif;
   --font-sans: var(--font-plex), system-ui, sans-serif;
 
@@ -129,6 +159,20 @@
 @layer base {
   :root {
     --glow-teal: #0e9f87;
+  }
+}
+
+/*
+ * The admin resolves two tokens differently rather than renaming them. `#0e9f87` and
+ * `#b42318` are chosen for contrast on white and are unreadable on deep navy, but the
+ * utilities have to stay `text-result` and `text-danger`: the calwebtech/teal-usage rule
+ * matches on the token name, so an `admin-result` token would slip straight past the one
+ * rule that keeps teal to outcome figures and affirmative marks.
+ */
+@layer base {
+  [data-theme='admin'] {
+    --color-result: #25c3a6;
+    --color-danger: #ff8a80;
   }
 }
 
