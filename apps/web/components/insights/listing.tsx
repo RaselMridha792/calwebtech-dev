@@ -52,8 +52,8 @@ function cardMeta(article: InsightsArticleCard, readingTimeLabel: string): strin
 }
 
 const pillClass = (current: boolean) =>
-  `inline-flex h-10 items-center rounded-lg border px-4 text-[14.5px] ${
-    current ? 'border-primary bg-primary/5 font-semibold text-ink' : 'border-line text-body hover:border-ink hover:text-ink'
+  `inline-flex h-10 items-center  border px-4 text-[14.5px] ${
+    current ? 'border-gold-ink bg-navy-500/5 font-semibold text-ink' : 'border-hairline text-ink-muted hover:border-ink hover:text-ink'
   }`;
 
 /** The topics that have articles, each its own indexable page. */
@@ -87,9 +87,9 @@ export function TopicFilter({ view, current }: { view: InsightsIndexView; curren
 /** The article to read first, above the list, on the first page of the unfiltered index. */
 export function FeaturedArticle({ article, copy }: { article: InsightsArticleCard; copy: InsightsIndexCopy }) {
   return (
-    <article className="lift relative mt-10 grid overflow-hidden rounded-2xl border border-line bg-white lg:grid-cols-2" {...reveal()}>
+    <article className="lift relative mt-10 grid overflow-hidden border border-hairline bg-canvas-raised lg:grid-cols-2" {...reveal()}>
       {article.image ? (
-        <div className="relative aspect-video bg-mist lg:h-full">
+        <div className="relative aspect-video bg-canvas-sunken lg:h-full">
           {/* Not preloaded: the hero backdrop above it is the listing's LCP element (docs/09). */}
           <ResponsiveImage
             src={article.image.src}
@@ -101,9 +101,9 @@ export function FeaturedArticle({ article, copy }: { article: InsightsArticleCar
         </div>
       ) : null}
       <div className="flex flex-col justify-center p-7 lg:p-10">
-        <p className="text-[13px] font-semibold text-primary">{copy.featuredLabel}</p>
+        <p className="text-[13px] font-semibold text-gold-ink">{copy.featuredLabel}</p>
         <h3 className="mt-3 font-display text-[24px] leading-snug font-extrabold text-ink lg:text-[30px]">
-          <a href={insightsArticlePath(article.slug)} className="after:absolute after:inset-0 hover:text-primary">
+          <a href={insightsArticlePath(article.slug)} className="after:absolute after:inset-0 hover:text-gold-ink">
             {article.title}
           </a>
         </h3>
@@ -131,7 +131,7 @@ export function Pagination({
   const status = copy.pagination.status
     .replaceAll('{page}', String(page))
     .replaceAll('{pages}', String(pageCount));
-  const linkClass = 'inline-flex h-10 min-w-10 items-center justify-center rounded-lg border border-line px-3 text-[14.5px] hover:border-ink hover:text-ink';
+  const linkClass = 'inline-flex h-10 min-w-10 items-center justify-center  border border-hairline px-3 text-[14.5px] hover:border-ink hover:text-ink';
 
   return (
     <nav aria-label={copy.pagination.label} className="mt-12 flex flex-wrap items-center justify-between gap-5">
@@ -149,7 +149,7 @@ export function Pagination({
             <a
               href={insightsListPath(topic, number)}
               className={
-                number === page ? `${linkClass} border-primary bg-primary/5 font-semibold text-ink` : linkClass
+                number === page ? `${linkClass} border-gold-ink bg-navy-500/5 font-semibold text-ink` : linkClass
               }
               {...(number === page ? { 'aria-current': 'page' as const } : {})}
             >

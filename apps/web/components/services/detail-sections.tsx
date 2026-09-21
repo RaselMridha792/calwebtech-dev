@@ -13,9 +13,9 @@ export const PRICE_LABEL = 'Typical price';
 /** The starting price band under the hero's calls to action, on the dark hero. */
 export function HeroPriceBand({ price }: { price: NonNullable<Page['price']> }) {
   return (
-    <p className="mt-8 inline-flex flex-wrap items-baseline gap-x-3 gap-y-1 rounded-xl border border-white/15 bg-white/5 px-5 py-3.5">
-      <span className="text-[14px] text-white/70">{PRICE_LABEL}</span>
-      <span className="font-display text-[20px] leading-tight font-extrabold text-white">{price.label}</span>
+    <p className="mt-8 inline-flex flex-wrap items-baseline gap-x-3 gap-y-1 border border-ink-invert/15 bg-navy-900-invert/5 px-5 py-3.5">
+      <span className="text-[14px] text-ink-invert-muted">{PRICE_LABEL}</span>
+      <span className="font-display text-[20px] leading-tight font-extrabold text-ink-invert">{price.label}</span>
     </p>
   );
 }
@@ -27,15 +27,12 @@ export function ProblemSection({ problem, tone }: { problem: NonNullable<Page['p
       <SectionHeading id="situations-heading" title={problem.heading} intro={problem.intro} ground={groundOf(tone)} />
       <ol className="grid gap-5 md:grid-cols-3 lg:gap-6">
         {problem.situations.map((situation, index) => (
-          <li key={situation.title} className="flex flex-col rounded-2xl border border-line bg-white p-7" {...reveal(index)}>
-            <span
-              className="grid h-10 w-10 place-items-center rounded-lg bg-primary/8 font-display text-[15px] font-extrabold text-primary"
-              aria-hidden="true"
-            >
-              {String(index + 1)}
+          <li key={situation.title} className="flex flex-col border-t border-hairline pt-5" {...reveal(index)}>
+            <span className="meta text-gold-ink" aria-hidden="true">
+              {String(index + 1).padStart(2, '0')}
             </span>
-            <p className="mt-5 font-display text-[20px] leading-snug font-bold text-ink">{situation.title}</p>
-            <p className="mt-2.5 text-[15.5px] leading-relaxed">{situation.body}</p>
+            <p className="heading-md mt-4 text-ink">{situation.title}</p>
+            <p className="body-base mt-2.5 text-ink-muted">{situation.body}</p>
           </li>
         ))}
       </ol>
@@ -90,11 +87,11 @@ export function TechnologySection({ technology, tone }: { technology: NonNullabl
           {technology.items.map((item) => (
             <li
               key={item.name}
-              className={`rounded-xl border px-5 py-3.5 ${dark ? 'border-white/15 bg-white/5' : 'border-line bg-white'}`}
+              className={` border px-5 py-3.5 ${dark ? 'border-ink-invert/15 bg-navy-900-invert/5' : 'border-hairline bg-canvas-raised'}`}
             >
               <span className={`block font-display text-[16px] font-bold ${dark ? '' : 'text-ink'}`}>{item.name}</span>
               {item.category ? (
-                <span className={`block text-[13px] ${dark ? 'text-white/70' : ''}`}>{item.category}</span>
+                <span className={`block text-[13px] ${dark ? 'text-ink-invert-muted' : ''}`}>{item.category}</span>
               ) : null}
             </li>
           ))}
@@ -139,15 +136,15 @@ export function ComparisonSection({
         role="region"
         aria-label={`${comparison.heading} The table scrolls sideways.`}
         tabIndex={0}
-        className="overflow-x-auto rounded-2xl border border-line bg-white focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        className="overflow-x-auto border border-hairline bg-canvas-raised focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-primary"
         {...reveal(1)}
       >
         <table className="w-full min-w-[860px] border-collapse text-left text-[15px] leading-relaxed">
           <caption className="sr-only">{comparison.heading}</caption>
           <thead>
-            <tr className="border-b border-line">
+            <tr className="border-b border-hairline">
               <td className="w-[16%] p-5" />
-              <th scope="col" className="w-[24%] bg-ink p-5 font-display text-[16px] font-bold text-white">
+              <th scope="col" className="w-[24%] bg-navy-900 p-5 font-display text-[16px] font-bold text-ink-invert">
                 {columns.us}
               </th>
               {others.map((label) => (
@@ -159,11 +156,11 @@ export function ComparisonSection({
           </thead>
           <tbody>
             {comparison.rows.map((row) => (
-              <tr key={row.label} className="border-b border-line last:border-b-0">
+              <tr key={row.label} className="border-b border-hairline last:border-b-0">
                 <th scope="row" className="p-5 align-top font-semibold text-ink">
                   {row.label}
                 </th>
-                <td className="bg-primary/5 p-5 align-top font-medium text-ink">{row.us}</td>
+                <td className="bg-navy-500/5 p-5 align-top font-medium text-ink">{row.us}</td>
                 <td className="p-5 align-top">{row.freelancer}</td>
                 <td className="p-5 align-top">{row.pageBuilder}</td>
                 <td className="p-5 align-top">{row.offshore}</td>
@@ -195,10 +192,10 @@ export function PricingSection({
           <SectionHeading id="pricing-heading" title={pricing.heading} intro={pricing.intro} ground={ground} className="mb-0" />
           {price ? (
             <p
-              className={`mt-8 rounded-2xl p-6 ${dark ? 'glass' : 'border border-line bg-white'}`}
+              className={`mt-8  p-6 ${dark ? 'glass' : 'border border-hairline bg-canvas-raised'}`}
               {...reveal(1)}
             >
-              <span className={`block text-[14px] ${dark ? 'text-white/75' : ''}`}>{PRICE_LABEL}</span>
+              <span className={`block text-[14px] ${dark ? 'text-ink-invert-muted' : ''}`}>{PRICE_LABEL}</span>
               <span className={`mt-1 block font-display text-[30px] leading-tight font-extrabold ${dark ? '' : 'text-ink'}`}>
                 {price.label}
               </span>
@@ -209,8 +206,8 @@ export function PricingSection({
               href={pricing.link.href}
               className={
                 dark
-                  ? 'mt-7 inline-flex h-12 items-center rounded-lg bg-white px-6 font-semibold text-ink hover:bg-mist'
-                  : 'mt-7 inline-flex h-12 items-center rounded-lg bg-ink px-6 font-semibold text-white hover:bg-ink2'
+                  ? 'mt-7 inline-flex h-12 items-center  bg-canvas-raised px-6 font-semibold text-ink hover:bg-canvas-sunken'
+                  : 'mt-7 inline-flex h-12 items-center  bg-navy-900 px-6 font-semibold text-ink-invert hover:bg-navy-700'
               }
             >
               {pricing.link.label}
@@ -219,9 +216,9 @@ export function PricingSection({
         </div>
         <dl className="grid content-start gap-x-8 gap-y-8 sm:grid-cols-2 lg:col-span-7">
           {pricing.factors.map((factor, index) => (
-            <div key={factor.title} className={`border-t pt-5 ${dark ? 'border-white/20' : 'border-line'}`} {...reveal(index)}>
+            <div key={factor.title} className={`border-t pt-5 ${dark ? 'border-ink-invert/15' : 'border-hairline'}`} {...reveal(index)}>
               <dt className={`font-display text-[18px] font-bold ${dark ? '' : 'text-ink'}`}>{factor.title}</dt>
-              <dd className={`mt-2 text-[15.5px] leading-relaxed ${dark ? 'text-white/80' : ''}`}>{factor.body}</dd>
+              <dd className={`mt-2 text-[15.5px] leading-relaxed ${dark ? 'text-ink-invert-muted' : ''}`}>{factor.body}</dd>
             </div>
           ))}
         </dl>

@@ -42,8 +42,8 @@ export function MetricBand({
   const headingId = heading ? `${id}-heading` : undefined;
   const figure =
     outcome && tone !== 'band'
-      ? 'font-display text-[36px] leading-none font-extrabold text-result lg:text-[46px]'
-      : `font-display text-[36px] leading-none font-extrabold lg:text-[46px] ${dark ? 'text-white' : 'text-ink'}`;
+      ? 'font-display text-[36px] leading-none font-extrabold text-gold-ink lg:text-[46px]'
+      : `font-display text-[36px] leading-none font-extrabold lg:text-[46px] ${dark ? 'text-ink-invert' : 'text-ink'}`;
   return (
     <Section id={id} tone={tone} backdrop={backdrop} labelledBy={headingId}>
       {heading ? <SectionHeading id={headingId} title={heading} intro={intro} ground={ground} /> : null}
@@ -51,15 +51,15 @@ export function MetricBand({
         {metrics.map((metric, index) => (
           <div
             key={metric.label}
-            className={`flex flex-col-reverse border-t pt-5 ${dark ? 'border-white/15' : 'border-line'}`}
+            className={`flex flex-col-reverse border-t pt-5 ${dark ? 'border-ink-invert/15' : 'border-hairline'}`}
             {...reveal(index)}
           >
-            <dt className={`mt-2.5 text-[14.5px] leading-snug ${dark ? 'text-white/70' : ''}`}>{metric.label}</dt>
+            <dt className={`mt-2.5 text-[14.5px] leading-snug ${dark ? 'text-ink-invert-muted' : ''}`}>{metric.label}</dt>
             <dd className={figure}>{metric.value}</dd>
           </div>
         ))}
       </dl>
-      {note ? <p className={`mt-10 max-w-[70ch] text-[14px] ${dark ? 'text-white/65' : ''}`}>{note}</p> : null}
+      {note ? <p className={`mt-10 max-w-[70ch] text-[14px] ${dark ? 'text-ink-invert-muted' : ''}`}>{note}</p> : null}
     </Section>
   );
 }
@@ -87,32 +87,30 @@ export function CtaBand({
     <section
       id={id}
       aria-labelledby={`${id}-heading`}
-      className={`content-auto relative overflow-hidden ${band ? 'band-gradient py-16 text-white lg:py-20' : 'border-y border-line bg-white py-14 lg:py-16'}`}
+      className={`content-auto relative overflow-hidden ${band ? 'band-gradient py-16 text-ink-invert lg:py-20' : 'border-y border-hairline bg-canvas-raised py-14 lg:py-16'}`}
     >
       {band ? (
         <div className="absolute inset-0" aria-hidden="true">
-          <div className="grid-lines-light absolute inset-0" />
-          <div className="absolute -right-20 -bottom-40 h-[520px] w-[520px] rounded-full bg-glow-teal-20 blur-3xl" />
         </div>
       ) : null}
       <div className="shell relative flex flex-wrap items-center justify-between gap-8">
         <div className="max-w-[60ch]">
-          {eyebrow ? <p className={`text-[14px] ${band ? 'text-white/75' : ''}`}>{eyebrow}</p> : null}
+          {eyebrow ? <p className={`text-[14px] ${band ? 'text-ink-invert-muted' : ''}`}>{eyebrow}</p> : null}
           <h2
             id={`${id}-heading`}
             className={`${eyebrow ? 'mt-2 ' : ''}font-display text-[28px] leading-tight font-extrabold lg:text-[36px] ${band ? '' : 'text-ink'}`}
           >
             {heading}
           </h2>
-          {body ? <p className={`mt-3 text-[16.5px] leading-relaxed ${band ? 'text-white/75' : ''}`}>{body}</p> : null}
+          {body ? <p className={`mt-3 text-[16.5px] leading-relaxed ${band ? 'text-ink-invert-muted' : ''}`}>{body}</p> : null}
         </div>
         <div className="flex flex-wrap gap-3">
           <a
             href={primaryCta.href}
             className={
               band
-                ? 'inline-flex h-14 items-center rounded-xl bg-white px-7 text-[16px] font-semibold text-ink hover:bg-mist'
-                : 'inline-flex h-14 items-center rounded-xl bg-primary px-7 text-[16px] font-semibold text-white hover:bg-primaryd'
+                ? 'inline-flex h-14 items-center  bg-canvas-raised px-7 text-[16px] font-semibold text-ink hover:bg-canvas-sunken'
+                : 'inline-flex h-14 items-center  bg-navy-900 px-7 text-[16px] font-semibold text-ink-invert hover:bg-navy-700'
             }
           >
             {primaryCta.label}
@@ -122,8 +120,8 @@ export function CtaBand({
               href={secondaryCta.href}
               className={
                 band
-                  ? 'glass inline-flex h-14 items-center rounded-xl px-7 text-[16px] font-semibold text-white hover:bg-white/15'
-                  : 'inline-flex h-14 items-center rounded-xl border border-line px-7 text-[16px] font-semibold text-ink hover:border-ink hover:bg-mist2'
+                  ? 'glass inline-flex h-14 items-center  px-7 text-[16px] font-semibold text-ink-invert hover:bg-navy-900-invert/15'
+                  : 'inline-flex h-14 items-center  border border-hairline px-7 text-[16px] font-semibold text-ink hover:border-ink hover:bg-canvas-raised'
               }
             >
               {secondaryCta.label}

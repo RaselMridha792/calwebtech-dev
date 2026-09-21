@@ -36,7 +36,7 @@ export function GlossaryIndex({ view }: { view: GlossaryIndexView }) {
         intro={content.intro}
       >
         {view.updatedAt ? (
-          <p className="mt-8 text-[14px] text-white/70">{`${String(terms.length)} terms, last updated ${formatUpdated(view.updatedAt)}`}</p>
+          <p className="mt-8 text-[14px] text-ink-invert-muted">{`${String(terms.length)} terms, last updated ${formatUpdated(view.updatedAt)}`}</p>
         ) : null}
       </PageHero>
 
@@ -47,13 +47,13 @@ export function GlossaryIndex({ view }: { view: GlossaryIndexView }) {
           <EmptyState action={content.elsewhere.primaryCta}>{content.list.empty}</EmptyState>
         ) : (
           <>
-            <nav aria-label={content.jumpLabel} className="border-y border-line py-4">
+            <nav aria-label={content.jumpLabel} className="border-y border-hairline py-4">
               <ul className="flex flex-wrap gap-2">
                 {groups.map((group) => (
                   <li key={group.letter}>
                     <a
                       href={`#${letterAnchor(group.letter)}`}
-                      className="inline-flex h-11 min-w-11 items-center justify-center rounded-lg border border-line px-3 font-display text-[15px] font-bold text-ink hover:border-ink hover:bg-mist2"
+                      className="inline-flex h-11 min-w-11 items-center justify-center border border-hairline px-3 font-display text-[15px] font-bold text-ink hover:border-ink hover:bg-canvas-raised"
                     >
                       <span aria-hidden="true">{group.letter}</span>
                       <span className="sr-only">{letterLabel(group.letter)}</span>
@@ -66,14 +66,14 @@ export function GlossaryIndex({ view }: { view: GlossaryIndexView }) {
             <div className="mt-12 space-y-12">
               {groups.map((group, index) => (
                 <section key={group.letter} id={letterAnchor(group.letter)} aria-label={letterLabel(group.letter)}>
-                  <p className="font-display text-[30px] leading-none font-extrabold text-primary" aria-hidden="true">
+                  <p className="font-display text-[30px] leading-none font-extrabold text-gold-ink" aria-hidden="true">
                     {group.letter}
                   </p>
-                  <ul className="mt-5 grid gap-5 border-t border-line pt-6 md:grid-cols-2 lg:grid-cols-3">
+                  <ul className="mt-5 grid gap-5 border-t border-hairline pt-6 md:grid-cols-2 lg:grid-cols-3">
                     {group.terms.map((term) => (
-                      <li key={term.slug} className="lift relative rounded-2xl border border-line bg-white p-6" {...reveal(index)}>
+                      <li key={term.slug} className="lift relative border border-hairline bg-canvas-raised p-6" {...reveal(index)}>
                         <p className="font-display text-[18px] leading-snug font-bold text-ink">
-                          <a href={glossaryTermPath(term.slug)} className="after:absolute after:inset-0 hover:text-primary">
+                          <a href={glossaryTermPath(term.slug)} className="after:absolute after:inset-0 hover:text-gold-ink">
                             {term.term}
                           </a>
                         </p>
@@ -102,14 +102,14 @@ export function GlossaryIndex({ view }: { view: GlossaryIndexView }) {
           <div className="mt-8 flex flex-wrap gap-3">
             <a
               href={content.elsewhere.primaryCta.href}
-              className="inline-flex h-14 items-center rounded-xl bg-primary px-7 text-[16px] font-semibold text-white shadow-cta hover:bg-primaryd"
+              className="inline-flex h-14 items-center bg-navy-900 px-7 text-[16px] font-semibold text-ink-invert  hover:bg-navy-700"
             >
               {content.elsewhere.primaryCta.label}
             </a>
             {content.elsewhere.secondaryCta ? (
               <a
                 href={content.elsewhere.secondaryCta.href}
-                className="inline-flex h-14 items-center rounded-xl border border-line bg-white px-7 text-[16px] font-semibold text-ink hover:border-ink"
+                className="inline-flex h-14 items-center border border-hairline bg-canvas-raised px-7 text-[16px] font-semibold text-ink hover:border-ink"
               >
                 {content.elsewhere.secondaryCta.label}
               </a>

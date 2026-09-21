@@ -35,7 +35,7 @@ function Comparison({ comparison, copy, index }: { comparison: WorkComparison; c
             size="medium"
             className="mb-8"
           />
-          <div className={dark ? '' : 'rounded-2xl bg-ink p-6'}>
+          <div className={dark ? '' : ' bg-navy-900 p-6'}>
             <ComparisonTable
               figures={comparison.metrics}
               caption={copy.metricsLabel}
@@ -48,8 +48,8 @@ function Comparison({ comparison, copy, index }: { comparison: WorkComparison; c
               href={caseStudyPath(comparison.slug)}
               className={
                 dark
-                  ? 'mt-8 inline-flex h-12 items-center rounded-lg bg-white px-6 font-semibold text-ink hover:bg-mist'
-                  : 'mt-8 inline-flex h-12 items-center rounded-lg bg-ink px-6 font-semibold text-white hover:bg-ink2'
+                  ? 'mt-8 inline-flex h-12 items-center  bg-canvas-raised px-6 font-semibold text-ink hover:bg-canvas-sunken'
+                  : 'mt-8 inline-flex h-12 items-center  bg-navy-900 px-6 font-semibold text-ink-invert hover:bg-navy-700'
               }
             >
               {copy.caseStudyLabel}

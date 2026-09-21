@@ -26,7 +26,7 @@ export function EnquirySection({
       <div className="grid items-start gap-12 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-5">
           <SectionHeading id={headingId} title={enquiry.heading} intro={enquiry.intro} ground={ground} className="mb-0" />
-          <p className={`mt-7 inline-flex rounded-lg px-4 py-2.5 text-[14.5px] ${ground === 'dark' ? 'bg-white/10' : 'border border-line bg-white text-ink'}`}>
+          <p className={`mt-7 inline-flex  px-4 py-2.5 text-[14.5px] ${ground === 'dark' ? 'bg-navy-900-invert/10' : 'border border-hairline bg-canvas-raised text-ink'}`}>
             <span>
               Enquiring about <b>{page.title}</b>
             </span>
@@ -45,7 +45,7 @@ export function EnquirySection({
             timelineOptions={START_TIMELINES}
             footnote={enquiry.footnote ?? undefined}
             turnstileSiteKey={turnstileSiteKey}
-            className="rounded-2xl border border-line bg-white p-7 text-body shadow-panel sm:p-9"
+            className="border border-hairline bg-canvas-raised p-7 text-ink-muted sm:p-9"
           />
         </div>
       </div>

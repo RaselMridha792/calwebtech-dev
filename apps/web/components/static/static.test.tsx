@@ -201,7 +201,7 @@ describe('static family pages rendered from their snapshots', () => {
     expect(html).toContain('document.currentScript');
     // The example text is text too (WCAG 1.4.3): the body token at full strength, never faded.
     const input = /<input id="site-search-query"[^>]*>/.exec(html)?.[0] ?? '';
-    expect(input).toMatch(/placeholder:text-body(\s|")/);
+    expect(input).toMatch(/placeholder:text-ink-muted(\s|")/);
     for (const item of view.destinations.items) expect(html).toContain(`href="${item.href}"`);
   });
 

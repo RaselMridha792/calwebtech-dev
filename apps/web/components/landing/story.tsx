@@ -8,8 +8,7 @@ const h2 = 'font-display text-[32px] leading-[1.1] font-extrabold text-ink lg:te
 
 export function ProblemSection({ problem }: { problem: Content['problem'] }) {
   return (
-    <section className="content-auto relative overflow-hidden bg-linear-to-b from-mist2 via-mist to-mist2 py-20 lg:py-24">
-      <div className="grid-lines absolute inset-0 opacity-70" aria-hidden="true" />
+    <section className="content-auto relative overflow-hidden bg-canvas-sunken py-20 lg:py-24">
       <div className="shell-narrow relative">
         <div className="max-w-[62ch]" {...reveal()}>
           <h2 className={h2}>{problem.heading}</h2>
@@ -20,7 +19,7 @@ export function ProblemSection({ problem }: { problem: Content['problem'] }) {
             {problem.cards.map((card, index) => (
               <li
                 key={card.figure}
-                className="lift rounded-2xl border border-line bg-white p-6"
+                className="lift border border-hairline bg-canvas-raised p-6"
                 {...reveal(index)}
               >
                 <p className="font-display text-[30px] leading-none font-extrabold text-ink">
@@ -38,7 +37,7 @@ export function ProblemSection({ problem }: { problem: Content['problem'] }) {
 
 export function SolutionSection({ solution }: { solution: Content['solution'] }) {
   return (
-    <section className="content-auto bg-white py-20 lg:py-28">
+    <section className="content-auto bg-canvas-raised py-20 lg:py-28">
       <div className="shell-narrow grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
         <div className={solution.image ? 'order-2 lg:order-1 lg:col-span-6' : 'lg:col-span-8'}>
           <h2 className={`${h2} max-w-[18ch]`} {...reveal()}>
@@ -48,7 +47,7 @@ export function SolutionSection({ solution }: { solution: Content['solution'] })
             {solution.steps.map((step, index) => (
               <li key={step.title} className="flex gap-5" {...reveal(index)}>
                 <span
-                  className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-ink font-display font-bold text-white"
+                  className="grid h-11 w-11 shrink-0 place-items-center bg-navy-900 font-display font-bold text-ink-invert"
                   aria-hidden="true"
                 >
                   {index + 1}
@@ -63,7 +62,7 @@ export function SolutionSection({ solution }: { solution: Content['solution'] })
         </div>
         {solution.image ? (
           <div className="order-1 lg:order-2 lg:col-span-6" {...reveal(1)}>
-            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-media ring-1 ring-line">
+            <div className="relative aspect-[4/3] overflow-hidden ring-1 ring-hairline">
               <ResponsiveImage
                 src={solution.image.src}
                 alt={solution.image.alt}
@@ -81,11 +80,7 @@ export function SolutionSection({ solution }: { solution: Content['solution'] })
 
 export function ServicesSection({ services }: { services: Content['services'] }) {
   return (
-    <section className="content-auto relative overflow-hidden border-y border-line bg-linear-to-br from-white via-mist2 to-mist py-20 lg:py-28">
-      <div
-        className="absolute -top-40 right-0 h-[520px] w-[520px] rounded-full bg-primary/[.08] blur-3xl"
-        aria-hidden="true"
-      />
+    <section className="content-auto relative overflow-hidden border-y border-hairline bg-canvas py-20 lg:py-28">
       <div className="shell-narrow relative">
         <div className="max-w-[60ch]" {...reveal()}>
           <h2 className={h2}>{services.heading}</h2>
@@ -95,7 +90,7 @@ export function ServicesSection({ services }: { services: Content['services'] })
           {services.items.map((item, index) => (
             <li
               key={item.title}
-              className="lift rounded-2xl border border-line bg-white p-7"
+              className="lift border border-hairline bg-canvas-raised p-7"
               {...reveal(index)}
             >
               <h3 className="font-display text-[19px] font-bold text-ink">{item.title}</h3>

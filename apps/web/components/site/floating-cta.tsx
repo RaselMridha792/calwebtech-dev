@@ -6,7 +6,7 @@ export function FloatingCta({ link }: { link: Link }) {
     <a
       href={link.href}
       data-floating-cta=""
-      className="fixed right-6 bottom-6 z-90 hidden items-center rounded-full bg-ink px-6 py-3.5 font-semibold text-white shadow-[0_16px_36px_-12px_rgba(10,29,55,.6)] hover:bg-ink2 md:inline-flex"
+      className="fixed right-6 bottom-6 z-90 hidden items-center rounded-full bg-navy-900 px-6 py-3.5 font-semibold text-ink-invert shadow-[0_16px_36px_-12px_rgba(10,29,55,.6)] hover:bg-navy-700 md:inline-flex"
     >
       {link.label}
     </a>

@@ -30,10 +30,10 @@ export default async function SitemapPage() {
           {sections.map((section) => (
             <div key={section.name}>
               <h2 className="font-display text-[22px] font-bold text-ink">{section.name}</h2>
-              <ul className="mt-4 space-y-1 border-t border-line pt-4 text-[15.5px]">
+              <ul className="mt-4 space-y-1 border-t border-hairline pt-4 text-[15.5px]">
                 {section.entries.map((entry) => (
                   <li key={entry.path}>
-                    <a href={entry.path} className="inline-block py-1 font-medium text-primary hover:text-primaryd">
+                    <a href={entry.path} className="inline-block py-1 font-medium text-gold-ink hover:text-gold-600">
                       {entry.title}
                     </a>
                   </li>

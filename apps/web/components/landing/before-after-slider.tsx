@@ -34,7 +34,7 @@ export function BeforeAfterSlider({ before, after, clientName }: BeforeAfterSlid
   return (
     <div
       ref={boxRef}
-      className="group relative aspect-[16/10] touch-pan-y overflow-hidden rounded-2xl bg-white shadow-panel ring-1 ring-line select-none"
+      className="group relative aspect-[16/10] touch-pan-y overflow-hidden bg-canvas-raised  ring-1 ring-hairline select-none"
       onPointerDown={(event) => {
         dragging.current = true;
         event.currentTarget.setPointerCapture(event.pointerId);
@@ -51,7 +51,7 @@ export function BeforeAfterSlider({ before, after, clientName }: BeforeAfterSlid
       }}
     >
       {before}
-      <span className="absolute right-5 bottom-4 rounded bg-white/80 px-2 py-1 text-[11px] font-bold text-ink">
+      <span className="absolute right-5 bottom-4 rounded bg-navy-900-invert/80 px-2 py-1 text-[11px] font-bold text-ink">
         Before
       </span>
 
@@ -60,7 +60,7 @@ export function BeforeAfterSlider({ before, after, clientName }: BeforeAfterSlid
         style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}
       >
         {after}
-        <span className="absolute bottom-4 left-5 rounded bg-ink px-2 py-1 text-[11px] font-bold text-white">
+        <span className="absolute bottom-4 left-5 rounded bg-navy-900 px-2 py-1 text-[11px] font-bold text-ink-invert">
           After
         </span>
       </div>
@@ -70,8 +70,8 @@ export function BeforeAfterSlider({ before, after, clientName }: BeforeAfterSlid
         style={{ transform: `translateX(${position - 50}%)` }}
         aria-hidden="true"
       >
-        <span className="absolute inset-y-0 left-1/2 w-0.5 -translate-x-1/2 bg-white" />
-        <span className="absolute top-1/2 left-1/2 grid h-11 w-11 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-white text-ink shadow-lg group-has-[input:focus-visible]:outline-3 group-has-[input:focus-visible]:outline-offset-2 group-has-[input:focus-visible]:outline-primary">
+        <span className="absolute inset-y-0 left-1/2 w-0.5 -translate-x-1/2 bg-canvas-raised" />
+        <span className="absolute top-1/2 left-1/2 grid h-11 w-11 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-canvas-raised text-ink shadow-lg group-has-[input:focus-visible]:outline-3 group-has-[input:focus-visible]:outline-offset-2 group-has-[input:focus-visible]:outline-primary">
           <DragIcon className="h-5 w-5" />
         </span>
       </div>

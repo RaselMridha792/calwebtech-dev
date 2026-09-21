@@ -41,21 +41,21 @@ export function GlossaryTermPage({ page }: { page: GlossaryTermView }) {
         title={page.term}
         answer={page.answerBlock ?? page.definition}
       >
-        <p className="mt-8 text-[14px] text-white/70">{`Last updated ${formatUpdated(page.updatedAt)}`}</p>
+        <p className="mt-8 text-[14px] text-ink-invert-muted">{`Last updated ${formatUpdated(page.updatedAt)}`}</p>
       </PageHero>
 
       <Section id="meaning" tone="white" deferred={false} labelledBy="meaning-heading">
         <SectionHeading id="meaning-heading" title={page.body.heading} size="medium" className="mb-6" />
         <Paragraphs paragraphs={page.body.paragraphs} />
         {page.sources.length > 0 ? (
-          <div className="mt-8 max-w-[72ch] border-t border-line pt-5">
+          <div className="mt-8 max-w-[72ch] border-t border-hairline pt-5">
             <p className="text-[13px] font-semibold text-ink">Sources</p>
             <ul className="mt-2 space-y-1.5 text-[15px]">
               {page.sources.map((source) => (
                 <li key={source.href}>
                   <a
                     href={source.href}
-                    className="font-semibold text-primary underline underline-offset-4 hover:text-primaryd"
+                    className="font-semibold text-gold-ink underline underline-offset-4 hover:text-gold-600"
                     rel="noreferrer"
                   >
                     {source.label}
@@ -83,17 +83,17 @@ export function GlossaryTermPage({ page }: { page: GlossaryTermView }) {
             </div>
             {page.example.caseStudy ? (
               <div className="lg:col-span-5">
-                <div className="rounded-2xl border border-line bg-mist2 p-7">
+                <div className="border border-hairline bg-canvas-raised p-7">
                   <p className="font-display text-[19px] font-bold text-ink">{page.example.caseStudy.clientName}</p>
                   <dl className="mt-5 flex flex-col-reverse">
                     <dt className="mt-1.5 text-[13.5px]">{page.example.caseStudy.metric.label}</dt>
-                    <dd className="font-display text-[34px] leading-none font-extrabold text-result">
+                    <dd className="font-display text-[34px] leading-none font-extrabold text-gold-ink">
                       {page.example.caseStudy.metric.value}
                     </dd>
                   </dl>
                   <a
                     href={caseStudyPath(page.example.caseStudy.slug)}
-                    className="mt-6 inline-block font-semibold text-primary hover:text-primaryd"
+                    className="mt-6 inline-block font-semibold text-gold-ink hover:text-gold-600"
                   >
                     Read the case study
                     <span className="sr-only">{`: ${page.example.caseStudy.clientName}`}</span>
@@ -113,9 +113,9 @@ export function GlossaryTermPage({ page }: { page: GlossaryTermView }) {
                 <SectionHeading id="related-heading" title={page.related.heading} size="medium" className="mb-6" />
                 <ul className="grid gap-4 sm:grid-cols-2">
                   {page.related.terms.map((term) => (
-                    <li key={term.slug} className="relative rounded-xl border border-line bg-white p-5">
+                    <li key={term.slug} className="relative border border-hairline bg-canvas-raised p-5">
                       <p className="font-semibold text-ink">
-                        <a href={glossaryTermPath(term.slug)} className="after:absolute after:inset-0 hover:text-primary">
+                        <a href={glossaryTermPath(term.slug)} className="after:absolute after:inset-0 hover:text-gold-ink">
                           {term.term}
                         </a>
                       </p>
@@ -124,7 +124,7 @@ export function GlossaryTermPage({ page }: { page: GlossaryTermView }) {
                   ))}
                 </ul>
                 <p className="mt-6 text-[15px]">
-                  <a href={GLOSSARY_ROUTE} className="font-semibold text-primary hover:text-primaryd">
+                  <a href={GLOSSARY_ROUTE} className="font-semibold text-gold-ink hover:text-gold-600">
                     Browse the full glossary
                   </a>
                 </p>
@@ -132,13 +132,13 @@ export function GlossaryTermPage({ page }: { page: GlossaryTermView }) {
             ) : null}
             {page.service ? (
               <div className="lg:col-span-5">
-                <div className="rounded-2xl border border-line bg-white p-7 shadow-panel">
-                  <p className="text-[13px] font-semibold text-primary">Who does this work?</p>
+                <div className="border border-hairline bg-canvas-raised p-7 ">
+                  <p className="text-[13px] font-semibold text-gold-ink">Who does this work?</p>
                   <p className="mt-2 font-display text-[21px] leading-snug font-bold text-ink">{page.service.title}</p>
                   {page.service.line ? <p className="mt-3 text-[15.5px] leading-relaxed">{page.service.line}</p> : null}
                   <a
                     href={servicePath(page.service.slug)}
-                    className="mt-6 inline-flex h-12 items-center rounded-xl bg-primary px-6 text-[15.5px] font-semibold text-white hover:bg-primaryd"
+                    className="mt-6 inline-flex h-12 items-center bg-navy-900 px-6 text-[15.5px] font-semibold text-ink-invert hover:bg-navy-700"
                   >
                     See the service
                     <span className="sr-only">{`: ${page.service.title}`}</span>

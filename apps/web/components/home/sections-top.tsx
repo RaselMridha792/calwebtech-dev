@@ -50,13 +50,13 @@ export function LogoBand({ label, clients }: { label: string; clients: Home['cli
   return (
     <section
       aria-label={label}
-      className="content-auto group relative overflow-hidden border-y border-line bg-white py-9"
+      className="content-auto group relative overflow-hidden border-y border-hairline bg-canvas-raised py-9"
     >
       <p className="shell mb-6 text-[13.5px]">{label}</p>
       <input id="logo-band-pause" type="checkbox" className="peer sr-only" />
       <label
         htmlFor="logo-band-pause"
-        className="sr-only peer-focus-visible:not-sr-only peer-focus-visible:absolute peer-focus-visible:top-2 peer-focus-visible:right-6 peer-focus-visible:z-10 peer-focus-visible:rounded-lg peer-focus-visible:bg-ink peer-focus-visible:px-3 peer-focus-visible:py-2 peer-focus-visible:text-[13px] peer-focus-visible:font-semibold peer-focus-visible:text-white peer-focus-visible:outline-3 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary"
+        className="sr-only peer-focus-visible:not-sr-only peer-focus-visible:absolute peer-focus-visible:top-2 peer-focus-visible:right-6 peer-focus-visible:z-10 peer-focus-visible: peer-focus-visible:bg-navy-900 peer-focus-visible:px-3 peer-focus-visible:py-2 peer-focus-visible:text-[13px] peer-focus-visible:font-semibold peer-focus-visible:text-ink-invert peer-focus-visible:outline-3 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary"
       >
         Pause the client names
       </label>
@@ -73,7 +73,7 @@ export function CapabilityBand({ capability }: { capability: Content['capability
   if (!capability.enabled) return null;
   const { showreel } = capability;
   return (
-    <section className="content-auto relative overflow-hidden bg-ink py-20 text-white lg:py-28">
+    <section className="content-auto relative overflow-hidden bg-navy-900 py-20 text-ink-invert lg:py-28">
       <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
         <BackdropImage image={capability.background.poster} className="kenburns opacity-[.22]" />
       </div>
@@ -81,8 +81,7 @@ export function CapabilityBand({ capability }: { capability: Content['capability
         <BackgroundVideo src={capability.background.videoUrl} className="opacity-100" />
       ) : null}
       <div className="absolute inset-0" aria-hidden="true">
-        <div className="absolute inset-0 bg-linear-to-r from-ink via-ink/90 to-ink/60" />
-        <div className="glow-blue absolute inset-0 opacity-70" />
+        <div className="absolute inset-0 bg-scrim-strong" />
       </div>
       <div className="shell relative" {...reveal()}>
         <h2 className={`${h2Light} max-w-[20ch]`}>{capability.heading}</h2>
@@ -93,11 +92,11 @@ export function CapabilityBand({ capability }: { capability: Content['capability
             ))}
           </ul>
         ) : null}
-        <p className="mt-8 max-w-[62ch] text-[16.5px] leading-relaxed text-white/70">{capability.body}</p>
+        <p className="mt-8 max-w-[62ch] text-[16.5px] leading-relaxed text-ink-invert-muted">{capability.body}</p>
         <div className="mt-9 flex flex-wrap gap-3">
           <a
             href={capability.primaryCta.href}
-            className="inline-flex items-center rounded-xl bg-white px-6 py-3.5 font-semibold text-ink hover:bg-mist"
+            className="inline-flex items-center bg-canvas-raised px-6 py-3.5 font-semibold text-ink hover:bg-canvas-sunken"
           >
             {capability.primaryCta.label}
           </a>
@@ -120,14 +119,14 @@ export function ProblemRouter({
 }) {
   if (faqs.length === 0) return null;
   return (
-    <section className="content-auto bg-white py-20 lg:py-28">
+    <section className="content-auto bg-canvas-raised py-20 lg:py-28">
       <div className="shell grid gap-12 lg:grid-cols-12 lg:gap-20">
         <div className="lg:col-span-4" {...reveal()}>
           <h2 className={h2Dark}>{problemRouter.heading}</h2>
           <p className="mt-5 text-[17px] leading-relaxed">{problemRouter.intro}</p>
           <a
             href={problemRouter.cta.href}
-            className="mt-7 inline-flex h-12 items-center rounded-lg bg-ink px-6 font-semibold text-white hover:bg-ink2"
+            className="mt-7 inline-flex h-12 items-center bg-navy-900 px-6 font-semibold text-ink-invert hover:bg-navy-700"
           >
             {problemRouter.cta.label}
           </a>
@@ -194,7 +193,7 @@ function Tags({ tags }: { tags: string[] }) {
   return (
     <ul className="flex flex-wrap gap-2 text-[12.5px] font-medium">
       {tags.map((tag) => (
-        <li key={tag} className="rounded-md bg-mist px-2.5 py-1 text-ink">
+        <li key={tag} className="bg-canvas-sunken px-2.5 py-1 text-ink">
           {tag}
         </li>
       ))}
@@ -204,12 +203,12 @@ function Tags({ tags }: { tags: string[] }) {
 
 function Metrics({ metrics, lead }: { metrics: HomeProject['metrics']; lead: boolean }) {
   return (
-    <dl className={`grid grid-cols-3 border-t border-line ${lead ? 'mt-7 gap-5 pt-6' : 'mt-6 gap-4 pt-5'}`}>
+    <dl className={`grid grid-cols-3 border-t border-hairline ${lead ? 'mt-7 gap-5 pt-6' : 'mt-6 gap-4 pt-5'}`}>
       {metrics.map((metric) => (
         <div key={metric.label} className="flex flex-col-reverse">
           <dt className={`mt-1.5 ${lead ? 'text-[13px]' : 'text-[12.5px]'}`}>{metric.label}</dt>
           <dd
-            className={`font-display leading-none font-extrabold text-result ${lead ? 'text-[26px] sm:text-[32px] lg:text-[38px]' : 'text-[26px]'}`}
+            className={`font-display leading-none font-extrabold text-gold-ink ${lead ? 'text-[26px] sm:text-[32px] lg:text-[38px]' : 'text-[26px]'}`}
           >
             {metric.value}
           </dd>
@@ -226,8 +225,8 @@ function CaseStudyLink({ project, label, lead }: { project: HomeProject; label: 
       href={`/work/${project.slug}/`}
       className={
         lead
-          ? 'mt-7 inline-flex h-12 items-center rounded-lg bg-ink px-6 font-semibold text-white hover:bg-ink2'
-          : 'mt-6 inline-block font-semibold text-primary hover:text-primaryd'
+          ? 'mt-7 inline-flex h-12 items-center  bg-navy-900 px-6 font-semibold text-ink-invert hover:bg-navy-700'
+          : 'mt-6 inline-block font-semibold text-gold-ink hover:text-gold-600'
       }
     >
       {label}
@@ -250,10 +249,10 @@ function LeadProject({
   return (
     <article
       data-work-filter={filterKey}
-      className={`overflow-hidden rounded-2xl border border-line lg:col-span-2 ${project.image ? 'grid lg:grid-cols-2' : ''}`}
+      className={`overflow-hidden  border border-hairline lg:col-span-2 ${project.image ? 'grid lg:grid-cols-2' : ''}`}
     >
       {project.image ? (
-        <div className="relative min-h-[280px] bg-mist">
+        <div className="relative min-h-[280px] bg-canvas-sunken">
           <ResponsiveImage
             src={project.image.src}
             alt={project.image.alt}
@@ -271,7 +270,7 @@ function LeadProject({
         <p className="mt-3 leading-relaxed">{project.summary}</p>
         <Metrics metrics={project.metrics} lead />
         {quote ? (
-          <figure className="mt-7 border-t border-line pt-6">
+          <figure className="mt-7 border-t border-hairline pt-6">
             <blockquote className="text-[15.5px] leading-relaxed text-ink">{`"${quote.quote}"`}</blockquote>
             <figcaption className="mt-4 flex items-center gap-3 text-[14px]">
               {quote.avatar ? (
@@ -307,9 +306,9 @@ function ProjectCard({
   caseStudyLabel: string | null;
 }) {
   return (
-    <article data-work-filter={filterKey} className="overflow-hidden rounded-2xl border border-line">
+    <article data-work-filter={filterKey} className="overflow-hidden border border-hairline">
       {project.image ? (
-        <div className="relative aspect-video bg-mist">
+        <div className="relative aspect-video bg-canvas-sunken">
           <ResponsiveImage
             src={project.image.src}
             alt={project.image.alt}
@@ -354,7 +353,7 @@ function WorkFilters({ filters }: { filters: string[] }) {
         {options.map((option, index) => (
           <label
             key={option.id}
-            className="inline-flex h-10 cursor-pointer items-center rounded-lg bg-mist px-4 text-[14.5px] font-semibold text-ink hover:bg-line has-checked:bg-ink has-checked:text-white has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-primary"
+            className="inline-flex h-10 cursor-pointer items-center bg-canvas-sunken px-4 text-[14.5px] font-semibold text-ink hover:bg-line has-checked:bg-navy-900 has-checked:text-ink-invert has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-primary"
           >
             <input type="radio" name="work-filter" id={option.id} defaultChecked={index === 0} className="sr-only" />
             {option.label}
@@ -370,14 +369,14 @@ export function FeaturedWork({ work, projects }: { work: Content['work']; projec
   const filterKey = (project: HomeProject) =>
     project.filter ? `f${String(filters.indexOf(project.filter))}` : '';
   return (
-    <section id="work" className="content-auto bg-white py-20 lg:py-28">
+    <section id="work" className="content-auto bg-canvas-raised py-20 lg:py-28">
       <div className="shell">
         <SectionHead link={work.link} className="mb-9">
           <h2 className={`${h2Dark} max-w-[20ch]`}>{work.heading}</h2>
           <p className="mt-4 max-w-[58ch] text-[17px] leading-relaxed">{work.intro}</p>
         </SectionHead>
         {projects.length === 0 ? (
-          <EmptyNote className="">{work.empty}</EmptyNote>
+          <EmptyNote>{work.empty}</EmptyNote>
         ) : (
           <>
             {filters.length > 1 ? <WorkFilters filters={filters} /> : null}
@@ -412,10 +411,9 @@ export function PullQuote({ quote }: { quote: Home['pullQuote'] }) {
   if (!quote) return null;
   const quoteByline = byline(quote.role, quote.company);
   return (
-    <section className="content-auto relative overflow-hidden bg-ink py-16 text-white lg:py-20">
+    <section className="content-auto relative overflow-hidden bg-navy-900 py-16 text-ink-invert lg:py-20">
       <div className="absolute inset-0" aria-hidden="true">
-        <div className="absolute inset-0 bg-linear-to-r from-ink via-ink/90 to-ink/75" />
-        <div className="glow-blue absolute inset-0 opacity-50" />
+        <div className="absolute inset-0 bg-scrim-strong" />
       </div>
       <div className="shell relative">
         <figure className="max-w-[58ch]" {...reveal()}>
@@ -434,8 +432,8 @@ export function PullQuote({ quote }: { quote: Home['pullQuote'] }) {
               />
             ) : null}
             <span className="text-[15px]">
-              <b className="block text-white">{quote.clientName}</b>
-              {quoteByline ? <span className="text-white/70">{quoteByline}</span> : null}
+              <b className="block text-ink-invert">{quote.clientName}</b>
+              {quoteByline ? <span className="text-ink-invert-muted">{quoteByline}</span> : null}
             </span>
           </figcaption>
         </figure>
@@ -447,7 +445,7 @@ export function PullQuote({ quote }: { quote: Home['pullQuote'] }) {
 export function MidCta({ midCta }: { midCta: Content['midCta'] }) {
   if (!midCta.enabled) return null;
   return (
-    <section className="content-auto border-y border-line bg-white py-14 lg:py-16">
+    <section className="content-auto border-y border-hairline bg-canvas-raised py-14 lg:py-16">
       <div className="shell flex flex-wrap items-center justify-between gap-8">
         <div>
           <p className="text-[14px]">{midCta.eyebrow}</p>
@@ -458,14 +456,14 @@ export function MidCta({ midCta }: { midCta: Content['midCta'] }) {
         <div className="flex flex-wrap gap-3">
           <a
             href={midCta.primaryCta.href}
-            className="inline-flex h-14 items-center rounded-xl bg-primary px-7 text-[16px] font-semibold text-white hover:bg-primaryd"
+            className="inline-flex h-14 items-center bg-navy-900 px-7 text-[16px] font-semibold text-ink-invert hover:bg-navy-700"
           >
             {midCta.primaryCta.label}
           </a>
           {midCta.secondaryCta ? (
             <a
               href={midCta.secondaryCta.href}
-              className="inline-flex h-14 items-center rounded-xl border border-line px-7 text-[16px] font-semibold text-ink hover:border-ink hover:bg-mist2"
+              className="inline-flex h-14 items-center border border-hairline px-7 text-[16px] font-semibold text-ink hover:border-ink hover:bg-canvas-raised"
             >
               {midCta.secondaryCta.label}
             </a>
@@ -494,24 +492,23 @@ export function BeforeAfterHome({
     />
   );
   return (
-    <section id="beforeafter" className="content-auto relative overflow-hidden bg-ink py-20 text-white lg:py-28">
+    <section id="beforeafter" className="content-auto relative overflow-hidden bg-navy-900 py-20 text-ink-invert lg:py-28">
       <div className="absolute inset-0" aria-hidden="true">
         <BackdropImage image={beforeAfter.backgroundImage} className="opacity-[.16]" />
-        <div className="absolute inset-0 bg-linear-to-r from-ink via-ink/92 to-ink/70" />
-        <div className="glow-blue absolute inset-0 opacity-60" />
+        <div className="absolute inset-0 bg-scrim-strong" />
       </div>
       <div className="shell relative grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-4" {...reveal()}>
           <h2 className={h2Light}>{beforeAfter.heading}</h2>
-          <p className="mt-5 text-[17px] leading-relaxed text-white/70">{beforeAfter.intro}</p>
+          <p className="mt-5 text-[17px] leading-relaxed text-ink-invert-muted">{beforeAfter.intro}</p>
           {comparison && comparison.metrics.length > 0 ? (
-            <dl className="mt-8 space-y-4 border-t border-white/15 pt-7">
+            <dl className="mt-8 space-y-4 border-t border-ink-invert/15 pt-7">
               {comparison.metrics.map((metric) => (
                 <div key={metric.label} className="flex items-baseline justify-between gap-6">
-                  <dt className="text-[14px] text-white/70">{metric.label}</dt>
+                  <dt className="text-[14px] text-ink-invert-muted">{metric.label}</dt>
                   <dd className="font-display font-bold">
-                    {metric.before} <span className="font-normal text-white/70">to</span>{' '}
-                    <span className="font-display font-bold text-result">{metric.after}</span>
+                    {metric.before} <span className="font-normal text-ink-invert-muted">to</span>{' '}
+                    <span className="font-display font-bold text-gold-ink">{metric.after}</span>
                   </dd>
                 </div>
               ))}
@@ -520,7 +517,7 @@ export function BeforeAfterHome({
           {beforeAfter.cta ? (
             <a
               href={beforeAfter.cta.href}
-              className="mt-8 inline-flex h-12 items-center rounded-lg bg-white px-6 font-semibold text-ink hover:bg-mist"
+              className="mt-8 inline-flex h-12 items-center bg-canvas-raised px-6 font-semibold text-ink hover:bg-canvas-sunken"
             >
               {beforeAfter.cta.label}
             </a>
@@ -534,7 +531,7 @@ export function BeforeAfterHome({
               clientName={comparison.clientName}
             />
           ) : (
-            <EmptyNote tone="dark" className="">
+            <EmptyNote tone="dark">
               {beforeAfter.empty}
             </EmptyNote>
           )}

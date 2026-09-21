@@ -110,7 +110,7 @@ export default async function HomePage() {
               referralOptions={content.book.referralOptions}
               footnote={content.book.footnote}
               turnstileSiteKey={turnstileSiteKey}
-              className="rounded-2xl border border-line bg-white p-7 shadow-panel sm:p-9"
+              className="border border-hairline bg-canvas-raised p-7 sm:p-9"
             />
           }
         />

@@ -64,14 +64,14 @@ export function GuidesIndex({ view }: { view: GuidesIndexView }) {
           <div className="mt-8 flex flex-wrap gap-3">
             <a
               href={content.elsewhere.primaryCta.href}
-              className="inline-flex h-14 items-center rounded-xl bg-primary px-7 text-[16px] font-semibold text-white shadow-cta hover:bg-primaryd"
+              className="inline-flex h-14 items-center bg-navy-900 px-7 text-[16px] font-semibold text-ink-invert  hover:bg-navy-700"
             >
               {content.elsewhere.primaryCta.label}
             </a>
             {content.elsewhere.secondaryCta ? (
               <a
                 href={content.elsewhere.secondaryCta.href}
-                className="inline-flex h-14 items-center rounded-xl border border-line bg-white px-7 text-[16px] font-semibold text-ink hover:border-ink"
+                className="inline-flex h-14 items-center border border-hairline bg-canvas-raised px-7 text-[16px] font-semibold text-ink hover:border-ink"
               >
                 {content.elsewhere.secondaryCta.label}
               </a>

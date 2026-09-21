@@ -53,9 +53,9 @@ export function LinkCard({
 }) {
   const Heading = level === 2 ? 'h2' : 'h3';
   return (
-    <li className="lift relative flex flex-col overflow-hidden rounded-2xl border border-line bg-white" {...reveal(step)}>
+    <li className="lift relative flex flex-col overflow-hidden border border-hairline bg-canvas-raised" {...reveal(step)}>
       {image ? (
-        <div className="relative aspect-video bg-mist">
+        <div className="relative aspect-video bg-canvas-sunken">
           <ResponsiveImage
             src={image.src}
             alt={image.alt}
@@ -68,14 +68,14 @@ export function LinkCard({
       <div className="flex flex-1 flex-col p-7">
         {eyebrow ? <p className="text-[13px] font-medium">{eyebrow}</p> : null}
         <Heading className={`${eyebrow ? 'mt-1.5 ' : ''}font-display text-[20px] leading-snug font-bold text-ink`}>
-          <a href={href} className="after:absolute after:inset-0 hover:text-primary">
+          <a href={href} className="after:absolute after:inset-0 hover:text-gold-ink">
             {title}
           </a>
         </Heading>
         {body ? <p className="mt-2.5 text-[15px] leading-relaxed">{body}</p> : null}
         {meta ? <p className="mt-4 text-[13.5px]">{meta}</p> : null}
         {linkLabel ? (
-          <span className="mt-auto pt-5 font-semibold text-primary" aria-hidden="true">
+          <span className="mt-auto pt-5 font-semibold text-gold-ink" aria-hidden="true">
             {linkLabel}
           </span>
         ) : null}
@@ -98,9 +98,9 @@ export function CaseStudyCard({
 }) {
   const Heading = level === 2 ? 'h2' : 'h3';
   return (
-    <li className="lift relative flex flex-col overflow-hidden rounded-2xl border border-line bg-white" {...reveal(step)}>
+    <li className="lift relative flex flex-col overflow-hidden border border-hairline bg-canvas-raised" {...reveal(step)}>
       {study.image ? (
-        <div className="relative aspect-video bg-mist">
+        <div className="relative aspect-video bg-canvas-sunken">
           <ResponsiveImage
             src={study.image.src}
             alt={study.image.alt}
@@ -114,7 +114,7 @@ export function CaseStudyCard({
         {study.tags.length > 0 ? (
           <ul className="flex flex-wrap gap-2 text-[12.5px] font-medium">
             {study.tags.map((tag) => (
-              <li key={tag} className="rounded-md bg-mist px-2.5 py-1 text-ink">
+              <li key={tag} className="bg-canvas-sunken px-2.5 py-1 text-ink">
                 {tag}
               </li>
             ))}
@@ -122,11 +122,11 @@ export function CaseStudyCard({
         ) : null}
         <Heading className="mt-4 font-display text-[23px] font-extrabold text-ink">{study.clientName}</Heading>
         <p className="mt-2.5 text-[15px] leading-relaxed">{study.summary}</p>
-        <dl className="mt-6 grid grid-cols-3 gap-4 border-t border-line pt-5">
+        <dl className="mt-6 grid grid-cols-3 gap-4 border-t border-hairline pt-5">
           {study.metrics.slice(0, 3).map((metric) => (
             <div key={metric.label} className="flex flex-col-reverse">
               <dt className="mt-1.5 text-[12.5px]">{metric.label}</dt>
-              <dd className="font-display text-[22px] leading-none font-extrabold text-result sm:text-[26px]">
+              <dd className="font-display text-[22px] leading-none font-extrabold text-gold-ink sm:text-[26px]">
                 {metric.value}
               </dd>
             </div>
@@ -134,7 +134,7 @@ export function CaseStudyCard({
         </dl>
         <a
           href={caseStudyPath(study.slug)}
-          className="mt-auto self-start pt-6 font-semibold text-primary after:absolute after:inset-0 hover:text-primaryd"
+          className="mt-auto self-start pt-6 font-semibold text-gold-ink after:absolute after:inset-0 hover:text-gold-600"
         >
           {linkLabel}
           <span className="sr-only">{`: ${study.clientName}`}</span>
@@ -157,12 +157,12 @@ export function TestimonialCard({
   const dark = ground === 'dark';
   const who = byline(testimonial.role, testimonial.company);
   return (
-    <figure className={`flex h-full flex-col rounded-2xl p-7 ${dark ? 'glass' : 'border border-line bg-white'}`}>
+    <figure className={`flex h-full flex-col  p-7 ${dark ? 'glass' : 'border border-hairline bg-canvas-raised'}`}>
       {showRating ? <Stars rating={testimonial.rating} className="mb-4 text-[15px]" /> : null}
       <blockquote className={`flex-1 text-[16px] leading-relaxed ${dark ? '' : 'text-ink'}`}>
         {`"${testimonial.quote}"`}
       </blockquote>
-      <figcaption className={`mt-6 flex items-center gap-3 border-t pt-5 ${dark ? 'border-white/10' : 'border-line'}`}>
+      <figcaption className={`mt-6 flex items-center gap-3 border-t pt-5 ${dark ? 'border-ink-invert/15' : 'border-hairline'}`}>
         {testimonial.avatar ? (
           <ResponsiveImage
             src={testimonial.avatar.src}
@@ -175,7 +175,7 @@ export function TestimonialCard({
         ) : null}
         <span className="text-[14px]">
           <b className={`block ${dark ? '' : 'text-ink'}`}>{testimonial.clientName}</b>
-          {who ? <span className={dark ? 'text-white/70' : ''}>{who}</span> : null}
+          {who ? <span className={dark ? 'text-ink-invert-muted' : ''}>{who}</span> : null}
         </span>
       </figcaption>
     </figure>

@@ -27,18 +27,18 @@ export type LightTone = Extract<SectionTone, 'white' | 'tint' | 'mist'>;
 export function CaseStudyHeadline({ view }: { view: View }) {
   const { headline, cover } = view;
   const figure = (
-    <div className={cover ? 'absolute inset-x-4 bottom-4 rounded-xl bg-ink/90 p-5 sm:p-6' : 'glass rounded-2xl p-7'}>
-      <p className="text-[13.5px] font-medium text-white/75">{headline.label}</p>
-      <p className="mt-2 font-display text-[44px] leading-none font-extrabold text-result sm:text-[52px]">
+    <div className={cover ? 'absolute inset-x-4 bottom-4  bg-navy-900/90 p-5 sm:p-6' : 'glass  p-7'}>
+      <p className="text-[13.5px] font-medium text-ink-invert-muted">{headline.label}</p>
+      <p className="mt-2 font-display text-[44px] leading-none font-extrabold text-gold-ink sm:text-[52px]">
         {headline.metric.value}
       </p>
-      <p className="mt-2 text-[15px] text-white/85">{headline.metric.label}</p>
+      <p className="mt-2 text-[15px] text-ink-invert-muted">{headline.metric.label}</p>
     </div>
   );
   if (!cover) return figure;
   return (
-    <div className="relative overflow-hidden rounded-2xl shadow-media">
-      <div className="relative aspect-4/3 bg-ink2">
+    <div className="relative overflow-hidden ">
+      <div className="relative aspect-4/3 bg-navy-700">
         <ResponsiveImage
           src={cover.src}
           alt={cover.alt}
@@ -53,11 +53,11 @@ export function CaseStudyHeadline({ view }: { view: View }) {
   );
 }
 
-const linkClass = 'font-semibold text-primary underline decoration-primary/30 underline-offset-4 hover:decoration-primary';
+const linkClass = 'font-semibold text-gold-ink underline decoration-primary/30 underline-offset-4 hover:decoration-primary';
 
 function GlanceItem({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <div className="border-t border-line pt-4">
+    <div className="border-t border-hairline pt-4">
       <dt className="text-[13.5px] font-medium">{label}</dt>
       <dd className="mt-1.5 text-[16px] leading-snug text-ink">{children}</dd>
     </div>
@@ -171,7 +171,7 @@ export function NarrativeSection({
 /** How the published figures were measured, under the outcome. */
 export function MeasurementNote({ label, children }: { label: string; children: string }) {
   return (
-    <div className="mt-8 rounded-2xl border border-line bg-white p-6">
+    <div className="mt-8 border border-hairline bg-canvas-raised p-6">
       <p className="font-display text-[16px] font-bold text-ink">{label}</p>
       <p className="mt-2 text-[15.5px] leading-relaxed">{children}</p>
     </div>
@@ -188,7 +188,7 @@ export function GallerySection({ view, tone }: { view: View; tone: LightTone }) 
       <SectionHeading id={headingId} title={view.headings.gallery} size="medium" className="mb-10" />
       <ul className={`grid gap-5 ${columns}`}>
         {view.gallery.map((image, index) => (
-          <li key={image.src} className="relative aspect-4/3 overflow-hidden rounded-2xl bg-mist" {...reveal(index)}>
+          <li key={image.src} className="relative aspect-4/3 overflow-hidden bg-canvas-sunken" {...reveal(index)}>
             <ResponsiveImage
               src={image.src}
               alt={image.alt}
@@ -236,7 +236,7 @@ export function VideoTestimonialCard({ video }: { video: WorkVideoTestimonial })
   const detail = byline(video.role, video.company);
   const who = [video.clientName, video.company].filter((part): part is string => Boolean(part)).join(', ');
   return (
-    <figure className="relative h-full min-h-[280px] overflow-hidden rounded-2xl bg-ink">
+    <figure className="relative h-full min-h-[280px] overflow-hidden bg-navy-900">
       {video.poster ? (
         <ResponsiveImage
           src={video.poster.src}
@@ -246,11 +246,11 @@ export function VideoTestimonialCard({ video }: { video: WorkVideoTestimonial })
           className="object-cover"
         />
       ) : null}
-      <div className="absolute inset-0 bg-linear-to-t from-ink via-ink/50 to-ink/10" aria-hidden="true" />
+      <div className="absolute inset-0 bg-linear-to-t from-navy-900 via-navy-900/50 to-navy-900/10" aria-hidden="true" />
       <Showreel variant="overlay" label={`Play video testimonial from ${who}`} videoUrl={video.videoUrl} poster={null} />
       <figcaption className="pointer-events-none absolute inset-x-0 bottom-0 p-6">
-        <b className="block text-white">{video.clientName}</b>
-        {detail ? <span className="text-[14px] text-white/75">{detail}</span> : null}
+        <b className="block text-ink-invert">{video.clientName}</b>
+        {detail ? <span className="text-[14px] text-ink-invert-muted">{detail}</span> : null}
       </figcaption>
     </figure>
   );

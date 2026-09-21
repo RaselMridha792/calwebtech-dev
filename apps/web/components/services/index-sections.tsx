@@ -32,7 +32,7 @@ export function ServiceGroups({ view }: { view: ServicesIndexView }) {
           const ground = groundOf(tone);
           return (
             <Section key={id} id={id} tone={tone} labelledBy={`${id}-heading`} deferred={index > 0}>
-              <p className={`mb-2 text-[14px] font-semibold ${ground === 'dark' ? 'text-white/75' : ''}`} {...reveal()}>
+              <p className={`mb-2 text-[14px] font-semibold ${ground === 'dark' ? 'text-ink-invert-muted' : ''}`} {...reveal()}>
                 {group.name}
               </p>
               <SectionHeading id={`${id}-heading`} title={group.heading} intro={group.description} ground={ground} />

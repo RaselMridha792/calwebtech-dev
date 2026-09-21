@@ -25,9 +25,9 @@ import { guideArticleJsonLd } from './json-ld';
 function GuideAside({ page }: { page: GuideDetailView }) {
   const { hero, gate } = page;
   return (
-    <div className="rounded-2xl border border-white/15 bg-white/5 p-6 backdrop-blur-sm">
+    <div className="border border-ink-invert/15 bg-navy-900-invert/5 p-6 backdrop-blur-sm">
       {hero.cover ? (
-        <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-ink/40 shadow-media">
+        <div className="relative aspect-[3/4] overflow-hidden bg-navy-900/40 ">
           <ResponsiveImage
             src={hero.cover.src}
             alt={hero.cover.alt}
@@ -38,10 +38,10 @@ function GuideAside({ page }: { page: GuideDetailView }) {
           />
         </div>
       ) : null}
-      <p className={`${hero.cover ? 'mt-5 ' : ''}text-[14px] text-white/75`}>{gate.fileLabel}</p>
+      <p className={`${hero.cover ? 'mt-5 ' : ''}text-[14px] text-ink-invert-muted`}>{gate.fileLabel}</p>
       <a
         href={`#${GUIDE_GATE_ANCHOR}`}
-        className="mt-4 inline-flex h-12 w-full items-center justify-center rounded-xl bg-white px-6 text-[15.5px] font-semibold text-ink hover:bg-mist"
+        className="mt-4 inline-flex h-12 w-full items-center justify-center bg-canvas-raised px-6 text-[15.5px] font-semibold text-ink hover:bg-canvas-sunken"
       >
         {hero.ctaLabel}
       </a>
@@ -99,7 +99,7 @@ export function GuideDetail({ page, turnstileSiteKey }: { page: GuideDetailView;
         aside={<GuideAside page={page} />}
       >
         {page.updatedAt ? (
-          <p className="mt-8 text-[14px] text-white/70">{`Last updated ${formatUpdated(page.updatedAt)}`}</p>
+          <p className="mt-8 text-[14px] text-ink-invert-muted">{`Last updated ${formatUpdated(page.updatedAt)}`}</p>
         ) : null}
       </PageHero>
 
@@ -140,7 +140,7 @@ export function GuideDetail({ page, turnstileSiteKey }: { page: GuideDetailView;
                 <li key={source.href}>
                   <a
                     href={source.href}
-                    className="font-semibold text-primary underline underline-offset-4 hover:text-primaryd"
+                    className="font-semibold text-gold-ink underline underline-offset-4 hover:text-gold-600"
                     rel="noreferrer"
                   >
                     {source.label}
@@ -174,10 +174,10 @@ export function GuideDetail({ page, turnstileSiteKey }: { page: GuideDetailView;
               size="medium"
               className="mb-6"
             />
-            <p className="text-[17px] leading-relaxed text-white/80">{page.service.item.line}</p>
+            <p className="text-[17px] leading-relaxed text-ink-invert-muted">{page.service.item.line}</p>
             <a
               href={servicePath(page.service.item.slug)}
-              className="mt-8 inline-flex h-14 items-center rounded-xl bg-white px-7 text-[16px] font-semibold text-ink hover:bg-mist"
+              className="mt-8 inline-flex h-14 items-center bg-canvas-raised px-7 text-[16px] font-semibold text-ink hover:bg-canvas-sunken"
             >
               {page.service.item.title}
             </a>
@@ -208,7 +208,7 @@ export function GuideDetail({ page, turnstileSiteKey }: { page: GuideDetailView;
                 <li key={term.slug}>
                   <a
                     href={glossaryTermPath(term.slug)}
-                    className="inline-flex min-h-11 items-center rounded-xl border border-line bg-mist2 px-4 py-2 text-[15px] font-semibold text-ink hover:border-ink"
+                    className="inline-flex min-h-11 items-center border border-hairline bg-canvas-raised px-4 py-2 text-[15px] font-semibold text-ink hover:border-ink"
                   >
                     {term.term}
                   </a>
@@ -217,7 +217,7 @@ export function GuideDetail({ page, turnstileSiteKey }: { page: GuideDetailView;
             </ul>
           ) : null}
           <p className="mt-8 text-[15px]">
-            <a href={GLOSSARY_ROUTE} className="font-semibold text-primary hover:text-primaryd">
+            <a href={GLOSSARY_ROUTE} className="font-semibold text-gold-ink hover:text-gold-600">
               Browse the full glossary
             </a>
           </p>

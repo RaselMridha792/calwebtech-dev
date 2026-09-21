@@ -15,11 +15,11 @@ export type SectionTone = 'white' | 'tint' | 'mist' | 'ink' | 'band';
 export const groundOf = (tone: SectionTone): Ground => (tone === 'ink' || tone === 'band' ? 'dark' : 'light');
 
 const TONES: Record<SectionTone, string> = {
-  white: 'bg-white',
-  tint: 'border-y border-line bg-linear-to-b from-mist2 via-mist to-mist2',
-  mist: 'border-y border-line bg-mist2',
-  ink: 'bg-ink text-white',
-  band: 'band-gradient text-white',
+  white: 'bg-canvas-raised',
+  tint: 'border-y border-hairline bg-canvas-sunken',
+  mist: 'border-y border-hairline bg-canvas-raised',
+  ink: 'bg-navy-900 text-ink-invert',
+  band: 'band-gradient text-ink-invert',
 };
 
 function Backdrop({ tone, image }: { tone: SectionTone; image: DecorativeImage | null }) {
@@ -27,24 +27,19 @@ function Backdrop({ tone, image }: { tone: SectionTone; image: DecorativeImage |
     case 'tint':
       return (
         <div className="absolute inset-0" aria-hidden="true">
-          <div className="grid-lines absolute inset-0 opacity-70" />
-          <div className="absolute -top-32 -right-24 h-[520px] w-[520px] rounded-full bg-primary/7 blur-3xl" />
         </div>
       );
     case 'ink':
       return (
         <div className="absolute inset-0" aria-hidden="true">
           <BackdropImage image={image} className="opacity-[.16]" />
-          <div className="absolute inset-0 bg-linear-to-r from-ink via-ink/92 to-ink/70" />
-          <div className="glow-blue absolute inset-0 opacity-60" />
+          <div className="absolute inset-0 bg-linear-to-r from-navy-900 via-navy-900/92 to-navy-900/70" />
         </div>
       );
     case 'band':
       return (
         <div className="absolute inset-0" aria-hidden="true">
           <BackdropImage image={image} className="opacity-[.14] mix-blend-luminosity" />
-          <div className="grid-lines-light absolute inset-0" />
-          <div className="absolute -bottom-40 -left-20 h-[560px] w-[560px] rounded-full bg-glow-teal-25 blur-3xl" />
         </div>
       );
     default:

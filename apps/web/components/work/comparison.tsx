@@ -47,9 +47,9 @@ export function ComparisonTable({
   if (figures.length === 0) return null;
   return (
     <table className="w-full border-collapse text-left text-[15px]">
-      <caption className="pb-3 text-left text-[14px] font-semibold text-white/80">{caption}</caption>
+      <caption className="pb-3 text-left text-[14px] font-semibold text-ink-invert-muted">{caption}</caption>
       <thead>
-        <tr className="border-b border-white/15 text-[13px] text-white/70">
+        <tr className="border-b border-ink-invert/15 text-[13px] text-ink-invert-muted">
           <th scope="col" className="py-2 pr-3 font-medium">
             <span className="sr-only">Measure</span>
           </th>
@@ -63,13 +63,13 @@ export function ComparisonTable({
       </thead>
       <tbody>
         {figures.map((figure) => (
-          <tr key={figure.label} className="border-b border-white/10">
-            <th scope="row" className="py-3 pr-3 text-[14.5px] font-normal text-white/80">
+          <tr key={figure.label} className="border-b border-ink-invert/15">
+            <th scope="row" className="py-3 pr-3 text-[14.5px] font-normal text-ink-invert-muted">
               {figure.label}
             </th>
-            <td className="py-3 pr-3 font-display font-bold text-white/80">{figure.before}</td>
+            <td className="py-3 pr-3 font-display font-bold text-ink-invert-muted">{figure.before}</td>
             <td className="py-3">
-              <span className="font-display text-[18px] font-extrabold text-result">{figure.after}</span>
+              <span className="font-display text-[18px] font-extrabold text-gold-ink">{figure.after}</span>
             </td>
           </tr>
         ))}

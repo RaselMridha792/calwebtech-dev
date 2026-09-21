@@ -20,23 +20,23 @@ export function Breadcrumbs({
   const dark = ground === 'dark';
   return (
     <>
-      <nav aria-label="Breadcrumb" className={`text-[13.5px] ${dark ? 'text-white/70' : 'text-body'} ${className}`}>
+      <nav aria-label="Breadcrumb" className={`text-[13.5px] ${dark ? 'text-ink-invert-muted' : 'text-ink-muted'} ${className}`}>
         <ol className="flex flex-wrap items-center gap-x-2">
           {trail.map((crumb, index) => (
             <li key={crumb.path} className="flex items-center gap-2">
               {index > 0 ? (
-                <span className={dark ? 'text-white/40' : 'text-body/60'} aria-hidden="true">
+                <span className={dark ? 'text-ink-invert-muted' : 'text-ink-muted/60'} aria-hidden="true">
                   /
                 </span>
               ) : null}
               {index === trail.length - 1 ? (
-                <span aria-current="page" className={`inline-block py-1 font-medium ${dark ? 'text-white' : 'text-ink'}`}>
+                <span aria-current="page" className={`inline-block py-1 font-medium ${dark ? 'text-ink-invert' : 'text-ink'}`}>
                   {crumb.name}
                 </span>
               ) : (
                 <a
                   href={crumb.path}
-                  className={`inline-block py-1 underline-offset-4 hover:underline ${dark ? 'hover:text-white' : 'hover:text-ink'}`}
+                  className={`inline-block py-1 underline-offset-4 hover:underline ${dark ? 'hover:text-ink-invert' : 'hover:text-ink'}`}
                 >
                   {crumb.name}
                 </a>

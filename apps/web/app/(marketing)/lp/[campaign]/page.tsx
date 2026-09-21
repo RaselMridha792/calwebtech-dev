@@ -76,7 +76,7 @@ export default async function CampaignLandingPage({ params }: PageProps<'/lp/[ca
     <>
       <a
         href="#form"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-999 focus:rounded focus:bg-ink focus:px-4 focus:py-2 focus:text-white"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-999 focus:rounded focus:bg-navy-900 focus:px-4 focus:py-2 focus:text-ink-invert"
       >
         Skip to the form
       </a>
@@ -87,10 +87,10 @@ export default async function CampaignLandingPage({ params }: PageProps<'/lp/[ca
         <LandingHero
           hero={content.hero}
           form={
-            <div className="overflow-hidden rounded-2xl bg-white text-ink shadow-form">
-              <div className="border-b border-line bg-mist px-7 py-5">
+            <div className="overflow-hidden bg-canvas-raised text-ink ">
+              <div className="border-b border-hairline bg-canvas-sunken px-7 py-5">
                 <h2 className="font-display text-[20px] font-extrabold">{content.heroForm.heading}</h2>
-                <p className="mt-1 text-[14px] text-body">{content.heroForm.subheading}</p>
+                <p className="mt-1 text-[14px] text-ink-muted">{content.heroForm.subheading}</p>
               </div>
               <LeadForm
                 variant="hero"
@@ -142,7 +142,7 @@ export default async function CampaignLandingPage({ params }: PageProps<'/lp/[ca
               serviceOptions={content.finalCta.serviceOptions}
               footnote={content.finalCta.formFootnote}
               turnstileSiteKey={process.env.TURNSTILE_SITE_KEY}
-              className="rounded-2xl border border-line bg-white p-7 shadow-panel sm:p-9"
+              className="border border-hairline bg-canvas-raised p-7 sm:p-9"
             />
           }
         />

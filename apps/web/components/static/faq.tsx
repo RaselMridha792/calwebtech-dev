@@ -18,7 +18,7 @@ export function FaqTopics({ view }: { view: StaticFaqView }) {
           <li key={group.key}>
             <a
               href={`#${group.key}`}
-              className="inline-flex h-10 items-center rounded-lg border border-line bg-white px-4 text-[14.5px] font-medium text-ink hover:border-ink"
+              className="inline-flex h-10 items-center border border-hairline bg-canvas-raised px-4 text-[14.5px] font-medium text-ink hover:border-ink"
             >
               {group.heading}
             </a>

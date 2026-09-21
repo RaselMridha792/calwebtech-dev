@@ -5,7 +5,7 @@ import { CheckIcon } from './icons';
 export function PillBadge({ children }: { children: ReactNode }) {
   return (
     <p className="glass inline-flex items-center gap-2.5 rounded-full px-4 py-2 text-[13px] font-medium">
-      <span className="h-1.5 w-1.5 rounded-full bg-result" aria-hidden="true" />
+      <span className="h-1.5 w-1.5 rounded-full bg-gold-ink" aria-hidden="true" />
       {children}
     </p>
   );
@@ -16,7 +16,7 @@ export function CheckBullet({ children }: { children: ReactNode }) {
   return (
     <li className="flex items-start gap-3.5">
       <span
-        className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-result/20 text-result"
+        className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-gold-ink/20 text-gold-ink"
         aria-hidden="true"
       >
         <CheckIcon className="h-3.5 w-3.5" />

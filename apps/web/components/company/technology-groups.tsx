@@ -7,10 +7,10 @@ export function TechnologyGroups({ groups }: { groups: readonly CompanyTechnolog
   return (
     <ul data-company-list="technology" className="grid gap-6 lg:grid-cols-2">
       {groups.map((group, index) => (
-        <li key={group.key} className="rounded-2xl border border-line bg-white p-7 lg:p-8" {...reveal(index)}>
+        <li key={group.key} className="border border-hairline bg-canvas-raised p-7 lg:p-8" {...reveal(index)}>
           <h3 className="font-display text-[22px] font-extrabold text-ink">{group.label}</h3>
           {group.summary ? <p className="mt-2 text-[15.5px] leading-relaxed">{group.summary}</p> : null}
-          <ul className="mt-6 divide-y divide-line border-t border-line">
+          <ul className="mt-6 divide-y divide-hairline border-t border-hairline">
             {group.technologies.map((technology) => (
               <li key={technology.slug} data-technology="" className="flex gap-4 py-4">
                 {technology.logo ? (

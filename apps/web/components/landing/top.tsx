@@ -20,7 +20,7 @@ export function LandingHeader({
   ctaLabel: string;
 }) {
   return (
-    <header className="sticky top-0 z-50 border-b border-line bg-white/95">
+    <header className="sticky top-0 z-50 border-b border-hairline bg-navy-900-invert/95">
       <div className="shell-narrow flex h-[70px] items-center justify-between gap-4">
         <Logo tone="light" height={34} priority />
         <div className="flex items-center gap-5">
@@ -35,13 +35,13 @@ export function LandingHeader({
           ) : null}
           <a
             href={`tel:${contact.phoneE164}`}
-            className="hidden text-[15px] font-semibold text-ink hover:text-primary sm:block"
+            className="hidden text-[15px] font-semibold text-ink hover:text-gold-ink sm:block"
           >
             {contact.phone}
           </a>
           <a
             href="#form"
-            className="inline-flex h-11 items-center rounded-lg bg-primary px-4 text-[14px] font-semibold whitespace-nowrap text-white hover:bg-primaryd sm:px-5 sm:text-[14.5px]"
+            className="inline-flex h-11 items-center bg-navy-900 px-4 text-[14px] font-semibold whitespace-nowrap text-ink-invert hover:bg-navy-700 sm:px-5 sm:text-[14.5px]"
           >
             {ctaLabel}
           </a>
@@ -53,7 +53,7 @@ export function LandingHeader({
 
 export function LandingHero({ hero, form }: { hero: Content['hero']; form: ReactNode }) {
   return (
-    <section className="relative overflow-hidden bg-ink text-white">
+    <section className="relative overflow-hidden bg-navy-900 text-ink-invert">
       <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
         <BackdropImage image={hero.backgroundImage} className="kenburns opacity-[.34]" priority />
       </div>
@@ -63,10 +63,8 @@ export function LandingHero({ hero, form }: { hero: Content['hero']; form: React
         On small screens, where the poster alone shows, the wash runs top to bottom.
       */}
       <div className="absolute inset-0" aria-hidden="true">
-        <div className="absolute inset-0 bg-linear-to-b from-ink/85 via-ink/90 to-ink lg:bg-linear-to-r lg:from-ink lg:via-ink/85 lg:to-ink/30" />
-        <div className="absolute inset-0 bg-linear-to-t from-ink via-transparent to-ink/55" />
-        <div className="glow-blue absolute inset-0 opacity-80" />
-        <div className="glow-teal absolute inset-0" />
+        <div className="absolute inset-0 bg-linear-to-b from-navy-900/85 via-navy-900/90 to-navy-900 lg:bg-linear-to-r lg:from-navy-900 lg:via-navy-900/85 lg:to-navy-900/30" />
+        <div className="absolute inset-0 bg-linear-to-t from-navy-900 via-transparent to-navy-900/55" />
       </div>
 
       <div className="shell-narrow relative grid items-start gap-12 pt-14 pb-16 lg:grid-cols-12 lg:gap-14 lg:pt-20 lg:pb-20">
@@ -75,19 +73,19 @@ export function LandingHero({ hero, form }: { hero: Content['hero']; form: React
           <h1 className="mt-7 font-display text-[38px] leading-[1.05] font-extrabold sm:text-[50px] xl:text-[58px]">
             {hero.heading}
           </h1>
-          <p className="mt-7 max-w-[56ch] text-[18px] leading-relaxed text-white/75">{hero.intro}</p>
+          <p className="mt-7 max-w-[56ch] text-[18px] leading-relaxed text-ink-invert-muted">{hero.intro}</p>
           <ul className="mt-8 space-y-3.5 text-[16px]">
             {hero.bullets.map((bullet) => (
               <CheckBullet key={bullet}>{bullet}</CheckBullet>
             ))}
           </ul>
           {hero.stats.length > 0 ? (
-            <dl className="mt-10 grid max-w-xl grid-cols-3 gap-6 border-t border-white/12 pt-8">
+            <dl className="mt-10 grid max-w-xl grid-cols-3 gap-6 border-t border-ink-invert/15 pt-8">
               {hero.stats.map((stat) => (
                 <div key={stat.label} className="flex flex-col-reverse">
-                  <dt className="mt-2 text-[13.5px] text-white/60">{stat.label}</dt>
+                  <dt className="mt-2 text-[13.5px] text-ink-invert-muted">{stat.label}</dt>
                   <dd
-                    className={`font-display text-[26px] leading-none font-extrabold sm:text-[30px] ${stat.isOutcome ? 'text-result' : ''}`}
+                    className={`font-display text-[26px] leading-none font-extrabold sm:text-[30px] ${stat.isOutcome ? 'text-gold-ink' : ''}`}
                   >
                     <CountUp value={stat.value} suffix={stat.suffix} />
                   </dd>
@@ -142,12 +140,12 @@ function ClientRow({ clients, duplicate }: { clients: LandingPageView['clients']
 export function TrustBar({ label, clients }: { label: string; clients: LandingPageView['clients'] }) {
   if (clients.length === 0) return null;
   return (
-    <section className="content-auto group relative overflow-hidden border-b border-line bg-white py-8" aria-label={label}>
+    <section className="content-auto group relative overflow-hidden border-b border-hairline bg-canvas-raised py-8" aria-label={label}>
       <p className="shell-narrow mb-5 text-[13.5px]">{label}</p>
       <input id="trust-bar-pause" type="checkbox" className="peer sr-only" />
       <label
         htmlFor="trust-bar-pause"
-        className="sr-only peer-focus-visible:not-sr-only peer-focus-visible:absolute peer-focus-visible:top-2 peer-focus-visible:right-6 peer-focus-visible:z-10 peer-focus-visible:rounded-lg peer-focus-visible:bg-ink peer-focus-visible:px-3 peer-focus-visible:py-2 peer-focus-visible:text-[13px] peer-focus-visible:font-semibold peer-focus-visible:text-white peer-focus-visible:outline-3 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary"
+        className="sr-only peer-focus-visible:not-sr-only peer-focus-visible:absolute peer-focus-visible:top-2 peer-focus-visible:right-6 peer-focus-visible:z-10 peer-focus-visible: peer-focus-visible:bg-navy-900 peer-focus-visible:px-3 peer-focus-visible:py-2 peer-focus-visible:text-[13px] peer-focus-visible:font-semibold peer-focus-visible:text-ink-invert peer-focus-visible:outline-3 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary"
       >
         Pause the client logos
       </label>

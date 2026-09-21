@@ -40,11 +40,11 @@ export function SiteSearch({ copy }: { copy: StaticNotFoundView['search'] }) {
             autoComplete="off"
             placeholder={copy.placeholder}
             aria-describedby="site-search-status"
-            className="h-13 min-w-0 flex-1 basis-60 rounded-xl border border-line bg-white px-4 text-[16px] text-ink placeholder:text-body focus:border-primary"
+            className="h-13 min-w-0 flex-1 basis-60 border border-hairline bg-canvas-raised px-4 text-[16px] text-ink placeholder:text-ink-muted focus:border-gold-ink"
           />
           <button
             type="submit"
-            className="h-13 rounded-xl bg-primary px-6 text-[16px] font-semibold text-white hover:bg-primaryd"
+            className="h-13 bg-navy-900 px-6 text-[16px] font-semibold text-ink-invert hover:bg-navy-700"
           >
             {copy.submitLabel}
           </button>
@@ -58,7 +58,7 @@ export function SiteSearch({ copy }: { copy: StaticNotFoundView['search'] }) {
         />
         <ul
           hidden
-          className="mt-2 divide-y divide-line overflow-hidden rounded-xl border border-line bg-white [&_a]:block [&_a]:px-4 [&_a]:pt-3 [&_a]:font-semibold [&_a]:text-ink [&_a:hover]:text-primary [&_span]:block [&_span]:px-4 [&_span]:pb-3 [&_span]:text-[13.5px]"
+          className="mt-2 divide-y divide-hairline overflow-hidden border border-hairline bg-canvas-raised [&_a]:block [&_a]:px-4 [&_a]:pt-3 [&_a]:font-semibold [&_a]:text-ink [&_a:hover]:text-gold-ink [&_span]:block [&_span]:px-4 [&_span]:pb-3 [&_span]:text-[13.5px]"
         />
       </form>
       <script dangerouslySetInnerHTML={{ __html: SEARCH_SCRIPT }} />

@@ -35,10 +35,10 @@ function fill(template: string, values: Readonly<Record<string, string | number>
 }
 
 const PRIMARY_BUTTON =
-  'inline-flex h-12 items-center justify-center rounded-xl bg-primary px-6 text-[15.5px] font-semibold text-white hover:bg-primaryd disabled:opacity-70';
+  'inline-flex h-12 items-center justify-center  bg-navy-900 px-6 text-[15.5px] font-semibold text-ink-invert hover:bg-navy-700 disabled:opacity-70';
 const QUIET_BUTTON =
-  'inline-flex h-12 items-center justify-center rounded-xl border border-line px-6 text-[15.5px] font-semibold text-ink hover:border-ink hover:bg-mist2';
-const CONTROL = 'h-12 w-full rounded-lg border border-line bg-white px-4 text-ink focus:border-primary aria-invalid:border-danger';
+  'inline-flex h-12 items-center justify-center  border border-hairline px-6 text-[15.5px] font-semibold text-ink hover:border-ink hover:bg-canvas-raised';
+const CONTROL = 'h-12 w-full  border border-hairline bg-canvas-raised px-4 text-ink focus:border-gold-ink aria-invalid:border-danger';
 
 export function Calculator({ copy, steps, events, permalink, turnstileSiteKey, autoFocus }: CalculatorViewProps) {
   const [state, formAction, pending] = useActionState(submitCalculator, initialState, permalink);
@@ -234,13 +234,13 @@ export function Calculator({ copy, steps, events, permalink, turnstileSiteKey, a
   const busy = pending || verifying;
 
   return (
-    <div className="rounded-2xl border border-line bg-white p-6 text-ink shadow-panel sm:p-9">
+    <div className="border border-hairline bg-canvas-raised p-6 text-ink sm:p-9">
       <div className="flex items-center justify-between gap-4 text-[13.5px]">
         <p className="font-semibold">{progressLabel}</p>
-        <p className="text-body">{timeLeft}</p>
+        <p className="text-ink-muted">{timeLeft}</p>
       </div>
       <div
-        className="mt-3 h-1.5 overflow-hidden rounded-full bg-mist"
+        className="mt-3 h-1.5 overflow-hidden rounded-full bg-canvas-sunken"
         role="progressbar"
         aria-label={copy.labels.progressName}
         aria-valuemin={1}
@@ -249,7 +249,7 @@ export function Calculator({ copy, steps, events, permalink, turnstileSiteKey, a
         aria-valuetext={`${progressLabel}. ${timeLeft}`}
       >
         <span
-          className="block h-full rounded-full bg-primary transition-[width] duration-300 motion-reduce:transition-none"
+          className="block h-full rounded-full bg-navy-900 transition-[width] duration-300 motion-reduce:transition-none"
           style={{ width: `${String(percent)}%` }}
         />
       </div>
@@ -274,7 +274,7 @@ export function Calculator({ copy, steps, events, permalink, turnstileSiteKey, a
           <h3 ref={questionRef} tabIndex={-1} className="mt-7 font-display text-[22px] leading-snug font-bold outline-none">
             {copy.gate.heading}
           </h3>
-          <p className="mt-3 text-[15.5px] leading-relaxed text-body">{copy.gate.body}</p>
+          <p className="mt-3 text-[15.5px] leading-relaxed text-ink-muted">{copy.gate.body}</p>
 
           {alertMessage ? (
             <p role="alert" className="mt-5 text-[14px] font-medium text-danger">
@@ -298,9 +298,9 @@ export function Calculator({ copy, steps, events, permalink, turnstileSiteKey, a
 
           <div ref={turnstileContainerRef} className="mt-5 empty:hidden" />
 
-          <p className="mt-5 text-[13.5px] leading-relaxed text-body">
+          <p className="mt-5 text-[13.5px] leading-relaxed text-ink-muted">
             {copy.gate.privacy}{' '}
-            <a href={copy.gate.privacyLink.href} className="font-semibold text-primary underline underline-offset-4 hover:text-primaryd">
+            <a href={copy.gate.privacyLink.href} className="font-semibold text-gold-ink underline underline-offset-4 hover:text-gold-600">
               {copy.gate.privacyLink.label}
             </a>
           </p>
@@ -322,14 +322,14 @@ export function Calculator({ copy, steps, events, permalink, turnstileSiteKey, a
                 {step.question}
               </h3>
             </legend>
-            {step.help ? <p className="mt-3 text-[15px] leading-relaxed text-body">{step.help}</p> : null}
+            {step.help ? <p className="mt-3 text-[15px] leading-relaxed text-ink-muted">{step.help}</p> : null}
             <ul className="mt-6 space-y-3">
               {step.options.map((option) => {
                 const selected = (chosen[step.key] ?? []).includes(option.value);
                 return (
                   <li key={option.value}>
                     <label
-                      className={`flex cursor-pointer items-start gap-3.5 rounded-xl border px-5 py-3.5 text-[15.5px] has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-primary ${selected ? 'border-2 border-primary bg-primary/5 px-[19px] py-[13px] font-semibold' : 'border-line hover:border-ink'}`}
+                      className={`flex cursor-pointer items-start gap-3.5  border px-5 py-3.5 text-[15.5px] has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-primary ${selected ? 'border-2 border-gold-ink bg-navy-500/5 px-[19px] py-[13px] font-semibold' : 'border-hairline hover:border-ink'}`}
                     >
                       <input
                         type={step.multiple ? 'checkbox' : 'radio'}
@@ -342,12 +342,12 @@ export function Calculator({ copy, steps, events, permalink, turnstileSiteKey, a
                       />
                       <span
                         aria-hidden="true"
-                        className={`mt-1 h-4 w-4 shrink-0 border-2 ${step.multiple ? 'rounded-sm' : 'rounded-full'} ${selected ? 'border-[5px] border-primary' : 'border-line'}`}
+                        className={`mt-1 h-4 w-4 shrink-0 border-2 ${step.multiple ? '' : 'rounded-full'} ${selected ? 'border-[5px] border-gold-ink' : 'border-hairline'}`}
                       />
                       <span className="min-h-6">
                         {option.label}
                         {option.description ? (
-                          <span className="mt-1 block text-[14px] leading-relaxed font-normal text-body">{option.description}</span>
+                          <span className="mt-1 block text-[14px] leading-relaxed font-normal text-ink-muted">{option.description}</span>
                         ) : null}
                       </span>
                     </label>
@@ -428,16 +428,16 @@ function Result({
       tabIndex={-1}
       role="status"
       data-calculator-result=""
-      className="rounded-2xl border border-line bg-white p-6 text-ink shadow-panel outline-none sm:p-9"
+      className="border border-hairline bg-canvas-raised p-6 text-ink outline-none sm:p-9"
     >
       <h3 className="font-display text-[22px] leading-snug font-bold">{copy.result.heading}</h3>
       <p
-        className={`mt-4 text-[14.5px] leading-relaxed ${state.status === 'unsent' ? 'border-l-4 border-danger pl-4 text-ink' : 'text-body'}`}
+        className={`mt-4 text-[14.5px] leading-relaxed ${state.status === 'unsent' ? 'border-l-4 border-danger pl-4 text-ink' : 'text-ink-muted'}`}
       >
         {state.note}
       </p>
 
-      <p className="mt-6 text-[13px] font-semibold tracking-[0.06em] text-body uppercase">{copy.result.rangeHeading}</p>
+      <p className="mt-6 text-[13px] font-semibold tracking-[0.06em] text-ink-muted uppercase">{copy.result.rangeHeading}</p>
       <p className="mt-1 font-display text-[34px] leading-none font-extrabold lg:text-[42px]">{result.rangeLabel}</p>
       <p className="mt-4 text-[15.5px] leading-relaxed">
         <b>{result.tierName}</b>
@@ -445,12 +445,12 @@ function Result({
       </p>
 
       <h4 className="mt-9 font-display text-[17px] font-bold">{copy.result.breakdownHeading}</h4>
-      <dl className="mt-4 divide-y divide-line border-y border-line">
+      <dl className="mt-4 divide-y divide-hairline border-y border-hairline">
         {result.breakdown.map((row) => (
           <div key={row.label} className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 py-3">
             <dt className="text-[15px]">
               {row.label}
-              {row.detail ? <span className="block text-[13.5px] text-body">{row.detail}</span> : null}
+              {row.detail ? <span className="block text-[13.5px] text-ink-muted">{row.detail}</span> : null}
             </dt>
             <dd className="text-[15px] font-semibold">{row.value}</dd>
           </div>
@@ -468,25 +468,25 @@ function Result({
           ))}
         </ul>
       ) : (
-        <p className="mt-4 text-[15px] leading-relaxed text-body">{result.noMovers}</p>
+        <p className="mt-4 text-[15px] leading-relaxed text-ink-muted">{result.noMovers}</p>
       )}
 
       <h4 className="mt-9 font-display text-[17px] font-bold">{copy.result.monthlyHeading}</h4>
       <p className="mt-3 text-[15px] leading-relaxed">{result.monthly}</p>
 
-      <details className="mt-9 border-t border-line pt-5">
+      <details className="mt-9 border-t border-hairline pt-5">
         <summary className="cursor-pointer font-display text-[17px] font-bold">{copy.result.answersHeading}</summary>
         <dl className="mt-4 space-y-2">
           {result.answers.map((row) => (
             <div key={row.label} className="flex flex-wrap items-baseline justify-between gap-x-6 text-[15px]">
-              <dt className="text-body">{row.label}</dt>
+              <dt className="text-ink-muted">{row.label}</dt>
               <dd>{row.value}</dd>
             </div>
           ))}
         </dl>
       </details>
 
-      <div className="mt-9 rounded-xl bg-mist2 p-6">
+      <div className="mt-9 bg-canvas-raised p-6">
         <h4 className="font-display text-[19px] font-bold">{copy.result.bookHeading}</h4>
         <p className="mt-2.5 text-[15px] leading-relaxed">{copy.result.bookBody}</p>
         <div className="mt-5 flex flex-wrap gap-3">
@@ -503,7 +503,7 @@ function Result({
         </div>
       </div>
 
-      <p className="mt-6 text-[13.5px] leading-relaxed text-body">{copy.result.note}</p>
+      <p className="mt-6 text-[13.5px] leading-relaxed text-ink-muted">{copy.result.note}</p>
     </div>
   );
 }

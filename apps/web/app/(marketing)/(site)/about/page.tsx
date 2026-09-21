@@ -80,7 +80,7 @@ export default async function AboutPage() {
                 <PartnerList partners={page.partners} compact />
                 <a
                   href={SITE_ROUTES.partners}
-                  className="mt-6 inline-block py-1 font-semibold text-primary hover:text-primaryd"
+                  className="mt-6 inline-block py-1 font-semibold text-gold-ink hover:text-gold-600"
                 >
                   {content.recognition.partnersLinkLabel}
                 </a>

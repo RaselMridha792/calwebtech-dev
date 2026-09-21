@@ -7,14 +7,14 @@ import { ResponsiveImage } from '../ui/responsive-image';
 /** When to expect a reply, and a telephone number for anyone who would rather talk. */
 export function ThankYouResponse({ page }: { page: StaticThankYouView }) {
   return (
-    <div className="rounded-2xl border border-line bg-white p-7 shadow-panel sm:p-8">
-      <p className="text-[14px] font-semibold text-body">{page.response.label}</p>
+    <div className="border border-hairline bg-canvas-raised p-7 sm:p-8">
+      <p className="text-[14px] font-semibold text-ink-muted">{page.response.label}</p>
       <p className="mt-1.5 font-display text-[26px] leading-tight font-extrabold text-ink">{page.response.value}</p>
       <p className="mt-3 text-[15.5px] leading-relaxed">{page.response.detail}</p>
-      <p className="mt-6 border-t border-line pt-5 text-[14px]">{page.callLabel}</p>
+      <p className="mt-6 border-t border-hairline pt-5 text-[14px]">{page.callLabel}</p>
       <a
         href={`tel:${page.contact.phoneE164}`}
-        className="mt-1 inline-block py-1 font-display text-[21px] font-bold text-ink hover:text-primary"
+        className="mt-1 inline-block py-1 font-display text-[21px] font-bold text-ink hover:text-gold-ink"
       >
         {page.contact.phone}
       </a>
@@ -41,9 +41,9 @@ export function ThankYouDetails({ page }: { page: StaticThankYouView }) {
           </h2>
           <ol className="mt-6 space-y-4">
             {page.nextSteps.steps.map((step, index) => (
-              <li key={step.title} className="flex gap-5 rounded-2xl border border-line bg-mist2 p-6">
+              <li key={step.title} className="flex gap-5 border border-hairline bg-canvas-raised p-6">
                 <span
-                  className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-ink font-display text-[15px] font-extrabold text-white"
+                  className="grid h-9 w-9 shrink-0 place-items-center bg-navy-900 font-display text-[15px] font-extrabold text-ink-invert"
                   aria-hidden="true"
                 >
                   {String(index + 1)}
@@ -73,7 +73,7 @@ export function ThankYouSecondary({ page }: { page: StaticThankYouView }) {
           <p className="mt-4 max-w-[52ch] text-[17px] leading-relaxed">{page.secondary.body}</p>
           <a
             href={page.secondary.cta.href}
-            className="mt-8 inline-flex h-14 items-center rounded-xl bg-primary px-7 text-[16px] font-semibold text-white hover:bg-primaryd"
+            className="mt-8 inline-flex h-14 items-center bg-navy-900 px-7 text-[16px] font-semibold text-ink-invert hover:bg-navy-700"
           >
             {page.secondary.cta.label}
           </a>
@@ -81,7 +81,7 @@ export function ThankYouSecondary({ page }: { page: StaticThankYouView }) {
             <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-[15px]">
               {page.links.map((link) => (
                 <li key={link.href}>
-                  <a href={link.href} className="inline-block py-1 font-semibold text-primary hover:text-primaryd">
+                  <a href={link.href} className="inline-block py-1 font-semibold text-gold-ink hover:text-gold-600">
                     {link.label}
                   </a>
                 </li>
@@ -91,7 +91,7 @@ export function ThankYouSecondary({ page }: { page: StaticThankYouView }) {
         </div>
         {page.image ? (
           <div className="lg:col-span-6">
-            <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-mist shadow-media">
+            <div className="relative aspect-[16/10] overflow-hidden bg-canvas-sunken ">
               <ResponsiveImage
                 src={page.image.src}
                 alt={page.image.alt}

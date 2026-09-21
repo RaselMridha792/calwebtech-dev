@@ -23,7 +23,7 @@ function writeAttribution(input: HTMLInputElement | null): void {
 }
 
 const controlClass =
-  'h-12 w-full rounded-lg border border-line bg-white px-4 text-ink placeholder:text-body/60 focus:border-primary aria-invalid:border-danger';
+  'h-12 w-full  border border-hairline bg-canvas-raised px-4 text-ink placeholder:text-ink-muted/60 focus:border-gold-ink aria-invalid:border-danger';
 
 export function GuideGate({
   slug,
@@ -101,13 +101,13 @@ export function GuideGate({
 
   if (state.status === 'success') {
     return (
-      <div ref={successRef} tabIndex={-1} role="status" className="rounded-2xl border border-line bg-white p-7 shadow-panel">
+      <div ref={successRef} tabIndex={-1} role="status" className="border border-hairline bg-canvas-raised p-7 ">
         <p className="font-display text-[22px] font-extrabold text-ink">{gate.success.heading}</p>
         <p className="mt-3 text-[15.5px] leading-relaxed">{gate.success.body}</p>
         <a
           href={gate.fileUrl}
           download
-          className="mt-6 inline-flex h-14 items-center rounded-xl bg-primary px-7 text-[16px] font-semibold text-white shadow-cta hover:bg-primaryd"
+          className="mt-6 inline-flex h-14 items-center bg-navy-900 px-7 text-[16px] font-semibold text-ink-invert  hover:bg-navy-700"
         >
           {gate.success.downloadLabel}
         </a>
@@ -151,7 +151,7 @@ export function GuideGate({
       onPointerDown={startTurnstile}
       noValidate
       aria-busy={busy}
-      className="rounded-2xl border border-line bg-white p-7 shadow-panel"
+      className="border border-hairline bg-canvas-raised p-7 "
     >
       <input type="hidden" name="type" value="RESOURCE" />
       <input type="hidden" name="formId" value={formId} />
@@ -210,7 +210,7 @@ export function GuideGate({
       <button
         type="submit"
         disabled={busy}
-        className="mt-6 inline-flex h-14 w-full items-center justify-center rounded-xl bg-primary px-8 text-[16px] font-semibold text-white shadow-cta hover:bg-primaryd disabled:opacity-70 sm:w-auto"
+        className="mt-6 inline-flex h-14 w-full items-center justify-center bg-navy-900 px-8 text-[16px] font-semibold text-ink-invert  hover:bg-navy-700 disabled:opacity-70 sm:w-auto"
       >
         {busy ? 'Sending…' : gate.submitLabel}
       </button>

@@ -78,19 +78,26 @@ describe('service page sections', () => {
     expect(html.match(/<th scope="row"/g)).toHaveLength(page.comparison.rows.length);
   });
 
-  it('keeps teal for outcome figures and round check marks, never headings, prices or links', () => {
+  it('keeps champagne for outcome figures, round check marks and links, never headings or prices', () => {
     const [, page] = pages[0] ?? [];
     if (!page) throw new Error('no snapshot');
     const html = sections(page);
-    const teal = [...html.matchAll(/<(\w+)[^>]*class="([^"]*\btext-result\b[^"]*)"[^>]*>/g)];
-    expect(teal.length).toBeGreaterThan(0);
-    for (const [, tag, classes = ''] of teal) {
-      const figure = tag === 'dd' && classes.includes('font-extrabold');
+    const gold = [...html.matchAll(/<(\w+)[^>]*class="([^"]*\btext-gold-(?:ink|500)\b[^"]*)"[^>]*>/g)];
+    expect(gold.length).toBeGreaterThan(0);
+    // What the brand lets champagne carry on a page: eyebrows, numerals, links and rules.
+    // Never a heading, never a price, never a fill behind text.
+    for (const [, tag, classes = ''] of gold) {
+      const figure = tag === 'dd' && (classes.includes('font-extrabold') || classes.includes('display-'));
+      const numeral = classes.includes('meta');
+      const eyebrow = classes.includes('eyebrow');
       const checkMark = tag === 'span' && classes.includes('rounded-full');
-      expect(figure || checkMark, `${String(tag)}: ${classes}`).toBe(true);
+      const link = tag === 'a';
+      const allowed = figure || numeral || eyebrow || checkMark || link;
+      expect(allowed, `${String(tag)}: ${classes}`).toBe(true);
+      expect(classes, `${String(tag)}: ${classes}`).not.toMatch(/\bdisplay-(?:mega|xl|lg|md)\b|\bheading-(?:lg|md|sm)\b/);
     }
     const price = page.price;
-    if (price) expect(renderToStaticMarkup(<HeroPriceBand price={price} />)).not.toContain('result');
+    if (price) expect(renderToStaticMarkup(<HeroPriceBand price={price} />)).not.toContain('text-gold');
   });
 });
 

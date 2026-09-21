@@ -21,7 +21,7 @@ function writeAttribution(input: HTMLInputElement | null): void {
 }
 
 const controlClass =
-  'h-12 w-full rounded-lg border border-line bg-white px-4 text-ink placeholder:text-body/60 focus:border-primary aria-invalid:border-danger';
+  'h-12 w-full  border border-hairline bg-canvas-raised px-4 text-ink placeholder:text-ink-muted/60 focus:border-gold-ink aria-invalid:border-danger';
 
 /**
  * The inline subscribe block inside an article. The only client component on the page:
@@ -186,7 +186,7 @@ export function SubscribeForm({
         <button
           type="submit"
           disabled={busy}
-          className="h-12 shrink-0 rounded-xl bg-primary px-6 text-[15.5px] font-semibold text-white hover:bg-primaryd disabled:opacity-70"
+          className="h-12 shrink-0 bg-navy-900 px-6 text-[15.5px] font-semibold text-ink-invert hover:bg-navy-700 disabled:opacity-70"
         >
           {busy ? 'Sending…' : copy.submitLabel}
         </button>

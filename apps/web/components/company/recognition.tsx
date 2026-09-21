@@ -14,7 +14,7 @@ export function AwardList({ awards, compact = false }: { awards: readonly Compan
     return (
       <ul data-company-list="awards" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {awards.map((award, index) => (
-          <li key={award.id} data-award="" className="rounded-2xl border border-line bg-white p-6" {...reveal(index)}>
+          <li key={award.id} data-award="" className="border border-hairline bg-canvas-raised p-6" {...reveal(index)}>
             <h3 className="font-display text-[16.5px] font-bold text-ink">{award.name}</h3>
             <p className="mt-2 text-[14px] leading-relaxed">{awardDetail(award)}</p>
           </li>
@@ -30,11 +30,11 @@ export function AwardList({ awards, compact = false }: { awards: readonly Compan
           <li
             key={award.id}
             data-award=""
-            className="flex flex-col rounded-2xl border border-line bg-white p-7"
+            className="flex flex-col border border-hairline bg-canvas-raised p-7"
             {...reveal(index)}
           >
             <div className="flex items-start justify-between gap-4">
-              <p className="rounded-md bg-mist px-2.5 py-1 font-display text-[14px] font-bold text-ink">
+              <p className="bg-canvas-sunken px-2.5 py-1 font-display text-[14px] font-bold text-ink">
                 <time dateTime={String(award.year)}>{award.year}</time>
               </p>
               {award.badge ? (
@@ -76,7 +76,7 @@ export function PartnerList({
     return (
       <ul data-company-list="partners" className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {partners.map((partner, index) => (
-          <li key={partner.id} data-partner="" className="rounded-xl border border-line bg-white px-5 py-6 text-center" {...reveal(index)}>
+          <li key={partner.id} data-partner="" className="border border-hairline bg-canvas-raised px-5 py-6 text-center" {...reveal(index)}>
             <h3 className="font-display text-[16.5px] font-bold text-ink">{partner.name}</h3>
             {(partner.certification ?? partner.tier) ? (
               <p className="mt-1 text-[13.5px]">{partner.certification ?? partner.tier}</p>
@@ -94,7 +94,7 @@ export function PartnerList({
           <li
             key={partner.id}
             data-partner=""
-            className="flex flex-col rounded-2xl border border-line bg-white p-7 lg:p-8"
+            className="flex flex-col border border-hairline bg-canvas-raised p-7 lg:p-8"
             {...reveal(index)}
           >
             <div className="flex items-center gap-4">
@@ -114,13 +114,13 @@ export function PartnerList({
               </div>
             </div>
             {partner.meaningForClient ? (
-              <div className="mt-5 border-t border-line pt-5">
+              <div className="mt-5 border-t border-hairline pt-5">
                 {meaningLabel ? <p className="text-[13.5px] font-semibold text-ink">{meaningLabel}</p> : null}
                 <p className="mt-1.5 text-[15.5px] leading-relaxed">{partner.meaningForClient}</p>
               </div>
             ) : null}
             {partner.quote ? (
-              <blockquote className="mt-5 border-l-4 border-line pl-4 text-[15px] leading-relaxed text-ink">
+              <blockquote className="mt-5 border-l-4 border-hairline pl-4 text-[15px] leading-relaxed text-ink">
                 {`"${partner.quote}"`}
               </blockquote>
             ) : null}
