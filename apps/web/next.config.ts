@@ -23,6 +23,17 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'images.pexels.com' },
     ],
   },
+  /*
+   * The admin's session cookie is first-party and SameSite=Strict, so the browser has to
+   * reach the API on this origin. In production Traefik already routes /api to the API
+   * and this never runs; in development, where web is on 3000 and the API on 4000, it is
+   * what keeps the cookie same-origin without CORS, which CLAUDE.md forbids configuring.
+   * Not a route under app/api: the web app still defines none.
+   */
+  rewrites() {
+    const api = process.env.API_INTERNAL_URL?.trim();
+    return Promise.resolve(api ? [{ source: '/api/:path*', destination: `${api.replace(/\/$/, '')}/:path*` }] : []);
+  },
   ...(analyze
     ? { distDir: '.next-analyze', experimental: { turbopackModuleIds: 'named' as const } }
     : {}),

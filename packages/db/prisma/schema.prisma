@@ -611,6 +611,9 @@ model Lead {
   answers         Json?
   consentAt       DateTime?
   value           Decimal?   @db.Decimal(12, 2)
+  /// When the owner has undertaken to act next. Set from the pipeline panel; null until
+  /// someone commits to a date, which is different from a date that has passed.
+  nextActionDate  DateTime?
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
   deletedAt       DateTime?
