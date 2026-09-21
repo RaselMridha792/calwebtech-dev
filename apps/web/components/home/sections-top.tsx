@@ -4,6 +4,7 @@ import { FaqAccordion } from '../landing/faq-accordion';
 import { CheckBullet, reveal } from '../ui/primitives';
 import { BackgroundVideo } from '../ui/background-video';
 import { BackdropImage } from '../ui/brand';
+import { ArrowIcon } from '../ui/icons';
 import { ResponsiveImage } from '../ui/responsive-image';
 import { EmptyNote, SectionHead, TextLink, byline, h2Dark, h2Light } from './parts';
 import { Showreel } from './showreel';
@@ -139,34 +140,47 @@ export function ProblemRouter({
   );
 }
 
+/**
+ * The services index: numbered editorial rows on hairlines, which is the form the brand
+ * gives a set of peers. No card, no border box, no shadow — the rule above and below each
+ * row is the only separation, and the numeral does the work an icon tile used to.
+ *
+ * Hovering indents the row and washes its ground; nothing lifts or scales. Each row is the
+ * link to its own page, with the arrow travelling 6px, so the "read more" that used to sit
+ * inside every box is the row itself.
+ */
 export function ServicesGrid({ services, items }: { services: Content['services']; items: Home['services'] }) {
   return (
-    <section
-      id="services"
-      className="content-auto relative overflow-hidden border-y border-line bg-linear-to-b from-mist2 via-mist to-mist2 py-20 lg:py-28"
-    >
-      <div className="grid-lines absolute inset-0 opacity-70" aria-hidden="true" />
-      <div className="absolute -top-32 -right-24 h-[520px] w-[520px] rounded-full bg-primary/7 blur-3xl" aria-hidden="true" />
-      <div className="shell relative">
+    <section id="services" className="content-auto bg-canvas py-20 lg:py-32">
+      <div className="shell">
         <SectionHead link={services.link} className="mb-12">
-          <h2 className={`${h2Dark} max-w-[16ch]`}>{services.heading}</h2>
+          <h2 className="display-lg max-w-[16ch] text-ink">{services.heading}</h2>
         </SectionHead>
-        <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="border-t border-hairline">
           {items.map((service, index) => (
-            <li
-              key={service.slug}
-              className="rounded-2xl border border-line bg-white p-7 transition-colors hover:border-ink"
-              {...reveal(index)}
-            >
-              <h3 className="font-display text-[20px] font-bold text-ink">{service.title}</h3>
-              <p className="mt-2.5 text-[15px] leading-relaxed">{service.summary}</p>
-              {service.deliverables.length > 0 ? (
-                <ul className="mt-5 space-y-1.5 text-[14px]">
-                  {service.deliverables.map((deliverable) => (
-                    <li key={deliverable}>{deliverable}</li>
-                  ))}
-                </ul>
-              ) : null}
+            <li key={service.slug} className="border-b border-hairline" {...reveal(index)}>
+              <a
+                href={`/services/${service.slug}/`}
+                className="group grid gap-x-8 gap-y-2 py-7 transition-[padding-inline-start,background-color] duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-canvas-raised focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus motion-safe:hover:ps-6 lg:grid-cols-12 lg:items-baseline"
+              >
+                <span className="meta text-ink-muted transition-colors duration-150 group-hover:text-gold-ink lg:col-span-1">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <h3 className="display-md text-ink lg:col-span-4">{service.title}</h3>
+                <div className="lg:col-span-6">
+                  <p className="body-base text-ink-muted">{service.summary}</p>
+                  {service.deliverables.length > 0 ? (
+                    <ul className="body-sm mt-3 flex flex-wrap gap-x-5 gap-y-1 text-ink-muted">
+                      {service.deliverables.map((deliverable) => (
+                        <li key={deliverable}>{deliverable}</li>
+                      ))}
+                    </ul>
+                  ) : null}
+                </div>
+                <span className="flex items-baseline justify-end lg:col-span-1">
+                  <ArrowIcon className="w-4 text-ink-muted transition-[transform,color] duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:text-gold-ink motion-safe:group-hover:translate-x-1.5" />
+                </span>
+              </a>
             </li>
           ))}
         </ul>
