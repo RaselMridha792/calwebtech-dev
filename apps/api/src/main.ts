@@ -4,6 +4,7 @@ import { resolve } from 'node:path';
 import { NestFactory } from '@nestjs/core';
 import cookieParser from 'cookie-parser';
 import type { NestExpressApplication } from '@nestjs/platform-express';
+import { MEDIA_ROOT } from './admin/media/media-storage';
 import { AppModule } from './app.module';
 import { loadEnv } from './config/env';
 
@@ -25,6 +26,19 @@ async function bootstrap(): Promise<void> {
   // Nothing is signed here: the session token is random and stored only as a hash, so a
   // signature would add a secret to keep without adding anything it does not already have.
   app.use(cookieParser());
+  /*
+   * Uploads, served straight from the media volume rather than through a controller: an
+   * image should not pay for a router. Every file's path contains the asset id and its
+   * width, and neither is ever rewritten, so the content at a path never changes and the
+   * response can be immutable for a year.
+   */
+  app.useStaticAssets(MEDIA_ROOT, {
+    prefix: '/media',
+    index: false,
+    immutable: true,
+    maxAge: '365d',
+    fallthrough: false,
+  });
   app.disable('x-powered-by');
   app.enableShutdownHooks();
   await app.listen(env.API_PORT);
