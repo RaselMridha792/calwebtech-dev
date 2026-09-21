@@ -544,6 +544,16 @@ export function BeforeAfterHome({
   );
 }
 
+/**
+ * The industries stack: full-bleed bands, edge to edge, which is what a bordered sector
+ * card becomes in this brand. The bands touch — no gap, no margin, no corner — so the run
+ * reads as one dark mass between the cream sections above and below it, which is what
+ * makes the page feel large.
+ *
+ * Every band carries the strong scrim across its whole image, not a gradient at one edge,
+ * because the title and its line sit on the image rather than below it. On hover the image
+ * scales a little under a scrim that holds: the copy has to stay legible throughout.
+ */
 export function IndustriesGrid({
   industries,
   items,
@@ -553,53 +563,56 @@ export function IndustriesGrid({
 }) {
   const { notListed } = industries;
   return (
-    <section id="industries" className="content-auto bg-white py-20 lg:py-28">
+    <section id="industries" className="content-auto bg-canvas py-20 lg:py-32">
       <div className="shell">
         <SectionHead link={industries.link} className="mb-12">
-          <h2 className={`${h2Dark} max-w-[18ch]`}>{industries.heading}</h2>
-          <p className="mt-4 max-w-[58ch] text-[17px] leading-relaxed">{industries.intro}</p>
+          <h2 className="display-lg max-w-[18ch] text-ink">{industries.heading}</h2>
+          <p className="body-lg mt-4 max-w-[58ch] text-ink-muted">{industries.intro}</p>
         </SectionHead>
-        <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {items.map((industry, index) => (
-            <li
-              key={industry.slug}
-              className={`relative flex flex-col justify-end overflow-hidden rounded-2xl bg-ink p-6 sm:aspect-3/4 ${industry.image ? 'min-h-60' : 'min-h-44'}`}
-              {...reveal(index)}
+      </div>
+
+      <ul className="bg-navy-900">
+        {items.map((industry, index) => (
+          <li key={industry.slug} className="border-b border-ink-invert/15 last:border-b-0" {...reveal(index)}>
+            <a
+              href={`/industries/${industry.slug}/`}
+              className="group relative flex min-h-45 items-center overflow-hidden focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-focus-invert lg:min-h-59"
             >
               {industry.image ? (
-                <>
-                  <ResponsiveImage
-                    src={industry.image.src}
-                    alt={industry.image.alt}
-                    fill
-                    sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                    className="object-cover opacity-70"
-                  />
-                  <div className="absolute inset-0 bg-linear-to-t from-ink via-ink/40 to-transparent" aria-hidden="true" />
-                </>
-              ) : (
-                <>
-                  <div className="glow-blue absolute inset-0 opacity-60" aria-hidden="true" />
-                  <div className="grid-lines-light absolute inset-0" aria-hidden="true" />
-                </>
-              )}
-              <h3 className="relative font-display text-[20px] font-bold text-white">{industry.name}</h3>
-              {industry.line ? (
-                <p className="relative mt-1.5 text-[14px] leading-snug text-white/75">{industry.line}</p>
+                <ResponsiveImage
+                  src={industry.image.src}
+                  alt={industry.image.alt}
+                  fill
+                  sizes="100vw"
+                  // A band is a short crop under a 72% scrim, so the detail a higher
+                  // quality would buy is detail nobody can see through it.
+                  quality={50}
+                  className="object-cover transition-transform duration-[1600ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-safe:group-hover:scale-105"
+                />
               ) : null}
-            </li>
-          ))}
-          <li
-            className="grid min-h-44 place-items-center rounded-2xl border border-line bg-mist p-6 text-center sm:aspect-3/4"
-            {...reveal(items.length)}
-          >
-            <div>
-              <h3 className="font-display text-[20px] font-bold text-ink">{notListed.heading}</h3>
-              <p className="mt-2 text-[14px] leading-snug">{notListed.body}</p>
-              <TextLink link={notListed.cta} className="mt-4 inline-block" />
-            </div>
+              <div className="absolute inset-0 bg-scrim-strong" aria-hidden="true" />
+
+              <div className="shell relative flex w-full flex-wrap items-baseline gap-x-8 gap-y-2">
+                <span className="meta text-gold-500">{String(index + 1).padStart(2, '0')}</span>
+                <h3 className="display-md text-ink-invert">{industry.name}</h3>
+                {industry.line ? (
+                  <p className="body-base hidden max-w-[42ch] text-ink-invert-muted lg:block">{industry.line}</p>
+                ) : null}
+                <span className="ms-auto hidden items-center gap-3 lg:flex">
+                  <ArrowIcon className="w-4 text-gold-500 transition-transform duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-safe:group-hover:translate-x-1.5" />
+                </span>
+              </div>
+            </a>
           </li>
-        </ul>
+        ))}
+      </ul>
+
+      <div className="shell">
+        <div className="mt-12 border-t border-hairline-gold pt-8">
+          <h3 className="heading-md text-ink">{notListed.heading}</h3>
+          <p className="body-base mt-2 max-w-[58ch] text-ink-muted">{notListed.body}</p>
+          <TextLink link={notListed.cta} className="mt-4 inline-block" />
+        </div>
       </div>
     </section>
   );
