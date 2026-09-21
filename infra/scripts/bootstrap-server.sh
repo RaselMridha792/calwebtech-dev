@@ -528,9 +528,12 @@ public_ip() {
 }
 
 # The known_hosts entry the CI pins, keyed by the host it connects to, never 127.0.0.1.
+# Comment lines are skipped because ssh-keyscan's banner goes to stdout from OpenSSH 10
+# on: without the filter awk reads that instead of the key, and pins a line with no key
+# in it, which fails every deploy at host verification.
 known_hosts_line() {
   local host="$1" key
-  key="$(ssh-keyscan -p "$SSH_PORT" -t ed25519 127.0.0.1 2>/dev/null | awk '{print $2, $3; exit}' || true)"
+  key="$(ssh-keyscan -p "$SSH_PORT" -t ed25519 127.0.0.1 2>/dev/null | awk '!/^#/ {print $2, $3; exit}' || true)"
   if [ -z "$key" ] && [ -r /etc/ssh/ssh_host_ed25519_key.pub ]; then
     key="$(awk '{print $1, $2}' /etc/ssh/ssh_host_ed25519_key.pub)"
   fi
