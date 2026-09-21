@@ -4,6 +4,8 @@ import {
   SERVICE_ENQUIRY_ANCHOR,
   SERVICE_FAQ_LIMIT,
   SERVICE_RELATED_LIMIT,
+  TECHNOLOGY_CATEGORY_LABELS,
+  templateServiceContent,
   faqItemSchema,
   formatServicePrice,
   groupHeadingFallback,
@@ -18,7 +20,6 @@ import {
   type CaseStudyCard,
   type FaqItem,
   type ServiceCard,
-  type ServiceContent,
   type ServiceDetailView,
   type ServicesIndexView,
   type TestimonialView,
@@ -26,7 +27,6 @@ import {
 import { z } from 'zod';
 import { CONSENTED } from '../common/published';
 import { image, outcomeMetricsSchema } from '../landing-pages/landing-page.mapper';
-import { DEFAULT_ACKNOWLEDGEMENT } from '../leads/leads.service';
 
 /**
  * Relations loaded for a service page. Unpublished projects and industries and unconsented
@@ -74,47 +74,8 @@ export interface ServicesIndexSources {
   services: readonly ServiceCardRecord[];
 }
 
-const TECHNOLOGY_CATEGORY_LABELS: Partial<Record<string, string>> = {
-  frontend: 'Front end',
-  backend: 'Back end',
-  cms: 'Content',
-  ecommerce: 'Ecommerce',
-  infrastructure: 'Infrastructure',
-  tooling: 'Tooling',
-};
-
 const deliverablesSchema = z.array(z.string().trim().min(1)).nullable();
 const processStepsSchema = z.array(timedStepSchema).nullable();
-
-/**
- * The template's copy for a service published without `content`, so a new record renders a
- * complete page with no deploy (docs/06, Task 1.3). Sections only the record's copy can
- * supply are left out. The success copy is the one the confirmation email falls back to.
- */
-export function templateServiceContent(service: { shortDescription: string }): ServiceContent {
-  return {
-    hero: { outcome: service.shortDescription, primaryCtaLabel: 'Get a quote', secondaryCta: null },
-    price: null,
-    problem: null,
-    included: { heading: 'What is included?', intro: null },
-    process: { heading: 'How does the work run, step by step?', intro: null, backdrop: null },
-    technology: { heading: 'Which technologies does it use?', intro: null },
-    proof: { heading: 'What results has this work delivered?', intro: null, linkLabel: 'See all related work' },
-    comparison: null,
-    pricing: null,
-    industries: { heading: 'Which industries is it built for?', intro: null },
-    testimonial: { heading: 'What do clients say about the work?' },
-    faq: { heading: 'What do buyers ask before they start?', intro: null },
-    enquiry: {
-      heading: 'How do I get a quote?',
-      intro: 'Tell us what you need and someone from our team will reply to you by email.',
-      submitLabel: 'Send my enquiry',
-      footnote: null,
-    },
-    formSuccess: DEFAULT_ACKNOWLEDGEMENT,
-    related: { heading: 'Which services often go with it?', intro: null },
-  };
-}
 
 /** Whitespace collapsed, and at most `max` characters, cut at a word where possible. */
 export function clip(text: string, max: number): string {
@@ -123,6 +84,13 @@ export function clip(text: string, max: number): string {
   const cut = flat.slice(0, max - 1);
   const space = cut.lastIndexOf(' ');
   return `${(space > max / 2 ? cut.slice(0, space) : cut).replace(/[\s,.;:]+$/, '')}…`;
+}
+
+/** The words a service page shows for a category, or nothing for a category it has none for. */
+function labelFor(category: string): string | null {
+  return category in TECHNOLOGY_CATEGORY_LABELS
+    ? TECHNOLOGY_CATEGORY_LABELS[category as keyof typeof TECHNOLOGY_CATEGORY_LABELS]
+    : null;
 }
 
 function present(value: string | null | undefined): value is string {
@@ -173,6 +141,17 @@ function caseStudyCard(project: ServiceDetailRecord['projects'][number]): CaseSt
   };
 }
 
+/**
+ * `items` in the order `slugs` names them, with anything it does not name after, in the
+ * order it arrived. Sorting is stable, so the unnamed keep their own sequence and a record
+ * linked in the admin lands at the end rather than in the middle of the page's own order.
+ */
+function inOrder<T extends { slug: string }>(items: readonly T[], slugs: readonly string[]): T[] {
+  if (slugs.length === 0) return [...items];
+  const rank = new Map(slugs.map((slug, index) => [slug, index]));
+  return [...items].sort((a, b) => (rank.get(a.slug) ?? slugs.length) - (rank.get(b.slug) ?? slugs.length));
+}
+
 /** Same-category services first, then the rest, in display order. */
 function relatedServices(service: ServiceDetailRecord, others: readonly ServiceCardRecord[]): ServiceCardRecord[] {
   const candidates = others.filter((other) => other.id !== service.id);
@@ -192,7 +171,7 @@ export function toServiceDetailView({ service, others }: ServiceDetailSources): 
   const deliverables = deliverablesSchema.parse(service.deliverables) ?? [];
   const steps = processStepsSchema.parse(service.processSteps) ?? [];
 
-  const caseStudies = service.projects
+  const caseStudies = inOrder(service.projects, copy.order.caseStudies)
     .map(caseStudyCard)
     .filter((card): card is CaseStudyCard => card !== null)
     .slice(0, SERVICE_CASE_STUDY_LIMIT);
@@ -235,9 +214,9 @@ export function toServiceDetailView({ service, others }: ServiceDetailSources): 
       service.technologies.length > 0
         ? {
             ...copy.technology,
-            items: service.technologies.map((technology) => ({
+            items: inOrder(service.technologies, copy.order.technologies).map((technology) => ({
               name: technology.name,
-              category: TECHNOLOGY_CATEGORY_LABELS[technology.category] ?? null,
+              category: labelFor(technology.category),
             })),
           }
         : null,
@@ -256,7 +235,7 @@ export function toServiceDetailView({ service, others }: ServiceDetailSources): 
       service.industries.length > 0
         ? {
             ...copy.industries,
-            items: service.industries.map((industry) => ({
+            items: inOrder(service.industries, copy.order.industries).map((industry) => ({
               slug: industry.slug,
               name: industry.name,
               line: present(industry.heroCopy) ? clip(industry.heroCopy, 300) : null,

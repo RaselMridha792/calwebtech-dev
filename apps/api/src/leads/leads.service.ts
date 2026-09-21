@@ -1,5 +1,6 @@
 import type { Prisma } from '@calwebtech/db';
 import {
+  DEFAULT_ACKNOWLEDGEMENT,
   SETTING_KEYS,
   acknowledgementSchema,
   type Acknowledgement,
@@ -19,12 +20,6 @@ import { PrismaService } from '../prisma/prisma.service';
 import { EmailQueue } from '../queue/email-queue';
 import { SettingsService } from '../settings/settings.service';
 import { TurnstileService } from '../turnstile/turnstile.service';
-
-/** For forms without a campaign page. Promises nothing about timing. */
-export const DEFAULT_ACKNOWLEDGEMENT: Acknowledgement = {
-  heading: 'Thanks. We have your request.',
-  body: 'Someone from our team will reply to you by email.',
-};
 
 /**
  * The on-screen success copy of the campaign page, or of the homepage (the `home.content`

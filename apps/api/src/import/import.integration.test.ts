@@ -116,7 +116,10 @@ afterAll(async () => {
 describe('snapshot import on an empty database', () => {
   it('records the marker, so the next deploy changes nothing', async () => {
     const marker = await db.setting.findUnique({ where: { key: IMPORT_MARKER_KEY } });
-    expect(marker?.value).toMatchObject({ source: 'apps/web/static-content', families: ['operational'] });
+    expect(marker?.value).toMatchObject({
+      source: 'apps/web/static-content',
+      families: ['operational', 'references', 'work', 'services'],
+    });
 
     await db.enquiryType.update({ where: { slug: 'support' }, data: { mailbox: 'support@example.com' } });
     expect((await importSnapshots(db, { dir: snapshotDir })).status).toBe('skipped');
@@ -162,9 +165,10 @@ describe('snapshot import on an empty database', () => {
   });
 
   it('stores a project lead from a page that has no record yet', async () => {
-    // The landing page and the services exist only as snapshots, so their slugs resolve to
-    // nothing; the lead is stored anyway and the default acknowledgement is used.
-    const input = submission({ type: 'PROJECT', formId: 'lp-hero', landingPageSlug: 'b2b-website-design', serviceSlug: 'care-plans' });
+    // Landing pages are snapshots alone, so the slug resolves to nothing and the lead is
+    // stored anyway with the default acknowledgement. The services have rows now, so this
+    // names one that does not: what a form on a retired page would still send.
+    const input = submission({ type: 'PROJECT', formId: 'lp-hero', landingPageSlug: 'b2b-website-design', serviceSlug: 'retired-service' });
     await expect(leads.create(input, '203.0.113.9')).resolves.toEqual({ status: 'received' });
     expect(await queuedTemplates(input.email)).toContain('lead-confirmation');
   });

@@ -33,6 +33,13 @@ export type ImporterLoader = () => Promise<SnapshotImporter>;
 
 export const IMPORTERS: readonly ImporterLoader[] = [
   () => import('./operational.js').then((module) => module.operationalImporter),
+  // Before any family that links to them: a service page shows technologies and
+  // industries, and cannot move into the database while those rows live only in a snapshot.
+  () => import('./references.js').then((module) => module.referencesImporter),
+  // After references, because a case study names the industry it was for.
+  () => import('./work.js').then((module) => module.workImporter),
+  // Last: a service links to the technologies, industries and case studies above.
+  () => import('./services.js').then((module) => module.servicesImporter),
 ];
 
 export interface ImportOptions {

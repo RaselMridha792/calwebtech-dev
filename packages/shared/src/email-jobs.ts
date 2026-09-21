@@ -44,6 +44,16 @@ export const acknowledgementSchema = z.object({
 });
 export type Acknowledgement = z.infer<typeof acknowledgementSchema>;
 
+/**
+ * What a form says when the page carries no words of its own. Defined here, beside the
+ * schema it satisfies, because the API sends it, the service template shows it and the
+ * snapshot import writes it, and three copies of one sentence would drift.
+ */
+export const DEFAULT_ACKNOWLEDGEMENT: Acknowledgement = {
+  heading: 'Thanks. We have your request.',
+  body: 'Someone from our team will reply to you by email.',
+};
+
 const recipientsSchema = z.array(z.email()).min(1).max(20);
 
 export const emailJobSchema = z.discriminatedUnion('template', [

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { DEFAULT_ACKNOWLEDGEMENT } from '../email-jobs';
 import { linkSchema } from '../home-page';
 import { testimonialViewSchema } from '../landing-page';
 import { decorativeImageSchema } from '../media';
@@ -23,6 +24,35 @@ export const SERVICES_SETTING_KEYS = {
   /** Copy of `/services/`, validated by servicesIndexContentSchema. */
   index: 'services.index',
 } as const;
+
+/**
+ * How a service page labels the technologies it lists, keyed by `Technology.category`. This
+ * is the vocabulary the column is documented with (packages/db/prisma/schema.prisma), and
+ * the only place it is turned into words, so the mapper and the snapshot import cannot
+ * disagree about what a category reads as.
+ *
+ * The technology page groups the same records its own way (`company/technology.json`); that
+ * grouping is presentation belonging to that page, not a category.
+ */
+export const TECHNOLOGY_CATEGORY_LABELS = {
+  frontend: 'Front end',
+  backend: 'Back end',
+  cms: 'Content',
+  ecommerce: 'Ecommerce',
+  infrastructure: 'Infrastructure',
+  tooling: 'Tooling',
+} as const satisfies Record<string, string>;
+
+export type TechnologyCategory = keyof typeof TECHNOLOGY_CATEGORY_LABELS;
+
+/** The category a label came from, or null for a word no category produces. */
+export function technologyCategoryFromLabel(label: string): TechnologyCategory | null {
+  const wanted = label.trim().toLowerCase();
+  for (const [category, text] of Object.entries(TECHNOLOGY_CATEGORY_LABELS)) {
+    if (text.toLowerCase() === wanted) return category as TechnologyCategory;
+  }
+  return null;
+}
 
 /** The id of the inline enquiry form's section; the hero's primary call to action links to it. */
 export const SERVICE_ENQUIRY_ANCHOR = 'enquire';
@@ -139,9 +169,57 @@ export const serviceContentSchema = z.object({
   /** Shown in place of the enquiry form once the lead is stored. The confirmation email repeats it. */
   formSuccess: z.object({ heading: requiredText(80), body: requiredText(300) }),
   related: serviceSectionCopySchema,
+  /**
+   * The order this page lists its records in, by slug, because the order is the page's and
+   * not the record's: the Shopify page opens its stack with Shopify, and the same row sits
+   * mid-list elsewhere. A record the list does not name follows the ones it does, in the
+   * order the records themselves are in, so a technology linked in the admin appears at the
+   * end of the section rather than displacing the page's own sequence.
+   */
+  order: z
+    .object({
+      technologies: z.array(slugSchema).default([]),
+      industries: z.array(slugSchema).default([]),
+      caseStudies: z.array(slugSchema).default([]),
+    })
+    .default(() => ({ technologies: [], industries: [], caseStudies: [] })),
 });
 export type ServiceContent = z.output<typeof serviceContentSchema>;
 export type ServiceContentInput = z.input<typeof serviceContentSchema>;
+
+/**
+ * The template's copy for a service published without `content`, so a new record renders a
+ * complete page with no deploy (docs/06, Task 1.3). Sections only the record's own copy can
+ * supply are left out. The success copy is the one the confirmation email falls back to.
+ *
+ * Here rather than in the API because the snapshot import writes the same headings into the
+ * records it creates, and a second copy of them would drift from this one.
+ */
+export function templateServiceContent(service: { shortDescription: string }): ServiceContent {
+  return {
+    hero: { outcome: service.shortDescription, primaryCtaLabel: 'Get a quote', secondaryCta: null },
+    price: null,
+    problem: null,
+    included: { heading: 'What is included?', intro: null },
+    process: { heading: 'How does the work run, step by step?', intro: null, backdrop: null },
+    technology: { heading: 'Which technologies does it use?', intro: null },
+    proof: { heading: 'What results has this work delivered?', intro: null, linkLabel: 'See all related work' },
+    comparison: null,
+    pricing: null,
+    industries: { heading: 'Which industries is it built for?', intro: null },
+    testimonial: { heading: 'What do clients say about the work?' },
+    faq: { heading: 'What do buyers ask before they start?', intro: null },
+    enquiry: {
+      heading: 'How do I get a quote?',
+      intro: 'Tell us what you need and someone from our team will reply to you by email.',
+      submitLabel: 'Send my enquiry',
+      footnote: null,
+    },
+    formSuccess: DEFAULT_ACKNOWLEDGEMENT,
+    related: { heading: 'Which services often go with it?', intro: null },
+    order: { technologies: [], industries: [], caseStudies: [] },
+  };
+}
 
 /** A service on the index, in related services and in the sitemap. */
 export const serviceCardSchema = z.object({

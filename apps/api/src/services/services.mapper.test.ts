@@ -1,13 +1,17 @@
 import type { Faq, Industry, Technology, Testimonial } from '@calwebtech/db';
-import { SERVICES_SETTING_KEYS, type ServiceContentInput, type ServicesIndexContentInput } from '@calwebtech/shared';
+import {
+  DEFAULT_ACKNOWLEDGEMENT,
+  SERVICES_SETTING_KEYS,
+  templateServiceContent,
+  type ServiceContentInput,
+  type ServicesIndexContentInput,
+} from '@calwebtech/shared';
 import { describe, expect, it } from 'vitest';
 import { ZodError } from 'zod';
 import { CONSENTED } from '../common/published';
-import { DEFAULT_ACKNOWLEDGEMENT } from '../leads/leads.service';
 import {
   clip,
   serviceDetailInclude,
-  templateServiceContent,
   toServiceDetailView,
   toServicesIndexView,
   type ServiceCardRecord,
