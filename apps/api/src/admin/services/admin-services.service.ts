@@ -344,7 +344,7 @@ function toDetail(
       : [],
     startingPriceBand: row.startingPriceBand,
     order: row.order,
-    seo: (row.seo ?? {}) as AdminServiceDetail['seo'],
+    seo: row.seo ?? {},
     status: row.status as ContentStatus,
     publishedAt: row.publishedAt?.toISOString() ?? null,
     updatedAt: row.updatedAt.toISOString(),
