@@ -14,12 +14,10 @@ type Home = HomePageView;
 
 function LogoRow({ clients, duplicate }: { clients: Home['clients']; duplicate: boolean }) {
   return (
-    <ul
-      className={`flex shrink-0 items-center gap-14 ${duplicate ? 'ml-14' : ''}`}
-      aria-hidden={duplicate ? true : undefined}
-    >
+    <ul className="flex shrink-0 items-center" aria-hidden={duplicate ? true : undefined}>
       {clients.map((client) => (
-        <li key={client.name} className="shrink-0">
+        // A rule between marks, never a card around one.
+        <li key={client.name} className="shrink-0 border-l border-hairline px-14">
           {client.logo ? (
             <ResponsiveImage
               src={client.logo.src}
@@ -27,11 +25,14 @@ function LogoRow({ clients, duplicate }: { clients: Home['clients']; duplicate: 
               width={140}
               height={32}
               sizes="140px"
-              className="h-8 w-auto opacity-40 grayscale"
+              className="h-8 w-auto opacity-60 grayscale transition-opacity duration-150 hover:opacity-100"
             />
           ) : (
-            // ink/50 keeps 3.3:1, the WCAG AA minimum for large bold text.
-            <span className="font-display text-[22px] font-bold whitespace-nowrap text-ink/50">{client.name}</span>
+            // The mark is set in type until the client's own SVG exists. ink-muted holds
+            // 4.8:1 on the sunken cream, well past the minimum for large bold text.
+            <span className="heading-lg whitespace-nowrap text-ink-muted transition-colors duration-150 hover:text-ink">
+              {client.name}
+            </span>
           )}
         </li>
       ))}
@@ -50,17 +51,17 @@ export function LogoBand({ label, clients }: { label: string; clients: Home['cli
   return (
     <section
       aria-label={label}
-      className="content-auto group relative overflow-hidden border-y border-hairline bg-canvas-raised py-9"
+      className="content-auto group relative overflow-hidden border-y border-hairline bg-canvas-sunken py-9"
     >
-      <p className="shell mb-6 text-[13.5px]">{label}</p>
+      <p className="eyebrow shell mb-6 text-ink-muted">{label}</p>
       <input id="logo-band-pause" type="checkbox" className="peer sr-only" />
       <label
         htmlFor="logo-band-pause"
-        className="sr-only peer-focus-visible:not-sr-only peer-focus-visible:absolute peer-focus-visible:top-2 peer-focus-visible:right-6 peer-focus-visible:z-10 peer-focus-visible: peer-focus-visible:bg-navy-900 peer-focus-visible:px-3 peer-focus-visible:py-2 peer-focus-visible:text-[13px] peer-focus-visible:font-semibold peer-focus-visible:text-ink-invert peer-focus-visible:outline-3 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary"
+        className="sr-only peer-focus-visible:not-sr-only peer-focus-visible:absolute peer-focus-visible:top-2 peer-focus-visible:right-6 peer-focus-visible:z-10 peer-focus-visible: peer-focus-visible:bg-navy-900 peer-focus-visible:px-3 peer-focus-visible:py-2 peer-focus-visible:text-[13px] peer-focus-visible:font-semibold peer-focus-visible:text-ink-invert peer-focus-visible:outline-3 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-focus-invert"
       >
         Pause the client names
       </label>
-      <div className="flex w-max animate-marquee px-6 group-hover:[animation-play-state:paused] peer-checked:[animation-play-state:paused]">
+      <div className="flex w-max animate-marquee group-hover:[animation-play-state:paused] peer-checked:[animation-play-state:paused]">
         <LogoRow clients={clients} duplicate={false} />
         <LogoRow clients={clients} duplicate />
       </div>
@@ -411,15 +412,10 @@ export function PullQuote({ quote }: { quote: Home['pullQuote'] }) {
   if (!quote) return null;
   const quoteByline = byline(quote.role, quote.company);
   return (
-    <section className="content-auto relative overflow-hidden bg-navy-900 py-16 text-ink-invert lg:py-20">
-      <div className="absolute inset-0" aria-hidden="true">
-        <div className="absolute inset-0 bg-scrim-strong" />
-      </div>
-      <div className="shell relative">
-        <figure className="max-w-[58ch]" {...reveal()}>
-          <blockquote className="font-display text-[24px] leading-[1.25] font-bold lg:text-[32px]">
-            {`"${quote.quote}"`}
-          </blockquote>
+    <section className="content-auto border-y border-hairline bg-canvas-raised py-16 lg:py-24">
+      <div className="shell">
+        <figure className="max-w-[46ch]" {...reveal()}>
+          <blockquote className="display-quote text-ink">{`"${quote.quote}"`}</blockquote>
           <figcaption className="mt-7 flex items-center gap-4">
             {quote.avatar ? (
               <ResponsiveImage
@@ -431,9 +427,9 @@ export function PullQuote({ quote }: { quote: Home['pullQuote'] }) {
                 className="h-12 w-12 rounded-full object-cover"
               />
             ) : null}
-            <span className="text-[15px]">
-              <b className="block text-ink-invert">{quote.clientName}</b>
-              {quoteByline ? <span className="text-ink-invert-muted">{quoteByline}</span> : null}
+            <span className="body-sm">
+              <b className="block text-ink">{quote.clientName}</b>
+              {quoteByline ? <span className="text-ink-muted">{quoteByline}</span> : null}
             </span>
           </figcaption>
         </figure>

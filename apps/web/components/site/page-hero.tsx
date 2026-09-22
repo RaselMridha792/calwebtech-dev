@@ -2,7 +2,6 @@ import type { DecorativeImage, Link } from '@calwebtech/shared';
 import type { ReactNode } from 'react';
 import type { Crumb } from '@/lib/seo/json-ld';
 import { BackdropImage } from '../ui/brand';
-import { PillBadge } from '../ui/primitives';
 import { AnswerBlock } from './answer-block';
 import { Breadcrumbs } from './breadcrumbs';
 import type { Ground } from './section';
@@ -68,11 +67,13 @@ export function PageHero({
           <Breadcrumbs crumbs={crumbs} ground={ground} />
           {eyebrow ? (
             <div className="mt-8">
-              {dark ? <PillBadge>{eyebrow}</PillBadge> : <p className="text-[14px] font-semibold text-gold-ink">{eyebrow}</p>}
+              <p className={`eyebrow border-t pt-4 ${dark ? 'border-hairline-gold text-gold-500' : 'border-hairline-gold text-gold-ink'}`}>
+                {eyebrow}
+              </p>
             </div>
           ) : null}
           <h1
-            className={`${eyebrow ? 'mt-5' : 'mt-8'} font-display text-[38px] leading-[1.05] font-extrabold sm:text-[50px] xl:text-[58px] ${dark ? '' : 'text-ink'}`}
+            className={`display-xl max-w-[20ch] text-balance ${eyebrow ? 'mt-5' : 'mt-8'} ${dark ? '' : 'text-ink'}`}
           >
             {title}
           </h1>
@@ -82,14 +83,14 @@ export function PageHero({
             </AnswerBlock>
           ) : null}
           {intro ? (
-            <p className={`mt-6 max-w-[58ch] text-[18px] leading-relaxed ${dark ? 'text-ink-invert-muted' : ''}`}>{intro}</p>
+            <p className={`body-lg mt-6 max-w-[58ch] ${dark ? 'text-ink-invert-muted' : 'text-ink-muted'}`}>{intro}</p>
           ) : null}
           {primaryCta || secondaryCta ? (
             <div className="mt-9 flex flex-wrap gap-3">
               {primaryCta ? (
                 <a
                   href={primaryCta.href}
-                  className="inline-flex h-14 items-center bg-navy-900 px-7 text-[16px] font-semibold text-ink-invert  hover:bg-navy-700"
+                  className={`button-label inline-flex h-14 items-center px-7 transition-colors duration-150 ${dark ? 'bg-gold-500 text-on-gold hover:bg-gold-300' : 'bg-navy-900 text-ink-invert hover:bg-navy-700'}`}
                 >
                   {primaryCta.label}
                 </a>
@@ -99,8 +100,8 @@ export function PageHero({
                   href={secondaryCta.href}
                   className={
                     dark
-                      ? 'glass inline-flex h-14 items-center  px-7 text-[16px] font-semibold text-ink-invert hover:bg-navy-900-invert/15'
-                      : 'inline-flex h-14 items-center  border border-hairline bg-canvas-raised px-7 text-[16px] font-semibold text-ink hover:border-ink'
+                      ? 'button-label inline-flex h-14 items-center border border-ink-invert/40 px-7 text-ink-invert transition-colors duration-150 hover:border-ink-invert'
+                      : 'button-label inline-flex h-14 items-center border border-hairline-strong px-7 text-ink transition-colors duration-150 hover:border-ink'
                   }
                 >
                   {secondaryCta.label}

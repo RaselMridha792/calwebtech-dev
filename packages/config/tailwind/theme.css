@@ -143,7 +143,8 @@
 
   --ease-out-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
 
-  --animate-marquee: marquee 40s linear infinite;
+  /* One slow pass, never eased: acceleration reads as a carousel rather than a rail. */
+  --animate-marquee: marquee 42s linear infinite;
   --animate-panel-in: panel-in 0.45s var(--ease-out-soft);
 
   @keyframes marquee {
