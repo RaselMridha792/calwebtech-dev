@@ -62,7 +62,9 @@ export function PageHero({
         </div>
       )}
 
-      <div className="shell relative grid items-center gap-12 pt-8 pb-16 lg:grid-cols-12 lg:gap-16 lg:pt-10 lg:pb-24">
+      <div
+        className={`shell relative grid items-center gap-12 pb-16 lg:grid-cols-12 lg:gap-16 lg:pb-24 ${dark ? 'pt-28 lg:pt-32' : 'pt-8 lg:pt-10'}`}
+      >
         <div className={aside ? 'lg:col-span-7' : 'lg:col-span-10'}>
           <Breadcrumbs crumbs={crumbs} ground={ground} />
           {eyebrow ? (

@@ -140,30 +140,41 @@
 /*
  * The floating header.
  *
- * At the top of a page whose hero is dark, the bar has no ground of its own: it sits on
- * the plate, in inverted ink, with the champagne underline the dark grounds use. Past
- * 120px of scroll (HeaderScrollState marks the document) it takes the cream ground and
- * its rule back, over the brand's standard curve.
+ * The bar is fixed, so a page that opens on a dark hero runs its plate under it and the
+ * bar can be transparent there — a sticky bar would take its own height out of the flow
+ * above the hero, and transparency would show the page's ground rather than the plate.
+ * A page that opens on anything else reserves that height instead.
  *
- * The hero says which ground it is, and `:has()` reads it, so a page that opens on cream
- * — contact, the FAQ, an article — never gets a transparent bar with inverted type on it.
- * Everything here is colour: the bar's height and position never change.
+ * At the top of a dark hero the bar has no ground of its own, in inverted ink, with the
+ * champagne underline the dark grounds use. Past 120px of scroll (HeaderScrollState marks
+ * the document) it takes the cream ground and its rule back.
+ *
+ * The hero says which ground it is and `:has()` reads it, so the pages that open on cream
+ * — contact, the FAQ, an article — never get a transparent bar with inverted type on it.
+ * The two actions carry their own colours through both states and are left alone.
  */
+:root {
+  --site-header-height: 76px;
+}
+
+body:not(:has(#main > [data-hero='dark']:first-child)) #main {
+  padding-top: var(--site-header-height);
+}
+
 body:has(#main > [data-hero='dark']:first-child) [data-site-header] {
   background-color: transparent;
   border-bottom-color: transparent;
   color: var(--color-ink-invert);
 }
 
-body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, button) {
+body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, button):not([data-cta]) {
   color: inherit;
 }
 
-/* The underline and the hover colour are champagne on a dark ground, not gold-ink. */
-body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, button):hover {
+body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, button):not([data-cta]):hover {
   color: var(--color-gold-500);
 }
-body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, button)::after {
+body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, button):not([data-cta])::after {
   background-color: var(--color-gold-500);
 }
 
@@ -174,9 +185,9 @@ body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, bu
   color: var(--color-ink);
   box-shadow: var(--shadow-lift);
 }
-:root[data-scrolled] body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, button):hover {
+:root[data-scrolled] body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, button):not([data-cta]):hover {
   color: var(--color-gold-ink);
 }
-:root[data-scrolled] body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, button)::after {
+:root[data-scrolled] body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, button):not([data-cta])::after {
   background-color: var(--color-gold-ink);
 }

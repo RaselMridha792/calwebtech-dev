@@ -478,10 +478,10 @@ export function PricingBands({ pricing, tiers }: { pricing: Content['pricing']; 
       <div className="shell relative grid gap-12 lg:grid-cols-12 lg:gap-20">
         <div className="lg:col-span-5" {...reveal()}>
           <h2 className={h2Dark}>{pricing.heading}</h2>
-          <p className="mt-5 text-[17px] leading-relaxed">{pricing.intro}</p>
+          <p className="body-lg mt-5 text-ink-muted">{pricing.intro}</p>
           <a
             href={pricing.cta.href}
-            className="mt-7 inline-flex h-12 items-center bg-navy-900 px-6 font-semibold text-ink-invert hover:bg-navy-700"
+            className="button-label mt-7 inline-flex h-12 items-center bg-navy-900 px-6 text-ink-invert transition-colors duration-150 hover:bg-navy-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
           >
             {pricing.cta.label}
           </a>
@@ -491,17 +491,16 @@ export function PricingBands({ pricing, tiers }: { pricing: Content['pricing']; 
             {tiers.map((tier, index) => (
               <li
                 key={tier.name}
-                className={`relative  p-6 ${tier.highlighted ? 'border-2 border-ink' : 'border border-hairline'}`}
+                className={`relative p-6 ${tier.highlighted ? 'border-2 border-ink' : 'border border-hairline'}`}
                 {...reveal(index)}
               >
                 {tier.highlighted && pricing.highlightLabel ? (
-                  <p className="absolute -top-3 left-6 rounded bg-navy-900 px-2.5 py-1 text-[12px] font-semibold text-ink-invert">
+                  <p className="eyebrow absolute -top-3 left-6 bg-navy-900 px-2.5 py-1.5 text-ink-invert">
                     {pricing.highlightLabel}
                   </p>
                 ) : null}
-                <h3 className="font-display text-[17px] font-bold text-ink">{tier.name}</h3>
-                <p className="mt-3 font-display text-[26px] leading-tight font-extrabold text-ink">{tier.priceLabel}</p>
-                <p className="mt-3 text-[14px] leading-relaxed">{tier.summary}</p>
+                <h3 className="heading-md text-ink">{tier.name}</h3>
+                <p className="body-sm mt-3 text-ink-muted">{tier.summary}</p>
               </li>
             ))}
           </ul>

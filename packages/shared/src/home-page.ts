@@ -164,6 +164,11 @@ export const homePageContentSchema = z.object({
     backgroundImage: backdropSchema,
   }),
   industries: z.object({
+    /**
+     * The affordance on each industry card. The same words the industries index already
+     * uses for its own cards, so the two pages say one thing.
+     */
+    cardLinkLabel: text(40).default('See the industry'),
     heading: text(160),
     intro: text(600),
     notListed: z.object({ heading: text(80), body: text(200), cta: linkSchema }),

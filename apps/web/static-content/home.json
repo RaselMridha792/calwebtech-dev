@@ -531,7 +531,8 @@
       "link": {
         "label": "All industries",
         "href": "/industries/"
-      }
+      },
+      "cardLinkLabel": "See the industry"
     },
     "estimate": {
       "badge": "Free, no sales call attached",
