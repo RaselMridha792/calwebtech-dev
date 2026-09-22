@@ -210,7 +210,10 @@ export function SiteHeader({ chrome, ctas }: { chrome: SiteChromeView; ctas?: He
   const headerCtas = ctas ?? chrome.header;
 
   return (
-    <header data-site-header="" className="sticky top-0 z-100 border-b border-hairline bg-canvas transition-colors duration-[420ms] ease-[cubic-bezier(0.4,0,0.2,1)]">
+    <header
+      data-site-header=""
+      className="fixed inset-x-0 top-0 z-100 border-b border-hairline bg-canvas transition-colors duration-[420ms] ease-[cubic-bezier(0.4,0,0.2,1)]"
+    >
       <div className="shell flex h-[76px] items-center justify-between">
         {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- next/link would add about 4 kB of framework runtime; a full navigation home is fine. */}
         <a href="/" className="shrink-0" aria-label="Calwebtech home">
@@ -272,6 +275,7 @@ export function SiteHeader({ chrome, ctas }: { chrome: SiteChromeView; ctas?: He
           {headerCtas.secondaryCta ? (
             <a
               href={headerCtas.secondaryCta.href}
+              data-cta=""
               className="button-label hidden h-11 items-center border border-hairline px-5 text-ink transition-colors duration-150 hover:border-hairline-strong hover:bg-canvas-sunken focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus lg:inline-flex"
             >
               {headerCtas.secondaryCta.label}
@@ -279,6 +283,7 @@ export function SiteHeader({ chrome, ctas }: { chrome: SiteChromeView; ctas?: He
           ) : null}
           <a
             href={headerCtas.primaryCta.href}
+            data-cta=""
             className="button-label hidden h-11 items-center bg-navy-900 px-6 text-ink-invert transition-colors duration-150 hover:bg-navy-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus sm:inline-flex"
           >
             {headerCtas.primaryCta.label}

@@ -76,7 +76,12 @@ function expectLandedOn(id: string, placement: Placement | null): void {
   if (!placement.atMaxScroll && !pinnedAtTop) {
     expect(Math.abs(placement.top - placement.scrollMarginTop), `#${id} lands at its scroll-margin`).toBeLessThanOrEqual(2);
   }
-  expect(placement.top, `#${id} is not hidden under the sticky header`).toBeGreaterThanOrEqual(placement.headerBottom - 1);
+  // The bar floats over a dark hero rather than sitting above it, so a page's first
+  // section starts at the very top and the browser cannot scroll any higher. The hero's own
+  // top padding is what clears the bar there; everywhere else the target must clear it.
+  if (!pinnedAtTop) {
+    expect(placement.top, `#${id} is not hidden under the header`).toBeGreaterThanOrEqual(placement.headerBottom - 1);
+  }
   expect(placement.top, `#${id} is on screen`).toBeLessThan(placement.viewportHeight);
 }
 

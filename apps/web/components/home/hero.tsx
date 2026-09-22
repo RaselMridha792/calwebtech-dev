@@ -79,7 +79,7 @@ export function HomeHero({
       ) : null}
       <div className="absolute inset-0 bg-scrim-strong" aria-hidden="true" />
 
-      <div className="shell relative grid items-center gap-12 pt-16 pb-14 lg:grid-cols-12 lg:gap-16 lg:pt-24 lg:pb-20">
+      <div className="shell relative grid items-center gap-12 pt-32 pb-14 lg:grid-cols-12 lg:gap-16 lg:pt-40 lg:pb-24">
         <div className="lg:col-span-7">
           {hero.eyebrow ? (
             <div className="border-t border-hairline-gold pt-4">
