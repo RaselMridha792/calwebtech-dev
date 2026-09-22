@@ -41,7 +41,7 @@ export function PricingSection({
 }) {
   if (tiers.length === 0) return null;
   return (
-    <section className="content-auto band-gradient relative overflow-hidden py-20 text-ink-invert lg:py-24">
+    <section className="content-auto relative bg-navy-900 overflow-hidden py-20 text-ink-invert lg:py-24">
       <div className="absolute inset-0" aria-hidden="true">
         <BackdropImage image={pricing.backgroundImage} className="opacity-[.13] mix-blend-luminosity" />
       </div>

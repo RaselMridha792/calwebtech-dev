@@ -5,6 +5,11 @@ acquisition platform. This file is the contract. Read it fully before the first 
 
 ## What this is
 
+> **`RULES.md` is the normative source.** This file restates it for agents working in the
+> repository. Where the two disagree, `RULES.md` wins and this file is the bug. Read
+> `RULES.md` section 1 before changing anything about the design, the stack or the content.
+
+
 A Next.js marketing site plus an authenticated admin dashboard, backed by a separate
 Node API, PostgreSQL and Redis, all running in Docker on a client-owned VPS.
 
@@ -221,6 +226,7 @@ the task produced without a deploy, and the acceptance criterion in
 | Decisions taken since the handoff | `docs/08-decisions.md` |
 | Budget math and rules for marketing routes | `docs/09-performance.md` |
 | Building a site page family, and who owns which file | `docs/10-site-pages.md` |
+| What may not change without asking | `RULES.md` |
 
 ## Ask before deciding
 

@@ -87,7 +87,7 @@ export function CtaBand({
     <section
       id={id}
       aria-labelledby={`${id}-heading`}
-      className={`content-auto relative overflow-hidden ${band ? 'band-gradient py-16 text-ink-invert lg:py-20' : 'border-y border-hairline bg-canvas-raised py-14 lg:py-16'}`}
+      className={`content-auto relative overflow-hidden ${band ? 'bg-navy-900 py-16 text-ink-invert lg:py-20' : 'border-y border-hairline bg-canvas-raised py-14 lg:py-16'}`}
     >
       {band ? (
         <div className="absolute inset-0" aria-hidden="true">

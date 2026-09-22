@@ -17,7 +17,7 @@ type Home = HomePageView;
 export function EstimateBand({ estimate }: { estimate: Content['estimate'] }) {
   const { preview } = estimate;
   return (
-    <section id="estimate" className="content-auto band-gradient relative overflow-hidden py-20 text-ink-invert lg:py-24">
+    <section id="estimate" className="content-auto relative bg-navy-900 overflow-hidden py-20 text-ink-invert lg:py-24">
       <div className="absolute inset-0" aria-hidden="true">
         <BackdropImage image={estimate.backgroundImage} className="opacity-[.14] mix-blend-luminosity" />
       </div>
@@ -418,7 +418,7 @@ export function Insights({ insights, posts }: { insights: Content['insights']; p
 export function Whitepaper({ whitepaper, guide }: { whitepaper: Content['whitepaper']; guide: Home['guide'] }) {
   if (!guide) return null;
   return (
-    <section className="content-auto band-gradient relative overflow-hidden py-16 text-ink-invert lg:py-20">
+    <section className="content-auto relative bg-navy-900 overflow-hidden py-16 text-ink-invert lg:py-20">
       <div className="shell relative" {...reveal()}>
         <p className="text-[15px] text-ink-invert-muted">{whitepaper.eyebrow}</p>
         <h2 className="mt-2 max-w-[22ch] font-display text-[28px] leading-[1.12] font-extrabold lg:text-[38px]">

@@ -48,12 +48,10 @@
   --color-status-critical: #992c24;
   --color-status-caution: #7a5410;
 
-  --color-ink: #0a1d37;
+  --color-ink: #101a24;
   --color-ink2: #12294a;
   --color-primary: #1550e0;
   --color-primaryd: #0f3fb4;
-  /* Midpoint of the ink-to-primary colour band gradient. */
-  --color-cobalt: #123a8f;
   /*
    * Outcome figures and affirmative marks (check icons, status dots) only.
    * Never headings, body text, buttons, links, borders or card backgrounds.
@@ -444,12 +442,4 @@
   background-color: color-mix(in oklab, var(--glow-teal) calc(--value(integer) * 1%), transparent);
 }
 
-/* The colour band: ink through cobalt to primary. */
-@utility band-gradient {
-  background: linear-gradient(
-    135deg,
-    var(--color-ink) 0%,
-    var(--color-cobalt) 46%,
-    var(--color-primary) 100%
-  );
-}
+
