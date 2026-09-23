@@ -6,6 +6,7 @@ import { PageHero } from '@/components/site/page-hero';
 import { ThankYouDetails, ThankYouResponse, ThankYouSecondary } from '@/components/static/thank-you';
 import { getStaticThankYou } from '@/lib/api/static';
 import { sitePageMetadata } from '@/lib/seo/page-metadata';
+import { HERO_BACKDROPS } from '@/lib/hero-backdrops';
 
 export async function generateMetadata({ params }: PageProps<'/thank-you/[type]'>): Promise<Metadata> {
   const { type } = await params;
@@ -27,15 +28,15 @@ export default async function ThankYouPage({ params }: PageProps<'/thank-you/[ty
   if (!page) notFound();
   return (
     <>
-      <PageHasOwnForm />
       <PageHero
-        ground="light"
+        backdrop={HERO_BACKDROPS.thankYou}
         crumbs={[{ name: page.eyebrow, path: thankYouPath(page.type) }]}
         eyebrow={page.eyebrow}
         title={page.title}
         intro={page.intro}
         aside={<ThankYouResponse page={page} />}
       />
+      <PageHasOwnForm />
       <ThankYouDetails page={page} />
       <ThankYouSecondary page={page} />
     </>

@@ -11,6 +11,7 @@ import { Section } from '../site/section';
 import { SectionHeading } from '../site/section-heading';
 import { formatUpdated } from './format-updated';
 import { definedTermJsonLd } from './json-ld';
+import { HERO_BACKDROPS } from '@/lib/hero-backdrops';
 
 /** Paragraphs at a readable measure, keyed by their opening words. */
 function Paragraphs({ paragraphs }: { paragraphs: readonly string[] }) {
@@ -33,6 +34,7 @@ export function GlossaryTermPage({ page }: { page: GlossaryTermView }) {
   return (
     <>
       <PageHero
+        backdrop={HERO_BACKDROPS.glossary}
         crumbs={[
           { name: 'Glossary', path: GLOSSARY_ROUTE },
           { name: page.term, path },
@@ -85,7 +87,7 @@ export function GlossaryTermPage({ page }: { page: GlossaryTermView }) {
               <div className="lg:col-span-5">
                 <div className="border border-hairline bg-canvas-raised p-7">
                   <p className="font-display text-[19px] font-bold text-ink">{page.example.caseStudy.clientName}</p>
-                  <dl className="mt-5 flex flex-col-reverse">
+                  <dl className="mt-5 flex flex-col-reverse justify-end">
                     <dt className="mt-1.5 text-[13.5px]">{page.example.caseStudy.metric.label}</dt>
                     <dd className="font-display text-[34px] leading-none font-extrabold text-gold-ink">
                       {page.example.caseStudy.metric.value}

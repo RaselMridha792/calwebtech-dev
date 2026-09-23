@@ -7,7 +7,7 @@ import { ResponsiveImage } from '../ui/responsive-image';
 /** When to expect a reply, and a telephone number for anyone who would rather talk. */
 export function ThankYouResponse({ page }: { page: StaticThankYouView }) {
   return (
-    <div className="border border-hairline bg-canvas-raised p-7 sm:p-8">
+    <div className="border border-hairline bg-canvas-raised p-7 text-ink-muted sm:p-8">
       <p className="text-[14px] font-semibold text-ink-muted">{page.response.label}</p>
       <p className="mt-1.5 font-display text-[26px] leading-tight font-extrabold text-ink">{page.response.value}</p>
       <p className="mt-3 text-[15.5px] leading-relaxed">{page.response.detail}</p>

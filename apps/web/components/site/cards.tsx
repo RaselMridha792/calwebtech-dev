@@ -124,9 +124,9 @@ export function CaseStudyCard({
         <p className="mt-2.5 text-[15px] leading-relaxed">{study.summary}</p>
         <dl className="mt-6 grid grid-cols-3 gap-4 border-t border-hairline pt-5">
           {study.metrics.slice(0, 3).map((metric) => (
-            <div key={metric.label} className="flex flex-col-reverse">
+            <div key={metric.label} className="flex flex-col-reverse justify-end">
               <dt className="mt-1.5 text-[12.5px]">{metric.label}</dt>
-              <dd className="font-display text-[22px] leading-none font-extrabold text-gold-ink sm:text-[26px]">
+              <dd className="font-display text-[22px] leading-none font-extrabold whitespace-nowrap text-gold-ink sm:text-[26px]">
                 {metric.value}
               </dd>
             </div>

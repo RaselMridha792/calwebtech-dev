@@ -12,7 +12,6 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { ArticleBodySection } from '@/components/insights/article-page';
 import {
-  ArticleCover,
   ArticleMeta,
   ArticleServicesSection,
   RelatedArticlesSection,
@@ -25,6 +24,7 @@ import { JsonLd } from '@/components/seo/json-ld';
 import { PageHero } from '@/components/site/page-hero';
 import { getInsightsArticle, getInsightsIndex, getInsightsTopic } from '@/lib/api/insights';
 import { sitePageMetadata } from '@/lib/seo/page-metadata';
+import { HERO_BACKDROPS } from '@/lib/hero-backdrops';
 
 /**
  * `/insights/<slug>/` is one URL space: a topic listing when a `PostCategory` has the slug,
@@ -100,7 +100,7 @@ async function TopicPage({ topic, page }: { topic: InsightsCategoryView; page: n
         eyebrow={view.copy.eyebrow}
         title={topic.copy.title}
         intro={topic.copy.intro}
-        backdrop={view.copy.backdrop}
+        backdrop={view.copy.backdrop ?? HERO_BACKDROPS.guides}
       />
       <InsightsListing view={view} topic={topic} heading={topic.copy.listHeading} results={listing.results} featured={null} />
     </>
@@ -113,7 +113,7 @@ function ArticlePage({ article }: { article: InsightsArticleView }) {
   return (
     <>
       <PageHero
-        ground="light"
+        backdrop={article.cover ? { src: article.cover.src } : HERO_BACKDROPS.guides}
         crumbs={crumbs([
           ...(article.category
             ? [{ name: article.category.name, path: insightsCategoryPath(article.category.slug) }]
@@ -124,7 +124,6 @@ function ArticlePage({ article }: { article: InsightsArticleView }) {
         title={article.title}
         answer={article.answerBlock}
         intro={article.excerpt}
-        aside={article.cover ? <ArticleCover image={article.cover} /> : null}
       >
         <ArticleMeta view={article} />
       </PageHero>

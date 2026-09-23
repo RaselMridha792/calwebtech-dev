@@ -5,6 +5,7 @@ import { PageHero } from '@/components/site/page-hero';
 import { FaqGroups, FaqTopics } from '@/components/static/faq';
 import { getStaticFaq } from '@/lib/api/static';
 import { sitePageMetadata } from '@/lib/seo/page-metadata';
+import { HERO_BACKDROPS } from '@/lib/hero-backdrops';
 
 export async function generateMetadata(): Promise<Metadata> {
   const view = await getStaticFaq();
@@ -20,7 +21,7 @@ export default async function FaqPage() {
   return (
     <>
       <PageHero
-        ground="light"
+        backdrop={HERO_BACKDROPS.faq}
         crumbs={[{ name: 'Frequently asked questions', path: SITE_ROUTES.faq }]}
         title={view.hero.title}
         answer={view.hero.answer}

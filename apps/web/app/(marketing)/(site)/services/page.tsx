@@ -4,6 +4,7 @@ import { ServiceGroups } from '@/components/services/index-sections';
 import { PageHero } from '@/components/site/page-hero';
 import { getServicesIndex } from '@/lib/api/services';
 import { sitePageMetadata } from '@/lib/seo/page-metadata';
+import { HERO_BACKDROPS } from '@/lib/hero-backdrops';
 
 export async function generateMetadata(): Promise<Metadata> {
   const { content } = await getServicesIndex();
@@ -17,6 +18,7 @@ export default async function ServicesIndexPage() {
   return (
     <>
       <PageHero
+        backdrop={HERO_BACKDROPS.services}
         crumbs={[{ name: 'Services', path: SITE_ROUTES.services }]}
         title={content.title}
         answer={content.answerBlock}

@@ -24,6 +24,7 @@ import { caseStudyArticleJsonLd, caseStudyReviewJsonLd } from '@/components/work
 import { getCaseStudy } from '@/lib/api/work';
 import type { JsonLdObject } from '@/lib/seo/json-ld';
 import { sitePageMetadata } from '@/lib/seo/page-metadata';
+import { HERO_BACKDROPS } from '@/lib/hero-backdrops';
 
 export async function generateMetadata({ params }: PageProps<'/work/[slug]'>): Promise<Metadata> {
   const { slug } = await params;
@@ -142,6 +143,7 @@ export default async function CaseStudyPage({ params }: PageProps<'/work/[slug]'
         title={view.title}
         answer={view.answerBlock}
         aside={<CaseStudyHeadline view={view} />}
+        backdrop={view.cover ? { src: view.cover.src } : HERO_BACKDROPS.work}
       />
       {withTones(caseStudyParts(view))}
       <JsonLd data={structuredData} />

@@ -46,6 +46,8 @@ export function Logo({
   height,
   className,
   priority = false,
+  lazy = false,
+  'data-logo': dataLogo,
 }: {
   tone: LogoTone;
   layout?: LogoLayout;
@@ -53,6 +55,13 @@ export function Logo({
   height: number;
   className?: string;
   priority?: boolean;
+  /**
+   * For a lockup that is hidden until a state shows it. A lazy image that is `display: none`
+   * is not fetched at all, so a page that never needs it never pays for it.
+   */
+  lazy?: boolean;
+  /** A hook for the stylesheet when two lockups share a slot (the site header). */
+  'data-logo'?: string;
 }) {
   const size = LAYOUTS[layout];
   return (
@@ -64,8 +73,10 @@ export function Logo({
       height={height}
       // The header's mark is in the first viewport of every page; everything else waits.
       fetchPriority={priority ? 'high' : undefined}
+      loading={lazy ? 'lazy' : undefined}
       decoding="async"
       className={className}
+      data-logo={dataLogo}
     />
   );
 }

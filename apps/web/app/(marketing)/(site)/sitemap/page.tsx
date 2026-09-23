@@ -4,6 +4,7 @@ import { PageHero } from '@/components/site/page-hero';
 import { Section } from '@/components/site/section';
 import { sitePageMetadata } from '@/lib/seo/page-metadata';
 import { sitemapEntries, sitemapSections } from '@/lib/sitemap';
+import { HERO_BACKDROPS } from '@/lib/hero-backdrops';
 
 export function generateMetadata(): Promise<Metadata> {
   return sitePageMetadata({
@@ -20,7 +21,7 @@ export default async function SitemapPage() {
   return (
     <>
       <PageHero
-        ground="light"
+        backdrop={HERO_BACKDROPS.sitemap}
         crumbs={[{ name: 'Sitemap', path: SITE_ROUTES.sitemap }]}
         title="Sitemap"
         intro="Every public page on the Calwebtech website, grouped by what it covers. Services, case studies and locations are listed here as soon as they are published."

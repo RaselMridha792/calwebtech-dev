@@ -134,6 +134,7 @@ function MegaMenu({
       <div
         id={`menu-${id}`}
         data-menu={id}
+        data-panel=""
         className="invisible absolute inset-x-0 top-full translate-y-1.5 border-t border-hairline bg-canvas-raised opacity-0 shadow-lift transition duration-150 group-focus-within/mega:visible group-focus-within/mega:translate-y-0 group-focus-within/mega:opacity-100 group-hover/mega:visible group-hover/mega:translate-y-0 group-hover/mega:opacity-100 group-data-dismissed/mega:invisible group-data-dismissed/mega:opacity-0"
       >
         <div className="shell grid grid-cols-12 gap-10 py-10">{children}</div>
@@ -159,11 +160,14 @@ function MobileMenu({ groups, ctas }: { groups: SiteChromeView['mobileMenu']['gr
         aria-label="Menu"
         className="grid h-11 w-11 cursor-pointer list-none place-items-center border border-hairline text-ink [&::-webkit-details-marker]:hidden"
       >
-        <svg className="h-5 w-5 text-ink" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <svg className="h-5 w-5" viewBox="0 0 20 20" fill="none" aria-hidden="true">
           <path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
         </svg>
       </summary>
-      <div className="absolute inset-x-0 top-full max-h-[calc(100vh-76px)] overflow-y-auto border-t border-hairline bg-canvas-raised shadow-lift">
+      <div
+        data-panel=""
+        className="absolute inset-x-0 top-full max-h-[calc(100vh-76px)] overflow-y-auto border-t border-hairline bg-canvas-raised shadow-lift"
+      >
         <div className="shell space-y-5 py-6">
           {groups.map((group) => (
             <div key={group.title}>
@@ -217,7 +221,11 @@ export function SiteHeader({ chrome, ctas }: { chrome: SiteChromeView; ctas?: He
       <div className="shell flex h-[76px] items-center justify-between">
         {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- next/link would add about 4 kB of framework runtime; a full navigation home is fine. */}
         <a href="/" className="shrink-0" aria-label="Calwebtech home">
-          <Logo tone="light" height={34} priority />
+          {/* One lockup per ground, swapped by the stylesheet: the bar is transparent over a
+              dark hero and cream everywhere else, and the navy wordmark vanishes on the first.
+              The dark-ground file is lazy, so a page without a dark hero never fetches it. */}
+          <Logo tone="light" height={34} priority className="block" data-logo="light-ground" />
+          <Logo tone="dark" height={34} lazy className="hidden" data-logo="dark-ground" />
         </a>
 
         <nav className="hidden h-full items-center xl:flex" aria-label="Main">
@@ -275,7 +283,7 @@ export function SiteHeader({ chrome, ctas }: { chrome: SiteChromeView; ctas?: He
           {headerCtas.secondaryCta ? (
             <a
               href={headerCtas.secondaryCta.href}
-              data-cta=""
+              data-cta="outline"
               className="button-label hidden h-11 items-center border border-hairline px-5 text-ink transition-colors duration-150 hover:border-hairline-strong hover:bg-canvas-sunken focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus lg:inline-flex"
             >
               {headerCtas.secondaryCta.label}

@@ -206,10 +206,12 @@ function Metrics({ metrics, lead }: { metrics: HomeProject['metrics']; lead: boo
   return (
     <dl className={`grid grid-cols-3 border-t border-hairline ${lead ? 'mt-7 gap-5 pt-6' : 'mt-6 gap-4 pt-5'}`}>
       {metrics.map((metric) => (
-        <div key={metric.label} className="flex flex-col-reverse">
+        <div key={metric.label} className="flex flex-col-reverse justify-end">
           <dt className={`mt-1.5 ${lead ? 'text-[13px]' : 'text-[12.5px]'}`}>{metric.label}</dt>
           <dd
-            className={`font-display leading-none font-extrabold text-gold-ink ${lead ? 'text-[26px] sm:text-[32px] lg:text-[38px]' : 'text-[26px]'}`}
+            // Never broken: "12 min" over two lines put the figure on a different baseline from its
+            // neighbours. Three columns at 390px are about 90px each, so the phone size is smaller.
+            className={`font-display leading-none font-extrabold whitespace-nowrap text-gold-ink ${lead ? 'text-[22px] sm:text-[32px] lg:text-[38px]' : 'text-[22px] sm:text-[26px]'}`}
           >
             {metric.value}
           </dd>

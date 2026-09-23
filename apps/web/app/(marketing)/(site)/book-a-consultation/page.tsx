@@ -4,6 +4,7 @@ import { BookingSection } from '@/components/booking/booking-section';
 import { PageHero } from '@/components/site/page-hero';
 import { getBookingPage } from '@/lib/api/booking';
 import { sitePageMetadata } from '@/lib/seo/page-metadata';
+import { HERO_BACKDROPS } from '@/lib/hero-backdrops';
 
 export async function generateMetadata(): Promise<Metadata> {
   const view = await getBookingPage();
@@ -29,6 +30,7 @@ export default async function BookAConsultationPage({ searchParams }: PageProps<
   return (
     <>
       <PageHero
+        backdrop={HERO_BACKDROPS.consultation}
         crumbs={[{ name: 'Book a consultation', path: CONSULTATION_PATH }]}
         title={view?.content.title ?? 'Book a consultation'}
         answer={view?.content.answerBlock ?? ''}

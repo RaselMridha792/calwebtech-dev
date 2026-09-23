@@ -82,7 +82,7 @@ export function LandingHero({ hero, form }: { hero: Content['hero']; form: React
           {hero.stats.length > 0 ? (
             <dl className="mt-10 grid max-w-xl grid-cols-3 gap-6 border-t border-ink-invert/15 pt-8">
               {hero.stats.map((stat) => (
-                <div key={stat.label} className="flex flex-col-reverse">
+                <div key={stat.label} className="flex flex-col-reverse justify-end">
                   <dt className="mt-2 text-[13.5px] text-ink-invert-muted">{stat.label}</dt>
                   <dd
                     className={`font-display text-[26px] leading-none font-extrabold sm:text-[30px] ${stat.isOutcome ? 'text-gold-ink' : ''}`}

@@ -117,7 +117,7 @@ export function TechnologyProof({
           {technology.stats.length > 0 ? (
             <dl className="mt-8 grid grid-cols-2 gap-6 border-t border-hairline pt-7">
               {technology.stats.map((stat) => (
-                <div key={stat.label} className="flex flex-col-reverse">
+                <div key={stat.label} className="flex flex-col-reverse justify-end">
                   <dt className="mt-2 text-[14px]">{stat.label}</dt>
                   <dd className="font-display text-[30px] leading-none font-extrabold text-ink">{stat.value}</dd>
                 </div>

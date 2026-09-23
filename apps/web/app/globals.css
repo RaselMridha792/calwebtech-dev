@@ -149,9 +149,11 @@
  * champagne underline the dark grounds use. Past 120px of scroll (HeaderScrollState marks
  * the document) it takes the cream ground and its rule back.
  *
- * The hero says which ground it is and `:has()` reads it, so the pages that open on cream
- * — contact, the FAQ, an article — never get a transparent bar with inverted type on it.
- * The two actions carry their own colours through both states and are left alone.
+ * The hero says which ground it is and `:has()` reads it, so a page that opens on cream never
+ * gets a transparent bar with inverted type on it. Since 2026-09-23 every site page opens on
+ * a photographic plate (docs/08-decisions.md, 48), so in practice that is the fallback, not
+ * the common case. The hero must be the first child of `#main` for the bar to see it: a
+ * hidden marker such as `PageHasOwnForm` goes after the hero, never before it.
  */
 :root {
   --site-header-height: 76px;
@@ -167,15 +169,53 @@ body:has(#main > [data-hero='dark']:first-child) [data-site-header] {
   color: var(--color-ink-invert);
 }
 
-body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, button):not([data-cta]) {
+/*
+ * The bar's own items follow the bar. The mega menu panels and the small-screen menu sit
+ * inside the header but carry a cream ground of their own, so anything inside a
+ * `[data-panel]` is left out: inheriting the bar's inverted ink put cream type on cream.
+ * The hamburger is a `summary`, not a link or a button, and was left out the other way —
+ * navy on the navy hero.
+ */
+body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, button, summary):not([data-cta], [data-panel] *) {
   color: inherit;
 }
 
-body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, button):not([data-cta]):hover {
+body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, button, summary):not([data-cta], [data-panel] *):hover {
   color: var(--color-gold-500);
 }
-body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, button):not([data-cta])::after {
+body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, button):not([data-cta], [data-panel] *)::after {
   background-color: var(--color-gold-500);
+}
+
+/*
+ * The outline action keeps its own colours through both states, like the filled one — but
+ * its own colours are navy type on a hairline, which on the transparent bar is navy on the
+ * navy hero. Over a dark hero it takes inverted ink and a light rule until the bar turns.
+ */
+body:has(#main > [data-hero='dark']:first-child) [data-site-header] [data-cta='outline'] {
+  color: var(--color-ink-invert);
+  border-color: color-mix(in srgb, var(--color-ink-invert) 35%, transparent);
+}
+:root[data-scrolled] body:has(#main > [data-hero='dark']:first-child) [data-site-header] [data-cta='outline'] {
+  color: var(--color-ink);
+  border-color: var(--color-hairline);
+}
+
+/* A panel is always a cream ground, whatever the bar above it is doing. */
+[data-site-header] [data-panel] {
+  color: var(--color-ink);
+}
+
+/*
+ * The mark, one lockup per ground. The navy wordmark on the transparent bar is navy on
+ * navy — only "Cal", in champagne, survived — so over a dark hero the cream lockup takes
+ * its place until the bar turns cream again.
+ */
+body:has(#main > [data-hero='dark']:first-child) [data-site-header] [data-logo='light-ground'] {
+  display: none;
+}
+body:has(#main > [data-hero='dark']:first-child) [data-site-header] [data-logo='dark-ground'] {
+  display: block;
 }
 
 /* Once the page has moved, the bar is a bar again. */
@@ -185,9 +225,15 @@ body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, bu
   color: var(--color-ink);
   box-shadow: var(--shadow-lift);
 }
-:root[data-scrolled] body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, button):not([data-cta]):hover {
+:root[data-scrolled] body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, button, summary):not([data-cta], [data-panel] *):hover {
   color: var(--color-gold-ink);
 }
-:root[data-scrolled] body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, button):not([data-cta])::after {
+:root[data-scrolled] body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, button):not([data-cta], [data-panel] *)::after {
   background-color: var(--color-gold-ink);
+}
+:root[data-scrolled] body:has(#main > [data-hero='dark']:first-child) [data-site-header] [data-logo='light-ground'] {
+  display: block;
+}
+:root[data-scrolled] body:has(#main > [data-hero='dark']:first-child) [data-site-header] [data-logo='dark-ground'] {
+  display: none;
 }

@@ -19,6 +19,7 @@ import { ResponsiveImage } from '../ui/responsive-image';
 import { formatUpdated } from './format-updated';
 import { GuideGate } from './guide-gate';
 import { guideArticleJsonLd } from './json-ld';
+import { HERO_BACKDROPS } from '@/lib/hero-backdrops';
 
 /** "15 September 2026", the way a dated resource reads. */
 /** The cover and what the download is, beside the hero. */
@@ -88,6 +89,7 @@ export function GuideDetail({ page, turnstileSiteKey }: { page: GuideDetailView;
   return (
     <>
       <PageHero
+        backdrop={HERO_BACKDROPS.guides}
         crumbs={[
           { name: 'Guides', path: GUIDES_ROUTE },
           { name: page.title, path },
