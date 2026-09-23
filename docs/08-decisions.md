@@ -245,11 +245,14 @@ Two traps this cost a while, both worth writing down:
   transactional outbox would close that gap. Revisit before campaign sends (Task 5.4).
 - Settings changed with `settings-cli` are not written to the audit log yet. The admin
   settings screen (Task 5.3) must write the audit entry.
-- Of task 5.1, what is built is: consultation types, weekly hours, minimum notice, the
-  horizon, server-side slots, the visitor's timezone, the double-booking constraint, the
-  confirmation and internal notification emails, and the dashboard's list, detail, status
-  and notes. Still to build: the `.ics` invite, reminders at 24h and 1h, signed reschedule
-  and cancel link pages, and date overrides and blackout dates in the admin. The build
-  plan's gate for 5.1 names reminders, reschedule and cancel, so 5.1 is not closed.
+- Of task 5.1, what is built is: consultation types, weekly hours and date overrides edited
+  from `/admin/bookings/availability`, minimum notice, the horizon, server-side slots, the
+  visitor's timezone, the double-booking constraint, the confirmation and internal
+  notification emails, and the dashboard's list, detail, status and notes. Still to build:
+  the `.ics` invite, reminders at 24h and 1h, and signed reschedule and cancel link pages.
+  The build plan's gate for 5.1 names reminders, reschedule and cancel, so 5.1 is not
+  closed.
+- The availability screen edits the one active consultation type. A second type would need
+  a chooser there and a type per booking link; nothing depends on that yet.
 - The Lighthouse gate runs against `/` and `/lp/[campaign]` only (docs/09). The booking
   page was measured by hand at 98/100/100/100 with LCP 2.1s; nothing keeps it there.
