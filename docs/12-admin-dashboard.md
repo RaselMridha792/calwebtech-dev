@@ -114,6 +114,13 @@ Subscriber list with source, consent state, tags, and suppression status shown s
 from subscription state — an unsubscribe can never be undone by an import. Segment
 builder producing a rule set that is re-evaluated at send time, with a live count.
 
+**Built** (Task 5.4, first part; `docs/08-decisions.md`, 49): `/admin/subscribers/` with
+search and status and tag filters, a subscriber page with its tags,
+`/admin/subscribers/segments/` with the builder and its live count, and
+`/admin/subscribers/suppression/`, where an address can be added by hand and never
+removed. Contract in `packages/shared/src/audience.ts`, API in `apps/api/src/admin/audience/`.
+Nothing creates subscribers yet (see decision 49's Open entry).
+
 ## 5. Campaigns and automations
 
 Campaign list and composer, template picker, personalisation tokens with fallbacks, test
@@ -272,7 +279,7 @@ landing page are last, because they are hand-written views (see `wip/content-imp
 | M3 | Media | B7, media library | Blocks M4 |
 | M4 | Publish a service without a deploy | B6 and B8 for Service, its editor, `CONTENT_SOURCE=api` for that family | **This is the goal** |
 | M5 | The rest of the content types | Remaining types, page sections | Yes |
-| M6 | Sales beyond leads | Subscribers, segments; bookings once Task 5.1 exists | Feeds Task 5.4 |
+| M6 | Sales beyond leads | Subscribers, segments; bookings once Task 5.1 exists | Feeds Task 5.4. Subscribers, segments and suppression built (decision 49) |
 
 M1 is the one to design first, and M4 is the one the owner asked for.
 

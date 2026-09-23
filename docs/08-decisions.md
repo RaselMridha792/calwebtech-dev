@@ -212,7 +212,42 @@ and buttons and it is a `summary`.
 Photographs remain the owner's placeholder choice until commissioned ones replace them; the
 licence for each is recorded by the fact that it is an Unsplash photograph (see Open).
 
+## 49. Subscribers, segments and the suppression list in the dashboard
+
+*2026-09-23.* The first part of Task 5.4. The schema already had `Subscriber`,
+`SubscriberTag`, `Segment` and `Suppression`, so no migration was needed. The contract is
+`packages/shared/src/audience.ts`, the API is `apps/api/src/admin/audience/`, and the
+screens are `/admin/subscribers/`, `/admin/subscribers/[id]/`, `/admin/subscribers/segments/`
+(with a builder at `segments/[id]/`, `new` to create) and `/admin/subscribers/suppression/`.
+All of it sits under the `subscribers` module, so the RBAC matrix is unchanged.
+
+- **A segment is a rule tree stored in `Segment.rules`** (`segmentRulesSchema`): match all
+  or any of up to 20 conditions on tag, signup page, email domain, time since joining and
+  time since last engaged. Dates are relative ("in the last 30 days"), because the rules are
+  evaluated again at send time, and "last month" has to mean the month before the send.
+  No conditions means everyone who may be mailed.
+- **Suppression and unsubscribes are applied on top of every segment**, not left to the
+  rules (`eligibleWhere`). No rule set can reach a suppressed or unsubscribed address. The
+  builder's live count, the list's counts and, later, the send all go through
+  `AdminAudienceService.audienceWhere`, so the count shown is the count a send reaches.
+- **Suppressed means the address is on `Suppression`**, compared without case, and it wins
+  over subscription state in the subscriber's status.
+- **The dashboard can add an address to the suppression list, as `manual`, and cannot
+  remove one.** Bounces, complaints and unsubscribes arrive from the provider and from the
+  person. Taking an address off the list is left out until the owner decides who may do it.
+- **The dashboard creates no subscribers and deletes none.** A subscriber is somebody who
+  gave consent on the site; deleting one loses the record of that consent.
+- A segment that a campaign uses cannot be deleted (409, `segment_in_use`).
+- New audit actions: `subscriber.tags_changed`, `suppression.added`, `segment.created`,
+  `segment.updated`, `segment.deleted`.
+
 ## Open
+
+- Nothing creates `Subscriber` rows yet. The insights newsletter form stores a `RESOURCE`
+  lead (`subscribe-action.ts`), and no import exists. Until the owner decides where
+  subscribers come from (newsletter signups, calculator leads who consented, an import),
+  the subscriber screens and segment counts are empty on every real database. Task 5.4's
+  gate needs somebody to send to.
 
 - The approved demo proof gives two names two identities. "Priya Raman" is Calwebtech's
   Design Lead on the landing page and Truvia Labs' VP Marketing in a testimonial. "Dana
