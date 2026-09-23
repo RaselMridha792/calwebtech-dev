@@ -7,3 +7,4 @@ export {
   bookingConfirmationSubject,
   bookingNotificationSubject,
 } from './booking';
+export { CampaignEmail, campaignSubject, renderCampaign, type CampaignEmailProps, type RenderedCampaign } from './campaign';
