@@ -13,6 +13,9 @@ importers:
       '@calwebtech/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@calwebtech/emails':
+        specifier: workspace:*
+        version: link:../../packages/emails
       '@calwebtech/shared':
         specifier: workspace:*
         version: link:../../packages/shared

@@ -3,6 +3,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { AdminAudienceModule } from './admin/audience/admin-audience.controller';
 import { AdminBookingsModule } from './admin/bookings/admin-bookings.controller';
+import { AdminCampaignsModule } from './admin/campaigns/admin-campaigns.controller';
 import { AdminLeadsModule } from './admin/leads/admin-leads.controller';
 import { AdminMediaModule } from './admin/media/admin-media.controller';
 import { AdminOpsModule } from './admin/ops/admin-ops.controller';
@@ -37,6 +38,7 @@ import { BookingModule } from './booking/booking.controller';
     AuthModule,
     AdminAudienceModule,
     AdminBookingsModule,
+    AdminCampaignsModule,
     AdminLeadsModule,
     AdminMediaModule,
     AdminOpsModule,
