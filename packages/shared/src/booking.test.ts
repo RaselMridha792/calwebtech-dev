@@ -5,6 +5,7 @@ import {
   type SlotSources,
   addDays,
   dayKeyOf,
+  adminAvailabilityUpdateSchema,
   generateSlots,
   isTimeZone,
   weekdayOf,
@@ -169,5 +170,62 @@ describe('generating slots', () => {
 
   it('returns nothing rather than looping when a duration would never fit', () => {
     expect(generateSlots(sources({ durationMinutes: 0, bufferBefore: 0, bufferAfter: 0 }))).toEqual([]);
+  });
+});
+
+describe('what the dashboard may save as availability', () => {
+  const base = {
+    durationMinutes: 30,
+    bufferBefore: 0,
+    bufferAfter: 0,
+    rules: [{ weekday: 2, startMinute: 9 * 60, endMinute: 17 * 60, minimumNoticeHours: 24 }],
+    overrides: [],
+  };
+
+  it('accepts a week, and an empty week as a closed calendar', () => {
+    expect(adminAvailabilityUpdateSchema.safeParse(base).success).toBe(true);
+    expect(adminAvailabilityUpdateSchema.safeParse({ ...base, rules: [] }).success).toBe(true);
+  });
+
+  it('refuses a day that ends before it starts', () => {
+    const rules = [{ weekday: 2, startMinute: 17 * 60, endMinute: 9 * 60, minimumNoticeHours: 24 }];
+    expect(adminAvailabilityUpdateSchema.safeParse({ ...base, rules }).success).toBe(false);
+  });
+
+  it('refuses a window too short to hold one call, which would offer no times', () => {
+    const rules = [{ weekday: 2, startMinute: 9 * 60, endMinute: 9 * 60 + 20, minimumNoticeHours: 24 }];
+    expect(adminAvailabilityUpdateSchema.safeParse({ ...base, rules }).success).toBe(false);
+    // The buffers count towards it, because a start every 30 minutes needs 30 minutes.
+    const tight = { ...base, bufferAfter: 15, rules: [{ weekday: 2, startMinute: 540, endMinute: 575, minimumNoticeHours: 24 }] };
+    expect(adminAvailabilityUpdateSchema.safeParse(tight).success).toBe(false);
+  });
+
+  it('allows two windows either side of lunch but not two that overlap', () => {
+    const lunch = [
+      { weekday: 2, startMinute: 9 * 60, endMinute: 12 * 60, minimumNoticeHours: 24 },
+      { weekday: 2, startMinute: 13 * 60, endMinute: 17 * 60, minimumNoticeHours: 24 },
+    ];
+    expect(adminAvailabilityUpdateSchema.safeParse({ ...base, rules: lunch }).success).toBe(true);
+
+    const clash = [
+      { weekday: 2, startMinute: 9 * 60, endMinute: 13 * 60, minimumNoticeHours: 24 },
+      { weekday: 2, startMinute: 12 * 60, endMinute: 17 * 60, minimumNoticeHours: 24 },
+    ];
+    expect(adminAvailabilityUpdateSchema.safeParse({ ...base, rules: clash }).success).toBe(false);
+
+    // The same hours on different days are not an overlap.
+    const week = clash.map((rule, index) => ({ ...rule, weekday: index + 1 }));
+    expect(adminAvailabilityUpdateSchema.safeParse({ ...base, rules: week }).success).toBe(true);
+  });
+
+  it('takes one entry per date, and refuses a date given twice', () => {
+    const once = [{ day: '2026-12-25', blocked: true, startMinute: null, endMinute: null, reason: 'Christmas' }];
+    expect(adminAvailabilityUpdateSchema.safeParse({ ...base, overrides: once }).success).toBe(true);
+    expect(adminAvailabilityUpdateSchema.safeParse({ ...base, overrides: [...once, ...once] }).success).toBe(false);
+  });
+
+  it('refuses a date that is not one', () => {
+    const wrong = [{ day: '25/12/2026', blocked: true, startMinute: null, endMinute: null, reason: null }];
+    expect(adminAvailabilityUpdateSchema.safeParse({ ...base, overrides: wrong }).success).toBe(false);
   });
 });

@@ -9,6 +9,8 @@ import { Queue } from 'bullmq';
 import { Redis } from 'ioredis';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { EMAIL_QUEUE } from '@calwebtech/shared';
+import { AdminBookingsService } from '../admin/bookings/admin-bookings.service';
+import { AuditService } from '../auth/audit.service';
 import { loadEnv } from '../config/env';
 import { migrateDeploy } from '../prisma/migrate-deploy';
 import { PrismaService } from '../prisma/prisma.service';
@@ -42,10 +44,13 @@ const queueName = `${EMAIL_QUEUE}-booking-${String(process.pid)}-${run}`;
 const emailQueue = new EmailQueue(env.REDIS_URL, queueName);
 const inspectConnection = new Redis(env.REDIS_URL);
 const inspect = new Queue(queueName, { connection: inspectConnection });
+const settings = new SettingsService(prisma);
+const adminBookings = new AdminBookingsService(prisma, new AuditService(prisma), settings);
+let ownerId = '';
 const booking = new BookingService(
   prisma,
   new TurnstileService(TURNSTILE_TEST.alwaysPassesSecret, fetch, 15_000),
-  new SettingsService(prisma),
+  settings,
   emailQueue,
 );
 
@@ -77,6 +82,12 @@ beforeAll(async () => {
   // setting the service reads its timezone from.
   const result = await importSnapshots(prisma.client, { dir: snapshotDir });
   if (result.status !== 'imported') throw new Error('the import was skipped on an empty database');
+
+  const owner = await prisma.client.user.create({
+    data: { email: 'owner@calwebtech.test', name: 'The Owner', role: 'OWNER', passwordHash: 'x' },
+    select: { id: true },
+  });
+  ownerId = owner.id;
 }, 180_000);
 
 afterAll(async () => {
@@ -176,5 +187,91 @@ describe('the booking engine against Postgres', () => {
       .map((job) => job.data as { template: string; to: string[] })
       .filter((data) => data.to.includes(input.email));
     expect(mine.map((data) => data.template)).toContain('booking-confirmation');
+  });
+});
+
+/**
+ * The loop the dashboard exists to close: hours changed in the admin are the hours the
+ * public page offers. Asserting the rows were written would prove nothing — the engine
+ * reads them through its own query, so the test asks the engine.
+ */
+describe('availability from the dashboard', () => {
+  it('reads the week the import created, in the business timezone', async () => {
+    const view = await adminBookings.availability();
+    expect(view.consultationType.slug).toBe('consultation');
+    expect(view.timeZone).not.toBe('');
+    expect(view.rules.length).toBeGreaterThan(0);
+    expect(view.rules.every((rule) => rule.endMinute > rule.startMinute)).toBe(true);
+  });
+
+  it('closes a weekday, and the page stops offering that day', async () => {
+    const before = await adminBookings.availability();
+    const slots = await booking.slots();
+    const weekdays = new Set(before.rules.map((rule) => rule.weekday));
+    const closing = [...weekdays][0];
+    expect(closing).toBeDefined();
+
+    await adminBookings.saveAvailability(
+      {
+        durationMinutes: before.consultationType.durationMinutes,
+        bufferBefore: before.consultationType.bufferBefore,
+        bufferAfter: before.consultationType.bufferAfter,
+        rules: before.rules.filter((rule) => rule.weekday !== closing),
+        overrides: [],
+      },
+      ownerId,
+    );
+
+    const after = await booking.slots();
+    const weekdayOf = (startsAt: string): number =>
+      new Date(startsAt).getUTCDay();
+    // Every remaining slot belongs to a day that is still open. The business zone and UTC
+    // can differ, so the check is that no slot falls on the closed rule's weekday in the
+    // hours it used to cover.
+    expect(after.days.length).toBeLessThanOrEqual(slots.days.length);
+    expect(after.days.flatMap((day) => day.slots).every((slot) => weekdayOf(slot.startsAt) !== closing)).toBe(true);
+
+    // And it is put back, so the tests that follow see the imported week.
+    await adminBookings.saveAvailability(
+      {
+        durationMinutes: before.consultationType.durationMinutes,
+        bufferBefore: before.consultationType.bufferBefore,
+        bufferAfter: before.consultationType.bufferAfter,
+        rules: before.rules,
+        overrides: [],
+      },
+      ownerId,
+    );
+  });
+
+  it('blocks one date, and nothing is offered on it', async () => {
+    const view = await booking.slots();
+    const day = view.days[1]?.day ?? '';
+    expect(day).not.toBe('');
+
+    const availability = await adminBookings.availability();
+    await adminBookings.saveAvailability(
+      {
+        durationMinutes: availability.consultationType.durationMinutes,
+        bufferBefore: availability.consultationType.bufferBefore,
+        bufferAfter: availability.consultationType.bufferAfter,
+        rules: availability.rules,
+        overrides: [{ day, blocked: true, startMinute: null, endMinute: null, reason: 'Closed for the test' }],
+      },
+      ownerId,
+    );
+
+    const after = await booking.slots();
+    expect(after.days.some((entry) => entry.day === day)).toBe(false);
+    expect((await adminBookings.availability()).overrides.map((entry) => entry.day)).toContain(day);
+  });
+
+  it('writes an audit entry naming who changed the hours', async () => {
+    const entries = await prisma.client.auditLog.findMany({
+      where: { action: 'booking.availability.updated' },
+      orderBy: { createdAt: 'desc' },
+      take: 1,
+    });
+    expect(entries[0]?.userId).toBe(ownerId);
   });
 });

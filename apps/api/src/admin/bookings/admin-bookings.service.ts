@@ -1,16 +1,23 @@
 import type { Prisma } from '@calwebtech/db';
 import {
+  BOOKING_HORIZON_DAYS,
+  BOOKING_SETTING_KEYS,
+  type AdminAvailability,
+  type AdminAvailabilityUpdate,
   type AdminBooking,
   type AdminBookingDetail,
   type AdminBookingList,
   type AdminBookingQuery,
   type AdminBookingUpdate,
+  adminAvailabilitySchema,
   adminBookingDetailSchema,
   adminBookingListSchema,
+  bookingPageContentSchema,
 } from '@calwebtech/shared';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { AuditService } from '../../auth/audit.service';
 import { PrismaService } from '../../prisma/prisma.service';
+import { SettingsService } from '../../settings/settings.service';
 
 const WITH_TYPE = {
   consultationType: { select: { name: true, durationMinutes: true } },
@@ -48,6 +55,7 @@ export class AdminBookingsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly audit: AuditService,
+    private readonly settings: SettingsService,
   ) {}
 
   async list(query: AdminBookingQuery): Promise<AdminBookingList> {
@@ -134,5 +142,104 @@ export class AdminBookingsService {
       after: { status: input.status ?? before.status, notes: input.notes === undefined ? 'unchanged' : 'changed' },
     });
     return this.find(id);
+  }
+
+  /**
+   * The hours calls can be booked in, as one screen reads them.
+   *
+   * The timezone comes from the page setting rather than from here, because every rule is
+   * written in it and the page states it to the visitor: two places to change it is one
+   * place to get it wrong.
+   */
+  async availability(): Promise<AdminAvailability> {
+    const [type, overrides, page] = await Promise.all([
+      this.prisma.client.consultationType.findFirst({
+        where: { active: true },
+        orderBy: { name: 'asc' },
+        include: { rules: { orderBy: [{ weekday: 'asc' }, { startMinute: 'asc' }] } },
+      }),
+      this.prisma.client.availabilityOverride.findMany({ orderBy: { date: 'asc' } }),
+      this.settings.get(BOOKING_SETTING_KEYS.page),
+    ]);
+    if (!type) throw new NotFoundException();
+
+    return adminAvailabilitySchema.parse({
+      consultationType: {
+        id: type.id,
+        name: type.name,
+        slug: type.slug,
+        durationMinutes: type.durationMinutes,
+        bufferBefore: type.bufferBefore,
+        bufferAfter: type.bufferAfter,
+        active: type.active,
+      },
+      timeZone: bookingPageContentSchema.parse(page).timeZone,
+      rules: type.rules.map((rule) => ({
+        weekday: rule.weekday,
+        startMinute: rule.startMinute,
+        endMinute: rule.endMinute,
+        minimumNoticeHours: rule.minimumNoticeHours,
+      })),
+      overrides: overrides.map((override) => ({
+        id: override.id,
+        day: override.date.toISOString().slice(0, 10),
+        blocked: override.blocked,
+        startMinute: override.startMinute,
+        endMinute: override.endMinute,
+        reason: override.reason,
+      })),
+      horizonDays: BOOKING_HORIZON_DAYS,
+    });
+  }
+
+  /**
+   * Replaces the week and the exceptions in one transaction.
+   *
+   * The rules are written afresh rather than reconciled: a week has at most a couple of
+   * dozen rows, and a diff that has to decide which of two identical windows was edited is
+   * more ways to be wrong than it is worth. Bookings already made are untouched — a call
+   * outside the new hours stays in the calendar, because somebody agreed to it.
+   */
+  async saveAvailability(input: AdminAvailabilityUpdate, actorId: string): Promise<AdminAvailability> {
+    const before = await this.availability();
+
+    await this.prisma.client.$transaction(async (tx) => {
+      await tx.consultationType.update({
+        where: { id: before.consultationType.id },
+        data: {
+          durationMinutes: input.durationMinutes,
+          bufferBefore: input.bufferBefore,
+          bufferAfter: input.bufferAfter,
+        },
+      });
+      await tx.availabilityRule.deleteMany({ where: { consultationTypeId: before.consultationType.id } });
+      if (input.rules.length > 0) {
+        await tx.availabilityRule.createMany({
+          data: input.rules.map((rule) => ({ ...rule, consultationTypeId: before.consultationType.id })),
+        });
+      }
+      await tx.availabilityOverride.deleteMany({});
+      if (input.overrides.length > 0) {
+        await tx.availabilityOverride.createMany({
+          data: input.overrides.map((override) => ({
+            date: new Date(`${override.day}T00:00:00.000Z`),
+            blocked: override.blocked,
+            startMinute: override.startMinute,
+            endMinute: override.endMinute,
+            reason: override.reason,
+          })),
+        });
+      }
+    });
+
+    await this.audit.recordQuietly({
+      userId: actorId,
+      action: 'booking.availability.updated',
+      entityType: 'ConsultationType',
+      entityId: before.consultationType.id,
+      before: { rules: before.rules.length, overrides: before.overrides.length, duration: before.consultationType.durationMinutes },
+      after: { rules: input.rules.length, overrides: input.overrides.length, duration: input.durationMinutes },
+    });
+    return this.availability();
   }
 }

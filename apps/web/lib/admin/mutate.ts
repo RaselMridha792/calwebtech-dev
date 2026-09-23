@@ -48,7 +48,7 @@ interface ApiErrorBody {
  */
 export async function adminMutate<T>(
   path: string,
-  init: { method: 'POST' | 'PATCH' | 'DELETE'; body?: unknown },
+  init: { method: 'POST' | 'PUT' | 'PATCH' | 'DELETE'; body?: unknown },
 ): Promise<T> {
   const response = await fetch(`/api${path}`, {
     method: init.method,

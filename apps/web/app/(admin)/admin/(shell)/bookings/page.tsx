@@ -34,7 +34,15 @@ export default async function AdminBookingsPage({ searchParams }: PageProps<'/ad
   return (
     <main className="min-h-0 flex-1 overflow-auto px-4 py-5">
       <div className="mx-auto w-full max-w-[1100px]">
-        <h1 className="font-display text-[21px] font-bold tracking-[-0.02em] text-admin-ink">Bookings</h1>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h1 className="font-display text-[21px] font-bold tracking-[-0.02em] text-admin-ink">Bookings</h1>
+          <Link
+            href="/admin/bookings/availability/"
+            className="h-8 rounded-[4px] border border-admin-line px-3 text-[12.5px] leading-[30px] font-semibold text-admin-body hover:border-admin-focus"
+          >
+            Availability
+          </Link>
+        </div>
         <p className="mt-0.5 mb-4 text-[12.5px] text-admin-body">
           {list.total} {list.total === 1 ? 'call' : 'calls'}. Times are shown in this browser&apos;s timezone, with the
           visitor&apos;s own beside each one.

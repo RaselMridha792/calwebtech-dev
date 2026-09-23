@@ -1,17 +1,21 @@
 import {
+  type AdminAvailability,
+  type AdminAvailabilityUpdate,
   type AdminBookingDetail,
   type AdminBookingList,
   type AdminBookingQuery,
   type AdminBookingUpdate,
+  adminAvailabilityUpdateSchema,
   adminBookingQuerySchema,
   adminBookingUpdateSchema,
 } from '@calwebtech/shared';
-import { Body, Controller, Get, Module, Param, Patch, Query, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Module, Param, Patch, Put, Query, Req, UseGuards } from '@nestjs/common';
 import { AdminGuard, RequireModule } from '../../auth/admin.guard';
 import type { AdminRequest } from '../../auth/admin-request';
 import { requireAuth } from '../../auth/admin-request';
 import { AuthModule } from '../../auth/auth.controller';
 import { ZodValidationPipe } from '../../common/zod-validation.pipe';
+import { SettingsService } from '../../settings/settings.service';
 import { AdminBookingsService } from './admin-bookings.service';
 
 /**
@@ -30,6 +34,25 @@ export class AdminBookingsController {
   @RequireModule('bookings', 'read')
   list(@Query(new ZodValidationPipe(adminBookingQuerySchema)) query: AdminBookingQuery): Promise<AdminBookingList> {
     return this.bookings.list(query);
+  }
+
+  /**
+   * Declared above `:id`, or Nest would read "availability" as a booking's id and answer
+   * 404 for the screen that sets the hours.
+   */
+  @Get('availability')
+  @RequireModule('bookings', 'read')
+  availability(): Promise<AdminAvailability> {
+    return this.bookings.availability();
+  }
+
+  @Put('availability')
+  @RequireModule('bookings')
+  saveAvailability(
+    @Body(new ZodValidationPipe(adminAvailabilityUpdateSchema)) body: AdminAvailabilityUpdate,
+    @Req() request: AdminRequest,
+  ): Promise<AdminAvailability> {
+    return this.bookings.saveAvailability(body, requireAuth(request).user.id);
   }
 
   @Get(':id')
@@ -52,6 +75,6 @@ export class AdminBookingsController {
 @Module({
   imports: [AuthModule],
   controllers: [AdminBookingsController],
-  providers: [AdminBookingsService],
+  providers: [AdminBookingsService, SettingsService],
 })
 export class AdminBookingsModule {}

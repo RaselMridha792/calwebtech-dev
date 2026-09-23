@@ -439,3 +439,99 @@ export const adminBookingUpdateSchema = z.object({
   notes: z.preprocess(blankToUndefined, z.string().trim().max(4000).optional()),
 });
 export type AdminBookingUpdate = z.output<typeof adminBookingUpdateSchema>;
+
+// ------------------------------------------------- availability, from the dashboard
+
+/**
+ * The hours a consultation can be booked in, as the dashboard reads and writes them.
+ *
+ * Minutes from midnight in the business's own timezone, which is the unit the generator
+ * works in: a rule written as "09:00" would have to be parsed somewhere, and the one place
+ * a clock face belongs is the input the person types into.
+ */
+export const adminAvailabilityRuleSchema = z.object({
+  weekday: z.number().int().min(0).max(6),
+  startMinute: z.number().int().min(0).max(24 * 60),
+  endMinute: z.number().int().min(0).max(24 * 60),
+  minimumNoticeHours: z.number().int().min(0).max(24 * 30),
+});
+export type AdminAvailabilityRule = z.infer<typeof adminAvailabilityRuleSchema>;
+
+export const adminAvailabilityOverrideSchema = z.object({
+  id: z.string(),
+  /** A calendar day in the business timezone: `2026-10-13`. */
+  day: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  blocked: z.boolean(),
+  startMinute: z.number().int().min(0).max(24 * 60).nullable(),
+  endMinute: z.number().int().min(0).max(24 * 60).nullable(),
+  reason: z.string().nullable(),
+});
+export type AdminAvailabilityOverride = z.infer<typeof adminAvailabilityOverrideSchema>;
+
+export const adminAvailabilitySchema = z.object({
+  consultationType: z.object({
+    id: z.string(),
+    name: z.string(),
+    slug: z.string(),
+    durationMinutes: z.number().int(),
+    bufferBefore: z.number().int(),
+    bufferAfter: z.number().int(),
+    active: z.boolean(),
+  }),
+  /** The business's own zone, from the page setting. Read-only here; the page owns it. */
+  timeZone: z.string(),
+  rules: z.array(adminAvailabilityRuleSchema),
+  overrides: z.array(adminAvailabilityOverrideSchema),
+  horizonDays: z.number().int(),
+});
+export type AdminAvailability = z.infer<typeof adminAvailabilitySchema>;
+
+/**
+ * What the dashboard may change. The whole week is sent at once rather than a rule at a
+ * time: a week is read as one thing, and a partial save leaves availability in a state
+ * nobody chose.
+ *
+ * An empty `rules` list is allowed and means the calendar is closed. It is not a mistake to
+ * guard against — a firm that stops taking calls for a month needs to be able to say so.
+ */
+export const adminAvailabilityUpdateSchema = z
+  .object({
+    durationMinutes: z.number().int().min(5).max(8 * 60),
+    bufferBefore: z.number().int().min(0).max(4 * 60),
+    bufferAfter: z.number().int().min(0).max(4 * 60),
+    rules: z.array(adminAvailabilityRuleSchema).max(7 * 4),
+    overrides: z.array(adminAvailabilityOverrideSchema.omit({ id: true })).max(365),
+  })
+  .refine((value) => value.rules.every((rule) => rule.endMinute > rule.startMinute), {
+    message: 'A day has to end after it starts',
+    path: ['rules'],
+  })
+  .refine(
+    (value) =>
+      value.rules.every(
+        (rule) => rule.endMinute - rule.startMinute >= value.bufferBefore + value.durationMinutes + value.bufferAfter,
+      ),
+    { message: 'A window that cannot hold one call would offer no times', path: ['rules'] },
+  )
+  .refine((value) => !hasOverlap(value.rules), {
+    message: 'Two windows on the same day overlap',
+    path: ['rules'],
+  })
+  .refine((value) => new Set(value.overrides.map((entry) => entry.day)).size === value.overrides.length, {
+    message: 'One entry per date',
+    path: ['overrides'],
+  });
+export type AdminAvailabilityUpdate = z.output<typeof adminAvailabilityUpdateSchema>;
+
+/** Two windows on one weekday may sit either side of lunch, but they may not overlap. */
+function hasOverlap(rules: readonly AdminAvailabilityRule[]): boolean {
+  for (let weekday = 0; weekday <= 6; weekday += 1) {
+    const day = rules.filter((rule) => rule.weekday === weekday).sort((a, b) => a.startMinute - b.startMinute);
+    for (let index = 1; index < day.length; index += 1) {
+      const previous = day[index - 1];
+      const current = day[index];
+      if (previous && current && current.startMinute < previous.endMinute) return true;
+    }
+  }
+  return false;
+}
