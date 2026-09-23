@@ -1,6 +1,7 @@
 import 'server-only';
 import {
   BOOKING_ERRORS,
+  CONSULTATION_PATH,
   type BookingConfirmation,
   type BookingPageView,
   type BookingSubmission,
@@ -9,6 +10,7 @@ import {
   bookingSlotsViewSchema,
 } from '@calwebtech/shared';
 import { cache } from 'react';
+import type { SitemapEntry } from '../sitemap';
 import { apiUrl, hasApi } from './core';
 
 /**
@@ -26,6 +28,15 @@ export const getBookingPage = cache(async (): Promise<BookingPageView | null> =>
   if (!response.ok) throw new Error(`API responded ${String(response.status)} for the booking page`);
   return bookingPageViewSchema.parse(await response.json());
 });
+
+/**
+ * One page, and no record behind it. It is listed whether or not a slot is free today: the
+ * page is the address the site links to and a buyer searches for, and an empty week is a
+ * fact about this afternoon rather than a reason to drop it out of the index.
+ */
+export function sitemapEntries(): Promise<SitemapEntry[]> {
+  return Promise.resolve([{ path: CONSULTATION_PATH, title: 'Book a consultation', section: 'Plan a project' }]);
+}
 
 /** The slots as they stand. Called again after a refused slot, so the page can re-offer. */
 export async function getBookingSlots(type?: string) {

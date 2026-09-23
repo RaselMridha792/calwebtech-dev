@@ -19,4 +19,5 @@ export const SITEMAP_SOURCES: readonly SitemapSource[] = [
   () => import('@/lib/api/calculator').then((module) => module.sitemapEntries()),
   () => import('@/lib/api/insights').then((module) => module.sitemapEntries()),
   () => import('@/lib/api/forms').then((module) => module.sitemapEntries()),
+  () => import('@/lib/api/booking').then((module) => module.sitemapEntries()),
 ];

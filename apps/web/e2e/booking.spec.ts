@@ -59,6 +59,15 @@ test.describe('book a consultation', () => {
     await expect(page.getByRole('button', { name: /confirm this time/i })).toHaveCount(0);
   });
 
+  test('is listed in sitemap.xml and on the sitemap page', async ({ request, page }) => {
+    const xml = await (await request.get('/sitemap.xml')).text();
+    expect(xml).toContain(`${PAGE}</loc>`);
+
+    await page.goto('/sitemap/');
+    const listed = page.getByRole('main').getByRole('link', { name: 'Book a consultation', exact: true });
+    await expect(listed.first()).toHaveAttribute('href', PAGE);
+  });
+
   test('is reachable from the header and the homepage band', async ({ page }, testInfo) => {
     await page.goto('/');
     const banner = page.getByRole('banner');
