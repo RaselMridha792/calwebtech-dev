@@ -18,8 +18,11 @@ export type { ImportContext } from './core';
  *
  * `node dist/import-snapshots.js` from the API image runs it
  * (apps/api/src/import-snapshots.ts); infra/scripts/deploy.sh does that on a stack with
- * IMPORT_SNAPSHOTS_ON_DEPLOY=true. The marker setting makes every later run a no-op, so
- * nothing a person has changed since is overwritten by a deploy; `--force` runs it again.
+ * IMPORT_SNAPSHOTS_ON_DEPLOY=true.
+ *
+ * The marker names the families that have run. A later deploy runs the ones it does not
+ * name and leaves the rest alone, so a family added after launch reaches a live database
+ * without re-importing the families somebody has since edited. `--force` runs them all.
  */
 
 export const IMPORT_MARKER_KEY = 'snapshots.import';
@@ -58,25 +61,47 @@ export async function importSnapshots(db: PrismaClient, options: ImportOptions):
   const log = options.log ?? (() => undefined);
   const marker = await db.setting.findUnique({ where: { key: IMPORT_MARKER_KEY } });
   const importedAt = markerDate(marker?.value);
-  if (importedAt && !options.force) {
-    log(`import: already done on ${importedAt}; pass --force to run it again`);
-    return { status: 'skipped', importedAt };
-  }
+  const done = options.force ? new Set<string>() : markerFamilies(marker?.value);
 
   const ctx = createImportContext(db, options.dir, log);
   const families: string[] = [];
   for (const load of options.importers ?? IMPORTERS) {
     const importer = await load();
+    // A family the marker already names has run against this database. Running it again
+    // would overwrite rows somebody has edited since, which is what the marker prevents.
+    if (done.has(importer.family)) continue;
     await importer.run(ctx);
     families.push(importer.family);
   }
 
-  const value = { importedAt: new Date().toISOString(), source: 'apps/web/static-content', families };
+  if (families.length === 0 && importedAt) {
+    log(`import: every family already imported, on ${importedAt}; pass --force to run them again`);
+    return { status: 'skipped', importedAt };
+  }
+
+  const value = {
+    importedAt: new Date().toISOString(),
+    source: 'apps/web/static-content',
+    families: [...done, ...families],
+  };
   await db.setting.upsert({ where: { key: IMPORT_MARKER_KEY }, create: { key: IMPORT_MARKER_KEY, value }, update: { value } });
+  if (done.size > 0) log(`import: ${families.join(', ')}; the rest had already run`);
   return { status: 'imported', families };
 }
 
 function markerDate(value: unknown): string | null {
   if (typeof value !== 'object' || value === null || !('importedAt' in value)) return null;
   return typeof value.importedAt === 'string' ? value.importedAt : null;
+}
+
+/**
+ * The families a previous run recorded. A marker from before they were recorded, or one
+ * written by hand, names none, so everything runs again — the safe reading of a marker
+ * nobody can interpret.
+ */
+function markerFamilies(value: unknown): Set<string> {
+  if (typeof value !== 'object' || value === null || !('families' in value)) return new Set();
+  const listed = value.families;
+  if (!Array.isArray(listed)) return new Set();
+  return new Set(listed.filter((entry): entry is string => typeof entry === 'string'));
 }
