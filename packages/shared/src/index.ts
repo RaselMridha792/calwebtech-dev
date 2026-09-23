@@ -1,4 +1,5 @@
 export * from './app-env';
+export * from './audience';
 export * from './admin-leads';
 export * from './admin-media';
 export * from './admin-services';
