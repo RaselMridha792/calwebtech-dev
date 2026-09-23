@@ -252,6 +252,11 @@ Two traps this cost a while, both worth writing down:
   the `.ics` invite, reminders at 24h and 1h, and signed reschedule and cancel link pages.
   The build plan's gate for 5.1 names reminders, reschedule and cancel, so 5.1 is not
   closed.
+- Production books in `America/Los_Angeles`, which is the shipped default, not the owner's
+  office. Every availability rule is written in that zone, so the hours on
+  `/admin/bookings/availability` read as Pacific until the `booking.page` setting's
+  `timeZone` is changed with settings-cli. The visitor always sees their own clock either
+  way, so this is wrong hours, not a wrong-looking page.
 - The booking page's own copy is the `booking.page` setting, and like `home.content` it is
   not one of the five settings the admin screen exposes, so it changes with `settings-cli`
   until the content manager reaches singleton pages (Task 5.3). The hours, which change
