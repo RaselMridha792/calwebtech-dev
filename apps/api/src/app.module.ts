@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { AdminAudienceModule } from './admin/audience/admin-audience.controller';
 import { AdminBookingsModule } from './admin/bookings/admin-bookings.controller';
 import { AdminLeadsModule } from './admin/leads/admin-leads.controller';
 import { AdminMediaModule } from './admin/media/admin-media.controller';
@@ -34,6 +35,7 @@ import { BookingModule } from './booking/booking.controller';
     // In-memory limits suit a single API instance. Move storage to Redis before scaling out.
     ThrottlerModule.forRoot([{ name: 'default', ttl: 60_000, limit: 120 }]),
     AuthModule,
+    AdminAudienceModule,
     AdminBookingsModule,
     AdminLeadsModule,
     AdminMediaModule,
