@@ -11,7 +11,7 @@ const PAGE = '/book-a-consultation/';
  * against another is the failure this page exists to avoid.
  */
 test.describe('book a consultation', () => {
-  test('is a page of its own, titled, with times to choose from', async ({ page }) => {
+  test('opens on a month, with the first free day chosen and its times beside it', async ({ page }) => {
     const errors: string[] = [];
     page.on('pageerror', (error) => errors.push(String(error)));
     await page.goto(PAGE);
@@ -20,9 +20,13 @@ test.describe('book a consultation', () => {
     await expect(page.locator('h1')).toContainText(/book a consultation/i);
 
     // Either there are times, or the page says plainly that there are none.
-    const times = page.getByRole('button', { pressed: false }).filter({ hasText: /^\d{1,2}[:.]\d{2}/ });
+    const times = page.locator('#booking-times').getByRole('button');
     const empty = page.getByText(/nothing bookable|not available right now/i);
     await expect(times.first().or(empty.first())).toBeVisible();
+
+    // A day in the grid is a choice, and the day that is open shows its own times.
+    const chosenDay = page.getByRole('button', { pressed: true }).first();
+    await expect(chosenDay.or(empty.first())).toBeVisible();
 
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     expect(overflow, 'no horizontal overflow').toBeLessThanOrEqual(0);
@@ -36,7 +40,7 @@ test.describe('book a consultation', () => {
     );
     await page.goto(PAGE);
 
-    const firstTime = page.locator('button[aria-pressed]').first();
+    const firstTime = page.locator('#booking-times button[aria-pressed]').first();
     const hasTimes = await firstTime.isVisible().catch(() => false);
     test.skip(!hasTimes, 'No slot is bookable in this environment, so there is nothing to book.');
 
