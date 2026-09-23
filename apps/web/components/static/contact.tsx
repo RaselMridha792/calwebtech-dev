@@ -13,7 +13,7 @@ export const CONTACT_FORM_ID = 'contact-form';
 export function ContactDetailsCard({ view }: { view: StaticContactView }) {
   const { details } = view.content;
   return (
-    <div className="border border-hairline bg-canvas-raised p-7 sm:p-8">
+    <div className="border border-hairline bg-canvas-raised p-7 text-ink-muted sm:p-8">
       <h2 className="font-display text-[22px] font-extrabold text-ink">{details.heading}</h2>
       <div className="mt-5">
         <ContactLinks contact={view.contact} phoneLabel={details.phoneLabel} emailLabel={details.emailLabel} />

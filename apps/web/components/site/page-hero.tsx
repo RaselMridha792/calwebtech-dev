@@ -52,10 +52,15 @@ export function PageHero({
       className={`relative overflow-hidden ${dark ? 'bg-navy-900 text-ink-invert' : 'border-b border-hairline bg-canvas'}`}
     >
       {dark ? (
+        // A plate, the way the homepage draws one: the photograph at full strength under one
+        // strong scrim across the whole of it. The photograph used to sit at a quarter
+        // opacity under two near-opaque gradients, which read as a flat navy ground — the
+        // image was loaded, preloaded as the LCP element, and then hidden. One scrim over the
+        // whole image keeps inverted ink above the 7.8:1 the brand asks for everywhere the
+        // words can fall, which an edge gradient cannot promise.
         <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
-          <BackdropImage image={backdrop} className="kenburns opacity-[.24]" priority />
-          <div className="absolute inset-0 bg-linear-to-r from-navy-900 via-navy-900/95 to-navy-900/70" />
-          <div className="absolute inset-0 bg-linear-to-t from-navy-900 via-transparent to-navy-900/60" />
+          <BackdropImage image={backdrop} className="kenburns" priority />
+          <div className="absolute inset-0 bg-scrim-strong" />
         </div>
       ) : (
         <div className="absolute inset-0" aria-hidden="true">

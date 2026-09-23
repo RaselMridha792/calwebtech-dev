@@ -51,7 +51,7 @@ export function MetricBand({
         {metrics.map((metric, index) => (
           <div
             key={metric.label}
-            className={`flex flex-col-reverse border-t pt-5 ${dark ? 'border-ink-invert/15' : 'border-hairline'}`}
+            className={`flex flex-col-reverse justify-end border-t pt-5 ${dark ? 'border-ink-invert/15' : 'border-hairline'}`}
             {...reveal(index)}
           >
             <dt className={`mt-2.5 text-[14.5px] leading-snug ${dark ? 'text-ink-invert-muted' : ''}`}>{metric.label}</dt>

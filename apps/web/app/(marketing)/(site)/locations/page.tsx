@@ -8,6 +8,7 @@ import { Section } from '@/components/site/section';
 import { SectionHeading } from '@/components/site/section-heading';
 import { getLocationsIndex } from '@/lib/api/locations';
 import { sitePageMetadata } from '@/lib/seo/page-metadata';
+import { HERO_BACKDROPS } from '@/lib/hero-backdrops';
 
 export async function generateMetadata(): Promise<Metadata> {
   const { content } = await getLocationsIndex();
@@ -20,6 +21,7 @@ export default async function LocationsPage() {
   return (
     <>
       <PageHero
+        backdrop={HERO_BACKDROPS.locations}
         crumbs={[{ name: 'Locations', path: SITE_ROUTES.locations }]}
         title={content.title}
         answer={content.answerBlock}

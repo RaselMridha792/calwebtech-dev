@@ -18,9 +18,9 @@ function StatsStrip({ statistics }: { statistics: Home['statistics'] }) {
   return (
     <div className="relative border-t-[6px] border-gold-500">
       <div className="shell">
-        <dl className="grid grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-ink-invert/15">
+        <dl className="grid grid-cols-2 gap-x-6 lg:grid-cols-4 lg:gap-x-0 lg:divide-x lg:divide-ink-invert/15">
           {statistics.map((stat) => (
-            <div key={stat.label} className="flex flex-col-reverse py-7 lg:px-10 lg:py-8 lg:first:pl-0">
+            <div key={stat.label} className="flex flex-col-reverse justify-end py-7 lg:px-10 lg:py-8 lg:first:pl-0">
               <dt className="body-sm mt-2 text-ink-invert-muted">{stat.label}</dt>
               <dd className="display-md text-gold-500">
                 {/^\d+$/.test(stat.value) ? (

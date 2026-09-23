@@ -4,6 +4,7 @@ import { EmptyState } from '../site/lists';
 import { PageHero } from '../site/page-hero';
 import { Section } from '../site/section';
 import { SectionHeading } from '../site/section-heading';
+import { HERO_BACKDROPS } from '@/lib/hero-backdrops';
 
 /** "Guide · 28 pages", or just "Guide" when the record does not say how long it is. */
 function guideMeta(pageCountLabel: string | null): string {
@@ -20,6 +21,7 @@ export function GuidesIndex({ view }: { view: GuidesIndexView }) {
   return (
     <>
       <PageHero
+        backdrop={HERO_BACKDROPS.guides}
         crumbs={[{ name: 'Guides', path: GUIDES_ROUTE }]}
         eyebrow="Resources"
         title={content.title}

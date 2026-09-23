@@ -125,7 +125,7 @@ export function IndustryResults({
             {section.metrics.map((metric, index) => (
               <div
                 key={`${metric.clientName}-${metric.label}`}
-                className="flex flex-col-reverse border-t border-ink-invert/15 pt-5"
+                className="flex flex-col-reverse justify-end border-t border-ink-invert/15 pt-5"
                 {...reveal(index)}
               >
                 <dt className="mt-2.5 text-[14.5px] leading-snug text-ink-invert-muted">

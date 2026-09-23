@@ -10,7 +10,7 @@ export function FaqTopics({ view }: { view: StaticFaqView }) {
   if (view.groups.length < 2) return null;
   return (
     <nav aria-labelledby="faq-topics-label" className="mt-9">
-      <p id="faq-topics-label" className="text-[14px] font-semibold text-ink">
+      <p id="faq-topics-label" className="text-[14px] font-semibold text-ink-invert">
         {view.navLabel}
       </p>
       <ul className="mt-3 flex flex-wrap gap-2">

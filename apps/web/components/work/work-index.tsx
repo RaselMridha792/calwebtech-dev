@@ -56,7 +56,7 @@ export function WorkResultsSummary({ view }: { view: WorkIndexView }) {
     <div className="glass p-6 sm:p-8">
       <dl className="grid grid-cols-2 gap-x-6 gap-y-6 sm:grid-cols-4 lg:grid-cols-2">
         {counts.map((count) => (
-          <div key={count.label} className="flex flex-col-reverse">
+          <div key={count.label} className="flex flex-col-reverse justify-end">
             <dt className="mt-1.5 text-[13.5px] text-ink-invert-muted">{count.label}</dt>
             <dd className="font-display text-[34px] leading-none font-extrabold">{count.value}</dd>
           </div>

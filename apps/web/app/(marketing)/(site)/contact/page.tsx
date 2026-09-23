@@ -8,6 +8,7 @@ import { ContactDetailsCard, ContactFormSection, ContactNextSteps, EnquiryRoutin
 import { contactPageJsonLd } from '@/components/static/json-ld';
 import { getStaticContact } from '@/lib/api/static';
 import { sitePageMetadata } from '@/lib/seo/page-metadata';
+import { HERO_BACKDROPS } from '@/lib/hero-backdrops';
 
 export async function generateMetadata(): Promise<Metadata> {
   const { content } = await getStaticContact();
@@ -28,14 +29,14 @@ export default async function ContactPage({ searchParams }: PageProps<'/contact'
   const chosen = view.enquiryTypes.find((type) => type.slug === requested)?.slug;
   return (
     <>
-      <PageHasOwnForm />
       <PageHero
-        ground="light"
+        backdrop={HERO_BACKDROPS.contact}
         crumbs={[{ name: 'Contact', path: SITE_ROUTES.contact }]}
         title={content.hero.title}
         intro={content.hero.intro}
         aside={<ContactDetailsCard view={view} />}
       />
+      <PageHasOwnForm />
       <ContactFormSection
         view={view}
         form={

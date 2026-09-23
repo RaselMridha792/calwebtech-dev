@@ -3,7 +3,6 @@ import {
   insightsArticlePath,
   servicePath,
   type ArticleHeading,
-  type Image,
   type InsightsArticleCopy,
   type InsightsArticleView,
   type InsightsAuthor,
@@ -21,28 +20,15 @@ import { formatArticleDate, wasUpdated } from './dates';
  * service call to action, the author block, and the related services and articles.
  */
 
-/** The article's cover photograph, beside the H1 and the answer block. */
-export function ArticleCover({ image }: { image: Image }) {
-  return (
-    <div className="relative aspect-video overflow-hidden border border-hairline bg-canvas-sunken">
-      <ResponsiveImage
-        src={image.src}
-        alt={image.alt}
-        fill
-        sizes="(min-width: 1024px) 40vw, 100vw"
-        className="object-cover"
-        priority
-      />
-    </div>
-  );
-}
-
-/** Who wrote it, when it was published and updated, and how long it takes to read. */
+/**
+ * Who wrote it, when it was published and updated, and how long it takes to read. It sits
+ * in the article's hero, which is a photographic plate, so it is set in inverted ink.
+ */
 export function ArticleMeta({ view }: { view: InsightsArticleView }) {
   const { copy, author } = view;
   const updated = wasUpdated(view.publishedAt, view.updatedAt);
   return (
-    <div className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-4 text-[14.5px]">
+    <div className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-4 text-[14.5px] text-ink-invert-muted">
       {author ? (
         <span className="flex items-center gap-3">
           {author.photo ? (
@@ -57,21 +43,21 @@ export function ArticleMeta({ view }: { view: InsightsArticleView }) {
           ) : null}
           <span>
             {`${copy.byLabel} `}
-            <b className="text-ink">{author.name}</b>
+            <b className="text-ink-invert">{author.name}</b>
             {`, ${author.role}`}
           </span>
         </span>
       ) : null}
       <span>
         {`${copy.publishedLabel} `}
-        <time dateTime={view.publishedAt} className="text-ink">
+        <time dateTime={view.publishedAt} className="text-ink-invert">
           {formatArticleDate(view.publishedAt)}
         </time>
       </span>
       {updated ? (
         <span>
           {`${copy.updatedLabel} `}
-          <time dateTime={view.updatedAt} className="text-ink">
+          <time dateTime={view.updatedAt} className="text-ink-invert">
             {formatArticleDate(view.updatedAt)}
           </time>
         </span>

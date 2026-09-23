@@ -174,6 +174,44 @@ Two traps this cost a while, both worth writing down:
   module with a `@calwebtech/shared/booking-status` subpath, beside `./slugify`, and the
   route is back to 5.4 kB.
 
+## 48. Every page opens on a photograph
+
+*2026-09-23.* The owner found the inner pages' flat navy heroes plain and asked for a
+relevant photograph behind every one. Two things were in the way, and only one of them was
+missing images.
+
+`PageHero` already took a `backdrop`, and a dozen page families already passed one — but it
+was drawn at a quarter opacity under two near-opaque navy gradients, so the photograph was
+downloaded, preloaded as the LCP element and then hidden. The hero now draws a plate the way
+the homepage does: the photograph at full strength under one `scrim-strong` across the whole
+of it, which holds inverted ink above the 7.8:1 the brand asks for wherever the words fall.
+An edge gradient cannot promise that.
+
+The pages with no record to carry an image — contact, the FAQ, the legal pages, the
+sitemap, thank-you, the glossary and guides indexes, the booking page — take one from
+`apps/web/lib/hero-backdrops.ts`. Every photograph there is one the site already serves:
+already chosen, already under the Unsplash License, already known to resolve. An invented id
+would answer 404, and on the LCP element that costs the page its largest paint as well as
+its picture. A case study uses its own cover, an article its own cover.
+
+Six pages had been light on purpose — contact, the FAQ, an article, the sitemap, thank-you
+and the legal pages — so they would never get a transparent bar. They are plates now, which
+meant their hero children, drawn for cream, had to be checked one by one: the article's
+byline and the FAQ's topic label were navy on the photograph, and the contact and thank-you
+cards let unstyled lines inherit the hero's inverted ink, cream on their own cream ground.
+The article's cover is its plate now rather than a second copy beside the heading.
+
+Two header faults were fixed with it, both the same mistake — a colour that belonged to the
+bar reaching things that sit on another ground. The navy wordmark was navy on the navy hero,
+so a cream lockup now takes its place there, lazy so a page without a dark hero never
+fetches it. The mega menu panels and the small-screen menu inherited the bar's inverted ink
+on their own cream ground; anything inside a `[data-panel]` is now left out of the bar's
+rules. The hamburger was navy on navy the other way round, because the rule only named links
+and buttons and it is a `summary`.
+
+Photographs remain the owner's placeholder choice until commissioned ones replace them; the
+licence for each is recorded by the fact that it is an Unsplash photograph (see Open).
+
 ## Open
 
 - The approved demo proof gives two names two identities. "Priya Raman" is Calwebtech's

@@ -3,6 +3,7 @@ import { Prose } from '../site/lists';
 import { PageHero } from '../site/page-hero';
 import { Section } from '../site/section';
 import { ContactLinks, RichText } from './parts';
+import { HERO_BACKDROPS } from '@/lib/hero-backdrops';
 
 function Block({ block }: { block: StaticLegalBlock }) {
   switch (block.type) {
@@ -69,7 +70,12 @@ const dateFormat = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'lo
 export function LegalPage({ page, path }: { page: StaticLegalView; path: string }) {
   return (
     <>
-      <PageHero ground="light" crumbs={[{ name: page.title, path }]} title={page.title} intro={page.intro}>
+      <PageHero
+        backdrop={HERO_BACKDROPS.legal}
+        crumbs={[{ name: page.title, path }]}
+        title={page.title}
+        intro={page.intro}
+      >
         <p className="mt-6 text-[14.5px]">
           {'Last updated '}
           <time dateTime={page.lastUpdated}>{dateFormat.format(new Date(`${page.lastUpdated}T00:00:00Z`))}</time>

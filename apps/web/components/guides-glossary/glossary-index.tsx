@@ -7,6 +7,7 @@ import { SectionHeading } from '../site/section-heading';
 import { reveal } from '../ui/primitives';
 import { formatUpdated } from './format-updated';
 import { definedTermSetJsonLd } from './json-ld';
+import { HERO_BACKDROPS } from '@/lib/hero-backdrops';
 
 /** The anchor a jump link points at. "#" files under `letter-other`. */
 export function letterAnchor(letter: string): string {
@@ -29,6 +30,7 @@ export function GlossaryIndex({ view }: { view: GlossaryIndexView }) {
   return (
     <>
       <PageHero
+        backdrop={HERO_BACKDROPS.glossary}
         crumbs={[{ name: 'Glossary', path: GLOSSARY_ROUTE }]}
         eyebrow="Resources"
         title={content.title}
