@@ -1,8 +1,8 @@
 # 13. Collaborator handoff — campaign engine (Task 5.4)
 
-You have write access to this repo as a collaborator. This branch,
-`handoff/campaign-engine`, exists only to hand you a clean starting point and a task —
-delete it once you have read this and branched off `main` for your own work.
+You have write access to this repo as a collaborator. Your work happens on the branch
+`tumit` — not on `main`, and not a new branch of your own. Push your commits there and
+open your PRs from `tumit` against `main`.
 
 ## Read these first, in order
 
@@ -71,16 +71,18 @@ Relevant existing pieces to build on rather than duplicate:
 ## Workflow
 
 ```
-git fetch origin
-git checkout -b feat/campaign-engine origin/main
+git clone <repo-url>
+cd calwebtech-dev
+git checkout tumit
 pnpm install
 docker compose -f infra/docker-compose.yml -f infra/docker-compose.dev.yml --env-file .env up -d db redis
 pnpm dev
 ```
 
-Work in small commits on `feat/campaign-engine` (or split it into
-`feat/campaign-segments`, `feat/campaign-composer`, `feat/campaign-send` if the task is
-too large for one PR — ask the owner if unsure where to cut it). Before opening a PR:
+Work in small commits directly on `tumit`, pushing as you go
+(`git push origin tumit`). If the task is too large for one PR, say so and ask the
+owner how to split it rather than opening a second branch on your own. Before opening a
+PR:
 
 ```
 pnpm build      # type check, lint, build everything
@@ -88,11 +90,11 @@ pnpm test       # unit tests
 pnpm test:integration   # needs db + redis up, see above
 ```
 
-Open the PR against `main`. CI (`verify`) runs type check, lint, full test suite,
-Lighthouse budget gate and the own-code JS budget on every PR automatically — it must be
-green before merge. **Do not merge your own PR or trigger a production deploy** — hand it
-back to the owner for that; deploy is a manual `workflow_dispatch` step gated on the
-production environment's secrets, which you do not have.
+Open the PR from `tumit` against `main`. CI (`verify`) runs type check, lint, full test
+suite, Lighthouse budget gate and the own-code JS budget on every PR automatically — it
+must be green before merge. **Do not merge your own PR or trigger a production deploy** —
+hand it back to the owner for that; deploy is a manual `workflow_dispatch` step gated on
+the production environment's secrets, which you do not have.
 
 Whatever you decide that isn't obvious from the docs — a schema choice, a UI pattern, a
 provider-rate-limit number — write it into `docs/08-decisions.md` the way the existing
@@ -101,8 +103,8 @@ re-litigated in a month.
 
 ## First prompt to paste into Claude Code
 
-Open this repo in Claude Code, on your own `feat/campaign-engine` branch, and paste this
-as your first message:
+Open this repo in Claude Code, on the `tumit` branch, and paste this as your first
+message:
 
 > Read `RULES.md`, `CLAUDE.md`, `docs/06-build-plan.md` task 5.4, and
 > `docs/13-collaborator-handoff.md`. Then look at how `apps/api/src/booking/` and
