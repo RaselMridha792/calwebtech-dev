@@ -6,7 +6,7 @@
  * `result` (teal) is deliberately absent: an email has no outcome figures to mark.
  */
 export const emailTokens = {
-  ink: '#0a1d37',
+  ink: '#101a24',
   primary: '#1550e0',
   mist: '#eef3f9',
   mist2: '#f7fafd',
