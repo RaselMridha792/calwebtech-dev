@@ -241,6 +241,41 @@ All of it sits under the `subscribers` module, so the RBAC matrix is unchanged.
 - New audit actions: `subscriber.tags_changed`, `suppression.added`, `segment.created`,
   `segment.updated`, `segment.deleted`.
 
+## 50. Campaign composer, templates, tokens, preview and test send
+
+*2026-09-24.* The second part of Task 5.4. Contract in `packages/shared/src/campaigns.ts`,
+templates in `packages/emails/src/campaign.tsx`, API in `apps/api/src/admin/campaigns/`,
+screens at `/admin/campaigns/` and `/admin/campaigns/[id]/` (`new` to create). No migration:
+`Campaign` already had every column.
+
+- **The body is blocks, not HTML** (`campaignBodySchema`): heading, paragraph, button and
+  divider, stored in `Campaign.body`. The template decides how each looks, so nobody writes
+  markup and every campaign stays on brand. A button links only to an `http(s)` address.
+- **Two branded templates**, `letter` and `announcement` (`Campaign.templateKey`). They are
+  code in `packages/emails`, reviewed like any other component; the dashboard only chooses
+  one. `announcement` lifts the first heading onto a dark band. Email colours stay the ones
+  in `packages/emails/src/tokens.ts`.
+- **Personalisation tokens**: `{{name}}`, `{{firstName}}` and `{{email}}`, with a fallback
+  after a bar, `{{firstName|there}}`. `personalise` in the shared package is the one
+  function that fills them, for the preview, the test and the send. A token nothing can
+  fill is refused when the campaign is saved rather than sent as braces.
+- **Only a draft can be edited or deleted** (409, `campaign_locked`). A scheduled campaign is
+  what will be sent and a sent one is the record of what was.
+- **The preview renders unsaved content** through the API (`POST /admin/campaigns/preview`)
+  with the same template as the send, filled from the newest subscriber the chosen segment
+  reaches, or a placeholder without one. The dashboard shows it in a sandboxed frame.
+- **A test send is a job on the email queue** (`campaign-test` in `emailJobSchema`), to at
+  most five addresses, with the subject marked `[Test]` and the tokens filled from the
+  person who asked. It goes out as the campaign is saved, so the button waits until there
+  are no unsaved changes. Each request has its own `testId`, so two tests are two emails and
+  a retried one is still one. It is audited (`campaign.test_sent`), throttled to six a
+  minute, and writes no delivery row: the report counts only the people a campaign was sent
+  to.
+- The API now depends on `@calwebtech/emails` to render the preview. It is a workspace
+  package, and the API image's `--filter "@calwebtech/api..."` build already includes it.
+- New audit actions: `campaign.created`, `campaign.updated`, `campaign.deleted`,
+  `campaign.test_sent`.
+
 ## Open
 
 - Nothing creates `Subscriber` rows yet. The insights newsletter form stores a `RESOURCE`

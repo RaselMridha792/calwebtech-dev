@@ -126,6 +126,11 @@ Nothing creates subscribers yet (see decision 49's Open entry).
 Campaign list and composer, template picker, personalisation tokens with fallbacks, test
 send, schedule, and per-campaign reporting. **Deferred to Task 5.4**; design last.
 
+**Built so far** (`docs/08-decisions.md`, 50): the campaign list with a status filter, and
+the composer at `/admin/campaigns/[id]/` with name, subject, preview text, template, segment
+and a block body, a live preview of unsaved content, and a test send to the team. Scheduling,
+the send itself and the report come next.
+
 ## 6. Content manager — one pattern, nineteen types
 
 Every type in `docs/02-content-model.md` gets the same three screens, so design the
