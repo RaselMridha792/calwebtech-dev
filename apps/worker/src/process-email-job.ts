@@ -72,6 +72,10 @@ export function createEmailJobProcessor({ transport, store, from, redirectTo, si
       providerId: id,
       ...(redirectTo ? { redirectedFrom: email.to } : {}),
     };
+    // A campaign test belongs to no lead or booking. The API audited the request, and the
+    // provider id is in the job's return value; a test writes no delivery row, because the
+    // campaign's report counts only the people it was sent to.
+    if (email.template === 'campaign-test') return { providerId: id };
     if ('bookingId' in email) await store.recordBookingDelivery(email.bookingId, record);
     else await store.recordDelivery(email.lead.leadId, record);
     return { providerId: id };

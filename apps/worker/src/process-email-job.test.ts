@@ -171,3 +171,27 @@ describe('cost calculator result', () => {
     expect(sent[0]?.html).not.toContain('book-a-consultation');
   });
 });
+
+describe('campaign test send', () => {
+  const test: EmailJob = {
+    template: 'campaign-test',
+    to: ['team@calwebtech.com'],
+    campaignId: 'cmcampaign01',
+    testId: 'abc123',
+    content: {
+      subject: 'Hello {{firstName|there}}',
+      templateKey: 'letter',
+      body: { blocks: [{ type: 'paragraph', text: 'Hi {{firstName|there}}.' }] },
+    },
+    recipient: { name: 'Sam Lee', email: 'team@calwebtech.com' },
+  };
+
+  it('sends a marked test with its own idempotency key and writes no delivery row', async () => {
+    const { sent, deliveries, transport, store } = fakes();
+    await createEmailJobProcessor({ transport, store, from: FROM })({ data: test });
+    expect(sent[0]?.subject).toBe('[Test] Hello Sam');
+    expect(sent[0]?.to).toEqual(['team@calwebtech.com']);
+    expect(sent[0]?.idempotencyKey).toBe('campaign-test-cmcampaign01-abc123');
+    expect(deliveries).toEqual([]);
+  });
+});
