@@ -252,6 +252,10 @@ Two traps this cost a while, both worth writing down:
   the `.ics` invite, reminders at 24h and 1h, and signed reschedule and cancel link pages.
   The build plan's gate for 5.1 names reminders, reschedule and cancel, so 5.1 is not
   closed.
+- The booking page's own copy is the `booking.page` setting, and like `home.content` it is
+  not one of the five settings the admin screen exposes, so it changes with `settings-cli`
+  until the content manager reaches singleton pages (Task 5.3). The hours, which change
+  far more often, are editable from `/admin/bookings/availability`.
 - The availability screen edits the one active consultation type. A second type would need
   a chooser there and a type per booking link; nothing depends on that yet.
 - The Lighthouse gate runs against `/` and `/lp/[campaign]` only (docs/09). The booking
