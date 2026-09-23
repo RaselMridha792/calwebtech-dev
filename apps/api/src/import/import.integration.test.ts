@@ -126,6 +126,28 @@ describe('snapshot import on an empty database', () => {
     expect((await db.enquiryType.findUniqueOrThrow({ where: { slug: 'support' } })).mailbox).toBe('support@example.com');
   });
 
+  it('runs a family added after launch, and leaves the ones already imported alone', async () => {
+    // What a deploy does the day a new family is appended to the registry: the marker names
+    // the four that ran, so only the new one runs. This is the path that got the booking
+    // rows onto a live database without re-importing content somebody had edited.
+    await db.setting.update({
+      where: { key: IMPORT_MARKER_KEY },
+      data: { value: { importedAt: new Date().toISOString(), source: 'apps/web/static-content', families: ['operational'] } },
+    });
+    await db.technology.deleteMany({});
+
+    const result = await importSnapshots(db, { dir: snapshotDir });
+    expect(result).toMatchObject({ status: 'imported' });
+    expect(result.status === 'imported' ? result.families : []).toEqual(['references', 'work', 'services']);
+    expect(await db.technology.count()).toBeGreaterThan(0);
+    // The mailbox belongs to the family that was skipped, so it is still there.
+    expect((await db.enquiryType.findUniqueOrThrow({ where: { slug: 'support' } })).mailbox).toBe('support@example.com');
+
+    const marker = await db.setting.findUniqueOrThrow({ where: { key: IMPORT_MARKER_KEY } });
+    expect(marker.value).toMatchObject({ families: ['operational', 'references', 'work', 'services'] });
+    expect((await importSnapshots(db, { dir: snapshotDir })).status).toBe('skipped');
+  });
+
   it('keeps a mailbox a person set, even when the import is forced', async () => {
     expect((await importSnapshots(db, { dir: snapshotDir, force: true })).status).toBe('imported');
     expect((await db.enquiryType.findUniqueOrThrow({ where: { slug: 'support' } })).mailbox).toBe('support@example.com');

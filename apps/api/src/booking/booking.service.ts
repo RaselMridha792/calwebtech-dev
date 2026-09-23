@@ -5,6 +5,7 @@ import {
   BOOKING_FORM_ID,
   BOOKING_HORIZON_DAYS,
   BOOKING_SETTING_KEYS,
+  DEFAULT_BOOKING_PAGE,
   type AvailabilityOverride,
   type AvailabilityRule,
   type BookingConfirmation,
@@ -47,10 +48,17 @@ export class BookingService {
     private readonly emailQueue: EmailQueue,
   ) {}
 
-  /** The page's copy and its business timezone. */
+  /**
+   * The page's copy and its business timezone.
+   *
+   * A database with no `booking.page` row is an ordinary state, not a fault: a fresh
+   * production stack has migrations but no settings yet. The shipped default answers for it,
+   * so the page renders and says there are no times rather than returning 500 to every
+   * visitor. A row that exists and is wrong still throws, because that is a fault.
+   */
   private async content() {
     const row = await this.settings.get(BOOKING_SETTING_KEYS.page);
-    return bookingPageContentSchema.parse(row);
+    return bookingPageContentSchema.parse(row ?? DEFAULT_BOOKING_PAGE);
   }
 
   /** The type a booking is for, with the rules that decide when it can happen. */
