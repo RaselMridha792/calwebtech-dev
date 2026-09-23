@@ -37,22 +37,20 @@ export default async function BookAConsultationPage({ searchParams }: PageProps<
 
       <section className="bg-canvas py-16 lg:py-24">
         <div className="shell">
-          <div className="max-w-[46rem]">
-            {view ? (
-              <BookingSection
-                content={view.content}
-                slots={view.slots}
-                source={source}
-                turnstileSiteKey={process.env.TURNSTILE_SITE_KEY}
-              />
-            ) : (
-              // No API, or no consultation type set up: say so rather than show a form
-              // that cannot take a booking.
-              <p className="body-lg border-t border-hairline pt-8 text-ink-muted">
-                Booking is not available right now. Send us a message and we will find a time by email.
-              </p>
-            )}
-          </div>
+          {view ? (
+            <BookingSection
+              content={view.content}
+              slots={view.slots}
+              source={source}
+              turnstileSiteKey={process.env.TURNSTILE_SITE_KEY}
+            />
+          ) : (
+            // No API, or no consultation type set up: say so rather than show a form
+            // that cannot take a booking.
+            <p className="body-lg max-w-[46rem] border-t border-hairline pt-8 text-ink-muted">
+              Booking is not available right now. Send us a message and we will find a time by email.
+            </p>
+          )}
         </div>
       </section>
     </>
