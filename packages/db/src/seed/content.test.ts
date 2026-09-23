@@ -55,7 +55,7 @@ describe('placeholder seed content', () => {
 
   it('points every homepage anchor at a section the template always renders', () => {
     const anchors = JSON.stringify(content.HOME_CONTENT).match(/"#[a-z]+"/g) ?? [];
-    const rendered = ['#work', '#estimate', '#book', '#awards', '#locations', '#insights', '#pricing', '#process', '#tech', '#beforeafter', '#quote'];
+    const rendered = ['#work', '#estimate', '#awards', '#locations', '#insights', '#pricing', '#process', '#tech', '#beforeafter', '#quote'];
     for (const anchor of anchors) expect(rendered).toContain(anchor.replaceAll('"', ''));
   });
 });

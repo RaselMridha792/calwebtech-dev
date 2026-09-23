@@ -168,7 +168,7 @@ export const HOME_CONTENT: HomePageContentInput = {
   },
   utilityBar: { serviceArea: 'Placeholder service area' },
   header: {
-    primaryCta: { label: 'Book a consultation', href: '#book' },
+    primaryCta: { label: 'Book a consultation', href: '/book-a-consultation/' },
     secondaryCta: { label: 'Instant estimate', href: '#estimate' },
   },
   megaMenu: {
@@ -207,7 +207,7 @@ export const HOME_CONTENT: HomePageContentInput = {
   problemRouter: {
     heading: 'Placeholder problem router heading',
     intro: 'Placeholder. The approved copy invites visitors to pick the problem closest to theirs.',
-    cta: { label: 'Talk it through with us', href: '#book' },
+    cta: { label: 'Talk it through with us', href: '/book-a-consultation/' },
   },
   services: { heading: 'Placeholder services heading' },
   work: {
@@ -232,7 +232,7 @@ export const HOME_CONTENT: HomePageContentInput = {
     notListed: {
       heading: 'Not listed here?',
       body: 'Placeholder. The approved copy invites other industries to get in touch.',
-      cta: { label: 'Start the conversation', href: '#book' },
+      cta: { label: 'Start the conversation', href: '/book-a-consultation/' },
     },
   },
   estimate: {
@@ -245,7 +245,7 @@ export const HOME_CONTENT: HomePageContentInput = {
       question: 'How many pages will the new site need?',
       options: ['Under 10', '10 to 50', '50 to 150', 'More than 150'],
     },
-    cta: { label: 'Talk to us about cost', href: '#book' },
+    cta: { label: 'Talk to us about cost', href: '/book-a-consultation/' },
   },
   whyUs: {
     heading: 'Placeholder reasons heading',
@@ -303,7 +303,7 @@ export const HOME_CONTENT: HomePageContentInput = {
       { label: 'Technology', href: '#tech' },
       { label: 'Pricing', href: '#pricing' },
       { label: 'Locations', href: '#locations' },
-      { label: 'Contact', href: '#book' },
+      { label: 'Contact', href: '/book-a-consultation/' },
     ],
     legal: [
       { label: 'Privacy policy', href: '/privacy-policy/' },
@@ -312,7 +312,7 @@ export const HOME_CONTENT: HomePageContentInput = {
       { label: 'Accessibility', href: '/accessibility/' },
     ],
   },
-  floatingCta: { label: 'Start a project', href: '#book' },
+  floatingCta: { label: 'Start a project', href: '/book-a-consultation/' },
 };
 
 /** Generic groupings; a column of vendor platforms would name real companies. */

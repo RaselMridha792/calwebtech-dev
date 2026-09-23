@@ -49,6 +49,10 @@ function fakes(failWith?: Error) {
       deliveries.push({ leadId, record });
       return Promise.resolve();
     },
+    recordBookingDelivery: (bookingId, record) => {
+      deliveries.push({ leadId: bookingId, record });
+      return Promise.resolve();
+    },
   };
   return { sent, deliveries, transport, store };
 }

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { AdminBookingsModule } from './admin/bookings/admin-bookings.controller';
 import { AdminLeadsModule } from './admin/leads/admin-leads.controller';
 import { AdminMediaModule } from './admin/media/admin-media.controller';
 import { AdminOpsModule } from './admin/ops/admin-ops.controller';
@@ -24,6 +25,7 @@ import { GuidesGlossaryModule } from './guides-glossary/guides-glossary.controll
 import { CalculatorPageModule } from './calculator/calculator.controller';
 import { InsightsModule } from './insights/insights.controller';
 import { FormsModule } from './forms/forms.controller';
+import { BookingModule } from './booking/booking.controller';
 
 @Module({
   imports: [
@@ -32,6 +34,7 @@ import { FormsModule } from './forms/forms.controller';
     // In-memory limits suit a single API instance. Move storage to Redis before scaling out.
     ThrottlerModule.forRoot([{ name: 'default', ttl: 60_000, limit: 120 }]),
     AuthModule,
+    AdminBookingsModule,
     AdminLeadsModule,
     AdminMediaModule,
     AdminOpsModule,
@@ -51,6 +54,7 @@ import { FormsModule } from './forms/forms.controller';
     CalculatorPageModule,
     InsightsModule,
     FormsModule,
+    BookingModule,
   ],
   controllers: [HealthController],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],

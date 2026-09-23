@@ -119,7 +119,7 @@ describe('siteHref', () => {
   it('sends homepage anchors with a page of their own to that page', () => {
     expect(siteHref('#pricing')).toBe('/pricing/');
     expect(siteHref('#beforeafter')).toBe('/before-and-after/');
-    expect(siteHref('#book')).toBe('/contact/');
+    expect(siteHref('#book')).toBe('/book-a-consultation/');
   });
 
   it('sends sections only the homepage has to that section on the homepage', () => {
@@ -196,7 +196,7 @@ describe('buildSiteChrome', () => {
       { label: 'Cost estimate', href: '/#estimate' },
       { label: 'Process', href: '/process/' },
     ]);
-    expect(chrome.utilityBar.links).toEqual([{ label: 'Support', href: '/contact/' }]);
+    expect(chrome.utilityBar.links).toEqual([{ label: 'Support', href: '/book-a-consultation/' }]);
   });
 
   it('features the first two case studies with their headline figure, and only offices with an address', () => {
@@ -216,12 +216,12 @@ describe('buildSiteChrome', () => {
     expect(conversionBand).toMatchObject({
       heading: 'Test book heading',
       intro: 'Test book intro.',
-      primaryCta: { label: 'Book a call', href: '/contact/' },
+      primaryCta: { label: 'Book a call', href: '/book-a-consultation/' },
       secondaryCta: { label: 'Estimate', href: '/#estimate' },
     });
     // Pricing lives in the Resources menu now, so the bar carries one plain link.
     expect(header.links.map((item) => item.href)).toEqual(['/technology/']);
-    expect(floatingCta).toEqual({ label: 'Start a project', href: '/contact/' });
+    expect(floatingCta).toEqual({ label: 'Start a project', href: '/book-a-consultation/' });
   });
 
   it('lets the closing band set its own second action, so the bar can drop one', () => {

@@ -17,6 +17,10 @@
     "./slugify": {
       "types": "./dist/slugify.d.ts",
       "default": "./dist/slugify.js"
+    },
+    "./booking-status": {
+      "types": "./dist/booking-status.d.ts",
+      "default": "./dist/booking-status.js"
     }
   },
   "files": [

@@ -2,9 +2,9 @@
 
 import { useCallback, useEffect, useRef } from 'react';
 import { loadTurnstile, type TurnstileApi } from '@/lib/turnstile-client';
+import { TURNSTILE_FIELD } from '@/lib/turnstile-field';
 
-/** The hidden input Turnstile writes its token into; the server action reads it. */
-export const TURNSTILE_FIELD = 'cf-turnstile-response';
+export { TURNSTILE_FIELD };
 
 /** An interactive challenge needs a person, so give them time. */
 const TOKEN_TIMEOUT_MS = 60_000;

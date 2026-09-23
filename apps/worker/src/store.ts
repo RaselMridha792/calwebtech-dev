@@ -24,5 +24,21 @@ export function prismaDeliveryStore(db: PrismaClient): DeliveryStore {
         },
       });
     },
+
+    async recordBookingDelivery(bookingId, record) {
+      await db.bookingEvent.create({
+        data: {
+          bookingId,
+          type: 'email_sent',
+          detail: {
+            template: record.template,
+            to: record.to,
+            transport: record.transport,
+            providerId: record.providerId,
+            ...(record.redirectedFrom ? { redirectedFrom: record.redirectedFrom } : {}),
+          },
+        },
+      });
+    },
   };
 }

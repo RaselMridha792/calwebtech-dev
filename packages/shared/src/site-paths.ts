@@ -70,7 +70,8 @@ export const HOME_SECTION_ROUTES: Readonly<Record<string, string>> = {
   '#process': SITE_ROUTES.process,
   '#pricing': SITE_ROUTES.pricing,
   '#locations': SITE_ROUTES.locations,
-  '#book': SITE_ROUTES.contact,
+  // The booking page exists now (task 5.1); this used to fall back to the contact form.
+  '#book': '/book-a-consultation/',
   '#quote': SITE_ROUTES.contact,
 };
 

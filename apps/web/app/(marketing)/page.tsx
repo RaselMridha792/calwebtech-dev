@@ -1,4 +1,4 @@
-import { BUDGET_BANDS } from '@calwebtech/shared';
+import { CONSULTATION_PATH } from '@calwebtech/shared';
 import type { Metadata } from 'next';
 import { LeadForm } from '@/components/forms/lead-form';
 import { HomeHero } from '@/components/home/hero';
@@ -118,22 +118,17 @@ export default async function HomePage() {
         <PricingBands pricing={content.pricing} tiers={home.pricingTiers} />
         <BookSection
           book={content.book}
-          form={
-            <LeadForm
-              variant="full"
-              formId="home-book"
-              leadType="CONSULTATION"
-              contactField="phone"
-              permalink="/"
-              submitLabel={content.book.submitLabel}
-              success={content.formSuccess}
-              budgetOptions={BUDGET_BANDS}
-              serviceOptions={content.book.serviceOptions}
-              referralOptions={content.book.referralOptions}
-              footnote={content.book.footnote}
-              turnstileSiteKey={turnstileSiteKey}
-              className="border border-hairline bg-canvas-raised p-7 sm:p-9"
-            />
+          action={
+            <div className="border border-hairline bg-canvas-raised p-7 sm:p-9">
+              <p className="heading-md text-ink">{content.book.heading}</p>
+              <p className="body-base mt-3 text-ink-muted">{content.book.footnote}</p>
+              <a
+                href={CONSULTATION_PATH}
+                className="button-label mt-7 inline-flex min-h-12 items-center bg-navy-900 px-6 text-ink-invert transition-colors duration-150 hover:bg-navy-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+              >
+                {content.book.submitLabel}
+              </a>
+            </div>
           }
         />
       </main>

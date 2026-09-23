@@ -1,7 +1,6 @@
 import { expect, test } from '@playwright/test';
 
 const PAGE = '/';
-const SUBMIT = /book my consultation/i;
 
 /** Sections navigation links to, with the empty-state line the launch seed gives them. */
 const EMPTY_STATES: [section: string, text: string][] = [
@@ -55,28 +54,6 @@ test.describe('homepage', () => {
     expect(text, 'no percentage figures').not.toMatch(/\d\s?%/);
     expect(text, 'no star ratings').not.toContain('★');
     expect(text, 'no money amounts').not.toMatch(/\$\s?\d/);
-  });
-
-  test('the consultation form stores a lead', async ({ page }, testInfo) => {
-    test.skip(
-      testInfo.project.name !== 'desktop-1440',
-      'The API allows five leads a minute per address, and the landing page tests use most of them.',
-    );
-    await page.goto(`${PAGE}?utm_source=e2e&utm_campaign=${testInfo.project.name}`);
-    const form = page.locator('#book form');
-    await form.scrollIntoViewIfNeeded();
-    await form.getByLabel('Full name').fill('E2E Consultation');
-    await form.getByLabel('Company', { exact: true }).fill('Example Client');
-    await form.getByLabel('Work email').fill(`consultation.${testInfo.project.name}@example.com`);
-    await form.getByLabel('Phone', { exact: true }).fill('+1 555 010 0100');
-    await form.getByText('Redesign', { exact: true }).click();
-    await form.getByLabel('Budget range').selectOption('25k-60k');
-    await form.getByLabel('How did you find us?').selectOption('AI assistant');
-    await form.getByLabel('What is going wrong right now?').fill('The site is slow and enquiries go missing.');
-
-    // The first submit waits for a Turnstile token (Cloudflare's always-pass test key).
-    await form.getByRole('button', { name: SUBMIT }).click();
-    await expect(page.locator('#book [role="status"]')).toContainText('Thanks', { timeout: 20_000 });
   });
 
   test('the mega menus open from the keyboard, dismiss with Escape and close when focus leaves', async ({ page }, testInfo) => {

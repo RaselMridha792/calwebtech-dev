@@ -8,6 +8,12 @@ export class SettingsService {
 
   constructor(private readonly prisma: PrismaService) {}
 
+  /** One setting's stored value, or null. The caller validates it with its own schema. */
+  async get(key: string): Promise<unknown> {
+    const row = await this.prisma.client.setting.findUnique({ where: { key }, select: { value: true } });
+    return row?.value ?? null;
+  }
+
   /**
    * Who gets the internal notification. Read on every lead and never cached, so a
    * changed address applies to the next lead without a restart or a redeploy.

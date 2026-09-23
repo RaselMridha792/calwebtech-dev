@@ -81,6 +81,32 @@ export const emailJobSchema = z.discriminatedUnion('template', [
     lead: leadSummarySchema,
     result: calculatorResultEmailSchema,
   }),
+  /**
+   * The booking family (task 5.1). No meeting link is generated: the note says a person
+   * sends one by hand, so the email promises only what actually happens.
+   */
+  z.object({
+    template: z.literal('booking-confirmation'),
+    to: recipientsSchema,
+    bookingId: z.string().min(1),
+    name: z.string().min(1),
+    consultationType: z.string().min(1),
+    startsAt: z.iso.datetime(),
+    endsAt: z.iso.datetime(),
+    /** The visitor's own zone, so the email states the time in the clock they read. */
+    timezone: z.string().min(1),
+  }),
+  z.object({
+    template: z.literal('booking-notification'),
+    to: recipientsSchema,
+    bookingId: z.string().min(1),
+    name: z.string().min(1),
+    email: z.email(),
+    consultationType: z.string().min(1),
+    startsAt: z.iso.datetime(),
+    timezone: z.string().min(1),
+    context: z.string().nullable(),
+  }),
 ]);
 export type EmailJob = z.infer<typeof emailJobSchema>;
 export type EmailTemplateKey = EmailJob['template'];
@@ -90,6 +116,10 @@ export type EmailTemplateKey = EmailJob['template'];
  * it as the provider idempotency key, so neither a repeated add nor a retried send can
  * email anyone twice. BullMQ does not allow ':' in custom ids.
  */
-export function emailJobId(job: Pick<EmailJob, 'template' | 'lead'>): string {
-  return `${job.template}-${job.lead.leadId}`;
+export function emailJobId(job: { template: EmailTemplateKey; lead?: { leadId: string }; bookingId?: string }): string {
+  const subject = job.lead?.leadId ?? job.bookingId;
+  // A job with neither would collide with every other job of its template, which is the
+  // one way this id can cause the duplicate send it exists to prevent.
+  if (subject === undefined) throw new Error(`emailJobId: a ${job.template} job names no lead or booking`);
+  return `${job.template}-${subject}`;
 }
