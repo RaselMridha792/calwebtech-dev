@@ -36,6 +36,8 @@ export type ImporterLoader = () => Promise<SnapshotImporter>;
 
 export const IMPORTERS: readonly ImporterLoader[] = [
   () => import('./operational.js').then((module) => module.operationalImporter),
+  // Independent of the content families: the page's copy, one consultation type and its hours.
+  () => import('./booking.js').then((module) => module.bookingImporter),
   // Before any family that links to them: a service page shows technologies and
   // industries, and cannot move into the database while those rows live only in a snapshot.
   () => import('./references.js').then((module) => module.referencesImporter),

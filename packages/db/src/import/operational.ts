@@ -1,12 +1,8 @@
 import {
-  BOOKING_SETTING_KEYS,
-  DEFAULT_BOOKING_PAGE,
-  DEFAULT_CONSULTATION,
   CALCULATOR_SETTING_KEYS,
   SETTING_KEYS,
   calculatorPageContentSchema,
   calculatorPageViewSchema,
-  bookingPageContentSchema,
   homepageIndexingSchema,
   siteIndexingSchema,
   staticContactViewSchema,
@@ -52,41 +48,5 @@ export const operationalImporter: SnapshotImporter = {
 
     await ctx.setSettingOnce(SETTING_KEYS.homepageIndexing, homepageIndexingSchema.parse({ index: false }));
     await ctx.setSettingOnce(SETTING_KEYS.siteIndexing, siteIndexingSchema.parse({ index: false }));
-
-    await bookingDefaults(ctx);
   },
 };
-
-/**
- * What the booking page needs to exist at all: its copy, the business timezone every
- * availability rule is written in, one consultation type and the hours it can be booked.
- *
- * All of it `once`. The copy below is a working default, not the owner's words, and the
- * timezone is the first office's — both are a setting and a row, changeable from the
- * dashboard without a deploy, and neither is overwritten again once it exists.
- */
-async function bookingDefaults(ctx: Parameters<SnapshotImporter['run']>[0]): Promise<void> {
-  await ctx.setSettingOnce(BOOKING_SETTING_KEYS.page, bookingPageContentSchema.parse(DEFAULT_BOOKING_PAGE));
-
-  const existing = await ctx.db.consultationType.findUnique({ where: { slug: DEFAULT_CONSULTATION.slug } });
-  if (existing) return;
-  const type = await ctx.db.consultationType.create({
-    data: {
-      slug: DEFAULT_CONSULTATION.slug,
-      name: DEFAULT_CONSULTATION.name,
-      durationMinutes: DEFAULT_CONSULTATION.durationMinutes,
-      bufferAfter: DEFAULT_CONSULTATION.bufferAfter,
-      description: DEFAULT_CONSULTATION.description,
-    },
-  });
-  await ctx.db.availabilityRule.createMany({
-    data: DEFAULT_CONSULTATION.weekdays.map((weekday) => ({
-      consultationTypeId: type.id,
-      weekday,
-      startMinute: DEFAULT_CONSULTATION.startMinute,
-      endMinute: DEFAULT_CONSULTATION.endMinute,
-      minimumNoticeHours: DEFAULT_CONSULTATION.minimumNoticeHours,
-    })),
-  });
-  ctx.log('import: operational: a consultation type and its weekday hours');
-}
