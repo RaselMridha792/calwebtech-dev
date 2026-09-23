@@ -19,7 +19,7 @@ const TONES: Record<SectionTone, string> = {
   tint: 'border-y border-hairline bg-canvas-sunken',
   mist: 'border-y border-hairline bg-canvas-raised',
   ink: 'bg-navy-900 text-ink-invert',
-  band: 'band-gradient text-ink-invert',
+  band: 'bg-navy-900 text-ink-invert',
 };
 
 function Backdrop({ tone, image }: { tone: SectionTone; image: DecorativeImage | null }) {
