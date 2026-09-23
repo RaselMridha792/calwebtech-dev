@@ -7,6 +7,7 @@ export * from './admin-ops';
 export * from './auth';
 export * from './booking';
 export * from './calculator';
+export * from './campaigns';
 export * from './email-jobs';
 export * from './home-page';
 export * from './landing-page';
