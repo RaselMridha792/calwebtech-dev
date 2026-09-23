@@ -1,6 +1,12 @@
 import type { EmailJob, SiteContact } from '@calwebtech/shared';
 import { render } from 'react-email';
 import type { ReactElement } from 'react';
+import {
+  BookingConfirmationEmail,
+  BookingNotificationEmail,
+  bookingConfirmationSubject,
+  bookingNotificationSubject,
+} from './booking';
 import { CalculatorResultEmailTemplate, calculatorResultSubject } from './calculator-result';
 import { LeadConfirmationEmail, leadConfirmationSubject } from './lead-confirmation';
 import { LeadNotificationEmail, leadNotificationSubject } from './lead-notification';
@@ -43,6 +49,10 @@ function compose(job: EmailJob, context: EmailContext): { subject: string; eleme
           <CalculatorResultEmailTemplate lead={job.lead} result={job.result} siteOrigin={context.siteOrigin ?? null} />
         ),
       };
+    case 'booking-confirmation':
+      return { subject: bookingConfirmationSubject(job), element: <BookingConfirmationEmail {...job} /> };
+    case 'booking-notification':
+      return { subject: bookingNotificationSubject(job), element: <BookingNotificationEmail {...job} /> };
   }
 }
 

@@ -79,8 +79,9 @@ describe('toSiteChromeView', () => {
   it('resolves every homepage anchor in the copy, so each link works from any page', () => {
     const chrome = toSiteChromeView(records());
     expect(hrefsOf(chrome).filter((href) => href.startsWith('#'))).toEqual([]);
-    // The placeholder copy's header points at #book and #estimate on the homepage.
-    expect(chrome.header.primaryCta.href).toBe('/contact/');
+    // The placeholder copy's header points at #book and #estimate on the homepage;
+    // #book has a page of its own now, and #estimate is still a section of this one.
+    expect(chrome.header.primaryCta.href).toBe('/book-a-consultation/');
     expect(chrome.header.secondaryCta?.href).toBe('/#estimate');
   });
 

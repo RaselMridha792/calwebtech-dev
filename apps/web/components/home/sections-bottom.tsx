@@ -516,7 +516,14 @@ const POINT_ICONS: Record<FinalPointIcon, ReactNode> = {
   calendar: <CalendarIcon className="h-4 w-4" />,
 };
 
-export function BookSection({ book, form }: { book: Content['book']; form: ReactNode }) {
+/**
+ * The homepage's closing band.
+ *
+ * Booking itself is a page of its own (task 5.1), because choosing a time is a task with
+ * steps rather than something to scroll past. This band keeps the reasons to have the call
+ * and sends people there; the form it used to hold is gone.
+ */
+export function BookSection({ book, action }: { book: Content['book']; action: ReactNode }) {
   return (
     <section id="book" className="content-auto relative overflow-hidden border-t border-hairline bg-canvas-sunken py-20 lg:py-28">
       <div className="absolute inset-0" aria-hidden="true">
@@ -527,8 +534,8 @@ export function BookSection({ book, form }: { book: Content['book']; form: React
       </div>
       <div className="shell relative grid items-start gap-12 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-5" {...reveal()}>
-          <h2 className="font-display text-[34px] leading-[1.08] font-extrabold text-ink lg:text-[44px]">{book.heading}</h2>
-          <p className="mt-5 max-w-[48ch] text-[17px] leading-relaxed">{book.intro}</p>
+          <h2 className="display-lg text-ink">{book.heading}</h2>
+          <p className="body-lg mt-5 max-w-[48ch] text-ink-muted">{book.intro}</p>
           {book.points.length > 0 ? (
             <ul className="mt-9 space-y-5 border-t border-hairline pt-8">
               {book.points.map((point) => (
@@ -548,7 +555,7 @@ export function BookSection({ book, form }: { book: Content['book']; form: React
             </ul>
           ) : null}
         </div>
-        <div className="lg:col-span-7">{form}</div>
+        <div className="lg:col-span-7">{action}</div>
       </div>
     </section>
   );

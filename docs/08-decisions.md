@@ -133,6 +133,47 @@ They fix the grade, the crop and the contrast floor; real commissioned shots at 
 crop and duotone are needed before launch. The system's own `assets/plates/README.md`
 briefs each one.
 
+## 47. Booking is its own page, and the system never arranges the meeting
+
+*2026-09-23.* The owner's client was concerned about booking, so it came forward from the
+rest of task 5.1. The button in the header used to scroll to a band on the homepage; it now
+goes to `/book-a-consultation/`, a page whose whole content is which times are free. There
+is no snapshot fallback and there never will be: a free slot is a fact about the database
+this second, and a cached list offers times nobody can book. Without the API the page says
+there are no times rather than showing any.
+
+**No meeting link is generated anywhere.** The owner was explicit: a person sends a Google
+Meet invitation by hand. So nothing integrates with a calendar, no `.ics` is attached yet,
+and both emails promise only what actually happens — the confirmation says nothing is
+scheduled automatically, and a test asserts it never mentions a calendar invitation.
+
+Slots are generated server-side from the consultation type, its weekly hours and the
+minimum notice, and a submitted time is checked against a freshly generated list rather
+than against the one the browser was sent. Two people wanting the same hour is settled by
+`@@unique([consultationTypeId, startsAt])`, not by reading before writing: the API inserts
+and turns Prisma's `P2002` into "that time has gone". The integration test starts both
+bookings before either finishes, which is the case a check-then-insert implementation
+passes in a test and fails in production.
+
+The visitor's timezone is theirs, not ours. The API sends instants; the page groups them
+into days by the visitor's own clock, because a Friday evening in Los Angeles is Saturday
+lunchtime in Sydney and belongs under Saturday for that reader. `Intl.DateTimeFormat`
+does all of it — a date library is most of a route's 20 kB own-code budget on its own.
+
+Two traps this cost a while, both worth writing down:
+
+- `TURNSTILE_FIELD` was imported into the booking's server action from the `'use client'`
+  module that renders the widget. On the server that import is not a string but a reference
+  to the client module, so `form.get()` matched nothing, the token arrived empty and the
+  visitor was told their own booking looked automated. The name now lives in
+  `apps/web/lib/turnstile-field.ts`, which has no directive, and every reader imports it
+  from there instead of writing it out.
+- The admin's status panel is a client component and imported two constants from the
+  package barrel, which carried the whole of Zod into the browser: 134.8 kB of own code on
+  `/admin/bookings/[id]` against a 20 kB gate. The statuses moved to their own Zod-free
+  module with a `@calwebtech/shared/booking-status` subpath, beside `./slugify`, and the
+  route is back to 5.4 kB.
+
 ## Open
 
 - The approved demo proof gives two names two identities. "Priya Raman" is Calwebtech's
@@ -204,3 +245,11 @@ briefs each one.
   transactional outbox would close that gap. Revisit before campaign sends (Task 5.4).
 - Settings changed with `settings-cli` are not written to the audit log yet. The admin
   settings screen (Task 5.3) must write the audit entry.
+- Of task 5.1, what is built is: consultation types, weekly hours, minimum notice, the
+  horizon, server-side slots, the visitor's timezone, the double-booking constraint, the
+  confirmation and internal notification emails, and the dashboard's list, detail, status
+  and notes. Still to build: the `.ics` invite, reminders at 24h and 1h, signed reschedule
+  and cancel link pages, and date overrides and blackout dates in the admin. The build
+  plan's gate for 5.1 names reminders, reschedule and cancel, so 5.1 is not closed.
+- The Lighthouse gate runs against `/` and `/lp/[campaign]` only (docs/09). The booking
+  page was measured by hand at 98/100/100/100 with LCP 2.1s; nothing keeps it there.

@@ -18,7 +18,7 @@
     "header": {
       "primaryCta": {
         "label": "Book a consultation",
-        "href": "#book"
+        "href": "/book-a-consultation/"
       },
       "secondaryCta": null
     },
@@ -411,7 +411,7 @@
       "intro": "Calwebtech designs and builds custom websites, ecommerce platforms and web applications for companies that are done losing enquiries to a brochure site. Every lead, booking and subscriber lands in a database you own.",
       "primaryCta": {
         "label": "Book a consultation",
-        "href": "#book"
+        "href": "/book-a-consultation/"
       },
       "secondaryCta": {
         "label": "See what it costs",
@@ -472,7 +472,7 @@
       "intro": "Most people arrive here with a problem, not a service name. Pick the one that sounds like your week and we will show you what we would do about it.",
       "cta": {
         "label": "Talk it through with us",
-        "href": "#book"
+        "href": "/book-a-consultation/"
       }
     },
     "services": {
@@ -498,7 +498,7 @@
       "heading": "Let's build what comes next.",
       "primaryCta": {
         "label": "Book a consultation",
-        "href": "#book"
+        "href": "/book-a-consultation/"
       },
       "secondaryCta": {
         "label": "Get an instant estimate",
@@ -525,7 +525,7 @@
         "body": "We have shipped in 30 more. Tell us the awkward part of yours.",
         "cta": {
           "label": "Start the conversation",
-          "href": "#book"
+          "href": "/book-a-consultation/"
         }
       },
       "link": {
@@ -846,7 +846,7 @@
         },
         {
           "label": "Contact",
-          "href": "#book"
+          "href": "/book-a-consultation/"
         }
       ],
       "legal": [
@@ -881,7 +881,7 @@
     },
     "floatingCta": {
       "label": "Start a project",
-      "href": "#book"
+      "href": "/book-a-consultation/"
     }
   },
   "contact": {

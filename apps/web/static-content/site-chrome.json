@@ -46,7 +46,7 @@
   "header": {
     "primaryCta": {
       "label": "Book a consultation",
-      "href": "/contact/"
+      "href": "/book-a-consultation/"
     },
     "secondaryCta": null,
     "links": [
@@ -614,7 +614,7 @@
           },
           {
             "label": "Contact",
-            "href": "/contact/"
+            "href": "/book-a-consultation/"
           }
         ]
       }
@@ -661,7 +661,7 @@
   },
   "floatingCta": {
     "label": "Start a project",
-    "href": "/contact/"
+    "href": "/book-a-consultation/"
   },
   "conversionBand": {
     "heading": "Tell us what is broken",
@@ -685,7 +685,7 @@
     ],
     "primaryCta": {
       "label": "Book a consultation",
-      "href": "/contact/"
+      "href": "/book-a-consultation/"
     },
     "secondaryCta": {
       "label": "Instant estimate",

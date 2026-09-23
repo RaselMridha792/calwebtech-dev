@@ -16,6 +16,8 @@ export interface DeliveryRecord {
 export interface DeliveryStore {
   siteContact(): Promise<SiteContact | null>;
   recordDelivery(leadId: string, record: DeliveryRecord): Promise<void>;
+  /** A booking has no lead, so its emails are recorded on its own timeline. */
+  recordBookingDelivery(bookingId: string, record: DeliveryRecord): Promise<void>;
 }
 
 export interface EmailJobProcessorOptions {
@@ -44,8 +46,14 @@ export function createEmailJobProcessor({ transport, store, from, redirectTo, si
 
     const contact = await store.siteContact();
     const rendered = await renderEmail(email, { contact, siteOrigin: siteOrigin ?? null });
-    // Everything but the internal notification goes to the visitor, so replies reach the team.
-    const replyTo = email.template === 'lead-notification' ? email.lead.email : contact?.email;
+    // An internal notification is replied to by us, to the person it is about; everything
+    // else goes to the visitor, so a reply reaches the team.
+    const replyTo =
+      email.template === 'lead-notification'
+        ? email.lead.email
+        : email.template === 'booking-notification'
+          ? email.email
+          : contact?.email;
 
     const { id } = await transport.send({
       from,
@@ -57,13 +65,15 @@ export function createEmailJobProcessor({ transport, store, from, redirectTo, si
       idempotencyKey: emailJobId(email),
     });
 
-    await store.recordDelivery(email.lead.leadId, {
+    const record: DeliveryRecord = {
       template: email.template,
       to: redirectTo ? [redirectTo] : email.to,
       transport: transport.name,
       providerId: id,
       ...(redirectTo ? { redirectedFrom: email.to } : {}),
-    });
+    };
+    if ('bookingId' in email) await store.recordBookingDelivery(email.bookingId, record);
+    else await store.recordDelivery(email.lead.leadId, record);
     return { providerId: id };
   };
 }

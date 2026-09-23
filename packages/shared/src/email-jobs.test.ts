@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { emailJobId, emailJobSchema, type EmailJob } from './email-jobs';
 
-const lead: EmailJob['lead'] = {
+const lead: Extract<EmailJob, { template: 'lead-notification' }>['lead'] = {
   leadId: 'cmf0lead0000abc',
   type: 'PROJECT',
   formId: 'lp-hero',
@@ -42,10 +42,55 @@ describe('emailJobSchema', () => {
   });
 });
 
+describe('the booking jobs', () => {
+  const booked: EmailJob = {
+    template: 'booking-confirmation',
+    to: ['dana@company.com'],
+    bookingId: 'cmf0book0000abc',
+    name: 'Dana Whitfield',
+    consultationType: 'Discovery call',
+    startsAt: '2026-09-24T15:45:00.000Z',
+    endsAt: '2026-09-24T16:15:00.000Z',
+    timezone: 'America/Los_Angeles',
+  };
+
+  it('accepts a confirmation and a notification', () => {
+    expect(emailJobSchema.parse(booked)).toEqual(booked);
+    const notification: EmailJob = {
+      template: 'booking-notification',
+      to: ['hello@calwebtech.com'],
+      bookingId: 'cmf0book0000abc',
+      name: 'Dana Whitfield',
+      email: 'dana@company.com',
+      consultationType: 'Discovery call',
+      startsAt: '2026-09-24T15:45:00.000Z',
+      timezone: 'America/Los_Angeles',
+      context: null,
+    };
+    expect(emailJobSchema.parse(notification)).toEqual(notification);
+  });
+
+  it('needs the end of the call, since the email states how long it is', () => {
+    const withoutEnd: Record<string, unknown> = { ...booked };
+    delete withoutEnd.endsAt;
+    expect(emailJobSchema.safeParse(withoutEnd).success).toBe(false);
+  });
+});
+
 describe('emailJobId', () => {
   it('is one id per lead and template, without the colon BullMQ rejects', () => {
     expect(emailJobId(confirmation)).toBe('lead-confirmation-cmf0lead0000abc');
     expect(emailJobId({ template: 'lead-notification', lead })).toBe('lead-notification-cmf0lead0000abc');
     expect(emailJobId(confirmation)).not.toContain(':');
+  });
+
+  it('names the booking when there is no lead', () => {
+    expect(emailJobId({ template: 'booking-confirmation', bookingId: 'cmf0book0000abc' })).toBe(
+      'booking-confirmation-cmf0book0000abc',
+    );
+  });
+
+  it('refuses a job that names neither', () => {
+    expect(() => emailJobId({ template: 'booking-notification' })).toThrow();
   });
 });

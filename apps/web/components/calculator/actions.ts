@@ -13,6 +13,7 @@ import {
 import { headers } from 'next/headers';
 import { getCalculatorPage, postCalculatorLead } from '@/lib/api/calculator';
 import { attributionFromForm } from '@/lib/lead-form';
+import { TURNSTILE_FIELD } from '@/lib/turnstile-field';
 
 /**
  * What the visitor sees after the email step. `sent` means the answers are stored and the
@@ -87,7 +88,7 @@ export async function submitCalculator(
     answers,
     attribution: attributionFromForm(form, requestHeaders.get('referer')),
     referenceCode: text(form, 'referenceCode'),
-    turnstileToken: text(form, 'cf-turnstile-response'),
+    turnstileToken: text(form, TURNSTILE_FIELD),
   });
   if (!submission.success) {
     const fieldErrors: Record<string, string[]> = {};

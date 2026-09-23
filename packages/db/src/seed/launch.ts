@@ -1,4 +1,7 @@
 import {
+  BOOKING_SETTING_KEYS,
+  DEFAULT_BOOKING_PAGE,
+  DEFAULT_CONSULTATION,
   HOME_PROBLEM_ROUTER_FAQ_GROUP,
   SETTING_KEYS,
   homePageContentSchema,
@@ -177,6 +180,43 @@ async function seedHomepage(db: PrismaClient): Promise<void> {
 }
 
 /**
+ * Something to book.
+ *
+ * The booking page has no content of its own beyond which times are free, so without a
+ * consultation type and the hours it can be booked the page is honest but empty — and the
+ * end-to-end run has nothing to book. The same rows the snapshot import creates, so a
+ * seeded database and an imported one behave the same way.
+ */
+async function seedBooking(db: PrismaClient): Promise<void> {
+  await db.setting.upsert({
+    where: { key: BOOKING_SETTING_KEYS.page },
+    create: { key: BOOKING_SETTING_KEYS.page, value: DEFAULT_BOOKING_PAGE },
+    update: { value: DEFAULT_BOOKING_PAGE },
+  });
+
+  const existing = await db.consultationType.findUnique({ where: { slug: DEFAULT_CONSULTATION.slug } });
+  if (existing) return;
+  const type = await db.consultationType.create({
+    data: {
+      slug: DEFAULT_CONSULTATION.slug,
+      name: DEFAULT_CONSULTATION.name,
+      durationMinutes: DEFAULT_CONSULTATION.durationMinutes,
+      bufferAfter: DEFAULT_CONSULTATION.bufferAfter,
+      description: DEFAULT_CONSULTATION.description,
+    },
+  });
+  await db.availabilityRule.createMany({
+    data: DEFAULT_CONSULTATION.weekdays.map((weekday) => ({
+      consultationTypeId: type.id,
+      weekday,
+      startMinute: DEFAULT_CONSULTATION.startMinute,
+      endMinute: DEFAULT_CONSULTATION.endMinute,
+      minimumNoticeHours: DEFAULT_CONSULTATION.minimumNoticeHours,
+    })),
+  });
+}
+
+/**
  * The launch seed: placeholder content that is safe on a reachable URL (content.ts).
  * `pnpm db:seed` locally and in CI; `node dist/seed.js` from the API image on staging.
  */
@@ -184,6 +224,7 @@ export async function seedLaunchContent(db: PrismaClient): Promise<{ landingPage
   assertSeedAllowed('launch');
   await removeEarlierProof(db);
   await seedSettings(db);
+  await seedBooking(db);
   await seedProcessAndPricing(db);
   await seedHomepage(db);
   const page = await seedLandingPage(db);
