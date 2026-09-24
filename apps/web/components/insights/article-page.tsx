@@ -37,7 +37,12 @@ export function ArticleBodySection({ view, subscribeForm }: { view: InsightsArti
           </div>
         ) : null}
 
-        <div className="max-w-[72ch] lg:col-span-8 lg:col-start-1 lg:row-start-2">
+        {/*
+          `min-w-0`: a grid item is otherwise as wide as its widest content, so on a phone an
+          article's table stretched the whole column past the screen and the section's
+          overflow-hidden cut the text off. The table scrolls inside its own wrapper instead.
+        */}
+        <div className="max-w-[72ch] min-w-0 lg:col-span-8 lg:col-start-1 lg:row-start-2">
           <Blocks tokens={opening} ctx={context} />
           <SubscribeBlock copy={copy.newsletter}>{subscribeForm}</SubscribeBlock>
           <Blocks tokens={rest} ctx={context} />
