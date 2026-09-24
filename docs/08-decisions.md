@@ -513,7 +513,7 @@ snapshot came back in PR #11, and the page was never built. It is built on them 
   Enter moves on and focus lands on the new question; an empty name keeps the contact step
   with focus on the field. A sent brief was one `PROJECT` lead with `draft_started:3,
   draft_saved:4…6, form_submitted` and landed on `/thank-you/project/`; an abandoned one
-  stayed a lead at draft step 5.
+  stayed a lead at draft step 5. The route's own client JavaScript is 8.1 kB of the 20 kB budget.
 
 ## Open
 
