@@ -2,6 +2,7 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from './generated/prisma/client';
 
 export * from './generated/prisma/client';
+export { audienceWhere, conditionWhere, eligibleWhere, segmentWhere, suppressedEmails } from './audience';
 
 /**
  * One client per process. Prisma 7 talks to Postgres through the `pg` driver

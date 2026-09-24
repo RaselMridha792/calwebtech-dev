@@ -1,5 +1,11 @@
-import type { Prisma } from '@calwebtech/db';
+import type { Prisma, PrismaClient } from './generated/prisma/client';
 import type { SegmentCondition, SegmentRules } from '@calwebtech/shared';
+
+/**
+ * Segment rules as Prisma filters (Task 5.4). Here rather than in the API because the API
+ * counts an audience while a segment is built and the worker resolves it again at send
+ * time, and the two must never disagree about who a rule set reaches.
+ */
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -56,4 +62,19 @@ export function eligibleWhere(suppressedEmails: readonly string[]): Prisma.Subsc
       ? { email: { notIn: [...suppressedEmails], mode: 'insensitive' } }
       : {}),
   };
+}
+
+/** Every suppressed address. Read in full: it is the one list that is never approximated. */
+export async function suppressedEmails(db: PrismaClient): Promise<string[]> {
+  const rows = await db.suppression.findMany({ select: { email: true } });
+  return rows.map((row) => row.email);
+}
+
+/** Who a rule set reaches right now, with suppression and unsubscribes taken out. */
+export async function audienceWhere(
+  db: PrismaClient,
+  rules: SegmentRules,
+  now = new Date(),
+): Promise<Prisma.SubscriberWhereInput> {
+  return { AND: [eligibleWhere(await suppressedEmails(db)), segmentWhere(rules, now)] };
 }

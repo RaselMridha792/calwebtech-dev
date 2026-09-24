@@ -1,4 +1,4 @@
-import type { Prisma } from '@calwebtech/db';
+import { type Prisma, audienceWhere, eligibleWhere, segmentWhere, suppressedEmails } from '@calwebtech/db';
 import {
   AUDIENCE_ERRORS,
   type AdminSegment,
@@ -27,7 +27,6 @@ import {
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { AuditService } from '../../auth/audit.service';
 import { PrismaService } from '../../prisma/prisma.service';
-import { eligibleWhere, segmentWhere } from './segment-where';
 
 const WITH_TAGS = { tags: { select: { tagName: true }, orderBy: { tagName: 'asc' } } } satisfies Prisma.SubscriberInclude;
 type SubscriberRecord = Prisma.SubscriberGetPayload<{ include: typeof WITH_TAGS }>;
@@ -82,14 +81,13 @@ export class AdminAudienceService {
    * The suppression list as addresses. Read in full: it is the one list that must never be
    * approximated, and at this business's scale it is thousands of rows, not millions.
    */
-  private async suppressedEmails(): Promise<string[]> {
-    const rows = await this.prisma.client.suppression.findMany({ select: { email: true } });
-    return rows.map((row) => row.email);
+  private suppressedEmails(): Promise<string[]> {
+    return suppressedEmails(this.prisma.client);
   }
 
   /** Who a rule set reaches right now, with suppression and unsubscribes taken out. */
-  async audienceWhere(rules: SegmentRules, now = new Date()): Promise<Prisma.SubscriberWhereInput> {
-    return { AND: [eligibleWhere(await this.suppressedEmails()), segmentWhere(rules, now)] };
+  audienceWhere(rules: SegmentRules, now = new Date()): Promise<Prisma.SubscriberWhereInput> {
+    return audienceWhere(this.prisma.client, rules, now);
   }
 
   async preview(rules: SegmentRules): Promise<SegmentPreview> {
