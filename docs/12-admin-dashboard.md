@@ -129,8 +129,9 @@ send, schedule, and per-campaign reporting. **Deferred to Task 5.4**; design las
 **Built so far** (`docs/08-decisions.md`, 50): the campaign list with a status filter, and
 the composer at `/admin/campaigns/[id]/` with name, subject, preview text, template, segment
 and a block body, a live preview of unsaved content, and a test send to the team. Scheduling,
-sending now, the send's progress and the public unsubscribe page followed (decision 51). The
-per-campaign report and the provider's webhooks come last.
+sending now, the send's progress and the public unsubscribe page followed (decision 51), then
+Resend's delivery webhook and the per-campaign report at `/admin/campaigns/[id]/report/`
+(decision 52). Automations are not part of Task 5.4 and are not built.
 
 ## 6. Content manager — one pattern, nineteen types
 

@@ -322,7 +322,46 @@ Additive, nothing lost.
 - The screen polls every 15 seconds while a campaign is scheduled or sending, so the counts
   move without a reload.
 
+## 52. Delivery events and the campaign report
+
+*2026-09-24.* The last part of Task 5.4. No migration: `WebhookLog`, `EmailEvent` and the
+recipient's event columns were already in the schema.
+
+- **The webhook is `POST /api/webhooks/resend`**, public and signed. Resend signs with Svix
+  (`svix-id`, `svix-timestamp`, `svix-signature`, secret `whsec_…`); the check is written with
+  `node:crypto` in `apps/api/src/webhooks/svix-signature.ts` rather than taken from the
+  `svix` package, which would be a new supplier. A timestamp more than five minutes from now
+  is refused, so a captured request cannot be replayed. The API keeps the raw body for this
+  (`NestFactory.create(..., { rawBody: true })`); nothing else changes.
+- **`RESEND_WEBHOOK_SECRET`** is a new optional key. Unset, the webhook answers 503 and no
+  event is recorded; sending is unaffected. Subscribe the webhook in Resend to
+  `email.delivered`, `email.opened`, `email.clicked`, `email.bounced` and `email.complained`;
+  anything else is logged and ignored.
+- **Stored first, applied second.** Every signed request is written to `WebhookLog` with its
+  `svix-id` before it is applied, so a failure can be replayed. A request whose `svix-id` is
+  already stored is acknowledged and not applied again, because Resend retries with the same
+  id. A failure is recorded on the log row and still answered 200.
+- **Applying** writes an `EmailEvent` for any email we sent, stamps the campaign recipient's
+  event column the first time only, sets the subscriber's `lastEngagedAt` on an open or click
+  (what the segment builder's "last engaged" rule reads), and puts the address on the
+  suppression list on a permanent bounce (`hard_bounce`) or a complaint (`complaint`),
+  whichever email it was. A bounce Resend marks `Transient` is recorded, not suppressed.
+  This also delivers Task 6.2's "bounce and complaint webhooks moving addresses to
+  suppression".
+- **The report** is `/admin/campaigns/[id]/report/` (`GET /admin/campaigns/:id/report`),
+  counted in people, not events. Each count includes the ones past it: an open counts as a
+  delivery, a click as an open. Opens are a floor, and the screen says so. "Unsubscribed" is
+  recipients whose unsubscribe came after the campaign started. The recipient list shows each
+  person once, at the furthest thing that happened, with a bounce or complaint above the rest
+  (`campaign-report.ts`); its filters use the same rule, so a list and its labels agree.
+- The report, like every list in the dashboard, is state in the URL with no client script.
+
 ## Open
+
+- Staging sits behind basic auth (`infra/traefik/dynamic/access.yml`), which covers `/api`
+  too, so Resend cannot reach `/api/webhooks/resend` there and a one-click unsubscribe from a
+  staging email is refused. Production has no basic auth. If staging needs delivery events,
+  exempt those two paths from the basic-auth middleware.
 
 - Nothing creates `Subscriber` rows yet. The insights newsletter form stores a `RESOURCE`
   lead (`subscribe-action.ts`), and no import exists. Until the owner decides where
