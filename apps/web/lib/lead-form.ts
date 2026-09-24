@@ -47,6 +47,13 @@ export function leadSubmissionFromForm(
     enquiryType: field(form, 'enquiryType'),
     landingPageSlug: field(form, 'landingPageSlug'),
     serviceSlug: field(form, 'serviceSlug'),
+    // The start a project brief (docs/06-build-plan.md, task 5.2): what it is for, the links
+    // the visitor wants read, and the draft that progressive saving already stored, so the
+    // final submit completes that lead rather than creating a second one.
+    projectType: field(form, 'projectType'),
+    projectLinks: field(form, 'projectLinks'),
+    draftId: field(form, 'draftId'),
+    draftToken: field(form, 'draftToken'),
     attribution: attributionFromForm(form, referer),
     referenceCode: field(form, 'referenceCode'),
     turnstileToken: field(form, TURNSTILE_FIELD),

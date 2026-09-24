@@ -44,6 +44,22 @@ describe('leadSubmissionFromForm', () => {
     const form = formWith([...base, ['type', 'CONTACT'], ['enquiryType', 'free-website-audit']]);
     expect(leadSubmissionSchema.parse(leadSubmissionFromForm(form, null)).enquiryType).toBe('free-website-audit');
   });
+
+  it('carries the start a project brief: its type, its links and the draft it completes', () => {
+    const form = formWith([
+      ...base,
+      ['formId', 'start-a-project'],
+      ['projectType', 'redesign'],
+      ['projectLinks', 'https://example.com/brief\nhttps://example.com/figma'],
+      ['draftId', 'cmdraft0001'],
+      ['draftToken', 'a-draft-token'],
+    ]);
+    const lead = leadSubmissionSchema.parse(leadSubmissionFromForm(form, null));
+    expect(lead.projectType).toBe('redesign');
+    expect(lead.projectLinks).toBe('https://example.com/brief\nhttps://example.com/figma');
+    expect(lead.draftId).toBe('cmdraft0001');
+    expect(lead.draftToken).toBe('a-draft-token');
+  });
 });
 
 describe('attributionFromForm', () => {
