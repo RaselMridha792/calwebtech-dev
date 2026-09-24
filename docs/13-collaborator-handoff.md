@@ -35,8 +35,8 @@ open your PRs from `tumit` against `main`.
 `pnpm build`, the unit tests and `pnpm test:integration` pass, and every route is within the
 own-code JS budget. Still to do before the PR is merged: a check of the new screens at 360px
 and 1440px and by keyboard, the PR itself, and the owner's answers to the questions in
-`docs/08-decisions.md`'s Open list, first of all where subscribers come from, since nothing
-creates them yet.
+`docs/08-decisions.md`'s Open list. Where subscribers come from is answered (decision 53:
+the homepage's "Subscribe now"); what is still open there is a confirmation email for it.
 
 ## What Task 5.4 is
 

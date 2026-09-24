@@ -119,7 +119,7 @@ search and status and tag filters, a subscriber page with its tags,
 `/admin/subscribers/segments/` with the builder and its live count, and
 `/admin/subscribers/suppression/`, where an address can be added by hand and never
 removed. Contract in `packages/shared/src/audience.ts`, API in `apps/api/src/admin/audience/`.
-Nothing creates subscribers yet (see decision 49's Open entry).
+Subscribers come from the homepage's "Subscribe now" (decision 53); the dashboard creates none.
 
 ## 5. Campaigns and automations
 

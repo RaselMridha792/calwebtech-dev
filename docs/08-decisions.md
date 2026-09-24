@@ -356,6 +356,85 @@ recipient's event columns were already in the schema.
   (`campaign-report.ts`); its filters use the same rule, so a list and its labels agree.
 - The report, like every list in the dashboard, is state in the URL with no client script.
 
+## 53. "Subscribe now" on the homepage is where subscribers come from
+
+*2026-09-24.* The owner's answer to the question decision 49 left open. The homepage carries a
+"Subscribe now" band above the footer: a call to action that takes one thing, an email
+address. That is the campaign engine's first source of `Subscriber` rows; until it, the
+audience builder had no audience.
+
+- **One field.** No name, no company, nothing else asked of the visitor. `Subscriber.name`
+  stays empty, and the personalisation tokens fall back (`{{firstName|there}}`), which is what
+  the fallback syntax is for.
+- **Its own endpoint, not the lead flow.** `POST /subscribers` (`apps/api/src/subscribers/`,
+  contract in `packages/shared/src/subscribe.ts`) writes a `Subscriber` and a `Contact`. The
+  insights article's newsletter block still stores a `RESOURCE` lead and does not create a
+  subscriber; moving it onto this endpoint is the obvious next step and was not asked for.
+- **The answer is always the same.** A new address, one already subscribed, one that
+  unsubscribed and one on the suppression list all get `subscribed`. A public form that
+  answered differently would tell a stranger whether somebody else's address is on a list.
+- **Suppression is never lifted from the form.** It is unauthenticated and sends nothing to
+  confirm the address, so anyone can type anyone's address into it. If that could re-enable an
+  address that had unsubscribed, bounced or complained, a stranger could undo a person's
+  request to be left alone. Such an address is left exactly as it is; only the owner decides
+  who may lift a suppression (decision 49). Nothing already stored is overwritten either: the
+  first consent time, address and source page stay the record.
+- **Protected like every public form:** Turnstile, a honeypot under the lead forms' field name
+  (`referenceCode`), five a minute per visitor address, and one row per address, settled by
+  the unique constraint when two arrive together.
+- **The words are homepage content.** `content.subscribe` in the homepage snapshot, with a
+  default in the schema so a `home.content` stored before the band existed still parses.
+  The success line says "You are on the list" and not "check your inbox": no confirmation
+  email is sent, so it would not be true.
+- **The source page is stored** (`/` for the homepage), so a segment can address the people
+  who subscribed there (decision 49's `sourcePage` rule).
+
+**What this does not do, and the owner should know.** It is a single opt-in. Nothing confirms
+that the address belongs to the person who typed it, so somebody can subscribe another
+person's address. Turnstile and the rate limit make that costly at scale, and every campaign
+carries a working unsubscribe link, but the right fix is a confirmation email (double
+opt-in), which needs email to be sending. Production sends none today (`EMAIL_TRANSPORT=log`,
+no Resend account), so this should be done before the first real campaign goes out, not
+after.
+
+## 54. The owner's revision of 2026-09-22, and no scroll reveal
+
+*2026-09-24.* The owner's written revision (a PDF dated 22/09) and the footer details sent
+with it. What it changed, in one place:
+
+- **Technology moved into Resources.** The bar carries no plain links any more; the
+  Resources menu gained a Technology column — the overview and its six parts, each an
+  anchor on `/technology/` (`#frontend` to `#mobile-and-ai`, `scroll-mt-28` so the fixed
+  header does not cover the heading). The menu lays four lists out in two-column spans when
+  a promo shares the panel, and the home content allows four resource columns.
+- **A booked call lands on `/thank-you/booking/`**, titled "Thank you for booking a
+  consultation with us.", and repeats the booked time back from the address (`?at=` and
+  `?tz=`: the instant and the visitor's zone, nothing about who booked it, since a
+  thank-you URL ends up in histories and referrers). The page's promises were corrected to
+  what happens: no calendar invite and no reschedule link are sent today.
+- **Industries in the owner's order:** Hotels and resorts (the renamed Hospitality),
+  Real estate, Spa centres, Media, Law, Healthcare, then the rest as they were. Spa centres,
+  Media and Law are new pages written for this — **their copy, including its statements
+  about HIPAA, lawyer-advertising rules and subscription law, is Calwebtech's draft and the
+  owner has not reviewed it**. Review it before the next deploy.
+- **Contact:** the telephone number is off the site until there is one to publish
+  (`siteContactSchema.phone` and `phoneE164` are nullable together, and every place that
+  showed a number leaves it out), the mailbox is `calidigi62@gmail.com`, and the footer
+  shows one line of address, "California, United States" (`footer.address`), in place of
+  the office list. The snapshots carry it; **production's `site.contact` setting still has
+  the old values and must be changed with settings-cli after the deploy**, or lead emails
+  and the API's views keep the demo number.
+- **"The pages load, then change" — the scroll reveal is gone.** Sections faded in as they
+  scrolled into view, but the fade was gated on script: an inline script hid every
+  `[data-reveal]` element until the React bundle had hydrated and an IntersectionObserver
+  ran, so a slow connection saw blank sections for up to three seconds and then everything
+  at once. A CSS view-timeline replacement was tried and refused by the anchor tests: it
+  forces layout of sections `content-visibility: auto` had skipped, so `/#services` landed
+  hundreds of pixels away. Content present at first paint beats a fade, so nothing is hidden
+  and nothing animates in. `reveal()` still marks elements and nothing styles them. The rest
+  of the slowness is distance — the server answers in 30–60 ms, the round trip from Dhaka is
+  about 290 ms — which a CDN in front of the real domain would address, not code.
+
 ## Open
 
 - Staging sits behind basic auth (`infra/traefik/dynamic/access.yml`), which covers `/api`
@@ -363,11 +442,11 @@ recipient's event columns were already in the schema.
   staging email is refused. Production has no basic auth. If staging needs delivery events,
   exempt those two paths from the basic-auth middleware.
 
-- Nothing creates `Subscriber` rows yet. The insights newsletter form stores a `RESOURCE`
-  lead (`subscribe-action.ts`), and no import exists. Until the owner decides where
-  subscribers come from (newsletter signups, calculator leads who consented, an import),
-  the subscriber screens and segment counts are empty on every real database. Task 5.4's
-  gate needs somebody to send to.
+- The homepage's "Subscribe now" creates subscribers (decision 53). Still open: the insights
+  article's newsletter block stores a `RESOURCE` lead and creates none, calculator leads who
+  consented are not subscribers, and no import exists. And the form is single opt-in, so a
+  confirmation email should come before the first real campaign; it needs email to be
+  sending, which production does not do today.
 
 - The approved demo proof gives two names two identities. "Priya Raman" is Calwebtech's
   Design Lead on the landing page and Truvia Labs' VP Marketing in a testimonial. "Dana
