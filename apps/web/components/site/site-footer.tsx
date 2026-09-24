@@ -20,9 +20,13 @@ function FooterColumn({ title, links }: { title: string; links: Link[] }) {
   );
 }
 
-/** The full footer: blurb, link columns, offices, contact and the legal set. */
+/**
+ * The full footer: blurb, link columns, offices, contact and the legal set. The contact
+ * block is an email address only; the telephone number stays in the header and on the
+ * contact page.
+ */
 export function SiteFooter({ chrome }: { chrome: SiteChromeView }) {
-  const { contact, footer } = chrome;
+  const { footer } = chrome;
   return (
     <footer className="relative overflow-hidden bg-navy-900 text-ink-invert-muted">
       <div className="absolute inset-0" aria-hidden="true">
@@ -50,20 +54,14 @@ export function SiteFooter({ chrome }: { chrome: SiteChromeView }) {
             </div>
           ))}
           <div>
-            <p className="eyebrow text-gold-500">Get in touch</p>
-            {/* Each link at least 24px tall (WCAG 2.2, 2.5.8 target size). */}
-            <ul className="mt-0.5 leading-relaxed">
-              <li>
-                <a href={`tel:${contact.phoneE164}`} className="inline-block py-1 transition-colors duration-150 hover:text-ink-invert">
-                  {contact.phone}
-                </a>
-              </li>
-              <li>
-                <a href={`mailto:${contact.email}`} className="inline-block py-1 transition-colors duration-150 hover:text-ink-invert">
-                  {contact.email}
-                </a>
-              </li>
-            </ul>
+            <p className="eyebrow text-gold-500">Contact us</p>
+            {/* At least 24px tall (WCAG 2.2, 2.5.8 target size). */}
+            <a
+              href={`mailto:${footer.contactEmail}`}
+              className="mt-0.5 inline-block py-1 leading-relaxed transition-colors duration-150 hover:text-ink-invert"
+            >
+              {footer.contactEmail}
+            </a>
           </div>
         </div>
 

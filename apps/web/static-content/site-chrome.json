@@ -621,14 +621,11 @@
     ],
     "offices": [
       {
-        "city": "Sacramento",
-        "address": "1201 J Street, Suite 200\nSacramento, CA 95814"
-      },
-      {
-        "city": "Austin",
-        "address": "98 San Jacinto Blvd, Suite 400\nAustin, TX 78701"
+        "city": "California",
+        "address": "Office address\nCalifornia, United States"
       }
     ],
+    "contactEmail": "calidigi62@gmail.com",
     "legal": [
       {
         "label": "Privacy policy",

@@ -877,7 +877,14 @@
       ],
       "backgroundImage": {
         "src": "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=1800&q=60"
-      }
+      },
+      "offices": [
+        {
+          "city": "California",
+          "address": "Office address\nCalifornia, United States"
+        }
+      ],
+      "contactEmail": "calidigi62@gmail.com"
     },
     "floatingCta": {
       "label": "Start a project",

@@ -358,6 +358,15 @@ recipient's event columns were already in the schema.
 
 ## Open
 
+- **The footer's office and contact are set in the homepage copy**, not taken from the
+  locations and the site contact (2026-09-24, at the collaborator's request). `home.content`'s
+  `footer.offices` and `footer.contactEmail` are optional: empty, the footer falls back to the
+  published locations with an address and to `contact.email`, as before. The snapshot sets one
+  office, "California", with a demo address ("Office address / California, United States")
+  to be replaced with the real one, and `calidigi62@gmail.com` as the footer's only contact;
+  the telephone number is no longer in the footer. The homepage's locations section, the
+  header and every other page keep their own contact details.
+
 - **Northmark Supply's image is not stock photography.** On 2026-09-24 the case study's
   picture was replaced, at the collaborator's request, by an image supplied as a file
   (`apps/web/public/media/northmark-supply.jpg`, 1536×1024, served through the Next image

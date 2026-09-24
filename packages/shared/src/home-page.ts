@@ -251,6 +251,13 @@ export const homePageContentSchema = z.object({
     company: z.array(linkSchema).max(10),
     legal: z.array(linkSchema).max(8),
     backgroundImage: backdropSchema,
+    /**
+     * The footer's offices when they are not the published locations. Empty falls back to
+     * the locations with an address, so the homepage's own locations section is unaffected.
+     */
+    offices: z.array(z.object({ city: text(120), address: text(300) })).max(2).default([]),
+    /** The footer's contact address when it differs from `contact.email`. */
+    contactEmail: z.email().nullable().default(null),
   }),
   floatingCta: linkSchema,
 });
