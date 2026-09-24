@@ -358,6 +358,17 @@ recipient's event columns were already in the schema.
 
 ## Open
 
+- **Northmark Supply's image is not stock photography.** On 2026-09-24 the case study's
+  picture was replaced, at the collaborator's request, by an image supplied as a file
+  (`apps/web/public/media/northmark-supply.jpg`, 1536×1024, served through the Next image
+  optimiser) on the homepage, `/work/`, the case study's cover and Open Graph image, and every
+  related card except one. Decision 41 says imagery comes from Unsplash and Pexels, with each
+  URL checked; this file's origin and licence are not recorded. The insights snapshot test
+  enforces that rule, so the Northmark card inside the insight "b2b-ecommerce-what-a-stock-
+  theme-cannot-do" still shows the old Unsplash photo. The owner decides: keep the new image
+  (record its licence, allow `/media/` in `insights.test.ts`, and update that card), or
+  return to a stock photograph everywhere.
+
 - Staging sits behind basic auth (`infra/traefik/dynamic/access.yml`), which covers `/api`
   too, so Resend cannot reach `/api/webhooks/resend` there and a one-click unsubscribe from a
   staging email is refused. Production has no basic auth. If staging needs delivery events,
