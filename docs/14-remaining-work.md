@@ -26,6 +26,7 @@ Each is one PR (or a few small ones). The first three are small and unblock the 
 rest follow the build plan.
 
 ### 1. The insights newsletter block creates a subscriber
+**Done on `tumit`, 2026-09-25 (decision 55).**
 `apps/web/components/insights/subscribe-form.tsx` and `subscribe-action.ts` still post a
 `RESOURCE` lead, so nobody who subscribes from an article reaches the campaign engine.
 Point it at `POST /subscribers` (`apps/api/src/subscribers/`, contract

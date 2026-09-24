@@ -360,7 +360,7 @@ handed to the second collaborator in `docs/14-remaining-work.md` on the `tumit` 
 | 3.1, 3.2 Locations | Location index and city pages live. Service-by-city matrix not built |
 | 3.3 Before/after, awards, partners | Done and live |
 | 4.1 Calculator | Done and live |
-| 4.2 Free audit, guides, insights, glossary, FAQ | Done and live except the free audit page: its contract, API and copy exist (PR #11), the page does not |
+| 4.2 Free audit, guides, insights, glossary, FAQ | Done and live except the free audit page: its contract, API and copy exist (PR #11), the page does not. On `tumit`, an article's subscribe block now creates a subscriber (decision 55) |
 | 4.3 Search | Not started |
 | 5.1 Booking | Built and live (decisions 47, 48): its own page with a calendar, server-side slots, the double-booking constraint, availability edited from `/admin`, bookings in the dashboard, a thank-you page. Not built: `.ics` invite, 24h and 1h reminders, signed reschedule and cancel pages |
 | 5.2 Start a project and landing | Landing template done. The start-a-project API with progressive saving and its copy exist (PR #11); the multi-step page is not built |
