@@ -1,6 +1,7 @@
 import type { Prisma, Testimonial } from '@calwebtech/db';
 import {
   INDUSTRY_CASE_STUDY_LIMIT,
+  INDUSTRY_FALLBACK_HEADINGS,
   INDUSTRY_FAQ_LIMIT,
   INDUSTRY_INTEGRATION_LIMIT,
   INDUSTRY_INTEGRATION_NAME_MAX,
@@ -28,15 +29,7 @@ import { CONSENTED, publishedAsOf } from '../common/published';
 import { image, outcomeMetricsSchema } from '../landing-pages/landing-page.mapper';
 
 /** Section headings used when a record has proof or items but no copy of its own yet. */
-export const INDUSTRY_FALLBACK_HEADINGS = {
-  painPoints: 'Which problems does the website need to solve?',
-  services: 'Which services fit this industry?',
-  caseStudies: 'Which projects have we delivered in this industry?',
-  caseStudiesLink: 'See all work in this industry',
-  results: 'What did those projects change?',
-  integrations: 'Which systems does the website connect to?',
-  faq: 'What do buyers ask before starting a project?',
-} as const;
+export { INDUSTRY_FALLBACK_HEADINGS };
 
 /**
  * Relations loaded for an industry page. Unpublished services and projects, soft-deleted

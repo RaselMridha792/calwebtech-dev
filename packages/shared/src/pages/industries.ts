@@ -40,6 +40,21 @@ export const INDUSTRY_INTEGRATION_NAME_MAX = 120;
 /** Longest pain point title an industry page shows. */
 export const INDUSTRY_PAIN_POINT_TITLE_MAX = 200;
 
+/**
+ * Section headings a page uses when a record has proof or items but no copy of its own yet.
+ * Also what the snapshot import stores for a section the approved page does not show, so the
+ * stored copy is complete without inventing a heading nobody reads.
+ */
+export const INDUSTRY_FALLBACK_HEADINGS = {
+  painPoints: 'Which problems does the website need to solve?',
+  services: 'Which services fit this industry?',
+  caseStudies: 'Which projects have we delivered in this industry?',
+  caseStudiesLink: 'See all work in this industry',
+  results: 'What did those projects change?',
+  integrations: 'Which systems does the website connect to?',
+  faq: 'What do buyers ask before starting a project?',
+} as const;
+
 const industryPointSchema = z.object({ title: requiredText(80), body: requiredText(400) });
 
 const sectionIntroSchema = requiredText(400).nullable().default(null);
