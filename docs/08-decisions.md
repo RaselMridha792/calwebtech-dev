@@ -212,7 +212,162 @@ and buttons and it is a `summary`.
 Photographs remain the owner's placeholder choice until commissioned ones replace them; the
 licence for each is recorded by the fact that it is an Unsplash photograph (see Open).
 
+## 49. Subscribers, segments and the suppression list in the dashboard
+
+*2026-09-23.* The first part of Task 5.4. The schema already had `Subscriber`,
+`SubscriberTag`, `Segment` and `Suppression`, so no migration was needed. The contract is
+`packages/shared/src/audience.ts`, the API is `apps/api/src/admin/audience/`, and the
+screens are `/admin/subscribers/`, `/admin/subscribers/[id]/`, `/admin/subscribers/segments/`
+(with a builder at `segments/[id]/`, `new` to create) and `/admin/subscribers/suppression/`.
+All of it sits under the `subscribers` module, so the RBAC matrix is unchanged.
+
+- **A segment is a rule tree stored in `Segment.rules`** (`segmentRulesSchema`): match all
+  or any of up to 20 conditions on tag, signup page, email domain, time since joining and
+  time since last engaged. Dates are relative ("in the last 30 days"), because the rules are
+  evaluated again at send time, and "last month" has to mean the month before the send.
+  No conditions means everyone who may be mailed.
+- **Suppression and unsubscribes are applied on top of every segment**, not left to the
+  rules (`eligibleWhere`). No rule set can reach a suppressed or unsubscribed address. The
+  builder's live count, the list's counts and, later, the send all go through
+  `AdminAudienceService.audienceWhere`, so the count shown is the count a send reaches.
+- **Suppressed means the address is on `Suppression`**, compared without case, and it wins
+  over subscription state in the subscriber's status.
+- **The dashboard can add an address to the suppression list, as `manual`, and cannot
+  remove one.** Bounces, complaints and unsubscribes arrive from the provider and from the
+  person. Taking an address off the list is left out until the owner decides who may do it.
+- **The dashboard creates no subscribers and deletes none.** A subscriber is somebody who
+  gave consent on the site; deleting one loses the record of that consent.
+- A segment that a campaign uses cannot be deleted (409, `segment_in_use`).
+- New audit actions: `subscriber.tags_changed`, `suppression.added`, `segment.created`,
+  `segment.updated`, `segment.deleted`.
+
+## 50. Campaign composer, templates, tokens, preview and test send
+
+*2026-09-24.* The second part of Task 5.4. Contract in `packages/shared/src/campaigns.ts`,
+templates in `packages/emails/src/campaign.tsx`, API in `apps/api/src/admin/campaigns/`,
+screens at `/admin/campaigns/` and `/admin/campaigns/[id]/` (`new` to create). No migration:
+`Campaign` already had every column.
+
+- **The body is blocks, not HTML** (`campaignBodySchema`): heading, paragraph, button and
+  divider, stored in `Campaign.body`. The template decides how each looks, so nobody writes
+  markup and every campaign stays on brand. A button links only to an `http(s)` address.
+- **Two branded templates**, `letter` and `announcement` (`Campaign.templateKey`). They are
+  code in `packages/emails`, reviewed like any other component; the dashboard only chooses
+  one. `announcement` lifts the first heading onto a dark band. Email colours stay the ones
+  in `packages/emails/src/tokens.ts`.
+- **Personalisation tokens**: `{{name}}`, `{{firstName}}` and `{{email}}`, with a fallback
+  after a bar, `{{firstName|there}}`. `personalise` in the shared package is the one
+  function that fills them, for the preview, the test and the send. A token nothing can
+  fill is refused when the campaign is saved rather than sent as braces.
+- **Only a draft can be edited or deleted** (409, `campaign_locked`). A scheduled campaign is
+  what will be sent and a sent one is the record of what was.
+- **The preview renders unsaved content** through the API (`POST /admin/campaigns/preview`)
+  with the same template as the send, filled from the newest subscriber the chosen segment
+  reaches, or a placeholder without one. The dashboard shows it in a sandboxed frame.
+- **A test send is a job on the email queue** (`campaign-test` in `emailJobSchema`), to at
+  most five addresses, with the subject marked `[Test]` and the tokens filled from the
+  person who asked. It goes out as the campaign is saved, so the button waits until there
+  are no unsaved changes. Each request has its own `testId`, so two tests are two emails and
+  a retried one is still one. It is audited (`campaign.test_sent`), throttled to six a
+  minute, and writes no delivery row: the report counts only the people a campaign was sent
+  to.
+- The API now depends on `@calwebtech/emails` to render the preview. It is a workspace
+  package, and the API image's `--filter "@calwebtech/api..."` build already includes it.
+- New audit actions: `campaign.created`, `campaign.updated`, `campaign.deleted`,
+  `campaign.test_sent`.
+
+## 51. Scheduling, the send and unsubscribing
+
+*2026-09-24.* The third part of Task 5.4. Migration `20260924033859_campaign_recipient_failure`
+adds `failedAt` and `error` to `CampaignRecipient`: a recipient not sent to for good, and why.
+Additive, nothing lost.
+
+- **Scheduling** (`POST /admin/campaigns/:id/schedule`, `sendAt` or null for now;
+  `POST .../unschedule` back to a draft). Only a draft with a segment can be scheduled, and a
+  time more than a minute in the past is refused rather than read as now. Audited as
+  `campaign.scheduled` and `campaign.unscheduled`.
+- **The worker starts a campaign, not the API** (decision 22: the API only produces). A sweep
+  on its own queue, `campaign-sweep`, runs every minute and when a campaign is sent now. It
+  moves a due campaign from SCHEDULED to SENDING in one conditional update, so it starts once;
+  evaluates the segment **at that moment**; writes a delivery row per person; then queues them.
+- **Rows before jobs.** A recipient's row is written before its job, and each sweep requeues
+  every recipient of a sending campaign not yet sent to. A process that dies in between loses
+  nobody. For campaigns this closes the outbox gap noted in Open for lead emails.
+- **One job per recipient** on the `campaign` queue, with the job id and the provider
+  idempotency key `campaign-send-<recipientId>`, so a retry or a requeue never sends twice. A
+  recipient already sent to is skipped.
+- **Rate**: a BullMQ limiter of `CAMPAIGN_SEND_PER_SECOND` (default 1) across every worker.
+  Resend's default is 2 a second for the whole account, and lead and booking emails share it.
+  Sends go one by one, not through Resend's batch endpoint, so each recipient has its own
+  provider id and its own idempotency key.
+- **Suppression is checked again at send time**, per recipient. Somebody who unsubscribes or
+  bounces during a long send is not sent to by it: the row is marked `failedAt` with
+  `suppressed` or `unsubscribed`. This is the rule that no campaign overrides the list.
+- **Finishing**: a sending campaign with nobody left is SENT, or FAILED if nobody received
+  it. The worker audits `campaign.dispatched`, `campaign.sent` and `campaign.failed` with no
+  user, because no user did it.
+- **Unsubscribe links.** Every campaign email carries its recipient's own link,
+  `/unsubscribe/<token>/`, and the RFC 8058 headers `List-Unsubscribe` (the API's
+  `/api/unsubscribe/<token>`) and `List-Unsubscribe-Post`. The token is the subscriber id, a
+  tilde and an HMAC of the id (`@calwebtech/shared/unsubscribe-token`), keyed from
+  `AUTH_SECRET` with a purpose label; it never expires. A tilde, because Next treats a last
+  segment with a dot as a file and would redirect every link once.
+- **Unsubscribing** sets `Subscriber.unsubscribedAt` and adds the address to `Suppression`
+  as `unsubscribe`, in one transaction, and is idempotent. Opening the page changes nothing;
+  its button does, so a link scanner cannot unsubscribe anybody. The page is noindex and
+  has no client script. Audited as `subscriber.unsubscribed`.
+- **No link, no send.** Without an `AUTH_SECRET` of 16 characters or more, or without
+  `APP_ORIGIN`, the API refuses to schedule and the worker starts nothing, logging why. It
+  never sends a campaign email without a working unsubscribe link.
+- The screen polls every 15 seconds while a campaign is scheduled or sending, so the counts
+  move without a reload.
+
+## 52. Delivery events and the campaign report
+
+*2026-09-24.* The last part of Task 5.4. No migration: `WebhookLog`, `EmailEvent` and the
+recipient's event columns were already in the schema.
+
+- **The webhook is `POST /api/webhooks/resend`**, public and signed. Resend signs with Svix
+  (`svix-id`, `svix-timestamp`, `svix-signature`, secret `whsec_…`); the check is written with
+  `node:crypto` in `apps/api/src/webhooks/svix-signature.ts` rather than taken from the
+  `svix` package, which would be a new supplier. A timestamp more than five minutes from now
+  is refused, so a captured request cannot be replayed. The API keeps the raw body for this
+  (`NestFactory.create(..., { rawBody: true })`); nothing else changes.
+- **`RESEND_WEBHOOK_SECRET`** is a new optional key. Unset, the webhook answers 503 and no
+  event is recorded; sending is unaffected. Subscribe the webhook in Resend to
+  `email.delivered`, `email.opened`, `email.clicked`, `email.bounced` and `email.complained`;
+  anything else is logged and ignored.
+- **Stored first, applied second.** Every signed request is written to `WebhookLog` with its
+  `svix-id` before it is applied, so a failure can be replayed. A request whose `svix-id` is
+  already stored is acknowledged and not applied again, because Resend retries with the same
+  id. A failure is recorded on the log row and still answered 200.
+- **Applying** writes an `EmailEvent` for any email we sent, stamps the campaign recipient's
+  event column the first time only, sets the subscriber's `lastEngagedAt` on an open or click
+  (what the segment builder's "last engaged" rule reads), and puts the address on the
+  suppression list on a permanent bounce (`hard_bounce`) or a complaint (`complaint`),
+  whichever email it was. A bounce Resend marks `Transient` is recorded, not suppressed.
+  This also delivers Task 6.2's "bounce and complaint webhooks moving addresses to
+  suppression".
+- **The report** is `/admin/campaigns/[id]/report/` (`GET /admin/campaigns/:id/report`),
+  counted in people, not events. Each count includes the ones past it: an open counts as a
+  delivery, a click as an open. Opens are a floor, and the screen says so. "Unsubscribed" is
+  recipients whose unsubscribe came after the campaign started. The recipient list shows each
+  person once, at the furthest thing that happened, with a bounce or complaint above the rest
+  (`campaign-report.ts`); its filters use the same rule, so a list and its labels agree.
+- The report, like every list in the dashboard, is state in the URL with no client script.
+
 ## Open
+
+- Staging sits behind basic auth (`infra/traefik/dynamic/access.yml`), which covers `/api`
+  too, so Resend cannot reach `/api/webhooks/resend` there and a one-click unsubscribe from a
+  staging email is refused. Production has no basic auth. If staging needs delivery events,
+  exempt those two paths from the basic-auth middleware.
+
+- Nothing creates `Subscriber` rows yet. The insights newsletter form stores a `RESOURCE`
+  lead (`subscribe-action.ts`), and no import exists. Until the owner decides where
+  subscribers come from (newsletter signups, calculator leads who consented, an import),
+  the subscriber screens and segment counts are empty on every real database. Task 5.4's
+  gate needs somebody to send to.
 
 - The approved demo proof gives two names two identities. "Priya Raman" is Calwebtech's
   Design Lead on the landing page and Truvia Labs' VP Marketing in a testimonial. "Dana
@@ -280,7 +435,8 @@ licence for each is recorded by the fact that it is an Unsplash photograph (see 
   then development uses `EMAIL_TRANSPORT=log` or Resend's test sender.
 - Emails are queued after the lead commits. If the API process dies between the commit and
   the enqueue, the lead is stored but its emails are not queued, and nothing marks it. A
-  transactional outbox would close that gap. Revisit before campaign sends (Task 5.4).
+  transactional outbox would close that gap. Campaign sends do not have it (decision 51:
+  rows first, requeued by the sweep); lead and booking emails still do.
 - Settings changed with `settings-cli` are not written to the audit log yet. The admin
   settings screen (Task 5.3) must write the audit entry.
 - Of task 5.1, what is built is: consultation types, weekly hours and date overrides edited

@@ -870,6 +870,11 @@ model CampaignRecipient {
   clickedAt    DateTime?
   bouncedAt    DateTime?
   complainedAt DateTime?
+  /// Set when this recipient will not be sent to: every attempt failed, or the address was
+  /// suppressed or unsubscribed between the audience being counted and its turn to send.
+  failedAt     DateTime?
+  /// Why, in a word or a provider message: `suppressed`, `unsubscribed`, or the last error.
+  error        String?
 
   campaign   Campaign    @relation(fields: [campaignId], references: [id], onDelete: Cascade)
   subscriber Subscriber? @relation(fields: [subscriberId], references: [id])

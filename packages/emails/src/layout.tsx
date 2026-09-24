@@ -44,7 +44,7 @@ export function EmailLayout({
   children,
 }: {
   preview: string;
-  footer: string;
+  footer: ReactNode;
   children: ReactNode;
 }) {
   return (

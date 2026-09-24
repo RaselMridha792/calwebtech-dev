@@ -7,7 +7,7 @@
 | proxy | Traefik v3, TLS, Let's Encrypt, routing, security headers. One per server, shared by every environment (`infra/proxy`) | 80, 443 |
 | web | Next.js standalone, public site and `/admin` | internal |
 | api | NestJS REST: content, leads, bookings, campaigns, auth, webhooks | via proxy at `/api` on the site origin |
-| worker | BullMQ consumer: email, reminders, revalidation, image processing | internal |
+| worker | BullMQ consumer: email, campaign sends and the campaign sweep (decision 51), reminders, revalidation, image processing | internal |
 | db | PostgreSQL 17, named volume | internal |
 | redis | Queue, rate limiting, cache | internal |
 | backup | pg_dump plus restic, nightly, encrypted, off-site | internal |

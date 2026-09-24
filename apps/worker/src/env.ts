@@ -27,6 +27,17 @@ const workerEnvSchema = z
      * a page are built here. Unset, those emails simply carry no link.
      */
     APP_ORIGIN: z.preprocess(blankToUndefined, z.url().optional()),
+    /**
+     * Signs each campaign recipient's unsubscribe link (`@calwebtech/shared/unsubscribe-token`);
+     * the API checks it with the same secret. Without it, or without APP_ORIGIN, no campaign is
+     * started: a campaign email without a working unsubscribe link is never sent.
+     */
+    AUTH_SECRET: z.preprocess(blankToUndefined, z.string().optional()),
+    /**
+     * Campaign emails per second. Resend's default account limit is 2 a second for everything
+     * the account sends, so 1 leaves room for lead and booking emails while a campaign runs.
+     */
+    CAMPAIGN_SEND_PER_SECOND: z.coerce.number().int().min(1).max(50).default(1),
   })
   .superRefine((env, context) => {
     if (env.EMAIL_TRANSPORT === 'resend' && !env.RESEND_API_KEY) {

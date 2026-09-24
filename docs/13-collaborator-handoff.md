@@ -21,6 +21,23 @@ open your PRs from `tumit` against `main`.
 5. `docs/02-content-model.md` and `docs/12-admin-dashboard.md` — the content types and the
    admin dashboard's module structure, since the campaign engine is an admin module.
 
+## Where it stands
+
+*2026-09-24.* Built on `tumit` in four parts, each recorded in `docs/08-decisions.md`:
+
+| Part | What | Decision |
+|---|---|---|
+| 1 | Subscribers, tags, segments with a live count, the suppression list | 49 |
+| 2 | Campaign composer, two branded templates, personalisation tokens, preview, test send | 50 |
+| 3 | Scheduling, the rate-limited send, suppression checked at send time, unsubscribe links and page | 51 |
+| 4 | Resend's delivery webhook, bounces and complaints to suppression, the per-campaign report | 52 |
+
+`pnpm build`, the unit tests and `pnpm test:integration` pass, and every route is within the
+own-code JS budget. Still to do before the PR is merged: a check of the new screens at 360px
+and 1440px and by keyboard, the PR itself, and the owner's answers to the questions in
+`docs/08-decisions.md`'s Open list, first of all where subscribers come from, since nothing
+creates them yet.
+
 ## What Task 5.4 is
 
 > Segment builder re-evaluating at send time, branded templates, personalisation tokens

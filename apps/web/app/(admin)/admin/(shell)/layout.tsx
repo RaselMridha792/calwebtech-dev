@@ -78,12 +78,17 @@ const SETTINGS: ModuleRoute = {
 };
 
 /** Path segment to page name, for the breadcrumb. One list, not two. */
-const CRUMB_LABELS: Record<string, string> = Object.fromEntries(
-  [...GROUPS.flatMap((group) => group.routes), SETTINGS].map((route) => [
-    route.href.replace(/^\/admin\/?/, '').replace(/\/$/, ''),
-    route.label,
-  ]),
-);
+const CRUMB_LABELS: Record<string, string> = {
+  ...Object.fromEntries(
+    [...GROUPS.flatMap((group) => group.routes), SETTINGS].map((route) => [
+      route.href.replace(/^\/admin\/?/, '').replace(/\/$/, ''),
+      route.label,
+    ]),
+  ),
+  // Screens inside a module that are not records of it.
+  'subscribers/segments': 'Segments',
+  'subscribers/suppression': 'Suppression list',
+};
 
 export default async function AdminShellLayout({ children }: LayoutProps<'/admin'>) {
   const user = await requireAdmin();

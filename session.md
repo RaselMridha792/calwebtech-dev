@@ -364,7 +364,7 @@ Notes on the machine this session used:
 | 5.1 Booking | Not started. A partial API blueprint survives in the old folder, unrecovered |
 | 5.2 Start a project and landing | Partial: landing template done; the start-a-project API with progressive saving is in PR #11, the multi-step page is not built |
 | 5.3 Admin dashboard, auth, RBAC | Not started. No login exists yet; settings change through `settings-cli` |
-| 5.4 Campaign engine | Not started (queue and email templates exist for lead emails only) |
+| 5.4 Campaign engine | Built on `tumit`, awaiting the PR (decisions 49 to 52): subscribers, tags, segments with a live count, the suppression list, the campaign composer with two branded templates, personalisation tokens, preview and test send, scheduling, a rate-limited per-recipient send with suppression checked again at send time, signed unsubscribe links with one-click, Resend's delivery webhook and the per-campaign report. Nothing creates subscribers yet; that is the owner's decision |
 | 6.1 Anti-spam | Partial: Turnstile, honeypot, per-IP rate limit. Missing: timing checks, per-email limits, MX and disposable-domain checks, duplicate-lead merging |
 | 6.2 Deliverability | Not started |
 | 6.3 Hardening and observability | Partial: Traefik TLS config, staging auth and noindex; on `feat/vps-deploy` the server hardening (UFW, fail2ban, key-only SSH, unattended upgrades) and HSTS plus the other security headers, with a report-only CSP. Sentry, Uptime Kuma and Umami not set up |
@@ -373,10 +373,11 @@ Notes on the machine this session used:
 
 ### Known gaps and risks
 - **Demo claims on a public URL.** The Vercel pages show demo ratings, client names, metrics, testimonials and partner claims naming Shopify, Google, Vercel and Cloudflare. They are noindex, but anyone with the link can read them. Replace before any public promotion.
-- **Lost email jobs.** Emails are queued after the lead commits. If the API process dies in between, the lead is stored and its emails are never queued. A transactional outbox would close this (before Task 5.4).
+- **Lost email jobs.** Emails are queued after the lead commits. If the API process dies in between, the lead is stored and its emails are never queued. A transactional outbox would close this. Campaign sends do not have the gap: their recipient rows are written first and the sweep requeues them (decision 51).
 - **No audit trail for settings.** `settings-cli` changes are not written to the audit log; the admin settings screen must do this.
 - **Staging and production on one server.** On a single 4 GB server their memory limits overlap. Confirm the server size.
 - **Lighthouse behind the real edge.** Once staging is live, run the gate against real Traefik and compare (`docs/09`, "Checking the lab against real Traefik").
+- **No subscriber source.** The campaign engine exists, but nothing creates `Subscriber` rows: the insights newsletter form stores a lead. Where subscribers come from is the owner's decision (docs/08-decisions.md, Open).
 - **Known demo gaps.** The newsletter box is left out (no subscriber backend). The video testimonial card has no video. Links to planned routes return 404.
 
 ## Where the code is
@@ -391,6 +392,7 @@ Notes on the machine this session used:
 | Contracts | `packages/shared/src/{home-page,landing-page,lead,site}.ts` |
 | Schema, migrations, seeds | `packages/db/prisma/schema.prisma`, `packages/db/src/seed/*` |
 | Email templates, worker | `packages/emails`, `apps/worker` |
+| Campaign engine (Task 5.4) | Contracts `packages/shared/src/{audience,campaigns,unsubscribe-token}.ts`; segment filters `packages/db/src/audience.ts`; API `apps/api/src/admin/{audience,campaigns}`, `apps/api/src/{unsubscribe,webhooks}`; worker `apps/worker/src/campaign-{send,sweep}.ts`; templates `packages/emails/src/campaign.tsx`; screens `apps/web/app/(admin)/admin/(shell)/{subscribers,campaigns}`, `apps/web/app/(marketing)/(site)/unsubscribe` |
 | Deploy | `infra/docker-compose.yml`, `infra/proxy`, `infra/traefik/dynamic` (`edge.yml`, `access.yml`, `security.yml`), `infra/scripts/{bootstrap-server,deploy,smoke}.sh`, `infra/env/{staging,production}.env.example`; the procedure in `docs/11-vps-deploy.md` |
 | Backups | `infra/backup/Dockerfile`, `infra/scripts/{backup-entrypoint,restore}.sh` |
 | CI | `.github/workflows/release.yml`, `.github/actions/deploy-over-ssh` |

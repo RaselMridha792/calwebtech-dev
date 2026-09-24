@@ -9,6 +9,8 @@ export interface OutgoingEmail {
   text: string;
   /** Resend keeps it for 24 hours, so a retried send returns the first email instead of a second. */
   idempotencyKey: string;
+  /** Extra headers, such as `List-Unsubscribe` on a campaign email. */
+  headers?: Record<string, string>;
 }
 
 /** Resend is a sending transport only. Nothing about who receives what lives there. */
@@ -21,9 +23,9 @@ export function resendTransport(apiKey: string): EmailTransport {
   const resend = new Resend(apiKey);
   return {
     name: 'resend',
-    async send({ idempotencyKey, replyTo, ...email }) {
+    async send({ idempotencyKey, replyTo, headers, ...email }) {
       const { data, error } = await resend.emails.send(
-        { ...email, ...(replyTo ? { replyTo } : {}) },
+        { ...email, ...(replyTo ? { replyTo } : {}), ...(headers ? { headers } : {}) },
         { idempotencyKey },
       );
       if (error) throw new Error(`Resend rejected the email: ${error.name}: ${error.message}`);

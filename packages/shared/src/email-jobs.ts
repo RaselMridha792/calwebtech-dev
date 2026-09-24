@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { calculatorLeadAnswersSchema, calculatorResultEmailSchema } from './calculator';
+import { campaignContentSchema } from './campaigns';
 import { attributionSchema, leadTypeSchema } from './lead';
 
 /** The BullMQ queue the API adds email jobs to and the worker consumes. */
@@ -107,6 +108,21 @@ export const emailJobSchema = z.discriminatedUnion('template', [
     timezone: z.string().min(1),
     context: z.string().nullable(),
   }),
+  /**
+   * A campaign's test send (Task 5.4). It carries the content as it was saved when the
+   * test was asked for, so an edit made while the job waits does not change what the
+   * team is looking at. `testId` makes each request its own job: two tests of the same
+   * campaign are two emails, but a retry of one is still one.
+   */
+  z.object({
+    template: z.literal('campaign-test'),
+    to: z.array(z.email()).min(1).max(5),
+    campaignId: z.string().min(1),
+    testId: z.string().min(1).max(40),
+    content: campaignContentSchema,
+    /** Whose details fill the tokens: the person who asked for the test. */
+    recipient: z.object({ name: z.string().nullable(), email: z.email() }),
+  }),
 ]);
 export type EmailJob = z.infer<typeof emailJobSchema>;
 export type EmailTemplateKey = EmailJob['template'];
@@ -116,10 +132,17 @@ export type EmailTemplateKey = EmailJob['template'];
  * it as the provider idempotency key, so neither a repeated add nor a retried send can
  * email anyone twice. BullMQ does not allow ':' in custom ids.
  */
-export function emailJobId(job: { template: EmailTemplateKey; lead?: { leadId: string }; bookingId?: string }): string {
-  const subject = job.lead?.leadId ?? job.bookingId;
+export function emailJobId(job: {
+  template: EmailTemplateKey;
+  lead?: { leadId: string };
+  bookingId?: string;
+  campaignId?: string;
+  testId?: string;
+}): string {
+  const subject =
+    job.lead?.leadId ?? job.bookingId ?? (job.campaignId && job.testId ? `${job.campaignId}-${job.testId}` : undefined);
   // A job with neither would collide with every other job of its template, which is the
   // one way this id can cause the duplicate send it exists to prevent.
-  if (subject === undefined) throw new Error(`emailJobId: a ${job.template} job names no lead or booking`);
+  if (subject === undefined) throw new Error(`emailJobId: a ${job.template} job names no lead, booking or campaign test`);
   return `${job.template}-${subject}`;
 }

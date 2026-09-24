@@ -8,6 +8,7 @@ import {
   bookingNotificationSubject,
 } from './booking';
 import { CalculatorResultEmailTemplate, calculatorResultSubject } from './calculator-result';
+import { CampaignEmail, campaignSubject } from './campaign';
 import { LeadConfirmationEmail, leadConfirmationSubject } from './lead-confirmation';
 import { LeadNotificationEmail, leadNotificationSubject } from './lead-notification';
 
@@ -53,6 +54,12 @@ function compose(job: EmailJob, context: EmailContext): { subject: string; eleme
       return { subject: bookingConfirmationSubject(job), element: <BookingConfirmationEmail {...job} /> };
     case 'booking-notification':
       return { subject: bookingNotificationSubject(job), element: <BookingNotificationEmail {...job} /> };
+    case 'campaign-test':
+      // Marked, so a test in an inbox is never mistaken for the campaign itself.
+      return {
+        subject: `[Test] ${campaignSubject(job.content, job.recipient)}`,
+        element: <CampaignEmail content={job.content} recipient={job.recipient} unsubscribeUrl={null} />,
+      };
   }
 }
 

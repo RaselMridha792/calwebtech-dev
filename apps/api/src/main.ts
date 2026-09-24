@@ -20,7 +20,9 @@ for (const candidate of ['.env', '../../.env']) {
 
 async function bootstrap(): Promise<void> {
   const env = loadEnv(process.env);
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  // `rawBody` keeps the bytes a webhook was signed over (apps/api/src/webhooks); the parsed
+  // body is unchanged for every other route.
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, { rawBody: true });
   app.set('trust proxy', env.TRUST_PROXY_HOPS);
   // The admin's session and CSRF cookies are read by AdminGuard (apps/api/src/auth).
   // Nothing is signed here: the session token is random and stored only as a hash, so a
