@@ -71,6 +71,14 @@ export default async function AdminCampaignsPage({ searchParams }: PageProps<'/a
                   >
                     {campaign.name}
                   </Link>
+                  {campaign.status === 'SENDING' || campaign.status === 'SENT' || campaign.status === 'FAILED' ? (
+                    <Link
+                      href={`/admin/campaigns/${campaign.id}/report/`}
+                      className="text-[12px] font-semibold text-admin-link hover:underline"
+                    >
+                      Report
+                    </Link>
+                  ) : null}
                   <span className="ms-auto text-[12px] font-semibold text-admin-body">
                     {CAMPAIGN_STATUS_LABELS[campaign.status]}
                   </span>

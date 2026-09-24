@@ -1,5 +1,6 @@
 'use client';
 import type { AdminCampaign } from '@calwebtech/shared';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { MutationError, adminMutate } from '@/lib/admin/mutate';
@@ -179,6 +180,12 @@ export function CampaignSchedulePanel({
               .filter(Boolean)
               .join(' · ')}
           </p>
+          <Link
+            href={`/admin/campaigns/${encodeURIComponent(campaign.id)}/report/`}
+            className="mt-2 inline-block text-[12.5px] font-semibold text-admin-link hover:underline"
+          >
+            View the report
+          </Link>
         </div>
       ) : null}
 
