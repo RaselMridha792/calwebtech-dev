@@ -292,15 +292,12 @@ test.describe('article page', () => {
     const block = page.locator('[aria-labelledby="article-subscribe-label"]');
     await expect(block).toHaveCount(1);
 
-    const name = block.locator('#insights-subscribe-name');
     const email = block.locator('#insights-subscribe-email');
-    await expect(block.locator('label[for="insights-subscribe-name"]')).toHaveCount(1);
     await expect(block.locator('label[for="insights-subscribe-email"]')).toHaveCount(1);
+    // An address and nothing else, as on the homepage (docs/08-decisions.md, 53).
+    await expect(block.locator('input:not([type="hidden"]):not([tabindex="-1"])')).toHaveCount(1);
 
-    await name.focus();
-    await expect(name).toBeFocused();
-    await page.keyboard.type('Jordan Blake');
-    await page.keyboard.press('Tab');
+    await email.focus();
     await expect(email).toBeFocused();
     await page.keyboard.type('not-an-email');
     await page.keyboard.press('Tab');
