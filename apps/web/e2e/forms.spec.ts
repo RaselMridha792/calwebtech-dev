@@ -64,3 +64,46 @@ test.describe('start a project', () => {
     await page.waitForURL(/\/thank-you\/project\/$/, { timeout: 30_000 });
   });
 });
+
+const AUDIT = '/free-website-audit/';
+const request = (page: Page) => page.locator('#audit-request form');
+
+/**
+ * The free website audit request (docs/14-remaining-work.md, task 3): one step, checked by
+ * the browser on send, and posted as an AUDIT lead through the same flow as every form.
+ */
+test.describe('free website audit', () => {
+  test('is one page with one heading, the request first and no wider than the screen', async ({ page }) => {
+    const errors: string[] = [];
+    page.on('pageerror', (error) => errors.push(String(error)));
+    await page.goto(AUDIT);
+
+    await expect(page.locator('h1')).toHaveCount(1);
+    await expect(request(page).locator('input[name="mainConcern"]').first()).toBeVisible();
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+    expect(overflow, 'no horizontal overflow').toBeLessThanOrEqual(0);
+    expect(errors).toEqual([]);
+  });
+
+  test('stops an empty send at the site address, from the keyboard', async ({ page }) => {
+    await page.goto(AUDIT);
+
+    await request(page).locator('button[type="submit"]').focus();
+    await page.keyboard.press('Enter');
+    await expect(page.locator('#audit-siteUrl')).toBeFocused();
+    await expect(page).toHaveURL(new RegExp(`${AUDIT}$`));
+  });
+
+  test('sends the request as one lead and lands on its thank you page', async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name !== 'desktop-1440', 'The API allows five leads a minute per address.');
+    await page.goto(AUDIT);
+
+    await page.locator('#audit-siteUrl').fill('https://example.com');
+    await request(page).locator('input[name="mainConcern"]').first().check();
+    await page.locator('#audit-name').fill('Jordan Blake');
+    await page.locator('#audit-email').fill(address());
+    await request(page).locator('button[type="submit"]').click();
+
+    await page.waitForURL(/\/thank-you\/audit\/$/, { timeout: 30_000 });
+  });
+});
