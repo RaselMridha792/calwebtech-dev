@@ -1,15 +1,20 @@
 import {
   BUDGET_BANDS,
+  FORMS_AUDIT_FORM_ID,
   FORMS_PROJECT_FORM_ID,
   FORMS_PROJECT_STEPS,
+  LEAD_AUDIT_CONCERNS,
   LEAD_PROJECT_TYPES,
   START_TIMELINES,
+  formsAuditViewSchema,
   formsProjectViewSchema,
 } from '@calwebtech/shared';
 import type { ReactNode } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
-import { formsProjectSnapshot } from '@/static-content/forms';
+import { formsAuditSnapshot, formsProjectSnapshot } from '@/static-content/forms';
+import { AuditForm } from './audit-form';
+import { AuditCovers, AuditDelivery, AuditFormSection, AuditLimits } from './audit-sections';
 import { ProjectBriefForm } from './project-brief-form';
 import { ProjectAlternatives, ProjectFormSection, ProjectWhatHappens, ProjectWhatWeNeed } from './project-sections';
 
@@ -121,5 +126,88 @@ describe('the start a project sections', () => {
     for (const heading of [content.whatHappens.heading, content.whatWeNeed.heading, content.alternatives.heading]) {
       expect(heading.endsWith('?')).toBe(true);
     }
+  });
+});
+
+const audit = formsAuditViewSchema.parse(formsAuditSnapshot).content;
+
+const auditForm = () =>
+  render(
+    <AuditForm
+      copy={audit.form}
+      concerns={LEAD_AUDIT_CONCERNS}
+      formId={FORMS_AUDIT_FORM_ID}
+      thankYouPath="/thank-you/audit/"
+      turnstileSiteKey={undefined}
+    />,
+  );
+
+describe('the free website audit request', () => {
+  it('requires the site, a name and an email, each labelled', () => {
+    const html = auditForm();
+    const required = [...html.matchAll(/<input id="audit-(\w+)"[^>]*required=""/g)].map((match) => match[1]);
+    expect(required).toEqual(['siteUrl', 'name', 'email']);
+    expect(/<input id="audit-email"[^>]*>/.exec(html)?.[0]).toContain('type="email"');
+    for (const field of ['siteUrl', 'competitorUrl', 'name', 'email', 'company', 'message']) {
+      expect(html, `${field} is labelled`).toContain(`for="audit-${field}"`);
+    }
+  });
+
+  it('asks the main concern as one answer from a labelled list', () => {
+    const html = auditForm();
+    expect(html).toContain(`<legend class="eyebrow text-ink-muted">${audit.form.fields.mainConcern.label}</legend>`);
+    for (const concern of LEAD_AUDIT_CONCERNS) {
+      expect(html).toMatch(new RegExp(`type="radio"[^>]*name="mainConcern" value="${concern.value}"`));
+    }
+  });
+
+  it('keeps the fields of a row on one line, whatever their labels wrap to', () => {
+    const html = auditForm();
+    const field = html.slice(html.lastIndexOf('<div', html.indexOf('for="audit-competitorUrl"')));
+    expect(field).toMatch(/^<div class="row-span-3 grid grid-rows-subgrid/);
+  });
+
+  it('posts as an AUDIT lead of this form, with a honeypot a person never sees', () => {
+    const html = auditForm();
+    expect(html).toContain('name="type" value="AUDIT"');
+    expect(html).toContain(`name="formId" value="${FORMS_AUDIT_FORM_ID}"`);
+    const honeypot = html.indexOf('name="referenceCode"');
+    const wrapper = html.lastIndexOf('<div', honeypot);
+    expect(html.slice(wrapper, honeypot)).toContain('aria-hidden="true"');
+    expect(html.slice(honeypot - 200, honeypot + 200)).toContain('tabindex="-1"');
+    expect(html).toContain(audit.form.submitLabel);
+  });
+});
+
+describe('the free website audit sections', () => {
+  it('put the request under its question-heading, with the assurances beside it', () => {
+    const html = render(<AuditFormSection content={audit} form={<p>form</p>} />);
+    expect(html).toContain('id="audit-request"');
+    expect(html).toContain('id="audit-request-heading"');
+    for (const line of audit.assurances) expect(html).toContain(line.replace(/'/g, '&#x27;'));
+  });
+
+  it('say what the audit covers, how it arrives and what it is not', () => {
+    const html = render(
+      <>
+        <AuditCovers content={audit} />
+        <AuditDelivery content={audit} />
+        <AuditLimits content={audit} />
+      </>,
+    );
+    for (const item of audit.covers.items) expect(html).toContain(item.title.replace(/'/g, '&#x27;'));
+    for (const step of audit.delivery.steps) expect(html).toContain(step.title.replace(/'/g, '&#x27;'));
+    for (const item of audit.limits.items) expect(html).toContain(item.replace(/'/g, '&#x27;'));
+    // The covers are rows on hairlines, never cards (the brand's second rule).
+    expect(html).not.toMatch(/<li[^>]*\bborder\s/);
+    for (const heading of [audit.covers.heading, audit.delivery.heading, audit.limits.heading, audit.form.heading]) {
+      expect(heading.endsWith('?')).toBe(true);
+    }
+  });
+
+  it('leave the picture out when the delivery has none', () => {
+    const html = render(<AuditDelivery content={{ ...audit, delivery: { ...audit.delivery, image: null } }} />);
+    expect(html).not.toContain('<img');
+    for (const step of audit.delivery.steps) expect(html).toContain(step.title.replace(/'/g, '&#x27;'));
   });
 });
