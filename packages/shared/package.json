@@ -21,6 +21,10 @@
     "./booking-status": {
       "types": "./dist/booking-status.d.ts",
       "default": "./dist/booking-status.js"
+    },
+    "./unsubscribe-token": {
+      "types": "./dist/unsubscribe-token.d.ts",
+      "default": "./dist/unsubscribe-token.js"
     }
   },
   "files": [
