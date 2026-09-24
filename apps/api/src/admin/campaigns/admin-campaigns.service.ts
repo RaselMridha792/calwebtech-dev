@@ -8,7 +8,10 @@ import {
   type AdminCampaignList,
   type AdminCampaignQuery,
   type AdminUser,
+  CAMPAIGN_REPORT_PAGE_SIZE,
   type CampaignContent,
+  type CampaignReport,
+  type CampaignReportQuery,
   type CampaignPreview,
   type CampaignPreviewRequest,
   type CampaignRecipient,
@@ -21,6 +24,7 @@ import {
   campaignBodySchema,
   campaignContentSchema,
   campaignPreviewSchema,
+  campaignReportSchema,
   campaignTestSentSchema,
   segmentRulesSchema,
 } from '@calwebtech/shared';
@@ -39,6 +43,7 @@ import { API_ENV, type ApiEnv } from '../../config/env';
 import { CampaignSweepQueue } from '../../queue/campaign-sweep-queue';
 import { EmailQueue } from '../../queue/email-queue';
 import { AdminAudienceService } from '../audience/admin-audience.service';
+import { stateWhere, toReportRecipient } from './campaign-report';
 
 const WITH_RELATIONS = {
   segment: { select: { id: true, name: true } },
@@ -176,6 +181,63 @@ export class AdminCampaignsService {
     }
     await this.audit.recordQuietly({ userId: actorId, action: 'campaign.unscheduled', entityType: 'Campaign', entityId: id });
     return this.find(id);
+  }
+
+  /**
+   * The campaign's report: who it reached and what they did, counted in people. Delivery
+   * implies sending, an open implies delivery and a click implies an open, so each count
+   * includes the ones past it; the recipient list shows each person once, at the furthest
+   * thing that happened.
+   */
+  async report(id: string, query: CampaignReportQuery): Promise<CampaignReport> {
+    const campaign = await this.find(id);
+    const inCampaign = { campaignId: id };
+    const count = (where: Prisma.CampaignRecipientWhereInput) =>
+      this.prisma.client.campaignRecipient.count({ where: { ...inCampaign, ...where } });
+
+    const started = await this.prisma.client.campaignRecipient.aggregate({
+      where: inCampaign,
+      _min: { sentAt: true },
+    });
+    const startedAt = started._min.sentAt;
+
+    const [recipients, sent, notSent, delivered, opened, clicked, bounced, complained, unsubscribed] = await Promise.all([
+      count({}),
+      count({ sentAt: { not: null } }),
+      count({ failedAt: { not: null } }),
+      count({ OR: [{ deliveredAt: { not: null } }, { openedAt: { not: null } }, { clickedAt: { not: null } }] }),
+      count({ OR: [{ openedAt: { not: null } }, { clickedAt: { not: null } }] }),
+      count({ clickedAt: { not: null } }),
+      count({ bouncedAt: { not: null } }),
+      count({ complainedAt: { not: null } }),
+      startedAt ? count({ sentAt: { not: null }, subscriber: { unsubscribedAt: { gte: startedAt } } }) : Promise.resolve(0),
+    ]);
+
+    const where: Prisma.CampaignRecipientWhereInput = { ...inCampaign, ...(query.state ? stateWhere(query.state) : {}) };
+    const [rows, total] = await Promise.all([
+      this.prisma.client.campaignRecipient.findMany({
+        where,
+        include: { subscriber: { select: { name: true } } },
+        orderBy: { email: 'asc' },
+        skip: (query.page - 1) * CAMPAIGN_REPORT_PAGE_SIZE,
+        take: CAMPAIGN_REPORT_PAGE_SIZE,
+      }),
+      this.prisma.client.campaignRecipient.count({ where }),
+    ]);
+
+    return campaignReportSchema.parse({
+      campaign: {
+        id: campaign.id,
+        name: campaign.name,
+        subject: campaign.subject,
+        status: campaign.status,
+        segment: campaign.segment?.name ?? null,
+        startedAt: startedAt?.toISOString() ?? null,
+        finishedAt: campaign.sentAt,
+      },
+      totals: { recipients, sent, notSent, delivered, opened, clicked, bounced, complained, unsubscribed },
+      recipients: { items: rows.map(toReportRecipient), total, page: query.page, pageSize: CAMPAIGN_REPORT_PAGE_SIZE },
+    });
   }
 
   /** Sent and not-sent counts per campaign, in two queries however many campaigns there are. */

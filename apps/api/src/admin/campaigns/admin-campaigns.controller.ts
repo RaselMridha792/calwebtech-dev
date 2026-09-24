@@ -4,12 +4,15 @@ import {
   type AdminCampaignQuery,
   type CampaignPreview,
   type CampaignPreviewRequest,
+  type CampaignReport,
+  type CampaignReportQuery,
   type CampaignSchedule,
   type CampaignTestSend,
   type CampaignTestSent,
   type CampaignWrite,
   adminCampaignQuerySchema,
   campaignPreviewRequestSchema,
+  campaignReportQuerySchema,
   campaignScheduleSchema,
   campaignTestSendSchema,
   campaignWriteSchema,
@@ -68,6 +71,16 @@ export class AdminCampaignsController {
   @RequireModule('campaigns', 'read')
   detail(@Param('id') id: string): Promise<AdminCampaign> {
     return this.campaigns.find(id);
+  }
+
+  /** Who a campaign reached and what they did. Declared above `:id`'s own writes. */
+  @Get(':id/report')
+  @RequireModule('campaigns', 'read')
+  report(
+    @Param('id') id: string,
+    @Query(new ZodValidationPipe(campaignReportQuerySchema)) query: CampaignReportQuery,
+  ): Promise<CampaignReport> {
+    return this.campaigns.report(id, query);
   }
 
   @Post()
