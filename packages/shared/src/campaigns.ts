@@ -269,3 +269,118 @@ export function maskEmail(email: string): string {
   const local = email.slice(0, at);
   return `${local.slice(0, 1)}${'*'.repeat(Math.max(2, Math.min(local.length - 1, 6)))}${email.slice(at)}`;
 }
+
+// ---------------------------------------------------------------- the report
+
+/**
+ * Where one recipient stands, furthest first: a click implies an open, an open implies a
+ * delivery. A bounce or complaint outranks them all, because it is what needs acting on.
+ */
+export const RECIPIENT_STATES = [
+  'complained',
+  'bounced',
+  'clicked',
+  'opened',
+  'delivered',
+  'sent',
+  'not_sent',
+  'pending',
+] as const;
+export type RecipientState = (typeof RECIPIENT_STATES)[number];
+
+export const RECIPIENT_STATE_LABELS: Record<RecipientState, string> = {
+  complained: 'Marked as spam',
+  bounced: 'Bounced',
+  clicked: 'Clicked',
+  opened: 'Opened',
+  delivered: 'Delivered',
+  sent: 'Sent',
+  not_sent: 'Not sent',
+  pending: 'Waiting',
+};
+
+export const campaignReportRecipientSchema = z.object({
+  id: z.string(),
+  email: z.string(),
+  name: z.string().nullable(),
+  state: z.enum(RECIPIENT_STATES),
+  /** Why a recipient was not sent to, or the last provider error. */
+  error: z.string().nullable(),
+  sentAt: z.iso.datetime().nullable(),
+  lastEventAt: z.iso.datetime().nullable(),
+});
+export type CampaignReportRecipient = z.infer<typeof campaignReportRecipientSchema>;
+
+export const CAMPAIGN_REPORT_PAGE_SIZE = 50;
+
+export const campaignReportQuerySchema = z.object({
+  state: z.preprocess(blankToUndefined, z.enum(RECIPIENT_STATES).optional()),
+  page: z.coerce.number().int().min(1).default(1),
+});
+export type CampaignReportQuery = z.output<typeof campaignReportQuerySchema>;
+
+/**
+ * A campaign's report. Every count is of people, not of events: somebody who opened an
+ * email five times is one open. Opens are a floor, not a measure, because many mail clients
+ * load images for the reader or not at all.
+ */
+export const campaignReportSchema = z.object({
+  campaign: z.object({
+    id: z.string(),
+    name: z.string(),
+    subject: z.string(),
+    status: z.enum(CAMPAIGN_STATUSES),
+    segment: z.string().nullable(),
+    startedAt: z.iso.datetime().nullable(),
+    finishedAt: z.iso.datetime().nullable(),
+  }),
+  totals: z.object({
+    recipients: z.number().int(),
+    sent: z.number().int(),
+    notSent: z.number().int(),
+    delivered: z.number().int(),
+    opened: z.number().int(),
+    clicked: z.number().int(),
+    bounced: z.number().int(),
+    complained: z.number().int(),
+    /** Recipients who unsubscribed after this campaign reached them. */
+    unsubscribed: z.number().int(),
+  }),
+  recipients: z.object({
+    items: z.array(campaignReportRecipientSchema),
+    total: z.number().int(),
+    page: z.number().int(),
+    pageSize: z.number().int(),
+  }),
+});
+export type CampaignReport = z.infer<typeof campaignReportSchema>;
+
+// ---------------------------------------------------------------- provider events
+
+/**
+ * The Resend webhook events the platform acts on (Task 5.4). Anything else is logged and
+ * ignored. `email.bounced` is a permanent rejection in Resend's terms; a transient one is
+ * still recorded but does not suppress the address.
+ */
+export const EMAIL_EVENT_TYPES = {
+  'email.delivered': 'delivered',
+  'email.opened': 'opened',
+  'email.clicked': 'clicked',
+  'email.bounced': 'bounced',
+  'email.complained': 'complained',
+} as const;
+export type EmailEventType = (typeof EMAIL_EVENT_TYPES)[keyof typeof EMAIL_EVENT_TYPES];
+
+/** What the webhook reads from a Resend event. Extra fields are kept in the stored payload. */
+export const resendWebhookEventSchema = z.object({
+  type: z.string().min(1),
+  created_at: z.string().min(1),
+  data: z
+    .object({
+      email_id: z.string().min(1).optional(),
+      to: z.union([z.array(z.string()), z.string()]).optional(),
+      bounce: z.object({ type: z.string().optional() }).loose().optional(),
+    })
+    .loose(),
+});
+export type ResendWebhookEvent = z.infer<typeof resendWebhookEventSchema>;
