@@ -515,6 +515,48 @@ snapshot came back in PR #11, and the page was never built. It is built on them 
   draft_saved:4…6, form_submitted` and landed on `/thank-you/project/`; an abandoned one
   stayed a lead at draft step 5. The route's own client JavaScript is 8.1 kB of the 20 kB budget.
 
+## 57. The free website audit page
+
+*2026-09-25.* Task 3 of `docs/14-remaining-work.md`. `/free-website-audit/` answered 404
+although its contract, API view (`GET /pages/free-website-audit`), getter and copy snapshot
+came back in PR #11. The page is built on them unchanged.
+
+- **One step, one lead.** The site, what worries the visitor about it (one of
+  `LEAD_AUDIT_CONCERNS`), a competitor to compare against, a name, an email, a company and a
+  note. Only the site, the name and the email are required. It posts as an `AUDIT` lead through
+  the site's lead action, so the API's Turnstile, honeypot, rate limit, storage and emails
+  handle it as they handle every form. The browser checks the required fields on send, then
+  Turnstile runs once; the action is dispatched by hand so a refused send keeps what was typed.
+  A sent request lands on `/thank-you/audit/`, which already existed.
+- **The lead mapper reads the audit's fields.** `lib/lead-form.ts` never read `mainConcern`
+  or `competitorUrl`, although the shared contract had them; it does now, and the lead stores
+  them in `answers`. Same foundation file as decision 56, changed for the same reason.
+- **The two forms share their controls.** The labelled input, textarea and choice list moved
+  out of the brief into `components/forms-pages/fields.tsx`, with an id prefix so the two
+  forms never share an id.
+- **Fields side by side stay level.** At 1440 the competitor's label ("… (optional)") wraps
+  to two lines and pushed its input below the site address's. Each field now spans three rows
+  of its grid (label, control, note) with `subgrid`, and the label sits on its input, so a
+  longer label moves its neighbour's input down with it. The brief's contact step had the same
+  grid and gets the same fix.
+- **The menus now open the page.** The Resources menu and the footer's resources linked "Free
+  website audit" to `/contact/` while the page did not exist; they link to
+  `/free-website-audit/` in the site chrome and homepage snapshots. The contact form keeps
+  its own "Free website audit" topic, and the start a project page's "Ask for a free website
+  audit" alternative now resolves.
+- The page: hero with the answer block, the request with the page's assurances beside it,
+  what the audit covers (rows on hairlines), how it arrives (timed steps beside the page's
+  picture), what it is not, and the questions as FAQPage. Grounds alternate white and tint.
+  The closing conversion band is hidden: the page is the form.
+- **Verified.** Unit tests (`forms-pages.test.tsx`, 7 new) and `e2e/forms.spec.ts` (3 new),
+  run against the dev stack at 360 and 1440: 10 passed, the two sends skipped on mobile for
+  the rate limit. In Chrome at 360, 768 and 1440: one `h1`, no horizontal overflow, the inputs
+  of each row on the same pixel at 768 and 1440 and stacked at 360, the delivery picture
+  loaded. By keyboard: Tab runs site, competitor, the concerns, name, email, company, note,
+  send; an empty send puts focus on the site address. A sent request was one `AUDIT` lead
+  with `answers {"mainConcern":"slow-on-mobile","competitorUrl":"https://rival.com"}`. The
+  route's own client JavaScript is 7.2 kB of the 20 kB budget.
+
 ## Open
 
 - **Nothing reports abandonment yet.** The drop-off per step is in the data (each draft lead's
@@ -555,9 +597,9 @@ snapshot came back in PR #11, and the page was never built. It is built on them 
   staging email is refused. Production has no basic auth. If staging needs delivery events,
   exempt those two paths from the basic-auth middleware.
 
-- The homepage's "Subscribe now" creates subscribers (decision 53). Still open: the insights
-  article's newsletter block stores a `RESOURCE` lead and creates none, calculator leads who
-  consented are not subscribers, and no import exists. And the form is single opt-in, so a
+- The homepage's "Subscribe now" creates subscribers (decision 53), and since decision 55 so
+  does the insights article's block. Still open: calculator leads who consented are not
+  subscribers, and no import exists. And the form is single opt-in, so a
   confirmation email should come before the first real campaign; it needs email to be
   sending, which production does not do today.
 
