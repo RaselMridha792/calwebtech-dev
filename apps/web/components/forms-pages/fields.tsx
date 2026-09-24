@@ -37,12 +37,21 @@ function Hint({ id, hint, error }: { id: string; hint: string | null; error: str
 
 function Label({ id, copy, required }: { id: string; copy: FormsField; required: boolean }) {
   return (
-    <label htmlFor={id} className="eyebrow text-ink-muted">
+    // `self-end`: in a row of fields a short label sits on its input, not at the top of a row a
+    // longer neighbour made two lines tall.
+    <label htmlFor={id} className="eyebrow self-end text-ink-muted">
       {copy.label}
       {required ? null : <span className="ms-2 tracking-normal normal-case">(optional)</span>}
     </label>
   );
 }
+
+/**
+ * A field's label, control and note share three rows with the field beside it (`subgrid`), so a
+ * label that wraps to two lines moves its neighbour's input down too and a row of inputs stays
+ * level. Spacing between fields is the field's own bottom padding; the grid has no row gap.
+ */
+const FIELD_ROWS = 'row-span-3 grid grid-rows-subgrid pb-5';
 
 export function Field({
   idPrefix,
@@ -66,7 +75,7 @@ export function Field({
 }) {
   const id = `${idPrefix}-${name}`;
   return (
-    <div>
+    <div className={FIELD_ROWS}>
       <Label id={id} copy={copy} required={required} />
       <input
         id={id}

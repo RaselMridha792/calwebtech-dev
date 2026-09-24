@@ -285,14 +285,14 @@ export function ProjectBriefForm({
         {step(
           1,
           <>
-            <div className="grid gap-5 sm:grid-cols-2">
+            <div className="grid gap-x-5 sm:grid-cols-2">
               <Field idPrefix="brief" name="name" copy={copy.fields.name} required autoComplete="name" minLength={2} error={error('name')} />
               <Field idPrefix="brief" name="email" copy={copy.fields.email} required type="email" autoComplete="email" error={error('email')} />
               <Field idPrefix="brief" name="company" copy={copy.fields.company} autoComplete="organization" error={error('company')} />
               <Field idPrefix="brief" name="phone" copy={copy.fields.phone} type="tel" autoComplete="tel" error={error('phone')} />
               <Field idPrefix="brief" name="siteUrl" copy={copy.fields.siteUrl} autoComplete="url" error={error('siteUrl')} />
             </div>
-            <p className="body-sm mt-5 max-w-[60ch] text-ink-muted">{copy.saveNote}</p>
+            <p className="body-sm max-w-[60ch] text-ink-muted">{copy.saveNote}</p>
           </>,
         )}
 

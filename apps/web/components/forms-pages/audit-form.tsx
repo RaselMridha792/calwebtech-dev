@@ -103,22 +103,22 @@ export function AuditForm({ copy, concerns, formId, thankYouPath, turnstileSiteK
         </p>
       ) : null}
 
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid gap-x-5 sm:grid-cols-2">
         <Field idPrefix="audit" name="siteUrl" copy={copy.fields.siteUrl} required autoComplete="url" error={error('siteUrl')} />
         <Field idPrefix="audit" name="competitorUrl" copy={copy.fields.competitorUrl} error={error('competitorUrl')} />
       </div>
 
-      <div className="mt-7">
+      <div className="mt-2">
         <Choices name="mainConcern" legend options={concerns} label={copy.fields.mainConcern.label} error={error('mainConcern')} />
       </div>
 
-      <div className="mt-7 grid gap-5 sm:grid-cols-2">
+      <div className="mt-7 grid gap-x-5 sm:grid-cols-2">
         <Field idPrefix="audit" name="name" copy={copy.fields.name} required autoComplete="name" minLength={2} error={error('name')} />
         <Field idPrefix="audit" name="email" copy={copy.fields.email} required type="email" autoComplete="email" error={error('email')} />
         <Field idPrefix="audit" name="company" copy={copy.fields.company} autoComplete="organization" error={error('company')} />
       </div>
 
-      <div className="mt-5">
+      <div>
         <Area idPrefix="audit" name="message" copy={copy.fields.description} rows={4} error={error('message')} />
       </div>
 
