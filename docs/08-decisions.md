@@ -471,7 +471,58 @@ article reached the campaign engine.
   a good one moves focus to the success line. A subscription from
   `/insights/core-web-vitals-in-plain-english/` stored that path and created no lead.
 
+## 56. The start a project page
+
+*2026-09-25.* Task 2 of `docs/14-remaining-work.md` (build plan task 5.2). `/start-a-project/`
+answered 404: the contract (`packages/shared/src/pages/forms.ts`), the API's page view and
+progressive saving (`apps/api/src/forms/`), the getter (`lib/api/forms.ts`) and the copy
+snapshot came back in PR #11, and the page was never built. It is built on them unchanged.
+
+- **Six steps, one question each**, in the contract's order: project type, contact, services,
+  budget, timeline, the brief in the visitor's words (`FORMS_PROJECT_STEPS`). Only a name and
+  an email are required, as the copy promises.
+- **The booking form's pattern (decision 47).** Every step is in the DOM and only the current
+  one is shown; a step's own fields are checked with `reportValidity()` before it hides; focus
+  moves to the new step's question; Turnstile runs once, on the send. The form is `noValidate`:
+  with native validation on, pressing Next made the browser check the required fields of the
+  hidden contact step and refuse to submit at all. The option lists (`LEAD_PROJECT_TYPES`,
+  `BUDGET_BANDS`, `START_TIMELINES`) are passed in as props, so the client component imports
+  only types from the shared barrel.
+- **Abandonment is measurable per step, the build plan's gate.** From the contact step on,
+  each move forward saves the brief through a server action (`components/forms-pages/actions.ts`)
+  to the existing `POST /forms/project-draft`, with the step reached. That writes the
+  `PROJECT` lead on the first save (`draft_started`) and a `draft_saved` activity with the
+  step on each later one; the send goes through the site's lead action with the draft's id and
+  token and completes the same lead (`form_submitted`), so one brief is one row. A brief left
+  on step five is a lead whose draft step is 5. The saves run one after another so each reads
+  the draft the one before created, never block the visitor, and the page says "Saved" only
+  when the API returned a draft.
+- **The lead mapper reads the brief's fields.** `lib/lead-form.ts` never read `projectType`,
+  `projectLinks`, `draftId` or `draftToken`, although the shared contract had them; it does
+  now. That file is on docs/10's foundation list; the change was needed for the task.
+- **Where the family's components live.** docs/10 puts a family's components in
+  `components/<family>/`, but `components/forms/` is the foundation's (`LeadForm`,
+  `use-turnstile`), so this family's are in `components/forms-pages/`.
+- The page: hero with the answer block, the brief with the page's assurances beside it, what
+  happens next, what a quote needs, the other ways in, and the questions as FAQPage. Grounds
+  alternate white and tint. The closing conversion band is hidden: the page is the form.
+- **Verified.** Unit tests (`forms-pages.test.tsx`, `lib/lead-form.test.ts`) and
+  `e2e/forms.spec.ts`, run against the dev stack at 360 and 1440 (7 passed, the send skipped
+  on mobile for the rate limit). In Chrome at 360, 768 and 1440: one `h1`, no horizontal
+  overflow, the lower sections rendered. By keyboard: Space picks an answer, Tab reaches Next,
+  Enter moves on and focus lands on the new question; an empty name keeps the contact step
+  with focus on the field. A sent brief was one `PROJECT` lead with `draft_started:3,
+  draft_saved:4…6, form_submitted` and landed on `/thank-you/project/`; an abandoned one
+  stayed a lead at draft step 5.
+
 ## Open
+
+- **Nothing reports abandonment yet.** The drop-off per step is in the data (each draft lead's
+  step and its `draft_*` activities) but no screen counts it; the leads inbox shows an
+  unfinished brief as an ordinary new lead. A small report in the dashboard, or a filter for
+  unfinished briefs, would make the gate visible to the owner.
+- **The floating "Start a project" button goes to `/book-a-consultation/`**, not to this page
+  (`floatingCta` in the homepage copy). That is the owner's content, so it was left.
 
 - **The article block's privacy line still mentions a name.** `insights.copy`'s
   `newsletter.privacyNote` reads "Your name and email are stored in our own database…", and
