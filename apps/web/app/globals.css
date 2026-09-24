@@ -101,33 +101,24 @@
 }
 
 /*
- * Scroll reveal. `js-motion` is set on <html> by an inline script before first
- * paint, so content is only hidden when the observer is guaranteed to run.
- * Opacity and transform only: nothing here can shift layout. The delay applies
- * to the reveal alone, never to the hover lift.
+ * There is no scroll reveal.
+ *
+ * Sections used to fade in as they scrolled into view. It was gated on script — an inline
+ * script hid every [data-reveal] element until the React bundle had downloaded, hydrated and
+ * started an IntersectionObserver — so on a slow connection the page showed blank sections
+ * for up to three seconds and then filled in all at once. The owner reported exactly that:
+ * "the page loads, then changes".
+ *
+ * A CSS-only replacement (a view timeline) was tried and refused by the anchor tests: it
+ * makes the browser lay out sections that `content-visibility: auto` had skipped, so a deep
+ * link like /#services lands hundreds of pixels away once they finish rendering, and it
+ * defeats the skipping that keeps the page cheap. Content that is there when the page paints
+ * is worth more than a fade, so nothing is hidden and nothing animates in. `reveal()` still
+ * puts `data-reveal` on its elements; nothing styles it, and it is where a reveal that
+ * cannot hide content or move layout would go if one is wanted again (docs/08-decisions.md, 54).
  */
-.js-motion [data-reveal] {
-  --reveal-delay: calc(var(--reveal-step, 0) * 80ms);
-  opacity: 0;
-  transform: translateY(22px);
-  transition:
-    opacity 0.6s var(--ease-out-soft) var(--reveal-delay),
-    transform 0.6s var(--ease-out-soft) var(--reveal-delay),
-    translate 0.25s ease,
-    box-shadow 0.25s ease,
-    border-color 0.25s ease;
-}
-.js-motion [data-reveal].is-revealed {
-  opacity: 1;
-  transform: none;
-}
 
 @media (prefers-reduced-motion: reduce) {
-  .js-motion [data-reveal] {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
   *,
   *::before,
   *::after {

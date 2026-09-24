@@ -69,20 +69,22 @@ export function ContactLinks({
   phoneLabel,
   emailLabel,
 }: {
-  contact: { phone: string; phoneE164: string; email: string };
+  contact: { phone: string | null; phoneE164: string | null; email: string };
   phoneLabel: string;
   emailLabel: string;
 }) {
   return (
     <dl className="grid gap-5 sm:grid-cols-2">
-      <div>
-        <dt className="text-[13.5px] font-medium">{phoneLabel}</dt>
-        <dd className="mt-1">
-          <a href={`tel:${contact.phoneE164}`} className="inline-block py-1 font-display text-[19px] font-bold text-ink hover:text-gold-ink">
-            {contact.phone}
-          </a>
-        </dd>
-      </div>
+      {contact.phone && contact.phoneE164 ? (
+        <div>
+          <dt className="text-[13.5px] font-medium">{phoneLabel}</dt>
+          <dd className="mt-1">
+            <a href={`tel:${contact.phoneE164}`} className="inline-block py-1 font-display text-[19px] font-bold text-ink hover:text-gold-ink">
+              {contact.phone}
+            </a>
+          </dd>
+        </div>
+      ) : null}
       <div>
         <dt className="text-[13.5px] font-medium">{emailLabel}</dt>
         <dd className="mt-1">

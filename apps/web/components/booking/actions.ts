@@ -1,7 +1,8 @@
 'use server';
 
-import { bookingSubmissionSchema, type BookingConfirmation } from '@calwebtech/shared';
+import { bookingSubmissionSchema, thankYouPath, type BookingConfirmation } from '@calwebtech/shared';
 import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
 import { TURNSTILE_FIELD } from '@/lib/turnstile-field';
 import { createBooking, getBookingSlots } from '@/lib/api/booking';
 
@@ -51,7 +52,13 @@ export async function submitBooking(_state: BookingFormState, form: FormData): P
   const visitorIp = forwarded?.split(',')[0]?.trim() ?? null;
 
   const result = await createBooking(parsed.data, visitorIp);
-  if (result.status === 'booked') return { status: 'booked', confirmation: result.confirmation };
+  if (result.status === 'booked') {
+    // A booked call goes to a page of its own (the owner's revision of 2026-09-22), which
+    // repeats the time back. Only the instant and the visitor's zone travel in the address:
+    // nothing about who booked it, since a thank-you URL ends up in histories and referrers.
+    const query = new URLSearchParams({ at: result.confirmation.startsAt, tz: parsed.data.timezone });
+    redirect(`${thankYouPath('booking')}?${query.toString()}`);
+  }
   if (result.status === 'slot-taken') {
     return { status: 'taken', slots: await getBookingSlots(parsed.data.consultationType) };
   }

@@ -1,25 +1,25 @@
 {
   "type": "booking",
   "seo": {
-    "title": "Thank you: consultation booked",
-    "description": "Your consultation with Calwebtech is booked. Here is what the confirmation email contains, how to reschedule and how to prepare for the call.",
+    "title": "Thank you for booking a consultation",
+    "description": "Your consultation with Calwebtech is booked. Here is what the confirmation email says and what happens before the call.",
     "ogImage": null
   },
   "eyebrow": "Consultation booked",
-  "title": "Thanks. Your consultation is booked.",
-  "intro": "The time you chose is reserved for you. A confirmation email with a calendar invite is on its way to the address you gave.",
+  "title": "Thank you for booking a consultation with us.",
+  "intro": "The time you chose is reserved for you. A confirmation is on its way to your email, and we send the meeting link ourselves before the call.",
   "received": {
     "heading": "What you sent us",
     "items": [
       "The type of consultation, the date and the time you chose, in your timezone",
-      "Your name, email address and company",
+      "Your name and email address, and your phone number if you gave one",
       "What you want to cover on the call"
     ]
   },
   "response": {
     "label": "Confirmation",
     "value": "By email, straight away",
-    "detail": "It carries a calendar invite and links to reschedule or cancel. Reminders follow a day and an hour before the call."
+    "detail": "It confirms the date and the time in your own timezone. The meeting link comes from a person on our team before the call."
   },
   "nextSteps": {
     "heading": "What happens before the call",
@@ -30,7 +30,7 @@
       },
       {
         "title": "Change the time if you need to",
-        "body": "Use the link in your confirmation email to reschedule or cancel. There is no need to call or write to us."
+        "body": "Reply to your confirmation email with a time that suits you better and we will move the call. There is no need to book again."
       },
       {
         "title": "We tell you what we would do",
@@ -62,8 +62,8 @@
   },
   "callLabel": "Prefer to talk? Call us",
   "contact": {
-    "phone": "+1 (800) 555-0188",
-    "phoneE164": "+18005550188",
-    "email": "hello@calwebtech.com"
+    "phone": null,
+    "phoneE164": null,
+    "email": "calidigi62@gmail.com"
   }
 }

@@ -30,7 +30,7 @@ export function LeadConfirmationEmail({ lead, acknowledgement, contact }: LeadCo
       <DetailRows rows={submissionRows(lead)} />
       {lead.message ? <Text style={styles.message}>{lead.message}</Text> : null}
 
-      {contact ? (
+      {contact?.phone && contact.phoneE164 ? (
         <Text style={styles.paragraph}>
           Need us sooner? Call{' '}
           <Link href={`tel:${contact.phoneE164}`} style={styles.link}>
@@ -38,7 +38,9 @@ export function LeadConfirmationEmail({ lead, acknowledgement, contact }: LeadCo
           </Link>{' '}
           or reply to this email.
         </Text>
-      ) : null}
+      ) : (
+        <Text style={styles.paragraph}>Need us sooner? Reply to this email.</Text>
+      )}
     </EmailLayout>
   );
 }

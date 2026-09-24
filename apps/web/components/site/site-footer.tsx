@@ -53,11 +53,13 @@ export function SiteFooter({ chrome }: { chrome: SiteChromeView }) {
             <p className="eyebrow text-gold-500">Get in touch</p>
             {/* Each link at least 24px tall (WCAG 2.2, 2.5.8 target size). */}
             <ul className="mt-0.5 leading-relaxed">
-              <li>
-                <a href={`tel:${contact.phoneE164}`} className="inline-block py-1 transition-colors duration-150 hover:text-ink-invert">
-                  {contact.phone}
-                </a>
-              </li>
+              {contact.phone && contact.phoneE164 ? (
+                <li>
+                  <a href={`tel:${contact.phoneE164}`} className="inline-block py-1 transition-colors duration-150 hover:text-ink-invert">
+                    {contact.phone}
+                  </a>
+                </li>
+              ) : null}
               <li>
                 <a href={`mailto:${contact.email}`} className="inline-block py-1 transition-colors duration-150 hover:text-ink-invert">
                   {contact.email}

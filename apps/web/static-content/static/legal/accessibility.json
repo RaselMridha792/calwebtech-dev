@@ -101,8 +101,8 @@
     "body": "Email or call us, whichever is easier for you. Tell us the page and what got in your way, and we will reply with how we will fix it."
   },
   "contact": {
-    "phone": "+1 (800) 555-0188",
-    "phoneE164": "+18005550188",
-    "email": "hello@calwebtech.com"
+    "phone": null,
+    "phoneE164": null,
+    "email": "calidigi62@gmail.com"
   }
 }

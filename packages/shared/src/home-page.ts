@@ -8,6 +8,7 @@ import {
 import { decorativeImageSchema, imageSchema, mediaSrcSchema } from './media';
 import { slugSchema } from './seo';
 import { siteContactSchema } from './site';
+import { DEFAULT_SUBSCRIBE_COPY, subscribeCopySchema } from './subscribe';
 
 const text = (max: number) => z.string().trim().min(1).max(max);
 
@@ -80,7 +81,8 @@ export const homePageContentSchema = z.object({
     /** Columns beside the featured projects. Empty falls back to the template's links. */
     workColumns: z.array(menuColumnSchema).max(2).default([]),
     /** Empty falls back to the template's links. */
-    resourceColumns: z.array(menuColumnSchema).max(3).default([]),
+    // Four since Technology joined Resources; the header narrows the lists to fit a promo.
+    resourceColumns: z.array(menuColumnSchema).max(4).default([]),
     resourcesPromo: menuPromoSchema.nullable().default(null),
   }),
   /** Groups in the small-screen menu. Empty falls back to services, industries and sections. */
@@ -251,8 +253,18 @@ export const homePageContentSchema = z.object({
     company: z.array(linkSchema).max(10),
     legal: z.array(linkSchema).max(8),
     backgroundImage: backdropSchema,
+    /**
+     * One line of address in place of the office list, when the owner would rather show a
+     * region than street addresses. Null lists the published offices, as before.
+     */
+    address: text(200).nullable().default(null),
   }),
   floatingCta: linkSchema,
+  /**
+   * The "Subscribe now" band above the footer (docs/08-decisions.md, 53). Defaulted, so a
+   * `home.content` stored before it existed still parses and the band still renders.
+   */
+  subscribe: subscribeCopySchema.default(DEFAULT_SUBSCRIBE_COPY),
 });
 export type HomePageContent = z.output<typeof homePageContentSchema>;
 export type HomePageContentInput = z.input<typeof homePageContentSchema>;

@@ -29,13 +29,26 @@ export type HomepageIndexing = z.infer<typeof homepageIndexingSchema>;
 export const siteIndexingSchema = z.object({ index: z.boolean() });
 export type SiteIndexing = z.infer<typeof siteIndexingSchema>;
 
-export const siteContactSchema = z.object({
-  /** Display form, e.g. "+1 (800) 555-0188". */
-  phone: z.string().trim().min(1),
-  /** E.164 form used in tel: links, e.g. "+18005550188". */
-  phoneE164: z.string().regex(/^\+[1-9]\d{6,14}$/),
-  email: z.email(),
-});
+/**
+ * How to reach the business. The telephone is optional: the owner took it off the site on
+ * 2026-09-23 until there is a number to publish, and every place that shows one leaves it
+ * out when it is null rather than printing a placeholder. Both forms are set or neither is.
+ */
+export const siteContactSchema = z
+  .object({
+    /** Display form, e.g. "+1 (800) 555-0188". */
+    phone: z.string().trim().min(1).nullable(),
+    /** E.164 form used in tel: links, e.g. "+18005550188". */
+    phoneE164: z
+      .string()
+      .regex(/^\+[1-9]\d{6,14}$/)
+      .nullable(),
+    email: z.email(),
+  })
+  .refine((contact) => (contact.phone === null) === (contact.phoneE164 === null), {
+    message: 'Give the number in both forms, or leave both empty',
+    path: ['phoneE164'],
+  });
 
 export const siteProofSchema = z.object({
   npsScore: z.number().min(-100).max(100).nullable(),

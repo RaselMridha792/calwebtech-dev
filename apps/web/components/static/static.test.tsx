@@ -118,7 +118,11 @@ describe('static family pages rendered from their snapshots', () => {
     );
     expectHeadingOrder(html);
     expect(html).toContain('data-testid="lead-form"');
-    expect(html).toContain(`href="tel:${view.contact.phoneE164}"`);
+    // The site publishes no number for now (2026-09-23): the mailbox is the way in, and a
+    // missing number is left out rather than linked as tel:null.
+    expect(html).toContain(`href="mailto:${view.contact.email}"`);
+    if (view.contact.phoneE164) expect(html).toContain(`href="tel:${view.contact.phoneE164}"`);
+    else expect(html).not.toContain('href="tel:');
     for (const type of view.enquiryTypes) expect(html).toContain(`href="/contact/?enquiry=${type.slug}#contact-form"`);
     expect(render(<EnquiryRouting view={{ ...view, enquiryTypes: [] }} />)).toBe('');
   });

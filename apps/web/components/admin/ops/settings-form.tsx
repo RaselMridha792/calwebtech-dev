@@ -95,16 +95,16 @@ function SettingCard({ setting }: { setting: SettingRow }) {
 // ---------------------------------------------------------------- per key
 
 function ContactFields({ value, busy, onSave }: FieldProps) {
-  const current = (value ?? {}) as { phone?: string; phoneE164?: string; email?: string };
+  const current = (value ?? {}) as { phone?: string | null; phoneE164?: string | null; email?: string };
   const [phone, setPhone] = useState(current.phone ?? '');
   const [phoneE164, setPhoneE164] = useState(current.phoneE164 ?? '');
   const [email, setEmail] = useState(current.email ?? '');
 
   return (
     <Row>
-      <Field label="Phone, as shown" id="contact-phone" value={phone} onChange={setPhone} placeholder="+1 (800) 555-0188" />
+      <Field label="Phone, as shown (optional)" id="contact-phone" value={phone} onChange={setPhone} placeholder="+1 (800) 555-0188" />
       <Field
-        label="Phone, for tel: links"
+        label="Phone, for tel: links (optional)"
         id="contact-e164"
         value={phoneE164}
         onChange={setPhoneE164}
@@ -114,7 +114,8 @@ function ContactFields({ value, busy, onSave }: FieldProps) {
       <Save
         busy={busy}
         onClick={() => {
-          onSave({ phone, phoneE164, email });
+          // Both phone fields empty takes the number off the site; the API refuses one without the other.
+          onSave({ phone: phone.trim() || null, phoneE164: phoneE164.trim() || null, email });
         }}
       />
     </Row>

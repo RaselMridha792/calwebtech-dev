@@ -28,6 +28,7 @@ import { CalculatorPageModule } from './calculator/calculator.controller';
 import { InsightsModule } from './insights/insights.controller';
 import { FormsModule } from './forms/forms.controller';
 import { BookingModule } from './booking/booking.controller';
+import { SubscribersModule } from './subscribers/subscribers.controller';
 import { UnsubscribeModule } from './unsubscribe/unsubscribe.controller';
 import { WebhooksModule } from './webhooks/resend-webhook.controller';
 
@@ -61,6 +62,7 @@ import { WebhooksModule } from './webhooks/resend-webhook.controller';
     InsightsModule,
     FormsModule,
     BookingModule,
+    SubscribersModule,
     UnsubscribeModule,
     WebhooksModule,
   ],

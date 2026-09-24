@@ -1,0 +1,176 @@
+{
+  "slug": "law-firms",
+  "name": "Law",
+  "title": "Law firm website design",
+  "seo": {
+    "title": "Law firm website design",
+    "description": "Law firm websites that turn searches into consultations, with practice area pages, screened intake and the advertising rules respected.",
+    "ogImage": "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=1200&h=630&q=75"
+  },
+  "answerBlock": "A law firm website has to show a prospective client, quickly and credibly, that you handle their kind of matter, then make it easy to ask for a consultation. Calwebtech designs and builds law firm websites with practice area pages, intake forms that screen enquiries before they reach a lawyer, and wording that respects the rules on lawyer advertising. Every enquiry is stored in a database the firm owns.",
+  "updatedAt": "2026-09-23T00:00:00.000Z",
+  "hero": {
+    "intro": "People look for a lawyer when something has gone wrong, usually on a phone and often out of hours. We build the site that tells them within seconds whether you handle their matter, and lets them ask for a consultation there and then.",
+    "primaryCta": {
+      "label": "Discuss your project",
+      "href": "/contact/"
+    },
+    "secondaryCta": {
+      "label": "See what it costs",
+      "href": "/pricing/"
+    },
+    "highlights": [
+      "Practice area pages written for the questions clients ask",
+      "Intake forms that screen enquiries before a lawyer reads them",
+      "Conflict-check details collected at first contact",
+      "Attorney profiles and results within the advertising rules"
+    ],
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=1600&q=60"
+    },
+    "line": "The consultation request that arrives already screened."
+  },
+  "painPoints": {
+    "heading": "Why do law firm websites lose clients to other firms?",
+    "intro": "Prospective clients often contact two or three firms, and the first one that responds clearly usually gets the matter.",
+    "items": [
+      {
+        "title": "A practice list with nothing behind it",
+        "body": "A list of practice areas without a page for each gives a client no reason to believe you handle their situation, and gives search engines nothing to rank."
+      },
+      {
+        "title": "Enquiries that arrive unscreened",
+        "body": "A general contact form sends every message to the same inbox, so lawyers spend billable time on enquiries the firm cannot take."
+      },
+      {
+        "title": "Nothing to do out of hours",
+        "body": "Most people start looking in the evening. If the site offers only a phone number, they contact whichever firm lets them ask for a consultation online."
+      },
+      {
+        "title": "Advertising rules as an afterthought",
+        "body": "Testimonials, case results and claims of expertise are regulated in most jurisdictions, and a site written without that in mind puts the firm at risk."
+      }
+    ]
+  },
+  "services": {
+    "heading": "Which services does a law firm need from a web partner?",
+    "intro": "Most law firm projects are a redesign that keeps the rankings the practice area pages already have and adds proper intake.",
+    "items": [
+      {
+        "slug": "custom-website-development",
+        "title": "Custom website development",
+        "body": "Practice area, attorney and office pages, with a consultation request on every one."
+      },
+      {
+        "slug": "website-redesign",
+        "title": "Website redesign",
+        "body": "A redesign that keeps the search rankings your practice area pages already have."
+      },
+      {
+        "slug": "web-application-development",
+        "title": "Web application development",
+        "body": "Intake flows that ask the right questions for each matter type, collect conflict-check details and route to the right lawyer."
+      },
+      {
+        "slug": "ai-search-visibility",
+        "title": "AI search visibility",
+        "body": "Legal service and attorney structured data, and plain-language answers to the questions clients now ask AI assistants."
+      },
+      {
+        "slug": "care-plans",
+        "title": "Website care plans",
+        "body": "Updates to practice areas, attorney profiles and published results, monitoring and a fixed development allowance, month to month."
+      }
+    ]
+  },
+  "compliance": {
+    "heading": "What advertising, confidentiality and accessibility rules does a law firm website have to meet?",
+    "intro": "A law firm website is lawyer advertising, it collects sensitive information and it has to be usable by everyone.",
+    "notes": [
+      {
+        "title": "Lawyer advertising rules",
+        "body": "In the United States, ABA Model Rules 7.1 to 7.3 and each state's own version govern claims, testimonials and past results. Disclaimers such as \"Attorney Advertising\" or \"Prior results do not guarantee a similar outcome\" are added where your state bar requires them, and the firm approves the final wording."
+      },
+      {
+        "title": "No attorney-client relationship by accident",
+        "body": "Intake forms say clearly that sending an enquiry does not create an attorney-client relationship, and ask only for the details a conflict check needs before the firm has agreed to act."
+      },
+      {
+        "title": "Confidential enquiries",
+        "body": "Enquiries travel over an encrypted connection and are stored in the firm's own database, with access limited to the people who handle intake. Nothing is kept in a third-party form tool."
+      },
+      {
+        "title": "Accessibility",
+        "body": "Pages and forms are built to WCAG 2.2 AA, so a prospective client using a screen reader or a keyboard can find the right lawyer and ask for a consultation like anyone else."
+      }
+    ]
+  },
+  "caseStudies": null,
+  "results": null,
+  "integrations": {
+    "heading": "Which systems does a law firm website usually connect to?",
+    "intro": "The website sits in front of the systems your intake team already uses, so a consultation request becomes a matter without being retyped.",
+    "items": [
+      {
+        "name": "Practice management",
+        "body": "Clio, MyCase, PracticePanther or Filevine, so a consultation request arrives as a lead or matter."
+      },
+      {
+        "name": "Intake and scheduling",
+        "body": "Consultation booking and screening questions routed to the right lawyer or intake team."
+      },
+      {
+        "name": "E-signature",
+        "body": "Engagement letters sent for signature once the firm has decided to take the matter."
+      },
+      {
+        "name": "Payments",
+        "body": "Consultation fees and retainers through LawPay or a similar provider built for trust accounting."
+      },
+      {
+        "name": "Phone and chat",
+        "body": "Call tracking and chat set up so every enquiry, however it arrives, is recorded against its source."
+      },
+      {
+        "name": "Listings and reviews",
+        "body": "Consistent firm details across Google Business Profile and legal directories, with review highlights where your bar's rules allow them."
+      }
+    ]
+  },
+  "faq": {
+    "heading": "What do law firms ask before a new website?",
+    "intro": "The questions managing partners, marketing leads and practice managers raise first.",
+    "items": [
+      {
+        "id": "law-faq-rules",
+        "question": "Will the website follow our state bar's advertising rules?",
+        "answer": "It is built with them in mind: claims, testimonials and results are handled the way the ABA Model Rules and most state versions expect, with disclaimers where they are required. The final wording is always approved by the firm, since the firm is responsible for its advertising."
+      },
+      {
+        "id": "law-faq-intake",
+        "question": "Can the site screen enquiries before they reach a lawyer?",
+        "answer": "Yes. Each practice area can have its own intake questions, so a family law enquiry and a personal injury enquiry ask for different details. Enquiries the firm does not handle can be told so politely and pointed elsewhere."
+      },
+      {
+        "id": "law-faq-practice-management",
+        "question": "Will it connect to our practice management software?",
+        "answer": "Most likely. Clio, MyCase, PracticePanther and Filevine all accept leads from a website. We confirm what yours supports in discovery, so a consultation request arrives as a lead without being retyped."
+      },
+      {
+        "id": "law-faq-results",
+        "question": "Can we publish case results and client reviews?",
+        "answer": "Where your jurisdiction allows it, yes, with the disclaimers it requires. Results and reviews are content your team controls, so anything can be edited or removed quickly if the rules or the firm's view change."
+      },
+      {
+        "id": "law-faq-cost",
+        "question": "How much does a law firm website cost?",
+        "answer": "A firm website with custom design, practice area and attorney pages and consultation forms usually sits in our focused build range of $12k to $25k. Multi-office firms, detailed intake flows and practice management integrations are platform builds, usually $25k to $60k."
+      },
+      {
+        "id": "law-faq-confidential",
+        "question": "Where are enquiries stored?",
+        "answer": "In a database registered to the firm, not in a third-party form tool. Access is limited to the people who handle intake, and every enquiry keeps a record of where it came from."
+      }
+    ]
+  }
+}

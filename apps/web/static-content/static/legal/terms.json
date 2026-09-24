@@ -129,8 +129,8 @@
     "body": "Email or call us and a person will answer. For anything about a project, the [contact page](/contact/) passes your message to the right people."
   },
   "contact": {
-    "phone": "+1 (800) 555-0188",
-    "phoneE164": "+18005550188",
-    "email": "hello@calwebtech.com"
+    "phone": null,
+    "phoneE164": null,
+    "email": "calidigi62@gmail.com"
   }
 }

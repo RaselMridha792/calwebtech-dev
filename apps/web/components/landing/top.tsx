@@ -33,12 +33,14 @@ export function LandingHeader({
               </span>
             </p>
           ) : null}
-          <a
-            href={`tel:${contact.phoneE164}`}
-            className="hidden text-[15px] font-semibold text-ink hover:text-gold-ink sm:block"
-          >
-            {contact.phone}
-          </a>
+          {contact.phone && contact.phoneE164 ? (
+            <a
+              href={`tel:${contact.phoneE164}`}
+              className="hidden text-[15px] font-semibold text-ink hover:text-gold-ink sm:block"
+            >
+              {contact.phone}
+            </a>
+          ) : null}
           <a
             href="#form"
             className="inline-flex h-11 items-center bg-navy-900 px-4 text-[14px] font-semibold whitespace-nowrap text-ink-invert hover:bg-navy-700 sm:px-5 sm:text-[14.5px]"

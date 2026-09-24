@@ -219,8 +219,8 @@ describe('buildSiteChrome', () => {
       primaryCta: { label: 'Book a call', href: '/book-a-consultation/' },
       secondaryCta: { label: 'Estimate', href: '/#estimate' },
     });
-    // Pricing lives in the Resources menu now, so the bar carries one plain link.
-    expect(header.links.map((item) => item.href)).toEqual(['/technology/']);
+    // Technology moved into the Resources menu (2026-09-23), so the bar carries no links of its own.
+    expect(header.links).toEqual([]);
     expect(floatingCta).toEqual({ label: 'Start a project', href: '/book-a-consultation/' });
   });
 

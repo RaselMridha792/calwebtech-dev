@@ -1,0 +1,176 @@
+{
+  "slug": "media-and-publishing",
+  "name": "Media",
+  "title": "Media and publishing website design",
+  "seo": {
+    "title": "Media and publishing website design",
+    "description": "Websites for publishers, broadcasters and podcasters: fast article pages, subscriptions, and a newsletter list you own.",
+    "ogImage": "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?auto=format&fit=crop&w=1200&h=630&q=75"
+  },
+  "answerBlock": "A media website has to load fast enough to keep readers who arrive from search and social, then turn them into subscribers and newsletter readers you own. Calwebtech designs and builds websites for publishers, broadcasters and podcasters, with article pages that pass Core Web Vitals with the ads switched on. Subscriptions and the newsletter list live in a database registered to you.",
+  "updatedAt": "2026-09-23T00:00:00.000Z",
+  "hero": {
+    "intro": "Readers arrive from search, social and newsletters, read one story and leave. We build the site that keeps them: pages that load before they give up, a reason to read the next piece, and a sign-up they actually finish.",
+    "primaryCta": {
+      "label": "Discuss your project",
+      "href": "/contact/"
+    },
+    "secondaryCta": {
+      "label": "See what it costs",
+      "href": "/pricing/"
+    },
+    "highlights": [
+      "Article pages that pass Core Web Vitals, ads included",
+      "Subscriptions, memberships and paywalls",
+      "A newsletter list held in your own database",
+      "An editor your newsroom can publish from quickly"
+    ],
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?auto=format&fit=crop&w=1600&q=60"
+    },
+    "line": "Pages fast enough to keep the reader for the next story."
+  },
+  "painPoints": {
+    "heading": "Why do media websites lose readers and revenue?",
+    "intro": "Most of the audience arrives on a single article, and the site has a few seconds to earn a second page.",
+    "items": [
+      {
+        "title": "Ads that make the page crawl",
+        "body": "Heavy ad scripts push the page past Google's Core Web Vitals thresholds, which costs search traffic, and the layout jumps as ads load, which costs the reader."
+      },
+      {
+        "title": "An audience rented from the platforms",
+        "body": "Traffic from social and search changes with every algorithm update. Without a newsletter and accounts you own, there is no audience to fall back on."
+      },
+      {
+        "title": "A publishing tool that slows the newsroom",
+        "body": "When a story takes too many steps to publish, update or correct, the site falls behind the news and editors start working around the system."
+      },
+      {
+        "title": "Subscriptions that are hard to start and hard to stop",
+        "body": "A clumsy paywall loses the readers most willing to pay, and a cancellation that needs a phone call breaks the automatic renewal laws in a growing number of places."
+      }
+    ]
+  },
+  "services": {
+    "heading": "Which services does a publisher or media business need from a web partner?",
+    "intro": "Most media projects rebuild the templates and the publishing workflow while keeping every article address the archive already ranks for.",
+    "items": [
+      {
+        "slug": "custom-website-development",
+        "title": "Custom website development",
+        "body": "Article, section and author templates built for speed, with ad slots that reserve their space so the page never jumps."
+      },
+      {
+        "slug": "web-application-development",
+        "title": "Web application development",
+        "body": "Subscriptions, memberships, paywalls and reader accounts connected to your payment provider."
+      },
+      {
+        "slug": "wordpress-development",
+        "title": "WordPress development",
+        "body": "WordPress, or a headless editor, set up so your newsroom can publish, schedule and correct stories quickly."
+      },
+      {
+        "slug": "ai-search-visibility",
+        "title": "AI search visibility",
+        "body": "Article and podcast structured data, and content built to be cited by AI search as well as ranked by Google."
+      },
+      {
+        "slug": "care-plans",
+        "title": "Website care plans",
+        "body": "Monitoring of page speed and ad performance, updates and a fixed development allowance, month to month."
+      }
+    ]
+  },
+  "compliance": {
+    "heading": "What privacy, subscription and accessibility rules does a media website have to meet?",
+    "intro": "Media sites run advertising, take payments and publish to everyone, so consent, subscriptions and accessibility all have rules.",
+    "notes": [
+      {
+        "title": "Consent for advertising and analytics",
+        "body": "Ad and analytics tags that set cookies load only after consent where GDPR and the ePrivacy rules apply, and honour opt-outs under US state privacy laws such as the CCPA."
+      },
+      {
+        "title": "Subscriptions that are easy to cancel",
+        "body": "Automatic renewal laws in several US states, California among them, require clear terms before purchase and a way to cancel online. Subscription flows let readers cancel as easily as they signed up."
+      },
+      {
+        "title": "Card payments",
+        "body": "Subscriptions and donations use hosted payment fields from your payment provider, so card details never touch the website and PCI DSS scope stays small."
+      },
+      {
+        "title": "Accessible articles, audio and video",
+        "body": "Articles, galleries and players are built to WCAG 2.2 AA, with captions for video and transcripts for audio where you publish them."
+      }
+    ]
+  },
+  "caseStudies": null,
+  "results": null,
+  "integrations": {
+    "heading": "Which systems does a media website usually connect to?",
+    "intro": "The website sits between your newsroom's tools and your readers, so each system does one job and the audience data stays yours.",
+    "items": [
+      {
+        "name": "Content management",
+        "body": "WordPress, a headless CMS or a custom editor, with roles for writers, editors and publishers."
+      },
+      {
+        "name": "Advertising",
+        "body": "Google Ad Manager and header bidding, with slots sized in advance so ads do not shift the page."
+      },
+      {
+        "name": "Subscriptions and paywalls",
+        "body": "Stripe, Piano or your existing subscription platform, with access rules the site enforces on every page."
+      },
+      {
+        "name": "Newsletters",
+        "body": "Sign-ups stored in your own database first, then sent through your email platform, so the list stays yours."
+      },
+      {
+        "name": "Audio and video",
+        "body": "Podcast hosts and video players embedded without slowing the page, with feeds for Apple Podcasts and Spotify."
+      },
+      {
+        "name": "Analytics",
+        "body": "Privacy-respecting analytics for audience, time on page and subscription conversion, under your own account."
+      }
+    ]
+  },
+  "faq": {
+    "heading": "What do publishers and media teams ask before a new website?",
+    "intro": "The questions editors, publishers and commercial leads raise first.",
+    "items": [
+      {
+        "id": "media-faq-speed",
+        "question": "Can a site with advertising still be fast?",
+        "answer": "Yes, if the ads are built in rather than bolted on. Ad slots reserve their space so the layout does not jump, scripts load after the article, and we measure Core Web Vitals with the ads switched on, not off."
+      },
+      {
+        "id": "media-faq-migration",
+        "question": "Can you move our archive without losing search traffic?",
+        "answer": "Yes. Every article keeps its address or gets a permanent redirect, and we check rankings and indexing before and after the move. Large archives move in batches, with the redirects tested first."
+      },
+      {
+        "id": "media-faq-paywall",
+        "question": "Can we run a paywall or a membership?",
+        "answer": "Yes. Metered, hard or freemium paywalls, memberships and donations can all be built on Stripe or your existing subscription platform, with the rules enforced by the site rather than hidden with a script."
+      },
+      {
+        "id": "media-faq-newsroom",
+        "question": "Will it slow our newsroom down?",
+        "answer": "The editor is built around how your newsroom already works: drafts, scheduling, updates and corrections in a few steps, with roles for writers and editors. We test it with your editors before launch."
+      },
+      {
+        "id": "media-faq-cost",
+        "question": "How much does a media website cost?",
+        "answer": "A focused publication with custom templates and a newsletter sign-up usually sits in our focused build range of $12k to $25k. Subscriptions, paywalls, archive migrations and multi-title platforms are platform builds, usually $25k to $60k."
+      },
+      {
+        "id": "media-faq-owned",
+        "question": "Who owns the audience data?",
+        "answer": "You do. Newsletter subscribers, accounts and subscriptions are stored in a database registered to you, and the email platform only sends. If you change providers, the list moves with you."
+      }
+    ]
+  }
+}

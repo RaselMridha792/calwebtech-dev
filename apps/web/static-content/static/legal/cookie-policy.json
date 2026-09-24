@@ -99,8 +99,8 @@
     "body": "If something in your browser does not match this page, tell us and we will look into it."
   },
   "contact": {
-    "phone": "+1 (800) 555-0188",
-    "phoneE164": "+18005550188",
-    "email": "hello@calwebtech.com"
+    "phone": null,
+    "phoneE164": null,
+    "email": "calidigi62@gmail.com"
   }
 }

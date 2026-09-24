@@ -49,8 +49,8 @@
     "body": "Tell us where you found it and we will fix it. Call or email us, and a person will help you find what you were looking for."
   },
   "contact": {
-    "phone": "+1 (800) 555-0188",
-    "phoneE164": "+18005550188",
-    "email": "hello@calwebtech.com"
+    "phone": null,
+    "phoneE164": null,
+    "email": "calidigi62@gmail.com"
   }
 }

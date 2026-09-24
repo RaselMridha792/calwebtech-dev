@@ -2,7 +2,6 @@ import type { SiteChromeView } from '@calwebtech/shared';
 import type { ReactNode } from 'react';
 import { organizationJsonLd } from '@/lib/seo/json-ld';
 import { AnchorScroll } from '../motion/anchor-scroll';
-import { RevealObserver } from '../motion/reveal-observer';
 import { JsonLd } from '../seo/json-ld';
 import { ConversionBand } from './conversion-band';
 import { HeaderScrollState } from './header-scroll';
@@ -28,7 +27,6 @@ export function SiteShell({ chrome, children }: { chrome: SiteChromeView; childr
       <SiteFooter chrome={chrome} />
       <FloatingCta link={chrome.floatingCta} />
       <JsonLd data={organizationJsonLd({ contact: chrome.contact, offices: chrome.footer.offices })} />
-      <RevealObserver />
       <AnchorScroll />
     </>
   );

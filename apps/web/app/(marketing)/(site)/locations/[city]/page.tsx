@@ -84,7 +84,11 @@ export default async function LocationPage({ params }: PageProps<'/locations/[ci
   if (!page) notFound();
 
   const path = locationPath(page.slug);
-  const call = { label: `Call ${page.contact.phone}`, href: `tel:${page.contact.phoneE164}` };
+  // No number to call while the site publishes none; the page falls back to email.
+  const call =
+    page.contact.phone && page.contact.phoneE164
+      ? { label: `Call ${page.contact.phone}`, href: `tel:${page.contact.phoneE164}` }
+      : { label: 'Email us', href: `mailto:${page.contact.email}` };
   const book = { label: 'Book a consultation', href: SITE_ROUTES.contact };
 
   return (

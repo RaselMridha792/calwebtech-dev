@@ -18,9 +18,9 @@
   },
   "address": "98 San Jacinto Blvd, Suite 400\nAustin, TX 78701",
   "contact": {
-    "phone": "+1 (800) 555-0188",
-    "phoneE164": "+18005550188",
-    "email": "hello@calwebtech.com"
+    "phone": null,
+    "phoneE164": null,
+    "email": "calidigi62@gmail.com"
   },
   "localContext": {
     "heading": "What is different about building websites for Austin companies?",
@@ -42,7 +42,9 @@
   "clients": {
     "heading": "Which Texas clients have we worked with?",
     "intro": "Truvia Labs, a SaaS company in Texas, is our published Texas client. Its marketing site, documentation and in-app onboarding now share one design system, so a product release no longer breaks the brand.",
-    "names": ["Truvia Labs"]
+    "names": [
+      "Truvia Labs"
+    ]
   },
   "caseStudies": {
     "heading": "What results have we delivered for work like yours?",
@@ -52,45 +54,85 @@
         "slug": "truvia-labs",
         "clientName": "Truvia Labs",
         "summary": "Marketing site, docs and in-app onboarding rebuilt on one design system so releases stopped breaking the brand.",
-        "tags": ["Texas, USA", "SaaS", "Next.js"],
+        "tags": [
+          "Texas, USA",
+          "SaaS",
+          "Next.js"
+        ],
         "image": {
           "src": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=70",
           "alt": "Product team working on a software platform"
         },
         "metrics": [
-          { "value": "+140%", "label": "Demo bookings" },
-          { "value": "3.1x", "label": "Organic sessions" },
-          { "value": "98", "label": "Lighthouse mobile" }
+          {
+            "value": "+140%",
+            "label": "Demo bookings"
+          },
+          {
+            "value": "3.1x",
+            "label": "Organic sessions"
+          },
+          {
+            "value": "98",
+            "label": "Lighthouse mobile"
+          }
         ]
       },
       {
         "slug": "meridian-parts",
         "clientName": "Meridian Parts",
         "summary": "Fitment search across 90,000 SKUs, so a technician finds the right part on a phone in a workshop.",
-        "tags": ["Michigan, USA", "Manufacturing", "Headless"],
+        "tags": [
+          "Michigan, USA",
+          "Manufacturing",
+          "Headless"
+        ],
         "image": {
           "src": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=900&q=70",
           "alt": "Engineer inspecting equipment on a production floor"
         },
         "metrics": [
-          { "value": "+207%", "label": "Organic traffic" },
-          { "value": "−63%", "label": "Wrong-part returns" },
-          { "value": "4.2x", "label": "Repeat orders" }
+          {
+            "value": "+207%",
+            "label": "Organic traffic"
+          },
+          {
+            "value": "−63%",
+            "label": "Wrong-part returns"
+          },
+          {
+            "value": "4.2x",
+            "label": "Repeat orders"
+          }
         ]
       },
       {
         "slug": "northmark-supply",
         "clientName": "Northmark Supply",
         "summary": "A catalogue of 40,000 parts behind a contact form. We rebuilt it as a searchable, account-priced quoting platform tied into their ERP.",
-        "tags": ["Ohio, USA", "B2B", "Distribution", "Next.js"],
+        "tags": [
+          "Ohio, USA",
+          "B2B",
+          "Distribution",
+          "Next.js"
+        ],
         "image": {
           "src": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=70",
           "alt": "Sales team reviewing performance figures"
         },
         "metrics": [
-          { "value": "+312%", "label": "Quote requests" },
-          { "value": "12 min", "label": "Quote turnaround, from 3 days" },
-          { "value": "−41%", "label": "Support calls" }
+          {
+            "value": "+312%",
+            "label": "Quote requests"
+          },
+          {
+            "value": "12 min",
+            "label": "Quote turnaround, from 3 days"
+          },
+          {
+            "value": "−41%",
+            "label": "Support calls"
+          }
         ]
       }
     ]

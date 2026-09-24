@@ -11,13 +11,17 @@ export function ThankYouResponse({ page }: { page: StaticThankYouView }) {
       <p className="text-[14px] font-semibold text-ink-muted">{page.response.label}</p>
       <p className="mt-1.5 font-display text-[26px] leading-tight font-extrabold text-ink">{page.response.value}</p>
       <p className="mt-3 text-[15.5px] leading-relaxed">{page.response.detail}</p>
-      <p className="mt-6 border-t border-hairline pt-5 text-[14px]">{page.callLabel}</p>
-      <a
-        href={`tel:${page.contact.phoneE164}`}
-        className="mt-1 inline-block py-1 font-display text-[21px] font-bold text-ink hover:text-gold-ink"
-      >
-        {page.contact.phone}
-      </a>
+      {page.contact.phone && page.contact.phoneE164 ? (
+        <>
+          <p className="mt-6 border-t border-hairline pt-5 text-[14px]">{page.callLabel}</p>
+          <a
+            href={`tel:${page.contact.phoneE164}`}
+            className="mt-1 inline-block py-1 font-display text-[21px] font-bold text-ink hover:text-gold-ink"
+          >
+            {page.contact.phone}
+          </a>
+        </>
+      ) : null}
     </div>
   );
 }

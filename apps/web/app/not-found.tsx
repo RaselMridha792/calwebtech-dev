@@ -1,5 +1,4 @@
 import { SITE_ROUTES } from '@calwebtech/shared';
-import { RevealObserver } from '@/components/motion/reveal-observer';
 import { SkipLink } from '@/components/site/skip-link';
 import { NotFoundPage } from '@/components/static/not-found';
 import { Logo } from '@/components/ui/logo';
@@ -52,7 +51,6 @@ export default async function NotFound() {
           </a>
         </div>
       </footer>
-      <RevealObserver />
     </>
   );
 }

@@ -69,7 +69,7 @@ export const siteChromeViewSchema = z.object({
         )
         .max(2),
     }),
-    resources: z.object({ columns: z.array(menuColumnSchema).max(3), promo: menuPromoSchema.nullable() }),
+    resources: z.object({ columns: z.array(menuColumnSchema).max(4), promo: menuPromoSchema.nullable() }),
   }),
   mobileMenu: z.object({
     groups: z.array(z.object({ title: text(60), links: z.array(siteLinkSchema).min(1).max(12) })).max(4),
@@ -118,8 +118,9 @@ export interface SiteChromeSources {
 
 /** Links the template supplies where the copy sets none. */
 export const CHROME_DEFAULTS = {
-  // Pricing moved into the Resources menu, where the cost calculator already lived.
-  headerLinks: [{ label: 'Technology', href: SITE_ROUTES.technology }],
+  // Pricing moved into the Resources menu, where the cost calculator already lived, and
+  // Technology followed it on 2026-09-23 at the owner's request, with its six parts.
+  headerLinks: [],
   workColumns: [
     {
       title: 'Browse',
@@ -262,9 +263,11 @@ export function buildSiteChrome(sources: SiteChromeSources): SiteChromeView {
     footer: {
       blurb: footer.blurb,
       columns: footerColumns,
-      offices: sources.offices
-        .flatMap((office) => (office.address ? [{ city: office.city, address: office.address }] : []))
-        .slice(0, 2),
+      offices: footer.address
+        ? [{ city: 'Address', address: footer.address }]
+        : sources.offices
+            .flatMap((office) => (office.address ? [{ city: office.city, address: office.address }] : []))
+            .slice(0, 2),
       legal: siteLinks(footer.legal),
       backgroundImage: footer.backgroundImage,
     },

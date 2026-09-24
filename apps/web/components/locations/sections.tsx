@@ -33,15 +33,17 @@ export function LocationContactCard({ page }: { page: LocationDetailView }) {
             <dd className="mt-1 whitespace-pre-line text-ink-invert">{page.address}</dd>
           </div>
         ) : null}
-        <div>
-          <dt className="text-[13px] text-ink-invert-muted">Phone</dt>
-          <dd className="mt-1">
-            <a href={`tel:${page.contact.phoneE164}`} className="inline-flex items-center gap-2 py-1 font-semibold text-ink-invert hover:underline">
-              <PhoneIcon className="h-4 w-4" />
-              {page.contact.phone}
-            </a>
-          </dd>
-        </div>
+        {page.contact.phone && page.contact.phoneE164 ? (
+          <div>
+            <dt className="text-[13px] text-ink-invert-muted">Phone</dt>
+            <dd className="mt-1">
+              <a href={`tel:${page.contact.phoneE164}`} className="inline-flex items-center gap-2 py-1 font-semibold text-ink-invert hover:underline">
+                <PhoneIcon className="h-4 w-4" />
+                {page.contact.phone}
+              </a>
+            </dd>
+          </div>
+        ) : null}
         <div>
           <dt className="text-[13px] text-ink-invert-muted">Email</dt>
           <dd className="mt-1">

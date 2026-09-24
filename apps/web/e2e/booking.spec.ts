@@ -57,10 +57,15 @@ test.describe('book a consultation', () => {
     await expect(page.getByRole('heading', { name: /does this look right/i })).toBeVisible();
     await page.getByRole('button', { name: /confirm this time/i }).click();
 
-    // The confirmation replaces the form: leaving it up invites a second booking of a
-    // slot that has already gone.
-    await expect(page.getByRole('status')).toContainText(/that time is yours/i, { timeout: 20_000 });
-    await expect(page.getByRole('button', { name: /confirm this time/i })).toHaveCount(0);
+    // A booked call lands on a page of its own, which says so and repeats the time back.
+    // Leaving the form up would invite a second booking of a slot that has already gone.
+    await expect(page).toHaveURL(/\/thank-you\/booking\/\?at=/, { timeout: 20_000 });
+    // The heading's words come from the thank-you copy, which is the snapshot's on production
+    // and the database's here, so this asks that the page is a page and not that it says one
+    // sentence. What must hold everywhere is that the time is repeated back.
+    await expect(page.locator('h1')).toHaveCount(1);
+    await expect(page.getByText('Your call')).toBeVisible();
+    await expect(page.getByText(/ at \d{1,2}:\d{2}\s?(AM|PM)/)).toBeVisible();
   });
 
   test('is listed in sitemap.xml and on the sitemap page', async ({ request, page }) => {
