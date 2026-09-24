@@ -276,6 +276,52 @@ screens at `/admin/campaigns/` and `/admin/campaigns/[id]/` (`new` to create). N
 - New audit actions: `campaign.created`, `campaign.updated`, `campaign.deleted`,
   `campaign.test_sent`.
 
+## 51. Scheduling, the send and unsubscribing
+
+*2026-09-24.* The third part of Task 5.4. Migration `20260924033859_campaign_recipient_failure`
+adds `failedAt` and `error` to `CampaignRecipient`: a recipient not sent to for good, and why.
+Additive, nothing lost.
+
+- **Scheduling** (`POST /admin/campaigns/:id/schedule`, `sendAt` or null for now;
+  `POST .../unschedule` back to a draft). Only a draft with a segment can be scheduled, and a
+  time more than a minute in the past is refused rather than read as now. Audited as
+  `campaign.scheduled` and `campaign.unscheduled`.
+- **The worker starts a campaign, not the API** (decision 22: the API only produces). A sweep
+  on its own queue, `campaign-sweep`, runs every minute and when a campaign is sent now. It
+  moves a due campaign from SCHEDULED to SENDING in one conditional update, so it starts once;
+  evaluates the segment **at that moment**; writes a delivery row per person; then queues them.
+- **Rows before jobs.** A recipient's row is written before its job, and each sweep requeues
+  every recipient of a sending campaign not yet sent to. A process that dies in between loses
+  nobody. For campaigns this closes the outbox gap noted in Open for lead emails.
+- **One job per recipient** on the `campaign` queue, with the job id and the provider
+  idempotency key `campaign-send-<recipientId>`, so a retry or a requeue never sends twice. A
+  recipient already sent to is skipped.
+- **Rate**: a BullMQ limiter of `CAMPAIGN_SEND_PER_SECOND` (default 1) across every worker.
+  Resend's default is 2 a second for the whole account, and lead and booking emails share it.
+  Sends go one by one, not through Resend's batch endpoint, so each recipient has its own
+  provider id and its own idempotency key.
+- **Suppression is checked again at send time**, per recipient. Somebody who unsubscribes or
+  bounces during a long send is not sent to by it: the row is marked `failedAt` with
+  `suppressed` or `unsubscribed`. This is the rule that no campaign overrides the list.
+- **Finishing**: a sending campaign with nobody left is SENT, or FAILED if nobody received
+  it. The worker audits `campaign.dispatched`, `campaign.sent` and `campaign.failed` with no
+  user, because no user did it.
+- **Unsubscribe links.** Every campaign email carries its recipient's own link,
+  `/unsubscribe/<token>/`, and the RFC 8058 headers `List-Unsubscribe` (the API's
+  `/api/unsubscribe/<token>`) and `List-Unsubscribe-Post`. The token is the subscriber id, a
+  tilde and an HMAC of the id (`@calwebtech/shared/unsubscribe-token`), keyed from
+  `AUTH_SECRET` with a purpose label; it never expires. A tilde, because Next treats a last
+  segment with a dot as a file and would redirect every link once.
+- **Unsubscribing** sets `Subscriber.unsubscribedAt` and adds the address to `Suppression`
+  as `unsubscribe`, in one transaction, and is idempotent. Opening the page changes nothing;
+  its button does, so a link scanner cannot unsubscribe anybody. The page is noindex and
+  has no client script. Audited as `subscriber.unsubscribed`.
+- **No link, no send.** Without an `AUTH_SECRET` of 16 characters or more, or without
+  `APP_ORIGIN`, the API refuses to schedule and the worker starts nothing, logging why. It
+  never sends a campaign email without a working unsubscribe link.
+- The screen polls every 15 seconds while a campaign is scheduled or sending, so the counts
+  move without a reload.
+
 ## Open
 
 - Nothing creates `Subscriber` rows yet. The insights newsletter form stores a `RESOURCE`
@@ -350,7 +396,8 @@ screens at `/admin/campaigns/` and `/admin/campaigns/[id]/` (`new` to create). N
   then development uses `EMAIL_TRANSPORT=log` or Resend's test sender.
 - Emails are queued after the lead commits. If the API process dies between the commit and
   the enqueue, the lead is stored but its emails are not queued, and nothing marks it. A
-  transactional outbox would close that gap. Revisit before campaign sends (Task 5.4).
+  transactional outbox would close that gap. Campaign sends do not have it (decision 51:
+  rows first, requeued by the sweep); lead and booking emails still do.
 - Settings changed with `settings-cli` are not written to the audit log yet. The admin
   settings screen (Task 5.3) must write the audit entry.
 - Of task 5.1, what is built is: consultation types, weekly hours and date overrides edited
