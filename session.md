@@ -363,7 +363,7 @@ handed to the second collaborator in `docs/14-remaining-work.md` on the `tumit` 
 | 4.2 Free audit, guides, insights, glossary, FAQ | Done and live except the free audit page: its contract, API and copy exist (PR #11), the page does not. On `tumit`, an article's subscribe block now creates a subscriber (decision 55) |
 | 4.3 Search | Not started |
 | 5.1 Booking | Built and live (decisions 47, 48): its own page with a calendar, server-side slots, the double-booking constraint, availability edited from `/admin`, bookings in the dashboard, a thank-you page. Not built: `.ics` invite, 24h and 1h reminders, signed reschedule and cancel pages |
-| 5.2 Start a project and landing | Landing template done. The start-a-project API with progressive saving and its copy exist (PR #11); the multi-step page is not built |
+| 5.2 Start a project and landing | Landing template done. On `tumit`, `/start-a-project/` is built on the PR #11 API: six steps, saved per step, abandonment measurable per step (decision 56) |
 | 5.3 Admin dashboard, auth, RBAC | Done: login, roles, leads, bookings, availability, services, subscribers, campaigns, settings, audit. Not built: editing homepage, booking-page and other singleton copy from `/admin` (settings-cli today) |
 | 5.4 Campaign engine | Done by the second collaborator (decisions 49 to 52), merged in PR #31 and live. Nothing is sent while production has `EMAIL_TRANSPORT=log` |
 | 6.1 Anti-spam | Partial: Turnstile, honeypot, per-IP rate limits. Missing: timing checks, per-email limits, MX and disposable-domain checks, duplicate-lead merging |

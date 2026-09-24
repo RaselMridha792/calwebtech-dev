@@ -36,6 +36,7 @@ setting. Remove the long comment in both files about the foundation not carrying
 `sourcePage` — it does now.
 
 ### 2. The start-a-project page (Task 5.2)
+**Done on `tumit`, 2026-09-25 (decision 56).**
 The contract, the API with progressive draft saving, the getters and the copy snapshot came
 back in PR #11 (`recover/pages2-forms`); the web route and components were never built, so
 `/start-a-project/` answers 404. Build the multi-step page on them. The gate is in
