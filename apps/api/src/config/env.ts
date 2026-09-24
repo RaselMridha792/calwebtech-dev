@@ -32,6 +32,11 @@ const apiEnvSchema = z.object({
    * worker starts no campaign, so no email goes out with a link that would not work.
    */
   AUTH_SECRET: z.preprocess(blankToUndefined, z.string().optional()),
+  /**
+   * The signing secret of the Resend webhook (`whsec_…`, from Resend's dashboard). Unset, the
+   * webhook answers 503 and delivery events are not recorded; sending is unaffected.
+   */
+  RESEND_WEBHOOK_SECRET: z.preprocess(blankToUndefined, z.string().optional()),
 }).superRefine((env, context) => {
   if (env.APP_ENV === 'production' && !env.TURNSTILE_SECRET) {
     context.addIssue({

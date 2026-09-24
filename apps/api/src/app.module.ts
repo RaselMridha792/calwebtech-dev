@@ -29,6 +29,7 @@ import { InsightsModule } from './insights/insights.controller';
 import { FormsModule } from './forms/forms.controller';
 import { BookingModule } from './booking/booking.controller';
 import { UnsubscribeModule } from './unsubscribe/unsubscribe.controller';
+import { WebhooksModule } from './webhooks/resend-webhook.controller';
 
 @Module({
   imports: [
@@ -61,6 +62,7 @@ import { UnsubscribeModule } from './unsubscribe/unsubscribe.controller';
     FormsModule,
     BookingModule,
     UnsubscribeModule,
+    WebhooksModule,
   ],
   controllers: [HealthController],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
