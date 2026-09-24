@@ -254,10 +254,12 @@ export const homePageContentSchema = z.object({
     legal: z.array(linkSchema).max(8),
     backgroundImage: backdropSchema,
     /**
-     * One line of address in place of the office list, when the owner would rather show a
-     * region than street addresses. Null lists the published offices, as before.
+     * The footer's offices when they are not the published locations. Empty falls back to
+     * the locations with an address, so the homepage's own locations section is unaffected.
      */
-    address: text(200).nullable().default(null),
+    offices: z.array(z.object({ city: text(120), address: text(300) })).max(2).default([]),
+    /** The footer's contact address when it differs from `contact.email`. */
+    contactEmail: z.email().nullable().default(null),
   }),
   floatingCta: linkSchema,
   /**

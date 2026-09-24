@@ -419,11 +419,13 @@ with it. What it changed, in one place:
   owner has not reviewed it**. Review it before the next deploy.
 - **Contact:** the telephone number is off the site until there is one to publish
   (`siteContactSchema.phone` and `phoneE164` are nullable together, and every place that
-  showed a number leaves it out), the mailbox is `calidigi62@gmail.com`, and the footer
-  shows one line of address, "California, United States" (`footer.address`), in place of
-  the office list. The snapshots carry it; **production's `site.contact` setting still has
-  the old values and must be changed with settings-cli after the deploy**, or lead emails
-  and the API's views keep the demo number.
+  showed a number leaves it out), and the mailbox is `calidigi62@gmail.com`. The footer
+  shows "California / United States", the owner's own words, through the collaborator's
+  `footer.offices` and `footer.contactEmail` (see Open): the two of us built the footer
+  change separately on the same day, and the merge kept that design rather than a second
+  field doing the same job. The snapshots carry it; **production's `site.contact` setting
+  still has the old values and must be changed with settings-cli after the deploy**, or lead
+  emails and the API's views keep the demo number.
 - **"The pages load, then change" — the scroll reveal is gone.** Sections faded in as they
   scrolled into view, but the fade was gated on script: an inline script hid every
   `[data-reveal]` element until the React bundle had hydrated and an IntersectionObserver
@@ -436,6 +438,27 @@ with it. What it changed, in one place:
   about 290 ms — which a CDN in front of the real domain would address, not code.
 
 ## Open
+
+- **The footer's office and contact are set in the homepage copy**, not taken from the
+  locations and the site contact (2026-09-24, at the collaborator's request). `home.content`'s
+  `footer.offices` and `footer.contactEmail` are optional: empty, the footer falls back to the
+  published locations with an address and to `contact.email`, as before. The snapshot sets one
+  office, "California" / "United States" — the owner's words, with no street address, since
+  the owner gave none — and `calidigi62@gmail.com` as the footer's only contact. The
+  telephone number is off the whole site, not only the footer (decision 54). The homepage's
+  locations section still lists the published locations; if the owner wants a street address
+  shown, it goes in `footer.offices`.
+
+- **Northmark Supply's image is not stock photography.** On 2026-09-24 the case study's
+  picture was replaced, at the collaborator's request, by an image supplied as a file
+  (`apps/web/public/media/northmark-supply.jpg`, 1536×1024, served through the Next image
+  optimiser) on the homepage, `/work/`, the case study's cover and Open Graph image, and every
+  related card except one. Decision 41 says imagery comes from Unsplash and Pexels, with each
+  URL checked; this file's origin and licence are not recorded. The insights snapshot test
+  enforces that rule, so the Northmark card inside the insight "b2b-ecommerce-what-a-stock-
+  theme-cannot-do" still shows the old Unsplash photo. The owner decides: keep the new image
+  (record its licence, allow `/media/` in `insights.test.ts`, and update that card), or
+  return to a stock photograph everywhere.
 
 - Staging sits behind basic auth (`infra/traefik/dynamic/access.yml`), which covers `/api`
   too, so Resend cannot reach `/api/webhooks/resend` there and a one-click unsubscribe from a

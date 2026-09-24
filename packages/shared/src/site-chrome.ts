@@ -78,6 +78,8 @@ export const siteChromeViewSchema = z.object({
     blurb: text(300),
     columns: z.array(z.object({ title: text(60), links: z.array(siteLinkSchema).min(1).max(10) })).max(4),
     offices: z.array(z.object({ city: text(120), address: text(300) })).max(2),
+    /** The footer's contact address; the site contact's when the copy sets none. */
+    contactEmail: z.email(),
     legal: z.array(siteLinkSchema).max(8),
     backgroundImage: decorativeImageSchema.nullable(),
   }),
@@ -263,11 +265,13 @@ export function buildSiteChrome(sources: SiteChromeSources): SiteChromeView {
     footer: {
       blurb: footer.blurb,
       columns: footerColumns,
-      offices: footer.address
-        ? [{ city: 'Address', address: footer.address }]
-        : sources.offices
-            .flatMap((office) => (office.address ? [{ city: office.city, address: office.address }] : []))
-            .slice(0, 2),
+      offices:
+        footer.offices.length > 0
+          ? footer.offices.map((office) => ({ city: office.city, address: office.address }))
+          : sources.offices
+              .flatMap((office) => (office.address ? [{ city: office.city, address: office.address }] : []))
+              .slice(0, 2),
+      contactEmail: footer.contactEmail ?? sources.contact.email,
       legal: siteLinks(footer.legal),
       backgroundImage: footer.backgroundImage,
     },

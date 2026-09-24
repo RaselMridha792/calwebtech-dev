@@ -20,14 +20,25 @@ export function HeroPriceBand({ price }: { price: NonNullable<Page['price']> }) 
   );
 }
 
-/** The three situations that bring a buyer to this service. */
+/**
+ * The three situations that bring a buyer to this service.
+ *
+ * From `md` each situation spans three rows of the list's grid and lays its numeral, title
+ * and body onto them with `subgrid`, so the three columns share one row per part: a title
+ * that wraps to two lines moves every body down with it, and the bodies start on one line.
+ * Below `md` it is a single column and nothing needs aligning.
+ */
 export function ProblemSection({ problem, tone }: { problem: NonNullable<Page['problem']>; tone: SectionTone }) {
   return (
     <Section id="situations" tone={tone} labelledBy="situations-heading">
       <SectionHeading id="situations-heading" title={problem.heading} intro={problem.intro} ground={groundOf(tone)} />
-      <ol className="grid gap-5 md:grid-cols-3 lg:gap-6">
+      <ol className="grid gap-5 md:grid-cols-3 md:gap-x-5 md:gap-y-0 lg:gap-x-6">
         {problem.situations.map((situation, index) => (
-          <li key={situation.title} className="flex flex-col border-t border-hairline pt-5" {...reveal(index)}>
+          <li
+            key={situation.title}
+            className="flex flex-col border-t border-hairline pt-5 md:row-span-3 md:grid md:grid-rows-subgrid"
+            {...reveal(index)}
+          >
             <span className="meta text-gold-ink" aria-hidden="true">
               {String(index + 1).padStart(2, '0')}
             </span>
