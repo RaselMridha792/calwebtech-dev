@@ -28,6 +28,7 @@ import { CalculatorPageModule } from './calculator/calculator.controller';
 import { InsightsModule } from './insights/insights.controller';
 import { FormsModule } from './forms/forms.controller';
 import { BookingModule } from './booking/booking.controller';
+import { UnsubscribeModule } from './unsubscribe/unsubscribe.controller';
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { BookingModule } from './booking/booking.controller';
     InsightsModule,
     FormsModule,
     BookingModule,
+    UnsubscribeModule,
   ],
   controllers: [HealthController],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
