@@ -7,19 +7,15 @@ import { submitLead, type LeadFormState } from '@/lib/lead-actions';
 import { TURNSTILE_FIELD, useTurnstile } from '../forms/use-turnstile';
 import { ArrowIcon } from '../ui/icons';
 import { saveProjectDraft } from './actions';
-
-export interface BriefOption {
-  value: string;
-  label: string;
-}
+import { Area, Choices, Field, type FormOption } from './fields';
 
 export interface ProjectBriefFormProps {
   copy: FormsProjectForm;
   /** `LEAD_PROJECT_TYPES`, `BUDGET_BANDS` and `START_TIMELINES`, passed in by the page: a value
    *  import from the shared barrel would carry all of Zod into this bundle (decision 47). */
-  projectTypes: readonly BriefOption[];
-  budgets: readonly BriefOption[];
-  timelines: readonly BriefOption[];
+  projectTypes: readonly FormOption[];
+  budgets: readonly FormOption[];
+  timelines: readonly FormOption[];
   services: readonly { slug: string; title: string }[];
   formId: string;
   thankYouPath: string;
@@ -47,12 +43,6 @@ const CONTACT_STEP = 1;
 const CHECK_PROBLEM = 'The security check did not finish. Please try again.';
 
 const INITIAL: LeadFormState = { status: 'idle' };
-
-const inputClass =
-  'body-base mt-2 h-12 w-full border border-hairline bg-canvas-raised px-4 text-ink outline-none placeholder:text-ink-muted/60 focus-visible:border-gold-ink aria-invalid:border-danger';
-
-const choiceClass =
-  'flex min-h-11 cursor-pointer items-center gap-3 border border-hairline px-4 py-2.5 text-[15px] text-ink hover:border-hairline-strong has-checked:border-gold-ink has-checked:font-semibold has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-focus';
 
 /**
  * The start a project brief (docs/06-build-plan.md, task 5.2): six steps, one question each.
@@ -296,11 +286,11 @@ export function ProjectBriefForm({
           1,
           <>
             <div className="grid gap-5 sm:grid-cols-2">
-              <Field name="name" copy={copy.fields.name} required autoComplete="name" minLength={2} error={error('name')} />
-              <Field name="email" copy={copy.fields.email} required type="email" autoComplete="email" error={error('email')} />
-              <Field name="company" copy={copy.fields.company} autoComplete="organization" error={error('company')} />
-              <Field name="phone" copy={copy.fields.phone} type="tel" autoComplete="tel" error={error('phone')} />
-              <Field name="siteUrl" copy={copy.fields.siteUrl} autoComplete="url" error={error('siteUrl')} />
+              <Field idPrefix="brief" name="name" copy={copy.fields.name} required autoComplete="name" minLength={2} error={error('name')} />
+              <Field idPrefix="brief" name="email" copy={copy.fields.email} required type="email" autoComplete="email" error={error('email')} />
+              <Field idPrefix="brief" name="company" copy={copy.fields.company} autoComplete="organization" error={error('company')} />
+              <Field idPrefix="brief" name="phone" copy={copy.fields.phone} type="tel" autoComplete="tel" error={error('phone')} />
+              <Field idPrefix="brief" name="siteUrl" copy={copy.fields.siteUrl} autoComplete="url" error={error('siteUrl')} />
             </div>
             <p className="body-sm mt-5 max-w-[60ch] text-ink-muted">{copy.saveNote}</p>
           </>,
@@ -328,9 +318,9 @@ export function ProjectBriefForm({
         {step(
           5,
           <>
-            <Area name="message" copy={copy.fields.description} rows={6} error={error('message')} />
+            <Area idPrefix="brief" name="message" copy={copy.fields.description} rows={6} error={error('message')} />
             <div className="mt-5">
-              <Area name="projectLinks" copy={copy.fields.projectLinks} rows={3} error={error('projectLinks')} />
+              <Area idPrefix="brief" name="projectLinks" copy={copy.fields.projectLinks} rows={3} error={error('projectLinks')} />
             </div>
             <p className="body-sm mt-5 max-w-[60ch] text-ink-muted">{copy.uploadNote}</p>
           </>,
@@ -381,126 +371,5 @@ export function ProjectBriefForm({
       <div ref={containerRef} className="mt-6 empty:hidden" />
       <p className="body-sm mt-6 max-w-[60ch] text-ink-muted">{copy.footnote}</p>
     </form>
-  );
-}
-
-type FieldCopy = FormsProjectForm['fields']['name'];
-
-function Hint({ id, hint, error }: { id: string; hint: string | null; error: string | undefined }) {
-  if (error) {
-    return (
-      <p id={`${id}-note`} className="mt-1.5 text-[13px] font-medium text-danger">
-        {error}
-      </p>
-    );
-  }
-  return hint ? (
-    <p id={`${id}-note`} className="body-sm mt-1.5 text-ink-muted">
-      {hint}
-    </p>
-  ) : null;
-}
-
-function Field({
-  name,
-  copy,
-  type = 'text',
-  required = false,
-  autoComplete,
-  minLength,
-  error,
-}: {
-  name: string;
-  copy: FieldCopy;
-  type?: string;
-  required?: boolean;
-  autoComplete?: string;
-  minLength?: number;
-  error: string | undefined;
-}) {
-  const id = `brief-${name}`;
-  const described = error || copy.hint ? `${id}-note` : undefined;
-  return (
-    <div>
-      <label htmlFor={id} className="eyebrow text-ink-muted">
-        {copy.label}
-        {required ? null : <span className="ms-2 tracking-normal normal-case">(optional)</span>}
-      </label>
-      <input
-        id={id}
-        name={name}
-        type={type}
-        required={required}
-        minLength={minLength}
-        autoComplete={autoComplete}
-        placeholder={copy.placeholder ?? undefined}
-        aria-describedby={described}
-        {...(error ? { 'aria-invalid': true } : {})}
-        className={inputClass}
-      />
-      <Hint id={id} hint={copy.hint} error={error} />
-    </div>
-  );
-}
-
-function Area({ name, copy, rows, error }: { name: string; copy: FieldCopy; rows: number; error: string | undefined }) {
-  const id = `brief-${name}`;
-  const described = error || copy.hint ? `${id}-note` : undefined;
-  return (
-    <div>
-      <label htmlFor={id} className="eyebrow text-ink-muted">
-        {copy.label}
-        <span className="ms-2 tracking-normal normal-case">(optional)</span>
-      </label>
-      <textarea
-        id={id}
-        name={name}
-        rows={rows}
-        placeholder={copy.placeholder ?? undefined}
-        aria-describedby={described}
-        {...(error ? { 'aria-invalid': true } : {})}
-        className="body-base mt-2 w-full border border-hairline bg-canvas-raised px-4 py-3 text-ink outline-none placeholder:text-ink-muted/60 focus-visible:border-gold-ink aria-invalid:border-danger"
-      />
-      <Hint id={id} hint={copy.hint} error={error} />
-    </div>
-  );
-}
-
-/**
- * One answer from a list (radios), or several (checkboxes). The step's legend already asks
- * the question; the group repeats the field's own name for anyone navigating by form controls.
- */
-function Choices({
-  name,
-  options,
-  label,
-  multiple = false,
-  error,
-}: {
-  name: string;
-  options: readonly BriefOption[];
-  label: string;
-  multiple?: boolean;
-  error: string | undefined;
-}) {
-  return (
-    <div role="group" aria-label={label}>
-      <ul className="grid gap-3 sm:grid-cols-2">
-        {options.map((option) => (
-          <li key={option.value}>
-            <label className={choiceClass}>
-              <input
-                type={multiple ? 'checkbox' : 'radio'}
-                name={name}
-                value={option.value}
-                className="size-4 shrink-0 accent-navy-900"
-              />
-              {option.label}
-            </label>
-          </li>
-        ))}
-      </ul>
-      {error ? <p className="mt-2 text-[13px] font-medium text-danger">{error}</p> : null}
-    </div>
   );
 }
