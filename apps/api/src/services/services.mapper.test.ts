@@ -155,6 +155,7 @@ const industry = (slug: string, heroCopy: string | null): Industry => ({
   seo: null,
   createdAt: at,
   updatedAt: at,
+  deletedAt: null,
 });
 
 function service(overrides: Partial<ServiceDetailRecord> = {}): ServiceDetailRecord {

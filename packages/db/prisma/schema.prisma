@@ -192,6 +192,8 @@ model Industry {
   seo          Json? // seoSchema, packages/shared
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  /// Removed from the admin. The row stays for the audit trail and its slug stays taken.
+  deletedAt    DateTime?
 
   services Service[]
   projects Project[]

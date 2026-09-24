@@ -38,7 +38,7 @@ export class IndustriesService {
     const [setting, industries] = await Promise.all([
       db.setting.findUnique({ where: { key: INDUSTRY_SETTING_KEYS.index } }),
       db.industry.findMany({
-        where: { status: 'PUBLISHED' },
+        where: { status: 'PUBLISHED', deletedAt: null },
         orderBy: [{ order: 'asc' }, { name: 'asc' }],
         select: industryCardSelect,
       }),
@@ -57,7 +57,7 @@ export class IndustriesService {
 
   private async buildDetail(slug: string): Promise<IndustryDetailView | null> {
     const industry = await this.prisma.client.industry.findFirst({
-      where: { slug, status: 'PUBLISHED' },
+      where: { slug, status: 'PUBLISHED', deletedAt: null },
       include: industryDetailInclude(new Date()),
     });
     if (!industry) return null;

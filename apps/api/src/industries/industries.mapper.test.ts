@@ -147,6 +147,7 @@ function industry(overrides: Partial<IndustryDetailRecord> = {}): IndustryDetail
     seo: null,
     createdAt: at,
     updatedAt: at,
+    deletedAt: null,
     services: [],
     projects: [],
     faqs: [],
