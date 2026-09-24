@@ -368,8 +368,8 @@ audience builder had no audience.
   the fallback syntax is for.
 - **Its own endpoint, not the lead flow.** `POST /subscribers` (`apps/api/src/subscribers/`,
   contract in `packages/shared/src/subscribe.ts`) writes a `Subscriber` and a `Contact`. The
-  insights article's newsletter block still stores a `RESOURCE` lead and does not create a
-  subscriber; moving it onto this endpoint is the obvious next step and was not asked for.
+  insights article's newsletter block used to store a `RESOURCE` lead; since decision 55 it
+  posts here too, with the article's path as the source page.
 - **The answer is always the same.** A new address, one already subscribed, one that
   unsubscribed and one on the suppression list all get `subscribed`. A public form that
   answered differently would tell a stranger whether somebody else's address is on a list.
@@ -437,7 +437,46 @@ with it. What it changed, in one place:
   of the slowness is distance — the server answers in 30–60 ms, the round trip from Dhaka is
   about 290 ms — which a CDN in front of the real domain would address, not code.
 
+## 55. The article's subscribe block creates a subscriber
+
+*2026-09-25.* Task 1 of `docs/14-remaining-work.md`. The inline block in every insights
+article posted a `RESOURCE` lead through the lead flow, so nobody who subscribed from an
+article reached the campaign engine.
+
+- **One path for subscribing.** The block's form now posts through the homepage's server
+  action (`components/subscribe/actions.ts`, `subscribeToNewsletter`) to `POST /subscribers`,
+  with the article's path (`/insights/<slug>/`) as `sourcePage`. Everything decision 53
+  promises holds for it: the same answer for every address, suppression never lifted,
+  Turnstile, the honeypot and the rate limit. `components/insights/subscribe-action.ts`, the
+  lead-flow copy of that path, is gone.
+- **An address and nothing else.** The name field is removed, and so is the hidden
+  `attribution` field: the subscriber contract has neither. `nameLabel` left
+  `insightsNewsletterCopySchema`, the eight article snapshots, the seed and the API test
+  fixtures. A stored `insights.copy` that still has it parses, because Zod drops unknown keys.
+  `INSIGHTS_NEWSLETTER_FORM_ID`, which named the lead, went with the action.
+- **What changes for the owner:** a subscription from an article no longer appears in the
+  leads inbox and no longer sends a confirmation email (a subscriber gets none, decision 53).
+  It appears under Subscribers, and a segment can select it with the "signed up on" rule
+  (a page containing `/insights/`).
+- **The copy stays in the `insights.copy` setting**, as before. Its `success` comment no longer
+  says the words are repeated in an email.
+- **Found while checking 360px:** in every article the body column was 514px wide on a
+  360px screen, because a grid item is as wide as its widest content and each article's table
+  set it; the section's `overflow-hidden` then cut the text and the subscribe block off at the
+  right edge. `min-w-0` on the column fixes it (`components/insights/article-page.tsx`); the
+  tables scroll inside their own wrappers, as they were built to.
+- Checked in Chrome at 360, 768 and 1440 (one input, no horizontal overflow, the column
+  312px at 360 on all eight articles) and by keyboard: Tab from the field reaches the button,
+  a bad address puts focus back on the field with `aria-invalid` and keeps what was typed, and
+  a good one moves focus to the success line. A subscription from
+  `/insights/core-web-vitals-in-plain-english/` stored that path and created no lead.
+
 ## Open
+
+- **The article block's privacy line still mentions a name.** `insights.copy`'s
+  `newsletter.privacyNote` reads "Your name and email are stored in our own database…", and
+  the block no longer asks for a name (decision 55). The words are the owner's (RULES.md,
+  section 1), so they were left; the owner may want "Your email is stored…".
 
 - **The footer's office and contact are set in the homepage copy**, not taken from the
   locations and the site contact (2026-09-24, at the collaborator's request). `home.content`'s
