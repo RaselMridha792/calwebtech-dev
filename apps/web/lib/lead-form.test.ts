@@ -60,6 +60,20 @@ describe('leadSubmissionFromForm', () => {
     expect(lead.draftId).toBe('cmdraft0001');
     expect(lead.draftToken).toBe('a-draft-token');
   });
+
+  it('carries the free website audit: the concern and a competitor to compare against', () => {
+    const form = formWith([
+      ...base,
+      ['type', 'AUDIT'],
+      ['formId', 'free-website-audit'],
+      ['siteUrl', 'halloway.com'],
+      ['mainConcern', 'not-enough-enquiries'],
+      ['competitorUrl', 'rival.com'],
+    ]);
+    const lead = leadSubmissionSchema.parse(leadSubmissionFromForm(form, null));
+    expect(lead.mainConcern).toBe('not-enough-enquiries');
+    expect(lead.competitorUrl).toBe('https://rival.com');
+  });
 });
 
 describe('attributionFromForm', () => {

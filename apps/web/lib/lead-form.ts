@@ -54,6 +54,9 @@ export function leadSubmissionFromForm(
     projectLinks: field(form, 'projectLinks'),
     draftId: field(form, 'draftId'),
     draftToken: field(form, 'draftToken'),
+    // The free website audit: what worries the visitor, and a competitor to compare against.
+    mainConcern: field(form, 'mainConcern'),
+    competitorUrl: field(form, 'competitorUrl'),
     attribution: attributionFromForm(form, referer),
     referenceCode: field(form, 'referenceCode'),
     turnstileToken: field(form, TURNSTILE_FIELD),
