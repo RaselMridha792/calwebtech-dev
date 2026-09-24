@@ -164,6 +164,8 @@ export const adminCampaignSchema = z.object({
   segment: z.object({ id: z.string(), name: z.string() }).nullable(),
   /** Delivery rows written so far; zero until the campaign is sent. */
   recipientCount: z.number().int(),
+  /** How far the send has got: sent, and not sent for good (failed, or suppressed in time). */
+  progress: z.object({ sent: z.number().int(), failed: z.number().int() }),
   createdAt: z.iso.datetime(),
   updatedAt: z.iso.datetime(),
 });
@@ -211,8 +213,59 @@ export type CampaignTestSend = z.output<typeof campaignTestSendSchema>;
 export const campaignTestSentSchema = z.object({ to: z.array(z.string()), queuedAt: z.iso.datetime() });
 export type CampaignTestSent = z.infer<typeof campaignTestSentSchema>;
 
+// ---------------------------------------------------------------- scheduling and sending
+
+/**
+ * When to send. `sendAt` null means now; the worker picks a due campaign up within a minute.
+ * A time in the past is refused rather than read as now, because it is usually a mistake.
+ */
+export const campaignScheduleSchema = z.object({
+  sendAt: z.iso.datetime({ offset: true }).nullable(),
+});
+export type CampaignSchedule = z.output<typeof campaignScheduleSchema>;
+
+/**
+ * The campaign queues. Sends go one job per recipient on `campaign`, rate limited against the
+ * provider. The sweep runs on its own queue so it is never stuck behind a long send: it is
+ * what starts due campaigns, requeues anything lost and marks a finished send as sent.
+ */
+export const CAMPAIGN_QUEUE = 'campaign';
+export const CAMPAIGN_SWEEP_QUEUE = 'campaign-sweep';
+
+export const campaignSendJobSchema = z.object({ recipientId: z.string().min(1) });
+export type CampaignSendJob = z.infer<typeof campaignSendJobSchema>;
+
+/** One job per recipient, and the provider idempotency key, so a retry never sends twice. */
+export function campaignSendJobId(recipientId: string): string {
+  return `campaign-send-${recipientId}`;
+}
+
+/** Why a recipient was not sent to, in the words the report shows. */
+export const RECIPIENT_SKIP_REASONS = { suppressed: 'suppressed', unsubscribed: 'unsubscribed' } as const;
+
 export const CAMPAIGN_ERRORS = {
   locked: 'campaign_locked',
   segmentUnknown: 'segment_unknown',
   queueUnavailable: 'queue_unavailable',
+  noSegment: 'segment_required',
+  inThePast: 'send_time_in_past',
+  notScheduled: 'campaign_not_scheduled',
+  sendingUnavailable: 'sending_unavailable',
 } as const;
+
+// ---------------------------------------------------------------- unsubscribing
+
+/** What the unsubscribe page shows: whose address, masked, and whether it is done. */
+export const unsubscribeViewSchema = z.object({
+  email: z.string(),
+  unsubscribed: z.boolean(),
+});
+export type UnsubscribeView = z.infer<typeof unsubscribeViewSchema>;
+
+/** `ava@example.com` reads `a**@example.com`: enough to recognise, not enough to harvest. */
+export function maskEmail(email: string): string {
+  const at = email.lastIndexOf('@');
+  if (at <= 0) return '***';
+  const local = email.slice(0, at);
+  return `${local.slice(0, 1)}${'*'.repeat(Math.max(2, Math.min(local.length - 1, 6)))}${email.slice(at)}`;
+}
