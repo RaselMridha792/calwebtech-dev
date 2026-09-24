@@ -23,7 +23,7 @@ import { SubscribeForm } from './subscribe-form';
 
 // The subscribe block's server action reaches the API, which cannot be imported outside a
 // request. Only the action is stubbed, so the form below is the one the article renders.
-vi.mock('./subscribe-action', () => ({ subscribeToInsights: () => Promise.resolve({ status: 'idle' as const }) }));
+vi.mock('../subscribe/actions', () => ({ subscribeToNewsletter: () => Promise.resolve({ status: 'idle' as const }) }));
 
 const render = (node: ReactNode) => renderToStaticMarkup(node);
 const index = insightsIndexViewSchema.parse(insightsIndexSnapshot);
@@ -261,17 +261,15 @@ describe('the subscribe form', () => {
     return render(<SubscribeForm copy={copy} sourcePage="/insights/an-article/" turnstileSiteKey={undefined} />);
   };
 
-  it('labels both fields and names the article it sits on', () => {
+  it('asks for a labelled email address and nothing else, and names the article it sits on', () => {
     const html = markup();
     if (!copy) throw new Error('No article snapshots');
-    for (const [id, label] of [
-      ['insights-subscribe-name', copy.nameLabel],
-      ['insights-subscribe-email', copy.emailLabel],
-    ]) {
-      expect(html, `${id} is labelled`).toContain(`for="${id}"`);
-      expect(html, `${id} exists`).toContain(`id="${id}"`);
-      expect(html).toContain(label);
-    }
+    expect(html).toContain('for="insights-subscribe-email"');
+    expect(html).toContain('id="insights-subscribe-email"');
+    expect(html).toContain(copy.emailLabel);
+    // One address, as on the homepage (docs/08-decisions.md, 53): no name, no attribution.
+    expect(html).not.toContain('name="name"');
+    expect(html).not.toContain('name="attribution"');
     expect(html).toContain('name="sourcePage"');
     expect(html).toContain('value="/insights/an-article/"');
     expect(html).toContain(copy.submitLabel);
