@@ -261,6 +261,10 @@ export function ProjectBriefForm({
     <form
       ref={formRef}
       className="border-t border-hairline pt-8"
+      // The browser would otherwise check every step's fields on each press of Next, including
+      // the required ones on steps it cannot show, and refuse to submit at all. Each step is
+      // checked on its own instead (`stepIsValid`), with the same native messages.
+      noValidate
       onSubmit={(event) => {
         // Enter in a field moves the brief on, or sends it from the last step.
         event.preventDefault();
