@@ -116,8 +116,8 @@ from the dead worktrees under the old `calwebtech/.claude/worktrees/`.
 - **The forms family** (`/start-a-project/`, `/free-website-audit/`) had been built to the
   contract, API, getters, copy snapshots and seed but never pushed. Recovered as PR #11
   (`recover/pages2-forms`), with the lead path merged so both the calculator's answers
-  and the brief's progressive draft survive. **Its web routes and components were never
-  built**: nothing renders those pages yet. That is the next content task.
+  and the brief's progressive draft survive. Its web routes and components were never
+  built; on `tumit` both pages now are (decisions 56 and 57).
 - **Booking** (Task 5.1) was part built in a worktree whose `packages/` did not survive.
   Not recovered, by the owner's decision; the 900 lines of API code in the old folder are
   a blueprint for rebuilding it, nothing more.
@@ -360,7 +360,7 @@ handed to the second collaborator in `docs/14-remaining-work.md` on the `tumit` 
 | 3.1, 3.2 Locations | Location index and city pages live. Service-by-city matrix not built |
 | 3.3 Before/after, awards, partners | Done and live |
 | 4.1 Calculator | Done and live |
-| 4.2 Free audit, guides, insights, glossary, FAQ | Done and live except the free audit page: its contract, API and copy exist (PR #11), the page does not. On `tumit`, an article's subscribe block now creates a subscriber (decision 55) |
+| 4.2 Free audit, guides, insights, glossary, FAQ | Done and live. On `tumit`: `/free-website-audit/` is built on the PR #11 API, one step posting an `AUDIT` lead, and the menus link to it (decision 57); an article's subscribe block creates a subscriber (decision 55) |
 | 4.3 Search | Not started |
 | 5.1 Booking | Built and live (decisions 47, 48): its own page with a calendar, server-side slots, the double-booking constraint, availability edited from `/admin`, bookings in the dashboard, a thank-you page. Not built: `.ics` invite, 24h and 1h reminders, signed reschedule and cancel pages |
 | 5.2 Start a project and landing | Landing template done. On `tumit`, `/start-a-project/` is built on the PR #11 API: six steps, saved per step, abandonment measurable per step (decision 56) |

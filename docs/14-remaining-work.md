@@ -46,6 +46,7 @@ with `hidden`, `reportValidity()` before a step hides its required fields, and t
 decision 47 about Turnstile and client-module constants).
 
 ### 3. The free website audit page
+**Done on `tumit`, 2026-09-25 (decision 57).**
 Same family, same PR #11 pieces, same 404 at `/free-website-audit/`. The Resources menu and
 the contact page point visitors at an audit that does not exist yet.
 
