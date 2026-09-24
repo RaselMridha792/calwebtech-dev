@@ -5,6 +5,7 @@ import { useRef, useState } from 'react';
 import { MutationError, adminMutate } from '@/lib/admin/mutate';
 import { BlockEditor, toBlock, toDraftBlock, type DraftBlock } from './block-editor';
 import { CampaignPreviewPanel } from './campaign-preview';
+import { CampaignSchedulePanel } from './campaign-schedule';
 
 /**
  * The campaign composer (docs/12-admin-dashboard.md, module 5; Task 5.4).
@@ -35,6 +36,7 @@ export function CampaignComposer({
   templates,
   tokens,
   mayWrite,
+  maySend,
   userEmail,
 }: {
   campaign: AdminCampaign | null;
@@ -42,6 +44,8 @@ export function CampaignComposer({
   templates: Record<CampaignTemplate, { label: string; description: string }>;
   tokens: Record<CampaignToken, string>;
   mayWrite: boolean;
+  /** Whether this role may schedule, unschedule and send; editing needs a draft as well. */
+  maySend: boolean;
   userEmail: string;
 }) {
   const router = useRouter();
@@ -303,7 +307,15 @@ export function CampaignComposer({
         ) : null}
       </div>
 
-      <div className="border-t border-admin-line pt-4 lg:sticky lg:top-0 lg:self-start">
+      <div className="flex flex-col gap-5 border-t border-admin-line pt-4 lg:sticky lg:top-0 lg:self-start">
+        {campaign ? (
+          <CampaignSchedulePanel
+            campaign={campaign}
+            segmentCount={segments.find((entry) => entry.id === campaign.segment?.id)?.count ?? null}
+            unsaved={unsaved}
+            mayWrite={maySend}
+          />
+        ) : null}
         <CampaignPreviewPanel
           content={content}
           segmentId={segmentId || null}

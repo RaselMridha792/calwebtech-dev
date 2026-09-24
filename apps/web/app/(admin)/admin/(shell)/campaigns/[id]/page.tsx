@@ -52,6 +52,7 @@ export default async function AdminCampaignPage({ params }: PageProps<'/admin/ca
           templates={CAMPAIGN_TEMPLATE_LABELS}
           tokens={CAMPAIGN_TOKEN_HELP}
           mayWrite={mayWrite && (!campaign || campaign.status === 'DRAFT')}
+          maySend={mayWrite}
           userEmail={user.email}
         />
       </div>
