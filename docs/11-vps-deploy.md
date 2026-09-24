@@ -12,7 +12,7 @@ images come from GitHub Actions, tagged by commit SHA, and the server pulls them
 | `traefik` | `traefik:v3` | The edge: ports 80 and 443, TLS from Let's Encrypt, routing by host name, headers, compression. One per server, shared by every stack (`infra/proxy`) | none set |
 | `web` | `…-web:<sha>` | Next.js, the public site | 1 GB |
 | `api` | `…-api:<sha>` | NestJS, at `https://<host>/api/*` on the same origin | 768 MB |
-| `worker` | `…-worker:<sha>` | BullMQ: lead emails through Resend | 512 MB |
+| `worker` | `…-worker:<sha>` | BullMQ: lead emails and campaign sends through Resend, and the campaign sweep | 512 MB |
 | `db` | `postgres:17-alpine` | The database. Internal network only, never a host port | none set |
 | `redis` | `redis:7-alpine` | Queue and rate limits. Internal only | none set |
 | `backup` | `…-backup:<sha>` | Nightly encrypted dump off-site. `ops` profile, started by hand | 256 MB |
@@ -291,6 +291,33 @@ $C up -d --wait web api worker
 The header of `infra/scripts/restore.sh` has the details, including restoring
 production's repository into staging. A deploy does not move the backup container to the
 new tag; `$C up -d backup` after a release does.
+
+## Campaign email (Task 5.4)
+
+Campaigns need three things on the server before the first one is sent. None of them is
+needed for the site or for lead emails.
+
+1. **`AUTH_SECRET`**, 16 characters or more. The bootstrap script already generates one; it
+   also signs every campaign's unsubscribe links, so it must not change once campaigns have
+   gone out, or the links in them stop working. Without it the API refuses to schedule and
+   the worker starts nothing (decision 51).
+2. **`APP_ORIGIN`**, the site's public address, which the unsubscribe links are built on.
+3. **Resend's webhook**, for delivery, opens, clicks, bounces and complaints (decision 52).
+   In Resend: Webhooks, add `https://<host>/api/webhooks/resend`, and select
+   `email.delivered`, `email.opened`, `email.clicked`, `email.bounced` and
+   `email.complained`. Put its signing secret in the stack's env file as
+   `RESEND_WEBHOOK_SECRET`, then redeploy. Without it the webhook answers 503, the report
+   shows sends only, and bounces are not moved to the suppression list.
+
+`CAMPAIGN_SEND_PER_SECOND` (default 1) is the send rate; Resend's default account limit is 2
+a second, shared with lead emails. Check a send with:
+
+```
+$C logs --tail 50 worker | grep campaign   # "started for N recipient(s)", "finished: …"
+```
+
+Staging sits behind basic auth, `/api` included, so Resend's webhook and mail clients'
+one-click unsubscribe cannot reach it there (docs/08-decisions.md, Open).
 
 ## Known limits
 
