@@ -1,6 +1,7 @@
 import { randomBytes } from 'node:crypto';
 import type { Prisma } from '@calwebtech/db';
 import { renderCampaign } from '@calwebtech/emails';
+import { usableSigningSecret } from '@calwebtech/shared/unsubscribe-token';
 import {
   CAMPAIGN_ERRORS,
   type AdminCampaign,
@@ -11,6 +12,7 @@ import {
   type CampaignPreview,
   type CampaignPreviewRequest,
   type CampaignRecipient,
+  type CampaignSchedule,
   type CampaignTestSend,
   type CampaignTestSent,
   type CampaignWrite,
@@ -22,9 +24,19 @@ import {
   campaignTestSentSchema,
   segmentRulesSchema,
 } from '@calwebtech/shared';
-import { ConflictException, Injectable, Logger, NotFoundException, ServiceUnavailableException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Inject,
+  Injectable,
+  Logger,
+  NotFoundException,
+  ServiceUnavailableException,
+} from '@nestjs/common';
 import { AuditService } from '../../auth/audit.service';
 import { PrismaService } from '../../prisma/prisma.service';
+import { API_ENV, type ApiEnv } from '../../config/env';
+import { CampaignSweepQueue } from '../../queue/campaign-sweep-queue';
 import { EmailQueue } from '../../queue/email-queue';
 import { AdminAudienceService } from '../audience/admin-audience.service';
 
@@ -34,11 +46,20 @@ const WITH_RELATIONS = {
 } satisfies Prisma.CampaignInclude;
 
 type CampaignRecord = Prisma.CampaignGetPayload<{ include: typeof WITH_RELATIONS }>;
+interface Progress {
+  sent: number;
+  failed: number;
+}
+
+const NO_PROGRESS: Progress = { sent: 0, failed: 0 };
+
+/** A send time this close to now, or earlier, is "now". Past that, a past time is a mistake. */
+const NOW_TOLERANCE_MS = 60_000;
 
 /** Fills the tokens when a preview has nobody real to fill them from. */
 const PLACEHOLDER_RECIPIENT: CampaignRecipient = { name: 'Alex Morgan', email: 'alex@example.com' };
 
-function toView(row: CampaignRecord): AdminCampaign {
+function toView(row: CampaignRecord, progress: Progress = NO_PROGRESS): AdminCampaign {
   return adminCampaignSchema.parse({
     id: row.id,
     name: row.name,
@@ -51,6 +72,7 @@ function toView(row: CampaignRecord): AdminCampaign {
     sentAt: row.sentAt?.toISOString() ?? null,
     segment: row.segment,
     recipientCount: row._count.recipients,
+    progress,
     createdAt: row.createdAt.toISOString(),
     updatedAt: row.updatedAt.toISOString(),
   });
@@ -81,6 +103,8 @@ export class AdminCampaignsService {
     private readonly audit: AuditService,
     private readonly audience: AdminAudienceService,
     private readonly emailQueue: EmailQueue,
+    private readonly sweepQueue: CampaignSweepQueue,
+    @Inject(API_ENV) private readonly env: ApiEnv,
   ) {}
 
   async list(query: AdminCampaignQuery): Promise<AdminCampaignList> {
@@ -89,13 +113,93 @@ export class AdminCampaignsService {
       include: WITH_RELATIONS,
       orderBy: { updatedAt: 'desc' },
     });
-    return adminCampaignListSchema.parse({ items: rows.map(toView) });
+    const progress = await this.progressFor(rows.map((row) => row.id));
+    return adminCampaignListSchema.parse({ items: rows.map((row) => toView(row, progress.get(row.id))) });
   }
 
   async find(id: string): Promise<AdminCampaign> {
     const row = await this.prisma.client.campaign.findUnique({ where: { id }, include: WITH_RELATIONS });
     if (!row) throw new NotFoundException();
-    return toView(row);
+    const progress = await this.progressFor([id]);
+    return toView(row, progress.get(id));
+  }
+
+  /**
+   * Schedules a draft, or sends it now when `sendAt` is null. The segment is not counted
+   * here: the worker counts it when the campaign starts, which is the point of a segment.
+   */
+  async schedule(id: string, input: CampaignSchedule, actorId: string): Promise<AdminCampaign> {
+    const campaign = await this.requireDraft(id);
+    if (!campaign.segment) {
+      throw new ConflictException({ error: CAMPAIGN_ERRORS.noSegment, message: 'Choose a segment before scheduling.' });
+    }
+    if (!usableSigningSecret(this.env.AUTH_SECRET)) {
+      throw new ConflictException({
+        error: CAMPAIGN_ERRORS.sendingUnavailable,
+        message: 'Sending is not set up on this server: AUTH_SECRET is missing or shorter than 16 characters, so no unsubscribe link could be signed.',
+      });
+    }
+
+    const now = Date.now();
+    const sendAt = input.sendAt ? new Date(input.sendAt) : new Date(now);
+    if (sendAt.getTime() < now - NOW_TOLERANCE_MS) {
+      throw new BadRequestException({
+        error: CAMPAIGN_ERRORS.inThePast,
+        message: 'That time has already passed. Choose a later time, or send now.',
+      });
+    }
+
+    await this.prisma.client.campaign.update({ where: { id }, data: { status: 'SCHEDULED', scheduledAt: sendAt } });
+    await this.audit.recordQuietly({
+      userId: actorId,
+      action: 'campaign.scheduled',
+      entityType: 'Campaign',
+      entityId: id,
+      after: { sendAt: sendAt.toISOString(), segment: campaign.segment.name, now: input.sendAt === null },
+    });
+    if (sendAt.getTime() <= now + NOW_TOLERANCE_MS) await this.sweepQueue.sweepNow(`campaign ${id} sent now`);
+    return this.find(id);
+  }
+
+  /** Back to a draft, as long as the worker has not started it. */
+  async unschedule(id: string, actorId: string): Promise<AdminCampaign> {
+    await this.find(id);
+    const moved = await this.prisma.client.campaign.updateMany({
+      where: { id, status: 'SCHEDULED' },
+      data: { status: 'DRAFT', scheduledAt: null },
+    });
+    if (moved.count !== 1) {
+      throw new ConflictException({
+        error: CAMPAIGN_ERRORS.notScheduled,
+        message: 'This campaign is not scheduled any more. It may already be sending.',
+      });
+    }
+    await this.audit.recordQuietly({ userId: actorId, action: 'campaign.unscheduled', entityType: 'Campaign', entityId: id });
+    return this.find(id);
+  }
+
+  /** Sent and not-sent counts per campaign, in two queries however many campaigns there are. */
+  private async progressFor(ids: readonly string[]): Promise<Map<string, Progress>> {
+    const result = new Map<string, Progress>();
+    if (ids.length === 0) return result;
+    const [sent, failed] = await Promise.all([
+      this.prisma.client.campaignRecipient.groupBy({
+        by: ['campaignId'],
+        where: { campaignId: { in: [...ids] }, sentAt: { not: null } },
+        _count: { _all: true },
+      }),
+      this.prisma.client.campaignRecipient.groupBy({
+        by: ['campaignId'],
+        where: { campaignId: { in: [...ids] }, failedAt: { not: null } },
+        _count: { _all: true },
+      }),
+    ]);
+    for (const id of ids) result.set(id, { sent: 0, failed: 0 });
+    for (const row of sent) result.set(row.campaignId, { ...(result.get(row.campaignId) ?? NO_PROGRESS), sent: row._count._all });
+    for (const row of failed) {
+      result.set(row.campaignId, { ...(result.get(row.campaignId) ?? NO_PROGRESS), failed: row._count._all });
+    }
+    return result;
   }
 
   async create(input: CampaignWrite, actorId: string): Promise<AdminCampaign> {

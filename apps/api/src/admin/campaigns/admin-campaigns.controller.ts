@@ -4,11 +4,13 @@ import {
   type AdminCampaignQuery,
   type CampaignPreview,
   type CampaignPreviewRequest,
+  type CampaignSchedule,
   type CampaignTestSend,
   type CampaignTestSent,
   type CampaignWrite,
   adminCampaignQuerySchema,
   campaignPreviewRequestSchema,
+  campaignScheduleSchema,
   campaignTestSendSchema,
   campaignWriteSchema,
 } from '@calwebtech/shared';
@@ -34,6 +36,7 @@ import { requireAuth } from '../../auth/admin-request';
 import { AuthModule } from '../../auth/auth.controller';
 import { ZodValidationPipe } from '../../common/zod-validation.pipe';
 import { API_ENV, type ApiEnv } from '../../config/env';
+import { CampaignSweepQueue } from '../../queue/campaign-sweep-queue';
 import { EmailQueue } from '../../queue/email-queue';
 import { AdminAudienceModule } from '../audience/admin-audience.controller';
 import { AdminCampaignsService } from './admin-campaigns.service';
@@ -93,6 +96,25 @@ export class AdminCampaignsController {
     return this.campaigns.remove(id, requireAuth(request).user.id);
   }
 
+  /** Schedules a draft, or sends it now with `sendAt: null`. Audited: this is the send. */
+  @Post(':id/schedule')
+  @HttpCode(200)
+  @RequireModule('campaigns')
+  schedule(
+    @Param('id') id: string,
+    @Body(new ZodValidationPipe(campaignScheduleSchema)) body: CampaignSchedule,
+    @Req() request: AdminRequest,
+  ): Promise<AdminCampaign> {
+    return this.campaigns.schedule(id, body, requireAuth(request).user.id);
+  }
+
+  @Post(':id/unschedule')
+  @HttpCode(200)
+  @RequireModule('campaigns')
+  unschedule(@Param('id') id: string, @Req() request: AdminRequest): Promise<AdminCampaign> {
+    return this.campaigns.unschedule(id, requireAuth(request).user.id);
+  }
+
   /** A few tests a minute is plenty for a person checking a layout, and caps a mistake. */
   @Post(':id/test')
   @HttpCode(202)
@@ -116,6 +138,11 @@ export class AdminCampaignsController {
     {
       provide: EmailQueue,
       useFactory: (env: ApiEnv) => new EmailQueue(env.REDIS_URL),
+      inject: [API_ENV],
+    },
+    {
+      provide: CampaignSweepQueue,
+      useFactory: (env: ApiEnv) => new CampaignSweepQueue(env.REDIS_URL),
       inject: [API_ENV],
     },
   ],

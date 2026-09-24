@@ -26,6 +26,12 @@ const apiEnvSchema = z.object({
    * the web container, which forwards the visitor IP, so the default is one.
    */
   TRUST_PROXY_HOPS: z.coerce.number().int().min(0).default(1),
+  /**
+   * Checks the signature on a campaign unsubscribe link; the worker signs with the same
+   * secret. Unset, the unsubscribe page answers that it cannot be used right now, and the
+   * worker starts no campaign, so no email goes out with a link that would not work.
+   */
+  AUTH_SECRET: z.preprocess(blankToUndefined, z.string().optional()),
 }).superRefine((env, context) => {
   if (env.APP_ENV === 'production' && !env.TURNSTILE_SECRET) {
     context.addIssue({
