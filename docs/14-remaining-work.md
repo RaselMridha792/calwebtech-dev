@@ -66,6 +66,7 @@ Non-negotiable 3 in `CLAUDE.md`: publishing never requires a deploy. Today these
   Admin screens for these, audited like every content change.
 
 ### 5. The rest of the booking engine (Task 5.1)
+**Done on `tumit`, 2026-09-25 (decision 60).**
 `.ics` invite on the confirmation, reminder emails 24 hours and 1 hour before (delayed
 worker jobs; a cancelled or moved booking must cancel its reminders), and signed reschedule
 and cancel pages. The tokens already exist: `Booking.rescheduleToken` and `cancelToken` are
