@@ -52,13 +52,13 @@ export class AdminOverviewService {
     const timeZone = await this.timeZone();
     const [leads, bookings, audience, campaigns, content, media] = await Promise.all([
       canRead(role, 'leads') ? this.leads(now, timeZone) : null,
-      canRead(role, 'bookings') ? this.bookings(now, timeZone) : null,
+      canRead(role, 'bookings') ? this.bookings(now) : null,
       canRead(role, 'subscribers') ? this.audience(now) : null,
       canRead(role, 'campaigns') ? this.campaigns() : null,
       canRead(role, 'content') ? this.content(now) : null,
       canRead(role, 'media') ? this.media() : null,
     ]);
-    return { generatedAt: now.toISOString(), leads, bookings, audience, campaigns, content, media };
+    return { generatedAt: now.toISOString(), timeZone, leads, bookings, audience, campaigns, content, media };
   }
 
   /** The booking page's timezone is the business's: the trend's days are its days. */
@@ -135,7 +135,7 @@ export class AdminOverviewService {
     };
   }
 
-  private async bookings(now: Date, timeZone: string): Promise<OverviewBookings> {
+  private async bookings(now: Date): Promise<OverviewBookings> {
     const live = { status: { in: [...LIVE_BOOKINGS] }, startsAt: { gte: now } };
     const [upcoming, next7Days] = await Promise.all([
       this.prisma.client.booking.findMany({
@@ -156,7 +156,6 @@ export class AdminOverviewService {
         startsAt: row.startsAt.toISOString(),
       })),
       next7Days,
-      timeZone,
     };
   }
 

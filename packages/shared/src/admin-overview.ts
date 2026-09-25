@@ -60,8 +60,6 @@ export const overviewBookingsSchema = z.object({
   /** The next calls that are still on, soonest first. */
   upcoming: z.array(overviewBookingSchema).max(5),
   next7Days: count,
-  /** The business timezone the booking page states, for showing the times. */
-  timeZone: z.string(),
 });
 export type OverviewBookings = z.infer<typeof overviewBookingsSchema>;
 
@@ -117,6 +115,8 @@ export type OverviewContent = z.infer<typeof overviewContentSchema>;
 
 export const adminOverviewSchema = z.object({
   generatedAt: z.iso.datetime(),
+  /** The business timezone the booking page states: the trend's days and every time shown. */
+  timeZone: z.string(),
   leads: overviewLeadsSchema.nullable(),
   bookings: overviewBookingsSchema.nullable(),
   audience: overviewAudienceSchema.nullable(),
