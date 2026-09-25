@@ -113,12 +113,15 @@ afterAll(async () => {
   await admin.$disconnect();
 });
 
+/** Every family in the registry, in the order they run. */
+const FAMILIES = ['operational', 'booking', 'references', 'work', 'services', 'industries', 'case-studies', 'page-copy'];
+
 describe('snapshot import on an empty database', () => {
   it('records the marker, so the next deploy changes nothing', async () => {
     const marker = await db.setting.findUnique({ where: { key: IMPORT_MARKER_KEY } });
     expect(marker?.value).toMatchObject({
       source: 'apps/web/static-content',
-      families: ['operational', 'booking', 'references', 'work', 'services', 'industries', 'case-studies', 'page-copy'],
+      families: FAMILIES,
     });
 
     await db.enquiryType.update({ where: { slug: 'support' }, data: { mailbox: 'support@example.com' } });
@@ -138,20 +141,21 @@ describe('snapshot import on an empty database', () => {
 
     const result = await importSnapshots(db, { dir: snapshotDir });
     expect(result).toMatchObject({ status: 'imported' });
-    expect(result.status === 'imported' ? result.families : []).toEqual(['booking', 'references', 'work', 'services', 'industries', 'case-studies', 'page-copy']);
+    expect(result.status === 'imported' ? result.families : []).toEqual(FAMILIES.slice(1));
     expect(await db.technology.count()).toBeGreaterThan(0);
     // The mailbox belongs to the family that was skipped, so it is still there.
     expect((await db.enquiryType.findUniqueOrThrow({ where: { slug: 'support' } })).mailbox).toBe('support@example.com');
 
     const marker = await db.setting.findUniqueOrThrow({ where: { key: IMPORT_MARKER_KEY } });
-    expect(marker.value).toMatchObject({ families: ['operational', 'booking', 'references', 'work', 'services', 'industries', 'case-studies', 'page-copy'] });
+    expect(marker.value).toMatchObject({ families: FAMILIES });
     expect((await importSnapshots(db, { dir: snapshotDir })).status).toBe('skipped');
-  });
+    // Every family runs against the database once, which takes longer than a unit test.
+  }, 60_000);
 
   it('keeps a mailbox a person set, even when the import is forced', async () => {
     expect((await importSnapshots(db, { dir: snapshotDir, force: true })).status).toBe('imported');
     expect((await db.enquiryType.findUniqueOrThrow({ where: { slug: 'support' } })).mailbox).toBe('support@example.com');
-  });
+  }, 60_000);
 
   it('offers at least one enquiry type on the contact page', () => {
     expect(offered.length).toBeGreaterThan(0);
