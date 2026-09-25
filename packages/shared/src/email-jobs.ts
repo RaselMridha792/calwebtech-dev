@@ -57,6 +57,35 @@ export const DEFAULT_ACKNOWLEDGEMENT: Acknowledgement = {
 
 const recipientsSchema = z.array(z.email()).min(1).max(20);
 
+/**
+ * The two signed links a booking's own emails carry: move the call, or cancel it
+ * (docs/08-decisions.md, 60). Optional so a job queued before they existed still parses.
+ */
+const bookingManageSchema = z.object({ rescheduleToken: z.string().min(1), cancelToken: z.string().min(1) });
+
+/** When a reminder goes: a day before the call and an hour before it. */
+export const BOOKING_REMINDER_WINDOWS = [
+  { key: '24h', hours: 24 },
+  { key: '1h', hours: 1 },
+] as const;
+export type BookingReminderWindow = (typeof BOOKING_REMINDER_WINDOWS)[number]['key'];
+export const bookingReminderWindowSchema = z.enum(['24h', '1h']);
+
+/** What happened to a booking, for the emails that say so. */
+export const bookingChangeSchema = z.enum(['booked', 'moved', 'cancelled']);
+export type BookingChange = z.infer<typeof bookingChangeSchema>;
+
+/** The call itself, as every booking email describes it. */
+const bookingCallShape = {
+  bookingId: z.string().min(1),
+  name: z.string().min(1),
+  consultationType: z.string().min(1),
+  startsAt: z.iso.datetime(),
+  endsAt: z.iso.datetime(),
+  /** The visitor's own zone, so the email states the time in the clock they read. */
+  timezone: z.string().min(1),
+};
+
 export const emailJobSchema = z.discriminatedUnion('template', [
   /** Sent to the person who filled the form. */
   z.object({
@@ -89,14 +118,13 @@ export const emailJobSchema = z.discriminatedUnion('template', [
   z.object({
     template: z.literal('booking-confirmation'),
     to: recipientsSchema,
-    bookingId: z.string().min(1),
-    name: z.string().min(1),
-    consultationType: z.string().min(1),
-    startsAt: z.iso.datetime(),
-    endsAt: z.iso.datetime(),
-    /** The visitor's own zone, so the email states the time in the clock they read. */
-    timezone: z.string().min(1),
+    ...bookingCallShape,
+    manage: bookingManageSchema.optional(),
   }),
+  /**
+   * Sent to us when a call is booked, moved or cancelled. Without `change` it is a booking, so
+   * a job queued before calls could be moved still reads as what it was.
+   */
   z.object({
     template: z.literal('booking-notification'),
     to: recipientsSchema,
@@ -107,6 +135,30 @@ export const emailJobSchema = z.discriminatedUnion('template', [
     startsAt: z.iso.datetime(),
     timezone: z.string().min(1),
     context: z.string().nullable(),
+    change: bookingChangeSchema.optional(),
+    /** Where a moved call was before. */
+    previousStartsAt: z.iso.datetime().nullable().optional(),
+  }),
+  /**
+   * A day and an hour before the call, queued with a delay when the call is booked or moved
+   * (docs/08-decisions.md, 60). The worker checks the booking again before sending, so a call
+   * cancelled or moved since is never reminded about at its old time.
+   */
+  z.object({
+    template: z.literal('booking-reminder'),
+    to: recipientsSchema,
+    ...bookingCallShape,
+    window: bookingReminderWindowSchema,
+    manage: bookingManageSchema.optional(),
+  }),
+  /** Sent to the visitor when they move or cancel their call from its signed link. */
+  z.object({
+    template: z.literal('booking-changed'),
+    to: recipientsSchema,
+    ...bookingCallShape,
+    change: z.enum(['moved', 'cancelled']),
+    previousStartsAt: z.iso.datetime().nullable(),
+    manage: bookingManageSchema.optional(),
   }),
   /**
    * A campaign's test send (Task 5.4). It carries the content as it was saved when the
@@ -138,7 +190,18 @@ export function emailJobId(job: {
   bookingId?: string;
   campaignId?: string;
   testId?: string;
+  window?: string;
+  change?: string;
+  startsAt?: string;
 }): string {
+  // A booking can be reminded twice and moved or cancelled after it was booked, and each is
+  // its own email. The window or the change and the call's time make the id, so moving a
+  // call and moving it back are two emails, while a retry of either is still one.
+  const occasion = job.window ?? (job.change && job.change !== 'booked' ? job.change : undefined);
+  if (job.bookingId && occasion) {
+    const at = job.startsAt ? Date.parse(job.startsAt) : 0;
+    return `${job.template}-${job.bookingId}-${occasion}-${String(at)}`;
+  }
   const subject =
     job.lead?.leadId ?? job.bookingId ?? (job.campaignId && job.testId ? `${job.campaignId}-${job.testId}` : undefined);
   // A job with neither would collide with every other job of its template, which is the

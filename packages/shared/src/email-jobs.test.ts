@@ -93,4 +93,60 @@ describe('emailJobId', () => {
   it('refuses a job that names neither', () => {
     expect(() => emailJobId({ template: 'booking-notification' })).toThrow();
   });
+
+  it('gives each reminder and each change to a call an id of its own, stable across retries', () => {
+    const at = '2026-09-24T15:45:00.000Z';
+    const later = '2026-09-25T15:45:00.000Z';
+    const day = emailJobId({ template: 'booking-reminder', bookingId: 'b1', window: '24h', startsAt: at });
+    const hour = emailJobId({ template: 'booking-reminder', bookingId: 'b1', window: '1h', startsAt: at });
+    const moved = emailJobId({ template: 'booking-reminder', bookingId: 'b1', window: '24h', startsAt: later });
+    expect(new Set([day, hour, moved]).size).toBe(3);
+    expect(day).toBe(emailJobId({ template: 'booking-reminder', bookingId: 'b1', window: '24h', startsAt: at }));
+    expect(day).not.toContain(':');
+    // The team hears of a booking once, and of each change separately.
+    expect(emailJobId({ template: 'booking-notification', bookingId: 'b1', change: 'booked', startsAt: at })).toBe(
+      'booking-notification-b1',
+    );
+    expect(emailJobId({ template: 'booking-notification', bookingId: 'b1', change: 'moved', startsAt: later })).toBe(
+      `booking-notification-b1-moved-${String(Date.parse(later))}`,
+    );
+  });
+});
+
+describe('the jobs for a moved or cancelled call', () => {
+  const call = {
+    to: ['dana@company.com'],
+    bookingId: 'cmf0book0000abc',
+    name: 'Dana Whitfield',
+    consultationType: 'Discovery call',
+    startsAt: '2026-09-24T15:45:00.000Z',
+    endsAt: '2026-09-24T16:15:00.000Z',
+    timezone: 'America/Los_Angeles',
+    manage: { rescheduleToken: 'test-reschedule-token', cancelToken: 'test-cancel-token' },
+  };
+
+  it('accepts a reminder a day or an hour before, and nothing else', () => {
+    expect(emailJobSchema.safeParse({ ...call, template: 'booking-reminder', window: '24h' }).success).toBe(true);
+    expect(emailJobSchema.safeParse({ ...call, template: 'booking-reminder', window: '1h' }).success).toBe(true);
+    expect(emailJobSchema.safeParse({ ...call, template: 'booking-reminder', window: '2h' }).success).toBe(false);
+  });
+
+  it('accepts a moved or cancelled call, and a notification that says which', () => {
+    const moved = { ...call, template: 'booking-changed', change: 'moved', previousStartsAt: '2026-09-23T15:45:00.000Z' };
+    expect(emailJobSchema.safeParse(moved).success).toBe(true);
+    expect(emailJobSchema.safeParse({ ...moved, change: 'booked' }).success).toBe(false);
+    const notification = {
+      template: 'booking-notification',
+      to: ['hello@calwebtech.com'],
+      bookingId: call.bookingId,
+      name: call.name,
+      email: 'dana@company.com',
+      consultationType: call.consultationType,
+      startsAt: call.startsAt,
+      timezone: call.timezone,
+      context: null,
+      change: 'cancelled',
+    };
+    expect(emailJobSchema.safeParse(notification).success).toBe(true);
+  });
 });

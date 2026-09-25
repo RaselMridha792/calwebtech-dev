@@ -383,7 +383,55 @@ export const BOOKING_ERRORS = {
   slotGone: 'slot_taken',
   slotUnknown: 'slot_unavailable',
   typeUnknown: 'consultation_type_unknown',
+  /** A signed link that names no booking, or names one that can no longer change. */
+  linkUnknown: 'booking_link_unknown',
+  /** The call is cancelled, or has already happened. */
+  closed: 'booking_closed',
 } as const;
+
+// ---------------------------------------------------------------- moving and cancelling
+
+/**
+ * `/book-a-consultation/reschedule/<token>/` and `/book-a-consultation/cancel/<token>/`
+ * (docs/08-decisions.md, 60). The token is the credential: whoever holds the link from the
+ * confirmation email may move or cancel that one call, and nothing else. It is a random
+ * 192-bit value stored on the booking, so it cannot be guessed and names one call.
+ */
+export const bookingTokenSchema = z.string().trim().min(16).max(64).regex(/^[A-Za-z0-9_-]+$/);
+
+export const BOOKING_LINK_ACTIONS = ['reschedule', 'cancel'] as const;
+export type BookingLinkAction = (typeof BOOKING_LINK_ACTIONS)[number];
+
+/** What a signed link shows: the call it is for, and whether it can still change. */
+export const bookingManageViewSchema = z.object({
+  action: z.enum(BOOKING_LINK_ACTIONS),
+  consultationType: requiredText(80),
+  durationMinutes: z.number().int().positive(),
+  startsAt: z.iso.datetime(),
+  endsAt: z.iso.datetime(),
+  /** The zone the visitor booked in. */
+  timezone: z.string().min(1),
+  /** False once the call is cancelled or its time has passed. */
+  open: z.boolean(),
+  cancelled: z.boolean(),
+});
+export type BookingManageView = z.infer<typeof bookingManageViewSchema>;
+
+export const bookingRescheduleSchema = z.object({
+  token: bookingTokenSchema,
+  /** One of the instants the API offered, as for a new booking. */
+  startsAt: z.iso.datetime(),
+  timezone: timeZoneSchema,
+});
+export type BookingReschedule = z.infer<typeof bookingRescheduleSchema>;
+
+export const bookingCancelSchema = z.object({ token: bookingTokenSchema });
+export type BookingCancel = z.infer<typeof bookingCancelSchema>;
+
+/** The addresses of the two pages a booking's emails link to. */
+export function bookingLinkPath(action: BookingLinkAction, token: string): string {
+  return `${CONSULTATION_PATH}${action}/${encodeURIComponent(token)}/`;
+}
 
 // ---------------------------------------------------------------- the dashboard
 
