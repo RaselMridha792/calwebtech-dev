@@ -405,6 +405,8 @@ export type BookingLinkAction = (typeof BOOKING_LINK_ACTIONS)[number];
 /** What a signed link shows: the call it is for, and whether it can still change. */
 export const bookingManageViewSchema = z.object({
   action: z.enum(BOOKING_LINK_ACTIONS),
+  /** Which type's times a move is offered from. */
+  consultationTypeSlug: z.string().min(1),
   consultationType: requiredText(80),
   durationMinutes: z.number().int().positive(),
   startsAt: z.iso.datetime(),

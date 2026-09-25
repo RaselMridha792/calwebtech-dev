@@ -330,6 +330,7 @@ export class BookingService {
     const cancelled = booking.status === 'CANCELLED';
     return {
       action,
+      consultationTypeSlug: booking.consultationType.slug,
       consultationType: booking.consultationType.name,
       durationMinutes: booking.consultationType.durationMinutes,
       startsAt: booking.startsAt.toISOString(),
