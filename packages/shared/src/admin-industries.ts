@@ -1,7 +1,12 @@
 import { z } from 'zod';
 import { contentStatusSchema } from './admin-services';
 import { answerBlockSchema, questionSchema, requiredText } from './pages/common';
-import { INDUSTRY_FALLBACK_HEADINGS, INDUSTRY_FAQ_LIMIT, industryContentSchema, type IndustryContentInput } from './pages/industries';
+import {
+  INDUSTRY_FALLBACK_HEADINGS,
+  INDUSTRY_FAQ_LIMIT,
+  industryContentSchema,
+  type IndustryContentInput,
+} from './pages/industries';
 import { seoSchema, slugSchema } from './seo';
 
 /**
@@ -96,9 +101,39 @@ export function templateIndustryContent(name: string): IndustryContentInput {
     painPoints: { heading: INDUSTRY_FALLBACK_HEADINGS.painPoints, intro: null, items: [point, point, point, point] },
     services: { heading: INDUSTRY_FALLBACK_HEADINGS.services, intro: null, items: [] },
     compliance: null,
-    caseStudies: { heading: INDUSTRY_FALLBACK_HEADINGS.caseStudies, intro: null, linkLabel: INDUSTRY_FALLBACK_HEADINGS.caseStudiesLink },
+    caseStudies: {
+      heading: INDUSTRY_FALLBACK_HEADINGS.caseStudies,
+      intro: null,
+      linkLabel: INDUSTRY_FALLBACK_HEADINGS.caseStudiesLink,
+    },
     results: { heading: INDUSTRY_FALLBACK_HEADINGS.results, intro: null, note: null },
     integrations: { heading: INDUSTRY_FALLBACK_HEADINGS.integrations, intro: null, items: [{ name: '', body: '' }] },
     faq: { heading: INDUSTRY_FALLBACK_HEADINGS.faq, intro: null },
   };
 }
+
+/**
+ * What the page copy editor may add where the copy has nothing: a new item in an empty list,
+ * or a section or piece of copy that is not set. Keyed by path, list positions written `#`
+ * (apps/web/components/admin/content/copy-editor.tsx). Only what `industryContentSchema`
+ * allows to be empty is here, so the editor cannot add a structure the page cannot render.
+ */
+export const INDUSTRY_CONTENT_SHAPES: Readonly<Record<string, unknown>> = {
+  image: { src: '', alt: '' },
+  'hero.primaryCta': { label: '', href: '' },
+  'hero.secondaryCta': { label: '', href: '' },
+  'hero.highlights.#': '',
+  'hero.backdrop': { src: '' },
+  'painPoints.intro': '',
+  'services.intro': '',
+  'services.items.#': { slug: '', body: '' },
+  compliance: { heading: '', intro: null, notes: [{ title: '', body: '' }] },
+  'compliance.intro': '',
+  'compliance.notes.#': { title: '', body: '' },
+  'caseStudies.intro': '',
+  'results.intro': '',
+  'results.note': '',
+  'integrations.intro': '',
+  'integrations.items.#': { name: '', body: '' },
+  'faq.intro': '',
+};
