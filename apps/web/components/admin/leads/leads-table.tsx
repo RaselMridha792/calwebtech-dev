@@ -22,20 +22,22 @@ interface Column {
   key: AdminLeadQuery['sort'] | null;
   label: string;
   width: string;
+  /** Its share while a lead is open and the secondary columns are gone. */
+  compactWidth?: string;
   numeric?: boolean;
   /** Left out while a lead is open beside the table, which then has half the room. */
   secondary?: boolean;
 }
 
 const COLUMNS: Column[] = [
-  { key: 'name', label: 'Name', width: 'w-[17%]' },
+  { key: 'name', label: 'Name', width: 'w-[17%]', compactWidth: 'w-[31%]' },
   { key: 'company', label: 'Company', width: 'w-[14%]', secondary: true },
-  { key: 'type', label: 'Form', width: 'w-[10%]' },
+  { key: 'type', label: 'Form', width: 'w-[10%]', compactWidth: 'w-[15%]' },
   { key: 'service', label: 'Service or campaign', width: 'w-[16%]', secondary: true },
-  { key: 'status', label: 'Status', width: 'w-[12%]' },
-  { key: 'owner', label: 'Owner', width: 'w-[11%]' },
+  { key: 'status', label: 'Status', width: 'w-[12%]', compactWidth: 'w-[17%]' },
+  { key: 'owner', label: 'Owner', width: 'w-[11%]', compactWidth: 'w-[17%]' },
   { key: 'value', label: 'Budget', width: 'w-[8%]', numeric: true, secondary: true },
-  { key: 'received', label: 'Received', width: 'w-[9%]', numeric: true },
+  { key: 'received', label: 'Received', width: 'w-[9%]', compactWidth: 'w-[14%]', numeric: true },
 ];
 
 export function LeadsTable({
@@ -47,7 +49,9 @@ export function LeadsTable({
   query: AdminLeadQuery;
   openLeadId: string | null;
 }) {
-  const columns = openLeadId ? COLUMNS.filter((column) => !column.secondary) : COLUMNS;
+  const columns = openLeadId
+    ? COLUMNS.filter((column) => !column.secondary).map((column) => ({ ...column, width: column.compactWidth ?? column.width }))
+    : COLUMNS;
   return (
     <table className="w-full table-fixed border-collapse">
       <caption className="sr-only">Leads, sortable by column</caption>
@@ -112,7 +116,11 @@ function Row({
   compact: boolean;
 }) {
   return (
-    <tr className={`relative transition-colors duration-150 ${open ? 'bg-admin-mist' : 'hover:bg-admin-hover'}`}>
+    <tr
+      className={`relative transition-colors duration-150 ${
+        open ? 'bg-admin-hover shadow-[inset_3px_0_0_var(--color-gold-500)]' : 'hover:bg-admin-hover'
+      }`}
+    >
       <td className="h-[52px] border-t border-admin-line2 pl-5">
         <input type="checkbox" name="ids" value={lead.id} aria-label={`Select ${lead.name}`} className={`${CHECK} relative z-20`} />
       </td>
