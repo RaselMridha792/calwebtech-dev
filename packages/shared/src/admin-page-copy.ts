@@ -68,7 +68,7 @@ export const PAGE_COPY_LABELS: Record<PageCopyKey, { title: string; help: string
   },
   [WORK_COPY_SETTING_KEY]: {
     title: 'Case studies copy',
-    help: 'The copy of /work/, the headings and labels of every case study, and /before-and-after/.',
+    help: 'The copy of /work/ and the headings and labels of every case study.',
     family: 'work',
   },
 };

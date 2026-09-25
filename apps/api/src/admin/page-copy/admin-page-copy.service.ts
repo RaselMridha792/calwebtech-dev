@@ -39,9 +39,20 @@ export class AdminPageCopyService {
     };
   }
 
+  /**
+   * The stored copy. Read through its schema when it passes, which lays it out in the page's
+   * order (Postgres keeps an object's keys sorted by length); as stored when it does not, so
+   * the screen can show what needs fixing.
+   */
   async detail(key: PageCopyKey): Promise<AdminPageCopyDetail> {
     const row = await this.prisma.client.setting.findUnique({ where: { key } });
-    return { key, value: row?.value ?? null, stored: Boolean(row), updatedAt: row?.updatedAt.toISOString() ?? null };
+    const parsed = row ? PAGE_COPY_SCHEMAS[key].safeParse(row.value) : null;
+    return {
+      key,
+      value: parsed?.success ? parsed.data : (row?.value ?? null),
+      stored: Boolean(row),
+      updatedAt: row?.updatedAt.toISOString() ?? null,
+    };
   }
 
   /**
