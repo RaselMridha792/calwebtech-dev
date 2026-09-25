@@ -37,6 +37,19 @@
   }
 
   /*
+   * The dashboard is dark, so the browser's own controls, pickers and scrollbars follow it,
+   * and its focus ring is the admin's own focus tone: cobalt is too dark to see on navy.
+   */
+  [data-theme='admin'] {
+    color-scheme: dark;
+    scrollbar-color: var(--color-admin-line) transparent;
+  }
+  [data-theme='admin'] :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-admin-focus);
+    outline-offset: 2px;
+  }
+
+  /*
    * No `scroll-behavior: smooth` here. It fixes the destination before `content-auto`
    * sections render at their real height, so anchors land in the wrong place. In-page
    * links are smoothed by components/motion/anchor-scroll.tsx instead.
