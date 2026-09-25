@@ -5,6 +5,7 @@ import { useActionState, useEffect, useRef, useState, type ComponentProps, type 
 import { TURNSTILE_FIELD, useTurnstile } from '@/components/forms/use-turnstile';
 import { captureAttribution } from '@/lib/attribution-client';
 import { submitLead, type LeadFormState } from '@/lib/lead-actions';
+import { FormClock } from '../forms/form-clock';
 
 /**
  * The email gate in front of a guide's download. It asks for a name and a work email only,
@@ -173,6 +174,7 @@ export function GuideGate({
           defaultValue=""
         />
       </div>
+      <FormClock />
 
       {alertMessage ? (
         <p role="alert" className="mb-5 text-[14px] font-medium text-danger">

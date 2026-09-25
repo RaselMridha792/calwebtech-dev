@@ -4,6 +4,7 @@ import { useCallback, useMemo, useRef, useState } from 'react';
 import { TURNSTILE_FIELD, useTurnstile } from '../forms/use-turnstile';
 import { ArrowIcon } from '../ui/icons';
 import { SlotPicker, hasFreeTime, visitorZone } from './slot-picker';
+import { FormClock } from '../forms/form-clock';
 
 /**
  * The booking form: pick a time, say who you are, confirm.
@@ -228,6 +229,7 @@ export function BookingForm({
       <input type="hidden" name="startsAt" value={chosen ?? ''} />
       <input type="hidden" name="timezone" value={zone} />
       <input type="hidden" name="consultationType" value={slots.consultationType.slug} />
+      <FormClock />
       {source ? <input type="hidden" name="source" value={source} /> : null}
       {checkProblem ? (
         <p role="alert" className="body-base mt-6 border-l-2 border-danger py-1 ps-4 text-ink">

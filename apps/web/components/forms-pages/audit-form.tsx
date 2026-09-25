@@ -7,6 +7,7 @@ import { submitLead, type LeadFormState } from '@/lib/lead-actions';
 import { useTurnstile } from '../forms/use-turnstile';
 import { ArrowIcon } from '../ui/icons';
 import { Area, Choices, Field, type FormOption } from './fields';
+import { FormClock } from '../forms/form-clock';
 
 export interface AuditFormProps {
   copy: FormsAuditForm;
@@ -129,6 +130,7 @@ export function AuditForm({ copy, concerns, formId, thankYouPath, turnstileSiteK
         <label htmlFor="audit-reference">Reference code</label>
         <input id="audit-reference" type="text" name="referenceCode" tabIndex={-1} autoComplete="off" defaultValue="" />
       </div>
+      <FormClock />
 
       <button
         type="submit"

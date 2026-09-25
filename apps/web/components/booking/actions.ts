@@ -5,6 +5,7 @@ import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { TURNSTILE_FIELD } from '@/lib/turnstile-field';
 import { createBooking, getBookingSlots } from '@/lib/api/booking';
+import { formElapsed } from '@/lib/form-clock-field';
 
 /**
  * What the page shows after the visitor confirms.
@@ -34,6 +35,7 @@ export async function submitBooking(_state: BookingFormState, form: FormData): P
     context: text(form, 'context'),
     source: text(form, 'source'),
     turnstileToken: text(form, TURNSTILE_FIELD),
+    formElapsedMs: formElapsed(form),
   });
 
 
@@ -65,5 +67,21 @@ export async function submitBooking(_state: BookingFormState, form: FormData): P
   if (result.status === 'bot-check') {
     return { status: 'error', message: 'That looked automated. Please try again.', fieldErrors: {} };
   }
-  return { status: 'error', message: result.message, fieldErrors: {} };
+  if (result.status === 'already-booked') {
+    // In the visitor's own clock, as the rest of the form shows times.
+    const when = new Intl.DateTimeFormat('en-GB', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      hour: 'numeric',
+      minute: '2-digit',
+      timeZone: parsed.data.timezone,
+    }).format(new Date(result.startsAt));
+    return {
+      status: 'error',
+      message: `You already have a call booked for ${when}. The link in its confirmation email moves it to another time.`,
+      fieldErrors: {},
+    };
+  }
+  return { status: 'error', message: result.message, fieldErrors: result.fieldErrors ?? {} };
 }

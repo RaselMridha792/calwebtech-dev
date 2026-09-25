@@ -4,6 +4,7 @@ import type { InsightsNewsletterCopy } from '@calwebtech/shared';
 import { useActionState, useEffect, useRef, useState, type ComponentProps } from 'react';
 import { TURNSTILE_FIELD, useTurnstile } from '../forms/use-turnstile';
 import { subscribeToNewsletter, type NewsletterState } from '../subscribe/actions';
+import { FormClock } from '../forms/form-clock';
 
 const INITIAL: NewsletterState = { status: 'idle' };
 
@@ -128,6 +129,7 @@ export function SubscribeForm({
         <label htmlFor="insights-subscribe-reference">Reference code</label>
         <input id="insights-subscribe-reference" type="text" name="referenceCode" tabIndex={-1} autoComplete="off" defaultValue="" />
       </div>
+      <FormClock />
 
       {alert ? (
         <p role="alert" className="mb-4 text-[14px] font-medium text-danger">
@@ -153,7 +155,7 @@ export function SubscribeForm({
           />
           {invalid ? (
             <p id="insights-subscribe-email-error" className="mt-1.5 text-[13px] font-medium text-danger">
-              {MESSAGES.invalid}
+              {state.message ?? MESSAGES.invalid}
             </p>
           ) : null}
         </div>

@@ -54,7 +54,9 @@ export type BookingResult =
   | { status: 'booked'; confirmation: BookingConfirmation }
   | { status: 'slot-taken' }
   | { status: 'bot-check' }
-  | { status: 'error'; message: string };
+  /** The address has a call still to come; its emails carry the link to move it. */
+  | { status: 'already-booked'; startsAt: string }
+  | { status: 'error'; message: string; fieldErrors?: Record<string, string[]> };
 
 /**
  * Sends a booking and reports what happened in the page's own terms.
@@ -85,6 +87,16 @@ export async function createBooking(input: BookingSubmission, visitorIp: string 
   const error = typeof body === 'object' && body !== null && 'error' in body ? String(body.error) : '';
   if (response.status === 403 && error === 'bot_check_failed') return { status: 'bot-check' };
   if (error === BOOKING_ERRORS.slotGone || error === BOOKING_ERRORS.slotUnknown) return { status: 'slot-taken' };
+  if (error === BOOKING_ERRORS.alreadyBooked && typeof body === 'object' && body !== null && 'startsAt' in body) {
+    return { status: 'already-booked', startsAt: String(body.startsAt) };
+  }
+  if (response.status === 429) {
+    return { status: 'error', message: 'Several bookings came from this address today. Please reply to your confirmation email instead.' };
+  }
+  if (response.status === 400 && typeof body === 'object' && body !== null && 'fieldErrors' in body) {
+    const fieldErrors = body.fieldErrors as Record<string, string[]>;
+    return { status: 'error', message: fieldErrors.email?.[0] ?? 'Some details are missing.', fieldErrors };
+  }
   return { status: 'error', message: 'That could not be booked. Please try again.' };
 }
 

@@ -8,6 +8,7 @@ import { TURNSTILE_FIELD, useTurnstile } from '../forms/use-turnstile';
 import { ArrowIcon } from '../ui/icons';
 import { saveProjectDraft } from './actions';
 import { Area, Choices, Field, type FormOption } from './fields';
+import { FormClock } from '../forms/form-clock';
 
 export interface ProjectBriefFormProps {
   copy: FormsProjectForm;
@@ -336,6 +337,7 @@ export function ProjectBriefForm({
         <label htmlFor="brief-reference">Reference code</label>
         <input id="brief-reference" type="text" name="referenceCode" tabIndex={-1} autoComplete="off" defaultValue="" />
       </div>
+      <FormClock />
 
       <div className="mt-8 flex flex-wrap items-center gap-3">
         {current > 0 ? (

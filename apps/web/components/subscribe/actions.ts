@@ -4,6 +4,7 @@ import { SUBSCRIBE_SOURCE_HOME, subscribeSubmissionSchema } from '@calwebtech/sh
 import { headers } from 'next/headers';
 import { postSubscriber } from '@/lib/api/subscribers';
 import { TURNSTILE_FIELD } from '@/lib/turnstile-field';
+import { formElapsed } from '@/lib/form-clock-field';
 
 /**
  * What the band shows after a submit. `email` is echoed on an error so React's automatic form
@@ -12,7 +13,13 @@ import { TURNSTILE_FIELD } from '@/lib/turnstile-field';
 export type NewsletterState =
   | { status: 'idle' }
   | { status: 'success' }
-  | { status: 'error'; reason: 'invalid' | 'bot_check_failed' | 'rate_limited' | 'unavailable'; email: string };
+  | {
+      status: 'error';
+      reason: 'invalid' | 'bot_check_failed' | 'rate_limited' | 'unavailable';
+      email: string;
+      /** The API's own words about the address, when it gave some (a throwaway inbox, no mail). */
+      message?: string;
+    };
 
 function text(form: FormData, name: string): string {
   const value = form.get(name);
@@ -31,6 +38,7 @@ export async function subscribeToNewsletter(_previous: NewsletterState, form: Fo
     sourcePage: text(form, 'sourcePage') || SUBSCRIBE_SOURCE_HOME,
     turnstileToken: text(form, TURNSTILE_FIELD) || undefined,
     referenceCode: text(form, 'referenceCode') || undefined,
+    formElapsedMs: formElapsed(form),
   });
   if (!parsed.success) return { status: 'error', reason: 'invalid', email };
 
@@ -43,7 +51,7 @@ export async function subscribeToNewsletter(_previous: NewsletterState, form: Fo
     case 'subscribed':
       return { status: 'success' };
     case 'invalid':
-      return { status: 'error', reason: 'invalid', email };
+      return { status: 'error', reason: 'invalid', email, ...(outcome.message ? { message: outcome.message } : {}) };
     case 'bot-check':
       return { status: 'error', reason: 'bot_check_failed', email };
     case 'rate-limited':

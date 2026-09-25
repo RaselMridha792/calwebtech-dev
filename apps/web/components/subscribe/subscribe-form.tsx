@@ -4,6 +4,7 @@ import type { SubscribeCopy } from '@calwebtech/shared';
 import { useActionState, useEffect, useRef, useState, type ComponentProps } from 'react';
 import { TURNSTILE_FIELD, useTurnstile } from '../forms/use-turnstile';
 import { subscribeToNewsletter, type NewsletterState } from './actions';
+import { FormClock } from '../forms/form-clock';
 
 const INITIAL: NewsletterState = { status: 'idle' };
 
@@ -98,7 +99,7 @@ export function SubscribeForm({
     checkProblem ??
     (failed
       ? state.reason === 'invalid'
-        ? copy.invalid
+        ? (state.message ?? copy.invalid)
         : state.reason === 'bot_check_failed'
           ? copy.botCheck
           : state.reason === 'rate_limited'
@@ -123,6 +124,7 @@ export function SubscribeForm({
         <label htmlFor="subscribe-reference">Reference code</label>
         <input id="subscribe-reference" type="text" name="referenceCode" tabIndex={-1} autoComplete="off" defaultValue="" />
       </div>
+      <FormClock />
 
       <label htmlFor="subscribe-email" className="eyebrow block text-ink-muted">
         {copy.emailLabel}

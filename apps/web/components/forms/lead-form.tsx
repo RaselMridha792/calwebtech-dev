@@ -6,6 +6,7 @@ import { captureAttribution } from '@/lib/attribution-client';
 import { submitLead, type LeadFormState } from '@/lib/lead-actions';
 import { ShieldIcon } from '../ui/icons';
 import { TURNSTILE_FIELD, useTurnstile } from './use-turnstile';
+import { FormClock } from './form-clock';
 
 interface Option {
   value: string;
@@ -249,6 +250,7 @@ export function LeadForm(props: LeadFormProps) {
         <label htmlFor={`${formId}-reference`}>Reference code</label>
         <input id={`${formId}-reference`} type="text" name="referenceCode" tabIndex={-1} autoComplete="off" defaultValue="" />
       </div>
+      <FormClock />
 
       {alertMessage ? (
         <p role="alert" className="text-[14px] font-medium text-danger">

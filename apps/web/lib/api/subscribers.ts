@@ -4,7 +4,8 @@ import { apiUrl, hasApi } from './core';
 
 export type SubscribeOutcome =
   | { status: 'subscribed' }
-  | { status: 'invalid' }
+  /** With the API's words when it named the address itself: a throwaway inbox, or no mail. */
+  | { status: 'invalid'; message?: string }
   | { status: 'bot-check' }
   | { status: 'rate-limited' }
   | { status: 'unavailable' };
@@ -40,7 +41,11 @@ export async function postSubscriber(input: SubscribeSubmission, visitorIp: stri
       ? { status: 'subscribed' }
       : { status: 'unavailable' };
   }
-  if (response.status === 400) return { status: 'invalid' };
+  if (response.status === 400) {
+    const body = (await response.json().catch(() => null)) as { fieldErrors?: { email?: string[] } } | null;
+    const message = body?.fieldErrors?.email?.[0];
+    return message ? { status: 'invalid', message } : { status: 'invalid' };
+  }
   if (response.status === 403) return { status: 'bot-check' };
   if (response.status === 429) return { status: 'rate-limited' };
   return { status: 'unavailable' };

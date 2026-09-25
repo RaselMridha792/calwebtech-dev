@@ -1,6 +1,7 @@
 import { attributionSchema, type Attribution } from '@calwebtech/shared';
 import { utmFromSearchParams } from './utm';
 import { TURNSTILE_FIELD } from './turnstile-field';
+import { formElapsed } from './form-clock-field';
 
 function field(form: FormData, name: string): string | undefined {
   const value = form.get(name);
@@ -59,6 +60,7 @@ export function leadSubmissionFromForm(
     competitorUrl: field(form, 'competitorUrl'),
     attribution: attributionFromForm(form, referer),
     referenceCode: field(form, 'referenceCode'),
+    formElapsedMs: formElapsed(form),
     turnstileToken: field(form, TURNSTILE_FIELD),
   };
 }

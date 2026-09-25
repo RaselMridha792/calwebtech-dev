@@ -76,6 +76,16 @@ describe('leadSubmissionFromForm', () => {
   });
 });
 
+describe('how long the form was open', () => {
+  it('travels as a number of milliseconds, and not at all when the clock never ran', () => {
+    const timed = leadSubmissionSchema.parse(leadSubmissionFromForm(formWith([...base, ['formElapsedMs', '8421']]), null));
+    expect(timed.formElapsedMs).toBe(8421);
+    // An empty field is no figure, never zero: zero would read as a form sent instantly.
+    const empty = leadSubmissionSchema.parse(leadSubmissionFromForm(formWith([...base, ['formElapsedMs', '']]), null));
+    expect(empty.formElapsedMs).toBeUndefined();
+  });
+});
+
 describe('attributionFromForm', () => {
   it('uses attribution captured in the browser when present', () => {
     const captured = { lastTouch: { source: 'linkedin' }, landingPage: '/lp/b2b/', device: 'mobile' };
