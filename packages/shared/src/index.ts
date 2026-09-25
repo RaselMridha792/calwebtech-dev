@@ -3,6 +3,7 @@ export * from './audience';
 export * from './admin-leads';
 export * from './admin-media';
 export * from './admin-services';
+export * from './admin-industries';
 export * from './admin-ops';
 export * from './auth';
 export * from './booking';
