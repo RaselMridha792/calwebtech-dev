@@ -8,6 +8,7 @@ import { AdminCaseStudiesModule } from './admin/case-studies/admin-case-studies.
 import { AdminIndustriesModule } from './admin/industries/admin-industries.controller';
 import { AdminLeadsModule } from './admin/leads/admin-leads.controller';
 import { AdminMediaModule } from './admin/media/admin-media.controller';
+import { AdminOverviewModule } from './admin/overview/admin-overview.controller';
 import { AdminOpsModule } from './admin/ops/admin-ops.controller';
 import { AdminPageCopyModule } from './admin/page-copy/admin-page-copy.controller';
 import { AdminServicesModule } from './admin/services/admin-services.controller';
@@ -50,6 +51,7 @@ import { WebhooksModule } from './webhooks/resend-webhook.controller';
     AdminLeadsModule,
     AdminMediaModule,
     AdminOpsModule,
+    AdminOverviewModule,
     AdminServicesModule,
     AdminIndustriesModule,
     AdminCaseStudiesModule,
