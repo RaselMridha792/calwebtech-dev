@@ -74,8 +74,8 @@ export default async function AdminContentPage() {
         )}
 
         <p className="mt-8 border-t border-admin-line pt-4 text-[11.5px] text-admin-muted">
-          The other content types — case studies, articles, industries, locations, the glossary — still come from the
-          snapshots and move across one at a time.
+          Industries and case studies have their own screens. The other content types — articles, locations, the
+          glossary — still come from the snapshots and move across one at a time.
         </p>
       </div>
     </main>

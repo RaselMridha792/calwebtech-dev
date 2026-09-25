@@ -4,6 +4,7 @@ import {
   AuditIcon,
   BookingsIcon,
   CampaignsIcon,
+  CaseStudiesIcon,
   ContentIcon,
   DashboardIcon,
   IndustriesIcon,
@@ -55,6 +56,7 @@ const GROUPS: { label: string; routes: ModuleRoute[] }[] = [
     routes: [
       { module: 'content', href: '/admin/content/', label: 'Services', icon: <ContentIcon /> },
       { module: 'content', href: '/admin/industries/', label: 'Industries', icon: <IndustriesIcon /> },
+      { module: 'content', href: '/admin/case-studies/', label: 'Case studies', icon: <CaseStudiesIcon /> },
       { module: 'media', href: '/admin/media/', label: 'Media', icon: <MediaIcon /> },
       { module: 'pageSections', href: '/admin/page-sections/', label: 'Page sections', icon: <SectionsIcon /> },
     ],
