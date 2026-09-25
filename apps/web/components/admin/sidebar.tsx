@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 import { CloseIcon, DisclosureIcon, MenuIcon, SidebarIcon } from './icons';
+import { SIDEBAR_COOKIE } from './sidebar-cookie';
 import { iconButton } from './ui/styles';
 import { UserMenu } from './user-menu';
 
@@ -34,7 +35,6 @@ export interface NavGroup {
   items: NavItem[];
 }
 
-export const SIDEBAR_COOKIE = 'admin-sidebar';
 
 export function Sidebar({
   groups,

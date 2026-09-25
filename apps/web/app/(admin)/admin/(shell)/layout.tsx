@@ -19,7 +19,8 @@ import {
   SubscribersIcon,
   TeamIcon,
 } from '@/components/admin/icons';
-import { SIDEBAR_COOKIE, Sidebar, type NavGroup, type NavItem } from '@/components/admin/sidebar';
+import { Sidebar, type NavGroup, type NavItem } from '@/components/admin/sidebar';
+import { SIDEBAR_COOKIE } from '@/components/admin/sidebar-cookie';
 import { TopBar } from '@/components/admin/top-bar';
 import { Logo } from '@/components/ui/logo';
 import { adminGet } from '@/lib/admin/api';
