@@ -58,6 +58,7 @@ describe('email queue against Redis', () => {
       siteContact: () => Promise.resolve(null),
       recordDelivery: () => Promise.resolve(),
       recordBookingDelivery: () => Promise.resolve(),
+      bookingState: () => Promise.resolve(null),
     };
 
     const queue = new Queue(queueName, { connection: connect() });

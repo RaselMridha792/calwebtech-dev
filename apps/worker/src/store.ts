@@ -25,11 +25,16 @@ export function prismaDeliveryStore(db: PrismaClient): DeliveryStore {
       });
     },
 
+    async bookingState(bookingId) {
+      return db.booking.findUnique({ where: { id: bookingId }, select: { status: true, startsAt: true } });
+    },
+
     async recordBookingDelivery(bookingId, record) {
       await db.bookingEvent.create({
         data: {
           bookingId,
-          type: 'email_sent',
+          // A reminder is its own event (`reminded_24h`, `reminded_1h`), as the schema names them.
+          type: record.window ? `reminded_${record.window}` : 'email_sent',
           detail: {
             template: record.template,
             to: record.to,

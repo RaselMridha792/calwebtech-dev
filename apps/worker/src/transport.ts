@@ -11,6 +11,8 @@ export interface OutgoingEmail {
   idempotencyKey: string;
   /** Extra headers, such as `List-Unsubscribe` on a campaign email. */
   headers?: Record<string, string>;
+  /** Files sent with it, such as a booked call's calendar entry. */
+  attachments?: { filename: string; content: string; contentType: string }[];
 }
 
 /** Resend is a sending transport only. Nothing about who receives what lives there. */
@@ -23,9 +25,22 @@ export function resendTransport(apiKey: string): EmailTransport {
   const resend = new Resend(apiKey);
   return {
     name: 'resend',
-    async send({ idempotencyKey, replyTo, headers, ...email }) {
+    async send({ idempotencyKey, replyTo, headers, attachments, ...email }) {
       const { data, error } = await resend.emails.send(
-        { ...email, ...(replyTo ? { replyTo } : {}), ...(headers ? { headers } : {}) },
+        {
+          ...email,
+          ...(replyTo ? { replyTo } : {}),
+          ...(headers ? { headers } : {}),
+          ...(attachments?.length
+            ? {
+                attachments: attachments.map((file) => ({
+                  filename: file.filename,
+                  content: Buffer.from(file.content, 'utf8'),
+                  contentType: file.contentType,
+                })),
+              }
+            : {}),
+        },
         { idempotencyKey },
       );
       if (error) throw new Error(`Resend rejected the email: ${error.name}: ${error.message}`);
@@ -39,7 +54,9 @@ export function logTransport(log: (line: string) => void): EmailTransport {
   return {
     name: 'log',
     send(email) {
-      log(`email not sent (EMAIL_TRANSPORT=log): "${email.subject}" to ${email.to.join(', ')}`);
+      const names = email.attachments?.map((file) => file.filename) ?? [];
+      const files = names.length > 0 ? ` with ${names.join(', ')}` : '';
+      log(`email not sent (EMAIL_TRANSPORT=log): "${email.subject}" to ${email.to.join(', ')}${files}`);
       return Promise.resolve({ id: `log-${email.idempotencyKey}` });
     },
   };
