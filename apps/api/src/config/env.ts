@@ -37,6 +37,12 @@ const apiEnvSchema = z.object({
    * webhook answers 503 and delivery events are not recorded; sending is unaffected.
    */
   RESEND_WEBHOOK_SECRET: z.preprocess(blankToUndefined, z.string().optional()),
+  /**
+   * Whether a form's email address is checked against DNS for a domain that can receive mail
+   * (docs/08-decisions.md, 61). `off` skips only that lookup, for a machine without DNS; the
+   * throwaway-inbox list, the timing check and the per-address limits still apply.
+   */
+  EMAIL_DOMAIN_CHECK: z.enum(['dns', 'off']).default('dns'),
 }).superRefine((env, context) => {
   if (env.APP_ENV === 'production' && !env.TURNSTILE_SECRET) {
     context.addIssue({
