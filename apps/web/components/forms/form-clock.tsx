@@ -30,5 +30,8 @@ export function FormClock() {
     };
   }, []);
 
-  return <input ref={ref} type="hidden" name={FORM_ELAPSED_FIELD} defaultValue="" />;
+  // No value or defaultValue prop: a hidden input's value is its default, so React would set it
+  // back to the prop on the next render — which a form that shows it is sending always has —
+  // and the figure would be gone by the time the form is read.
+  return <input ref={ref} type="hidden" name={FORM_ELAPSED_FIELD} />;
 }

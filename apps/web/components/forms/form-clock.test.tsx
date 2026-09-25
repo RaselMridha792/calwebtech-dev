@@ -6,7 +6,7 @@ import { FormClock } from './form-clock';
 describe('the form clock', () => {
   it('renders an empty hidden field, which the server reads as no figure', () => {
     const html = renderToStaticMarkup(<FormClock />);
-    expect(html).toBe('<input type="hidden" name="formElapsedMs" value=""/>');
+    expect(html).toBe('<input type="hidden" name="formElapsedMs"/>');
     const form = new FormData();
     form.set('formElapsedMs', '');
     expect(formElapsed(form)).toBeUndefined();

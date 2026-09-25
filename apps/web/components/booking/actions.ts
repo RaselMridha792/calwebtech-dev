@@ -75,6 +75,7 @@ export async function submitBooking(_state: BookingFormState, form: FormData): P
       month: 'long',
       hour: 'numeric',
       minute: '2-digit',
+      hour12: true,
       timeZone: parsed.data.timezone,
     }).format(new Date(result.startsAt));
     return {
