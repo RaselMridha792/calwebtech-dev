@@ -747,6 +747,73 @@ works with `EMAIL_TRANSPORT=log`, so no provider was added (Task 6.2).
   - Own JavaScript is 6.9 kB on the move page and 4.3 kB on the cancel page. The booking page is
     unchanged at 8.4 kB.
 
+## 61. Anti-spam beyond Turnstile and the honeypot
+
+*2026-09-25.* Task 6 of `docs/14-remaining-work.md` (build plan task 6.1). One guard in the API
+(`apps/api/src/antispam/`) sits in front of leads, bookings and subscriptions alike. The numbers
+and the throwaway-inbox list live in the shared contract (`packages/shared/src/antispam.ts`).
+Every failure of the machinery itself — Redis away, DNS slow — lets the submission through,
+because losing a real enquiry costs more than the spam the check stops.
+
+- **Timing.** `FormClock` is a hidden field in every form. It times the form from when it
+  appears, using `performance.now()` so a wrong clock changes nothing. The API refuses a form
+  sent sooner than its minimum: two seconds for a lead or a booking, one for a subscription.
+  The refusal is a failed bot check, so a person who really was that quick is told to try
+  again and their retry goes through. A form without the figure, loaded before the field
+  existed or sent without script, is not timed.
+
+  The calculator's gate carries no clock. It appears after eight answers, where an autofilled
+  name and email could be quicker than the minimum.
+- **Addresses.** A throwaway inbox provider, from a short list matched on whole labels, is
+  refused with a message under the email field. So is a domain that cannot receive mail. The
+  API asks DNS for the domain's mail servers and falls back to its address records, as a
+  sending server would, and refuses only a domain that does not exist or has neither. A null
+  MX is let through: it exists, and a mistyped domain is what the check is for. Answers are
+  cached for six hours. `EMAIL_DOMAIN_CHECK=off` skips the lookup alone.
+- **Per-address limits.** These sit on top of the per-IP ones:
+  - five leads an hour;
+  - three bookings a day;
+  - five subscriptions an hour.
+
+  They are counted in Redis under a hash, so no address is stored there. Counting happens
+  after the bot check, so a script cannot spend a real person's allowance. Past the limit a
+  lead or a booking answers 429. A subscription is answered as always and writes nothing,
+  since subscribing twice changes nothing (decision 53).
+- **Duplicates join what is already there.**
+  - **Leads.** A lead from the same address, of the same type, updates the open lead instead
+    of creating a second. The open lead is one from new to proposal sent, created within
+    thirty days, with a form actually sent. The update writes what the new submission says,
+    adds its services and records `form_resubmitted` with its message. Its emails carry the
+    submission's id so they are sent, and the team's notification reads "Lead updated".
+
+    An unfinished brief is never joined, and a won or lost lead starts a new one. The
+    Contact was already one per address; a subscriber was already one per address.
+  - **Bookings.** An address with a call still to come cannot book a second. The page names
+    that call's time and points at the link in its email that moves it (decision 60).
+- **Found while checking in Chrome.** The clock's hidden input first carried `defaultValue=""`.
+  A hidden input's value is its default, so React cleared the figure on the render every form
+  does when it shows it is sending, and the API never saw it. The field has no value prop now.
+- **Verified.**
+  - Unit tests: the DNS check (a domain with mail servers, one with only an address, one that
+    does not exist, a failure and a timeout passing, the cache and its expiry), the guard and
+    the contract.
+  - An integration test through the three services:
+    - a resubmission merged, with emails of its own;
+    - another type and a closed lead starting anew;
+    - a form sent in 200 ms refused with nothing stored;
+    - a throwaway inbox and an undeliverable domain named under the field;
+    - the lead limit ending in 429;
+    - a subscriber past the limit answered as always;
+    - a second booking refused with the first one's time;
+    - the whole API suite (163).
+  - In Chrome:
+    - an audit sent at once was refused as automated and went through on a retry;
+    - a second audit from the same address became one lead with `form_resubmitted`;
+    - a mailinator address was named under the homepage field at 360;
+    - a second booking from one address was refused with the first call's time.
+  - The e2e specs that send forms pause as a person would (`e2e/pause.ts`). The clock adds
+    about 0.2 kB to a form's route.
+
 ## Open
 
 - **Nothing reports abandonment yet.** The drop-off per step is in the data (each draft lead's
@@ -835,6 +902,10 @@ works with `EMAIL_TRANSPORT=log`, so no provider was added (Task 6.2).
   `CONTENT_DATABASE_FIRST`; production names `services` alone today. Until a family is named,
   what the dashboard saves for it is stored and audited but the site keeps its snapshot, and the
   page copy screen says so beside each row.
+- **The antispam figures are first guesses** (decision 61): two seconds before a lead or a
+  booking, five leads an hour and three bookings a day per address. Once the site takes real
+  enquiries, the `form_resubmitted` and refused-submission patterns will say whether they are
+  right; they live in `packages/shared/src/antispam.ts`.
 - **Saving a case study moves it to the top of /work/**, which lists featured first and then the
   most recently changed (decision 58). The approved order was stamped in at import; mark the case
   studies that must stay first as Featured.
