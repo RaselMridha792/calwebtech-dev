@@ -51,6 +51,8 @@ Same family, same PR #11 pieces, same 404 at `/free-website-audit/`. The Resourc
 the contact page point visitors at an audit that does not exist yet.
 
 ### 4. Editing from `/admin` what is still edited by a deploy
+**Done on `tumit`, 2026-09-25 (decisions 58 and 59).** Switching the families on in production
+is the owner's step: see the first Open entry in docs/08.
 Non-negotiable 3 in `CLAUDE.md`: publishing never requires a deploy. Today these still do:
 - **Industries and case studies.** Move each family database-first the way services moved
   (decision 44: read the database, fall back to the snapshot), with an importer family of its

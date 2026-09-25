@@ -356,7 +356,7 @@ handed to the second collaborator in `docs/14-remaining-work.md` on the `tumit` 
 | 1.3 Services | Done and live; services are in the database and edited from `/admin` (decision 44) |
 | 1.4 Metadata and schema layer | Done: per-page metadata, structured data, `sitemap.xml`, `/sitemap/`, `robots.txt`. Not built: `llms.txt` |
 | 1.5 Pricing, process, contact, legal | Done and live |
-| 2.1 to 2.3 Work, case studies, industries, team | Done and live from snapshots. Industries in the owner's order with Spa centres, Media and Law added (decision 54). Not built: editing industries and case studies from `/admin` |
+| 2.1 to 2.3 Work, case studies, industries, team | Done and live from snapshots. Industries in the owner's order with Spa centres, Media and Law added (decision 54). On `tumit`: industries and case studies are edited from `/admin` and can read the database first, their imported rows proven equal to the snapshots (decision 58) |
 | 3.1, 3.2 Locations | Location index and city pages live. Service-by-city matrix not built |
 | 3.3 Before/after, awards, partners | Done and live |
 | 4.1 Calculator | Done and live |
@@ -364,7 +364,7 @@ handed to the second collaborator in `docs/14-remaining-work.md` on the `tumit` 
 | 4.3 Search | Not started |
 | 5.1 Booking | Built and live (decisions 47, 48): its own page with a calendar, server-side slots, the double-booking constraint, availability edited from `/admin`, bookings in the dashboard, a thank-you page. Not built: `.ics` invite, 24h and 1h reminders, signed reschedule and cancel pages |
 | 5.2 Start a project and landing | Landing template done. On `tumit`, `/start-a-project/` is built on the PR #11 API: six steps, saved per step, abandonment measurable per step (decision 56) |
-| 5.3 Admin dashboard, auth, RBAC | Done: login, roles, leads, bookings, availability, services, subscribers, campaigns, settings, audit. Not built: editing homepage, booking-page and other singleton copy from `/admin` (settings-cli today) |
+| 5.3 Admin dashboard, auth, RBAC | Done: login, roles, leads, bookings, availability, services, subscribers, campaigns, settings, audit. On `tumit`: industries, case studies and page copy (homepage, booking page, thank-you pages, index copy) edited and audited from `/admin` (decisions 58, 59) |
 | 5.4 Campaign engine | Done by the second collaborator (decisions 49 to 52), merged in PR #31 and live. Nothing is sent while production has `EMAIL_TRANSPORT=log` |
 | 6.1 Anti-spam | Partial: Turnstile, honeypot, per-IP rate limits. Missing: timing checks, per-email limits, MX and disposable-domain checks, duplicate-lead merging |
 | 6.2 Deliverability | Not started, and blocked: the owner has not chosen to set up an email provider, so no email leaves production |
@@ -375,7 +375,7 @@ handed to the second collaborator in `docs/14-remaining-work.md` on the `tumit` 
 ### Known gaps and risks
 - **Demo claims on a public URL.** The Vercel pages show demo ratings, client names, metrics, testimonials and partner claims naming Shopify, Google, Vercel and Cloudflare. They are noindex, but anyone with the link can read them. Replace before any public promotion.
 - **Lost email jobs.** Emails are queued after the lead commits. If the API process dies in between, the lead is stored and its emails are never queued. A transactional outbox would close this. Campaign sends do not have the gap: their recipient rows are written first and the sweep requeues them (decision 51).
-- **No audit trail for settings.** `settings-cli` changes are not written to the audit log; the admin settings screen must do this.
+- **No audit trail for settings-cli.** `settings-cli` changes are not written to the audit log. The settings screen and, on `tumit`, the page copy screen (decision 59) are audited, so the CLI is only needed without the dashboard.
 - **Staging and production on one server.** On a single 4 GB server their memory limits overlap. Confirm the server size.
 - **Lighthouse behind the real edge.** Once staging is live, run the gate against real Traefik and compare (`docs/09`, "Checking the lab against real Traefik").
 - **Single opt-in.** The homepage's "Subscribe now" creates subscribers (decision 53) but nothing confirms the address belongs to the person who typed it. A confirmation email needs email to be sending, which production does not do; it should come before the first real campaign.
