@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { personPause } from './pause';
 
 /**
  * The static family (docs/10-site-pages.md): pricing, process, contact, FAQ, the thank-you
@@ -155,6 +156,7 @@ test.describe('contact page', () => {
     await form.locator('textarea').fill('A question about the care plan on our current site.');
 
     const submit = form.getByRole('button').last();
+    await personPause(page);
     // The first submit waits for a Turnstile token (Cloudflare's always-pass test key).
     await submit.click();
     const landed = page

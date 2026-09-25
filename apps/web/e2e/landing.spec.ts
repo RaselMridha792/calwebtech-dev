@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { personPause } from './pause';
 
 const PAGE = '/lp/b2b-website-design/';
 /** Proof-shaped test fixtures (pnpm db:seed:fixtures). Never seeded on a reachable environment. */
@@ -50,6 +51,7 @@ test.describe('campaign landing page', () => {
     await form.getByLabel('Full name').fill('E2E Hero');
     await email.fill(`hero.${testInfo.project.name}@example.com`);
     await form.getByLabel('Budget range').selectOption('25k-60k');
+    await personPause(page);
     await form.getByRole('button', { name: SUBMIT }).click();
     await expect(page.locator('#form [role="status"]')).toContainText('Thanks', { timeout: 20_000 });
   });
@@ -63,6 +65,7 @@ test.describe('campaign landing page', () => {
     await form.getByLabel('Current website').fill('example-client.com');
     await form.getByText('Redesign', { exact: true }).click();
     await form.getByLabel('When do you want to start?').selectOption('this-quarter');
+    await personPause(page);
     await form.getByRole('button', { name: SUBMIT }).click();
     await expect(page.locator('#final [role="status"]')).toContainText('Thanks', { timeout: 20_000 });
   });

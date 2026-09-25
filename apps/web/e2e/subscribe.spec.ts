@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { personPause } from './pause';
 
 /**
  * "Subscribe now" on the homepage: one field, an address, and a subscriber in the database.
@@ -46,6 +47,7 @@ test.describe('subscribe now', () => {
     await page.goto('/');
     const section = band(page);
     await section.getByLabel('Email address').fill(email);
+    await personPause(page);
     await section.getByRole('button', { name: 'Subscribe' }).click();
 
     await expect(section.getByRole('status')).toContainText(/you are on the list/i, { timeout: 20_000 });
@@ -55,6 +57,7 @@ test.describe('subscribe now', () => {
     // The same address again: the same answer, and no error to learn from.
     await page.reload();
     await band(page).getByLabel('Email address').fill(email);
+    await personPause(page);
     await band(page).getByRole('button', { name: 'Subscribe' }).click();
     await expect(band(page).getByRole('status')).toContainText(/you are on the list/i, { timeout: 20_000 });
   });

@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { personPause } from './pause';
 
 const PAGE = '/start-a-project/';
 
@@ -58,6 +59,7 @@ test.describe('start a project', () => {
     for (let step = 2; step < 5; step += 1) await next(page).click();
     await expect(brief(page).locator('fieldset[data-step="5"]')).toBeVisible();
     await page.locator('#brief-message').fill('Our quote form breaks on mobile.');
+    await personPause(page);
     await next(page).click();
 
     // The send waits for the security check, as every form on the site does.
@@ -102,6 +104,7 @@ test.describe('free website audit', () => {
     await request(page).locator('input[name="mainConcern"]').first().check();
     await page.locator('#audit-name').fill('Jordan Blake');
     await page.locator('#audit-email').fill(address());
+    await personPause(page);
     await request(page).locator('button[type="submit"]').click();
 
     await page.waitForURL(/\/thank-you\/audit\/$/, { timeout: 30_000 });
