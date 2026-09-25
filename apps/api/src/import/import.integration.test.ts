@@ -118,7 +118,7 @@ describe('snapshot import on an empty database', () => {
     const marker = await db.setting.findUnique({ where: { key: IMPORT_MARKER_KEY } });
     expect(marker?.value).toMatchObject({
       source: 'apps/web/static-content',
-      families: ['operational', 'booking', 'references', 'work', 'services', 'industries', 'case-studies'],
+      families: ['operational', 'booking', 'references', 'work', 'services', 'industries', 'case-studies', 'page-copy'],
     });
 
     await db.enquiryType.update({ where: { slug: 'support' }, data: { mailbox: 'support@example.com' } });
@@ -138,13 +138,13 @@ describe('snapshot import on an empty database', () => {
 
     const result = await importSnapshots(db, { dir: snapshotDir });
     expect(result).toMatchObject({ status: 'imported' });
-    expect(result.status === 'imported' ? result.families : []).toEqual(['booking', 'references', 'work', 'services', 'industries', 'case-studies']);
+    expect(result.status === 'imported' ? result.families : []).toEqual(['booking', 'references', 'work', 'services', 'industries', 'case-studies', 'page-copy']);
     expect(await db.technology.count()).toBeGreaterThan(0);
     // The mailbox belongs to the family that was skipped, so it is still there.
     expect((await db.enquiryType.findUniqueOrThrow({ where: { slug: 'support' } })).mailbox).toBe('support@example.com');
 
     const marker = await db.setting.findUniqueOrThrow({ where: { key: IMPORT_MARKER_KEY } });
-    expect(marker.value).toMatchObject({ families: ['operational', 'booking', 'references', 'work', 'services', 'industries', 'case-studies'] });
+    expect(marker.value).toMatchObject({ families: ['operational', 'booking', 'references', 'work', 'services', 'industries', 'case-studies', 'page-copy'] });
     expect((await importSnapshots(db, { dir: snapshotDir })).status).toBe('skipped');
   });
 

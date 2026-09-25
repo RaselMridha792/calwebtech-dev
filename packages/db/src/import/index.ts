@@ -50,6 +50,8 @@ export const IMPORTERS: readonly ImporterLoader[] = [
   () => import('./industries.js').then((module) => module.industriesImporter),
   // After services, which links a project's services; brings what a case study page needs.
   () => import('./case-studies.js').then((module) => module.caseStudiesImporter),
+  // Independent of the records: the homepage's and the thank-you pages' copy, where none is stored.
+  () => import('./page-copy.js').then((module) => module.pageCopyImporter),
 ];
 
 export interface ImportOptions {
