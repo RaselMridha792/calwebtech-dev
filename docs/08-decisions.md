@@ -814,6 +814,58 @@ because losing a real enquiry costs more than the spam the check stops.
   - The e2e specs that send forms pause as a person would (`e2e/pause.ts`). The clock adds
     about 0.2 kB to a form's route.
 
+## 62. llms.txt and site search
+
+*2026-09-25.* Task 7 of `docs/14-remaining-work.md`: build plan tasks 1.4 (its last piece) and
+4.3.
+
+- **`/llms.txt`** follows the format llmstxt.org proposes: a title, then a one-line summary,
+  then sections of links with a line each. It is built per request from the pages' own words:
+  - the summary is the homepage's description;
+  - then the footer's line about the company, the service area, the offices and the contact
+    address;
+  - then every published service and industry with its own summary;
+  - then the key pages, and optional ones such as insights, the glossary and the sitemap.
+
+  Nothing in it is written separately, so it cannot drift from the pages or claim what they do
+  not. While `site.indexing` is off it answers 404, as robots.txt disallows everything then.
+- **Site search** covers the five kinds the page spec names: services, case studies, insights,
+  glossary terms and questions. Results are typed, and filtered by kind with a count for each.
+  - **In Postgres, with no vendor.** `GET /search` uses Postgres's own full-text engine, weights
+    the title above the text and reads the query with `websearch_to_tsquery`, so quotes, `or`
+    and a minus work as people type them. It finds only what has a page:
+    - live services and posts;
+    - case studies with the figures their page needs;
+    - published terms;
+    - questions on the FAQ page or on a live service, industry or location page.
+
+    The tables are small enough to need no index: a three-word query answers in well under
+    300 ms against the imported content, the build plan's gate. If the content grows into
+    thousands of rows, add GIN indexes on the same expressions.
+  - **From the snapshots while pages render from them.** In the launch mode (decision 43) the
+    database does not hold what the visitor reads, the articles and the glossary above all, so
+    the web app searches the same five kinds in the snapshots. Every word must match, and a word
+    in a title counts three times one in the text. The answer has the same shape, so the page
+    cannot tell which engine answered. A record created in the dashboard is found once pages
+    read the API; until then the snapshot search covers the snapshots' content.
+  - **`/search/`**: a photograph hero, a labelled GET form, the filter as links, and results as
+    rows on hairlines that name their kind first. It has no script, 3.2 kB of own JavaScript
+    (the framework's floor), is never indexed and is not in the sitemap. Nothing links to it yet
+    except a query that sends someone there. A search link in the header or footer is the
+    owner's copy (`home.content`), editable from the page copy screen (decision 59).
+- **Not built: the service-by-city matrix** (task 3.2). docs/14 says to ask the owner whether
+  it is still wanted, and this pass asks nothing, so it waits for that answer.
+- **Verified.**
+  - Tests:
+    - unit tests for the file's format, the contract, the snapshot search and the page;
+    - an integration test of the Postgres search: a service found by its name first, drafts
+      left out, a case study found by its client, the filter keeping every count, and the
+      300 ms gate;
+    - the whole API suite (167).
+  - In Chrome at 360 and 1440, `/search/` has one `h1`, is noindex, has no overflow and no
+    console errors. A query was typed and sent by keyboard, and the Questions filter was
+    followed by keyboard.
+
 ## Open
 
 - **Nothing reports abandonment yet.** The drop-off per step is in the data (each draft lead's
@@ -902,6 +954,10 @@ because losing a real enquiry costs more than the spam the check stops.
   `CONTENT_DATABASE_FIRST`; production names `services` alone today. Until a family is named,
   what the dashboard saves for it is stored and audited but the site keeps its snapshot, and the
   page copy screen says so beside each row.
+- **The service-by-city matrix (task 3.2) is not built** and waits for the owner to say whether
+  it is still wanted (docs/14, task 7). The locations index and the two city pages are live.
+- **Nothing links to `/search/` yet** (decision 62). A search link in the header or footer is a
+  change to the homepage copy, the owner's to make from the page copy screen.
 - **The antispam figures are first guesses** (decision 61): two seconds before a lead or a
   booking, five leads an hour and three bookings a day per address. Once the site takes real
   enquiries, the `form_resubmitted` and refused-submission patterns will say whether they are
