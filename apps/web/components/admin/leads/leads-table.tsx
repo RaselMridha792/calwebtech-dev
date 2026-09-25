@@ -1,6 +1,7 @@
 import type { AdminLeadList, AdminLeadListItem, AdminLeadQuery } from '@calwebtech/shared';
 import Link from 'next/link';
 import { SortIcon } from '../icons';
+import { CHECK, TAG } from '../ui/styles';
 import { budgetShort, received, typeLabel } from './format';
 import { leadPanelUrl, sortUrl } from './query-url';
 import { StatusPill } from './status-pill';
@@ -22,17 +23,19 @@ interface Column {
   label: string;
   width: string;
   numeric?: boolean;
+  /** Left out while a lead is open beside the table, which then has half the room. */
+  secondary?: boolean;
 }
 
 const COLUMNS: Column[] = [
-  { key: 'received', label: 'Received', width: 'w-[9%]', numeric: true },
-  { key: 'name', label: 'Name', width: 'w-[15%]' },
-  { key: 'company', label: 'Company', width: 'w-[13%]' },
-  { key: 'type', label: 'Type', width: 'w-[8%]' },
-  { key: 'service', label: 'Service or campaign', width: 'w-[17%]' },
+  { key: 'name', label: 'Name', width: 'w-[17%]' },
+  { key: 'company', label: 'Company', width: 'w-[14%]', secondary: true },
+  { key: 'type', label: 'Form', width: 'w-[10%]' },
+  { key: 'service', label: 'Service or campaign', width: 'w-[16%]', secondary: true },
   { key: 'status', label: 'Status', width: 'w-[12%]' },
   { key: 'owner', label: 'Owner', width: 'w-[11%]' },
-  { key: 'value', label: 'Value band', width: 'w-[9%]', numeric: true },
+  { key: 'value', label: 'Budget', width: 'w-[8%]', numeric: true, secondary: true },
+  { key: 'received', label: 'Received', width: 'w-[9%]', numeric: true },
 ];
 
 export function LeadsTable({
@@ -44,26 +47,27 @@ export function LeadsTable({
   query: AdminLeadQuery;
   openLeadId: string | null;
 }) {
+  const columns = openLeadId ? COLUMNS.filter((column) => !column.secondary) : COLUMNS;
   return (
-    <table role="grid" className="w-full table-fixed border-collapse">
+    <table className="w-full table-fixed border-collapse">
       <caption className="sr-only">Leads, sortable by column</caption>
       <thead>
         <tr>
-          <th scope="col" className="sticky top-0 z-10 w-[3%] border-b border-admin-line bg-admin-sunken px-[10px]">
+          <th scope="col" className="sticky top-0 z-10 w-12 bg-admin-sunken pl-5">
             {/*
               Selecting a page of rows is the one thing here that cannot be a link, so it is
               left to the bulk bar, which owns the selection.
             */}
             <span className="sr-only">Select</span>
           </th>
-          {COLUMNS.map((column) => (
+          {columns.map((column) => (
             <SortableHeader key={column.label} column={column} query={query} />
           ))}
         </tr>
       </thead>
       <tbody>
         {list.items.map((lead) => (
-          <Row key={lead.id} lead={lead} query={query} open={lead.id === openLeadId} />
+          <Row key={lead.id} lead={lead} query={query} open={lead.id === openLeadId} compact={openLeadId !== null} />
         ))}
       </tbody>
     </table>
@@ -72,68 +76,78 @@ export function LeadsTable({
 
 function SortableHeader({ column, query }: { column: Column; query: AdminLeadQuery }) {
   const active = column.key !== null && query.sort === column.key;
+  const align = column.numeric ? 'justify-end text-right' : '';
   return (
     <th
       scope="col"
       aria-sort={active ? (query.dir === 'asc' ? 'ascending' : 'descending') : 'none'}
-      className={`sticky top-0 z-10 h-8 border-b border-admin-line bg-admin-sunken px-[10px] text-left ${column.width}`}
+      className={`sticky top-0 z-10 h-11 bg-admin-sunken px-3 text-left last:pr-5 ${column.width}`}
     >
       {column.key === null ? (
-        <span className="text-[10px] font-bold tracking-[0.1em] text-admin-body uppercase">{column.label}</span>
+        <span className="text-[12px] font-semibold text-admin-muted">{column.label}</span>
       ) : (
         <Link
           href={sortUrl(query, column.key)}
-          className="flex items-center gap-1 text-[10px] font-bold tracking-[0.1em] text-admin-body uppercase hover:text-admin-ink"
+          className={`flex items-center gap-1 text-[12px] font-semibold whitespace-nowrap transition-colors duration-150 hover:text-ink-invert ${align} ${
+            active ? 'text-ink-invert' : 'text-admin-muted'
+          }`}
         >
           {column.label}
-          {active ? <SortIcon direction={query.dir} className="size-3 text-admin-link" /> : null}
+          {active ? <SortIcon direction={query.dir} className="size-3.5 text-admin-link" /> : null}
         </Link>
       )}
     </th>
   );
 }
 
-function Row({ lead, query, open }: { lead: AdminLeadListItem; query: AdminLeadQuery; open: boolean }) {
+function Row({
+  lead,
+  query,
+  open,
+  compact,
+}: {
+  lead: AdminLeadListItem;
+  query: AdminLeadQuery;
+  open: boolean;
+  compact: boolean;
+}) {
   return (
-    <tr className={`relative h-[30px] ${open ? 'bg-admin-mist' : 'hover:bg-admin-hover'}`}>
-      <td className="border-b border-admin-mist px-[10px]">
-        <input
-          type="checkbox"
-          name="ids"
-          value={lead.id}
-          aria-label={`Select ${lead.name}`}
-          className="relative z-20 size-3.5 accent-admin-edge"
-        />
+    <tr className={`relative transition-colors duration-150 ${open ? 'bg-admin-mist' : 'hover:bg-admin-hover'}`}>
+      <td className="h-[52px] border-t border-admin-line2 pl-5">
+        <input type="checkbox" name="ids" value={lead.id} aria-label={`Select ${lead.name}`} className={`${CHECK} relative z-20`} />
       </td>
 
-      <Cell numeric>{received(lead.createdAt)}</Cell>
-
-      <td className="truncate border-b border-admin-mist px-[10px] text-[12.5px] font-semibold text-admin-ink">
+      <td className="truncate border-t border-admin-line2 px-3 text-[14px] font-semibold text-ink-invert">
         {/*
           `before:absolute before:inset-0` stretches this one link across the whole row, so a
           click anywhere opens the panel without a row-level click handler.
         */}
-        <Link href={leadPanelUrl(query, lead.id)} className="before:absolute before:inset-0 hover:underline">
+        <Link
+          href={leadPanelUrl(query, lead.id)}
+          aria-current={open ? 'true' : undefined}
+          className="before:absolute before:inset-0 hover:underline"
+        >
           {lead.name}
         </Link>
       </td>
 
-      <Cell title={lead.company}>{lead.company ?? '—'}</Cell>
+      {compact ? null : <Cell title={lead.company}>{lead.company ?? '—'}</Cell>}
 
-      <td className="border-b border-admin-mist px-[10px]">
-        <span className="inline-block rounded-[3px] border border-admin-line px-1.5 py-px text-[10.5px] font-semibold tracking-[0.04em] text-admin-body uppercase">
-          {typeLabel(lead.type)}
-        </span>
+      <td className="border-t border-admin-line2 px-3">
+        <span className={TAG}>{typeLabel(lead.type)}</span>
       </td>
 
-      <Cell title={lead.source}>{lead.source ?? '—'}</Cell>
+      {compact ? null : <Cell title={lead.source}>{lead.source ?? '—'}</Cell>}
 
-      <td className="border-b border-admin-mist px-[10px]">
+      <td className="border-t border-admin-line2 px-3">
         <StatusPill status={lead.status} />
       </td>
 
-      <Cell>{lead.owner?.name ?? 'Unassigned'}</Cell>
-      <Cell numeric>{budgetShort(lead.budgetBand)}</Cell>
+      <Cell muted={!lead.owner}>{lead.owner?.name ?? 'Unassigned'}</Cell>
+      {compact ? null : <Cell numeric>{budgetShort(lead.budgetBand)}</Cell>}
+      <Cell numeric last>
+        {received(lead.createdAt)}
+      </Cell>
     </tr>
   );
 }
@@ -145,18 +159,22 @@ function Row({ lead, query, open }: { lead: AdminLeadListItem; query: AdminLeadQ
 function Cell({
   children,
   numeric,
+  muted,
+  last,
   title,
 }: {
   children: React.ReactNode;
   numeric?: boolean;
+  muted?: boolean;
+  last?: boolean;
   title?: string | null;
 }) {
   return (
     <td
       title={title ?? undefined}
-      className={`truncate border-b border-admin-mist px-[10px] text-[12.5px] text-admin-body ${
-        numeric ? 'tabular-nums' : ''
-      }`}
+      className={`truncate border-t border-admin-line2 px-3 text-[14px] ${muted ? 'text-admin-muted' : 'text-ink-invert-muted'} ${
+        numeric ? 'text-right tabular-nums' : ''
+      } ${last ? 'pr-5' : ''}`}
     >
       {children}
     </td>

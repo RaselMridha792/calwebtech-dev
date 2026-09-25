@@ -1,14 +1,15 @@
 import {
   LEAD_CHANNELS,
   LEAD_DATE_RANGES,
-  LEAD_STATUSES,
-  LEAD_STATUS_LABELS,
   LEAD_TYPE_LABELS,
   LEAD_TYPES,
   type AdminLeadFilterOptions,
   type AdminLeadQuery,
 } from '@calwebtech/shared';
 import Link from 'next/link';
+import type { ReactNode } from 'react';
+import { SearchIcon } from '../icons';
+import { INPUT, LINK } from '../ui/styles';
 import { AutoSubmit } from './auto-submit';
 
 /**
@@ -16,8 +17,9 @@ import { AutoSubmit } from './auto-submit';
  * bookmarked, shared and reached with the back button, and the table stays a server
  * component with no state to hydrate.
  *
- * Submitting drops `page`, so narrowing the view always lands on the first page. The sort
- * is carried through, because changing a filter should not also reorder the table.
+ * Status is chosen by the tabs above the bar, so it rides along here as hidden fields, as
+ * the sort does: changing a filter should neither reset the tab nor reorder the table.
+ * Submitting drops `page`, so narrowing the view always lands on the first page.
  */
 export function FilterBar({
   query,
@@ -27,159 +29,143 @@ export function FilterBar({
   options: AdminLeadFilterOptions;
 }) {
   const type = query.type?.[0] ?? '';
-  const status = query.status?.[0] ?? '';
 
   return (
-    <form
-      role="search"
-      method="get"
-      action="/admin/leads/"
-      className="flex shrink-0 flex-wrap items-end gap-2.5 border-y border-admin-line bg-admin-surface px-4 py-2.5"
-    >
+    <form role="search" method="get" action="/admin/leads/" className="flex flex-wrap items-center gap-2">
       <AutoSubmit />
       <input type="hidden" name="sort" value={query.sort} />
       <input type="hidden" name="dir" value={query.dir} />
+      {(query.status ?? []).map((status) => (
+        <input key={status} type="hidden" name="status" value={status} />
+      ))}
+      {query.includeClosed ? <input type="hidden" name="includeClosed" value="true" /> : null}
 
-      <Field label="Search" htmlFor="filter-search" width="w-[190px]">
+      <div className="relative w-full sm:w-[260px]">
+        <label htmlFor="filter-search" className="sr-only">
+          Search leads
+        </label>
+        <SearchIcon className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-admin-muted" />
         <input
           id="filter-search"
           name="search"
           type="search"
           defaultValue={query.search ?? ''}
-          placeholder="Name, company, email"
+          placeholder="Name, company or email"
           data-autosubmit="skip"
-          className={`${INPUT} bg-admin-sunken ${query.search ? LIT : ''}`}
+          className={`${INPUT} pl-9 ${query.search ? 'border-admin-edge' : ''}`}
         />
-      </Field>
+      </div>
 
-      <Field label="Type" htmlFor="filter-type" width="w-[116px]">
-        <select id="filter-type" name="type" defaultValue={type} className={`${INPUT} ${type ? LIT : ''}`}>
-          <option value="">All types</option>
-          {LEAD_TYPES.map((value) => (
-            <option key={value} value={value}>
-              {LEAD_TYPE_LABELS[value]}
-            </option>
-          ))}
-        </select>
-      </Field>
+      <Pick label="Form" id="filter-type" name="type" value={type} lit={Boolean(type)}>
+        <option value="">All</option>
+        {LEAD_TYPES.map((value) => (
+          <option key={value} value={value}>
+            {LEAD_TYPE_LABELS[value]}
+          </option>
+        ))}
+      </Pick>
 
-      <Field label="Status" htmlFor="filter-status" width="w-[128px]">
-        <select id="filter-status" name="status" defaultValue={status} className={`${INPUT} ${status ? LIT : ''}`}>
-          <option value="">All statuses</option>
-          {LEAD_STATUSES.map((value) => (
-            <option key={value} value={value}>
-              {LEAD_STATUS_LABELS[value]}
-            </option>
-          ))}
-        </select>
-      </Field>
+      <Pick label="Owner" id="filter-owner" name="owner" value={query.owner ?? ''} lit={Boolean(query.owner)}>
+        <option value="">Anyone</option>
+        <option value="me">Me</option>
+        <option value="unassigned">Unassigned</option>
+        {options.owners.map((owner) => (
+          <option key={owner.id} value={owner.id}>
+            {owner.name}
+          </option>
+        ))}
+      </Pick>
 
-      <Field label="Owner" htmlFor="filter-owner" width="w-[128px]">
-        <select id="filter-owner" name="owner" defaultValue={query.owner ?? ''} className={`${INPUT} ${query.owner ? LIT : ''}`}>
-          <option value="">Anyone</option>
-          <option value="me">Me</option>
-          <option value="unassigned">Unassigned</option>
-          {options.owners.map((owner) => (
-            <option key={owner.id} value={owner.id}>
-              {owner.name}
-            </option>
-          ))}
-        </select>
-      </Field>
+      <Pick
+        label="Received"
+        id="filter-received"
+        name="received"
+        value={query.received ?? 'last-90-days'}
+        lit={Boolean(query.received && query.received !== 'last-90-days')}
+      >
+        {LEAD_DATE_RANGES.map((range) => (
+          <option key={range.value} value={range.value}>
+            {range.label}
+          </option>
+        ))}
+      </Pick>
 
-      <Field label="Received" htmlFor="filter-received" width="w-[124px]">
-        <select
-          id="filter-received"
-          name="received"
-          defaultValue={query.received ?? 'last-90-days'}
-          className={`${INPUT} ${query.received && query.received !== 'last-90-days' ? LIT : ''}`}
-        >
-          {LEAD_DATE_RANGES.map((range) => (
-            <option key={range.value} value={range.value}>
-              {range.label}
-            </option>
-          ))}
-        </select>
-      </Field>
+      <Pick label="Source" id="filter-source" name="source" value={query.source ?? ''} lit={Boolean(query.source)}>
+        <option value="">All</option>
+        {LEAD_CHANNELS.map((channel) => (
+          <option key={channel.value} value={channel.value}>
+            {channel.label}
+          </option>
+        ))}
+      </Pick>
 
-      <Field label="Source" htmlFor="filter-source" width="w-[132px]">
-        <select id="filter-source" name="source" defaultValue={query.source ?? ''} className={`${INPUT} ${query.source ? LIT : ''}`}>
-          <option value="">All sources</option>
-          {LEAD_CHANNELS.map((channel) => (
-            <option key={channel.value} value={channel.value}>
-              {channel.label}
-            </option>
-          ))}
-        </select>
-      </Field>
+      <Pick label="Service" id="filter-service" name="serviceSlug" value={query.serviceSlug ?? ''} lit={Boolean(query.serviceSlug)}>
+        <option value="">All</option>
+        {options.services.map((service) => (
+          <option key={service.slug} value={service.slug}>
+            {service.title}
+          </option>
+        ))}
+      </Pick>
 
-      <Field label="Service" htmlFor="filter-service" width="w-[150px]">
-        <select
-          id="filter-service"
-          name="serviceSlug"
-          defaultValue={query.serviceSlug ?? ''}
-          className={`${INPUT} ${query.serviceSlug ? LIT : ''}`}
-        >
-          <option value="">All services</option>
-          {options.services.map((service) => (
-            <option key={service.slug} value={service.slug}>
-              {service.title}
-            </option>
-          ))}
-        </select>
-      </Field>
-
-      <Field label="Enquiry" htmlFor="filter-enquiry" width="w-[134px]">
-        <select
-          id="filter-enquiry"
-          name="enquiry"
-          defaultValue={query.enquiry ?? ''}
-          className={`${INPUT} ${query.enquiry ? LIT : ''}`}
-        >
-          <option value="">All enquiries</option>
-          {options.enquiryTypes.map((enquiry) => (
-            <option key={enquiry.slug} value={enquiry.slug}>
-              {enquiry.name}
-            </option>
-          ))}
-        </select>
-      </Field>
+      <Pick label="Enquiry" id="filter-enquiry" name="enquiry" value={query.enquiry ?? ''} lit={Boolean(query.enquiry)}>
+        <option value="">All</option>
+        {options.enquiryTypes.map((enquiry) => (
+          <option key={enquiry.slug} value={enquiry.slug}>
+            {enquiry.name}
+          </option>
+        ))}
+      </Pick>
 
       {/* Reachable by keyboard and the only way to apply the filters without JavaScript. */}
-      <button type="submit" className="sr-only">
+      <button type="submit" className="sr-only focus:not-sr-only focus:rounded-lg focus:px-3 focus:py-2 focus:text-ink-invert">
         Apply filters
       </button>
 
-      <Link href="/admin/leads/" className="h-[30px] self-end text-[12.5px] font-semibold text-admin-link hover:underline">
+      <Link href="/admin/leads/" className={`${LINK} ml-1 text-[13.5px]`}>
         Clear all
       </Link>
     </form>
   );
 }
 
-const INPUT =
-  'h-[30px] w-full rounded-[4px] border border-admin-line bg-admin-surface px-2 text-[12.5px] text-admin-ink outline-none focus-visible:border-admin-focus';
-
-/** The one affordance that says this view is narrowed. */
-const LIT = 'border-admin-edge';
-
-function Field({
+/**
+ * A select with its label inside the same pill, so the bar reads as a sentence of choices
+ * ("Owner: Anyone") and every control keeps a real, visible label. A lit pill is one that
+ * narrows the view.
+ */
+function Pick({
   label,
-  htmlFor,
-  width,
+  id,
+  name,
+  value,
+  lit,
   children,
 }: {
   label: string;
-  htmlFor: string;
-  width: string;
-  children: React.ReactNode;
+  id: string;
+  name: string;
+  value: string;
+  lit: boolean;
+  children: ReactNode;
 }) {
   return (
-    <div className={`flex flex-col gap-[3px] ${width}`}>
-      <label htmlFor={htmlFor} className="text-[9.5px] font-bold tracking-[0.12em] text-admin-muted uppercase">
+    <div
+      className={`flex h-10 items-center rounded-lg border transition-colors duration-150 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-admin-focus pointer-coarse:h-11 ${
+        lit ? 'border-admin-edge bg-admin-nav' : 'border-admin-line hover:border-admin-edge'
+      }`}
+    >
+      <label htmlFor={id} className="pl-3 text-[13px] text-admin-muted">
         {label}
       </label>
-      {children}
+      <select
+        id={id}
+        name={name}
+        defaultValue={value}
+        className="h-full max-w-[180px] cursor-pointer truncate rounded-lg bg-transparent pr-2 pl-1.5 text-[13.5px] font-semibold text-ink-invert outline-none focus-visible:outline-none"
+      >
+        {children}
+      </select>
     </div>
   );
 }
