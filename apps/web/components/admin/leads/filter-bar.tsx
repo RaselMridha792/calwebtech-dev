@@ -6,6 +6,7 @@ import {
   type AdminLeadFilterOptions,
   type AdminLeadQuery,
 } from '@calwebtech/shared';
+import Form from 'next/form';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { SearchIcon } from '../icons';
@@ -13,9 +14,10 @@ import { INPUT, LINK } from '../ui/styles';
 import { AutoSubmit } from './auto-submit';
 
 /**
- * The filter bar. A plain GET form, so the whole view lives in the URL: it can be
- * bookmarked, shared and reached with the back button, and the table stays a server
- * component with no state to hydrate.
+ * The filter bar. A GET form, so the whole view lives in the URL: it can be bookmarked,
+ * shared and reached with the back button, and the table stays a server component with no
+ * state to hydrate. Next's `Form` turns the submit into a client-side navigation, so a
+ * filter answers without reloading the page; without script it is an ordinary GET.
  *
  * Status is chosen by the tabs above the bar, so it rides along here as hidden fields, as
  * the sort does: changing a filter should neither reset the tab nor reorder the table.
@@ -31,7 +33,7 @@ export function FilterBar({
   const type = query.type?.[0] ?? '';
 
   return (
-    <form role="search" method="get" action="/admin/leads/" className="flex flex-wrap items-center gap-2">
+    <Form role="search" action="/admin/leads/" scroll={false} className="flex flex-wrap items-center gap-2">
       <AutoSubmit />
       <input type="hidden" name="sort" value={query.sort} />
       <input type="hidden" name="dir" value={query.dir} />
@@ -125,7 +127,7 @@ export function FilterBar({
       <Link href="/admin/leads/" className={`${LINK} ml-1 text-[13.5px]`}>
         Clear all
       </Link>
-    </form>
+    </Form>
   );
 }
 
