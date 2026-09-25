@@ -52,6 +52,10 @@ export function ContentIcon(props: IconProps) {
   return <Glyph {...props} d="M9 1.5H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V5.5zM9 1.5v4h4M5.5 8.5h5m-5 2.5h5" />;
 }
 
+export function IndustriesIcon(props: IconProps) {
+  return <Glyph {...props} d="M2 14V6.5l4 2.5V6.5l4 2.5V3.5h4V14zM2 14h12M11.5 6h1m-1 2.5h1m-8 3h1m2 0h1m2 0h1" />;
+}
+
 export function MediaIcon(props: IconProps) {
   return <Glyph {...props} d="M3 2.5h10a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1zm-1 8 3-2.5 3 2.4 2.5-2.4L14 10.5M6 6a.75.75 0 1 1-1.5 0A.75.75 0 0 1 6 6z" />;
 }
