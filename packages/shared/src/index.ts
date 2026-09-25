@@ -35,3 +35,4 @@ export * from './pages/guides-glossary';
 export * from './pages/calculator';
 export * from './pages/insights';
 export * from './pages/forms';
+export * from './search';
