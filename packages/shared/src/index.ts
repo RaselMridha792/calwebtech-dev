@@ -4,6 +4,7 @@ export * from './admin-leads';
 export * from './admin-media';
 export * from './admin-services';
 export * from './admin-industries';
+export * from './admin-case-studies';
 export * from './admin-ops';
 export * from './auth';
 export * from './booking';
