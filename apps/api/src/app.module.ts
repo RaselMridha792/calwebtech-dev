@@ -19,6 +19,7 @@ import { LandingPagesModule } from './landing-pages/landing-pages.controller';
 import { LeadsModule } from './leads/leads.controller';
 import { PageCopyModule } from './page-copy/page-copy.controller';
 import { PrismaModule } from './prisma/prisma.service';
+import { SearchModule } from './search/search.controller';
 import { SiteChromeModule } from './site/site-chrome.controller';
 // Site page families (docs/10-site-pages.md): one import each, below this line.
 import { IndustriesModule } from './industries/industries.controller';
@@ -60,6 +61,7 @@ import { WebhooksModule } from './webhooks/resend-webhook.controller';
     // Site page families: one module each, below this line.
     IndustriesModule,
     PageCopyModule,
+    SearchModule,
     WorkModule,
     ServicesModule,
     CompanyModule,
