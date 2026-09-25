@@ -73,3 +73,82 @@ describe('the internal notification', () => {
     expect(email.text).not.toMatch(/what they want to talk about/i);
   });
 });
+
+const manage = { rescheduleToken: 'test-reschedule-token-0001', cancelToken: 'test-cancel-token-000001' };
+const withSite = {
+  contact: { email: 'hello@calwebtech.com', phone: null, phoneE164: null },
+  siteOrigin: 'https://example.com',
+  now: new Date('2026-09-20T10:00:00.000Z'),
+};
+
+describe('the signed links and the calendar entry', () => {
+  it("link the confirmation to moving and cancelling the call, on the site's own origin", async () => {
+    const email = await renderEmail({ ...confirmation, manage }, withSite);
+    expect(email.html).toContain('https://example.com/book-a-consultation/reschedule/test-reschedule-token-0001/');
+    expect(email.html).toContain('https://example.com/book-a-consultation/cancel/test-cancel-token-000001/');
+    expect(email.text).toMatch(/calendar entry/i);
+  });
+
+  it('fall back to replying when there are no links, rather than half a link', async () => {
+    const email = await renderEmail({ ...confirmation, manage }, context);
+    expect(email.html).not.toContain('/reschedule/');
+    expect(email.text).toMatch(/reply to this email/i);
+  });
+
+  it("attach the time as a calendar entry to the confirmation, and not to the team's notification", async () => {
+    const booked = await renderEmail(confirmation, withSite);
+    expect(booked.attachments?.[0]?.content).toContain('DTSTART:20260924T154500Z');
+    expect(booked.attachments?.[0]?.content).toContain('ORGANIZER;CN="Calwebtech":mailto:hello@calwebtech.com');
+    expect((await renderEmail(notification, withSite)).attachments).toBeUndefined();
+  });
+});
+
+describe('the reminders', () => {
+  const reminder: EmailJob = { ...confirmation, template: 'booking-reminder', window: '24h', manage };
+
+  it('say tomorrow a day before and in an hour an hour before, with the time', async () => {
+    const day = await renderEmail(reminder, withSite);
+    expect(day.subject).toMatch(/^Tomorrow/);
+    expect(day.text).toContain('8:45');
+    const hour = await renderEmail({ ...reminder, window: '1h' }, withSite);
+    expect(hour.subject).toMatch(/^In an hour/);
+    expect(hour.html).toContain('/book-a-consultation/cancel/test-cancel-token-000001/');
+    expect(hour.attachments).toBeUndefined();
+  });
+});
+
+describe('a moved or cancelled call', () => {
+  const moved: EmailJob = {
+    ...confirmation,
+    template: 'booking-changed',
+    change: 'moved',
+    previousStartsAt: '2026-09-23T15:45:00.000Z',
+    manage,
+  };
+
+  it('tells the visitor the new time and the old, and replaces the calendar entry', async () => {
+    const email = await renderEmail(moved, withSite);
+    expect(email.subject).toMatch(/^Moved/);
+    expect(email.text).toContain('Wednesday 23 September');
+    expect(email.attachments?.[0]?.content).toContain('STATUS:CONFIRMED');
+  });
+
+  it('confirms a cancellation, cancels the calendar entry, and offers a new time', async () => {
+    const email = await renderEmail({ ...moved, change: 'cancelled', previousStartsAt: null }, withSite);
+    expect(email.subject).toMatch(/^Cancelled/);
+    expect(email.attachments?.[0]?.content).toContain('METHOD:CANCEL');
+    expect(email.html).toContain('https://example.com/book-a-consultation/');
+    expect(email.html).not.toContain('/reschedule/');
+  });
+
+  it('tells the team what changed', async () => {
+    const email = await renderEmail(
+      { ...notification, change: 'moved', previousStartsAt: '2026-09-23T15:45:00.000Z' },
+      withSite,
+    );
+    expect(email.subject).toMatch(/^Booking moved/);
+    expect(email.text).toContain('Wednesday 23 September');
+    const cancelled = await renderEmail({ ...notification, change: 'cancelled' }, withSite);
+    expect(cancelled.subject).toMatch(/^Booking cancelled/);
+  });
+});
