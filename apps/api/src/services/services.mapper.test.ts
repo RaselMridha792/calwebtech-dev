@@ -95,6 +95,7 @@ function project(slug: string, overrides: Partial<ProjectRecord> = {}): ProjectR
     beforeImageUrl: null,
     afterImageUrl: null,
     beforeAfterMetrics: null,
+    content: null,
     status: 'PUBLISHED',
     seo: null,
     createdAt: at,

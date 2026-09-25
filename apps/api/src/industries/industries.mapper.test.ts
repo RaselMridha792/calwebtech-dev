@@ -108,6 +108,7 @@ function project(overrides: Partial<ProjectRecord> = {}): ProjectRecord {
     beforeImageUrl: null,
     afterImageUrl: null,
     beforeAfterMetrics: null,
+    content: null,
     status: 'PUBLISHED',
     seo: null,
     createdAt: at,

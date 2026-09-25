@@ -239,6 +239,9 @@ model Project {
   beforeImageUrl     String?
   afterImageUrl      String?
   beforeAfterMetrics Json? // { label, before, after }[]
+  /// Presentation the columns cannot hold, validated by the work family schema
+  /// (packages/shared/src/pages/work.ts): the page's own order of its services.
+  content            Json?
   status             Status    @default(DRAFT)
   seo                Json? // seoSchema, packages/shared
   createdAt          DateTime  @default(now())

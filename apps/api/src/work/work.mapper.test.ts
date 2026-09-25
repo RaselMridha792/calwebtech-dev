@@ -146,6 +146,7 @@ function project(slug: string, overrides: Partial<WorkProjectRecord> = {}): Work
     beforeImageUrl: null,
     afterImageUrl: null,
     beforeAfterMetrics: null,
+    content: null,
     status: 'PUBLISHED',
     seo: null,
     createdAt: at,
