@@ -11,6 +11,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { TURNSTILE_TEST } from '../turnstile/turnstile-test-keys';
 import { TurnstileService } from '../turnstile/turnstile.service';
 import { SubscribersService } from './subscribers.controller';
+import { SubmissionGuard } from '../antispam/submission-guard';
 
 /**
  * The rules of the public subscribe form, against a real database. Each one is a rule about
@@ -31,8 +32,8 @@ function withDatabase(url: string, name: string): string {
 
 const admin = createPrismaClient(env.DATABASE_URL);
 const prisma = new PrismaService({ ...env, DATABASE_URL: withDatabase(env.DATABASE_URL, databaseName) });
-const passes = new SubscribersService(prisma, new TurnstileService(TURNSTILE_TEST.alwaysPassesSecret, fetch, 15_000));
-const fails = new SubscribersService(prisma, new TurnstileService(TURNSTILE_TEST.alwaysFailsSecret, fetch, 15_000));
+const passes = new SubscribersService(prisma, new TurnstileService(TURNSTILE_TEST.alwaysPassesSecret, fetch, 15_000), SubmissionGuard.off());
+const fails = new SubscribersService(prisma, new TurnstileService(TURNSTILE_TEST.alwaysFailsSecret, fetch, 15_000), SubmissionGuard.off());
 
 let sequence = 0;
 function submission(overrides: Partial<SubscribeSubmission> = {}): SubscribeSubmission {

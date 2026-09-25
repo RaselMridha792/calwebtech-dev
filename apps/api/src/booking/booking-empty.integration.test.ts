@@ -13,6 +13,7 @@ import { SettingsService } from '../settings/settings.service';
 import { TURNSTILE_TEST } from '../turnstile/turnstile-test-keys';
 import { TurnstileService } from '../turnstile/turnstile.service';
 import { BookingService } from './booking.service';
+import { SubmissionGuard } from '../antispam/submission-guard';
 
 /**
  * A production stack the hour it is first deployed: migrations have run and nothing else.
@@ -38,6 +39,7 @@ const booking = new BookingService(
   new TurnstileService(TURNSTILE_TEST.alwaysPassesSecret, fetch, 15_000),
   new SettingsService(prisma),
   emailQueue,
+  SubmissionGuard.off(),
 );
 
 function withDatabase(url: string, name: string): string {

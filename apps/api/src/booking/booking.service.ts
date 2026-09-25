@@ -21,7 +21,17 @@ import {
   dayKeyOf,
   generateSlots,
 } from '@calwebtech/shared';
-import { ConflictException, ForbiddenException, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  ForbiddenException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
+import { SubmissionGuard } from '../antispam/submission-guard';
+import { refuseUnlessPlausible } from '../leads/leads.service';
 import { EmailQueue } from '../queue/email-queue';
 import { PrismaService } from '../prisma/prisma.service';
 import { SettingsService } from '../settings/settings.service';
@@ -51,6 +61,7 @@ export class BookingService {
     private readonly turnstile: TurnstileService,
     private readonly settings: SettingsService,
     private readonly emailQueue: EmailQueue,
+    private readonly guard: SubmissionGuard,
   ) {}
 
   /**
@@ -165,8 +176,25 @@ export class BookingService {
    * as the booking, so a refused slot leaves no half-written person behind.
    */
   async create(input: BookingSubmission, visitorIp: string | undefined): Promise<BookingConfirmation> {
+    const email = input.email.trim().toLowerCase();
+    await refuseUnlessPlausible(this.guard, 'booking', email, input.formElapsedMs);
+
     const botCheck = await this.turnstile.verify(input.turnstileToken, visitorIp);
     if (botCheck === 'failed') throw new ForbiddenException({ error: 'bot_check_failed' });
+    if (!(await this.guard.withinLimit('booking', email))) {
+      throw new HttpException({ error: 'rate_limited' }, HttpStatus.TOO_MANY_REQUESTS);
+    }
+
+    // One call coming up per address: a second is almost always the same person trying again,
+    // and the first one's emails carry the link to move it (docs/08-decisions.md, 61).
+    const upcoming = await this.prisma.client.booking.findFirst({
+      where: { email, status: { in: ['CONFIRMED', 'RESCHEDULED'] }, startsAt: { gt: new Date() } },
+      select: { startsAt: true },
+      orderBy: { startsAt: 'asc' },
+    });
+    if (upcoming) {
+      throw new ConflictException({ error: BOOKING_ERRORS.alreadyBooked, startsAt: upcoming.startsAt.toISOString() });
+    }
 
     const type = await this.consultationType(input.consultationType);
     const startsAt = new Date(input.startsAt);
@@ -177,7 +205,6 @@ export class BookingService {
     const endsAt = new Date(startsAt.getTime() + type.durationMinutes * 60_000);
     const rescheduleToken = randomBytes(24).toString('base64url');
     const cancelToken = randomBytes(24).toString('base64url');
-    const email = input.email.trim().toLowerCase();
 
     try {
       const booking = await this.prisma.client.$transaction(async (tx) => {

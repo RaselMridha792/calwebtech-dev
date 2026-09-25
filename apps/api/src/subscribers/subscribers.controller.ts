@@ -7,7 +7,10 @@ import {
 import { Body, Controller, ForbiddenException, HttpCode, HttpStatus, Injectable, Ip, Logger, Module, Post } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import { Prisma } from '@calwebtech/db';
+import { submissionGuardProvider } from '../antispam/antispam.provider';
+import { SubmissionGuard } from '../antispam/submission-guard';
 import { ZodValidationPipe } from '../common/zod-validation.pipe';
+import { refuseUnlessPlausible } from '../leads/leads.service';
 import { API_ENV, type ApiEnv } from '../config/env';
 import { PrismaService } from '../prisma/prisma.service';
 import { TurnstileService } from '../turnstile/turnstile.service';
@@ -37,6 +40,7 @@ export class SubscribersService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly turnstile: TurnstileService,
+    private readonly guard: SubmissionGuard,
   ) {}
 
   async subscribe(input: SubscribeSubmission, visitorIp: string | undefined): Promise<SubscribeResult> {
@@ -46,8 +50,16 @@ export class SubscribersService {
       return SUBSCRIBED;
     }
 
+    // A form sent faster than a person could is told to try again; a throwaway inbox or a
+    // domain that cannot receive mail is named under the field (docs/08-decisions.md, 61).
+    await refuseUnlessPlausible(this.guard, 'subscribe', input.email, input.formElapsedMs);
+
     const botCheck = await this.turnstile.verify(input.turnstileToken, visitorIp);
     if (botCheck === 'failed') throw new ForbiddenException({ error: SUBSCRIBE_ERRORS.botCheckFailed });
+
+    // Over the address's limit: the same answer as always, and nothing written. Subscribing
+    // twice changes nothing anyway, so there is nothing to tell.
+    if (!(await this.guard.withinLimit('subscribe', input.email))) return SUBSCRIBED;
 
     const email = input.email;
     try {
@@ -105,6 +117,7 @@ export class SubscribersController {
   controllers: [SubscribersController],
   providers: [
     SubscribersService,
+    submissionGuardProvider,
     {
       provide: TurnstileService,
       useFactory: (env: ApiEnv) => new TurnstileService(env.TURNSTILE_SECRET ?? ''),

@@ -28,6 +28,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { SkipThrottle, Throttle } from '@nestjs/throttler';
+import { submissionGuardProvider } from '../antispam/antispam.provider';
 import { ZodValidationPipe } from '../common/zod-validation.pipe';
 import { API_ENV, type ApiEnv } from '../config/env';
 import { EmailQueue } from '../queue/email-queue';
@@ -115,6 +116,7 @@ export class BookingController {
   controllers: [BookingPageController, BookingController],
   providers: [
     BookingService,
+    submissionGuardProvider,
     SettingsService,
     {
       provide: TurnstileService,

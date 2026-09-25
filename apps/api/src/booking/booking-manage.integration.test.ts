@@ -18,6 +18,7 @@ import { TURNSTILE_TEST } from '../turnstile/turnstile-test-keys';
 import { TurnstileService } from '../turnstile/turnstile.service';
 import { reminderJobIds } from './booking-reminders';
 import { BookingService } from './booking.service';
+import { SubmissionGuard } from '../antispam/submission-guard';
 
 /**
  * A booked call from the visitor's side after they booked it (docs/08-decisions.md, 60): its
@@ -49,6 +50,7 @@ const booking = new BookingService(
   new TurnstileService(TURNSTILE_TEST.alwaysPassesSecret, fetch, 15_000),
   settings,
   emailQueue,
+  SubmissionGuard.off(),
 );
 const adminBookings = new AdminBookingsService(prisma, new AuditService(prisma), settings, emailQueue);
 
