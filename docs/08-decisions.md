@@ -557,6 +557,126 @@ came back in PR #11. The page is built on them unchanged.
   with `answers {"mainConcern":"slow-on-mobile","competitorUrl":"https://rival.com"}`. The
   route's own client JavaScript is 7.2 kB of the 20 kB budget.
 
+## 58. Industries and case studies are edited in the admin, and can read the database first
+
+*2026-09-25.* Task 4 of `docs/14-remaining-work.md`, first part. Non-negotiable 3 says publishing
+never needs a deploy, and industries and case studies still did. Both now work the way services
+do (decision 44). They have their own importer families, an equality test against the snapshots,
+a database-first getter, and admin screens to add, edit, publish, unpublish and remove.
+
+- **Three new importer families, appended to the registry.** A live database that ran the older
+  families runs only these on its next deploy.
+  - `industries` writes the index copy, each page's copy into `Industry.content`, the card image,
+    the SEO and the FAQs.
+  - `case-studies` writes the `work.copy` setting, with headings stored using the `{client}`
+    token. For each project it adds the platforms, the segment (read from the card's tags), the
+    gallery with alt text and the order of its services.
+  - `page-copy` is decision 59.
+
+  Copy already stored, whether written by the family before or edited in the admin since, is
+  left alone even on a forced run.
+- **The pages built from the imported rows are the approved ones.** `industries-import` and
+  `work-import` check this section by section. The only exceptions are named in the tests:
+  - **Card tags and alt text.** Same as the service pages.
+  - **The work proof band.** Its figures and rating are the homepage's too, and the snapshots
+    disagree about them (decision 43). The web app keeps the snapshot's band until the database
+    has figures.
+  - **"headless CMS" versus "Headless CMS".** The technology row takes the service pages'
+    spelling (decision 45).
+  - **A related service's summary.** A case study describes each service in its own words; the
+    row holds one summary, the one on the services index.
+- **A page's own order, again (decision 45).** One relation links a service and an industry, read
+  from both sides. The approved pages disagree about it on all twelve industries:
+  - a service page lists the sectors it serves best;
+  - an industry page lists the services a buyer in that sector needs.
+
+  An industry page now lists the services its copy names, in that order (`matchedServices`).
+  Case studies list their services in their own order too, kept in the new `Project.content`
+  column (migration `20260925130000_project_content`). `/work/` lists featured case studies
+  first, then the most recently changed. Every approved case study carries the same date, so the
+  import stamps them a second apart in the approved order. **Saving a case study moves it to the
+  top of /work/**; Featured is how to keep one first.
+- **Removal keeps the row.** Industry gains `deletedAt` (migration
+  `20260925120000_industry_deleted_at`), as Service and Project have. For both editors:
+  - a removed record keeps its slug, so nothing else can inherit its redirect;
+  - a published address that moves leaves a 301 to the new address;
+  - a published address that is removed leaves a 301 to its index;
+  - every change is audited: `industry.*` and `case_study.*`.
+- **Case studies publish only when their page can render.** That means three outcome figures
+  and an answer block (`caseStudyReadiness`). The API refuses to publish otherwise and gives the
+  reason. A link to a service, platform or industry that does not exist is refused, not dropped.
+- **Editing copy without editing JSON.** `components/admin/content/copy-editor.tsx` renders a
+  page's copy as fields, following the page's schema:
+  - a line or text area for each piece of copy;
+  - a named group for each section;
+  - lists that can be added to, reordered and trimmed;
+  - each API error shown under the field whose path it names.
+
+  A section can be added or left out only where the page describes its shape
+  (`INDUSTRY_CONTENT_SHAPES`, `CASE_STUDY_SHAPES`), so the editor never invents structure. The
+  service editor's controls moved to `editor-parts.tsx` so all the editors share them.
+- **Switching it on.** Add `industries` and `work` to `CONTENT_DATABASE_FIRST`, and only after the
+  deploy's import has run those families on that database. `/before-and-after/` keeps its
+  snapshot, because its approved comparison describes its screenshots in words no row holds.
+- **Verified.**
+  - Tests:
+    - unit tests for the mapper, getters and copy editor;
+    - integration tests for the import equality, both admin services end to end with their
+      audit entries, and the whole API suite (149).
+  - In Chrome at 360 and 1440:
+    - both lists and both editors have no overflow, no console errors, and every control
+      labelled;
+    - an industry title and a case study summary changed in the editor reached
+      `/industries/healthcare/` and `/work/` with the families read from the database first;
+    - emptied copy was refused with the reason under the field.
+  - Own JavaScript on the new admin routes is 3.4 to 9.6 kB of the 20 kB budget. The public
+    routes did not change.
+
+## 59. Page copy is edited in the admin and audited
+
+*2026-09-25.* Task 4, second part. Some page copy belongs to no record, and only `settings-cli`
+on the server could change it. That tool writes no audit entry. The copy in question:
+
+- the homepage (`home.content`);
+- the booking page (`booking.page`);
+- the thank-you pages (`static.thank-you`);
+- the copy around the services, industries and work indexes.
+
+- **The six rows and the screen.**
+  - `PAGE_COPY_KEYS` lists the six rows, each with the schema its page reads it with.
+  - `/admin/page-copy/` lists them. Each opens in the copy editor.
+  - The API checks the whole value with the page's own schema before storing it, and refuses it
+    with each refused field's path.
+  - Every change is audited as `page_copy.updated`, with the sections it touched. Sections are
+    compared regardless of the order Postgres keeps keys in.
+- **The copy had to be stored first.** The launch never wrote `home.content` or
+  `static.thank-you` (decision 43). The `page-copy` family writes them from the snapshots, only
+  where no row exists. The thank-you copy is read back out of its seven pages. A test builds each
+  thank-you page from the stored copy and checks that it equals its snapshot.
+- **The site lays the stored copy over the snapshot.** This applies while pages render from
+  snapshots and `home` or `thank-you` is in `CONTENT_DATABASE_FIRST`. `GET /pages/copy/:key`
+  serves the two stored copies, and the web app uses them as follows:
+  - **The homepage** takes its words from the database and keeps its records from the snapshot.
+  - **The header, menus, footer and closing band** of every page are rebuilt from those words
+    with `buildSiteChrome`. Built from the snapshots alone, that rebuild is byte for byte the
+    committed chrome.
+  - **Each thank-you page** is built from the stored copy. A type the copy lacks keeps its
+    snapshot, so a form never sends anyone to a page that went missing.
+
+  With the approved copy stored, every page equals the committed one. The booking page reads
+  its copy from the database already.
+- **Verified.**
+  - Tests:
+    - integration tests: import, refusal by path, audit, served copy, and edits kept by a forced
+      import;
+    - web unit tests: an unchanged site with the approved copy stored, the edited words
+      reaching the homepage and the chrome, and a thank-you type the copy lacks keeping its
+      snapshot.
+  - In Chrome at 360 and 1440:
+    - the homepage copy opens as 451 labelled fields, with no overflow and no console errors;
+    - a hero heading and a footer address changed in the screen reached the homepage and the
+      footer of `/pricing/`, and were put back.
+
 ## Open
 
 - **Nothing reports abandonment yet.** The drop-off per step is in the data (each draft lead's
@@ -638,6 +758,22 @@ came back in PR #11. The page is built on them unchanged.
   Switching it on earlier fails every push to `main`. The bootstrap script prints them.
 - The owner's server has 4 GB, which runs one stack. Staging and production side by side
   need 8 GB or a second server.
+- **Turning the database-first families on in production is the owner's step.** Services,
+  industries, case studies (`work`), the homepage copy (`home`) and the thank-you copy
+  (`thank-you`) can each read the database first (decisions 44, 58 and 59). Each needs the
+  deploy's import to have run its family on that database first, then its name in
+  `CONTENT_DATABASE_FIRST`; production names `services` alone today. Until a family is named,
+  what the dashboard saves for it is stored and audited but the site keeps its snapshot, and the
+  page copy screen says so beside each row.
+- **Saving a case study moves it to the top of /work/**, which lists featured first and then the
+  most recently changed (decision 58). The approved order was stamped in at import; mark the case
+  studies that must stay first as Featured.
+- **Not editable from the dashboard yet:** a case study's quote and video testimonial (their own
+  records), the proof band's figures and rating (shared with the homepage), and
+  `/before-and-after/`, which keeps its snapshot.
+- **In the dashboard's sidebar, Dashboard is marked as the current page on every screen**,
+  because its link (`/admin/`) is the start of every other one (`components/admin/sidebar.tsx`,
+  `isCurrent`). Seen while checking task 4; left as it was.
 - Content is still edited by changing a snapshot and deploying (decision 43). Families move
   into the database one at a time once the admin exists (Task 5.3). Each needs its mapper
   extended or its snapshot corrected where the two disagree, and an owner's decision for
@@ -686,10 +822,9 @@ came back in PR #11. The page is built on them unchanged.
   visitor in Dhaka is offered 2:30 AM. That is the intended offer, not a bug to fix. The
   setting is `booking.page`'s `timeZone`, changeable with settings-cli if the answer ever
   changes.
-- The booking page's own copy is the `booking.page` setting, and like `home.content` it is
-  not one of the five settings the admin screen exposes, so it changes with `settings-cli`
-  until the content manager reaches singleton pages (Task 5.3). The hours, which change
-  far more often, are editable from `/admin/bookings/availability`.
+- The booking page's own copy is the `booking.page` setting. Since decision 59 it is edited
+  from `/admin/page-copy/` with the homepage and thank-you copy, and audited; the hours, which
+  change far more often, are editable from `/admin/bookings/availability`.
 - The availability screen edits the one active consultation type. A second type would need
   a chooser there and a type per booking link; nothing depends on that yet.
 - The Lighthouse gate runs against `/` and `/lp/[campaign]` only (docs/09). The booking
