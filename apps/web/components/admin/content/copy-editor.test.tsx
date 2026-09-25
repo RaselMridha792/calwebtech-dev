@@ -1,6 +1,6 @@
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
-import { CopyEditor, emptied, humanize, shapeKey, type Json } from './copy-editor';
+import { CopyEditor, emptied, humanize, ordered, plainly, shapeKey, type Json } from './copy-editor';
 
 /**
  * The page copy editor turns a page's stored copy into fields. What matters is that every
@@ -67,5 +67,21 @@ describe('the page copy editor', () => {
     expect(humanize('primaryCta')).toBe('Primary call to action');
     expect(humanize('seo')).toBe('Search result');
     expect(humanize('linkLabel')).toBe('Link label');
+  });
+
+  it('lays stored copy out in the order of the page, whatever order the database kept its keys in', () => {
+    const stored: Json = { faq: { intro: null, heading: 'Test FAQ?' }, title: 'Test', extra: 1, hero: { intro: 'Test.' } };
+    const template: Json = { title: '', hero: { intro: '' }, faq: { heading: '', intro: null } };
+    const result = ordered(stored, template) as Record<string, Json>;
+    expect(Object.keys(result)).toEqual(['title', 'hero', 'faq', 'extra']);
+    expect(Object.keys(result.faq as Record<string, Json>)).toEqual(['heading', 'intro']);
+    expect(ordered([{ b: 1, a: 2 }], [{ a: 0, b: 0 }])).toEqual([{ a: 2, b: 1 }]);
+  });
+
+  it('says what a length rule means in plain words, and keeps a schema’s own message', () => {
+    expect(plainly('Too small: expected string to have >=1 characters')).toBe('This cannot be empty.');
+    expect(plainly('Too big: expected string to have <=80 characters')).toBe('Keep this to 80 characters or fewer.');
+    expect(plainly('Too small: expected array to have >=1 items')).toBe('This needs at least 1.');
+    expect(plainly('Alt text is required')).toBe('Alt text is required');
   });
 });

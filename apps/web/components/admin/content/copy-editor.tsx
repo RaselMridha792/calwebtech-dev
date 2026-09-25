@@ -414,9 +414,24 @@ function FieldErrors({ messages }: { messages: string[] | undefined }) {
   if (!messages?.length) return null;
   return (
     <p role="alert" className="text-[11px] text-danger">
-      {messages.join(' ')}
+      {messages.map(plainly).join(' ')}
     </p>
   );
+}
+
+/**
+ * The validator's messages about length, in the words of someone writing copy. A schema's
+ * own message ("Alt text is required") passes through unchanged.
+ */
+export function plainly(message: string): string {
+  if (/expected string to have >=1 characters/.test(message)) return 'This cannot be empty.';
+  const longest = /expected string to have <=(\d+) characters/.exec(message);
+  if (longest) return `Keep this to ${longest[1] ?? ''} characters or fewer.`;
+  const fewest = /expected array to have >=(\d+) items/.exec(message);
+  if (fewest) return `This needs at least ${fewest[1] ?? ''}.`;
+  const most = /expected array to have <=(\d+) items/.exec(message);
+  if (most) return `This takes at most ${most[1] ?? ''}.`;
+  return message;
 }
 
 // ---------------------------------------------------------------- helpers
@@ -430,6 +445,26 @@ export function shapeKey(path: Path): string {
 
 function errorKey(context: Context, path: Path): string {
   return [context.errorPrefix, ...path.map(String)].filter(Boolean).join('.');
+}
+
+/**
+ * `value` with its keys in `like`'s order, all the way down. Postgres stores JSON with its
+ * keys sorted by length, so copy read back from a row lists the FAQ before the hero; the
+ * editor shows sections in the page's order by laying the stored value over the template's.
+ * Keys the template does not have follow, and nothing is added or dropped.
+ */
+export function ordered(value: Json, like: Json | undefined): Json {
+  if (Array.isArray(value)) {
+    const item = Array.isArray(like) ? like[0] : undefined;
+    return value.map((entry) => ordered(entry, item));
+  }
+  if (value === null || typeof value !== 'object') return value;
+  const template = like !== null && typeof like === 'object' && !Array.isArray(like) ? like : {};
+  const keys = [
+    ...Object.keys(template).filter((key) => key in value),
+    ...Object.keys(value).filter((key) => !(key in template)),
+  ];
+  return Object.fromEntries(keys.map((key) => [key, ordered(value[key] ?? null, template[key])]));
 }
 
 /** A copy of an item with its words taken out, for a new entry in the same list. */
