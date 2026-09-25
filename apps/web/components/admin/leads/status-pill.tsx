@@ -19,7 +19,7 @@ const DOT: Record<LeadStatus, string> = {
 
 export function StatusPill({ status }: { status: LeadStatus }) {
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full bg-admin-mist py-0.5 pr-2 pl-[7px] text-[11px] font-semibold text-admin-ink">
+    <span className="inline-flex h-6 shrink-0 items-center gap-1.5 rounded-full bg-admin-mist pr-2.5 pl-2 text-[12px] font-semibold whitespace-nowrap text-ink-invert">
       <span aria-hidden className={`size-2 shrink-0 ${DOT[status]}`} />
       {LEAD_STATUS_LABELS[status]}
     </span>
