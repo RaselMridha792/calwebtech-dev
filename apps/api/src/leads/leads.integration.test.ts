@@ -22,6 +22,7 @@ import { SettingsService } from '../settings/settings.service';
 import { TURNSTILE_TEST } from '../turnstile/turnstile-test-keys';
 import { TurnstileService } from '../turnstile/turnstile.service';
 import { LeadsService } from './leads.service';
+import { SubmissionGuard } from '../antispam/submission-guard';
 
 // Needs a migrated and seeded Postgres and a Redis: infra/docker-compose.yml with the dev
 // overrides locally, services in CI. Turnstile calls reach Cloudflare with its test keys.
@@ -38,7 +39,8 @@ const inspectConnection = new Redis(env.REDIS_URL);
 const inspect = new Queue(queueName, { connection: inspectConnection });
 const settings = new SettingsService(prisma);
 
-const leadsWith = (secret: string) => new LeadsService(prisma, new TurnstileService(secret, fetch, 15_000), settings, emailQueue);
+const leadsWith = (secret: string) =>
+  new LeadsService(prisma, new TurnstileService(secret, fetch, 15_000), settings, emailQueue, SubmissionGuard.off());
 
 const run = Date.now().toString(36);
 let sequence = 0;

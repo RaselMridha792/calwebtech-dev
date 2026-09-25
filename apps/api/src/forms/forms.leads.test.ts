@@ -6,6 +6,7 @@ import type { EmailQueue } from '../queue/email-queue';
 import type { SettingsService } from '../settings/settings.service';
 import type { TurnstileService } from '../turnstile/turnstile.service';
 import { openProjectDraft } from './forms.draft';
+import { SubmissionGuard } from '../antispam/submission-guard';
 
 /*
  * The forms family's half of the lead flow (docs/10-site-pages.md): the brief's final submit
@@ -51,6 +52,7 @@ function leadsServiceWith(existing: StoredLead | null = null) {
     { verify: vi.fn(() => Promise.resolve('passed')) } as unknown as TurnstileService,
     { leadNotificationRecipients: vi.fn(() => Promise.resolve(['sales@example.com'])) } as unknown as SettingsService,
     { enqueue } as unknown as EmailQueue,
+    SubmissionGuard.off(),
   );
   return { service, lead, created, updated, enqueue };
 }
@@ -121,7 +123,8 @@ describe('POST /leads completing a saved brief', () => {
   it('looks for no brief when the form sends no draft, which is every other form', async () => {
     const { service, lead, created } = leadsServiceWith();
     await service.create(submission({ type: 'CONTACT', formId: 'contact-page' }), undefined);
-    expect(lead.findFirst).not.toHaveBeenCalled();
+    // The one lookup is for an open lead of the same person to join, never a brief by id.
+    for (const [query] of lead.findFirst.mock.calls) expect(query.where.id).toBeUndefined();
     expect(created[0]?.data.answers).toBeUndefined();
   });
 });

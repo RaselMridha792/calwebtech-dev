@@ -20,6 +20,7 @@ import type { EmailQueue } from '../queue/email-queue';
 import { SettingsService } from '../settings/settings.service';
 import { TurnstileService } from '../turnstile/turnstile.service';
 import { CalculatorPageService } from './calculator.service';
+import { SubmissionGuard } from '../antispam/submission-guard';
 
 /*
  * The cost calculator against Postgres (docs/06-build-plan.md, task 4.1): the page builds
@@ -90,7 +91,13 @@ describe('calculator leads against Postgres', () => {
   // No Turnstile secret outside production stores the lead without a verdict; no emails are sent.
   const queued: unknown[] = [];
   const emailQueue = { enqueue: (jobs: unknown[]) => Promise.resolve(void queued.push(...jobs)) } as unknown as EmailQueue;
-  const leads = new LeadsService(prisma, new TurnstileService('', fetch, 15_000), new SettingsService(prisma), emailQueue);
+  const leads = new LeadsService(
+    prisma,
+    new TurnstileService('', fetch, 15_000),
+    new SettingsService(prisma),
+    emailQueue,
+    SubmissionGuard.off(),
+  );
 
   const submission = (name: string, answers: unknown) =>
     leadSubmissionSchema.parse({

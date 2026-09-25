@@ -16,6 +16,7 @@ import { EmailQueue } from '../queue/email-queue';
 import { SettingsService } from '../settings/settings.service';
 import { TURNSTILE_TEST } from '../turnstile/turnstile-test-keys';
 import { TurnstileService } from '../turnstile/turnstile.service';
+import { SubmissionGuard } from '../antispam/submission-guard';
 
 /**
  * The snapshot import's acceptance test (decision 43): on an empty, migrated database of
@@ -48,6 +49,7 @@ const leads = new LeadsService(
   new TurnstileService(TURNSTILE_TEST.alwaysPassesSecret, fetch, 15_000),
   new SettingsService(prisma),
   emailQueue,
+  SubmissionGuard.off(),
 );
 
 /** What the contact page offers: the snapshot the web app renders in production. */
