@@ -76,11 +76,9 @@ export interface SlotPickerProps {
   onChoose: (startsAt: string) => void;
   /** Called on the first touch of a day or a time, e.g. to load the bot check early. */
   onInteract?: () => void;
-  /** Leaves this time out, as the one a call being moved already has. */
-  exclude?: string | null;
 }
 
-export function SlotPicker({ slots, zone, chosen, onChoose, onInteract, exclude = null }: SlotPickerProps) {
+export function SlotPicker({ slots, zone, chosen, onChoose, onInteract }: SlotPickerProps) {
   /** Null until the visitor moves: the first month and day with a free time are the default. */
   const [openMonth, setOpenMonth] = useState<string | null>(null);
   const [openDay, setOpenDay] = useState<string | null>(null);
@@ -105,7 +103,6 @@ export function SlotPicker({ slots, zone, chosen, onChoose, onInteract, exclude 
     const key = new Intl.DateTimeFormat('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit', timeZone: zone });
     for (const day of slots.days) {
       for (const slot of day.slots) {
-        if (slot.startsAt === exclude) continue;
         const at = new Date(slot.startsAt);
         const dayKey = key.format(at);
         const entry = byDay.get(dayKey) ?? { key: dayKey, label: dayLabel.format(at), slots: [] };
@@ -114,7 +111,7 @@ export function SlotPicker({ slots, zone, chosen, onChoose, onInteract, exclude 
       }
     }
     return [...byDay.values()].sort((a, b) => a.key.localeCompare(b.key));
-  }, [slots, zone, dayLabel, timeLabel, exclude]);
+  }, [slots, zone, dayLabel, timeLabel]);
 
   const free = useMemo(() => new Map(days.map((day) => [day.key, day])), [days]);
 
@@ -198,7 +195,7 @@ export function SlotPicker({ slots, zone, chosen, onChoose, onInteract, exclude 
           <thead>
             <tr>
               {WEEKDAYS.map((weekday) => (
-                <th key={weekday.short} scope="col" className="pb-2 text-center">
+                <th key={weekday.long} scope="col" className="pb-2 text-center">
                   <span aria-hidden="true" className="meta text-ink-muted">
                     {weekday.short}
                   </span>
