@@ -28,19 +28,24 @@ function respond(routes: Record<string, unknown>) {
 }
 
 const snapshot = workIndexViewSchema.parse(workIndexSnapshot);
-const [first, second] = snapshot.caseStudies;
-if (!first || !second) throw new Error('the work snapshot needs two case studies');
+
+function need<T>(value: T | undefined): T {
+  if (value === undefined) throw new Error('the work snapshot needs two case studies');
+  return value;
+}
+const first = need(snapshot.caseStudies[0]);
+const second = need(snapshot.caseStudies[1]);
 
 /** What the API answers with one case study in the database, renamed, and no proof figures. */
 function database(): WorkIndexView {
-  const industry = snapshot.filters.industries.find((term) => term.slug === first?.industry);
+  const industry = snapshot.filters.industries.find((term) => term.slug === first.industry);
   return {
     copy: { ...snapshot.copy, title: 'Test work title from the database' },
     caseStudies: [{ ...first, clientName: 'Test client from the database', industry: industry?.slug ?? null }],
     filters: {
       industries: industry ? [industry] : [],
-      services: snapshot.filters.services.filter((term) => first?.services.includes(term.slug)),
-      platforms: snapshot.filters.platforms.filter((term) => first?.platforms.includes(term.slug)),
+      services: snapshot.filters.services.filter((term) => first.services.includes(term.slug)),
+      platforms: snapshot.filters.platforms.filter((term) => first.platforms.includes(term.slug)),
     },
     proof: { statistics: [], rating: null },
   };
