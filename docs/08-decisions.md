@@ -677,6 +677,76 @@ on the server could change it. That tool writes no audit entry. The copy in ques
     - a hero heading and a footer address changed in the screen reached the homepage and the
       footer of `/pricing/`, and were put back.
 
+## 60. Reminders, a calendar entry, and moving or cancelling a call
+
+*2026-09-25.* Task 5 of `docs/14-remaining-work.md`, the rest of build plan task 5.1. All of it
+works with `EMAIL_TRANSPORT=log`, so no provider was added (Task 6.2).
+
+- **A calendar entry, never a meeting link.** The emails that carry an iCalendar file
+  (`packages/emails/src/invite.ts`):
+  - the confirmation, with the time;
+  - a moved call's email, with the new time;
+  - a cancelled call's email, with the entry's cancellation.
+
+  The UID stays with the booking and SEQUENCE only grows, so a calendar updates the entry it
+  holds instead of adding another. The organiser is the site's contact address when one is set.
+  The entry states that the meeting link comes from a person. Decision 47 stands: the system
+  arranges no meeting.
+- **Reminders a day and an hour before.** These are delayed jobs on the email queue, one per
+  window. Their ids name the booking, the window and the call's time. Moving a call removes its
+  old reminders and queues new ones. Cancelling it removes them, whether the visitor cancels from
+  the link or the team cancels or closes it in the dashboard. A reminder whose time has already
+  passed is not queued. **Before sending, the worker reads the booking again** and skips a call
+  that was cancelled, moved to another time or deleted. That covers a removal that could not
+  happen, such as a job already being sent or Redis briefly unavailable. A sent reminder is
+  written on the booking's timeline as `reminded_24h` or `reminded_1h`, the names the schema
+  gives them.
+- **The signed links.** Every booking already stored two random 192-bit tokens. They are now
+  links in the confirmation and the reminders:
+  - `/book-a-consultation/reschedule/<token>/` moves the call;
+  - `/book-a-consultation/cancel/<token>/` cancels it.
+
+  Each token allows only its own action. The other link's token, or one that names nothing,
+  answers 404. Both pages are noindex, send no referrer (the address is the credential) and hide
+  the closing band.
+- **Moving follows the same rules as booking.** The new time must be one the engine offers now,
+  and the database's unique index settles two people choosing it at once. The call keeps its
+  tokens, becomes `RESCHEDULED`, and gets a `rescheduled` event with both times. The visitor and
+  the team are each emailed.
+- **Cancelling is idempotent.** A second cancel answers the same way as the first. A call whose
+  time has passed can neither move nor cancel.
+- **A cancelled call gives its time back.** This fixes a bug found while building the feature:
+  the unique index on `(consultationTypeId, startsAt)` kept a cancelled call's row holding its
+  slot. The slot was offered to the next visitor, and booking it failed. The index is now on
+  `slotStartsAt`, the time a call holds while it is on: null once it is cancelled, so the
+  database still refuses two calls at one time (migration
+  `20260925150000_booking_slot_released_on_cancel`, which fills the column for every call that
+  is not cancelled). Bringing a cancelled call back in the dashboard over a time booked since is
+  refused.
+- **The booking page's calendar became `SlotPicker`,** with no change to its markup or behaviour,
+  so the move page offers the same one. Its weekday headings were keyed by their narrow names,
+  and two days share "T" and two share "S". That filled the console with duplicate-key errors on
+  every visit to `/book-a-consultation/`. They are keyed by the full name now.
+- **Verified.**
+  - Unit tests: the calendar file, the four email templates and their links, the worker's
+    reminder check, and the pages.
+  - Integration tests:
+    - reminders delayed at both windows;
+    - each link allowing its own action only;
+    - a refused and then a successful move, with its reminders replaced and both sides told;
+    - a cancel freeing the time for somebody else;
+    - the dashboard's cancel removing the reminders;
+    - the whole API suite (156) and the worker's (5).
+  - The booking e2e suite at 360 and 1440.
+  - In Chrome at 360 and 1440:
+    - both pages have one `h1`, no overflow and no console errors;
+    - a call booked on the site was moved by keyboard, with focus landing on the review, and
+      then cancelled;
+    - the log transport recorded the confirmation, the moved and cancelled emails with
+      `calwebtech-call.ics`, and the team's three notifications.
+  - Own JavaScript is 6.9 kB on the move page and 4.3 kB on the cancel page. The booking page is
+    unchanged at 8.4 kB.
+
 ## Open
 
 - **Nothing reports abandonment yet.** The drop-off per step is in the data (each draft lead's
@@ -809,13 +879,13 @@ on the server could change it. That tool writes no audit entry. The copy in ques
   rows first, requeued by the sweep); lead and booking emails still do.
 - Settings changed with `settings-cli` are not written to the audit log yet. The admin
   settings screen (Task 5.3) must write the audit entry.
-- Of task 5.1, what is built is: consultation types, weekly hours and date overrides edited
-  from `/admin/bookings/availability`, minimum notice, the horizon, server-side slots, the
-  visitor's timezone, the double-booking constraint, the confirmation and internal
-  notification emails, and the dashboard's list, detail, status and notes. Still to build:
-  the `.ics` invite, reminders at 24h and 1h, and signed reschedule and cancel link pages.
-  The build plan's gate for 5.1 names reminders, reschedule and cancel, so 5.1 is not
-  closed.
+- Task 5.1 is complete on `tumit` (decision 60): the `.ics` entry, the 24h and 1h reminders
+  and the signed reschedule and cancel pages were the last of it. None of the booking emails
+  reaches anyone until production sends email (Task 6.2); until then the reminders are
+  queued, checked and logged like every other email.
+- **The booking emails carry the move and cancel links only where `APP_ORIGIN` is set on the
+  worker**, since the job holds paths and never a host. Without it they fall back to "reply to
+  this email", as before.
 - Production books in `America/Los_Angeles`, and that is the owner's choice, asked and
   answered on 2026-09-23: the calls are taken in US West Coast hours. Every availability
   rule is written in that zone, so `/admin/bookings/availability` reads as Pacific, and a
