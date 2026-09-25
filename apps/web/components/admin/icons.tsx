@@ -5,15 +5,15 @@ import type { SVGProps } from 'react';
  * marketing side already hand-writes its own (components/ui/icons.tsx), and a dependency
  * for twelve shapes would be the largest thing in the bundle.
  *
- * All are 16-viewBox stroke glyphs at the weight the design handoff specifies, and all are
- * decorative — every nav item carries its own text label.
+ * All are 16-viewBox stroke glyphs, and all are decorative: every control that shows one
+ * also carries its own text, visible or for a screen reader.
  */
 type IconProps = SVGProps<SVGSVGElement>;
 
 const base = {
   fill: 'none',
   stroke: 'currentColor',
-  strokeWidth: 1.35,
+  strokeWidth: 1.5,
   strokeLinecap: 'round',
   strokeLinejoin: 'round',
   'aria-hidden': true,
@@ -104,4 +104,39 @@ export function DisclosureIcon({ open, ...props }: IconProps & { open: boolean }
 
 export function SortIcon({ direction, ...props }: IconProps & { direction: 'asc' | 'desc' }) {
   return <Glyph {...props} strokeWidth={1.8} d={direction === 'asc' ? 'M4.5 9.5 8 6l3.5 3.5' : 'M4.5 6.5 8 10l3.5-3.5'} />;
+}
+
+export function SearchIcon(props: IconProps) {
+  return <Glyph {...props} d="M7 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm7 2-3.5-3.5" />;
+}
+
+/** Leaves the dashboard: a link that opens the public site. */
+export function ExternalIcon(props: IconProps) {
+  return <Glyph {...props} d="M9.5 2.5h4v4m0-4L7.5 8.5m4 1.5v3.5h-9v-9H6" />;
+}
+
+export function PlusIcon(props: IconProps) {
+  return <Glyph {...props} strokeWidth={1.8} d="M8 3v10M3 8h10" />;
+}
+
+export function ChevronRightIcon(props: IconProps) {
+  return <Glyph {...props} strokeWidth={1.7} d="M6 3.5 10.5 8 6 12.5" />;
+}
+
+export function DownloadIcon(props: IconProps) {
+  return <Glyph {...props} d="M8 2.5v8m-3.5-3.5L8 10.5 11.5 7M3 13.5h10" />;
+}
+
+export function SignOutIcon(props: IconProps) {
+  return <Glyph {...props} d="M6.5 2.5h-3a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h3M10.5 11 13.5 8l-3-3M13.5 8H6" />;
+}
+
+/** The sidebar's own toggle: a panel with its rail, and which way it will move. */
+export function SidebarIcon({ collapsed, ...props }: IconProps & { collapsed: boolean }) {
+  return (
+    <Glyph
+      {...props}
+      d={`M3 2.5h10a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1zm3 0v11${collapsed ? 'M9 6.5 10.5 8 9 9.5' : 'M11 6.5 9.5 8 11 9.5'}`}
+    />
+  );
 }
