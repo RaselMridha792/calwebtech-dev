@@ -57,6 +57,22 @@
 }
 
 /*
+ * The dashboard's one entrance: something that appears because of what you did (a bulk
+ * bar, a saved note) rises into place. Opacity and transform only, and used behind
+ * `motion-safe:` so reduced motion sees it simply appear.
+ */
+@keyframes admin-rise {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/*
  * Slow drift for background posters under video (docs/05, Background video). Transform
  * only, and off under reduced motion.
  */
