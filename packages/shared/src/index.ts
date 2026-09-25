@@ -8,6 +8,7 @@ export * from './admin-industries';
 export * from './admin-case-studies';
 export * from './admin-ops';
 export * from './admin-page-copy';
+export * from './admin-overview';
 export * from './auth';
 export * from './booking';
 export * from './calculator';
