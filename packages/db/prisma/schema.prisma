@@ -761,6 +761,10 @@ model Booking {
   timezone           String
   startsAt           DateTime
   endsAt             DateTime
+  /// The instant the call holds while it is on: `startsAt`, or null once it is cancelled. The
+  /// unique index below is on this, so the database still refuses two calls at one time and a
+  /// cancelled call gives its time back (docs/08-decisions.md, 60).
+  slotStartsAt       DateTime?
   status             BookingStatus @default(CONFIRMED)
   context            String?
   rescheduleToken    String        @unique
@@ -775,7 +779,7 @@ model Booking {
   events           BookingEvent[]
 
   /// Database-level double-booking prevention. Client-side checks are not sufficient.
-  @@unique([consultationTypeId, startsAt])
+  @@unique([consultationTypeId, slotStartsAt])
   @@index([startsAt, status])
 }
 

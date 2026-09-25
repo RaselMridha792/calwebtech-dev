@@ -15,6 +15,8 @@ import type { AdminRequest } from '../../auth/admin-request';
 import { requireAuth } from '../../auth/admin-request';
 import { AuthModule } from '../../auth/auth.controller';
 import { ZodValidationPipe } from '../../common/zod-validation.pipe';
+import { API_ENV, type ApiEnv } from '../../config/env';
+import { EmailQueue } from '../../queue/email-queue';
 import { SettingsService } from '../../settings/settings.service';
 import { AdminBookingsService } from './admin-bookings.service';
 
@@ -75,6 +77,14 @@ export class AdminBookingsController {
 @Module({
   imports: [AuthModule],
   controllers: [AdminBookingsController],
-  providers: [AdminBookingsService, SettingsService],
+  providers: [
+    AdminBookingsService,
+    SettingsService,
+    {
+      provide: EmailQueue,
+      useFactory: (env: ApiEnv) => new EmailQueue(env.REDIS_URL),
+      inject: [API_ENV],
+    },
+  ],
 })
 export class AdminBookingsModule {}

@@ -9,7 +9,10 @@ import {
   type AvailabilityOverride,
   type AvailabilityRule,
   type BookingConfirmation,
+  type BookingLinkAction,
+  type BookingManageView,
   type BookingPageView,
+  type BookingReschedule,
   type BookingSlotsView,
   type BookingSubmission,
   addDays,
@@ -23,6 +26,7 @@ import { EmailQueue } from '../queue/email-queue';
 import { PrismaService } from '../prisma/prisma.service';
 import { SettingsService } from '../settings/settings.service';
 import { TurnstileService } from '../turnstile/turnstile.service';
+import { reminderJobIds, reminderJobs, type RemindedCall } from './booking-reminders';
 
 /**
  * The booking engine (docs/06-build-plan.md, task 5.1).
@@ -32,10 +36,11 @@ import { TurnstileService } from '../turnstile/turnstile.service';
  * minutes ago may not exist now and a slot it never offered may have been typed in.
  *
  * The last word belongs to the database. `Booking` is unique on
- * `(consultationTypeId, startsAt)`, so when two people confirm the same slot in the same
- * second one insert succeeds and the other raises P2002 — which this service reports as
- * "that time has gone" rather than as a failure. Checking first and inserting second would
- * leave exactly the window the constraint closes.
+ * `(consultationTypeId, slotStartsAt)` — the time a call holds while it is on — so when two
+ * people confirm the same slot in the same second one insert succeeds and the other raises
+ * P2002, which this service reports as "that time has gone" rather than as a failure.
+ * Checking first and inserting second would leave exactly the window the constraint closes.
+ * A cancelled call holds no time, so its slot can be booked again.
  */
 @Injectable()
 export class BookingService {
@@ -191,6 +196,7 @@ export class BookingService {
             timezone: input.timezone,
             startsAt,
             endsAt,
+            slotStartsAt: startsAt,
             context: input.context ?? null,
             rescheduleToken,
             cancelToken,
@@ -202,7 +208,18 @@ export class BookingService {
         return created;
       });
 
-      await this.notify(booking.id, input, type.name, startsAt, endsAt);
+      await this.notify(booking.id, input, type.name, startsAt, endsAt, { rescheduleToken, cancelToken });
+      await this.remind({
+        id: booking.id,
+        name: input.name,
+        email,
+        consultationType: type.name,
+        startsAt,
+        endsAt,
+        timezone: input.timezone,
+        rescheduleToken,
+        cancelToken,
+      });
       return {
         status: 'booked',
         startsAt: startsAt.toISOString(),
@@ -233,6 +250,7 @@ export class BookingService {
     typeName: string,
     startsAt: Date,
     endsAt: Date,
+    manage: { rescheduleToken: string; cancelToken: string },
   ): Promise<void> {
     try {
       const recipients = await this.settings.leadNotificationRecipients();
@@ -246,6 +264,7 @@ export class BookingService {
           startsAt: startsAt.toISOString(),
           endsAt: endsAt.toISOString(),
           timezone: input.timezone,
+          manage,
         },
         ...(recipients.length > 0
           ? [
@@ -267,4 +286,196 @@ export class BookingService {
       this.logger.error(`Booking ${bookingId} was stored but its emails could not be queued.`, error);
     }
   }
+
+  /** Queues a call's reminders. As with the confirmation, a failure never fails the booking. */
+  private async remind(call: RemindedCall): Promise<void> {
+    try {
+      await this.emailQueue.schedule(reminderJobs(call));
+    } catch (error) {
+      this.logger.error(`Booking ${call.id} was stored but its reminders could not be queued.`, error);
+    }
+  }
+
+  /** Takes a call's reminders for a time off the queue; the worker's own check covers a failure. */
+  private async forget(call: { id: string; startsAt: Date }): Promise<void> {
+    try {
+      await this.emailQueue.remove(reminderJobIds(call));
+    } catch (error) {
+      this.logger.warn(`Booking ${call.id}: its reminders could not be removed; the worker will skip them.`, error);
+    }
+  }
+
+  // ---------------------------------------------------------------- the signed links
+
+  /**
+   * The booking a signed link names, and which action it allows. The two tokens are
+   * different on purpose: a link forwarded to cancel a call cannot move it, and one to move
+   * it cannot cancel it.
+   */
+  private async byToken(token: string) {
+    const booking = await this.prisma.client.booking.findFirst({
+      where: { OR: [{ rescheduleToken: token }, { cancelToken: token }] },
+      include: { consultationType: { select: { slug: true, name: true, durationMinutes: true } } },
+    });
+    if (!booking) throw new NotFoundException({ error: BOOKING_ERRORS.linkUnknown });
+    const action: BookingLinkAction = booking.rescheduleToken === token ? 'reschedule' : 'cancel';
+    return { booking, action };
+  }
+
+  private view(
+    booking: Awaited<ReturnType<BookingService['byToken']>>['booking'],
+    action: BookingLinkAction,
+    now: Date,
+  ): BookingManageView {
+    const cancelled = booking.status === 'CANCELLED';
+    return {
+      action,
+      consultationType: booking.consultationType.name,
+      durationMinutes: booking.consultationType.durationMinutes,
+      startsAt: booking.startsAt.toISOString(),
+      endsAt: booking.endsAt.toISOString(),
+      timezone: booking.timezone,
+      cancelled,
+      open: !cancelled && ACTIVE_STATUSES.has(booking.status) && booking.startsAt.getTime() > now.getTime(),
+    };
+  }
+
+  /** What a signed link shows. 404 for a token that names no booking. */
+  async manage(token: string): Promise<BookingManageView> {
+    const { booking, action } = await this.byToken(token);
+    return this.view(booking, action, new Date());
+  }
+
+  /**
+   * Cancels the call a cancel link names. Cancelling twice answers as the first did, so a
+   * double click or a reload is not an error. A call already held, or one the team has
+   * closed, cannot be cancelled from the link.
+   */
+  async cancel(token: string): Promise<BookingManageView> {
+    const now = new Date();
+    const { booking, action } = await this.byToken(token);
+    if (action !== 'cancel') throw new NotFoundException({ error: BOOKING_ERRORS.linkUnknown });
+    if (booking.status === 'CANCELLED') return this.view(booking, action, now);
+    if (!this.view(booking, action, now).open) throw new ConflictException({ error: BOOKING_ERRORS.closed });
+
+    const updated = await this.prisma.client.$transaction(async (tx) => {
+      const row = await tx.booking.update({
+        where: { id: booking.id },
+        // The time is given back: a cancelled call holds no slot.
+        data: { status: 'CANCELLED', slotStartsAt: null },
+        include: { consultationType: { select: { slug: true, name: true, durationMinutes: true } } },
+      });
+      await tx.bookingEvent.create({ data: { bookingId: booking.id, type: 'cancelled', detail: { by: 'visitor' } } });
+      return row;
+    });
+
+    await this.forget(booking);
+    await this.announce(updated, 'cancelled', null);
+    return this.view(updated, action, now);
+  }
+
+  /**
+   * Moves the call a reschedule link names, through the same rules as a new booking: the new
+   * time must be one the engine offers now, and the database's unique constraint settles two
+   * people choosing it at once. The tokens stay the same, so the links keep working.
+   */
+  async reschedule(input: BookingReschedule): Promise<BookingManageView> {
+    const now = new Date();
+    const { booking, action } = await this.byToken(input.token);
+    if (action !== 'reschedule') throw new NotFoundException({ error: BOOKING_ERRORS.linkUnknown });
+    if (!this.view(booking, action, now).open) throw new ConflictException({ error: BOOKING_ERRORS.closed });
+
+    const startsAt = new Date(input.startsAt);
+    if (startsAt.getTime() === booking.startsAt.getTime()) return this.view(booking, action, now);
+    const offered = await this.slots(booking.consultationType.slug);
+    const isOffered = offered.days.some((day) => day.slots.some((slot) => slot.startsAt === startsAt.toISOString()));
+    if (!isOffered) throw new ConflictException({ error: BOOKING_ERRORS.slotUnknown });
+    const endsAt = new Date(startsAt.getTime() + booking.consultationType.durationMinutes * 60_000);
+
+    let updated: typeof booking;
+    try {
+      updated = await this.prisma.client.$transaction(async (tx) => {
+        const row = await tx.booking.update({
+          where: { id: booking.id },
+          data: { startsAt, endsAt, slotStartsAt: startsAt, timezone: input.timezone, status: 'RESCHEDULED' },
+          include: { consultationType: { select: { slug: true, name: true, durationMinutes: true } } },
+        });
+        await tx.bookingEvent.create({
+          data: {
+            bookingId: booking.id,
+            type: 'rescheduled',
+            detail: { from: booking.startsAt.toISOString(), to: startsAt.toISOString(), by: 'visitor' },
+          },
+        });
+        return row;
+      });
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+        throw new ConflictException({ error: BOOKING_ERRORS.slotGone });
+      }
+      throw error;
+    }
+
+    await this.forget(booking);
+    await this.remind({
+      id: updated.id,
+      name: updated.name,
+      email: updated.email,
+      consultationType: updated.consultationType.name,
+      startsAt: updated.startsAt,
+      endsAt: updated.endsAt,
+      timezone: updated.timezone,
+      rescheduleToken: updated.rescheduleToken,
+      cancelToken: updated.cancelToken,
+    });
+    await this.announce(updated, 'moved', booking.startsAt);
+    return this.view(updated, action, now);
+  }
+
+  /** Tells the visitor and the team that a call moved or was cancelled. Never fails the change. */
+  private async announce(
+    booking: Awaited<ReturnType<BookingService['byToken']>>['booking'],
+    change: 'moved' | 'cancelled',
+    previousStartsAt: Date | null,
+  ): Promise<void> {
+    try {
+      const recipients = await this.settings.leadNotificationRecipients();
+      const call = {
+        bookingId: booking.id,
+        name: booking.name,
+        consultationType: booking.consultationType.name,
+        startsAt: booking.startsAt.toISOString(),
+        timezone: booking.timezone,
+      };
+      await this.emailQueue.enqueue([
+        {
+          template: 'booking-changed',
+          to: [booking.email],
+          ...call,
+          endsAt: booking.endsAt.toISOString(),
+          change,
+          previousStartsAt: previousStartsAt?.toISOString() ?? null,
+          manage: { rescheduleToken: booking.rescheduleToken, cancelToken: booking.cancelToken },
+        },
+        ...(recipients.length > 0
+          ? [
+              {
+                template: 'booking-notification' as const,
+                to: recipients,
+                ...call,
+                email: booking.email,
+                context: booking.context,
+                change,
+                previousStartsAt: previousStartsAt?.toISOString() ?? null,
+              },
+            ]
+          : []),
+      ]);
+    } catch (error) {
+      this.logger.error(`Booking ${booking.id} was ${change} but its emails could not be queued.`, error);
+    }
+  }
 }
+
+/** A call in one of these still happens; the rest are over or cancelled. */
+const ACTIVE_STATUSES = new Set(['CONFIRMED', 'RESCHEDULED']);
