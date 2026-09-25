@@ -3,13 +3,16 @@ import { Heading, Hr, Text } from 'react-email';
 import { attributionRows, firstName, oneLine, sourceLabel, submissionRows } from './format';
 import { DetailRows, EmailLayout, styles } from './layout';
 
-export function leadNotificationSubject(lead: LeadSummary): string {
+export function leadNotificationSubject(lead: LeadSummary, returning = false): string {
   const who = lead.company ? `${lead.name} (${lead.company})` : lead.name;
-  return oneLine(`New lead: ${who} via ${sourceLabel(lead)}`);
+  return oneLine(`${returning ? 'Lead updated' : 'New lead'}: ${who} via ${sourceLabel(lead)}`);
 }
 
-/** Sent to the team. Reply-To is the visitor, so answering the email reaches them. */
-export function LeadNotificationEmail({ lead }: { lead: LeadSummary }) {
+/**
+ * Sent to the team. Reply-To is the visitor, so answering the email reaches them. A lead that
+ * came back, merged into its open lead (docs/08-decisions.md, 61), says so.
+ */
+export function LeadNotificationEmail({ lead, returning = false }: { lead: LeadSummary; returning?: boolean }) {
   const attribution = attributionRows(lead.attribution);
   return (
     <EmailLayout
@@ -17,8 +20,13 @@ export function LeadNotificationEmail({ lead }: { lead: LeadSummary }) {
       footer={`Lead ${lead.leadId}, form ${lead.formId}, submitted ${lead.submittedAt}.`}
     >
       <Heading as="h1" style={styles.heading}>
-        New lead from {oneLine(lead.name)}
+        {returning ? `${oneLine(lead.name)} wrote again` : `New lead from ${oneLine(lead.name)}`}
       </Heading>
+      {returning ? (
+        <Text style={styles.paragraph}>
+          This was added to their open lead rather than made into a second one. What they sent this time is below.
+        </Text>
+      ) : null}
       <Text style={styles.paragraph}>Reply to this email to answer {firstName(lead.name)} directly.</Text>
       <DetailRows rows={submissionRows(lead)} />
 

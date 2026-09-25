@@ -49,8 +49,8 @@ function compose(job: EmailJob, context: EmailContext): { subject: string; eleme
       };
     case 'lead-notification':
       return {
-        subject: leadNotificationSubject(job.lead),
-        element: <LeadNotificationEmail lead={job.lead} />,
+        subject: leadNotificationSubject(job.lead, job.resubmission !== undefined),
+        element: <LeadNotificationEmail lead={job.lead} returning={job.resubmission !== undefined} />,
       };
     case 'calculator-result':
       return {
