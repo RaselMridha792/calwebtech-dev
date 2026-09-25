@@ -354,14 +354,14 @@ handed to the second collaborator in `docs/14-remaining-work.md` on the `tumit` 
 | 1.1 Layout shell | Done: floating header with mega menus, footer, breadcrumbs, closing conversion band, floating CTA. Not built: cookie consent, announcement bar |
 | 1.2 Homepage | Done on the 2026 brand; content from the snapshot (decision 43), plus "Subscribe now" (decision 53) |
 | 1.3 Services | Done and live; services are in the database and edited from `/admin` (decision 44) |
-| 1.4 Metadata and schema layer | Done: per-page metadata, structured data, `sitemap.xml`, `/sitemap/`, `robots.txt`. Not built: `llms.txt` |
+| 1.4 Metadata and schema layer | Done: per-page metadata, structured data, `sitemap.xml`, `/sitemap/`, `robots.txt`. On `tumit`: `llms.txt` (decision 62) |
 | 1.5 Pricing, process, contact, legal | Done and live |
 | 2.1 to 2.3 Work, case studies, industries, team | Done and live from snapshots. Industries in the owner's order with Spa centres, Media and Law added (decision 54). On `tumit`: industries and case studies are edited from `/admin` and can read the database first, their imported rows proven equal to the snapshots (decision 58) |
-| 3.1, 3.2 Locations | Location index and city pages live. Service-by-city matrix not built |
+| 3.1, 3.2 Locations | Location index and city pages live. Service-by-city matrix not built: waiting for the owner to say whether it is still wanted |
 | 3.3 Before/after, awards, partners | Done and live |
 | 4.1 Calculator | Done and live |
 | 4.2 Free audit, guides, insights, glossary, FAQ | Done and live. On `tumit`: `/free-website-audit/` is built on the PR #11 API, one step posting an `AUDIT` lead, and the menus link to it (decision 57); an article's subscribe block creates a subscriber (decision 55) |
-| 4.3 Search | Not started |
+| 4.3 Search | On `tumit`: `/search/` across services, case studies, insights, glossary and questions, typed and filterable; Postgres full text in the API, the snapshots while pages render from them (decision 62) |
 | 5.1 Booking | Built and live (decisions 47, 48): its own page with a calendar, server-side slots, the double-booking constraint, availability edited from `/admin`, bookings in the dashboard, a thank-you page. On `tumit`: the `.ics` entry, 24h and 1h reminders, signed reschedule and cancel pages, and a cancelled call giving its time back (decision 60) |
 | 5.2 Start a project and landing | Landing template done. On `tumit`, `/start-a-project/` is built on the PR #11 API: six steps, saved per step, abandonment measurable per step (decision 56) |
 | 5.3 Admin dashboard, auth, RBAC | Done: login, roles, leads, bookings, availability, services, subscribers, campaigns, settings, audit. On `tumit`: industries, case studies and page copy (homepage, booking page, thank-you pages, index copy) edited and audited from `/admin` (decisions 58, 59) |

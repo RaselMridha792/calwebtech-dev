@@ -81,6 +81,8 @@ MX and disposable-domain checks, and duplicate-lead merging that updates the exi
 rather than creating a second. Apply to leads, bookings and subscribers alike.
 
 ### 7. Smaller gaps
+**`llms.txt` and site search done on `tumit`, 2026-09-25 (decision 62). The service-by-city
+matrix is not built: it waits for the owner's answer.**
 - `llms.txt` (Task 1.4) — the only piece of the metadata layer missing.
 - Site search (Task 4.3).
 - The service-by-city matrix (Task 3.2), if the owner still wants it — ask first.
