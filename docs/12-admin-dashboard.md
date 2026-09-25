@@ -73,12 +73,37 @@ Groups: **Overview** · **Sales** (leads, bookings, subscribers, campaigns) ·
 **Content** (each type, media, page sections) · **Site** (forms and routing, settings) ·
 **Admin** (team and roles, audit log).
 
+**Built** (`docs/08-decisions.md`, 63):
+- The sidebar carries the logo, narrows to a rail of icons (remembered in a cookie), and
+  holds the signed-in user's menu with sign-out at its foot.
+- The top bar has the breadcrumb, "View site", and **search or jump to** (Ctrl K or ⌘K): every
+  screen the role opens, the "New …" actions it may take, and a search of leads or
+  subscribers.
+- Every screen is built from one kit, `apps/web/components/admin/ui/`: the page frame, header,
+  panels, tabs, empty states, stat cards and the class strings for controls and buttons.
+  Existing tokens only; the primary action is the brand's champagne on navy.
+
 ## 1. Overview
 
 Leads this week, this month, and their trend; leads by status; leads by source and
 campaign; latest five leads; recently edited content; queue and email health; anything
 that needs attention (drafts scheduled in the past, images missing alt text, content
 referencing deleted records).
+
+**Built** (`docs/08-decisions.md`, 63): `GET /admin/overview` returns every section the role can
+open and null for the rest. The screen shows:
+- leads in the last 7 and 30 days against the period before, and thirty days of daily counts;
+- leads by status and by channel, and the latest five;
+- the next calls, active subscribers, and the last campaign's delivery, open and click rates;
+- recently edited services, industries, case studies and page copy;
+- a "needs your attention" list: overdue follow-ups, new leads with no owner, scheduled
+  services past their time, unpublished pages, draft campaigns, and a site hidden from search
+  engines.
+
+Not on it yet:
+- Queue health: the web app cannot see Redis, and the API does not report BullMQ counts.
+- Images missing alt text: impossible, since the library refuses them.
+- Content referencing deleted records.
 
 ## 2. Leads inbox — *the first screen to design*
 
