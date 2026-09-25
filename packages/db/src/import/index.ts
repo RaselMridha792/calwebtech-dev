@@ -48,6 +48,8 @@ export const IMPORTERS: readonly ImporterLoader[] = [
   // After services, because an industry page names the services it lists. Its own family so
   // a database that imported `references` before it existed receives the pages' copy.
   () => import('./industries.js').then((module) => module.industriesImporter),
+  // After services, which links a project's services; brings what a case study page needs.
+  () => import('./case-studies.js').then((module) => module.caseStudiesImporter),
 ];
 
 export interface ImportOptions {
