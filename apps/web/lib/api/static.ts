@@ -2,12 +2,14 @@ import 'server-only';
 import {
   SITE_ROUTES,
   STATIC_LEGAL_SLUGS,
+  STATIC_SETTING_KEYS,
   staticContactViewSchema,
   staticFaqViewSchema,
   staticLegalViewSchema,
   staticNotFoundViewSchema,
   staticPricingViewSchema,
   staticProcessViewSchema,
+  staticThankYouContentSchema,
   staticThankYouViewSchema,
   type StaticLegalSlug,
   type StaticNotFoundView,
@@ -24,7 +26,7 @@ import {
   staticProcessSnapshot,
   staticThankYouSnapshots,
 } from '@/static-content/static';
-import { apiUrl, findView, getView, usesSnapshots } from './core';
+import { apiUrl, findStoredCopy, findView, getView, usesSnapshots } from './core';
 
 /*
  * The static page family (docs/10-site-pages.md): pricing, process, contact, FAQ, the
@@ -80,14 +82,24 @@ export const getStaticNotFound = cache(async (): Promise<StaticNotFoundPageView 
   }
 });
 
-/** A conversion type's thank-you page, or null for a type that has none (the page answers 404). */
-export const getStaticThankYou = cache((type: string) =>
-  findView(
+/**
+ * A conversion type's thank-you page, or null for a type that has none (the page answers 404).
+ *
+ * With `thank-you` database-first, a page the stored copy has is built from it and the
+ * snapshot's contact details (docs/08-decisions.md, 59); a type the stored copy lacks keeps
+ * its snapshot, so a form never sends a visitor to a page that went missing.
+ */
+export const getStaticThankYou = cache(async (type: string) => {
+  const view = await findView(
     `/pages/thank-you/${encodeURIComponent(type)}`,
     staticThankYouViewSchema,
     Object.hasOwn(staticThankYouSnapshots, type) ? staticThankYouSnapshots[type] : null,
-  ),
-);
+  );
+  const stored = await findStoredCopy('thank-you', STATIC_SETTING_KEYS.thankYou, staticThankYouContentSchema);
+  const page = stored?.pages.find((entry) => entry.type === type);
+  if (!stored || !page || !view) return view;
+  return staticThankYouViewSchema.parse({ ...page, image: stored.image, callLabel: stored.callLabel, contact: view.contact });
+});
 
 export const getStaticLegal = cache((slug: StaticLegalSlug) =>
   getView(`/pages/legal/${slug}`, staticLegalViewSchema, staticLegalSnapshots[slug]),

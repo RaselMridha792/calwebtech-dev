@@ -1,6 +1,8 @@
 import 'server-only';
 import {
+  SETTING_KEYS,
   botCheckFailedResponseSchema,
+  homePageContentSchema,
   homePageViewSchema,
   landingPageViewSchema,
   validationErrorResponseSchema,
@@ -11,7 +13,7 @@ import {
 import { cache } from 'react';
 import staticHome from '@/static-content/home.json';
 import staticLanding from '@/static-content/landing-b2b-website-design.json';
-import { apiUrl, getView, hasApi, usesSnapshots } from './core';
+import { apiUrl, findStoredCopy, getView, hasApi, usesSnapshots } from './core';
 
 /*
  * The homepage, campaign landing pages and lead submissions. Site page families keep
@@ -44,9 +46,13 @@ export async function getLandingPage(slug: string): Promise<LandingPageView | nu
  * deduplicated within a request (metadata and page share one call) and never cached
  * across requests: a changed setting, such as homepage.indexing, applies at once.
  */
-export const getHomePage = cache(
-  (): Promise<HomePageView> => getView('/pages/home', homePageViewSchema, staticHome),
-);
+export const getHomePage = cache(async (): Promise<HomePageView> => {
+  const view = await getView('/pages/home', homePageViewSchema, staticHome);
+  // With `home` database-first, the words come from the dashboard and the proof from the
+  // snapshot (docs/08-decisions.md, 59).
+  const content = await findStoredCopy('home', SETTING_KEYS.homeContent, homePageContentSchema);
+  return content ? { ...view, content } : view;
+});
 
 export type LeadPostResult =
   | { ok: true }
