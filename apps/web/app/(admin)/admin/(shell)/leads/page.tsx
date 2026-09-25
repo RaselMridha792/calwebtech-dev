@@ -1,20 +1,27 @@
 import {
   ADMIN_LEADS_PAGE_SIZE,
+  CLOSED_LEAD_STATUSES,
   LEAD_STATUSES,
   LEAD_STATUS_LABELS,
   adminLeadDetailSchema,
   adminLeadFilterOptionsSchema,
   adminLeadListSchema,
   adminLeadQuerySchema,
+  canRead,
   canWrite,
+  type AdminLeadList,
   type AdminLeadQuery,
+  type LeadStatus,
 } from '@calwebtech/shared';
+import { DownloadIcon } from '@/components/admin/icons';
 import { BulkBar } from '@/components/admin/leads/bulk-bar';
 import { FilterBar } from '@/components/admin/leads/filter-bar';
 import { EmptyState, MobileList, Pager } from '@/components/admin/leads/inbox-parts';
 import { LeadPanel } from '@/components/admin/leads/lead-panel';
 import { LeadsTable } from '@/components/admin/leads/leads-table';
 import { leadsUrl } from '@/components/admin/leads/query-url';
+import { LinkTabs, PageHeader, type TabLink } from '@/components/admin/ui/page';
+import { CARD, button } from '@/components/admin/ui/styles';
 import { adminFind, adminGet } from '@/lib/admin/api';
 import { requireModule } from '@/lib/admin/session';
 
@@ -24,6 +31,10 @@ import { requireModule } from '@/lib/admin/session';
  * The whole view — filters, sort, page, and which lead is open — lives in the URL, so this
  * is a server component that re-renders on navigation. The only client code on the screen
  * is the bulk bar and the panel's save, which are the two things that genuinely need state.
+ *
+ * The page scrolls as one, so the table is never squeezed into a box of its own however
+ * short the window; its header row sticks to the top as the rows pass under it. From 1024px
+ * an open lead has its own column that stays in view, and below that it takes the width.
  */
 const SELECTION_FORM = 'leads-selection';
 
@@ -40,68 +51,104 @@ export default async function LeadsPage({ searchParams }: PageProps<'/admin/lead
   ]);
 
   const mayWrite = canWrite(user.role, 'leads');
+  const mayExport = canRead(user.role, 'export');
+  const statuses = LEAD_STATUSES.map((value) => ({ value, label: LEAD_STATUS_LABELS[value] }));
 
   return (
-    <div className="flex min-h-0 flex-1">
-      <div className="flex min-w-0 flex-1 flex-col">
-        <div className="flex shrink-0 flex-wrap items-start justify-between gap-3 px-4 pt-4">
-          <div>
-            <h1 className="font-display text-[21px] font-bold tracking-[-0.02em] text-admin-ink">Leads</h1>
-            <p className="mt-0.5 text-[12.5px] text-admin-body">
-              {list.total} {list.total === 1 ? 'lead' : 'leads'} · {list.unassignedNew} unassigned and new · one table
-              for every capture point
-            </p>
-          </div>
-          <a
-            href={`/api/admin/leads/export?${toSearch(query)}`}
-            className="flex h-8 items-center rounded-[4px] border border-admin-line px-3 text-[12.5px] font-semibold text-admin-body hover:border-admin-focus hover:text-admin-ink"
-          >
-            Export view
-          </a>
+    <main id="admin-main" tabIndex={-1} className="min-h-0 flex-1 overflow-y-auto outline-none lg:flex lg:items-start">
+      <div className={`flex min-w-0 flex-1 flex-col ${open ? 'max-lg:hidden' : ''}`}>
+        <div className="flex shrink-0 flex-col gap-5 px-4 pt-6 sm:px-6 lg:px-8 lg:pt-8">
+          <PageHeader
+            eyebrow="Sales"
+            title="Leads"
+            count={list.total}
+            description={
+              <>
+                Every enquiry from every form on the site, in one list.{' '}
+                {list.unassignedNew > 0
+                  ? `${String(list.unassignedNew)} ${list.unassignedNew === 1 ? 'is' : 'are'} new and ${list.unassignedNew === 1 ? 'has' : 'have'} no owner yet.`
+                  : 'Every new lead has an owner.'}
+              </>
+            }
+            actions={
+              mayExport ? (
+                <a href={`/api/admin/leads/export?${toSearch(query)}`} className={button('secondary')}>
+                  <DownloadIcon className="size-4" />
+                  Export this view
+                </a>
+              ) : null
+            }
+          />
+          <LinkTabs label="Lead status" tabs={statusTabs(query, list)} />
+          <FilterBar query={query} options={options} />
         </div>
 
-        <FilterBar query={query} options={options} />
-
         {mayWrite ? (
-          <BulkBar
-            containerId={SELECTION_FORM}
-            owners={options.owners}
-            statuses={LEAD_STATUSES.map((value) => ({ value, label: LEAD_STATUS_LABELS[value] }))}
-          />
+          <div className="shrink-0 px-4 pt-4 sm:px-6 lg:px-8">
+            <BulkBar containerId={SELECTION_FORM} owners={options.owners} statuses={statuses} />
+          </div>
         ) : null}
 
-        {list.items.length === 0 ? (
-          <div className="flex-1 overflow-auto bg-admin-surface">
-            <EmptyState query={query} />
+        <div className="px-4 pt-4 pb-16 sm:px-6 lg:px-8">
+          {/* `overflow-clip` rounds the corners without making a scroll box, so the header row can stick. */}
+          <div className={`${CARD} overflow-clip`}>
+            {list.items.length === 0 ? (
+              <EmptyState query={query} />
+            ) : (
+              <>
+                {/*
+                  Not a form: the checkboxes only need a common ancestor the bulk bar can read,
+                  and every action on this screen is a link or an API call, never a submit.
+                */}
+                <div id={SELECTION_FORM}>
+                  <div className="hidden lg:block">
+                    <LeadsTable list={list} query={query} openLeadId={openLeadId} />
+                  </div>
+                  <MobileList list={list} query={query} openLeadId={openLeadId} />
+                </div>
+                <Pager list={list} query={query} />
+              </>
+            )}
           </div>
-        ) : (
-          <>
-            {/*
-              Not a form: the checkboxes only need a common ancestor the bulk bar can read,
-              and every action on this screen is a link or an API call, never a submit.
-            */}
-            <div id={SELECTION_FORM} className="min-h-0 flex-1 overflow-auto bg-admin-surface">
-              <div className="hidden lg:block">
-                <LeadsTable list={list} query={query} openLeadId={openLeadId} />
-              </div>
-              <MobileList list={list} query={query} openLeadId={openLeadId} />
-            </div>
-            <Pager list={list} query={query} />
-          </>
-        )}
+        </div>
       </div>
 
-      {open ? (
-        <LeadPanel
-          lead={open}
-          query={query}
-          owners={options.owners}
-          mayWrite={mayWrite}
-          statuses={LEAD_STATUSES.map((value) => ({ value, label: LEAD_STATUS_LABELS[value] }))}
-        />
-      ) : null}
-    </div>
+      {open ? <LeadPanel lead={open} query={query} owners={options.owners} mayWrite={mayWrite} statuses={statuses} /> : null}
+    </main>
   );
+}
+
+/**
+ * The status tabs. "Open" is the inbox's default, which leaves won and lost leads out;
+ * choosing Won or Lost brings closed leads into the counts, or theirs would read zero.
+ */
+function statusTabs(query: AdminLeadQuery, list: AdminLeadList): TabLink[] {
+  const chosen = query.status?.length === 1 ? query.status[0] : undefined;
+  const closed = new Set<LeadStatus>(CLOSED_LEAD_STATUSES);
+  const openStatuses = LEAD_STATUSES.filter((status) => !closed.has(status));
+  const openCount = openStatuses.reduce((sum, status) => sum + list.statusCounts[status], 0);
+  const allCount = LEAD_STATUSES.reduce((sum, status) => sum + list.statusCounts[status], 0);
+
+  return [
+    {
+      label: 'Open',
+      href: leadsUrl(query, { status: undefined, includeClosed: false, page: 1 }),
+      count: openCount,
+      current: !query.status?.length && !query.includeClosed,
+    },
+    ...LEAD_STATUSES.map((status) => ({
+      label: LEAD_STATUS_LABELS[status],
+      href: leadsUrl(query, { status: [status], includeClosed: closed.has(status), page: 1 }),
+      count: closed.has(status) && !query.includeClosed ? undefined : list.statusCounts[status],
+      current: chosen === status,
+    })),
+    {
+      label: 'All',
+      href: leadsUrl(query, { status: undefined, includeClosed: true, page: 1 }),
+      count: query.includeClosed ? allCount : undefined,
+      current: !query.status?.length && query.includeClosed,
+    },
+  ];
 }
 
 /** The API takes the same query string the page was given, minus what it defaults anyway. */
