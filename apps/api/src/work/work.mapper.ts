@@ -13,6 +13,7 @@ import {
   workCopySchema,
   workHeading,
   workIndexViewSchema,
+  workProjectContentSchema,
   type Image,
   type Metric,
   type TestimonialView,
@@ -125,6 +126,25 @@ export function caseStudyReadiness(project: Pick<WorkProjectRecord, 'outcomeMetr
 
 // ---------------------------------------------------------------- terms and cards
 
+/**
+ * The project's services in the order its case study names them (`Project.content`), then
+ * any it does not name in the services' own order. A project without that copy, or with
+ * copy the schema refuses, keeps the services' own order.
+ */
+export function orderedServices<Service extends { slug: string }>(
+  project: { content: Prisma.JsonValue | null; services: readonly Service[] },
+): Service[] {
+  const parsed = workProjectContentSchema.safeParse(project.content ?? {});
+  const named = parsed.success ? parsed.data.order.services : [];
+  if (named.length === 0) return [...project.services];
+  const rank = (slug: string): number => {
+    const position = named.indexOf(slug);
+    return position === -1 ? named.length : position;
+  };
+  // A stable sort, so the services a case study does not name keep their own order.
+  return [...project.services].sort((a, b) => rank(a.slug) - rank(b.slug));
+}
+
 function publishedIndustry(project: WorkProjectRecord): WorkTerm | null {
   const industry = project.industry;
   return industry?.status === 'PUBLISHED' ? { slug: industry.slug, name: industry.name } : null;
@@ -149,7 +169,7 @@ function cardOf(project: WorkProjectRecord, metrics: readonly Metric[]): WorkCas
     image: image(project.coverImageUrl, project.coverImageAlt),
     metrics: metrics.slice(0, 3),
     industry: publishedIndustry(project)?.slug ?? null,
-    services: project.services.map((service) => service.slug),
+    services: orderedServices(project).map((service) => service.slug),
     platforms: project.technologies.map((technology) => technology.slug),
   });
 }
@@ -324,6 +344,7 @@ export function toCaseStudyView(sources: WorkCaseStudySources): WorkCaseStudyVie
   const before = image(project.beforeImageUrl, `${clientName} website before the redesign`);
   const after = image(project.afterImageUrl, `${clientName} website after the redesign`);
   const [headline] = readiness.metrics;
+  const services = orderedServices(project);
 
   return parseAs(record, workCaseStudyViewSchema, {
     slug: project.slug,
@@ -342,7 +363,7 @@ export function toCaseStudyView(sources: WorkCaseStudySources): WorkCaseStudyVie
     metrics: readiness.metrics.slice(0, WORK_MAX_METRICS),
     atAGlance: {
       industry: publishedIndustry(project),
-      services: project.services.map(({ slug, title }) => ({ slug, name: title })),
+      services: services.map(({ slug, title }) => ({ slug, name: title })),
       platforms: project.technologies.map(({ slug, name }) => ({ slug, name })),
       location: present(project.location) ? project.location.trim() : null,
       duration: present(project.duration) ? project.duration.trim() : null,
@@ -361,7 +382,7 @@ export function toCaseStudyView(sources: WorkCaseStudySources): WorkCaseStudyVie
     measurement: copy.measurement,
     quote: testimonialView(project),
     videoTestimonial: videoTestimonialView(sources.videoTestimonial, cover),
-    relatedServices: project.services
+    relatedServices: services
       .slice(0, 6)
       // A service's description belongs to the services family; fit it to the card rather than fail the page.
       .map((service) => ({ slug: service.slug, name: service.title, summary: fitText(service.shortDescription, 300) })),
