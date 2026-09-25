@@ -2,6 +2,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { MutationError, adminMutate } from '@/lib/admin/mutate';
+import { INPUT, LINK, SELECT, button } from '../ui/styles';
 
 /**
  * The bulk actions, which appear once anything is selected.
@@ -89,10 +90,10 @@ export function BulkBar({
   return (
     <section
       aria-label="Bulk actions"
-      className="flex shrink-0 flex-wrap items-center gap-2.5 border-b border-admin-line bg-admin-mist px-4 py-2"
+      className="flex flex-wrap items-center gap-2.5 rounded-xl border border-admin-edge bg-admin-nav px-4 py-3 motion-safe:animate-[admin-rise_180ms_var(--ease-out-quint)]"
     >
-      <span className="text-[12.5px] font-bold text-admin-ink">{selected.length} selected</span>
-      <span aria-hidden className="h-[18px] w-px bg-admin-line" />
+      <span className="text-[14px] font-bold text-ink-invert">{selected.length} selected</span>
+      <span aria-hidden className="h-5 w-px bg-admin-line" />
 
       <label className="sr-only" htmlFor="bulk-owner">
         Assign owner
@@ -103,7 +104,7 @@ export function BulkBar({
         onChange={(event) => {
           setOwnerId(event.target.value);
         }}
-        className={CONTROL}
+        className={`${SELECT} w-auto`}
       >
         <option value="">Assign owner…</option>
         <option value="unassigned">Unassigned</option>
@@ -123,7 +124,7 @@ export function BulkBar({
         onChange={(event) => {
           setStatus(event.target.value);
         }}
-        className={CONTROL}
+        className={`${SELECT} w-auto`}
       >
         <option value="">Change status…</option>
         {statuses.map((entry) => (
@@ -145,7 +146,7 @@ export function BulkBar({
               setReason(event.target.value);
             }}
             placeholder="Reason — written to the audit log"
-            className={`${CONTROL} w-[260px]`}
+            className={`${INPUT} w-full sm:w-[280px]`}
           />
         </>
       ) : null}
@@ -154,27 +155,25 @@ export function BulkBar({
         type="button"
         onClick={apply}
         disabled={busy || (!status && !ownerId)}
-        className="h-[29px] rounded-[4px] bg-primary px-3 text-[12px] font-semibold text-white hover:bg-admin-primaryh disabled:opacity-40"
+        className={button('primary')}
       >
         {busy ? 'Applying…' : 'Apply'}
       </button>
 
-      <a href={exportUrl} className={`${CONTROL} flex items-center`}>
+      <a href={exportUrl} className={button('secondary')}>
         Export selection
       </a>
 
       {error ? (
-        <p role="alert" className="text-[12px] text-danger">
+        <p role="alert" className="text-[13px] font-semibold text-danger">
           {error}
         </p>
       ) : null}
 
-      <button type="button" onClick={clear} className="ml-auto text-[12px] font-semibold text-admin-link underline">
+      <button type="button" onClick={clear} className={`${LINK} ml-auto text-[13.5px]`}>
         Deselect
       </button>
     </section>
   );
 }
 
-const CONTROL =
-  'h-[29px] rounded-[4px] border border-admin-line bg-admin-surface px-2 text-[12px] font-semibold text-admin-body outline-none hover:border-admin-focus hover:text-admin-ink focus-visible:border-admin-focus';

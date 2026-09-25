@@ -2,6 +2,7 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { MutationError, adminMutate } from '@/lib/admin/mutate';
+import { ERROR, HELP, INPUT, LABEL, SELECT, button } from '../ui/styles';
 
 /**
  * Status, owner and next action date, saved as one pipeline change.
@@ -72,8 +73,8 @@ export function PipelineForm({
   }
 
   return (
-    <div className="flex flex-col gap-3">
-      <div className="flex flex-wrap gap-2.5">
+    <div className="flex flex-col gap-4">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <Control label="Status" htmlFor="pipeline-status">
           <select
             id="pipeline-status"
@@ -82,7 +83,7 @@ export function PipelineForm({
               setNextStatus(event.target.value);
               setSaved(false);
             }}
-            className={INPUT}
+            className={SELECT}
           >
             {statuses.map((entry) => (
               <option key={entry.value} value={entry.value}>
@@ -100,7 +101,7 @@ export function PipelineForm({
               setNextOwner(event.target.value);
               setSaved(false);
             }}
-            className={INPUT}
+            className={SELECT}
           >
             <option value="">Unassigned</option>
             {owners.map((owner) => (
@@ -125,9 +126,9 @@ export function PipelineForm({
         </Control>
       </div>
 
-      <div className="flex flex-col gap-[3px]">
-        <label htmlFor="pipeline-reason" className="text-[9.5px] font-bold tracking-[0.12em] text-admin-muted uppercase">
-          Reason for status change {statusMoved ? '— required, written to the audit log' : ''}
+      <div className="flex flex-col gap-1.5">
+        <label htmlFor="pipeline-reason" className={LABEL}>
+          Reason for the status change{statusMoved ? ' (required)' : ''}
         </label>
         <input
           id="pipeline-reason"
@@ -137,25 +138,20 @@ export function PipelineForm({
           onChange={(event) => {
             setReason(event.target.value);
           }}
-          className={`${INPUT} w-full ${reasonMissing ? 'border-danger' : ''}`}
+          className={INPUT}
         />
-        <p id="pipeline-reason-help" className={`text-[11px] ${error ? 'text-danger' : 'text-admin-muted'}`}>
+        <p id="pipeline-reason-help" className={error ? ERROR : HELP}>
           {error ?? 'Shown on the timeline and in the audit log.'}
         </p>
       </div>
 
-      <div className="flex items-center gap-2.5">
-        <button
-          type="button"
-          onClick={save}
-          disabled={busy || !changed}
-          className="h-[30px] rounded-[4px] bg-primary px-3 text-[12.5px] font-semibold text-white hover:bg-admin-primaryh disabled:opacity-40"
-        >
+      <div className="flex items-center gap-3">
+        <button type="button" onClick={save} disabled={busy || !changed} className={button('primary')}>
           {busy ? 'Saving…' : 'Save change'}
         </button>
         {saved ? (
-          <span className="flex items-center gap-1.5 text-[12px] text-admin-body">
-            <span aria-hidden className="size-[7px] rounded-full bg-result" />
+          <span role="status" className="flex items-center gap-2 text-[13px] text-ink-invert-muted motion-safe:animate-[admin-rise_180ms_var(--ease-out-quint)]">
+            <span aria-hidden className="size-2 rounded-full bg-result" />
             Saved and audited
           </span>
         ) : null}
@@ -164,13 +160,11 @@ export function PipelineForm({
   );
 }
 
-const INPUT =
-  'h-[30px] rounded-[4px] border border-admin-line bg-admin-surface px-2 text-[12.5px] text-admin-ink outline-none focus-visible:border-admin-focus';
 
 function Control({ label, htmlFor, children }: { label: string; htmlFor: string; children: React.ReactNode }) {
   return (
-    <div className="flex min-w-[150px] flex-1 flex-col gap-[3px]">
-      <label htmlFor={htmlFor} className="text-[9.5px] font-bold tracking-[0.12em] text-admin-muted uppercase">
+    <div className="flex min-w-0 flex-col gap-1.5 last:sm:col-span-2">
+      <label htmlFor={htmlFor} className={LABEL}>
         {label}
       </label>
       {children}
