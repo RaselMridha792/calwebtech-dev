@@ -366,7 +366,7 @@ handed to the second collaborator in `docs/14-remaining-work.md` on the `tumit` 
 | 5.2 Start a project and landing | Landing template done. On `tumit`, `/start-a-project/` is built on the PR #11 API: six steps, saved per step, abandonment measurable per step (decision 56) |
 | 5.3 Admin dashboard, auth, RBAC | Done: login, roles, leads, bookings, availability, services, subscribers, campaigns, settings, audit. On `tumit`: industries, case studies and page copy (homepage, booking page, thank-you pages, index copy) edited and audited from `/admin` (decisions 58, 59) |
 | 5.4 Campaign engine | Done by the second collaborator (decisions 49 to 52), merged in PR #31 and live. Nothing is sent while production has `EMAIL_TRANSPORT=log` |
-| 6.1 Anti-spam | Partial: Turnstile, honeypot, per-IP rate limits. Missing: timing checks, per-email limits, MX and disposable-domain checks, duplicate-lead merging |
+| 6.1 Anti-spam | Turnstile, honeypot, per-IP rate limits live. On `tumit`: timing checks, per-address limits, throwaway-inbox and DNS domain checks, a resubmitted lead joining its open lead, and one upcoming call per address (decision 61) |
 | 6.2 Deliverability | Not started, and blocked: the owner has not chosen to set up an email provider, so no email leaves production |
 | 6.3 Hardening and observability | Server hardening, TLS, HSTS and security headers live. Sentry, Uptime Kuma and Umami not set up; Sentry is a third-party service and needs the owner's approval |
 | 6.4 Backup and restore | Restic sidecar deployed; not running until the owner chooses an off-site provider. The restore drill has not been done |

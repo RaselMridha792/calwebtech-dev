@@ -75,6 +75,7 @@ same slot rules and the same database constraint as a new booking (decision 47).
 works with `EMAIL_TRANSPORT=log`, so it can be built and tested before email is switched on.
 
 ### 6. Anti-spam (Task 6.1)
+**Done on `tumit`, 2026-09-25 (decision 61).**
 Timing checks (a form submitted faster than a person can fill it), per-email rate limits,
 MX and disposable-domain checks, and duplicate-lead merging that updates the existing lead
 rather than creating a second. Apply to leads, bookings and subscribers alike.
