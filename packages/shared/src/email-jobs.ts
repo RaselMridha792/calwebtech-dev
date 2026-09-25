@@ -58,6 +58,13 @@ export const DEFAULT_ACKNOWLEDGEMENT: Acknowledgement = {
 const recipientsSchema = z.array(z.email()).min(1).max(20);
 
 /**
+ * Set when the same person sent the same kind of form again and it was merged into their open
+ * lead (docs/08-decisions.md, 61): the id of that submission, so its emails are their own and
+ * the team sees the lead came back. Absent on a lead's first submission.
+ */
+const resubmissionSchema = z.string().min(1).max(40).optional();
+
+/**
  * The two signed links a booking's own emails carry: move the call, or cancel it
  * (docs/08-decisions.md, 60). Optional so a job queued before they existed still parses.
  */
@@ -93,12 +100,14 @@ export const emailJobSchema = z.discriminatedUnion('template', [
     to: recipientsSchema,
     lead: leadSummarySchema,
     acknowledgement: acknowledgementSchema,
+    resubmission: resubmissionSchema,
   }),
   /** Sent to the addresses in the `leads.notificationRecipients` setting. */
   z.object({
     template: z.literal('lead-notification'),
     to: recipientsSchema,
     lead: leadSummarySchema,
+    resubmission: resubmissionSchema,
   }),
   /**
    * The cost calculator's emailed copy of the result (docs/03, "Cost calculator"). The
@@ -110,6 +119,7 @@ export const emailJobSchema = z.discriminatedUnion('template', [
     to: recipientsSchema,
     lead: leadSummarySchema,
     result: calculatorResultEmailSchema,
+    resubmission: resubmissionSchema,
   }),
   /**
    * The booking family (task 5.1). No meeting link is generated: the note says a person
@@ -193,7 +203,9 @@ export function emailJobId(job: {
   window?: string;
   change?: string;
   startsAt?: string;
+  resubmission?: string;
 }): string {
+  if (job.lead && job.resubmission) return `${job.template}-${job.lead.leadId}-${job.resubmission}`;
   // A booking can be reminded twice and moved or cancelled after it was booked, and each is
   // its own email. The window or the change and the call's time make the id, so moving a
   // call and moving it back are two emails, while a retry of either is still one.

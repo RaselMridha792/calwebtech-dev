@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { formElapsedSchema } from './antispam';
 import { CONSULTATION_PATH } from './calculator';
 import { answerBlockSchema, pageSeoSchema, questionSchema, requiredText } from './pages/common';
 import { BOOKING_STATUSES } from './booking-status';
@@ -364,6 +365,8 @@ export const bookingSubmissionSchema = z.object({
   /** Carried from the cost calculator when the visitor arrives from its result. */
   source: z.preprocess(blankToUndefined, z.string().trim().max(60).optional()),
   turnstileToken: z.preprocess(blankToUndefined, z.string().max(2048).optional()),
+  /** How long the form was open before it was sent (antispam.ts). */
+  formElapsedMs: formElapsedSchema,
 });
 export type BookingSubmission = z.output<typeof bookingSubmissionSchema>;
 
@@ -387,6 +390,8 @@ export const BOOKING_ERRORS = {
   linkUnknown: 'booking_link_unknown',
   /** The call is cancelled, or has already happened. */
   closed: 'booking_closed',
+  /** The address already has a call coming up; the page offers its link instead of a second. */
+  alreadyBooked: 'already_booked',
 } as const;
 
 // ---------------------------------------------------------------- moving and cancelling

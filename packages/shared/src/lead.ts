@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { formElapsedSchema } from './antispam';
 import { calculatorAnswersSchema } from './calculator';
 import { slugSchema } from './seo';
 
@@ -169,6 +170,8 @@ export const leadSubmissionSchema = z.object({
   referenceCode: z.string().max(500).optional(),
   /** Cloudflare Turnstile token from the widget. The API verifies it before storing anything. */
   turnstileToken: z.preprocess(blankToUndefined, z.string().max(2048).optional()),
+  /** How long the form was open before it was sent (antispam.ts). */
+  formElapsedMs: formElapsedSchema,
 });
 
 export type LeadSubmissionInput = z.input<typeof leadSubmissionSchema>;

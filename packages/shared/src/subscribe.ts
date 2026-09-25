@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { formElapsedSchema } from './antispam';
 
 /**
  * Subscribing from the website: one email address, and nothing else.
@@ -33,6 +34,8 @@ export const subscribeSubmissionSchema = z.object({
    * field a person never fills in; a bot that does has its submission discarded.
    */
   referenceCode: z.string().max(500).optional(),
+  /** How long the form was open before it was sent (antispam.ts). */
+  formElapsedMs: formElapsedSchema,
 });
 export type SubscribeSubmission = z.output<typeof subscribeSubmissionSchema>;
 export type SubscribeSubmissionInput = z.input<typeof subscribeSubmissionSchema>;

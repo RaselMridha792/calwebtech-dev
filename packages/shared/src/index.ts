@@ -1,3 +1,4 @@
+export * from './antispam';
 export * from './app-env';
 export * from './audience';
 export * from './admin-leads';
