@@ -1,6 +1,20 @@
 'use client';
-import { useId, useState } from 'react';
-import { INPUT, LABEL } from './editor-parts';
+import { useId, useState, type ReactNode } from 'react';
+import { PlusIcon, SortIcon } from '@/components/admin/icons';
+import {
+  CARD,
+  CARD_PAD,
+  CHECK,
+  ERROR,
+  H2,
+  H3,
+  HELP,
+  INPUT,
+  LABEL,
+  TEXTAREA,
+  button,
+  iconButton,
+} from '@/components/admin/ui/styles';
 
 /**
  * Page copy as a form (docs/08-decisions.md, 58).
@@ -17,6 +31,11 @@ import { INPUT, LABEL } from './editor-parts';
  * section with a shape can be added and removed; one without cannot be created here, which
  * keeps the editor from inventing structure the schema does not have.
  *
+ * On the screen, a page's top-level sections are cards with a heading each, so a long page
+ * reads as a table of contents; a group inside a section is indented under its own heading,
+ * and each entry in a list is a small card with its own controls. Loose fields between
+ * sections share a card, in the order the page keeps them.
+ *
  * Client-only and free of the shared barrel, so it adds nothing but itself to the route.
  */
 export type Json = string | number | boolean | null | Json[] | { [key: string]: Json };
@@ -29,20 +48,25 @@ export interface CopyEditorProps {
   /** The path of this value in the request, to match errors: `content`. Empty for a whole value. */
   errorPrefix?: string;
   shapes?: Record<string, Json>;
+  /**
+   * The heading level of the top-level sections: 2 on a screen of their own, where each is a
+   * card; 3 inside a card that already has an h2, where they are plain headed groups.
+   */
+  level?: 2 | 3;
 }
 
-export function CopyEditor({ value, onChange, errors = {}, errorPrefix = '', shapes = {} }: CopyEditorProps) {
+export function CopyEditor({ value, onChange, errors = {}, errorPrefix = '', shapes = {}, level = 2 }: CopyEditorProps) {
   const [raw, setRaw] = useState<string | null>(null);
   const [rawError, setRawError] = useState<string | null>(null);
   const rawId = useId();
-  const context: Context = { errors, errorPrefix, shapes, idBase: useId() };
+  const context: Context = { errors, errorPrefix, shapes, idBase: useId(), level };
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className={`flex min-w-0 flex-col ${level === 2 ? 'gap-6' : 'gap-5'}`}>
       <div className="flex justify-end">
         <button
           type="button"
-          className={SMALL_BUTTON}
+          className={button('ghost', 'sm')}
           onClick={() => {
             setRawError(null);
             setRaw(raw === null ? JSON.stringify(value, null, 2) : null);
@@ -54,7 +78,7 @@ export function CopyEditor({ value, onChange, errors = {}, errorPrefix = '', sha
       {raw === null ? (
         <Node value={value} path={[]} label={null} onChange={onChange} context={context} />
       ) : (
-        <div className="flex flex-col gap-[3px]">
+        <div className="flex min-w-0 flex-col gap-1.5">
           <label htmlFor={rawId} className={LABEL}>
             The copy as JSON
           </label>
@@ -74,10 +98,10 @@ export function CopyEditor({ value, onChange, errors = {}, errorPrefix = '', sha
                 setRawError('Not valid JSON yet. The fields keep the last valid version.');
               }
             }}
-            className="w-full rounded-[4px] border border-admin-line bg-admin-surface px-2 py-1.5 font-mono text-[12px] text-admin-ink outline-none focus-visible:border-admin-focus"
+            className={`${TEXTAREA} font-mono text-[13px]`}
           />
           {rawError ? (
-            <p role="alert" className="text-[11px] text-danger">
+            <p role="alert" className={ERROR}>
               {rawError}
             </p>
           ) : null}
@@ -95,15 +119,19 @@ interface Context {
   errorPrefix: string;
   shapes: Record<string, Json>;
   idBase: string;
+  level: 2 | 3;
 }
 
 type Path = (string | number)[];
 
-const AREA =
-  'w-full rounded-[4px] border border-admin-line bg-admin-surface px-2 py-1.5 text-[12.5px] text-admin-ink outline-none focus-visible:border-admin-focus';
+/** A list entry: a small card of its own inside the section. */
+const ITEM = 'flex min-w-0 flex-col gap-4 rounded-lg border border-admin-line2 bg-admin-sunken p-4';
 
-const SMALL_BUTTON =
-  'h-[26px] rounded-[4px] border border-admin-line px-2 text-[11px] font-semibold text-admin-body hover:border-admin-focus hover:text-admin-ink disabled:opacity-40';
+/** A group inside a section: indented under its heading, so where it ends is visible. */
+const NESTED = 'flex min-w-0 flex-col gap-4 border-l-2 border-admin-line2 pl-4 sm:pl-5';
+
+/** A top-level section on a screen of its own. */
+const SECTION = `${CARD} ${CARD_PAD} flex min-w-0 flex-col gap-5`;
 
 function Node({
   value,
@@ -111,12 +139,15 @@ function Node({
   label,
   onChange,
   context,
+  flat = false,
 }: {
   value: Json;
   path: Path;
   label: string | null;
   onChange: (value: Json) => void;
   context: Context;
+  /** Inside a list entry, which already carries the heading and the frame. */
+  flat?: boolean;
 }) {
   const shape = context.shapes[shapeKey(path)];
 
@@ -124,7 +155,7 @@ function Node({
     return <List items={value} path={path} label={label ?? 'Items'} onChange={onChange} context={context} />;
   }
   if (value !== null && typeof value === 'object') {
-    return <Group value={value} path={path} label={label} onChange={onChange} context={context} />;
+    return <Group value={value} path={path} label={label} onChange={onChange} context={context} flat={flat} />;
   }
   if (value === null && shape !== undefined && typeof shape === 'string') {
     // A piece of copy that may be left out: empty stores null.
@@ -172,9 +203,10 @@ function Node({
     );
   }
   return (
-    <label className="flex items-center gap-2 text-[12.5px] text-admin-ink">
+    <label className="flex items-center gap-2.5 text-[14px] text-ink-invert">
       <input
         type="checkbox"
+        className={CHECK}
         checked={value}
         onChange={(event) => {
           onChange(event.target.checked);
@@ -191,15 +223,17 @@ function Group({
   label,
   onChange,
   context,
+  flat,
 }: {
   value: { [key: string]: Json };
   path: Path;
   label: string | null;
   onChange: (value: Json) => void;
   context: Context;
+  flat: boolean;
 }) {
   const removable = path.length > 0 && context.shapes[shapeKey(path)] !== undefined && typeof path.at(-1) === 'string';
-  const fields = Object.entries(value).map(([key, inner]) => (
+  const field = (key: string, inner: Json): ReactNode => (
     <Node
       key={key}
       value={inner}
@@ -210,19 +244,19 @@ function Group({
       }}
       context={context}
     />
-  ));
+  );
 
-  if (label === null) return <div className="flex flex-col gap-3">{fields}</div>;
-  return (
-    <fieldset className="flex min-w-0 flex-col gap-3 rounded-[4px] border border-admin-line p-3">
-      <legend className="px-1 text-[10.5px] font-bold tracking-[0.1em] text-admin-ink uppercase">{label}</legend>
-      {fields}
+  if (label === null) return <Root value={value} field={field} context={context} />;
+
+  const body = (
+    <>
+      <div className="flex min-w-0 flex-col gap-4">{Object.entries(value).map(([key, inner]) => field(key, inner))}</div>
       <FieldErrors messages={context.errors[errorKey(context, path)]} />
       {removable ? (
         <div>
           <button
             type="button"
-            className={SMALL_BUTTON}
+            className={button('ghost', 'sm')}
             onClick={() => {
               onChange(null);
             }}
@@ -231,8 +265,62 @@ function Group({
           </button>
         </div>
       ) : null}
-    </fieldset>
+    </>
   );
+  if (flat) return <div className="flex min-w-0 flex-col gap-4">{body}</div>;
+
+  const level = headingLevel(context, path);
+  const id = headingId(context, path);
+  return (
+    <section aria-labelledby={id} className={level === 2 ? SECTION : NESTED}>
+      <Heading level={level} id={id}>
+        {label}
+      </Heading>
+      {body}
+    </section>
+  );
+}
+
+/**
+ * The whole value: its sections in the page's order. On a screen of its own, each section
+ * is a card and the loose fields between sections share one, so nothing floats unframed.
+ */
+function Root({
+  value,
+  field,
+  context,
+}: {
+  value: { [key: string]: Json };
+  field: (key: string, inner: Json) => ReactNode;
+  context: Context;
+}) {
+  const blocks: ReactNode[] = [];
+  let loose: ReactNode[] = [];
+  let looseKey = '';
+  const flush = (): void => {
+    if (loose.length === 0) return;
+    blocks.push(
+      <div key={`fields-${looseKey}`} className={context.level === 2 ? `${CARD} ${CARD_PAD} flex min-w-0 flex-col gap-4` : 'flex min-w-0 flex-col gap-4'}>
+        {loose}
+      </div>,
+    );
+    loose = [];
+  };
+
+  for (const [key, inner] of Object.entries(value)) {
+    const shape = context.shapes[shapeKey([key])];
+    const section = Array.isArray(inner) || (inner !== null && typeof inner === 'object') || (inner === null && typeof shape !== 'string');
+    if (section) {
+      flush();
+      blocks.push(field(key, inner));
+    } else {
+      if (loose.length === 0) looseKey = key;
+      loose.push(field(key, inner));
+    }
+  }
+  flush();
+
+  return <div className={`flex min-w-0 flex-col ${context.level === 2 ? 'gap-6' : 'gap-5'}`}>{blocks}</div>;
 }
 
 function List({
@@ -249,6 +337,8 @@ function List({
   context: Context;
 }) {
   const blank = context.shapes[shapeKey([...path, 0])] ?? (items[0] === undefined ? undefined : emptied(items[0]));
+  const level = headingLevel(context, path);
+  const id = headingId(context, path);
   const move = (from: number, to: number): void => {
     const next = [...items];
     const [moved] = next.splice(from, 1);
@@ -258,68 +348,103 @@ function List({
   };
 
   return (
-    <fieldset className="flex min-w-0 flex-col gap-2 rounded-[4px] border border-admin-line p-3">
-      <legend className="px-1 text-[10.5px] font-bold tracking-[0.1em] text-admin-ink uppercase">{label}</legend>
-      {items.length === 0 ? <p className="text-[11.5px] text-admin-muted">None yet.</p> : null}
-      {items.map((item, index) => (
-        <div key={index} className="flex flex-col gap-2 border-b border-admin-line pb-2 last:border-b-0">
-          <Node
-            value={item}
-            path={[...path, index]}
-            label={`${label} ${String(index + 1)}`}
-            onChange={(next) => {
-              onChange(items.map((entry, i) => (i === index ? next : entry)));
-            }}
-            context={context}
-          />
-          <div className="flex flex-wrap gap-1.5">
-            <button
-              type="button"
-              className={SMALL_BUTTON}
-              disabled={index === 0}
-              onClick={() => {
-                move(index, index - 1);
-              }}
-            >
-              Move up
-            </button>
-            <button
-              type="button"
-              className={SMALL_BUTTON}
-              disabled={index === items.length - 1}
-              onClick={() => {
-                move(index, index + 1);
-              }}
-            >
-              Move down
-            </button>
-            <button
-              type="button"
-              className={SMALL_BUTTON}
-              onClick={() => {
-                onChange(items.filter((_, i) => i !== index));
-              }}
-            >
-              Remove
-            </button>
-          </div>
-        </div>
-      ))}
+    <section aria-labelledby={id} className={level === 2 ? SECTION : 'flex min-w-0 flex-col gap-3'}>
+      <Heading level={level} id={id}>
+        {label}
+      </Heading>
+      {items.length === 0 ? <p className={HELP}>None yet.</p> : null}
+      {items.length > 0 ? (
+        <ol className="flex min-w-0 flex-col gap-3">
+          {items.map((item, index) => {
+            const name = `${label} ${String(index + 1)}`;
+            const simple = item === null || typeof item !== 'object';
+            const controls = (
+              <span className="flex shrink-0 items-center gap-1">
+                <button
+                  type="button"
+                  className={iconButton('sm')}
+                  disabled={index === 0}
+                  aria-label={`Move ${name} up`}
+                  onClick={() => {
+                    move(index, index - 1);
+                  }}
+                >
+                  <SortIcon direction="asc" className="size-4" />
+                </button>
+                <button
+                  type="button"
+                  className={iconButton('sm')}
+                  disabled={index === items.length - 1}
+                  aria-label={`Move ${name} down`}
+                  onClick={() => {
+                    move(index, index + 1);
+                  }}
+                >
+                  <SortIcon direction="desc" className="size-4" />
+                </button>
+                <button
+                  type="button"
+                  className={button('ghost', 'sm')}
+                  aria-label={`Remove ${name}`}
+                  onClick={() => {
+                    onChange(items.filter((_, i) => i !== index));
+                  }}
+                >
+                  Remove
+                </button>
+              </span>
+            );
+            const node = (
+              <Node
+                value={item}
+                path={[...path, index]}
+                label={name}
+                onChange={(next) => {
+                  onChange(items.map((entry, i) => (i === index ? next : entry)));
+                }}
+                context={context}
+                flat
+              />
+            );
+            return (
+              <li key={index} className={ITEM}>
+                {simple ? (
+                  <>
+                    {node}
+                    <div className="flex">{controls}</div>
+                  </>
+                ) : (
+                  <>
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <Heading level={level + 1} id={headingId(context, [...path, index])}>
+                        {name}
+                      </Heading>
+                      {controls}
+                    </div>
+                    {node}
+                  </>
+                )}
+              </li>
+            );
+          })}
+        </ol>
+      ) : null}
       <FieldErrors messages={context.errors[errorKey(context, path)]} />
       {blank !== undefined ? (
         <div>
           <button
             type="button"
-            className={SMALL_BUTTON}
+            className={button('secondary', 'sm')}
             onClick={() => {
               onChange([...items, blank]);
             }}
           >
+            <PlusIcon className="size-4" />
             Add to {label.toLowerCase()}
           </button>
         </div>
       ) : null}
-    </fieldset>
+    </section>
   );
 }
 
@@ -341,10 +466,9 @@ function Text({
   const id = `${context.idBase}-${path.join('-')}`;
   const messages = context.errors[errorKey(context, path)];
   const long = type === 'text' && (value.length > 90 || LONG_KEYS.test(String(path.at(-1) ?? '')));
-  const className = `${long ? AREA : INPUT} ${messages ? 'border-danger' : ''}`;
 
   return (
-    <div className="flex min-w-0 flex-col gap-[3px]">
+    <div className="flex min-w-0 flex-col gap-1.5">
       <label htmlFor={id} className={LABEL}>
         {label}
       </label>
@@ -357,7 +481,7 @@ function Text({
           onChange={(event) => {
             onChange(event.target.value);
           }}
-          className={className}
+          className={TEXTAREA}
         />
       ) : (
         <input
@@ -368,7 +492,7 @@ function Text({
           onChange={(event) => {
             onChange(event.target.value);
           }}
-          className={className}
+          className={INPUT}
         />
       )}
       <FieldErrors messages={messages} />
@@ -390,18 +514,19 @@ function NotSet({
   context: Context;
 }) {
   return (
-    <div className="flex flex-wrap items-center gap-2 rounded-[4px] border border-dashed border-admin-line px-3 py-2">
-      <span className="text-[11.5px] text-admin-body">
-        <span className="font-semibold text-admin-ink">{label}</span> is not set, so the page leaves it out.
+    <div className="flex min-w-0 flex-wrap items-center gap-x-4 gap-y-2 rounded-lg border border-dashed border-admin-line px-4 py-3">
+      <span className="min-w-0 flex-1 basis-60 text-[13.5px] leading-[1.5] text-ink-invert-muted">
+        <span className="font-semibold text-ink-invert">{label}</span> is not set, so the page leaves it out.
       </span>
       {shape !== undefined ? (
         <button
           type="button"
-          className={SMALL_BUTTON}
+          className={button('secondary', 'sm')}
           onClick={() => {
             onChange(structuredClone(shape));
           }}
         >
+          <PlusIcon className="size-4" />
           Add {label.toLowerCase()}
         </button>
       ) : null}
@@ -413,9 +538,21 @@ function NotSet({
 function FieldErrors({ messages }: { messages: string[] | undefined }) {
   if (!messages?.length) return null;
   return (
-    <p role="alert" className="text-[11px] text-danger">
+    <p role="alert" className={ERROR}>
       {messages.map(plainly).join(' ')}
     </p>
+  );
+}
+
+/** A section's or a list's heading, at the level its depth in the page gives it. */
+function Heading({ level, id, children }: { level: number; id: string; children: ReactNode }) {
+  const depth = Math.min(6, Math.max(2, level));
+  const Tag = `h${String(depth)}` as 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+  const className = depth === 2 ? H2 : depth === 3 ? H3 : 'text-[14px] font-semibold text-ink-invert';
+  return (
+    <Tag id={id} className={className}>
+      {children}
+    </Tag>
   );
 }
 
@@ -445,6 +582,15 @@ export function shapeKey(path: Path): string {
 
 function errorKey(context: Context, path: Path): string {
   return [context.errorPrefix, ...path.map(String)].filter(Boolean).join('.');
+}
+
+/** A top-level section is h2 on its own screen and h3 inside a card; each level under it is one deeper. */
+function headingLevel(context: Context, path: Path): number {
+  return context.level + Math.max(0, path.length - 1);
+}
+
+function headingId(context: Context, path: Path): string {
+  return `${context.idBase}-${path.join('-')}-heading`;
 }
 
 /**

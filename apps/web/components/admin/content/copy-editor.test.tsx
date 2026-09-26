@@ -24,8 +24,9 @@ describe('the page copy editor', () => {
     for (const text of ['Test marina website design', 'Test boat owners book from the quay.', 'Test call', '/contact/', 'Test one', 'Test highlight']) {
       expect(html).toContain(text);
     }
-    expect(html).toContain('<legend class="px-1 text-[10.5px] font-bold tracking-[0.1em] text-admin-ink uppercase">Pain points</legend>');
-    expect(html).toContain('>Primary call to action</legend>');
+    // A top-level section is a card headed by an h2; a group inside it is headed one level down.
+    expect(html).toMatch(/<section aria-labelledby="([^"]+)"[^>]*><h2 id="\1"[^>]*>Pain points<\/h2>/);
+    expect(html).toContain('>Primary call to action</h3>');
     // Every input and textarea has a label pointing at it.
     const ids = [...html.matchAll(/<(?:input|textarea) id="([^"]+)"/g)].map((match) => match[1]);
     expect(ids.length).toBeGreaterThan(5);
