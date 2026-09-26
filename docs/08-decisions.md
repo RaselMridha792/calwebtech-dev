@@ -1304,6 +1304,17 @@ abandonment must be measurable per step.
 
 ## Open
 
+- **Stored redirects are written but never served** (found while planning task 6,
+  `docs/16-service-city-matrix.md`, Q7). The services, industries and case studies screens
+  write a `Redirect` row when a published slug changes. Nothing reads them: no web route, proxy
+  or API endpoint does, only integration tests. A moved address shows the old snapshot page or
+  a 404, against CLAUDE.md's rule that a slug change creates a permanent redirect. `fromPath`
+  is unique, so moving A→B→A→B fails on the second save, and A→B→A would loop once redirects
+  are served. The plan makes serving them its step 2.
+- **Production has no Location rows.** Sacramento and Austin exist only as snapshots; no
+  importer, seed or editor writes a Location. A matrix page points at one, so step 1 of
+  docs/16 imports them (Q6).
+
 - **The floating "Start a project" button goes to `/book-a-consultation/`**, not to this page
   (`floatingCta` in the homepage copy). The owner chose `/start-a-project/` (decision 66) and
   changes it from the page copy screen.
