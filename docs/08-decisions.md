@@ -1087,6 +1087,39 @@ decided yet, so this builds the connection and nothing that depends on it.
   feature sends is the owner's decision too: sending lead or subscriber data to a provider
   moves it outside our database, which CLAUDE.md puts with the owner.
 
+## 65. The before and after comparison shows two photographs
+
+*2026-09-26.* At the collaborator's request, the homepage's comparison ("Drag it and see the
+difference") shows two pictures they made, in place of the two drawn SVG mock-ups. Both are
+the same laptop, photographed the same way:
+- before: a crowded early-2000s travel site called HelloWay;
+- after: its modern redesign.
+
+Dragging the handle across one laptop turns the old site into the new.
+
+- **The files.** They were PNGs at 1448×1086, 1.7 and 1.9 MB. They are now high-quality
+  progressive JPEGs at the same size, 165 and 208 kB, in `apps/web/public/media/`:
+  `home-before-helloway.jpg` and `home-after-helloway.jpg`. The page serves them through the
+  image optimiser, like every other local picture. Each carries alt text describing what it
+  shows.
+- **The frame takes the pictures' shape.** The slider's frame was 16:10, the shape of the
+  drawn mock-ups. A 4:3 photograph in it lost the bottom of the laptop to `object-cover`. An
+  image may now state its `width` and `height`: optional on `imageSchema`, so nothing else
+  changes. The slider then takes that shape; without them it is 16:10 as before, so the
+  landing pages and the case studies' comparisons look exactly as they did.
+- **The same pair on `/before-and-after/`.** That page leads with the homepage's comparison
+  and `work.test.ts` holds the two equal, so it shows the same pictures.
+- **"Before" is readable.** Its label's background was `bg-navy-900-invert/80`, a class for
+  a token that does not exist, so it never had one. It is a cream chip now. The same
+  non-token is used in a dozen other places on the site, where it also draws nothing (see
+  Open).
+- **Verified.** On the homepage and `/before-and-after/`, at 360, 768 and 1440 in Chrome:
+  - the frame is 4:3 and both pictures load;
+  - dragging and the arrow keys move the handle;
+  - no overflow and no console errors.
+
+  Tests: web 465, shared 259, API 276.
+
 ## Open
 
 - **Nothing reports abandonment yet.** The drop-off per step is in the data (each draft lead's
@@ -1175,6 +1208,17 @@ decided yet, so this builds the connection and nothing that depends on it.
   `CONTENT_DATABASE_FIRST`; production names `services` alone today. Until a family is named,
   what the dashboard saves for it is stored and audited but the site keeps its snapshot, and the
   page copy screen says so beside each row.
+- **The comparison's words name another client** (decision 65). The pictures show "HelloWay",
+  a travel site. The text beside them, and on `/before-and-after/`, says "Halloway Group's
+  homepage", with its figures (6.8s to 1.6s, 71% to 38%, 9 to 54). The words and figures are
+  the owner's. Whether HelloWay is Halloway Group, and whether those figures are this
+  redesign's, is the owner's to say. Like Northmark's picture, where the two images came from
+  and under what licence is not recorded.
+- **`navy-900-invert` is not a token**, and a dozen marketing components use it in a
+  background class (`bg-navy-900-invert/5` to `/95`), which therefore draws nothing. Among
+  them are the landing page's sticky header, the reviews table and several bordered notes.
+  Decision 65 fixed only the slider's label. Replacing the rest changes how those sections
+  look, which is the owner's call (RULES.md, section 1).
 - **AI is connected but used by nothing yet** (decision 64). Which feature comes first is the
   owner's choice, as is whether any lead or subscriber data may be sent to a provider (CLAUDE.md,
   "Ask before deciding"). Production can store keys today through its `AUTH_SECRET`; setting a
