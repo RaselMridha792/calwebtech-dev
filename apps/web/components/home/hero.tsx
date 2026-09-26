@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { CountUp } from '../motion/count-up';
 import { BackgroundVideo } from '../ui/background-video';
 import { BackdropImage } from '../ui/brand';
+import { ArrowIcon } from '../ui/icons';
 import { Stars } from '../ui/primitives';
 
 type Home = HomePageView;
@@ -104,9 +105,10 @@ export function HomeHero({
           <div className="mt-9 flex flex-wrap gap-3">
             <a
               href={hero.primaryCta.href}
-              className="button-label inline-flex min-h-12 items-center bg-gold-500 px-6 py-4 text-on-gold transition-colors duration-150 hover:bg-gold-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-invert"
+              className="group/cta button-label inline-flex min-h-12 items-center gap-3 bg-gold-500 px-6 py-4 text-on-gold transition-colors duration-150 hover:bg-gold-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-invert"
             >
               {hero.primaryCta.label}
+              <ArrowIcon className="w-4 transition-transform duration-420 ease-out-quint motion-safe:group-hover/cta:translate-x-1" />
             </a>
             {hero.secondaryCta ? (
               <a
@@ -132,7 +134,8 @@ export function HomeHero({
           ) : null}
         </div>
 
-        <div id="quote" className="w-full lg:col-span-5">
+        {/* The form overlaps the photograph, so it takes the brand's plate shadow. */}
+        <div id="quote" className="w-full shadow-plate lg:col-span-5">
           {form}
         </div>
       </div>
