@@ -209,15 +209,15 @@ function VideoTestimonialCard({ video, step }: { video: NonNullable<Home['videoT
     .join(' · ');
   const who = [video.clientName, video.company].filter((part): part is string => Boolean(part)).join(', ');
   return (
-    <figure className="relative min-h-[280px] overflow-hidden " {...reveal(step)}>
+    <figure className="group relative min-h-[320px] overflow-hidden lg:ml-8" {...reveal(step)}>
       <ResponsiveImage
         src={video.poster.src}
         alt={video.poster.alt}
         fill
         sizes="(min-width: 1024px) 33vw, 100vw"
-        className="object-cover"
+        className="object-cover transition-transform duration-[1600ms] ease-out-quint motion-safe:group-hover:scale-105"
       />
-      <div className="absolute inset-0 bg-scrim-strong" aria-hidden="true" />
+      <div className="absolute inset-0 bg-linear-to-t from-navy-900 via-navy-900/50 to-navy-900/10" aria-hidden="true" />
       {video.videoUrl ? (
         <Showreel variant="overlay" label={`Play video testimonial from ${who}`} videoUrl={video.videoUrl} poster={null} />
       ) : null}
@@ -269,13 +269,22 @@ export function TestimonialsBand({
         {items.length === 0 && !video ? (
           <EmptyNote tone="dark">{testimonials.empty}</EmptyNote>
         ) : (
-          <div className="mt-12 grid gap-6 lg:grid-cols-3">
+          // Quotes on rules, not glass cards: a large champagne mark opens each, a hairline
+          // divides them, and the person sits at the foot so the columns end together.
+          <div className="mt-14 grid gap-10 lg:grid-cols-3 lg:gap-0">
             {items.map((item, index) => {
               const itemByline = byline(item.role, item.company);
               return (
-                <figure key={item.id} className="glass p-7" {...reveal(index)}>
-                  <blockquote className="text-[16px] leading-relaxed">{`"${item.quote}"`}</blockquote>
-                  <figcaption className="mt-6 flex items-center gap-3 border-t border-ink-invert/15 pt-5">
+                <figure
+                  key={item.id}
+                  className="flex flex-col border-t border-ink-invert/15 pt-8 lg:border-t-0 lg:border-l lg:px-8 lg:pt-0 lg:first:border-l-0 lg:first:pl-0"
+                  {...reveal(index)}
+                >
+                  <span aria-hidden className="font-display text-[72px] leading-[0.6] font-extrabold text-gold-500">
+                    &ldquo;
+                  </span>
+                  <blockquote className="mt-5 text-[17px] leading-relaxed text-ink-invert">{item.quote}</blockquote>
+                  <figcaption className="mt-auto flex items-center gap-3 pt-8">
                     {item.avatar ? (
                       <ResponsiveImage
                         src={item.avatar.src}
