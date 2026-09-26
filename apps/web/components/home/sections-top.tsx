@@ -138,11 +138,13 @@ export function ProblemRouter({
  * gives a set of peers. No card, no border box, no shadow — the rule above and below each
  * row is the only separation, and the numeral does the work an icon tile used to.
  *
- * Hovering indents the row and washes its ground; nothing lifts or scales. Each row is the
- * link to its own page, with the arrow travelling 6px, so the "read more" that used to sit
- * inside every box is the row itself.
+ * Hovering or focusing a row sweeps the navy ground across it from the left and turns its
+ * type to cream, the numeral and arrow to champagne; the ground reaches a little past the
+ * text so the words never touch its edge. Transform and colour only, so nothing moves the
+ * rows around it. Each row is the link to its own page.
  */
 export function ServicesGrid({ services, items }: { services: Content['services']; items: Home['services'] }) {
+  const ease = 'duration-500 ease-out-quint motion-reduce:transition-none';
   return (
     <section id="services" className="content-auto bg-canvas py-20 lg:py-32">
       <div className="shell">
@@ -154,24 +156,40 @@ export function ServicesGrid({ services, items }: { services: Content['services'
             <li key={service.slug} className="border-b border-hairline" {...reveal(index)}>
               <a
                 href={`/services/${service.slug}/`}
-                className="group grid gap-x-8 gap-y-2 py-7 transition-[padding-inline-start,background-color] duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-canvas-raised focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus motion-safe:hover:ps-6 lg:grid-cols-12 lg:items-baseline"
+                className="group relative isolate grid gap-x-8 gap-y-2 py-8 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-focus lg:grid-cols-12 lg:items-baseline"
               >
-                <span className="meta text-ink-muted transition-colors duration-150 group-hover:text-gold-ink lg:col-span-1">
+                <span
+                  aria-hidden
+                  className={`absolute inset-y-0 -inset-x-4 -z-10 origin-left scale-x-0 bg-navy-900 transition-transform group-hover:scale-x-100 group-focus-visible:scale-x-100 lg:-inset-x-8 ${ease}`}
+                />
+                <span className={`meta text-ink-muted transition-colors group-hover:text-gold-500 group-focus-visible:text-gold-500 lg:col-span-1 ${ease}`}>
                   {String(index + 1).padStart(2, '0')}
                 </span>
-                <h3 className="display-md text-ink lg:col-span-4">{service.title}</h3>
+                <h3
+                  className={`display-md text-ink transition group-hover:translate-x-2 group-hover:text-ink-invert group-focus-visible:text-ink-invert lg:col-span-4 ${ease}`}
+                >
+                  {service.title}
+                </h3>
                 <div className="lg:col-span-6">
-                  <p className="body-base text-ink-muted">{service.summary}</p>
+                  <p className={`body-base text-ink-muted transition-colors group-hover:text-ink-invert-muted group-focus-visible:text-ink-invert-muted ${ease}`}>
+                    {service.summary}
+                  </p>
                   {service.deliverables.length > 0 ? (
-                    <ul className="body-sm mt-3 flex flex-wrap gap-x-5 gap-y-1 text-ink-muted">
+                    <ul
+                      className={`body-sm mt-3 flex flex-wrap gap-x-5 gap-y-1 text-ink-muted transition-colors group-hover:text-ink-invert-muted group-focus-visible:text-ink-invert-muted ${ease}`}
+                    >
                       {service.deliverables.map((deliverable) => (
-                        <li key={deliverable}>{deliverable}</li>
+                        <li key={deliverable} className="flex items-baseline gap-2 before:h-1 before:w-1 before:shrink-0 before:translate-y-[-3px] before:bg-current before:opacity-50">
+                          {deliverable}
+                        </li>
                       ))}
                     </ul>
                   ) : null}
                 </div>
                 <span className="flex items-baseline justify-end lg:col-span-1">
-                  <ArrowIcon className="w-4 text-ink-muted transition-[transform,color] duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:text-gold-ink motion-safe:group-hover:translate-x-1.5" />
+                  <ArrowIcon
+                    className={`w-5 text-ink-muted transition group-hover:translate-x-1.5 group-hover:text-gold-500 group-focus-visible:text-gold-500 ${ease}`}
+                  />
                 </span>
               </a>
             </li>
