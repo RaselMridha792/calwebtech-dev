@@ -9,6 +9,8 @@ export * from './admin-case-studies';
 export * from './admin-ops';
 export * from './admin-page-copy';
 export * from './admin-overview';
+export * from './admin-ai';
+export * from './ai-providers';
 export * from './auth';
 export * from './booking';
 export * from './calculator';
