@@ -71,7 +71,7 @@ export function ComparisonTable({
             </th>
             <td className="py-3 pr-3 font-display font-bold text-ink-invert-muted">{figure.before}</td>
             <td className="py-3">
-              <span className="font-display text-[18px] font-extrabold text-gold-ink">{figure.after}</span>
+              <span className="font-display text-[18px] font-extrabold text-gold-500">{figure.after}</span>
             </td>
           </tr>
         ))}

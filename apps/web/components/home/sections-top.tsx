@@ -532,7 +532,7 @@ export function BeforeAfterHome({
                   <dt className="text-[14px] text-ink-invert-muted">{metric.label}</dt>
                   <dd className="font-display font-bold">
                     {metric.before} <span className="font-normal text-ink-invert-muted">to</span>{' '}
-                    <span className="font-display font-bold text-gold-ink">{metric.after}</span>
+                    <span className="font-display font-bold text-gold-500">{metric.after}</span>
                   </dd>
                 </div>
               ))}
