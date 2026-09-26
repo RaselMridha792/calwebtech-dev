@@ -51,9 +51,13 @@ function cardMeta(article: InsightsArticleCard, readingTimeLabel: string): strin
     .join(' · ');
 }
 
+/**
+ * A topic as a tab on a rule: the current one ink with a champagne rule drawn under it, the
+ * others muted until the pointer draws theirs. The article count follows in `meta`.
+ */
 const pillClass = (current: boolean) =>
-  `inline-flex h-10 items-center  border px-4 text-[14.5px] ${
-    current ? 'border-gold-ink bg-navy-500/5 font-semibold text-ink' : 'border-hairline text-ink-muted hover:border-ink hover:text-ink'
+  `group relative -mb-px inline-flex items-center gap-2 py-3.5 text-[15px] font-semibold transition-colors duration-150 after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:origin-left after:bg-gold-ink after:transition-transform after:duration-420 after:ease-out-quint focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-focus motion-reduce:after:transition-none ${
+    current ? 'text-ink after:scale-x-100' : 'text-ink-muted after:scale-x-0 hover:text-ink hover:after:scale-x-100'
   }`;
 
 /** The topics that have articles, each its own indexable page. */
@@ -62,7 +66,7 @@ export function TopicFilter({ view, current }: { view: InsightsIndexView; curren
   if (topics.length === 0) return null;
   return (
     <nav aria-label={view.copy.topicsLabel} className="mt-10">
-      <ul className="flex flex-wrap gap-2.5">
+      <ul className="flex flex-wrap gap-x-8 border-b border-hairline">
         <li>
           <a href={INSIGHTS_ROUTE} className={pillClass(current === null)} {...(current === null ? { 'aria-current': 'page' as const } : {})}>
             {view.copy.allTopicsLabel}
@@ -75,7 +79,9 @@ export function TopicFilter({ view, current }: { view: InsightsIndexView; curren
               className={pillClass(current === topic.slug)}
               {...(current === topic.slug ? { 'aria-current': 'page' as const } : {})}
             >
-              {`${topic.name} (${String(topic.articleCount)})`}
+              {topic.name}
+              {/* A space for the accessible name; flex layout ignores it. */}{' '}
+              <span className="meta text-ink-muted">{`(${String(topic.articleCount)})`}</span>
             </a>
           </li>
         ))}
