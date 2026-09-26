@@ -1,4 +1,4 @@
-import type { FinalPointIcon, HomePageContent, HomePageView } from '@calwebtech/shared';
+import { SITE_ROUTES, type FinalPointIcon, type HomePageContent, type HomePageView } from '@calwebtech/shared';
 import type { ReactNode } from 'react';
 import { BackdropImage } from '../ui/brand';
 import { CalendarIcon, ShieldIcon, TickIcon } from '../ui/icons';
@@ -413,29 +413,38 @@ export function Insights({ insights, posts }: { insights: Content['insights']; p
           <h2 className={h2Dark}>{insights.heading}</h2>
         </SectionHead>
         {posts.length > 0 ? (
-          <ul className="grid gap-6 md:grid-cols-3">
+          // Articles without boxes: the photograph slowly zooms, the title underlines, and the
+          // whole entry is the link to the article.
+          <ul className="grid gap-x-10 gap-y-14 md:grid-cols-3">
             {posts.map((post, index) => {
               const meta = [post.category, post.readingTime ? `${String(post.readingTime)} min read` : null]
                 .filter((part): part is string => Boolean(part))
                 .join(' · ');
               return (
-                <li key={post.slug} className="overflow-hidden border border-hairline bg-canvas-raised" {...reveal(index)}>
-                  {post.image ? (
-                    <div className="relative aspect-video bg-canvas-sunken">
-                      <ResponsiveImage
-                        src={post.image.src}
-                        alt={post.image.alt}
-                        fill
-                        sizes="(min-width: 768px) 33vw, 100vw"
-                        className="object-cover"
-                      />
+                <li key={post.slug} {...reveal(index)}>
+                  <a
+                    href={`${SITE_ROUTES.insights}${post.slug}/`}
+                    className="group block focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-focus"
+                  >
+                    {post.image ? (
+                      <div className="relative aspect-[16/10] overflow-hidden bg-canvas-sunken">
+                        <ResponsiveImage
+                          src={post.image.src}
+                          alt={post.image.alt}
+                          fill
+                          sizes="(min-width: 768px) 33vw, 100vw"
+                          className="object-cover transition-transform duration-[1600ms] ease-out-quint motion-safe:group-hover:scale-105"
+                        />
+                      </div>
+                    ) : null}
+                    <div className="pt-6">
+                      {meta ? <p className="meta text-ink-muted uppercase">{meta}</p> : null}
+                      <h3 className="heading-md mt-3 text-ink decoration-gold-ink decoration-2 underline-offset-[6px] group-hover:underline">
+                        {post.title}
+                      </h3>
+                      <p className="body-sm mt-3 text-ink-muted">{post.excerpt}</p>
                     </div>
-                  ) : null}
-                  <div className="p-6">
-                    {meta ? <p className="text-[13px]">{meta}</p> : null}
-                    <h3 className="mt-2 font-display text-[19px] leading-snug font-bold text-ink">{post.title}</h3>
-                    <p className="mt-2.5 text-[14.5px] leading-relaxed">{post.excerpt}</p>
-                  </div>
+                  </a>
                 </li>
               );
             })}
