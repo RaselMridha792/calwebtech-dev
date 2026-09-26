@@ -122,7 +122,7 @@ export default async function HomePage() {
           action={
             // A navy plate on the sunken ground, the brand's grid fading from its corner, so the
             // page's last ask reads as the destination rather than one more box.
-            <div className="relative overflow-hidden bg-navy-900 p-8 text-ink-invert sm:p-10 lg:sticky lg:top-28">
+            <div className="relative overflow-hidden bg-navy-900 p-8 text-ink-invert sm:p-10">
               <div
                 aria-hidden
                 className="grid-lines-light pointer-events-none absolute inset-0"
