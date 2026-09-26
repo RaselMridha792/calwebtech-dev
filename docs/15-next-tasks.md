@@ -131,8 +131,8 @@ lead or a booking and queuing its emails, the emails are lost, and nothing recor
 - The migration is forward-only.
 
 ### 6. The service-by-city matrix (Task 3.2)
-**Plan and questions written in `docs/16-service-city-matrix.md` (2026-09-26); no code until the
-owner answers Q1 to Q11.** Two blockers were found, which are steps 1 and 2 of the plan:
+**The owner answered Q1 to Q11 on 2026-09-26 (decision 74): build it, in the order that
+decision gives.** Plan and questions: `docs/16-service-city-matrix.md`. Two blockers were found, which are steps 1 and 2 of the plan:
 production has no Location rows (the city pages are snapshot-only), and stored redirects are
 written but never served.
 

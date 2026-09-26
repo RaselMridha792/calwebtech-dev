@@ -1662,6 +1662,53 @@ everything the dashboard edits is edited as before, and each change is its own c
   (decision 66). This changes only components, so it reaches production with the deploy; no
   dashboard edit is needed.
 
+## 74. The owner's answers on the redesign and the service-by-city matrix
+
+*2026-09-26.* The owner answered the collaborator's questions: decisions 72 and 73, the Open
+entry on the comparison's summary, and Q1 to Q11 of `docs/16-service-city-matrix.md`.
+
+- **The redesign stays.** The navy mega menus (decision 72) and the site without boxes
+  (decision 73) are confirmed as they are, in full.
+- **The comparison's summary on `/before-and-after/` stays as written**, "result figures"
+  included.
+- **The matrix, question by question:**
+  1. **Address:** `/services/<service>/<city>/`, for example
+     `/services/ecommerce-development/sacramento/`. `docs/03` and `docs/04` are corrected to
+     match.
+  2. **How many:** exactly nine pages. This overrides the recommendation of no target.
+  3. **`b2b-web-design`:** not part of the matrix, and no B2B service is created. The campaign
+     page `/lp/b2b-website-design/` stays as it is, a landing page of its own.
+  4. **Cities:** the new city pages come first. San Francisco, Los Angeles and San Diego get
+     city pages before their matrix pages; Sacramento and Austin already have theirs.
+  5. **The nine pairs**, confirmed by the owner:
+     - ecommerce development in Sacramento, San Francisco, Los Angeles, San Diego and Austin;
+     - WordPress development in Sacramento, San Francisco, Los Angeles and San Diego.
+
+     Austin is in, although `docs/04` lists it as Tier 3; `docs/04`'s tiers are corrected to
+     match the site.
+  6. **Locations into the database:** yes, as recommended. The city pages keep rendering from
+     their snapshots until the owner names `locations` in `CONTENT_DATABASE_FIRST`.
+  7. **Stored redirects are served** for all four families (services, industries, case studies
+     and the matrix), as recommended.
+  8. **Sixty per cent:** the editor warns, and the API refuses to publish below it, as
+     recommended.
+  9. **Sections and structured data:** as proposed in Q9. No price, and no review or rating.
+  10. **Parent links:** as proposed. City cards link to the matrix page, and the service page
+      gets a short list. Nothing changes while none is published.
+  11. **Family name:** `service-locations`, as recommended.
+- **What answer 4 adds to the plan.** Three new city pages must be created, and publishing
+  never needs a deploy (non-negotiable 3), so the owner has to create them from the dashboard.
+  A location editor is therefore part of this work, with Task 3.1's sixty per cent warning.
+  `docs/16` listed it as out of scope. The order becomes:
+  1. serve redirects;
+  2. import the locations;
+  3. the location editor;
+  4. the matrix: type, page, editor, parent links.
+- **What does not change: no invented local content.** Nine is the number the owner will
+  fill, not a quota to fill with placeholder copy. Nothing is published until the owner
+  supplies the real local facts listed in `docs/16`, section 5, for each of the nine pairs
+  and each of the three new cities.
+
 ## Open
 
 - **Stored redirects are written but never served** (found while planning task 6,
@@ -1762,9 +1809,6 @@ everything the dashboard edits is edited as before, and each change is its own c
   figures (decision 67). Still open:
   - the homepage's introducing sentence in production, the owner's edit on the page copy
     screen;
-  - the summary on `/before-and-after/`, which says the homepage was "rebuilt around a clear
-    headline, a photograph and result figures". The new pictures show no result figures. It
-    is the owner's copy.
   - Like Northmark's picture, where the two images came from and under what licence is not
     recorded.
 - **`navy-900-invert` is not a token**, and a dozen marketing components use it in a

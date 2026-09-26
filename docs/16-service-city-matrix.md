@@ -1,5 +1,11 @@
 # 16. The service-by-city matrix — plan and questions
 
+> **Answered 2026-09-26 (decision 74).** Read decision 74 before this plan. Most of the
+> recommendations were accepted. Three answers differ:
+> - exactly nine pages;
+> - the new city pages come first, which adds a location editor to the work;
+> - ecommerce × Austin is one of the nine.
+
 Written 2026-09-26 for task 6 of `docs/15-next-tasks.md` (build plan Task 3.2). **Nothing is
 built yet.** The task starts with a plan and questions, because the docs disagree with each
 other and with the site. This document covers:
