@@ -206,7 +206,8 @@ body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, bu
 body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, button, summary):not([data-cta], [data-panel] *):hover {
   color: var(--color-gold-500);
 }
-body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, button):not([data-cta], [data-panel] *)::after {
+body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, button):not([data-cta], [data-panel] *)::after,
+body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, button):not([data-cta], [data-panel] *)::before {
   background-color: var(--color-gold-500);
 }
 
@@ -224,9 +225,15 @@ body:has(#main > [data-hero='dark']:first-child) [data-site-header] [data-cta='o
   border-color: var(--color-hairline);
 }
 
-/* A panel is always a cream ground, whatever the bar above it is doing. */
+/*
+ * A panel keeps its own ground, whatever the bar above it is doing: the small-screen menu is
+ * cream, the mega menus navy (decision 72).
+ */
 [data-site-header] [data-panel] {
   color: var(--color-ink);
+}
+[data-site-header] [data-panel][data-menu] {
+  color: var(--color-ink-invert);
 }
 
 /*
@@ -241,9 +248,56 @@ body:has(#main > [data-hero='dark']:first-child) [data-site-header] [data-logo='
   display: block;
 }
 
-/* Once the page has moved, the bar is a bar again. */
+/*
+ * The frosted layer under the bar waits until the bar has a ground to frost: over a dark hero
+ * it would blur the top of the photograph.
+ */
+body:has(#main > [data-hero='dark']:first-child) [data-site-header] [data-header-glass] {
+  display: none;
+}
+:root[data-scrolled] body:has(#main > [data-hero='dark']:first-child) [data-site-header] [data-header-glass] {
+  display: block;
+}
+
+/*
+ * An open menu over a dark hero turns the bar navy, so the bar and the navy panel below it
+ * read as one surface (decision 72). Once the page has moved the bar is cream, and stays so.
+ */
+:root:not([data-scrolled]) body:has(#main > [data-hero='dark']:first-child) [data-site-header]:has([data-mega]:is(:hover, :focus-within):not([data-dismissed])) {
+  background-color: var(--color-navy-900);
+}
+/* The navy action would vanish into the navy bar, so it takes a light rule for the while. */
+:root:not([data-scrolled]) body:has(#main > [data-hero='dark']:first-child) [data-site-header]:has([data-mega]:is(:hover, :focus-within):not([data-dismissed])) [data-cta=''] {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-ink-invert) 35%, transparent);
+}
+
+/*
+ * The reading progress along the bar's foot, driven by the page's scroll where the browser
+ * can; elsewhere it stays at nothing. Transform only, and none under reduced motion.
+ */
+[data-site-header] [data-header-progress] {
+  transform: scaleX(0);
+}
+@keyframes header-progress {
+  to {
+    transform: scaleX(1);
+  }
+}
+@supports (animation-timeline: scroll()) {
+  [data-site-header] [data-header-progress] {
+    animation: header-progress linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-site-header] [data-header-progress] {
+    display: none;
+  }
+}
+
+/* Once the page has moved, the bar is a bar again, frosted. */
 :root[data-scrolled] body:has(#main > [data-hero='dark']:first-child) [data-site-header] {
-  background-color: var(--color-canvas);
+  background-color: color-mix(in srgb, var(--color-canvas) 85%, transparent);
   border-bottom-color: var(--color-hairline);
   color: var(--color-ink);
   box-shadow: var(--shadow-lift);
@@ -251,7 +305,8 @@ body:has(#main > [data-hero='dark']:first-child) [data-site-header] [data-logo='
 :root[data-scrolled] body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, button, summary):not([data-cta], [data-panel] *):hover {
   color: var(--color-gold-ink);
 }
-:root[data-scrolled] body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, button):not([data-cta], [data-panel] *)::after {
+:root[data-scrolled] body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, button):not([data-cta], [data-panel] *)::after,
+:root[data-scrolled] body:has(#main > [data-hero='dark']:first-child) [data-site-header] :where(a, button):not([data-cta], [data-panel] *)::before {
   background-color: var(--color-gold-ink);
 }
 :root[data-scrolled] body:has(#main > [data-hero='dark']:first-child) [data-site-header] [data-logo='light-ground'] {
