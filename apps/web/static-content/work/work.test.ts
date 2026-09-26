@@ -2,6 +2,7 @@ import { readdirSync } from 'node:fs';
 import path from 'node:path';
 import {
   countSentences,
+  homepageComparison,
   homePageViewSchema,
   workBeforeAndAfterViewSchema,
   workCaseStudyViewSchema,
@@ -95,6 +96,13 @@ describe('work snapshots', () => {
     expect(comparison?.metrics).toEqual(approved.beforeAfter?.metrics);
     expect(comparison?.before).toEqual(approved.beforeAfter?.before);
     expect(comparison?.after).toEqual(approved.beforeAfter?.after);
+  });
+
+  it('give the homepage the comparison /before-and-after/ marks for it (decision 70)', () => {
+    // With `before-and-after` read from the database, the homepage takes this one from the
+    // page's list; the two snapshots have to agree for the switch to change nothing.
+    const view = workBeforeAndAfterViewSchema.parse(workBeforeAndAfterSnapshot);
+    expect(homepageComparison(view)).toEqual(approved.beforeAfter);
   });
 
   it('link the menus’ filtered work links to results', () => {
