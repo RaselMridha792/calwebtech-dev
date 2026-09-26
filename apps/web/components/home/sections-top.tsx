@@ -200,12 +200,14 @@ export function ServicesGrid({ services, items }: { services: Content['services'
   );
 }
 
+/** A project's place, sector and stack as one line of `meta`, dotted, not a row of chips. */
 function Tags({ tags }: { tags: string[] }) {
   if (tags.length === 0) return null;
   return (
-    <ul className="flex flex-wrap gap-2 text-[12.5px] font-medium">
-      {tags.map((tag) => (
-        <li key={tag} className="bg-canvas-sunken px-2.5 py-1 text-ink">
+    <ul className="meta flex flex-wrap items-center gap-x-2.5 gap-y-1 text-ink-muted uppercase">
+      {tags.map((tag, index) => (
+        <li key={tag} className="flex items-center gap-2.5">
+          {index > 0 ? <span aria-hidden className="h-1 w-1 bg-hairline-strong" /> : null}
           {tag}
         </li>
       ))}
@@ -320,25 +322,30 @@ function ProjectCard({
   caseStudyLabel: string | null;
 }) {
   return (
+    // No box: the photograph and a rule carry the card. Hovering slowly pushes into the
+    // photograph and steps the arrow after the client's name; the whole card is the link.
     <article
       data-work-filter={filterKey}
-      className="group relative overflow-hidden border border-hairline transition-colors duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-canvas-raised focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-focus"
+      className="group relative focus-within:outline-2 focus-within:outline-offset-8 focus-within:outline-focus"
     >
       {project.image ? (
-        <div className="relative aspect-video bg-canvas-sunken">
+        <div className="relative aspect-[16/10] overflow-hidden bg-canvas-sunken">
           <ResponsiveImage
             src={project.image.src}
             alt={project.image.alt}
             fill
             sizes="(min-width: 1024px) 50vw, 100vw"
-            className="object-cover"
+            className="object-cover transition-transform duration-[1600ms] ease-out-quint motion-safe:group-hover:scale-[1.04]"
           />
         </div>
       ) : null}
-      <div className="p-7">
+      <div className="pt-6">
         <Tags tags={project.tags} />
-        <h3 className="heading-lg mt-4 text-ink transition-colors duration-150 group-hover:text-gold-ink">{project.clientName}</h3>
-        <p className="mt-2.5 text-[15px] leading-relaxed">{project.summary}</p>
+        <h3 className="heading-lg mt-3 flex items-center justify-between gap-4 text-ink">
+          {project.clientName}
+          <ArrowIcon className="w-5 shrink-0 text-ink-muted transition duration-420 ease-out-quint group-hover:text-gold-ink motion-safe:group-hover:translate-x-1.5" />
+        </h3>
+        <p className="body-base mt-2.5 text-ink-muted">{project.summary}</p>
         <Metrics metrics={project.metrics} lead={false} />
         {caseStudyLabel ? <CaseStudyLink project={project} label={caseStudyLabel} lead={false} /> : null}
       </div>
@@ -399,7 +406,7 @@ export function FeaturedWork({ work, projects }: { work: Content['work']; projec
         ) : (
           <>
             {filters.length > 1 ? <WorkFilters filters={filters} /> : null}
-            <div className="grid gap-6 lg:grid-cols-2">
+            <div className="grid gap-x-10 gap-y-16 lg:grid-cols-2">
               {projects.map((project, index) =>
                 index === 0 ? (
                   <LeadProject
