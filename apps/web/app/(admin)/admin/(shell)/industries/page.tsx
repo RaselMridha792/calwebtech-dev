@@ -1,5 +1,8 @@
-import { CONTENT_STATUS_LABELS, adminIndustryListSchema } from '@calwebtech/shared';
+import { CONTENT_STATUS_LABELS, adminIndustryListSchema, type ContentStatus } from '@calwebtech/shared';
 import Link from 'next/link';
+import { ChevronRightIcon, PlusIcon } from '@/components/admin/icons';
+import { AdminPage, EmptyState, PageHeader, Panel } from '@/components/admin/ui/page';
+import { LIST, LIST_ROW, MUTED, PILL, TAG, button } from '@/components/admin/ui/styles';
 import { adminGet } from '@/lib/admin/api';
 import { requireModule } from '@/lib/admin/session';
 
@@ -13,65 +16,80 @@ export default async function AdminIndustriesPage() {
   const list = await adminGet('/admin/industries', adminIndustryListSchema);
   const mayWrite = user.modules.includes('content') && user.role !== 'VIEWER';
 
-  return (
-    <main className="min-h-0 flex-1 overflow-auto px-4 py-5">
-      <div className="mx-auto w-full max-w-[1000px]">
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <h1 className="font-display text-[21px] font-bold tracking-[-0.02em] text-admin-ink">Industries</h1>
-            <p className="mt-0.5 text-[12.5px] text-admin-body">
-              {list.items.length} in the database. A published industry replaces the committed snapshot for its address
-              when the site reads industries from the database first.
-            </p>
-          </div>
-          {mayWrite ? (
-            <Link
-              href="/admin/industries/new/"
-              className="flex h-8 items-center rounded-[4px] bg-primary px-3 text-[12.5px] font-semibold text-white hover:bg-admin-primaryh"
-            >
-              New industry
-            </Link>
-          ) : null}
-        </div>
+  const newIndustry = mayWrite ? (
+    <Link href="/admin/industries/new/" className={button('primary')}>
+      <PlusIcon className="size-4" />
+      New industry
+    </Link>
+  ) : null;
 
-        {list.items.length === 0 ? (
-          <div className="mt-10 text-center">
-            <h2 className="font-display text-[19px] font-bold tracking-[-0.015em] text-admin-ink">
-              No industries in the database yet
-            </h2>
-            <p className="mx-auto mt-2 max-w-[460px] text-[13.5px] leading-[22px] text-admin-body">
-              The industries on the site are still rendered from the committed snapshots until the snapshot import brings
-              them in. Adding one here publishes it at its own address.
-            </p>
-          </div>
-        ) : (
-          <ul className="mt-5">
-            {list.items.map((industry) => (
-              <li key={industry.id} className="flex flex-wrap items-center gap-3 border-b border-admin-line py-3 first:border-t">
-                <div className="min-w-[220px] flex-1">
-                  <Link
-                    href={`/admin/industries/${industry.id}/`}
-                    className="text-[13px] font-semibold text-admin-ink hover:underline"
-                  >
-                    {industry.name}
-                  </Link>
-                  <p className="text-[11.5px] text-admin-muted">
-                    /industries/{industry.slug}/ · order {industry.order}
-                    {industry.hasContent ? '' : ' · no page copy yet'}
-                  </p>
-                </div>
-                <span className="text-[11.5px] text-admin-body">{CONTENT_STATUS_LABELS[industry.status]}</span>
-                {industry.shadowsSnapshot ? (
-                  <span className="text-[11px] text-admin-muted">snapshot still serving this address</span>
-                ) : null}
-                <span className="text-[11px] text-admin-muted tabular-nums">
-                  {new Date(industry.updatedAt).toLocaleDateString('en-GB', { timeZone: 'UTC' })}
-                </span>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-    </main>
+  return (
+    <AdminPage>
+      <PageHeader
+        eyebrow="Content"
+        title="Industries"
+        count={list.items.length}
+        description="The industry pages on the site, one for each kind of business you serve. Edit one and publish, and the page changes for visitors — no developer needed."
+        actions={newIndustry}
+      />
+
+      {list.items.length === 0 ? (
+        <Panel flush>
+          <EmptyState title="No industries yet" actions={newIndustry}>
+            The industries on the site still come from its built-in copy until they are brought in. Add one here and
+            it publishes at its own address.
+          </EmptyState>
+        </Panel>
+      ) : (
+        <ul className={LIST}>
+          {list.items.map((industry) => (
+            <li key={industry.id} className={LIST_ROW}>
+              <div className="flex min-w-0 flex-1 basis-60 flex-col gap-0.5">
+                <Link
+                  href={`/admin/industries/${industry.id}/`}
+                  className="text-[14.5px] font-semibold text-ink-invert before:absolute before:inset-0"
+                >
+                  {industry.name}
+                </Link>
+                <p className={MUTED}>
+                  /industries/{industry.slug}/ · Order {industry.order}
+                </p>
+              </div>
+              {industry.hasContent ? null : <span className={TAG}>No page copy yet</span>}
+              {industry.shadowsSnapshot ? <span className={TAG}>Snapshot still serving this address</span> : null}
+              <StatusPill status={industry.status} />
+              <span className="text-[12.5px] text-admin-muted tabular-nums sm:w-24 sm:text-right">{when(industry.updatedAt)}</span>
+              <ChevronRightIcon className="size-4 shrink-0 text-admin-muted max-sm:hidden" />
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <p className={MUTED}>
+        Services and case studies have their own screens. An industry without page copy shows its heading and answer
+        block alone until copy is added.
+      </p>
+    </AdminPage>
   );
+}
+
+/** Teal is a round affirmative mark and nothing else, so only a published page gets it. */
+const DOT: Record<ContentStatus, string> = {
+  PUBLISHED: 'rounded-full bg-result',
+  SCHEDULED: 'rounded-full bg-gold-500',
+  DRAFT: 'rounded-full bg-admin-surface ring-2 ring-admin-muted ring-inset',
+  ARCHIVED: 'rounded-full bg-admin-muted',
+};
+
+function StatusPill({ status }: { status: ContentStatus }) {
+  return (
+    <span className={`${PILL} pl-2`}>
+      <span aria-hidden className={`size-2 shrink-0 ${DOT[status]}`} />
+      {CONTENT_STATUS_LABELS[status]}
+    </span>
+  );
+}
+
+function when(iso: string): string {
+  return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
 }
