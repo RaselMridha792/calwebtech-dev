@@ -120,13 +120,24 @@ export default async function AdminAuditPage({ searchParams }: PageProps<'/admin
   );
 }
 
+/**
+ * Who made the change: the signed-in user, or, for a change made on the server's command
+ * line, the tool that made it (`via`, which `admin-cli` and `settings-cli` record; decision 68).
+ */
+function actorLabel(entry: AdminAuditEntry): string {
+  if (entry.actor) return entry.actor.name;
+  const after = entry.after;
+  const via = typeof after === 'object' && after !== null && 'via' in after ? after.via : null;
+  return typeof via === 'string' ? `Command line (${via})` : 'No signed-in user';
+}
+
 function Entry({ entry }: { entry: AdminAuditEntry }) {
   const changed = entry.before !== null || entry.after !== null;
   return (
     <li className="px-4 py-3.5 sm:px-5">
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
         <span className={TAG}>{actionLabel(entry.action)}</span>
-        <span className="text-[14px] font-semibold text-ink-invert">{entry.actor ? entry.actor.name : 'No signed-in user'}</span>
+        <span className="text-[14px] font-semibold text-ink-invert">{actorLabel(entry)}</span>
         <span className="min-w-0 text-[13.5px] text-ink-invert-muted">
           {entry.entityType}
           {entry.entityId ? (
