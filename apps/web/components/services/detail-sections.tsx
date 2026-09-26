@@ -147,7 +147,7 @@ export function ComparisonSection({
         role="region"
         aria-label={`${comparison.heading} The table scrolls sideways.`}
         tabIndex={0}
-        className="overflow-x-auto border border-hairline bg-canvas-raised focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        className="overflow-x-auto border border-hairline bg-canvas-raised focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus"
         {...reveal(1)}
       >
         <table className="w-full min-w-[860px] border-collapse text-left text-[15px] leading-relaxed">

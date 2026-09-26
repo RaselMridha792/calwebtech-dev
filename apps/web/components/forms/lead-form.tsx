@@ -302,7 +302,7 @@ export function LeadForm(props: LeadFormProps) {
                 {props.serviceOptions.map((option) => (
                   <label
                     key={option}
-                    className="inline-flex h-10 cursor-pointer items-center border border-hairline px-4 text-[14px] hover:border-ink has-checked:border-gold-ink has-checked:bg-navy-500/5 has-checked:font-semibold has-checked:text-ink has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-primary"
+                    className="inline-flex h-10 cursor-pointer items-center border border-hairline px-4 text-[14px] hover:border-ink has-checked:border-gold-ink has-checked:bg-navy-500/5 has-checked:font-semibold has-checked:text-ink has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-focus"
                   >
                     <input
                       type="checkbox"

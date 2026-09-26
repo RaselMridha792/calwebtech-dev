@@ -268,7 +268,7 @@ export function WorkPagination({
   if (pageCount <= 1) return null;
   const pages = Array.from({ length: pageCount }, (_, index) => index + 1);
   const box =
-    'inline-flex h-11 min-w-11 items-center justify-center  border px-3 font-semibold focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-primary';
+    'inline-flex h-11 min-w-11 items-center justify-center  border px-3 font-semibold focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus';
   return (
     <nav aria-label="Pagination" className="mt-12">
       <ul className="flex flex-wrap items-center justify-center gap-2">
