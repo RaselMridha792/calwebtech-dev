@@ -61,9 +61,12 @@ export function LogoBand({ label, clients }: { label: string; clients: Home['cli
       >
         Pause the client names
       </label>
-      <div className="flex w-max animate-marquee group-hover:[animation-play-state:paused] peer-checked:[animation-play-state:paused]">
-        <LogoRow clients={clients} duplicate={false} />
-        <LogoRow clients={clients} duplicate />
+      {/* The names fade in and out at the edges instead of being cut by them. */}
+      <div className="[mask-image:linear-gradient(90deg,transparent,black_12%,black_88%,transparent)] peer-checked:*:[animation-play-state:paused]">
+        <div className="flex w-max animate-marquee group-hover:[animation-play-state:paused]">
+          <LogoRow clients={clients} duplicate={false} />
+          <LogoRow clients={clients} duplicate />
+        </div>
       </div>
     </section>
   );
