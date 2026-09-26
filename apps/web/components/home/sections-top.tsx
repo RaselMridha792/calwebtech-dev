@@ -448,7 +448,7 @@ export function MidCta({ midCta }: { midCta: Content['midCta'] }) {
           </h2>
         </div>
         <div className="flex flex-wrap gap-3">
-          <ActionLink link={midCta.primaryCta} className="h-14 px-7" />
+          <ActionLink link={midCta.primaryCta} size="lg" />
           {midCta.secondaryCta ? (
             <a
               href={midCta.secondaryCta.href}

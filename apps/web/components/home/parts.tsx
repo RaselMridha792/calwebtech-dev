@@ -58,10 +58,13 @@ export function TextLink({
 export function ActionLink({
   link,
   tone = 'navy',
+  size = 'md',
   className = '',
 }: {
   link: Link;
   tone?: 'navy' | 'cream';
+  /** `lg` for an action that closes a band on its own. */
+  size?: 'md' | 'lg';
   className?: string;
 }) {
   const colours =
@@ -71,10 +74,10 @@ export function ActionLink({
   return (
     <a
       href={link.href}
-      className={`group/action button-label inline-flex h-12 items-center gap-3 px-6 transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 ${colours} ${className}`}
+      className={`group/action button-label inline-flex items-center gap-3 transition-colors ${size === 'lg' ? 'h-14 px-7' : 'h-12 px-6'} duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 ${colours} ${className}`}
     >
       {link.label}
-      <ArrowIcon className="w-4 transition-transform duration-[420ms] ease-out-quint motion-safe:group-hover/action:translate-x-1" />
+      <ArrowIcon className="w-4 transition-transform duration-420 ease-out-quint motion-safe:group-hover/action:translate-x-1" />
     </a>
   );
 }
