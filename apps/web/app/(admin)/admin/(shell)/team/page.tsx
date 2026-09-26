@@ -1,5 +1,6 @@
 import { ADMIN_ROLES, adminTeamViewSchema } from '@calwebtech/shared';
 import { TeamPanel } from '@/components/admin/ops/team-panel';
+import { AdminPage, PageHeader } from '@/components/admin/ui/page';
 import { adminGet } from '@/lib/admin/api';
 import { requireModule } from '@/lib/admin/session';
 
@@ -12,15 +13,14 @@ export default async function AdminTeamPage() {
   const view = await adminGet('/admin/team', adminTeamViewSchema);
 
   return (
-    <main className="min-h-0 flex-1 overflow-auto px-4 py-5">
-      <div className="mx-auto w-full max-w-[860px]">
-        <h1 className="font-display text-[21px] font-bold tracking-[-0.02em] text-admin-ink">Team and roles</h1>
-        <p className="mt-0.5 mb-4 text-[12.5px] text-admin-body">
-          {view.members.length} {view.members.length === 1 ? 'account' : 'accounts'}. A role decides which modules
-          someone reaches; the API applies it to every request, not just to what is shown here.
-        </p>
-        <TeamPanel members={view.members} roles={[...ADMIN_ROLES]} />
-      </div>
-    </main>
+    <AdminPage width="medium">
+      <PageHeader
+        eyebrow="Admin"
+        title="Team and roles"
+        count={view.members.length}
+        description="Who can sign in to this dashboard, and what each person can reach. A role applies to everything someone does here, not only to what is shown on their screen."
+      />
+      <TeamPanel members={view.members} roles={[...ADMIN_ROLES]} />
+    </AdminPage>
   );
 }

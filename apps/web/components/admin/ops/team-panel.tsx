@@ -2,6 +2,7 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { MutationError, adminMutate } from '@/lib/admin/mutate';
+import { CARD, CARD_PAD, ERROR, H2, HELP, INPUT, LABEL, PILL, SELECT, TAG, button } from '../ui/styles';
 
 /**
  * Team and roles (docs/12-admin-dashboard.md, module 10).
@@ -54,102 +55,137 @@ export function TeamPanel({ members, roles }: { members: Member[]; roles: string
       />
 
       {created ? (
-        <div role="status" className="rounded-[4px] border border-admin-line bg-admin-sunken p-3">
-          <p className="text-[12.5px] font-semibold text-admin-ink">
+        <div
+          role="status"
+          className={`${CARD} ${CARD_PAD} motion-safe:animate-[admin-rise_180ms_var(--ease-out-quint)]`}
+        >
+          <p className="flex items-center gap-2.5 text-[14.5px] font-semibold text-ink-invert">
+            <span aria-hidden className="size-2 shrink-0 rounded-full bg-result" />
             Account created for {created.email}
           </p>
-          <p className="mt-1 text-[12px] text-admin-body">
+          <p className="mt-1.5 text-[14px] leading-[1.6] text-ink-invert-muted">
             There is no invitation email yet, so pass this first password on yourself. It is shown once and cannot be
-            read again — if it is lost, reset it with <code>admin-cli set-password</code> on the server.
+            read again — if it is lost, a developer can reset it on the server with <code>admin-cli set-password</code>.
           </p>
-          <p className="mt-2 rounded-[3px] bg-admin-surface px-2 py-1.5 font-mono text-[13px] break-all text-admin-ink">
+          <p className="mt-3 rounded-lg border border-admin-line2 bg-admin-sunken px-3 py-2.5 font-mono text-[14px] break-all text-ink-invert select-all">
             {created.password}
           </p>
         </div>
       ) : null}
 
       {error ? (
-        <p role="alert" className="text-[12.5px] text-danger">
+        <p role="alert" className={`${ERROR} motion-safe:animate-[admin-rise_180ms_var(--ease-out-quint)]`}>
           {error}
         </p>
       ) : null}
 
-      <ul className="flex flex-col">
-        {members.map((member) => (
-          <li
-            key={member.id}
-            className="flex flex-wrap items-center gap-3 border-b border-admin-line py-3 first:border-t first:border-admin-line"
-          >
-            <div className="min-w-[200px] flex-1">
-              <p className="text-[13px] font-semibold text-admin-ink">
-                {member.name}
-                {member.isSelf ? <span className="ml-2 text-[11px] font-normal text-admin-muted">you</span> : null}
-                {member.disabledAt ? <span className="ml-2 text-[11px] font-normal text-danger">disabled</span> : null}
-              </p>
-              <p className="text-[11.5px] text-admin-muted">
-                {member.email} · {member.activeSessions} open{' '}
-                {member.activeSessions === 1 ? 'session' : 'sessions'} ·{' '}
-                {member.lastLoginAt
-                  ? `last signed in ${new Date(member.lastLoginAt).toLocaleDateString('en-GB', { timeZone: 'UTC' })}`
-                  : 'never signed in'}
-              </p>
-            </div>
+      <section aria-labelledby="team-people" className={`${CARD} overflow-hidden`}>
+        <div className="flex flex-col gap-1 px-4 pt-5 pb-4 sm:px-6">
+          <h2 id="team-people" className={H2}>
+            People
+          </h2>
+          <p className="text-[13.5px] leading-[1.55] text-ink-invert-muted">
+            Change a role from the list and it applies straight away. Disabling someone keeps their history but stops
+            them signing in.
+          </p>
+        </div>
+        <ul className="divide-y divide-admin-line2 border-t border-admin-line2">
+          {members.map((member) => (
+            <li key={member.id} className="flex flex-wrap items-center gap-x-5 gap-y-3 px-4 py-4 sm:px-6">
+              <div className="flex min-w-0 flex-1 basis-[240px] items-center gap-3.5">
+                <span
+                  aria-hidden
+                  className={`flex size-10 shrink-0 items-center justify-center rounded-full font-display text-[13px] font-bold ${
+                    member.disabledAt ? 'bg-admin-sunken text-admin-muted' : 'bg-admin-mist text-ink-invert'
+                  }`}
+                >
+                  {initials(member.name)}
+                </span>
+                <div className="flex min-w-0 flex-col gap-0.5">
+                  <p className="flex flex-wrap items-center gap-2 text-[14.5px] font-semibold text-ink-invert">
+                    <span className="truncate">{member.name}</span>
+                    {member.isSelf ? <span className={TAG}>You</span> : null}
+                    {member.disabledAt ? (
+                      <span className={PILL}>
+                        <span aria-hidden className="size-2 shrink-0 rounded-full bg-danger" />
+                        Disabled
+                      </span>
+                    ) : null}
+                  </p>
+                  <p className="truncate text-[13.5px] text-ink-invert-muted">{member.email}</p>
+                  <p className="text-[12.5px] text-admin-muted">
+                    {member.lastLoginAt ? `Last signed in ${signedIn(member.lastLoginAt)}` : 'Never signed in'} ·{' '}
+                    {member.activeSessions} open {member.activeSessions === 1 ? 'session' : 'sessions'}
+                  </p>
+                </div>
+              </div>
 
-            <label className="sr-only" htmlFor={`role-${member.id}`}>
-              Role for {member.name}
-            </label>
-            <select
-              id={`role-${member.id}`}
-              value={member.role}
-              disabled={member.isSelf || busy === member.id || Boolean(member.disabledAt)}
-              onChange={(event) => {
-                run(member.id, `/admin/team/${encodeURIComponent(member.id)}/role`, {
-                  method: 'PATCH',
-                  body: { role: event.target.value },
-                });
-              }}
-              className="h-[29px] rounded-[4px] border border-admin-line bg-admin-surface px-2 text-[12px] text-admin-ink disabled:opacity-40"
-            >
-              {roles.map((role) => (
-                <option key={role} value={role}>
-                  {role}
-                </option>
-              ))}
-            </select>
+              <div className="flex flex-wrap items-center gap-2">
+                <label className="sr-only" htmlFor={`role-${member.id}`}>
+                  Role for {member.name}
+                </label>
+                <div className="w-[150px]">
+                  <select
+                    id={`role-${member.id}`}
+                    value={member.role}
+                    disabled={member.isSelf || busy === member.id || Boolean(member.disabledAt)}
+                    onChange={(event) => {
+                      run(member.id, `/admin/team/${encodeURIComponent(member.id)}/role`, {
+                        method: 'PATCH',
+                        body: { role: event.target.value },
+                      });
+                    }}
+                    className={SELECT}
+                  >
+                    {roles.map((role) => (
+                      <option key={role} value={role}>
+                        {roleLabel(role)}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-            {member.activeSessions > 0 ? (
-              <Action
-                busy={busy === member.id}
-                onClick={() => {
-                  run(member.id, `/admin/team/${encodeURIComponent(member.id)}/revoke-sessions`, { method: 'POST' });
-                }}
-              >
-                Sign out everywhere
-              </Action>
-            ) : null}
+                {member.activeSessions > 0 ? (
+                  <button
+                    type="button"
+                    disabled={busy === member.id}
+                    className={button('secondary')}
+                    onClick={() => {
+                      run(member.id, `/admin/team/${encodeURIComponent(member.id)}/revoke-sessions`, { method: 'POST' });
+                    }}
+                  >
+                    Sign out everywhere
+                  </button>
+                ) : null}
 
-            {member.isSelf ? null : member.disabledAt ? (
-              <Action
-                busy={busy === member.id}
-                onClick={() => {
-                  run(member.id, `/admin/team/${encodeURIComponent(member.id)}/enable`, { method: 'POST' });
-                }}
-              >
-                Re-enable
-              </Action>
-            ) : (
-              <Action
-                busy={busy === member.id}
-                onClick={() => {
-                  run(member.id, `/admin/team/${encodeURIComponent(member.id)}/disable`, { method: 'POST' });
-                }}
-              >
-                Disable
-              </Action>
-            )}
-          </li>
-        ))}
-      </ul>
+                {member.isSelf ? null : member.disabledAt ? (
+                  <button
+                    type="button"
+                    disabled={busy === member.id}
+                    className={button('secondary')}
+                    onClick={() => {
+                      run(member.id, `/admin/team/${encodeURIComponent(member.id)}/enable`, { method: 'POST' });
+                    }}
+                  >
+                    Re-enable
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    disabled={busy === member.id}
+                    className={button('danger')}
+                    onClick={() => {
+                      run(member.id, `/admin/team/${encodeURIComponent(member.id)}/disable`, { method: 'POST' });
+                    }}
+                  >
+                    Disable
+                  </button>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
     </div>
   );
 }
@@ -188,77 +224,95 @@ function InviteForm({
   }
 
   return (
-    <div className="flex flex-wrap items-end gap-3 rounded-[4px] border border-admin-line bg-admin-sunken p-3">
-      <div className="flex min-w-[180px] flex-1 flex-col gap-[3px]">
-        <label htmlFor="invite-name" className="text-[9.5px] font-bold tracking-[0.12em] text-admin-muted uppercase">
-          Name
-        </label>
-        <input
-          id="invite-name"
-          value={name}
-          onChange={(event) => {
-            setName(event.target.value);
-          }}
-          className={INPUT}
-        />
+    <section aria-labelledby="team-invite" className={`${CARD} ${CARD_PAD}`}>
+      <div className="mb-5 flex flex-col gap-1">
+        <h2 id="team-invite" className={H2}>
+          Add a person
+        </h2>
+        <p className="text-[13.5px] leading-[1.55] text-ink-invert-muted">
+          They get a first password to sign in with, shown to you once. Pick the role that gives them only what they
+          need.
+        </p>
       </div>
-      <div className="flex min-w-[200px] flex-1 flex-col gap-[3px]">
-        <label htmlFor="invite-email" className="text-[9.5px] font-bold tracking-[0.12em] text-admin-muted uppercase">
-          Email address
-        </label>
-        <input
-          id="invite-email"
-          type="email"
-          value={email}
-          onChange={(event) => {
-            setEmail(event.target.value);
-          }}
-          className={INPUT}
-        />
+
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)_170px]">
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="invite-name" className={LABEL}>
+            Name
+          </label>
+          <input
+            id="invite-name"
+            value={name}
+            autoComplete="off"
+            onChange={(event) => {
+              setName(event.target.value);
+            }}
+            className={INPUT}
+          />
+        </div>
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="invite-email" className={LABEL}>
+            Email address
+          </label>
+          <input
+            id="invite-email"
+            type="email"
+            value={email}
+            autoComplete="off"
+            onChange={(event) => {
+              setEmail(event.target.value);
+            }}
+            className={INPUT}
+          />
+        </div>
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="invite-role" className={LABEL}>
+            Role
+          </label>
+          <select
+            id="invite-role"
+            value={role}
+            onChange={(event) => {
+              setRole(event.target.value);
+            }}
+            className={SELECT}
+          >
+            {roles.map((entry) => (
+              <option key={entry} value={entry}>
+                {roleLabel(entry)}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
-      <div className="flex flex-col gap-[3px]">
-        <label htmlFor="invite-role" className="text-[9.5px] font-bold tracking-[0.12em] text-admin-muted uppercase">
-          Role
-        </label>
-        <select
-          id="invite-role"
-          value={role}
-          onChange={(event) => {
-            setRole(event.target.value);
-          }}
-          className={INPUT}
+
+      <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-admin-line2 pt-4">
+        <p className={HELP}>Owners can do everything, including this screen. Viewers can only look.</p>
+        <button
+          type="button"
+          disabled={busy || name.trim().length < 2 || !email.includes('@')}
+          onClick={add}
+          className={button('primary')}
         >
-          {roles.map((entry) => (
-            <option key={entry} value={entry}>
-              {entry}
-            </option>
-          ))}
-        </select>
+          {busy ? 'Adding…' : 'Add person'}
+        </button>
       </div>
-      <button
-        type="button"
-        disabled={busy || name.trim().length < 2 || !email.includes('@')}
-        onClick={add}
-        className="h-[30px] rounded-[4px] bg-primary px-3 text-[12.5px] font-semibold text-white hover:bg-admin-primaryh disabled:opacity-40"
-      >
-        {busy ? 'Adding…' : 'Add person'}
-      </button>
-    </div>
+    </section>
   );
 }
 
-const INPUT =
-  'h-[30px] rounded-[4px] border border-admin-line bg-admin-surface px-2 text-[12.5px] text-admin-ink outline-none focus-visible:border-admin-focus';
+/** "EDITOR" as a person would read it: "Editor". The value sent to the API is unchanged. */
+function roleLabel(role: string): string {
+  return role.charAt(0).toUpperCase() + role.slice(1).toLowerCase();
+}
 
-function Action({ busy, onClick, children }: { busy: boolean; onClick: () => void; children: React.ReactNode }) {
-  return (
-    <button
-      type="button"
-      disabled={busy}
-      onClick={onClick}
-      className="h-[29px] rounded-[4px] border border-admin-line px-2.5 text-[12px] font-semibold text-admin-body hover:border-admin-focus hover:text-admin-ink disabled:opacity-40"
-    >
-      {children}
-    </button>
-  );
+function initials(name: string): string {
+  const parts = name.trim().split(/[\s._-]+/).filter(Boolean);
+  const first = parts[0]?.charAt(0) ?? '';
+  const last = parts.length > 1 ? (parts.at(-1)?.charAt(0) ?? '') : '';
+  return (first + last).toUpperCase() || '?';
+}
+
+function signedIn(iso: string): string {
+  return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
 }
