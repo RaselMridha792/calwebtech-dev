@@ -560,13 +560,15 @@ export function BeforeAfterHome({
 }
 
 /**
- * The industries grid: a card per sector with its photograph, its name, the line that says
- * what we do there and a link into its page.
+ * The industries grid: a tile per sector, its photograph under a navy fade with its name,
+ * the line that says what we do there and a link into its page.
  *
  * A grid rather than the stack of full-bleed bands the brand draws for this, at the
  * owner's request: seven bands ran the page long and gave each sector the same weight as a
- * hero. The cards keep the brand's rules — square corners, a rule instead of a border box
- * where one will do, the strong scrim over every photograph, and no shadow.
+ * hero. The tiles keep the brand's rules — square corners, no border box, no shadow, the
+ * type on the photograph's navy fade — and "not listed here" is the grid's last tile, so the
+ * rows close square: when the count would leave a gap, the first sector takes two columns,
+ * and when the note would sit alone it spans the row.
  */
 export function IndustriesGrid({
   industries,
@@ -576,6 +578,9 @@ export function IndustriesGrid({
   items: Home['industries'];
 }) {
   const { notListed } = industries;
+  const cells = items.length + 1;
+  const leadWide = cells % 3 === 2;
+  const noteWide = cells % 3 === 1;
   return (
     <section id="industries" className="content-auto bg-canvas py-20 lg:py-32">
       <div className="shell">
@@ -584,50 +589,50 @@ export function IndustriesGrid({
           <p className="body-lg mt-4 max-w-[58ch] text-ink-muted">{industries.intro}</p>
         </SectionHead>
 
-        <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((industry, index) => (
-            <li key={industry.slug} {...reveal(index)}>
+            <li key={industry.slug} className={index === 0 && leadWide ? 'lg:col-span-2' : ''} {...reveal(index)}>
               <a
                 href={`/industries/${industry.slug}/`}
-                className="group flex h-full flex-col border border-hairline transition-colors duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-hairline-strong hover:bg-canvas-raised focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+                className="group relative isolate flex aspect-[4/3] flex-col justify-end overflow-hidden bg-navy-900 p-7 text-ink-invert focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-focus lg:aspect-auto lg:h-[340px]"
               >
-                <div className="relative aspect-16/10 overflow-hidden bg-navy-900">
-                  {industry.image ? (
-                    <ResponsiveImage
-                      src={industry.image.src}
-                      alt={industry.image.alt}
-                      fill
-                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                      quality={50}
-                      className="object-cover transition-transform duration-[1600ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-safe:group-hover:scale-105"
-                    />
-                  ) : null}
-                  <div className="absolute inset-0 bg-scrim" aria-hidden="true" />
-                  <span className="meta absolute top-4 left-4 text-gold-500">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-                </div>
-
-                <div className="flex flex-1 flex-col p-6">
-                  <h3 className="heading-lg text-ink transition-colors duration-150 group-hover:text-gold-ink">
-                    {industry.name}
-                  </h3>
-                  {industry.line ? <p className="body-sm mt-2 text-ink-muted">{industry.line}</p> : null}
-                  <span className="button-label mt-auto flex items-center gap-2 pt-5 text-gold-ink">
-                    {industries.cardLinkLabel}
-                    <ArrowIcon className="w-4 transition-transform duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-safe:group-hover:translate-x-1.5" />
-                  </span>
-                </div>
+                {industry.image ? (
+                  <ResponsiveImage
+                    src={industry.image.src}
+                    alt={industry.image.alt}
+                    fill
+                    sizes={
+                      index === 0 && leadWide
+                        ? '(min-width: 1024px) 66vw, (min-width: 640px) 50vw, 100vw'
+                        : '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw'
+                    }
+                    quality={50}
+                    className="-z-20 object-cover opacity-75 transition duration-[1600ms] ease-out-quint group-hover:opacity-90 motion-safe:group-hover:scale-105"
+                  />
+                ) : null}
+                <span aria-hidden className="absolute inset-0 -z-10 bg-linear-to-t from-navy-900 via-navy-900/60 to-navy-900/5" />
+                <span aria-hidden className="meta absolute top-6 left-7 text-ink-invert-muted">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <h3 className="heading-lg">{industry.name}</h3>
+                {industry.line ? <p className="body-sm mt-2 max-w-[44ch] text-ink-invert-muted">{industry.line}</p> : null}
+                <span className="button-label mt-5 flex items-center gap-2 transition-colors duration-150 group-hover:text-gold-500">
+                  {industries.cardLinkLabel}
+                  <ArrowIcon className="w-4 transition-transform duration-420 ease-out-quint motion-safe:group-hover:translate-x-1.5" />
+                </span>
               </a>
             </li>
           ))}
+          <li className={noteWide ? 'sm:col-span-2 lg:col-span-3' : ''}>
+            <div className="flex h-full min-h-[240px] flex-col justify-between gap-6 border-t-2 border-gold-ink bg-canvas-sunken p-7">
+              <div>
+                <h3 className="heading-md text-ink">{notListed.heading}</h3>
+                <p className="body-base mt-2 max-w-[48ch] text-ink-muted">{notListed.body}</p>
+              </div>
+              <TextLink link={notListed.cta} className="self-start" />
+            </div>
+          </li>
         </ul>
-
-        <div className="mt-12 border-t border-hairline-gold pt-8">
-          <h3 className="heading-md text-ink">{notListed.heading}</h3>
-          <p className="body-base mt-2 max-w-[58ch] text-ink-muted">{notListed.body}</p>
-          <TextLink link={notListed.cta} className="mt-4 inline-block" />
-        </div>
       </div>
     </section>
   );
