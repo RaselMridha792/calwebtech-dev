@@ -168,11 +168,12 @@ export function WorkingModelSection({ data }: { data: LocationDetailView['workin
   return (
     <Section id="how-we-work" tone="ink" labelledBy="how-we-work-heading">
       <SectionHeading id="how-we-work-heading" title={data.heading} intro={data.intro} ground={groundOf('ink')} />
-      <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {/* Points on rules, not glass cards; each rule draws champagne under the pointer. */}
+      <ul className="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
         {data.points.map((point, index) => (
-          <li key={point.title} className="glass p-7" {...reveal(index)}>
-            <p className="font-display text-[15px] font-extrabold text-ink-invert-muted">{String(index + 1).padStart(2, '0')}</p>
-            <p className="mt-3 font-display text-[19px] leading-snug font-bold">{point.title}</p>
+          <li key={point.title} className="group relative border-t border-ink-invert/20 pt-7 pb-2 before:absolute before:inset-x-0 before:-top-px before:h-0.5 before:origin-left before:scale-x-0 before:bg-gold-500 before:transition-transform before:duration-500 before:ease-out-quint hover:before:scale-x-100" {...reveal(index)}>
+            <p className="meta text-ink-invert-muted transition-colors duration-150 group-hover:text-gold-500">{String(index + 1).padStart(2, '0')}</p>
+            <p className="heading-md mt-4">{point.title}</p>
             <p className="mt-3 text-[15px] leading-relaxed text-ink-invert-muted">{point.body}</p>
           </li>
         ))}
@@ -334,10 +335,10 @@ export function ApproachSection({ data }: { data: LocationsIndexView['content'][
   return (
     <Section id="working-remotely" tone="ink" labelledBy="working-remotely-heading">
       <SectionHeading id="working-remotely-heading" title={data.heading} intro={data.intro} ground="dark" />
-      <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <ul className="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
         {data.points.map((point, index) => (
-          <li key={point.title} className="glass p-7" {...reveal(index)}>
-            <p className="font-display text-[19px] leading-snug font-bold">{point.title}</p>
+          <li key={point.title} className="group relative border-t border-ink-invert/20 pt-7 pb-2 before:absolute before:inset-x-0 before:-top-px before:h-0.5 before:origin-left before:scale-x-0 before:bg-gold-500 before:transition-transform before:duration-500 before:ease-out-quint hover:before:scale-x-100" {...reveal(index)}>
+            <p className="heading-md">{point.title}</p>
             <p className="mt-3 text-[15px] leading-relaxed text-ink-invert-muted">{point.body}</p>
           </li>
         ))}
