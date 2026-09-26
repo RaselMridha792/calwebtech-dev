@@ -7,6 +7,7 @@ import {
   BookingsIcon,
   CampaignsIcon,
   CaseStudiesIcon,
+  CompareIcon,
   ContentIcon,
   DashboardIcon,
   IndustriesIcon,
@@ -64,6 +65,7 @@ const GROUPS: { label: string | null; routes: ModuleRoute[] }[] = [
       { module: 'content', href: '/admin/content/', label: 'Services', icon: <ContentIcon />, keywords: 'pages content' },
       { module: 'content', href: '/admin/industries/', label: 'Industries', icon: <IndustriesIcon />, keywords: 'sectors' },
       { module: 'content', href: '/admin/case-studies/', label: 'Case studies', icon: <CaseStudiesIcon />, keywords: 'work projects portfolio' },
+      { module: 'content', href: '/admin/before-and-after/', label: 'Before and after', icon: <CompareIcon />, keywords: 'comparison slider redesign homepage' },
       { module: 'content', href: '/admin/page-copy/', label: 'Page copy', icon: <PageCopyIcon />, keywords: 'homepage words text' },
       { module: 'media', href: '/admin/media/', label: 'Media', icon: <MediaIcon />, keywords: 'images upload photos' },
       { module: 'pageSections', href: '/admin/page-sections/', label: 'Page sections', icon: <SectionsIcon />, keywords: 'announcement' },
@@ -99,6 +101,7 @@ const CREATE: { module: AdminModule; href: string; label: string; keywords?: str
   { module: 'content', href: '/admin/content/services/new/', label: 'New service', keywords: 'add page' },
   { module: 'content', href: '/admin/industries/new/', label: 'New industry', keywords: 'add' },
   { module: 'content', href: '/admin/case-studies/new/', label: 'New case study', keywords: 'add project work' },
+  { module: 'content', href: '/admin/before-and-after/new/', label: 'New comparison', keywords: 'add before after slider' },
   { module: 'campaigns', href: '/admin/campaigns/new/', label: 'New campaign', keywords: 'add email send' },
   { module: 'subscribers', href: '/admin/subscribers/segments/new/', label: 'New segment', keywords: 'add audience' },
 ];
