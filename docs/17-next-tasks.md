@@ -9,18 +9,15 @@ changed:
 `docs/15-next-tasks.md` is done: tasks 1 to 5 (decisions 67 to 71), and the redesign the owner
 confirmed (decisions 72 to 74). Task 6, the service-by-city matrix, continues here as task 1.
 
-## Before you push anything
+## Before you start
 
-**PR #33 is open** and holds all of your work up to decision 74. The owner merges and deploys
-it. Anything pushed to `tumit` before it is merged joins that PR, unreviewed. So:
-- check with `gh pr view 33 --json state`;
-- until it says `MERGED`, commit locally and do not push;
-- once it is merged, `git pull origin main` into `tumit` and carry on.
+**PR #33 is merged and live** (production runs `16b3232` since 2026-09-27). `tumit` is `main`
+plus the docs commit that added this line, so `git pull` and start.
 
 ## What production looks like
 
-- After PR #33 is deployed, production reads six families from the database: services,
-  industries, `work`, `home`, `thank-you` and `before-and-after`. A snapshot edit in those
+- Production reads six families from the database: services, industries, `work`, `home`,
+  `thank-you` and `before-and-after`. A snapshot edit in those
   families never reaches the live site (decision 66).
 - **Every family you move into the database follows the same pattern:**
   - an importer appended to the **end** of `IMPORTERS` (`packages/db/src/import/index.ts`),
@@ -148,6 +145,12 @@ Last in docs/12's order.
 - **`e2e/home.spec.ts` expects the services promo at `/#estimate`.** Your local database
   had `/cost-calculator/` (decision 72). Find out whether the fixture or the test is wrong,
   and fix that one. Production's menu is the owner's copy; leave it.
+- **`/book-a-consultation/` throws React error #418 for every visitor outside UTC** (Open,
+  in docs/08). The server and the browser render the slot picker's text in different zones.
+  - Render what depends on the visitor's zone only after hydration, or pass the zone from the
+    server; give every formatter an explicit locale.
+  - Prove it with an e2e test that runs the page in a non-UTC `timezoneId` and fails on a page
+    error.
 
 ## Not yours — leave these alone
 
@@ -187,8 +190,7 @@ As before:
 
 ## The prompt
 
-Once PR #33 is merged, open the repo in Claude Code on `tumit` (`git pull origin main` first)
-and paste this:
+Open the repo in Claude Code on `tumit` (`git pull` first) and paste this:
 
 > Read `RULES.md`, `CLAUDE.md`, `docs/13-collaborator-handoff.md` and
 > `docs/17-next-tasks.md`, then decisions 44, 58, 59, 66, 70 and 74 in

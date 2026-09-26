@@ -1799,9 +1799,18 @@ entry on the comparison's summary, and Q1 to Q11 of `docs/16-service-city-matrix
   Switching it on earlier fails every push to `main`. The bootstrap script prints them.
 - The owner's server has 4 GB, which runs one stack. Staging and production side by side
   need 8 GB or a second server.
-- **Production reads all five database-first families from the database** (decision 66):
-  services, industries, case studies (`work`), the homepage copy (`home`) and the thank-you
-  copy (`thank-you`). Their snapshot files no longer reach the live site; a change to their
+- **The booking page mismatches on hydration outside UTC.** On production, every visitor
+  whose browser is not in UTC gets React error #418 on `/book-a-consultation/`. Checked
+  2026-09-27 in Chrome, in Dhaka and Los Angeles time, with none in UTC.
+  - The cause: the server renders the slot picker's text in UTC, and the browser renders it in
+    its own zone (`slot-picker.tsx` reads `resolvedOptions().timeZone`; several formatters
+    pass an `undefined` locale).
+  - React redraws that part and the page works, so the booking e2e tests pass.
+  - It predates PR #33, which did not touch the booking page. docs/17, task 8.
+- **Production reads six database-first families from the database**: services, industries,
+  case studies (`work`), the homepage copy (`home`) and the thank-you copy (`thank-you`) since
+  decision 66, and `before-and-after` since the deploy of `16b3232` on 2026-09-27 (decision
+  70). Their snapshot files no longer reach the live site; a change to their
   words is made from the dashboard, and a PR that changes one of those snapshots says which
   dashboard edit production needs. A new family is named in `CONTENT_DATABASE_FIRST` only
   after the deploy's import has run it on that database.
