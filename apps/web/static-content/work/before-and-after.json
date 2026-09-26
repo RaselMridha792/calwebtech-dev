@@ -24,8 +24,8 @@
   "comparisons": [
     {
       "slug": null,
-      "clientName": "Halloway Group",
-      "heading": "What changed when Halloway Group's website was redesigned?",
+      "clientName": "HelloWay",
+      "heading": "What changed when HelloWay's website was redesigned?",
       "summary": "A dated homepage rebuilt around a clear headline, a photograph and result figures, compared at the same scroll position on the same screen.",
       "before": {
         "src": "/media/home-before-helloway.jpg",
@@ -39,23 +39,7 @@
         "width": 1448,
         "height": 1086
       },
-      "metrics": [
-        {
-          "label": "Mobile load time",
-          "before": "6.8s",
-          "after": "1.6s"
-        },
-        {
-          "label": "Bounce rate",
-          "before": "71%",
-          "after": "38%"
-        },
-        {
-          "label": "Enquiries per month",
-          "before": "9",
-          "after": "54"
-        }
-      ]
+      "metrics": []
     }
   ]
 }
