@@ -35,14 +35,17 @@ function Comparison({ comparison, copy, index }: { comparison: WorkComparison; c
             size="medium"
             className="mb-8"
           />
-          <div className={dark ? '' : ' bg-navy-900 p-6'}>
-            <ComparisonTable
-              figures={comparison.metrics}
-              caption={copy.metricsLabel}
-              beforeLabel={copy.beforeLabel}
-              afterLabel={copy.afterLabel}
-            />
-          </div>
+          {/* No figures, no panel: an empty navy box is not "what moved" (decision 67). */}
+          {comparison.metrics.length > 0 ? (
+            <div className={dark ? '' : ' bg-navy-900 p-6'}>
+              <ComparisonTable
+                figures={comparison.metrics}
+                caption={copy.metricsLabel}
+                beforeLabel={copy.beforeLabel}
+                afterLabel={copy.afterLabel}
+              />
+            </div>
+          ) : null}
           {comparison.slug ? (
             <a
               href={caseStudyPath(comparison.slug)}

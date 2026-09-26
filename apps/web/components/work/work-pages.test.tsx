@@ -244,6 +244,9 @@ describe('/before-and-after/', () => {
       expect(markup).toContain(comparison.heading.replaceAll("'", '&#x27;'));
       expect(markup).toContain('type="range"');
     }
-    expect(markup).toContain('<caption');
+    // One table of figures per comparison that has figures, and none for one that has none:
+    // HelloWay's were invented and came out (decision 66).
+    const withFigures = view.comparisons.filter((comparison) => comparison.metrics.length > 0).length;
+    expect(markup.split('<caption').length - 1).toBe(withFigures);
   });
 });
