@@ -80,11 +80,19 @@ export function WhyUs({ whyUs }: { whyUs: Content['whyUs'] }) {
         <h2 className={`${h2Dark} max-w-[20ch]`} {...reveal()}>
           {whyUs.heading}
         </h2>
-        <ul className="mt-12 grid gap-x-12 gap-y-11 md:grid-cols-2 lg:grid-cols-3">
+        {/* Numbered on a rule, the rule drawing champagne from the left under the pointer. */}
+        <ul className="mt-14 grid gap-x-12 gap-y-4 md:grid-cols-2 lg:grid-cols-3">
           {whyUs.items.map((item, index) => (
-            <li key={item.title} {...reveal(index)}>
-              <h3 className="font-display text-[19px] font-bold text-ink">{item.title}</h3>
-              <p className="mt-2.5 text-[15.5px] leading-relaxed">{item.body}</p>
+            <li
+              key={item.title}
+              className="group relative border-t border-hairline pt-7 pb-8 before:absolute before:inset-x-0 before:-top-px before:h-0.5 before:origin-left before:scale-x-0 before:bg-gold-ink before:transition-transform before:duration-500 before:ease-out-quint hover:before:scale-x-100"
+              {...reveal(index)}
+            >
+              <span className="meta text-ink-muted transition-colors duration-150 group-hover:text-gold-ink">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <h3 className="heading-md mt-4 text-ink">{item.title}</h3>
+              <p className="body-base mt-3 text-ink-muted">{item.body}</p>
             </li>
           ))}
         </ul>
