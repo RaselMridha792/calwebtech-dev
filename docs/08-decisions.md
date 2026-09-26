@@ -866,6 +866,125 @@ because losing a real enquiry costs more than the spam the check stops.
     console errors. A query was typed and sent by keyboard, and the Questions filter was
     followed by keyboard.
 
+## 63. The dashboard is rebuilt: one visual system, an overview, and search
+
+*2026-09-26.* The collaborator found the dashboard flat and hard to read — navy on navy, 9px
+labels, every screen laid out its own way, and an overview that was still a placeholder — and
+asked for it to be rebuilt as a modern, interactive tool a non-coder can use, as polished as
+the public site, with nothing it does taken away. Before building, a dozen admin products were
+looked at (Linear, Vercel, Stripe, Resend, Supabase, Attio, Payload, Sanity, Strapi, Shopify
+Polaris, Tailwind Catalyst, shadcn and Tremor), along with the dashboard guidance from Nielsen
+Norman Group and Smashing Magazine. A design was drawn first on a Claude Design canvas
+(https://claude.ai/artifact/6PQPCodDy9Sz39HjLExZq2, private to the owner's account), then
+built.
+
+- **No token was added or changed.** RULES.md, section 1 puts tokens with the owner, so the
+  rebuild uses only what `theme.css` already has:
+  - the admin's navy steps for surfaces;
+  - the brand's cream (`ink-invert`, `ink-invert-muted`) for text, where the old screens used
+    the cooler `admin-ink` and `admin-body`;
+  - the brand's champagne on a dark ground for the one primary action per screen. That is the
+    same gold-on-navy button as the homepage hero (`bg-gold-500 text-on-gold`), and the rule
+    the teal lint cites allows it.
+
+  Gold also marks the current place (the active menu item, the current tab) and the small
+  eyebrow over each title. Teal stays on round dots and bold figures, as the lint allows. A
+  light theme would need light values for `result` and `danger` inside the admin, which is a
+  token decision, so it was not built (see Open).
+- **One kit, `apps/web/components/admin/ui/`.**
+  - `styles.ts` holds class strings for cards, controls, buttons, pills, tags and tables:
+    - controls are 40px, and 44px on a touch screen (RULES.md, section 7);
+    - labels sit above fields at 13px, not in 9px capitals;
+    - body text is 14px.
+  - `page.tsx` has the frame every screen uses: `AdminPage`, `PageHeader`, `Panel`,
+    `EmptyState`, `LinkTabs`, `ChipLinks`, `Facts` and `BackLink`.
+  - `charts.tsx` draws stat cards, sparklines and daily bars as SVG on the server, because a
+    chart library would be most of a route's own-code budget.
+
+  The kit's column is `#admin-main`, not `#main`: the marketing layout pads `#main` for its
+  fixed header, and that padding showed up as a gap above every admin title.
+- **The shell.**
+  - The sidebar carries the real logo instead of a typed wordmark, as CLAUDE.md requires.
+  - The Dashboard item no longer lights up on every screen. It matched every path by prefix.
+  - Settings moved into the Site group.
+  - The sidebar narrows to a rail of icons. A cookie remembers it, so a reload draws the page
+    the way it was left.
+  - The user menu at its foot holds sign-out, and keeps the keyboard contract RULES.md sets:
+    Escape closes it and focus returns to its button.
+  - The top bar has a real breadcrumb, a "View site" link, and **search or jump to**, opened
+    with Ctrl K or ⌘K. It lists:
+    - every screen the role can open;
+    - the "New …" actions the role can take;
+    - a search of leads or subscribers for the words typed.
+
+    It is a native `<dialog>`, loaded only when first opened, so no screen pays for it
+    beforehand.
+  - A skip link comes first in the tab order. Browser controls are dark
+    (`color-scheme: dark`). The focus ring is the admin's own focus tone, because cobalt did
+    not show on navy.
+- **The overview is built** (docs/12, screen 1). `GET /admin/overview` answers in one read,
+  and a section is null when the role cannot open its module, so the API decides what each
+  role's first screen shows. It carries:
+  - leads this week and this month, each against the period before;
+  - thirty days of daily counts in the business timezone;
+  - where leads stand, and where they came from;
+  - the latest five leads, with no addresses, since a viewer reads this screen too;
+  - the next calls, the audience, the last campaign's delivery, open and click rates;
+  - recently edited content, and scheduled services past their time.
+
+  The page greets by the business's clock and says in one sentence what is waiting. It lists
+  what needs attention, each item linked to where it is dealt with: overdue follow-ups, new
+  leads with no owner, unpublished pages, draft campaigns, and a site still hidden from
+  search engines. It is tested against the imported content and leads placed at known ages.
+- **The leads inbox.**
+  - Status tabs with counts. Choosing Won or Lost brings closed leads into the counts, or
+    theirs would read zero.
+  - Filters are pills with their labels inside them.
+  - While a lead is open, the table drops its secondary columns.
+  - The panel leads with the pipeline and offers "Email" and "Call".
+  - The page scrolls as one, with the table's header row sticking. At first the table
+    scrolled in a box of its own, and a short window squeezed it to two rows (the
+    collaborator caught it).
+- **Every other screen** — bookings and availability, subscribers, segments and suppression,
+  campaigns, the composer and the report, services, industries, case studies and page copy,
+  media, team, settings, the audit log, the two placeholders, and sign-in — moved onto the
+  same frame. Each one follows one of two patterns:
+  - **Listings:** a header with the count and the one primary action, then link tabs or filter
+    chips, then rows in a card. The whole row is clickable, carries its state as a pill with a
+    dot, and has a real empty state.
+  - **Editors:** the fields in cards on the left, with a plain line of help for each group.
+    Publishing, save, delete and the search result sit in a column on the right that stays
+    in view as the page scrolls.
+
+  A few things were added in passing:
+  - The bookings list pages; it used to stop at twenty-five.
+  - The bookings list and a booking's record read times on the business's clock.
+  - The media library gets a search box. The page already read the parameter.
+  - A segment's field errors are shown as words.
+  - Sign-in shows the logo, and the typed wordmark component is deleted.
+
+  Copy that only explained the machinery ("committed snapshot", "CONTENT_DATABASE_FIRST") now
+  says what a visitor sees, and where a server setting has to change it still names it. No
+  string a test asserts was changed except two in `copy-editor.test.tsx`, which followed its
+  groups from `fieldset`/`legend` to headed sections.
+
+  Moving between screens shows a skeleton at once (`(shell)/loading.tsx`). A leads filter is
+  a client-side navigation through Next's `Form`, so it no longer reloads the page.
+- **Verified.**
+  - Every admin screen, 35 routes, at 360, 768 and 1440 in Chrome: no horizontal overflow,
+    exactly one `h1` and one `main`, and no console errors. The full lead record had no `h1`
+    before this pass either; it has one now.
+  - By keyboard:
+    - the skip link is the first stop;
+    - Ctrl K opens the palette with focus in its combobox, the arrows and Enter go to a screen,
+      and Escape closes it;
+    - the rail survives a reload;
+    - the user menu and the phone drawer close on Escape and hand focus back.
+  - Own JavaScript per route stays under the 20 kB gate: 5.9 to 13.2 kB on admin routes, up
+    from 3.4 to 9.6 kB. Every marketing route's figures are byte for byte what they were.
+  - Tests: web 465, API 260, shared 259, plus the overview's integration test. Lint and type
+    checks are clean.
+
 ## Open
 
 - **Nothing reports abandonment yet.** The drop-off per step is in the data (each draft lead's
@@ -954,6 +1073,12 @@ because losing a real enquiry costs more than the spam the check stops.
   `CONTENT_DATABASE_FIRST`; production names `services` alone today. Until a family is named,
   what the dashboard saves for it is stored and audited but the site keeps its snapshot, and the
   page copy screen says so beside each row.
+- **The dashboard has one theme, the dark one** (decision 63). A light theme would need light
+  values for `result` and `danger` inside `[data-theme='admin']`, which is a token decision for
+  the owner (RULES.md, section 1).
+- **Page sections and Forms and routing are still placeholders** (decision 63 restyled them,
+  nothing more). The enquiry types behind the contact form are live data that a Forms screen
+  could edit.
 - **The service-by-city matrix (task 3.2) is not built** and waits for the owner to say whether
   it is still wanted (docs/14, task 7). The locations index and the two city pages are live.
 - **Nothing links to `/search/` yet** (decision 62). A search link in the header or footer is a
