@@ -1600,6 +1600,68 @@ changed, and the dashboard edits the menus as before.
 - **Locally the services promo leads to `/cost-calculator/`**, not `/#estimate`, which is what
   `e2e/home.spec.ts` expects of it. That is the local database's menu, not this change.
 
+## 73. The marketing site loses its boxes: rows, rules, tiles and plates
+
+*2026-09-26.* Asked for by the owner's side: the site read as a template, a box around every
+list. **This changes section layouts across the marketing site, so under RULES.md section 1 it
+is the owner's to confirm or reverse.** No token, copy, link target or content model changed;
+everything the dashboard edits is edited as before, and each change is its own commit on
+`tumit` so any one can be reverted alone.
+
+- **The direction is the brand book's own rule 2, "no boxes"**, which most sections broke. A
+  list is now numbered rows on hairlines, entries on a rule that draws champagne from the left
+  under the pointer, photograph tiles under a navy fade, or a navy plate for the one thing a
+  section wants chosen. The `lift` hover (a shadow and a 4px rise) is gone from every card.
+- **The homepage**, section by section:
+  - services: a row fills with navy from the left on hover, its type turning cream; the old
+    hover animated padding, which moved layout;
+  - work: the filters are tabs on a rule; the lead case study is a spread beside a large
+    photograph; the other cards lose their box, the photograph slowly zooms, the tags are one
+    dotted line of `meta`;
+  - industries: photograph tiles with the sector's type on a navy fade. "Not listed here" is
+    the grid's last tile, and the first sector takes two columns when the count would leave a
+    gap, so seven sectors no longer leave one alone on the last row;
+  - the reasons to stay, awards, and the stack are numbered rows; the process is a timeline
+    with a marker at each step; client quotes stand on rules under a large quote mark;
+  - articles and locations lose their boxes. **The article entries now link to the article**:
+    they looked like links and went nowhere;
+  - pricing: shapes on a rule, the most common one a navy plate carrying its label;
+  - the closing booking ask is a navy plate; every filled action shares one form with an
+    arrow that steps on hover (`ActionLink` in `components/home/parts.tsx`);
+  - the client names fade at the band's edges; three raised-cream sections in a row now
+    alternate with canvas and sunken grounds (rule 3).
+- **Across the site**: the shared link, case study and testimonial cards (`site/cards.tsx`,
+  used by about 28 index and detail sections), the featured article, the team portraits, the
+  glossary terms, the industry and location cards, the company question answers, award preview
+  and technology groups, and the points on the industries and locations dark bands all take
+  the same forms. Landing pages (`/lp/`) are left alone: they are campaign pages with their own
+  approved design.
+- **The work filters** (`/work/`) were a box of chips in three columns, with dead options
+  showing "(0)". They are a toolbar of three menus (native `<details>`, so they work without
+  script), each naming its choice; the list shows every term with its count, and a term that
+  would lead to nothing is shown but not a link. The filters in force sit under the toolbar as
+  pills that remove themselves, beside Clear filters. Every option is still a link, so each
+  view is still a server-rendered, shareable URL. `FilterMenus` (a few hundred bytes of
+  script on `/work/` only) keeps one menu open at a time and closes it on an outside click or
+  Escape. The pagination is numbers on a rule. Insight topics are tabs on a rule to match.
+- **Fixes found on the way**:
+  - champagne on navy was `gold-ink` (the light-ground gold, 1.8:1) in the estimate band's
+    bullets, the work summary's figures and a comparison's "after" figure. They are `gold-500`.
+    **This closes the Open entry on the "after" figure**;
+  - four focus rings still drew the old cobalt `outline-primary`; they use `outline-focus`;
+  - `hover:bg-navy-900-invert/15` on two glass buttons named a colour that does not exist, so
+    they had no hover;
+  - champagne stays off headings and quote marks, which the brand test in
+    `services/sections.test.tsx` asserts for the shared cards.
+- **Checked**: type check, lint and the 471 web unit tests pass. Every page above answers 200
+  with no sideways scroll and no script error at 360, 768 and 1440; the work filter menus open,
+  close on an outside click and on Escape (focus returns to the button) at 360 and 1440. The
+  Playwright suite was not run (its browsers are not installed here), nor the budget build;
+  the only new script is `FilterMenus`.
+- **Production** reads the homepage, services, industries and work from the database
+  (decision 66). This changes only components, so it reaches production with the deploy; no
+  dashboard edit is needed.
+
 ## Open
 
 - **Stored redirects are written but never served** (found while planning task 6,
@@ -1733,10 +1795,6 @@ changed, and the dashboard edits the menus as before.
   studies that must stay first as Featured.
 - **Not editable from the dashboard yet:** the proof band's figures and rating (shared with the
   homepage). A case study's testimonials and `/before-and-after/` are (decision 70).
-- **The "after" figure of a comparison is hard to read.** On `/before-and-after/` and the
-  homepage it is `text-gold-ink` on navy. It shows only when a comparison has figures, and
-  HelloWay's have none (decision 67). The owner's call: `gold-500` is the brand's gold for dark
-  grounds.
 - Outside the five database-first families, content is still edited by changing a snapshot
   and deploying (decision 43). Families move into the database one at a time. Each needs its mapper
   extended or its snapshot corrected where the two disagree, and an owner's decision for
