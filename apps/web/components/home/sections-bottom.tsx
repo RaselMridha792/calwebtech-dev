@@ -407,7 +407,7 @@ export function Recognition({
 
 export function Insights({ insights, posts }: { insights: Content['insights']; posts: Home['posts'] }) {
   return (
-    <section id="insights" className="content-auto bg-canvas-raised py-20 lg:py-28">
+    <section id="insights" className="content-auto bg-canvas py-20 lg:py-28">
       <div className="shell">
         <SectionHead link={insights.link} className="mb-12">
           <h2 className={h2Dark}>{insights.heading}</h2>
@@ -476,7 +476,7 @@ export function Whitepaper({ whitepaper, guide }: { whitepaper: Content['whitepa
 
 export function Locations({ locations, items }: { locations: Content['locations']; items: Home['locations'] }) {
   return (
-    <section id="locations" className="content-auto bg-canvas-raised py-20 lg:py-28">
+    <section id="locations" className="content-auto bg-canvas-sunken py-20 lg:py-28">
       <div className="shell">
         <div className="max-w-[62ch]" {...reveal()}>
           <h2 className={h2Dark}>{locations.heading}</h2>
