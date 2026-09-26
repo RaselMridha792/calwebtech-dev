@@ -241,12 +241,15 @@ function CaseStudyLink({ project, label, lead }: { project: HomeProject; label: 
       href={`/work/${project.slug}/`}
       className={
         lead
-          ? 'button-label mt-7 inline-flex h-12 items-center bg-navy-900 px-6 text-ink-invert transition-colors duration-150 after:absolute after:inset-0 hover:bg-navy-700'
+          ? 'button-label mt-8 inline-flex h-12 items-center gap-3 bg-navy-900 px-6 text-ink-invert transition-colors duration-150 after:absolute after:inset-0 group-hover:bg-navy-700'
           : 'button-label mt-6 inline-block text-gold-ink transition-colors duration-150 after:absolute after:inset-0 hover:text-gold-600'
       }
     >
       {label}
       <span className="sr-only">{`: ${project.clientName}`}</span>
+      {lead ? (
+        <ArrowIcon className="w-4 transition-transform duration-420 ease-out-quint motion-safe:group-hover:translate-x-1" />
+      ) : null}
     </a>
   );
 }
@@ -263,27 +266,27 @@ function LeadProject({
   const { quote } = project;
   const quoteByline = quote ? byline(quote.role, quote.company) : '';
   return (
+    // The lead project is a spread, not a box: a large photograph beside its story, the figures
+    // on a rule and the client's own words under them.
     <article
       data-work-filter={filterKey}
-      className={`group relative overflow-hidden border border-hairline transition-colors duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)] focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-focus hover:bg-canvas lg:col-span-2 ${project.image ? 'grid lg:grid-cols-2' : ''}`}
+      className="group relative grid items-center gap-10 focus-within:outline-2 focus-within:outline-offset-8 focus-within:outline-focus lg:col-span-2 lg:grid-cols-12 lg:gap-14"
     >
       {project.image ? (
-        <div className="relative min-h-[280px] bg-canvas-sunken">
+        <div className="relative aspect-[4/3] overflow-hidden bg-canvas-sunken lg:col-span-7">
           <ResponsiveImage
             src={project.image.src}
             alt={project.image.alt}
             fill
-            sizes="(min-width: 1024px) 50vw, 100vw"
-            className="object-cover"
+            sizes="(min-width: 1024px) 58vw, 100vw"
+            className="object-cover transition-transform duration-[1600ms] ease-out-quint motion-safe:group-hover:scale-[1.04]"
           />
         </div>
       ) : null}
-      <div className="p-8 lg:p-10">
+      <div className={project.image ? 'lg:col-span-5' : 'lg:col-span-12'}>
         <Tags tags={project.tags} />
-        <h3 className="mt-5 font-display text-[26px] leading-tight font-extrabold text-ink lg:text-[30px]">
-          {project.clientName}
-        </h3>
-        <p className="mt-3 leading-relaxed">{project.summary}</p>
+        <h3 className="display-md mt-4 text-ink">{project.clientName}</h3>
+        <p className="body-lg mt-4 text-ink-muted">{project.summary}</p>
         <Metrics metrics={project.metrics} lead />
         {quote ? (
           <figure className="mt-7 border-t border-hairline pt-6">
