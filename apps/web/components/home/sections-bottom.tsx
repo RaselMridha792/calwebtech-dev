@@ -172,17 +172,24 @@ export function ProcessTimeline({ process, steps }: { process: Content['process'
           <p className="mt-4 max-w-[58ch] text-[17px] leading-relaxed">{process.intro}</p>
         </SectionHead>
         {steps.length > 0 ? (
-          <ol className="grid gap-6 md:grid-cols-2 lg:grid-cols-5">
+          // A timeline: one rule runs under every step with a marker where each begins, the
+          // first filled. Under the pointer a step's stretch of the rule draws in champagne and
+          // its marker fills.
+          <ol className="grid gap-x-6 gap-y-10 md:grid-cols-2 lg:grid-cols-5">
             {steps.map((step, index) => (
               <li
                 key={step.title}
-                className={`border-t-2 pt-5 ${index === 0 ? 'border-ink' : 'border-hairline'}`}
+                className="group relative border-t-2 border-hairline pt-8 before:absolute before:inset-x-0 before:-top-0.5 before:h-0.5 before:origin-left before:scale-x-0 before:bg-gold-ink before:transition-transform before:duration-500 before:ease-out-quint hover:before:scale-x-100"
                 {...reveal(index)}
               >
-                <p className="font-display text-[15px] font-extrabold text-ink">Step {index + 1}</p>
-                <h3 className="mt-1.5 font-display text-[19px] font-bold text-ink">{step.title}</h3>
-                <p className="mt-2.5 text-[14.5px] leading-relaxed">{step.summary}</p>
-                <p className="mt-3 text-[13px]">{step.timing}</p>
+                <span
+                  aria-hidden
+                  className={`absolute -top-[7px] left-0 h-3 w-3 border-2 border-ink transition-colors duration-200 group-hover:bg-gold-ink group-hover:border-gold-ink ${index === 0 ? 'bg-ink' : 'bg-canvas-raised'}`}
+                />
+                <p className="meta text-ink-muted uppercase">Step {index + 1}</p>
+                <h3 className="heading-md mt-2 text-ink">{step.title}</h3>
+                <p className="body-sm mt-3 text-ink-muted">{step.summary}</p>
+                <p className="meta mt-4 text-ink">{step.timing}</p>
               </li>
             ))}
           </ol>
