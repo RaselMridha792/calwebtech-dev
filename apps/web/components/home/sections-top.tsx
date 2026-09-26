@@ -363,14 +363,16 @@ function WorkFilters({ filters }: { filters: string[] }) {
     ...filters.map((label, index) => ({ id: `work-filter-${String(index)}`, label })),
   ];
   return (
-    <fieldset className="mb-9">
+    <fieldset className="mb-12">
       <legend className="sr-only">Filter the work by industry</legend>
       <style dangerouslySetInnerHTML={{ __html: css }} />
-      <div className="flex flex-wrap gap-2">
+      {/* Tabs on a rule, not a row of chips: the chosen one is ink with a champagne rule
+          drawn under it, the others muted. */}
+      <div className="flex flex-wrap gap-x-8 gap-y-2 border-b border-hairline">
         {options.map((option, index) => (
           <label
             key={option.id}
-            className="inline-flex h-10 cursor-pointer items-center bg-canvas-sunken px-4 text-[14.5px] font-semibold text-ink hover:bg-line has-checked:bg-navy-900 has-checked:text-ink-invert has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-primary"
+            className="relative -mb-px inline-flex cursor-pointer items-center py-3.5 text-[15px] font-semibold text-ink-muted transition-colors duration-150 after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:origin-left after:scale-x-0 after:bg-gold-ink after:transition-transform after:duration-420 after:ease-out-quint hover:text-ink has-checked:text-ink has-checked:after:scale-x-100 has-focus-visible:outline-2 has-focus-visible:outline-offset-4 has-focus-visible:outline-focus motion-reduce:after:transition-none"
           >
             <input type="radio" name="work-filter" id={option.id} defaultChecked={index === 0} className="sr-only" />
             {option.label}
