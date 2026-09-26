@@ -1,6 +1,8 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { CloseIcon } from '@/components/admin/icons';
+import { ERROR, HELP, INPUT, LABEL, TAG, button } from '@/components/admin/ui/styles';
 import { MutationError, adminMutate } from '@/lib/admin/mutate';
 
 /**
@@ -48,18 +50,13 @@ export function TagEditor({ subscriberId, tags, mayWrite }: { subscriberId: stri
   }
 
   return (
-    <section className="mt-8 border-t border-admin-line pt-5">
-      <h2 className="text-[9.5px] font-bold tracking-[0.12em] text-admin-muted uppercase">Tags</h2>
-
+    <div className="flex flex-col gap-5">
       {current.length === 0 ? (
-        <p className="mt-2 text-[12.5px] text-admin-body">No tags.</p>
+        <p className="text-[14px] text-ink-invert-muted">No tags yet.</p>
       ) : (
-        <ul className="mt-3 flex flex-wrap gap-2">
+        <ul aria-label="Current tags" className="flex flex-wrap gap-2">
           {current.map((tag) => (
-            <li
-              key={tag}
-              className="flex h-8 items-center gap-2 rounded-[4px] border border-admin-line px-3 text-[12.5px] text-admin-ink"
-            >
+            <li key={tag} className={`${TAG} h-8 gap-1.5 pr-1 text-[13px]`}>
               {tag}
               {mayWrite ? (
                 <button
@@ -69,9 +66,9 @@ export function TagEditor({ subscriberId, tags, mayWrite }: { subscriberId: stri
                   onClick={() => {
                     setCurrent(current.filter((entry) => entry !== tag));
                   }}
-                  className="text-admin-muted hover:text-admin-ink disabled:opacity-40"
+                  className="flex size-6 items-center justify-center rounded text-admin-muted transition-colors duration-150 hover:bg-admin-mist hover:text-ink-invert disabled:opacity-40"
                 >
-                  ×
+                  <CloseIcon className="size-3.5" />
                 </button>
               ) : null}
             </li>
@@ -81,13 +78,17 @@ export function TagEditor({ subscriberId, tags, mayWrite }: { subscriberId: stri
 
       {mayWrite ? (
         <>
-          <div className="mt-3 flex flex-wrap items-end gap-2">
-            <label className="flex min-w-[200px] flex-1 flex-col gap-[3px]">
-              <span className="text-[9.5px] font-bold tracking-[0.12em] text-admin-muted uppercase">Add a tag</span>
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="subscriber-tag-draft" className={LABEL}>
+              Add a tag
+            </label>
+            <div className="flex flex-wrap items-center gap-2">
               <input
+                id="subscriber-tag-draft"
                 value={draft}
                 disabled={busy}
                 maxLength={40}
+                aria-describedby="subscriber-tag-help"
                 onChange={(event) => {
                   setDraft(event.target.value);
                 }}
@@ -98,35 +99,31 @@ export function TagEditor({ subscriberId, tags, mayWrite }: { subscriberId: stri
                   }
                 }}
                 placeholder="newsletter"
-                className="h-[30px] w-full rounded-[4px] border border-admin-line bg-admin-surface px-2 text-[12.5px] text-admin-ink outline-none focus-visible:border-admin-focus"
+                className={`${INPUT} min-w-50 flex-1`}
               />
-            </label>
-            <button
-              type="button"
-              onClick={add}
-              disabled={busy || !draft.trim()}
-              className="h-8 rounded-[4px] border border-admin-line px-3 text-[12.5px] font-semibold text-admin-body hover:border-admin-focus disabled:opacity-40"
-            >
-              Add
-            </button>
+              <button type="button" onClick={add} disabled={busy || !draft.trim()} className={button('secondary')}>
+                Add
+              </button>
+            </div>
+            <p id="subscriber-tag-help" className={HELP}>
+              Short and lower-case, like “newsletter” or “vip”. Press Enter or Add to put it in the set.
+            </p>
           </div>
 
           {error ? (
-            <p role="alert" className="mt-2 text-[12.5px] text-danger">
+            <p role="alert" className={ERROR}>
               {error}
             </p>
           ) : null}
 
-          <button
-            type="button"
-            onClick={save}
-            disabled={busy || !changed}
-            className="mt-3 h-9 rounded-[4px] bg-primary px-4 text-[12.5px] font-semibold text-white hover:bg-admin-primaryh disabled:opacity-40"
-          >
-            {busy ? 'Saving…' : 'Save tags'}
-          </button>
+          <div className="flex flex-wrap items-center gap-3">
+            <button type="button" onClick={save} disabled={busy || !changed} className={button('primary')}>
+              {busy ? 'Saving…' : 'Save tags'}
+            </button>
+            {changed && !busy ? <span className="text-[13px] text-admin-muted">Not saved yet.</span> : null}
+          </div>
         </>
       ) : null}
-    </section>
+    </div>
   );
 }
