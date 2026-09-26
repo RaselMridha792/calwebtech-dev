@@ -524,28 +524,27 @@ export function PricingBands({ pricing, tiers }: { pricing: Content['pricing']; 
         <div className="lg:col-span-5" {...reveal()}>
           <h2 className={h2Dark}>{pricing.heading}</h2>
           <p className="body-lg mt-5 text-ink-muted">{pricing.intro}</p>
-          <a
-            href={pricing.cta.href}
-            className="button-label mt-7 inline-flex h-12 items-center bg-navy-900 px-6 text-ink-invert transition-colors duration-150 hover:bg-navy-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
-          >
-            {pricing.cta.label}
-          </a>
+          <ActionLink link={pricing.cta} className="mt-7" />
         </div>
         {tiers.length > 0 ? (
+          // Three shapes side by side on a rule; the one most clients choose is a navy plate,
+          // its label in champagne at the top, instead of a box with a tab hanging off it.
           <ul className="grid gap-5 sm:grid-cols-3 lg:col-span-7">
             {tiers.map((tier, index) => (
               <li
                 key={tier.name}
-                className={`relative p-6 ${tier.highlighted ? 'border-2 border-ink' : 'border border-hairline'}`}
+                className={`group relative flex flex-col p-7 ${
+                  tier.highlighted
+                    ? 'bg-navy-900 text-ink-invert'
+                    : 'border-t-2 border-hairline-strong before:absolute before:inset-x-0 before:-top-0.5 before:h-0.5 before:origin-left before:scale-x-0 before:bg-gold-ink before:transition-transform before:duration-500 before:ease-out-quint hover:before:scale-x-100'
+                }`}
                 {...reveal(index)}
               >
-                {tier.highlighted && pricing.highlightLabel ? (
-                  <p className="eyebrow absolute -top-3 left-6 bg-navy-900 px-2.5 py-1.5 text-ink-invert">
-                    {pricing.highlightLabel}
-                  </p>
-                ) : null}
-                <h3 className="heading-md text-ink">{tier.name}</h3>
-                <p className="body-sm mt-3 text-ink-muted">{tier.summary}</p>
+                <p className={`meta uppercase ${tier.highlighted ? 'text-gold-500' : 'text-ink-muted'}`}>
+                  {tier.highlighted && pricing.highlightLabel ? pricing.highlightLabel : String(index + 1).padStart(2, '0')}
+                </p>
+                <h3 className={`heading-md mt-5 ${tier.highlighted ? 'text-ink-invert' : 'text-ink'}`}>{tier.name}</h3>
+                <p className={`body-sm mt-3 ${tier.highlighted ? 'text-ink-invert-muted' : 'text-ink-muted'}`}>{tier.summary}</p>
               </li>
             ))}
           </ul>
@@ -585,10 +584,7 @@ export function BookSection({ book, action }: { book: Content['book']; action: R
             <ul className="mt-9 space-y-5 border-t border-hairline pt-8">
               {book.points.map((point) => (
                 <li key={point.title} className="flex gap-4">
-                  <span
-                    className="grid h-10 w-10 shrink-0 place-items-center border border-hairline bg-canvas-raised text-ink"
-                    aria-hidden="true"
-                  >
+                  <span className="mt-1 shrink-0 text-gold-ink [&_svg]:h-5 [&_svg]:w-5" aria-hidden="true">
                     {POINT_ICONS[point.icon]}
                   </span>
                   <span>
