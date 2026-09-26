@@ -23,6 +23,7 @@ export function leadsUrl(query: AdminLeadQuery, changes: Partial<AdminLeadQuery>
   if (next.serviceSlug) params.set('serviceSlug', next.serviceSlug);
   if (next.campaignSlug) params.set('campaignSlug', next.campaignSlug);
   if (next.enquiry) params.set('enquiry', next.enquiry);
+  if (next.brief) params.set('brief', next.brief);
   if (next.includeClosed) params.set('includeClosed', 'true');
   if (next.sort !== 'received') params.set('sort', next.sort);
   if (next.dir !== 'desc') params.set('dir', next.dir);

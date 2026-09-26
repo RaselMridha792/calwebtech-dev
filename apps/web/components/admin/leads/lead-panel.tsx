@@ -1,4 +1,11 @@
-import type { AdminLeadDetail, AdminLeadQuery, AdminLeadTimelineEntry } from '@calwebtech/shared';
+import {
+  BRIEF_STEP_LABELS,
+  FORMS_PROJECT_STEPS,
+  FORMS_PROJECT_STEP_COUNT,
+  type AdminLeadDetail,
+  type AdminLeadQuery,
+  type AdminLeadTimelineEntry,
+} from '@calwebtech/shared';
 import Link from 'next/link';
 import { CloseIcon } from '../icons';
 import { KICKER, button, iconButton } from '../ui/styles';
@@ -57,6 +64,13 @@ export function LeadPanel({
       </Section>
 
       <Section heading={submissionHeading(lead.type)} id="lead-submission">
+        {lead.unfinishedBriefStep === null ? null : (
+          <p className="mb-3.5 rounded-lg border border-dashed border-admin-line bg-admin-surface px-3 py-2.5 text-[13px] leading-[1.55] text-ink-invert-muted">
+            <span className="font-semibold text-ink-invert">Not sent.</span> They stopped at step{' '}
+            {lead.unfinishedBriefStep} of {FORMS_PROJECT_STEP_COUNT}, {briefStepLabel(lead.unfinishedBriefStep)}. This is what
+            they had typed so far; they were not told it was saved.
+          </p>
+        )}
         <Fields rows={submissionRows(lead)} />
       </Section>
 
@@ -295,6 +309,11 @@ function activityText(entry: Extract<AdminLeadTimelineEntry, { kind: 'activity' 
     default:
       return entry.type.replace(/_/g, ' ');
   }
+}
+
+function briefStepLabel(step: number): string {
+  const key = FORMS_PROJECT_STEPS[step - 1];
+  return key ? BRIEF_STEP_LABELS[key].toLowerCase() : 'an unknown step';
 }
 
 function submissionHeading(type: AdminLeadDetail['type']): string {

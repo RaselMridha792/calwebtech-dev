@@ -2,6 +2,7 @@ import type { AdminLeadList, AdminLeadListItem, AdminLeadQuery } from '@calwebte
 import Link from 'next/link';
 import { SortIcon } from '../icons';
 import { CHECK, TAG } from '../ui/styles';
+import { UnfinishedBrief } from './brief-marker';
 import { budgetShort, received, typeLabel } from './format';
 import { leadPanelUrl, sortUrl } from './query-url';
 import { StatusPill } from './status-pill';
@@ -142,7 +143,11 @@ function Row({
       {compact ? null : <Cell title={lead.company}>{lead.company ?? '—'}</Cell>}
 
       <td className="border-t border-admin-line2 px-3">
-        <span className={TAG}>{typeLabel(lead.type)}</span>
+        {lead.unfinishedBriefStep === null ? (
+          <span className={TAG}>{typeLabel(lead.type)}</span>
+        ) : (
+          <UnfinishedBrief step={lead.unfinishedBriefStep} />
+        )}
       </td>
 
       {compact ? null : <Cell title={lead.source}>{lead.source ?? '—'}</Cell>}

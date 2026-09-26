@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { LeadsIcon } from '../icons';
 import { EmptyState as Empty } from '../ui/page';
 import { TAG, button } from '../ui/styles';
+import { UnfinishedBrief } from './brief-marker';
 import { budgetShort, received, typeLabel } from './format';
 import { leadPanelUrl, leadsUrl } from './query-url';
 import { StatusPill } from './status-pill';
@@ -112,7 +113,11 @@ export function MobileList({
             </span>
             <span className="flex flex-wrap items-center gap-2">
               <StatusPill status={lead.status} />
-              <span className={TAG}>{typeLabel(lead.type)}</span>
+              {lead.unfinishedBriefStep === null ? (
+                <span className={TAG}>{typeLabel(lead.type)}</span>
+              ) : (
+                <UnfinishedBrief step={lead.unfinishedBriefStep} />
+              )}
               {lead.budgetBand ? (
                 <span className="text-[12.5px] text-ink-invert-muted tabular-nums">{budgetShort(lead.budgetBand)}</span>
               ) : null}
