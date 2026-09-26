@@ -221,3 +221,48 @@ export function emailJobId(job: {
   if (subject === undefined) throw new Error(`emailJobId: a ${job.template} job names no lead, booking or campaign test`);
   return `${job.template}-${subject}`;
 }
+
+/**
+ * A job on the email queue that names a row of the email outbox (docs/08-decisions.md, 71).
+ * The row holds the email, written with the lead or the booking it belongs to; the job only
+ * points at it, so what is sent is what was committed.
+ */
+export const emailOutboxJobSchema = z.object({ outboxId: z.string().min(1) });
+export type EmailOutboxJob = z.infer<typeof emailOutboxJobSchema>;
+
+/**
+ * An outbox row's job id, and the provider's idempotency key when it is sent. One row is one
+ * job and one email, however often the API and the worker's sweep add it. BullMQ does not
+ * allow ':' in custom ids, and a cuid has none.
+ */
+export function emailOutboxJobId(outboxId: string): string {
+  return `outbox-${outboxId}`;
+}
+
+const DAY_SECONDS = 24 * 60 * 60;
+
+/**
+ * How an email job is retried, and how long it stays in Redis: a day once sent, a week if
+ * every attempt failed. The payload itself lives in Postgres for an outbox job.
+ */
+export const EMAIL_JOB_OPTIONS = {
+  attempts: 5,
+  backoff: { type: 'exponential', delay: 30_000 },
+  removeOnComplete: { age: DAY_SECONDS },
+  removeOnFail: { age: 7 * DAY_SECONDS },
+} as const;
+
+/**
+ * An outbox row as a job for the email queue, delayed until its time. The API adds this
+ * right after its transaction commits and the worker's sweep adds the same for any row still
+ * pending, so the two can never disagree about the id, the delay or the retries.
+ */
+export function emailOutboxQueueEntry(row: { id: string; template: string; sendAt: Date }, now: Date = new Date()) {
+  const delay = row.sendAt.getTime() - now.getTime();
+  const data: EmailOutboxJob = { outboxId: row.id };
+  return {
+    name: row.template,
+    data,
+    opts: { ...EMAIL_JOB_OPTIONS, jobId: emailOutboxJobId(row.id), ...(delay > 0 ? { delay } : {}) },
+  };
+}
