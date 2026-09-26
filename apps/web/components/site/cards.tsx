@@ -172,7 +172,11 @@ export function CaseStudyCard({
   );
 }
 
-/** A client quote with name, role and company, on a light or dark ground. */
+/**
+ * A client quote with name, role and company, on a light or dark ground: on a rule under a
+ * large champagne mark, not in a box or glass card, with the person at the foot so quotes
+ * side by side end together.
+ */
 export function TestimonialCard({
   testimonial,
   ground = 'light',
@@ -185,12 +189,17 @@ export function TestimonialCard({
   const dark = ground === 'dark';
   const who = byline(testimonial.role, testimonial.company);
   return (
-    <figure className={`flex h-full flex-col  p-7 ${dark ? 'glass' : 'border border-hairline bg-canvas-raised'}`}>
-      {showRating ? <Stars rating={testimonial.rating} className="mb-4 text-[15px]" /> : null}
-      <blockquote className={`flex-1 text-[16px] leading-relaxed ${dark ? '' : 'text-ink'}`}>
+    <figure className={`flex h-full flex-col border-t pt-7 ${dark ? 'border-ink-invert/15' : 'border-hairline'}`}>
+      <div className="flex items-start justify-between gap-4">
+        <span aria-hidden className={`font-display text-[64px] leading-[0.6] font-extrabold ${dark ? 'text-ink-invert-muted' : 'text-hairline-strong'}`}>
+          &ldquo;
+        </span>
+        {showRating ? <Stars rating={testimonial.rating} className="text-[15px]" /> : null}
+      </div>
+      <blockquote className={`mt-5 flex-1 text-[16.5px] leading-relaxed ${dark ? 'text-ink-invert' : 'text-ink'}`}>
         {`"${testimonial.quote}"`}
       </blockquote>
-      <figcaption className={`mt-6 flex items-center gap-3 border-t pt-5 ${dark ? 'border-ink-invert/15' : 'border-hairline'}`}>
+      <figcaption className="mt-7 flex items-center gap-3">
         {testimonial.avatar ? (
           <ResponsiveImage
             src={testimonial.avatar.src}
