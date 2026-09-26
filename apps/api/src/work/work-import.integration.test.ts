@@ -3,9 +3,17 @@ import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { createPrismaClient } from '@calwebtech/db';
 import { importSnapshots } from '@calwebtech/db/import';
-import type { WorkCaseStudyView, WorkIndexView } from '@calwebtech/shared';
+import { PLACEHOLDER_CONTACT } from '@calwebtech/db/seed';
+import {
+  SETTING_KEYS,
+  homepageComparison,
+  workBeforeAndAfterViewSchema,
+  type WorkCaseStudyView,
+  type WorkIndexView,
+} from '@calwebtech/shared';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { loadEnv } from '../config/env';
+import { HomePageService } from '../home/home-page.service';
 import { migrateDeploy } from '../prisma/migrate-deploy';
 import { PrismaService } from '../prisma/prisma.service';
 import { WorkService } from './work.service';
@@ -135,5 +143,48 @@ describe('the case studies family, built from the imported rows', () => {
     const after = await prisma.client.project.findUniqueOrThrow({ where: { slug } });
     expect(after.segment).toBe('Test edited segment');
     expect(after.gallery).toEqual([]);
+  });
+});
+
+/**
+ * What the `before-and-after` family has to prove before `CONTENT_DATABASE_FIRST` names it
+ * (docs/08-decisions.md, 70): the page and the homepage's comparison, built from the imported
+ * rows, are the snapshots'. Testimonials the dashboard edits now are kept by a forced run.
+ */
+describe('the before and after family, built from the imported rows', () => {
+  const approved = snapshot('work/before-and-after.json');
+  const home = snapshot('home.json') as { beforeAfter: unknown };
+
+  it('builds /before-and-after/ as the snapshot shows it', async () => {
+    const built = await work.findBeforeAndAfter();
+    expect(built.comparisons.length).toBeGreaterThan(0);
+    expect(built).toEqual(workBeforeAndAfterViewSchema.parse(approved));
+  });
+
+  it('gives the homepage the comparison the homepage snapshot shows', async () => {
+    expect(homepageComparison(await work.findBeforeAndAfter())).toEqual(home.beforeAfter);
+    // The API's homepage too, given the contact details the import leaves to settings-cli.
+    await prisma.client.setting.upsert({
+      where: { key: SETTING_KEYS.contact },
+      create: { key: SETTING_KEYS.contact, value: PLACEHOLDER_CONTACT },
+      update: {},
+    });
+    expect((await new HomePageService(prisma).find()).beforeAfter).toEqual(home.beforeAfter);
+  });
+
+  it('leaves comparisons and testimonials someone has edited alone when the import is forced', async () => {
+    const db = prisma.client;
+    const comparison = await db.comparison.findFirstOrThrow();
+    await db.comparison.update({ where: { id: comparison.id }, data: { summary: 'Test summary edited in the dashboard.' } });
+    const testimonial = await db.testimonial.findFirstOrThrow({ where: { projectId: { not: null } } });
+    await db.testimonial.update({ where: { id: testimonial.id }, data: { quote: 'Test quote edited.', deletedAt: new Date() } });
+    const counts = { comparisons: await db.comparison.count(), testimonials: await db.testimonial.count() };
+
+    await importSnapshots(db, { dir: snapshotDir, force: true });
+    expect((await db.comparison.findUniqueOrThrow({ where: { id: comparison.id } })).summary).toBe('Test summary edited in the dashboard.');
+    const kept = await db.testimonial.findUniqueOrThrow({ where: { id: testimonial.id } });
+    expect(kept.quote).toBe('Test quote edited.');
+    expect(kept.deletedAt).not.toBeNull();
+    expect({ comparisons: await db.comparison.count(), testimonials: await db.testimonial.count() }).toEqual(counts);
   });
 });

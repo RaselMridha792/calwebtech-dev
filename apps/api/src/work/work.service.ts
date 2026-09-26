@@ -13,7 +13,7 @@ import {
   toBeforeAndAfterView,
   toCaseStudyView,
   toWorkIndexView,
-  workComparisonSelect,
+  WORK_COMPARISON_QUERY,
   workProjectInclude,
   workVideoTestimonialQuery,
 } from './work.mapper';
@@ -109,17 +109,11 @@ export class WorkService {
   }
 
   private async buildBeforeAndAfter(): Promise<WorkBeforeAndAfterView> {
-    const db = this.prisma.client;
-    const [copy, projects] = await Promise.all([
+    const [copy, comparisons] = await Promise.all([
       this.copySetting(),
-      db.project.findMany({
-        where: { ...PUBLISHED_PROJECT, beforeImageUrl: { not: null }, afterImageUrl: { not: null } },
-        select: workComparisonSelect,
-        orderBy: PROJECT_ORDER,
-        take: PROJECT_LIMIT,
-      }),
+      this.prisma.client.comparison.findMany({ ...WORK_COMPARISON_QUERY, take: PROJECT_LIMIT }),
     ]);
-    return this.mapped(() => toBeforeAndAfterView({ copySetting: copy?.value ?? null, projects }));
+    return this.mapped(() => toBeforeAndAfterView({ copySetting: copy?.value ?? null, comparisons }));
   }
 
   /** Runs a mapper; a record or setting that breaks the contract is logged by name and answers 500. */

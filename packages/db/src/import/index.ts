@@ -52,6 +52,8 @@ export const IMPORTERS: readonly ImporterLoader[] = [
   () => import('./case-studies.js').then((module) => module.caseStudiesImporter),
   // Independent of the records: the homepage's and the thank-you pages' copy, where none is stored.
   () => import('./page-copy.js').then((module) => module.pageCopyImporter),
+  // After work, because a comparison may link a case study: /before-and-after/'s comparisons.
+  () => import('./before-and-after.js').then((module) => module.beforeAndAfterImporter),
 ];
 
 export interface ImportOptions {

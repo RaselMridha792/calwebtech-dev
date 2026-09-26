@@ -6,7 +6,7 @@
  * - models with only `status` (Industry, Project, Location, GlossaryTerm, Guide, Demo,
  *   JobOpening): `{ status: 'PUBLISHED' }`.
  * - add `deletedAt: null` wherever the model has `deletedAt` (Service, Project, LandingPage).
- * - testimonials appear only with `consentAt: { not: null }`.
+ * - testimonials appear only with `consentAt: { not: null }` and `deletedAt: null` (`CONSENTED`).
  */
 export function publishedAsOf(now: Date) {
   return {
@@ -14,5 +14,8 @@ export function publishedAsOf(now: Date) {
   };
 }
 
-/** Testimonials may be shown only once the client has agreed to publication. */
-export const CONSENTED = { consentAt: { not: null } };
+/**
+ * Testimonials may be shown only once the client has agreed to publication, and never once
+ * removed in the dashboard, which keeps the row (docs/08-decisions.md, 70).
+ */
+export const CONSENTED = { consentAt: { not: null }, deletedAt: null };

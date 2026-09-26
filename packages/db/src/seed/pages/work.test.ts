@@ -1,4 +1,4 @@
-import { answerBlockSchema, workCopySchema } from '@calwebtech/shared';
+import { answerBlockSchema, comparisonInputSchema, workCopySchema } from '@calwebtech/shared';
 import { describe, expect, it } from 'vitest';
 import { PAGE_FIXTURES, PAGE_SEEDS } from './index';
 import { WORK_PLACEHOLDER_COPY, workFixtures, workSeed } from './work';
@@ -19,9 +19,16 @@ describe('work page seed', () => {
   });
 
   it('gives the fixture case study what its page needs: an answer block and three figures', () => {
-    const project = workFixtures.content as { answerBlock: string; outcomeMetrics: unknown[]; featured: boolean };
+    const { project } = workFixtures.content as { project: { answerBlock: string; outcomeMetrics: unknown[]; featured: boolean } };
     expect(answerBlockSchema.safeParse(project.answerBlock).success).toBe(true);
     expect(project.outcomeMetrics).toHaveLength(3);
     expect(project.featured).toBe(false);
+  });
+
+  it('gives /before-and-after/ a valid fixture comparison, kept off the homepage', () => {
+    const { comparison } = workFixtures.content as { comparison: unknown };
+    const parsed = comparisonInputSchema.parse(comparison);
+    expect(parsed.onHomepage).toBe(false);
+    expect(parsed.metrics.length).toBeGreaterThan(0);
   });
 });

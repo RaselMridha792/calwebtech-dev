@@ -1,6 +1,8 @@
 import { HOME_PROBLEM_ROUTER_FAQ_GROUP, SETTING_KEYS, type HomePageView } from '@calwebtech/shared';
 import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
+import { CONSENTED } from '../common/published';
 import { PrismaService } from '../prisma/prisma.service';
+import { WORK_COMPARISON_QUERY } from '../work/work.mapper';
 import { homeCategoryInclude, homePostInclude, homeProjectInclude, toHomePageView } from './home-page.mapper';
 
 /**
@@ -59,6 +61,7 @@ export class HomePageService {
       guide,
       locations,
       pricingTiers,
+      comparison,
     ] = await Promise.all([
       db.setting.findMany({ where: { key: { in: SETTING_ROWS } } }),
       db.reviewSource.findMany(),
@@ -78,7 +81,7 @@ export class HomePageService {
       db.technology.findMany({ orderBy: [{ category: 'asc' }, { order: 'asc' }] }),
       db.processStep.findMany({ orderBy: { order: 'asc' } }),
       db.testimonial.findMany({
-        where: { consentAt: { not: null } },
+        where: CONSENTED,
         orderBy: [{ featured: 'desc' }, { date: 'desc' }],
         take: 12,
       }),
@@ -92,6 +95,8 @@ export class HomePageService {
       db.guide.findFirst({ where: { status: 'PUBLISHED' } }),
       db.location.findMany({ where: { status: 'PUBLISHED' }, orderBy: [{ tier: 'asc' }, { city: 'asc' }], take: 6 }),
       db.pricingTier.findMany({ where: { active: true }, orderBy: { order: 'asc' } }),
+      // The comparison /before-and-after/ marks for the homepage (docs/08-decisions.md, 70).
+      db.comparison.findFirst({ ...WORK_COMPARISON_QUERY, where: { ...WORK_COMPARISON_QUERY.where, onHomepage: true } }),
     ]);
     const setting = (key: string) => settings.find((row) => row.key === key)?.value ?? null;
 
@@ -117,6 +122,7 @@ export class HomePageService {
         guide,
         locations,
         pricingTiers,
+        comparison,
       });
     } catch (error) {
       this.logger.error(

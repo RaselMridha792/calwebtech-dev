@@ -284,6 +284,7 @@ model Project {
   testimonials  Testimonial[]
   landingPages  LandingPage[] @relation("LandingPageResults")
   beforeAfterOn LandingPage[] @relation("LandingPageBeforeAfter")
+  comparisons   Comparison[]
 
   @@index([status, featured])
 }
@@ -315,10 +316,41 @@ model Testimonial {
   date       DateTime?
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
+  /// Removed in the dashboard: kept, with its consent date, and shown nowhere.
+  deletedAt  DateTime?
 
   projectId    String?
   project      Project?      @relation(fields: [projectId], references: [id])
   landingPages LandingPage[]
+}
+
+/// A before and after comparison on `/before-and-after/` (docs/08-decisions.md, 70): two
+/// pictures of one site, the words around them and up to four figures. The homepage shows
+/// the first published one marked `onHomepage`, in `order`.
+model Comparison {
+  id         String    @id @default(cuid())
+  /// The client's name, as the slider and the page give it.
+  clientName String
+  /// The section's heading, written as a question.
+  heading    String
+  summary    String
+  /// imageSchema (packages/shared): src, alt, and optionally width and height.
+  before     Json
+  after      Json
+  /// { label, before, after }[], at most four.
+  metrics    Json      @default("[]")
+  order      Int       @default(0)
+  onHomepage Boolean   @default(false)
+  status     Status    @default(DRAFT)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  deletedAt  DateTime?
+
+  /// The case study it links to, shown only while that page is published.
+  projectId String?
+  project   Project? @relation(fields: [projectId], references: [id])
+
+  @@index([status, order])
 }
 
 /// Aggregated third-party ratings, refreshed on a schedule rather than called live,

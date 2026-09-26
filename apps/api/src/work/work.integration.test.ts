@@ -27,6 +27,14 @@ const run = randomUUID().slice(0, 8);
 const slug = `integration-work-${run}`;
 const draftSlug = `integration-work-draft-${run}`;
 let createdCopy = false;
+const comparisonName = `Integration comparison ${run}`;
+const draftComparisonName = `Integration draft comparison ${run}`;
+
+const comparisonCopy = (clientName: string) => ({
+  clientName,
+  heading: `What changed for ${clientName}?`,
+  summary: 'Integration test comparison.',
+});
 
 const question = (topic: string) => `What about the ${topic} for {client}?`;
 
@@ -134,9 +142,21 @@ beforeAll(async () => {
     },
   });
   await db.project.create({ data: { slug: draftSlug, status: 'DRAFT', ...project } });
+  // /before-and-after/ lists comparisons, each linking its case study (decision 70).
+  const pictures = {
+    before: { src: 'https://images.example.com/before.png', alt: 'Integration before' },
+    after: { src: 'https://images.example.com/after.png', alt: 'Integration after' },
+  };
+  await db.comparison.createMany({
+    data: [
+      { ...comparisonCopy(comparisonName), ...pictures, status: 'PUBLISHED', projectId: published.id, metrics: project.beforeAfterMetrics },
+      { ...comparisonCopy(draftComparisonName), ...pictures, status: 'DRAFT' },
+    ],
+  });
 });
 
 afterAll(async () => {
+  await db.comparison.deleteMany({ where: { clientName: { in: [comparisonName, draftComparisonName] } } });
   await db.testimonial.deleteMany({ where: { project: { slug: { in: [slug, draftSlug] } } } });
   await db.project.deleteMany({ where: { slug: { in: [slug, draftSlug] } } });
   if (createdCopy) await db.setting.deleteMany({ where: { key: WORK_COPY_SETTING_KEY } });
@@ -162,10 +182,11 @@ describe('work pages against the database', () => {
     expect(await service.findCaseStudy(`no-such-project-${run}`)).toBeNull();
   });
 
-  it('shows the published before and after pair, linked to its case study', async () => {
+  it('shows a published comparison, linked to its case study, and never a draft', async () => {
     const view = workBeforeAndAfterViewSchema.parse(await new WorkService(prisma).findBeforeAndAfter());
-    const comparison = view.comparisons.find((item) => item.slug === slug);
-    expect(comparison?.clientName).toBe(project.clientName);
-    expect(view.comparisons.some((item) => item.slug === draftSlug)).toBe(false);
+    const comparison = view.comparisons.find((item) => item.clientName === comparisonName);
+    expect(comparison?.slug).toBe(slug);
+    expect(comparison?.metrics).toEqual(project.beforeAfterMetrics);
+    expect(view.comparisons.some((item) => item.clientName === draftComparisonName)).toBe(false);
   });
 });

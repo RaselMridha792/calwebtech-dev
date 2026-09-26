@@ -2,10 +2,33 @@ import { Prisma, type ReviewSource, type Technology, type Testimonial } from '@c
 import { HOME_CONTENT, PLACEHOLDER_CONTACT } from '@calwebtech/db/seed';
 import { describe, expect, it } from 'vitest';
 import { ZodError } from 'zod';
+import type { WorkComparisonRecord } from '../work/work.mapper';
 import { toHomePageView, type HomePageSources, type HomeProjectRecord } from './home-page.mapper';
 
 const at = new Date('2026-09-01T00:00:00Z');
 let sequence = 0;
+
+/** A published comparison marked for the homepage, as the query returns it. */
+function comparison(overrides: Partial<WorkComparisonRecord> = {}): WorkComparisonRecord {
+  return {
+    id: 'test-comparison',
+    clientName: 'Test comparison client',
+    heading: 'What changed for the test comparison client?',
+    summary: 'Test summary.',
+    before: { src: '/media/test-before.jpg', alt: 'Test picture before', width: 1448, height: 1086 },
+    after: { src: '/media/test-after.jpg', alt: 'Test picture after', width: 1448, height: 1086 },
+    metrics: [],
+    order: 0,
+    onHomepage: true,
+    status: 'PUBLISHED',
+    createdAt: at,
+    updatedAt: at,
+    deletedAt: null,
+    projectId: null,
+    project: null,
+    ...overrides,
+  };
+}
 
 function sources(overrides: Partial<HomePageSources> = {}): HomePageSources {
   return {
@@ -88,6 +111,7 @@ function testimonial(overrides: Partial<Testimonial> = {}): Testimonial {
     videoUrl: null,
     featured: false,
     consentAt: at,
+    deletedAt: null,
     date: null,
     createdAt: at,
     updatedAt: at,
@@ -150,39 +174,28 @@ describe('toHomePageView', () => {
     expect(view.testimonials.map((quote) => quote.id)).toEqual(quotes.map((quote) => quote.id));
   });
 
-  it('takes before and after from the first project with both screenshots', () => {
+  it('takes before and after from the comparison marked for the homepage, as /before-and-after/ shows it', () => {
     const view = toHomePageView(
       sources({
-        projects: [
-          project({ clientName: 'Before only client', beforeImageUrl: '/media/before-only.png' }),
-          project({
-            beforeImageUrl: '/media/before.png',
-            afterImageUrl: '/media/after.png',
-            beforeAfterMetrics: [{ label: 'Test measure', before: '4', after: '2' }],
-          }),
-          project({
-            clientName: 'Later client',
-            beforeImageUrl: '/media/later-before.png',
-            afterImageUrl: '/media/later-after.png',
-          }),
-        ],
+        // A project's own screenshots belong to its case study page, not the homepage.
+        projects: [project({ beforeImageUrl: '/media/project-before.png', afterImageUrl: '/media/project-after.png' })],
+        comparison: comparison({ metrics: [{ label: 'Test measure', before: '4', after: '2' }] }),
       }),
     );
     expect(view.beforeAfter).toEqual({
-      clientName: 'Test client',
-      before: { src: '/media/before.png', alt: 'Test client website before the redesign' },
-      after: { src: '/media/after.png', alt: 'Test client website after the redesign' },
+      clientName: 'Test comparison client',
+      before: { src: '/media/test-before.jpg', alt: 'Test picture before', width: 1448, height: 1086 },
+      after: { src: '/media/test-after.jpg', alt: 'Test picture after', width: 1448, height: 1086 },
       metrics: [{ label: 'Test measure', before: '4', after: '2' }],
     });
   });
 
-  it('has no before and after when no project has both screenshots', () => {
+  it('has no before and after when no comparison is marked for the homepage', () => {
     const view = toHomePageView(
-      sources({
-        projects: [project({ beforeImageUrl: '/media/before.png' }), project({ afterImageUrl: '/media/after.png' })],
-      }),
+      sources({ projects: [project({ beforeImageUrl: '/media/before.png', afterImageUrl: '/media/after.png' })] }),
     );
     expect(view.beforeAfter).toBeNull();
+    expect(toHomePageView(sources({ comparison: null })).beforeAfter).toBeNull();
   });
 
   it('groups technologies by category under readable labels', () => {
