@@ -393,7 +393,7 @@ export function Recognition({
             <ul className="heading-sm flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-hairline pt-8 text-ink">
               {expertise.map((item, index) => (
                 <li key={item} className="flex items-center gap-5">
-                  {index > 0 ? <span aria-hidden className="h-1.5 w-1.5 bg-gold-ink" /> : null}
+                  {index > 0 ? <span aria-hidden className="h-1.5 w-1.5 bg-hairline-strong" /> : null}
                   {item}
                 </li>
               ))}
