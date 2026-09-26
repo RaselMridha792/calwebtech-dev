@@ -346,7 +346,7 @@ function ProjectCard({
         <Tags tags={project.tags} />
         <h3 className="heading-lg mt-3 flex items-center justify-between gap-4 text-ink">
           {project.clientName}
-          <ArrowIcon className="w-5 shrink-0 text-ink-muted transition duration-420 ease-out-quint group-hover:text-gold-ink motion-safe:group-hover:translate-x-1.5" />
+          <ArrowIcon className="w-5 shrink-0 text-ink-muted transition duration-420 ease-out-quint group-hover:text-ink motion-safe:group-hover:translate-x-1.5" />
         </h3>
         <p className="body-base mt-2.5 text-ink-muted">{project.summary}</p>
         <Metrics metrics={project.metrics} lead={false} />
