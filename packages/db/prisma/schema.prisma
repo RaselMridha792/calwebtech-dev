@@ -123,6 +123,35 @@ model PageSection {
   updatedAt  DateTime @updatedAt
 }
 
+/// An AI provider's key and the model to use with it (docs/08-decisions.md, 64). Entered in the
+/// dashboard rather than the server's environment, so it can change without a deploy. The key
+/// is stored encrypted (AES-256-GCM) and never read back out to the dashboard; only its last
+/// four characters are. A removed connection is deleted outright, key and all: the audit log
+/// keeps the history, and a key that is no longer wanted should not survive anywhere.
+model AiConnection {
+  id            String    @id @default(cuid())
+  /// An id from AI_PROVIDERS in packages/shared/src/ai-providers.ts.
+  provider      String
+  label         String
+  model         String
+  /// Only for a provider that has no fixed address of its own (Azure, a custom service).
+  baseUrl       String?
+  /// iv, auth tag and ciphertext, base64, as apps/api/src/admin/ai/credential-box.ts writes them.
+  keyCipher     String
+  /// Which server secret encrypted it: "credentials-key" or "auth-secret".
+  keySource     String
+  keyHint       String
+  /// The connection the site uses. At most one is, kept so by the service.
+  isDefault     Boolean   @default(false)
+  lastTestAt    DateTime?
+  lastTestOk    Boolean?
+  lastTestMs    Int?
+  lastTestError String?
+  createdById   String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
 model Setting {
   id        String   @id @default(cuid())
   key       String   @unique
