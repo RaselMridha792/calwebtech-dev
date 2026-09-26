@@ -483,17 +483,24 @@ export function Locations({ locations, items }: { locations: Content['locations'
           <p className="mt-5 text-[17px] leading-relaxed">{locations.intro}</p>
         </div>
         {items.length > 0 ? (
-          <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          // A city to a row, set large, with what we cover there and the street address
+          // beside it: an index, not a row of cards with an empty slot.
+          <ul className="mt-12 border-t border-hairline">
             {items.map((location, index) => (
-              <li key={location.slug} className="border border-hairline p-6" {...reveal(index)}>
-                <h3 className="font-display text-[20px] font-bold text-ink">
+              <li
+                key={location.slug}
+                className="group grid gap-x-8 gap-y-3 border-b border-hairline py-8 lg:grid-cols-12 lg:items-baseline"
+                {...reveal(index)}
+              >
+                <span className="meta text-ink-muted transition-colors duration-150 group-hover:text-gold-ink lg:col-span-1">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <h3 className="display-md text-ink lg:col-span-4">
                   {[location.city, location.state].filter(Boolean).join(', ')}
                 </h3>
-                {location.serviceArea ? (
-                  <p className="mt-2.5 text-[14.5px] leading-relaxed">{location.serviceArea}</p>
-                ) : null}
+                <p className="body-base text-ink-muted lg:col-span-4">{location.serviceArea}</p>
                 {location.address ? (
-                  <p className="mt-4 border-t border-hairline pt-4 text-[14px] whitespace-pre-line">{location.address}</p>
+                  <p className="meta text-ink whitespace-pre-line lg:col-span-3 lg:text-right">{location.address}</p>
                 ) : null}
               </li>
             ))}
