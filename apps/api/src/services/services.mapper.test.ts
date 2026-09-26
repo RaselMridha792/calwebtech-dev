@@ -95,6 +95,7 @@ function project(slug: string, overrides: Partial<ProjectRecord> = {}): ProjectR
     beforeImageUrl: null,
     afterImageUrl: null,
     beforeAfterMetrics: null,
+    content: null,
     status: 'PUBLISHED',
     seo: null,
     createdAt: at,
@@ -155,6 +156,7 @@ const industry = (slug: string, heroCopy: string | null): Industry => ({
   seo: null,
   createdAt: at,
   updatedAt: at,
+  deletedAt: null,
 });
 
 function service(overrides: Partial<ServiceDetailRecord> = {}): ServiceDetailRecord {

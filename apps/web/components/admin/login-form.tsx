@@ -1,6 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { ERROR, INPUT, LABEL, button } from './ui/styles';
 
 /**
  * Signs in against the API on this origin, so the session cookie it sets is first-party.
@@ -52,24 +53,17 @@ export function LoginForm() {
         event.preventDefault();
         void signIn(new FormData(event.currentTarget));
       }}
-      className="flex flex-col gap-4"
+      className="flex flex-col gap-5"
     >
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="email" className="text-[9.5px] font-bold tracking-[0.12em] text-admin-muted uppercase">
+        <label htmlFor="email" className={LABEL}>
           Email address
         </label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          autoComplete="username"
-          required
-          className="h-[38px] rounded-[4px] border border-admin-line bg-admin-sunken px-3 text-[13px] text-admin-ink outline-none focus-visible:border-admin-focus"
-        />
+        <input id="email" name="email" type="email" autoComplete="username" required className={INPUT} />
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="password" className="text-[9.5px] font-bold tracking-[0.12em] text-admin-muted uppercase">
+        <label htmlFor="password" className={LABEL}>
           Password
         </label>
         <input
@@ -79,21 +73,17 @@ export function LoginForm() {
           autoComplete="current-password"
           required
           aria-describedby={error ? 'sign-in-error' : undefined}
-          className="h-[38px] rounded-[4px] border border-admin-line bg-admin-sunken px-3 text-[13px] text-admin-ink outline-none focus-visible:border-admin-focus"
+          className={INPUT}
         />
       </div>
 
       {error ? (
-        <p id="sign-in-error" role="alert" className="text-[12.5px] text-danger">
+        <p id="sign-in-error" role="alert" className={`${ERROR} motion-safe:animate-[admin-rise_180ms_var(--ease-out-quint)]`}>
           {error}
         </p>
       ) : null}
 
-      <button
-        type="submit"
-        disabled={busy}
-        className="h-[38px] rounded-[4px] bg-primary text-[12.5px] font-semibold text-white hover:bg-admin-primaryh disabled:opacity-40"
-      >
+      <button type="submit" disabled={busy} className={`${button('primary')} w-full`}>
         {busy ? 'Signing in…' : 'Sign in'}
       </button>
     </form>

@@ -53,9 +53,13 @@ function fakes(failWith?: Error) {
       deliveries.push({ leadId: bookingId, record });
       return Promise.resolve();
     },
+    bookingState: () => Promise.resolve(booking),
   };
   return { sent, deliveries, transport, store };
 }
+
+/** The booking the store reports; each reminder test sets it. */
+let booking: { status: string; startsAt: Date } | null = null;
 
 describe('email job processor', () => {
   it('sends the confirmation to the visitor, with replies going to the team', async () => {
@@ -193,5 +197,51 @@ describe('campaign test send', () => {
     expect(sent[0]?.to).toEqual(['team@calwebtech.com']);
     expect(sent[0]?.idempotencyKey).toBe('campaign-test-cmcampaign01-abc123');
     expect(deliveries).toEqual([]);
+  });
+});
+
+describe('the booking reminders and calendar entries', () => {
+  const startsAt = '2026-09-24T15:45:00.000Z';
+  const reminder: EmailJob = {
+    template: 'booking-reminder',
+    to: ['dana@company.com'],
+    bookingId: 'cmf0book0000abc',
+    name: 'Dana Whitfield',
+    consultationType: 'Discovery call',
+    startsAt,
+    endsAt: '2026-09-24T16:15:00.000Z',
+    timezone: 'America/Los_Angeles',
+    window: '24h',
+  };
+
+  it('sends a reminder for a call still on at that time, and writes it on the timeline as a reminder', async () => {
+    booking = { status: 'CONFIRMED', startsAt: new Date(startsAt) };
+    const { sent, deliveries, transport, store } = fakes();
+    await createEmailJobProcessor({ transport, store, from: FROM })({ data: reminder });
+    expect(sent).toHaveLength(1);
+    expect(deliveries[0]?.record).toMatchObject({ template: 'booking-reminder', window: '24h' });
+  });
+
+  it('sends nothing for a call cancelled, moved or gone since the reminder was queued', async () => {
+    for (const state of [
+      { status: 'CANCELLED', startsAt: new Date(startsAt) },
+      { status: 'RESCHEDULED', startsAt: new Date('2026-09-25T15:45:00.000Z') },
+      null,
+    ]) {
+      booking = state;
+      const { sent, deliveries, transport, store } = fakes();
+      const result = await createEmailJobProcessor({ transport, store, from: FROM })({ data: reminder });
+      expect(sent, JSON.stringify(state)).toHaveLength(0);
+      expect(deliveries).toHaveLength(0);
+      expect(result.providerId).toMatch(/^skipped/);
+    }
+  });
+
+  it("attaches the calendar entry to the visitor's confirmation", async () => {
+    const { sent, transport, store } = fakes();
+    const confirmationOfTheCall = { ...reminder, template: 'booking-confirmation' as const, window: undefined };
+    await createEmailJobProcessor({ transport, store, from: FROM })({ data: confirmationOfTheCall });
+    expect(sent[0]?.attachments?.[0]).toMatchObject({ filename: 'calwebtech-call.ics' });
+    expect(sent[0]?.attachments?.[0]?.content).toContain('DTSTART:20260924T154500Z');
   });
 });

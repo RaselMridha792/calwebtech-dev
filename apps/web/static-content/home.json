@@ -122,6 +122,30 @@
       ],
       "industryLinks": [
         {
+          "label": "Hotels and resorts",
+          "href": "/industries/hospitality/"
+        },
+        {
+          "label": "Real estate",
+          "href": "/industries/real-estate/"
+        },
+        {
+          "label": "Spa centres",
+          "href": "/industries/spa-centres/"
+        },
+        {
+          "label": "Media",
+          "href": "/industries/media-and-publishing/"
+        },
+        {
+          "label": "Law",
+          "href": "/industries/law-firms/"
+        },
+        {
+          "label": "Healthcare",
+          "href": "/industries/healthcare/"
+        },
+        {
           "label": "Manufacturing",
           "href": "/industries/manufacturing/"
         },
@@ -130,32 +154,20 @@
           "href": "/industries/distribution/"
         },
         {
-          "label": "Construction",
-          "href": "/industries/"
+          "label": "Retail and D2C",
+          "href": "/industries/ecommerce-and-d2c/"
         },
         {
           "label": "SaaS and technology",
           "href": "/industries/saas/"
         },
         {
-          "label": "Healthcare",
-          "href": "/industries/healthcare/"
-        },
-        {
-          "label": "Financial services",
-          "href": "/industries/"
-        },
-        {
-          "label": "Real estate",
-          "href": "/industries/real-estate/"
-        },
-        {
-          "label": "Hospitality and travel",
-          "href": "/industries/hospitality/"
+          "label": "Professional services",
+          "href": "/industries/professional-services/"
         },
         {
           "label": "Education",
-          "href": "/industries/"
+          "href": "/industries/education/"
         }
       ],
       "industriesPromo": {
@@ -220,7 +232,7 @@
             },
             {
               "label": "Free website audit",
-              "href": "/contact/"
+              "href": "/free-website-audit/"
             },
             {
               "label": "AI search visibility check",
@@ -254,6 +266,39 @@
             {
               "label": "Our playbook",
               "href": "#process"
+            }
+          ]
+        },
+        {
+          "title": "Technology",
+          "links": [
+            {
+              "label": "Our technology",
+              "href": "/technology/"
+            },
+            {
+              "label": "Front end",
+              "href": "/technology/#frontend"
+            },
+            {
+              "label": "Back end",
+              "href": "/technology/#backend"
+            },
+            {
+              "label": "Data",
+              "href": "/technology/#data"
+            },
+            {
+              "label": "Content",
+              "href": "/technology/#cms"
+            },
+            {
+              "label": "Infrastructure",
+              "href": "/technology/#infrastructure"
+            },
+            {
+              "label": "Mobile and AI",
+              "href": "/technology/#mobile-and-ai"
             }
           ]
         },
@@ -339,28 +384,32 @@
           "title": "Industries",
           "links": [
             {
-              "label": "Manufacturing",
-              "href": "/industries/manufacturing/"
-            },
-            {
-              "label": "Distribution",
-              "href": "/industries/distribution/"
-            },
-            {
-              "label": "SaaS",
-              "href": "/industries/saas/"
-            },
-            {
-              "label": "Healthcare",
-              "href": "/industries/healthcare/"
+              "label": "Hotels and resorts",
+              "href": "/industries/hospitality/"
             },
             {
               "label": "Real estate",
               "href": "/industries/real-estate/"
             },
             {
-              "label": "Hospitality",
-              "href": "/industries/hospitality/"
+              "label": "Spa centres",
+              "href": "/industries/spa-centres/"
+            },
+            {
+              "label": "Media",
+              "href": "/industries/media-and-publishing/"
+            },
+            {
+              "label": "Law",
+              "href": "/industries/law-firms/"
+            },
+            {
+              "label": "Healthcare",
+              "href": "/industries/healthcare/"
+            },
+            {
+              "label": "All industries",
+              "href": "/industries/"
             }
           ]
         },
@@ -792,7 +841,7 @@
         },
         {
           "label": "Free website audit",
-          "href": "/contact/"
+          "href": "/free-website-audit/"
         },
         {
           "label": "AI visibility check",
@@ -877,17 +926,37 @@
       ],
       "backgroundImage": {
         "src": "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=1800&q=60"
-      }
+      },
+      "offices": [
+        {
+          "city": "California",
+          "address": "United States"
+        }
+      ],
+      "contactEmail": "calidigi62@gmail.com"
     },
     "floatingCta": {
       "label": "Start a project",
       "href": "/book-a-consultation/"
+    },
+    "subscribe": {
+      "heading": "Subscribe now",
+      "intro": "Get our latest articles and guides by email. No spam, and you can unsubscribe at any time.",
+      "emailLabel": "Email address",
+      "placeholder": "you@company.com",
+      "submitLabel": "Subscribe",
+      "consent": "By subscribing you agree to receive emails from Calwebtech.",
+      "success": "Thank you. You are on the list.",
+      "invalid": "Please enter a valid email address.",
+      "botCheck": "We could not confirm this request came from a person. Please try again.",
+      "rateLimited": "You have sent several requests in a row. Please wait a minute and try again.",
+      "unavailable": "Subscribing is not available right now. Please try again later."
     }
   },
   "contact": {
-    "phone": "+1 (800) 555-0188",
-    "phoneE164": "+18005550188",
-    "email": "hello@calwebtech.com"
+    "phone": null,
+    "phoneE164": null,
+    "email": "calidigi62@gmail.com"
   },
   "reviews": {
     "averageRating": 4.9,
@@ -1123,7 +1192,7 @@
     },
     {
       "slug": "hospitality",
-      "name": "Hospitality",
+      "name": "Hotels and resorts",
       "line": "Direct booking that beats the commission sites.",
       "image": {
         "src": "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=600&q=70",
@@ -1180,8 +1249,8 @@
       ],
       "filter": "B2B and distribution",
       "image": {
-        "src": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=70",
-        "alt": "Sales team reviewing performance figures"
+        "src": "/media/northmark-supply.jpg",
+        "alt": "Two people sketching page layouts in a notebook between their laptops"
       },
       "metrics": [
         {
@@ -1334,12 +1403,16 @@
   "beforeAfter": {
     "clientName": "Halloway Group",
     "before": {
-      "src": "/media/home-before-halloway.svg",
-      "alt": "Halloway Group homepage before the redesign: a dated layout with a navy bar, grey banner and orange button"
+      "src": "/media/home-before-helloway.jpg",
+      "alt": "The HelloWay travel website before the redesign, on a laptop: a crowded early-2000s page with a yellow banner, a blue sidebar of links, a scrolling offer and a visitor counter",
+      "width": 1448,
+      "height": 1086
     },
     "after": {
-      "src": "/media/home-after-halloway.svg",
-      "alt": "Halloway Group homepage after the redesign: a clean layout with a clear headline, photograph and result figures"
+      "src": "/media/home-after-helloway.jpg",
+      "alt": "The HelloWay travel website after the redesign, on the same laptop: a clean menu, a full-width photograph under the headline Your Next Adventure Starts Here, and a row of destination photographs",
+      "width": 1448,
+      "height": 1086
     },
     "metrics": [
       {

@@ -35,9 +35,19 @@ function MenuList({ title, links, className = 'col-span-3' }: { title?: string |
   );
 }
 
-function MenuColumns({ columns }: { columns: MenuColumn[] }) {
+/**
+ * A panel is twelve columns and a promo takes the last three, so the lists share nine when
+ * there is one. Four lists at three columns each would push the promo onto a row of its own
+ * (the Resources menu, since Technology joined it), so they narrow instead. The classes are
+ * written out whole for the stylesheet to find them.
+ */
+const SPANS = { 2: 'col-span-2', 3: 'col-span-3' } as const;
+
+function MenuColumns({ columns, promo = false }: { columns: MenuColumn[]; promo?: boolean }) {
+  const room = promo ? 9 : 12;
+  const span = SPANS[Math.min(3, Math.max(2, Math.floor(room / Math.max(1, columns.length)))) as 2 | 3];
   return columns.map((column, index) => (
-    <MenuList key={`${column.title ?? ''}-${String(index)}`} title={column.title} links={column.links} />
+    <MenuList key={`${column.title ?? ''}-${String(index)}`} title={column.title} links={column.links} className={span} />
   ));
 }
 
@@ -230,7 +240,7 @@ export function SiteHeader({ chrome, ctas }: { chrome: SiteChromeView; ctas?: He
 
         <nav className="hidden h-full items-center xl:flex" aria-label="Main">
           <MegaMenu id="services" label="Services" href="/services/">
-            <MenuColumns columns={menu.services.columns} />
+            <MenuColumns columns={menu.services.columns} promo />
             <MenuPromo promo={menu.services.promo} tone="mist" />
           </MegaMenu>
 
@@ -263,7 +273,7 @@ export function SiteHeader({ chrome, ctas }: { chrome: SiteChromeView; ctas?: He
           </MegaMenu>
 
           <MegaMenu id="resources" label="Resources">
-            <MenuColumns columns={menu.resources.columns} />
+            <MenuColumns columns={menu.resources.columns} promo={menu.resources.promo !== null} />
             {menu.resources.promo ? <MenuPromo promo={menu.resources.promo} tone="dark" /> : null}
           </MegaMenu>
 

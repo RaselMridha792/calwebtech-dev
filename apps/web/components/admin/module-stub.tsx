@@ -1,26 +1,34 @@
 import Link from 'next/link';
+import { AdminPage, EmptyState, PageHeader, Panel } from '@/components/admin/ui/page';
+import { button } from '@/components/admin/ui/styles';
 
 /**
  * A module that has its place in the shell but nothing behind it yet
  * (docs/12-admin-dashboard.md, screen 4).
  *
- * The note says which milestone it is waiting on, so the dashboard is honest about what it
- * cannot do rather than showing an empty screen that looks broken.
+ * The note says what the module will do, so the dashboard is honest about what it cannot
+ * do yet rather than showing an empty screen that looks broken.
  */
 export function ModuleStub({ group, title, note }: { group: string; title: string; note: string }) {
   return (
-    <main className="flex min-h-0 flex-1 items-center justify-center overflow-auto px-6 py-16">
-      <div className="max-w-[440px] text-center">
-        <p className="text-[10px] font-bold tracking-[0.14em] text-admin-muted uppercase">{group}</p>
-        <h1 className="mt-2 font-display text-[26px] font-bold tracking-[-0.025em] text-admin-ink">{title}</h1>
-        <p className="mt-2.5 text-[13.5px] leading-[22px] text-admin-body">{note}</p>
-        <Link
-          href="/admin/leads/"
-          className="mt-5 inline-flex h-8 items-center rounded-[4px] border border-admin-line px-3 text-[12.5px] font-semibold text-admin-body hover:border-admin-focus hover:text-admin-ink"
+    <AdminPage width="medium">
+      <PageHeader
+        eyebrow={group}
+        title={title}
+        description="This screen is on its way. It has its place in the menu already so nothing moves around later; there is simply nothing behind it yet."
+      />
+      <Panel>
+        <EmptyState
+          title="Nothing to manage here yet"
+          actions={
+            <Link href="/admin/" className={button('secondary')}>
+              Back to the dashboard
+            </Link>
+          }
         >
-          Back to leads
-        </Link>
-      </div>
-    </main>
+          {note}
+        </EmptyState>
+      </Panel>
+    </AdminPage>
   );
 }

@@ -1,6 +1,7 @@
 import type { Prisma, Testimonial } from '@calwebtech/db';
 import {
   INDUSTRY_CASE_STUDY_LIMIT,
+  INDUSTRY_FALLBACK_HEADINGS,
   INDUSTRY_FAQ_LIMIT,
   INDUSTRY_INTEGRATION_LIMIT,
   INDUSTRY_INTEGRATION_NAME_MAX,
@@ -28,15 +29,7 @@ import { CONSENTED, publishedAsOf } from '../common/published';
 import { image, outcomeMetricsSchema } from '../landing-pages/landing-page.mapper';
 
 /** Section headings used when a record has proof or items but no copy of its own yet. */
-export const INDUSTRY_FALLBACK_HEADINGS = {
-  painPoints: 'Which problems does the website need to solve?',
-  services: 'Which services fit this industry?',
-  caseStudies: 'Which projects have we delivered in this industry?',
-  caseStudiesLink: 'See all work in this industry',
-  results: 'What did those projects change?',
-  integrations: 'Which systems does the website connect to?',
-  faq: 'What do buyers ask before starting a project?',
-} as const;
+export { INDUSTRY_FALLBACK_HEADINGS };
 
 /**
  * Relations loaded for an industry page. Unpublished services and projects, soft-deleted
@@ -168,6 +161,45 @@ function caseStudy(project: IndustryProjectRecord): CaseStudy | null {
   };
 }
 
+const namedServicesSchema = z.object({ services: z.object({ items: z.array(z.object({ slug: z.string() })) }) });
+
+/** The service slugs an industry's copy names, or none when it has no copy or names none. */
+export function namedServiceSlugs(content: unknown): string[] {
+  const parsed = namedServicesSchema.safeParse(content);
+  return parsed.success ? parsed.data.services.items.map((item) => item.slug) : [];
+}
+
+type IndustryServiceRecord = Pick<IndustryDetailRecord['services'][number], 'slug' | 'title' | 'shortDescription'>;
+
+/**
+ * The services an industry page lists. When its copy names services, the page lists those,
+ * in the copy's order, each described for the sector — the page's own choice, as a service
+ * page's order is its own (docs/08-decisions.md, 45 and 58). The link between a service and
+ * an industry is one relation read from both sides, and the approved pages do not agree
+ * about it: a service page lists the industries it serves best, an industry page the
+ * services a buyer in that sector needs. A named service that is not published is skipped.
+ *
+ * Copy that names none lists the linked services by their own order and summary, which is
+ * what a record created before it had copy shows.
+ */
+export function matchedServices(
+  services: readonly IndustryServiceRecord[],
+  named: readonly { slug: string; body: string }[],
+): { slug: string; title: string; body: string }[] {
+  if (named.length === 0) {
+    return services
+      .slice(0, INDUSTRY_SERVICE_LIMIT)
+      .map((service) => ({ slug: service.slug, title: service.title, body: service.shortDescription }));
+  }
+  const bySlug = new Map(services.map((service) => [service.slug, service]));
+  return named
+    .flatMap((item) => {
+      const service = bySlug.get(item.slug);
+      return service ? [{ slug: service.slug, title: service.title, body: item.body }] : [];
+    })
+    .slice(0, INDUSTRY_SERVICE_LIMIT);
+}
+
 /** Figures shared out across the case studies, so one client with many figures cannot fill the band. */
 function sectorMetrics(studies: readonly CaseStudy[]): IndustryMetric[] {
   if (studies.length === 0) return [];
@@ -200,12 +232,7 @@ export function toIndustryDetailView(industry: IndustryDetailRecord): IndustryDe
         }
       : null;
 
-  const translations = new Map((content?.services.items ?? []).map((item) => [item.slug, item.body]));
-  const serviceItems = industry.services.slice(0, INDUSTRY_SERVICE_LIMIT).map((service) => ({
-    slug: service.slug,
-    title: service.title,
-    body: translations.get(service.slug) ?? service.shortDescription,
-  }));
+  const serviceItems = matchedServices(industry.services, content?.services.items ?? []);
 
   const studies = industry.projects
     .map(caseStudy)

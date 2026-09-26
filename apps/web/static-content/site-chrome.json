@@ -1,9 +1,9 @@
 {
   "indexable": false,
   "contact": {
-    "phone": "+1 (800) 555-0188",
-    "phoneE164": "+18005550188",
-    "email": "hello@calwebtech.com"
+    "phone": null,
+    "phoneE164": null,
+    "email": "calidigi62@gmail.com"
   },
   "reviews": {
     "averageRating": 4.9,
@@ -49,12 +49,7 @@
       "href": "/book-a-consultation/"
     },
     "secondaryCta": null,
-    "links": [
-      {
-        "label": "Technology",
-        "href": "/technology/"
-      }
-    ]
+    "links": []
   },
   "megaMenu": {
     "services": {
@@ -159,6 +154,30 @@
     "industries": {
       "links": [
         {
+          "label": "Hotels and resorts",
+          "href": "/industries/hospitality/"
+        },
+        {
+          "label": "Real estate",
+          "href": "/industries/real-estate/"
+        },
+        {
+          "label": "Spa centres",
+          "href": "/industries/spa-centres/"
+        },
+        {
+          "label": "Media",
+          "href": "/industries/media-and-publishing/"
+        },
+        {
+          "label": "Law",
+          "href": "/industries/law-firms/"
+        },
+        {
+          "label": "Healthcare",
+          "href": "/industries/healthcare/"
+        },
+        {
           "label": "Manufacturing",
           "href": "/industries/manufacturing/"
         },
@@ -167,32 +186,20 @@
           "href": "/industries/distribution/"
         },
         {
-          "label": "Construction",
-          "href": "/industries/"
+          "label": "Retail and D2C",
+          "href": "/industries/ecommerce-and-d2c/"
         },
         {
           "label": "SaaS and technology",
           "href": "/industries/saas/"
         },
         {
-          "label": "Healthcare",
-          "href": "/industries/healthcare/"
-        },
-        {
-          "label": "Financial services",
-          "href": "/industries/"
-        },
-        {
-          "label": "Real estate",
-          "href": "/industries/real-estate/"
-        },
-        {
-          "label": "Hospitality and travel",
-          "href": "/industries/hospitality/"
+          "label": "Professional services",
+          "href": "/industries/professional-services/"
         },
         {
           "label": "Education",
-          "href": "/industries/"
+          "href": "/industries/education/"
         }
       ],
       "promo": {
@@ -254,8 +261,8 @@
           "href": "/work/northmark-supply/",
           "clientName": "Northmark Supply",
           "image": {
-            "src": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=70",
-            "alt": "Sales team reviewing performance figures"
+            "src": "/media/northmark-supply.jpg",
+            "alt": "Two people sketching page layouts in a notebook between their laptops"
           },
           "metric": {
             "value": "+312%",
@@ -287,7 +294,7 @@
             },
             {
               "label": "Free website audit",
-              "href": "/contact/"
+              "href": "/free-website-audit/"
             },
             {
               "label": "AI search visibility check",
@@ -321,6 +328,39 @@
             {
               "label": "Our playbook",
               "href": "/process/"
+            }
+          ]
+        },
+        {
+          "title": "Technology",
+          "links": [
+            {
+              "label": "Our technology",
+              "href": "/technology/"
+            },
+            {
+              "label": "Front end",
+              "href": "/technology/#frontend"
+            },
+            {
+              "label": "Back end",
+              "href": "/technology/#backend"
+            },
+            {
+              "label": "Data",
+              "href": "/technology/#data"
+            },
+            {
+              "label": "Content",
+              "href": "/technology/#cms"
+            },
+            {
+              "label": "Infrastructure",
+              "href": "/technology/#infrastructure"
+            },
+            {
+              "label": "Mobile and AI",
+              "href": "/technology/#mobile-and-ai"
             }
           ]
         },
@@ -407,28 +447,32 @@
         "title": "Industries",
         "links": [
           {
-            "label": "Manufacturing",
-            "href": "/industries/manufacturing/"
-          },
-          {
-            "label": "Distribution",
-            "href": "/industries/distribution/"
-          },
-          {
-            "label": "SaaS",
-            "href": "/industries/saas/"
-          },
-          {
-            "label": "Healthcare",
-            "href": "/industries/healthcare/"
+            "label": "Hotels and resorts",
+            "href": "/industries/hospitality/"
           },
           {
             "label": "Real estate",
             "href": "/industries/real-estate/"
           },
           {
-            "label": "Hospitality",
-            "href": "/industries/hospitality/"
+            "label": "Spa centres",
+            "href": "/industries/spa-centres/"
+          },
+          {
+            "label": "Media",
+            "href": "/industries/media-and-publishing/"
+          },
+          {
+            "label": "Law",
+            "href": "/industries/law-firms/"
+          },
+          {
+            "label": "Healthcare",
+            "href": "/industries/healthcare/"
+          },
+          {
+            "label": "All industries",
+            "href": "/industries/"
           }
         ]
       },
@@ -557,7 +601,7 @@
           },
           {
             "label": "Free website audit",
-            "href": "/contact/"
+            "href": "/free-website-audit/"
           },
           {
             "label": "AI visibility check",
@@ -621,14 +665,11 @@
     ],
     "offices": [
       {
-        "city": "Sacramento",
-        "address": "1201 J Street, Suite 200\nSacramento, CA 95814"
-      },
-      {
-        "city": "Austin",
-        "address": "98 San Jacinto Blvd, Suite 400\nAustin, TX 78701"
+        "city": "California",
+        "address": "United States"
       }
     ],
+    "contactEmail": "calidigi62@gmail.com",
     "legal": [
       {
         "label": "Privacy policy",

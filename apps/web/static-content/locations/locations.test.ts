@@ -62,7 +62,9 @@ describe('locations snapshots', () => {
         expect(Object.keys(locationSnapshots)).toContain(nearby.slug);
       }
       expect(locationPath(view.slug)).toBe(`/locations/${view.slug}/`);
-      expect(view.contact.phoneE164).toMatch(/^\+[1-9]\d{6,14}$/);
+      // A local contact is a mailbox, with a number only when the site publishes one.
+      expect(view.contact.email).toMatch(/@/);
+      if (view.contact.phoneE164 !== null) expect(view.contact.phoneE164).toMatch(/^\+[1-9]\d{6,14}$/);
     }
   });
 

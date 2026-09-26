@@ -1,0 +1,176 @@
+{
+  "slug": "spa-centres",
+  "name": "Spa centres",
+  "title": "Spa and wellness website design",
+  "seo": {
+    "title": "Spa and wellness centre website design",
+    "description": "Spa websites that fill the treatment book: clear menus and prices, online booking, and gift cards and memberships sold direct.",
+    "ogImage": "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=1200&h=630&q=75"
+  },
+  "answerBlock": "A spa website has to turn a browsing guest into a booked treatment, with a clear menu, honest prices and online booking that works on a phone. Calwebtech designs and builds spa and wellness centre websites connected to your booking software, with gift cards and memberships sold direct. Every booking enquiry and gift card sale is stored in a database you own.",
+  "updatedAt": "2026-09-23T00:00:00.000Z",
+  "hero": {
+    "intro": "Most spa guests decide on their phone, often late in the evening. We build the site that lets them choose a treatment, see the price and the duration, and book a time there and then, instead of meaning to call tomorrow and forgetting.",
+    "primaryCta": {
+      "label": "Discuss your project",
+      "href": "/contact/"
+    },
+    "secondaryCta": {
+      "label": "See what it costs",
+      "href": "/pricing/"
+    },
+    "highlights": [
+      "Treatment menus with prices, durations and add-ons",
+      "Online booking connected to your spa software",
+      "Gift cards and packages sold direct",
+      "Memberships and series passes that renew themselves"
+    ],
+    "backdrop": {
+      "src": "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=1600&q=60"
+    },
+    "line": "A treatment menu guests can book from at midnight."
+  },
+  "painPoints": {
+    "heading": "Why do spa websites lose bookings they should have won?",
+    "intro": "Guests arrive ready to book and leave when the next step is harder than it should be.",
+    "items": [
+      {
+        "title": "A menu with no prices",
+        "body": "A treatment list without prices or durations sends guests to the phone, and many of them never call. The ones who do tie up reception at the busiest hours."
+      },
+      {
+        "title": "Booking that happens somewhere else",
+        "body": "A link out to a generic booking screen, with different branding and another log-in, loses guests at the moment they were ready to choose a time."
+      },
+      {
+        "title": "Gift cards that only sell in person",
+        "body": "Gift cards are a large share of spa revenue around the holidays, yet many sites cannot sell one online, or sell it through a platform that takes a cut."
+      },
+      {
+        "title": "Memberships run on spreadsheets",
+        "body": "Monthly memberships and treatment series are the steadiest income a spa has, but without an online sign-up and automatic renewals they depend on staff remembering to ask."
+      }
+    ]
+  },
+  "services": {
+    "heading": "Which services does a spa or wellness centre need from a web partner?",
+    "intro": "Most spa projects are a redesign built around the booking software the front desk already uses.",
+    "items": [
+      {
+        "slug": "custom-website-development",
+        "title": "Custom website development",
+        "body": "Photography-led treatment menus with prices, durations and add-ons, and a booking button on every treatment."
+      },
+      {
+        "slug": "ecommerce-development",
+        "title": "Ecommerce development",
+        "body": "Gift cards, packages and retail products sold online, with redemption that matches how your reception works."
+      },
+      {
+        "slug": "web-application-development",
+        "title": "Web application development",
+        "body": "Membership sign-up, series passes and client intake forms connected to your booking software."
+      },
+      {
+        "slug": "ai-search-visibility",
+        "title": "AI search visibility",
+        "body": "Structured data for your treatments, prices and opening hours, and content that answers what guests ask AI assistants before they book."
+      },
+      {
+        "slug": "care-plans",
+        "title": "Website care plans",
+        "body": "Seasonal menu and offer updates, monitoring of booking links and a fixed development allowance, month to month."
+      }
+    ]
+  },
+  "compliance": {
+    "heading": "What privacy, payment and accessibility rules does a spa website have to meet?",
+    "intro": "Guests share health details, pay online and arrive in person, so each of those has to be handled properly before they book.",
+    "notes": [
+      {
+        "title": "Health questions on intake forms",
+        "body": "Intake forms ask about pregnancy, allergies and medical conditions. They are collected only when needed, sent over an encrypted connection and stored in your own database, with access limited to the therapists who need them and never used for marketing. Medical spas covered by HIPAA need more, and we scope that with you."
+      },
+      {
+        "title": "Card payments",
+        "body": "Deposits, gift cards and memberships use hosted payment fields from your payment provider, so card details never touch the website and PCI DSS scope stays small."
+      },
+      {
+        "title": "Cancellation and no-show terms",
+        "body": "Deposits and late-cancellation fees are shown before a guest confirms, so the charge is never a surprise and a dispute is easier to answer."
+      },
+      {
+        "title": "Accessible booking",
+        "body": "Menus, booking and forms are built to WCAG 2.2 AA, so a guest using a screen reader or a keyboard can choose and book a treatment like anyone else."
+      }
+    ]
+  },
+  "caseStudies": null,
+  "results": null,
+  "integrations": {
+    "heading": "Which systems does a spa website usually connect to?",
+    "intro": "The website sits in front of the software your front desk already runs, so bookings and sales land where your team works.",
+    "items": [
+      {
+        "name": "Spa booking software",
+        "body": "Mindbody, Boulevard, Zenoti, Vagaro or Fresha for treatments, therapists and availability."
+      },
+      {
+        "name": "Payments",
+        "body": "Stripe, Square or your booking software's own payments for deposits, gift cards and memberships."
+      },
+      {
+        "name": "Gift cards",
+        "body": "Your booking software's gift cards or a dedicated platform, with balances reception can check and redeem."
+      },
+      {
+        "name": "Client email and CRM",
+        "body": "Booking confirmations, aftercare emails and a client list you own, fed by bookings and enquiries."
+      },
+      {
+        "name": "Retail and stock",
+        "body": "Products sold online, with stock kept in step with what is on the shelf at reception."
+      },
+      {
+        "name": "Listings and reviews",
+        "body": "Consistent details across Google Business Profile and booking directories, with review highlights on the site."
+      }
+    ]
+  },
+  "faq": {
+    "heading": "What do spa owners ask before a new website?",
+    "intro": "The questions spa owners, managers and marketing leads raise first.",
+    "items": [
+      {
+        "id": "spa-faq-booking",
+        "question": "Will the website work with our booking software?",
+        "answer": "Almost certainly. Mindbody, Boulevard, Zenoti, Vagaro and Fresha all offer booking widgets or links, and most offer an API. We confirm what yours supports in discovery and design the booking step around it, so it feels like one site."
+      },
+      {
+        "id": "spa-faq-giftcards",
+        "question": "Can we sell gift cards online?",
+        "answer": "Yes. Gift cards can be sold through your booking software, a gift card platform or a checkout on the site with hosted payment fields, depending on how your team redeems them. Digital cards are emailed straight away, which matters in the last days before a holiday."
+      },
+      {
+        "id": "spa-faq-memberships",
+        "question": "Can guests sign up for a membership on the website?",
+        "answer": "Yes. Memberships and treatment series can be bought online with automatic monthly renewals, and members see their remaining treatments when they book."
+      },
+      {
+        "id": "spa-faq-intake",
+        "question": "How do you handle client intake and health forms?",
+        "answer": "Intake forms are sent before the first visit and stored in your own database, with access limited to the staff who need them. Medical spas that fall under HIPAA need more, and we scope that with you before anything is built."
+      },
+      {
+        "id": "spa-faq-cost",
+        "question": "How much does a spa website cost?",
+        "answer": "A single-location spa website with custom design, a treatment menu and booking links usually sits in our focused build range of $12k to $25k. Multi-location groups, gift card and membership sales and custom intake flows are platform builds, usually $25k to $60k."
+      },
+      {
+        "id": "spa-faq-editing",
+        "question": "Can our team update treatments and offers ourselves?",
+        "answer": "Yes. Treatments, prices, offers and therapists are content types with their own editors, so your team publishes a new seasonal menu from the dashboard without a developer."
+      }
+    ]
+  }
+}

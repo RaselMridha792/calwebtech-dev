@@ -1,6 +1,7 @@
 import { attributionSchema, type Attribution } from '@calwebtech/shared';
 import { utmFromSearchParams } from './utm';
 import { TURNSTILE_FIELD } from './turnstile-field';
+import { formElapsed } from './form-clock-field';
 
 function field(form: FormData, name: string): string | undefined {
   const value = form.get(name);
@@ -47,8 +48,19 @@ export function leadSubmissionFromForm(
     enquiryType: field(form, 'enquiryType'),
     landingPageSlug: field(form, 'landingPageSlug'),
     serviceSlug: field(form, 'serviceSlug'),
+    // The start a project brief (docs/06-build-plan.md, task 5.2): what it is for, the links
+    // the visitor wants read, and the draft that progressive saving already stored, so the
+    // final submit completes that lead rather than creating a second one.
+    projectType: field(form, 'projectType'),
+    projectLinks: field(form, 'projectLinks'),
+    draftId: field(form, 'draftId'),
+    draftToken: field(form, 'draftToken'),
+    // The free website audit: what worries the visitor, and a competitor to compare against.
+    mainConcern: field(form, 'mainConcern'),
+    competitorUrl: field(form, 'competitorUrl'),
     attribution: attributionFromForm(form, referer),
     referenceCode: field(form, 'referenceCode'),
+    formElapsedMs: formElapsed(form),
     turnstileToken: field(form, TURNSTILE_FIELD),
   };
 }

@@ -2,13 +2,28 @@
 import type { AdminSegment, SegmentCondition, SegmentField, SegmentPreview, SegmentRules } from '@calwebtech/shared';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
+import { CloseIcon, PlusIcon } from '@/components/admin/icons';
+import {
+  CARD,
+  CARD_PAD,
+  ERROR,
+  H2,
+  HELP,
+  INPUT,
+  KICKER,
+  LABEL,
+  SELECT,
+  TEXTAREA,
+  button,
+  iconButton,
+} from '@/components/admin/ui/styles';
 import { MutationError, adminMutate } from '@/lib/admin/mutate';
 import { describeRules } from './describe-rules';
 
 /**
  * The segment builder (docs/12-admin-dashboard.md, module 4).
  *
- * The count below the rules is live: every change asks the API, a moment after the typing
+ * The count beside the rules is live: every change asks the API, a moment after the typing
  * stops, how many subscribers the rules reach now. It is the API's count, not one worked out
  * here, so it already leaves out the suppression list and unsubscribes and cannot disagree
  * with what a send would reach.
@@ -131,9 +146,32 @@ function toCondition(draft: DraftCondition): SegmentCondition | null {
   }
 }
 
-const LABEL = 'text-[9.5px] font-bold tracking-[0.12em] text-admin-muted uppercase';
-const INPUT =
-  'h-[30px] w-full rounded-[4px] border border-admin-line bg-admin-surface px-2 text-[12.5px] text-admin-ink outline-none focus-visible:border-admin-focus disabled:opacity-60';
+/** A card with a heading row, composed here so the client bundle carries no page kit. */
+function Card({
+  title,
+  description,
+  labelledBy,
+  children,
+  live,
+}: {
+  title: string;
+  description?: string;
+  labelledBy: string;
+  children: React.ReactNode;
+  live?: boolean;
+}) {
+  return (
+    <section aria-labelledby={labelledBy} aria-live={live ? 'polite' : undefined} className={`${CARD} ${CARD_PAD}`}>
+      <div className="mb-5 flex flex-col gap-1">
+        <h2 id={labelledBy} className={H2}>
+          {title}
+        </h2>
+        {description ? <p className="text-[13.5px] leading-[1.55] text-ink-invert-muted">{description}</p> : null}
+      </div>
+      {children}
+    </section>
+  );
+}
 
 export function SegmentEditor({
   segment,
@@ -265,279 +303,322 @@ export function SegmentEditor({
     Object.entries(fieldErrors).find(([key]) => key.startsWith(`rules.conditions.${String(index)}`))?.[1][0];
 
   return (
-    <div className="flex flex-col gap-5">
-      <section className="flex flex-col gap-3 border-t border-admin-line pt-4">
-        <div className="flex flex-col gap-[3px]">
-          <label htmlFor="segment-name" className={LABEL}>
-            Name
-          </label>
-          <input
-            id="segment-name"
-            value={name}
-            disabled={disabled}
-            maxLength={80}
-            aria-invalid={fieldErrors.name ? true : undefined}
-            aria-describedby={fieldErrors.name ? 'segment-name-error' : undefined}
-            onChange={(event) => {
-              setName(event.target.value);
-              touch();
-            }}
-            className={`${INPUT} ${fieldErrors.name ? 'border-danger' : ''}`}
-          />
-          {fieldErrors.name ? (
-            <p id="segment-name-error" role="alert" className="text-[11px] text-danger">
-              {fieldErrors.name.join(' ')}
-            </p>
-          ) : null}
-        </div>
-        <div className="flex flex-col gap-[3px]">
-          <label htmlFor="segment-description" className={LABEL}>
-            Description
-          </label>
-          <textarea
-            id="segment-description"
-            value={description}
-            disabled={disabled}
-            rows={2}
-            maxLength={300}
-            onChange={(event) => {
-              setDescription(event.target.value);
-              touch();
-            }}
-            placeholder="Who this is for, in a sentence. Optional."
-            className="w-full rounded-[4px] border border-admin-line bg-admin-surface px-2 py-1.5 text-[12.5px] text-admin-ink outline-none focus-visible:border-admin-focus disabled:opacity-60"
-          />
-        </div>
-      </section>
-
-      <section className="flex flex-col gap-3 border-t border-admin-line pt-4">
-        <div>
-          <h2 className="text-[10px] font-bold tracking-[0.14em] text-admin-muted uppercase">Rules</h2>
-          <p className="mt-1 text-[11.5px] text-admin-body">
-            No rules reaches everyone who may be mailed. The suppression list and unsubscribes are always left out.
-          </p>
-        </div>
-
-        {conditions.length > 1 ? (
-          <fieldset className="flex flex-wrap items-center gap-2">
-            <legend className="sr-only">How the rules combine</legend>
-            {(['all', 'any'] as const).map((option) => (
-              <button
-                key={option}
-                type="button"
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
+      <div className="flex min-w-0 flex-col gap-6">
+        <Card title="Name" labelledBy="segment-about" description="What the segment is called where a campaign picks its audience.">
+          <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="segment-name" className={LABEL}>
+                Name
+              </label>
+              <input
+                id="segment-name"
+                value={name}
                 disabled={disabled}
-                aria-pressed={match === option}
-                onClick={() => {
-                  setMatch(option);
+                maxLength={80}
+                placeholder="Newsletter readers"
+                aria-invalid={fieldErrors.name ? true : undefined}
+                aria-describedby={fieldErrors.name ? 'segment-name-error' : undefined}
+                onChange={(event) => {
+                  setName(event.target.value);
                   touch();
                 }}
-                className={`h-8 rounded-[4px] border px-3 text-[12.5px] font-semibold disabled:opacity-60 ${
-                  match === option
-                    ? 'border-admin-edge bg-admin-nav text-admin-ink'
-                    : 'border-admin-line text-admin-body hover:border-admin-focus'
-                }`}
-              >
-                {option === 'all' ? 'Match every rule' : 'Match any rule'}
-              </button>
-            ))}
-          </fieldset>
-        ) : null}
+                className={INPUT}
+              />
+              {fieldErrors.name ? (
+                <p id="segment-name-error" role="alert" className={ERROR}>
+                  {fieldErrors.name.join(' ')}
+                </p>
+              ) : null}
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="segment-description" className={LABEL}>
+                Description
+              </label>
+              <textarea
+                id="segment-description"
+                value={description}
+                disabled={disabled}
+                rows={2}
+                maxLength={300}
+                onChange={(event) => {
+                  setDescription(event.target.value);
+                  touch();
+                }}
+                placeholder="Who this is for, in a sentence. Optional."
+                className={TEXTAREA}
+              />
+            </div>
+          </div>
+        </Card>
 
-        {conditions.length > 0 ? (
-          <ol className="border-t border-admin-line">
-            {conditions.map((draft, index) => {
-              const choice = choiceFor(draft.field);
-              const problem = conditionError(index);
-              const baseId = `condition-${String(draft.key)}`;
-              return (
-                <li key={draft.key} className="border-b border-admin-line py-3">
-                  <div className="flex flex-wrap items-end gap-2">
-                    <label className="flex w-full flex-col gap-[3px] sm:w-[170px]">
-                      <span className={LABEL}>{index === 0 ? 'Where' : match === 'all' ? 'And' : 'Or'}</span>
-                      <select
-                        value={draft.field}
-                        disabled={disabled}
-                        onChange={(event) => {
-                          const next = FIELDS.find((option) => option.field === event.target.value);
-                          if (next) update(draft.key, { field: next.field, op: next.ops[0]?.op ?? '', value: '' });
-                        }}
-                        className={INPUT}
-                      >
-                        {FIELDS.map((option) => (
-                          <option key={option.field} value={option.field}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </select>
-                    </label>
-                    <label className="flex w-full flex-col gap-[3px] sm:w-[210px]">
-                      <span className="sr-only">Condition</span>
-                      <select
-                        value={draft.op}
-                        disabled={disabled}
-                        onChange={(event) => {
-                          update(draft.key, { op: event.target.value });
-                        }}
-                        className={INPUT}
-                      >
-                        {choice.ops.map((option) => (
-                          <option key={option.op} value={option.op}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </select>
-                    </label>
-                    <label className="flex min-w-[140px] flex-1 flex-col gap-[3px]">
-                      <span className="sr-only">{choice.takes === 'days' ? 'Number of days' : 'Value'}</span>
-                      {choice.takes === 'days' ? (
-                        <input
-                          type="number"
-                          min={1}
-                          max={3650}
-                          inputMode="numeric"
-                          value={draft.days}
+        <Card
+          title="Rules"
+          labelledBy="segment-rules"
+          description="Each rule narrows who is included. With no rules the segment reaches everyone who may be mailed; the suppression list and unsubscribes are always left out."
+        >
+          <div className="flex flex-col gap-4">
+            {conditions.length > 1 ? (
+              <fieldset className="flex flex-wrap items-center gap-3">
+                <legend className="sr-only">How the rules combine</legend>
+                <span className={KICKER}>Include people who</span>
+                <div className="inline-flex rounded-lg border border-admin-line p-0.5">
+                  {(['all', 'any'] as const).map((option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      disabled={disabled}
+                      aria-pressed={match === option}
+                      onClick={() => {
+                        setMatch(option);
+                        touch();
+                      }}
+                      className={`h-8 rounded-md px-3 text-[13px] font-semibold transition-colors duration-150 disabled:opacity-50 pointer-coarse:h-10 ${
+                        match === option ? 'bg-admin-nav text-ink-invert' : 'text-ink-invert-muted hover:text-ink-invert'
+                      }`}
+                    >
+                      {option === 'all' ? 'Match every rule' : 'Match any rule'}
+                    </button>
+                  ))}
+                </div>
+              </fieldset>
+            ) : null}
+
+            {conditions.length > 0 ? (
+              <ol className="flex flex-col gap-3">
+                {conditions.map((draft, index) => {
+                  const choice = choiceFor(draft.field);
+                  const problem = conditionError(index);
+                  const baseId = `condition-${String(draft.key)}`;
+                  return (
+                    <li key={draft.key} className="rounded-lg border border-admin-line2 bg-admin-sunken/40 p-3 sm:p-4">
+                      {/*
+                        On a phone the connector word and the remove button share the first row and
+                        the three controls stack under them; from `sm` the whole rule reads as one line.
+                      */}
+                      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 sm:grid-cols-[auto_minmax(0,1.05fr)_minmax(0,1.4fr)_minmax(0,0.9fr)_auto] sm:gap-3">
+                        <label
+                          htmlFor={`${baseId}-field`}
+                          className="text-[12px] font-bold tracking-[0.08em] text-admin-muted uppercase sm:w-14"
+                        >
+                          {index === 0 ? 'Where' : match === 'all' ? 'And' : 'Or'}
+                        </label>
+                        {mayWrite ? (
+                          <button
+                            type="button"
+                            disabled={disabled}
+                            onClick={() => {
+                              remove(draft.key);
+                            }}
+                            aria-label={`Remove rule ${String(index + 1)}`}
+                            title="Remove this rule"
+                            className={`${iconButton('sm')} sm:order-last`}
+                          >
+                            <CloseIcon className="size-4" />
+                          </button>
+                        ) : null}
+                        <select
+                          id={`${baseId}-field`}
+                          value={draft.field}
                           disabled={disabled}
-                          aria-invalid={problem ? true : undefined}
-                          aria-describedby={problem ? `${baseId}-error` : undefined}
                           onChange={(event) => {
-                            update(draft.key, { days: event.target.value });
+                            const next = FIELDS.find((option) => option.field === event.target.value);
+                            if (next) update(draft.key, { field: next.field, op: next.ops[0]?.op ?? '', value: '' });
                           }}
-                          className={`${INPUT} ${problem ? 'border-danger' : ''}`}
-                        />
-                      ) : (
-                        <input
-                          value={draft.value}
-                          disabled={disabled}
-                          placeholder={choice.placeholder}
-                          list={draft.field === 'tag' ? 'segment-known-tags' : undefined}
-                          aria-invalid={problem ? true : undefined}
-                          aria-describedby={problem ? `${baseId}-error` : undefined}
-                          onChange={(event) => {
-                            update(draft.key, { value: event.target.value });
-                          }}
-                          className={`${INPUT} ${problem ? 'border-danger' : ''}`}
-                        />
-                      )}
-                    </label>
-                    {mayWrite ? (
+                          className={`${SELECT} col-span-2 sm:col-span-1`}
+                        >
+                          {FIELDS.map((option) => (
+                            <option key={option.field} value={option.field}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </select>
+                        <div className="col-span-2 flex flex-col gap-1.5 sm:col-span-1">
+                          <label htmlFor={`${baseId}-op`} className="sr-only">
+                            Condition
+                          </label>
+                          <select
+                            id={`${baseId}-op`}
+                            value={draft.op}
+                            disabled={disabled}
+                            onChange={(event) => {
+                              update(draft.key, { op: event.target.value });
+                            }}
+                            className={SELECT}
+                          >
+                            {choice.ops.map((option) => (
+                              <option key={option.op} value={option.op}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        <div className="col-span-2 flex flex-col gap-1.5 sm:col-span-1">
+                          <label htmlFor={`${baseId}-value`} className="sr-only">
+                            {choice.takes === 'days' ? 'Number of days' : 'Value'}
+                          </label>
+                          {choice.takes === 'days' ? (
+                            <input
+                              id={`${baseId}-value`}
+                              type="number"
+                              min={1}
+                              max={3650}
+                              inputMode="numeric"
+                              value={draft.days}
+                              disabled={disabled}
+                              aria-invalid={problem ? true : undefined}
+                              aria-describedby={problem ? `${baseId}-error` : undefined}
+                              onChange={(event) => {
+                                update(draft.key, { days: event.target.value });
+                              }}
+                              className={INPUT}
+                            />
+                          ) : (
+                            <input
+                              id={`${baseId}-value`}
+                              value={draft.value}
+                              disabled={disabled}
+                              placeholder={choice.placeholder}
+                              list={draft.field === 'tag' ? 'segment-known-tags' : undefined}
+                              aria-invalid={problem ? true : undefined}
+                              aria-describedby={problem ? `${baseId}-error` : undefined}
+                              onChange={(event) => {
+                                update(draft.key, { value: event.target.value });
+                              }}
+                              className={INPUT}
+                            />
+                          )}
+                        </div>
+                      </div>
+                      {problem ? (
+                        <p id={`${baseId}-error`} role="alert" className={`${ERROR} mt-2`}>
+                          {problem}
+                        </p>
+                      ) : null}
+                    </li>
+                  );
+                })}
+              </ol>
+            ) : (
+              <p className="text-[14px] text-ink-invert-muted">
+                No rules yet, so this segment reaches everyone who may be mailed.
+                {mayWrite ? ' Add a rule to narrow it down.' : ''}
+              </p>
+            )}
+
+            <datalist id="segment-known-tags">
+              {knownTags.map((tag) => (
+                <option key={tag} value={tag} />
+              ))}
+            </datalist>
+
+            {mayWrite ? (
+              <div className="flex flex-wrap items-center gap-3">
+                <button type="button" onClick={add} disabled={disabled || conditions.length >= 20} className={button('secondary')}>
+                  <PlusIcon className="size-4" />
+                  Add a rule
+                </button>
+                {conditions.length >= 20 ? <span className={HELP}>A segment can have up to 20 rules.</span> : null}
+              </div>
+            ) : null}
+          </div>
+        </Card>
+      </div>
+
+      <aside className="flex flex-col gap-4 lg:sticky lg:top-6 lg:self-start">
+        <Card title="Who this reaches now" labelledBy="segment-reach" live>
+          {!complete ? (
+            <p className="text-[14px] leading-[1.6] text-ink-invert-muted">Finish the rule you are writing to see the count.</p>
+          ) : previewState === 'failed' ? (
+            <p className="text-[14px] leading-[1.6] text-ink-invert-muted">The count could not be worked out. Check the rules.</p>
+          ) : preview ? (
+            <div className={`flex flex-col gap-3 transition-opacity duration-150 ${previewState === 'loading' ? 'opacity-60' : ''}`}>
+              <p className="flex flex-wrap items-baseline gap-x-2">
+                <span className="font-display text-[36px] leading-none font-extrabold tracking-[-0.02em] text-ink-invert tabular-nums">
+                  {preview.count.toLocaleString()}
+                </span>
+                <span className="text-[13.5px] text-admin-muted tabular-nums">{`of ${preview.eligible.toLocaleString()}`}</span>
+              </p>
+              <p className="text-[13.5px] leading-[1.55] text-ink-invert-muted">{`subscribers who may be mailed · ${describeRules(rules)}`}</p>
+              {preview.sample.length > 0 ? (
+                <div className="flex flex-col gap-2 border-t border-admin-line2 pt-3">
+                  <span className={KICKER}>For example</span>
+                  <ul className="flex flex-col gap-1">
+                    {preview.sample.map((person) => (
+                      <li key={person.email} className="text-[13px] break-all text-ink-invert-muted">
+                        {person.name ? `${person.name} · ${person.email}` : person.email}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+            </div>
+          ) : (
+            <p className="text-[14px] leading-[1.6] text-ink-invert-muted">Counting…</p>
+          )}
+        </Card>
+
+        {mayWrite ? (
+          <Card
+            title={segment ? 'Save changes' : 'Create the segment'}
+            labelledBy="segment-save"
+            description={segment ? 'Campaigns that use this segment pick up the new rules on their next send.' : undefined}
+          >
+            <div className="flex flex-col gap-3">
+              {error ? (
+                <p role="alert" className={ERROR}>
+                  {error}
+                </p>
+              ) : null}
+              <button type="button" onClick={save} disabled={disabled} className={`${button('primary')} w-full`}>
+                {busy === 'save' ? 'Saving…' : segment ? 'Save' : 'Create segment'}
+              </button>
+              {saved ? (
+                <p
+                  role="status"
+                  className="flex items-center gap-2 text-[13px] text-ink-invert-muted motion-safe:animate-[admin-rise_180ms_var(--ease-out-quint)]"
+                >
+                  <span aria-hidden className="size-2 shrink-0 rounded-full bg-result" />
+                  Saved.
+                </p>
+              ) : null}
+              {segment ? (
+                <div className="flex flex-col gap-2 border-t border-admin-line2 pt-3">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={destroy}
+                      disabled={disabled || segment.campaignCount > 0}
+                      title={segment.campaignCount > 0 ? 'A segment a campaign uses cannot be deleted.' : undefined}
+                      className={button('danger')}
+                    >
+                      {busy === 'delete' ? 'Deleting…' : confirmingDelete ? 'Yes, delete it' : 'Delete segment'}
+                    </button>
+                    {confirmingDelete ? (
                       <button
                         type="button"
-                        disabled={disabled}
                         onClick={() => {
-                          remove(draft.key);
+                          setConfirmingDelete(false);
                         }}
-                        aria-label={`Remove rule ${String(index + 1)}`}
-                        className="h-[30px] rounded-[4px] border border-admin-line px-3 text-[12.5px] font-semibold text-admin-body hover:border-admin-focus disabled:opacity-40"
+                        className={button('secondary')}
                       >
-                        Remove
+                        Keep it
                       </button>
                     ) : null}
                   </div>
-                  {problem ? (
-                    <p id={`${baseId}-error`} role="alert" className="mt-1 text-[11px] text-danger">
-                      {problem}
-                    </p>
-                  ) : null}
-                </li>
-              );
-            })}
-          </ol>
-        ) : null}
-
-        <datalist id="segment-known-tags">
-          {knownTags.map((tag) => (
-            <option key={tag} value={tag} />
-          ))}
-        </datalist>
-
-        {mayWrite ? (
-          <div>
-            <button
-              type="button"
-              onClick={add}
-              disabled={disabled || conditions.length >= 20}
-              className="h-8 rounded-[4px] border border-admin-line px-3 text-[12.5px] font-semibold text-admin-body hover:border-admin-focus disabled:opacity-40"
-            >
-              Add a rule
-            </button>
-          </div>
-        ) : null}
-      </section>
-
-      <section aria-live="polite" className="border-t border-admin-line pt-4">
-        <h2 className="text-[10px] font-bold tracking-[0.14em] text-admin-muted uppercase">Who this reaches now</h2>
-        {!complete ? (
-          <p className="mt-2 text-[12.5px] text-admin-body">Finish the rule you are writing to see the count.</p>
-        ) : previewState === 'failed' ? (
-          <p className="mt-2 text-[12.5px] text-admin-body">The count could not be worked out. Check the rules.</p>
-        ) : preview ? (
-          <div className={previewState === 'loading' ? 'opacity-60' : undefined}>
-            <p className="mt-2 font-display text-[21px] font-bold tracking-[-0.02em] text-admin-ink tabular-nums">
-              {`${preview.count.toLocaleString()} of ${preview.eligible.toLocaleString()}`}
-            </p>
-            <p className="text-[12px] text-admin-body">{`subscribers who may be mailed · ${describeRules(rules)}`}</p>
-            {preview.sample.length > 0 ? (
-              <ul className="mt-3 space-y-1">
-                {preview.sample.map((person) => (
-                  <li key={person.email} className="text-[12px] break-all text-admin-muted">
-                    {person.name ? `${person.name} · ${person.email}` : person.email}
-                  </li>
-                ))}
-              </ul>
-            ) : null}
-          </div>
-        ) : (
-          <p className="mt-2 text-[12.5px] text-admin-body">Counting…</p>
-        )}
-      </section>
-
-      {error ? (
-        <p role="alert" className="text-[12.5px] text-danger">
-          {error}
-        </p>
-      ) : null}
-
-      {mayWrite ? (
-        <div className="flex flex-wrap items-center gap-2 border-t border-admin-line pt-4">
-          <button
-            type="button"
-            onClick={save}
-            disabled={disabled}
-            className="h-9 rounded-[4px] bg-primary px-4 text-[12.5px] font-semibold text-white hover:bg-admin-primaryh disabled:opacity-40"
-          >
-            {busy === 'save' ? 'Saving…' : segment ? 'Save' : 'Create segment'}
-          </button>
-          {saved ? (
-            <span role="status" className="text-[12px] text-admin-body">
-              Saved.
-            </span>
-          ) : null}
-          {segment ? (
-            <span className="ms-auto flex flex-wrap items-center gap-2">
-              {confirmingDelete ? (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setConfirmingDelete(false);
-                  }}
-                  className="h-9 rounded-[4px] border border-admin-line px-3 text-[12.5px] font-semibold text-admin-body hover:border-admin-focus"
-                >
-                  Keep it
-                </button>
+                  <p className={HELP}>
+                    {segment.campaignCount > 0
+                      ? 'A segment a campaign uses cannot be deleted. Point the campaign at another segment first.'
+                      : confirmingDelete
+                        ? 'This removes the segment for good. The subscribers themselves are not touched.'
+                        : 'Deleting a segment does not delete any subscriber.'}
+                  </p>
+                </div>
               ) : null}
-              <button
-                type="button"
-                onClick={destroy}
-                disabled={disabled || segment.campaignCount > 0}
-                title={segment.campaignCount > 0 ? 'A segment a campaign uses cannot be deleted.' : undefined}
-                className="h-9 rounded-[4px] border border-admin-line px-3 text-[12.5px] font-semibold text-danger hover:border-danger disabled:opacity-40"
-              >
-                {busy === 'delete' ? 'Deleting…' : confirmingDelete ? 'Yes, delete it' : 'Delete segment'}
-              </button>
-            </span>
-          ) : null}
-        </div>
-      ) : null}
+            </div>
+          </Card>
+        ) : null}
+      </aside>
     </div>
   );
 }

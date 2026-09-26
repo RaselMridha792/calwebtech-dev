@@ -120,3 +120,22 @@ export async function findViewDatabaseFirst<Schema extends z.ZodType>(
   }
   throw new Error(`API responded ${String(response.status)} for ${path}`);
 }
+
+/**
+ * Page copy stored in the database for a page that renders from its snapshot, or null
+ * (docs/08-decisions.md, 59). Only while pages render from snapshots and the family is named
+ * in `CONTENT_DATABASE_FIRST`: the caller lays the copy over the snapshot's records, so the
+ * homepage's words can change from the dashboard while its proof stays where it is. With
+ * `CONTENT_SOURCE=api` the API's own view already carries the stored copy.
+ */
+export async function findStoredCopy<Schema extends z.ZodType>(
+  family: string,
+  key: string,
+  schema: Schema,
+): Promise<z.output<Schema> | null> {
+  if (!usesSnapshots() || !isDatabaseFirst(family)) return null;
+  const response = await fetch(apiUrl(`/pages/copy/${encodeURIComponent(key)}`), { cache: 'no-store' });
+  if (response.status === 404) return null;
+  if (!response.ok) throw new Error(`API responded ${String(response.status)} for the "${key}" copy`);
+  return schema.parse(await response.json());
+}

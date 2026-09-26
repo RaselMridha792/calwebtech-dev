@@ -54,7 +54,6 @@ export const INSIGHTS_PLACEHOLDER_COPY: InsightsCopyInput = {
     newsletter: {
       heading: 'Placeholder: would you like the next article by email?',
       body: 'Placeholder. The approved copy says what a subscriber gets and how often.',
-      nameLabel: 'Full name',
       emailLabel: 'Work email',
       submitLabel: 'Subscribe',
       privacyNote: 'Placeholder. The approved copy says where the details are stored and how to unsubscribe.',

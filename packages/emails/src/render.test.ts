@@ -84,6 +84,17 @@ describe('internal lead notification', () => {
   });
 });
 
+describe('a lead that came back', () => {
+  it('tells the team it was added to the open lead, rather than announcing a new one', async () => {
+    const email = await renderEmail({ ...notification, resubmission: 'act-2' }, { contact });
+    expect(email.subject).toMatch(/^Lead updated: /);
+    expect(email.text).toMatch(/wrote again/i);
+    expect(email.text).toMatch(/added to their open lead/);
+    const first = await renderEmail(notification, { contact });
+    expect(first.subject).toMatch(/^New lead: /);
+  });
+});
+
 describe('brand rules', () => {
   it('uses no teal, which is reserved for outcome figures', async () => {
     for (const job of [confirmation, notification]) {

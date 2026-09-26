@@ -1,8 +1,9 @@
 'use client';
 import type { AdminAvailability } from '@calwebtech/shared';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { MutationError, adminMutate } from '@/lib/admin/mutate';
+import { CARD, CARD_PAD, ERROR, H2, HELP, INPUT, LABEL, button } from '../ui/styles';
 
 /**
  * The hours calls can be booked in, and the days they cannot (task 5.1).
@@ -41,9 +42,8 @@ function minutesOf(value: string): number {
   return Number(hours) * 60 + Number(rest);
 }
 
-const field =
-  'h-8 rounded-[4px] border border-admin-line bg-admin-sunken px-2 text-[12.5px] text-admin-ink outline-none focus-visible:border-admin-focus disabled:opacity-40';
-const label = 'block text-[9.5px] font-bold tracking-[0.12em] text-admin-muted uppercase';
+/** A time or date input sits in a fixed-width slot so a row of them lines up. */
+const SLOT = 'w-[136px] shrink-0';
 
 export function AvailabilityForm({ availability, mayWrite }: { availability: AdminAvailability; mayWrite: boolean }) {
   const router = useRouter();
@@ -115,273 +115,275 @@ export function AvailabilityForm({ availability, mayWrite }: { availability: Adm
 
   const stride = bufferBefore + duration + bufferAfter;
   const openDays = week.filter((windows) => windows.length > 0).length;
+  const locked = !mayWrite || busy;
 
   return (
-    <div className="mt-6">
-      <section>
-        <h2 className="text-[9.5px] font-bold tracking-[0.12em] text-admin-muted uppercase">The call</h2>
-        <div className="mt-3 flex flex-wrap items-end gap-4">
-          <div>
-            <label htmlFor="duration" className={label}>
-              Minutes
-            </label>
-            <input
-              id="duration"
-              type="number"
-              min={5}
-              max={480}
-              step={5}
-              value={duration}
-              disabled={!mayWrite || busy}
-              onChange={(event) => {
-                setDuration(Number(event.target.value));
-                setSaved(false);
-              }}
-              className={`mt-1.5 w-24 ${field}`}
-            />
-          </div>
-          <div>
-            <label htmlFor="buffer-before" className={label}>
-              Gap before
-            </label>
-            <input
-              id="buffer-before"
-              type="number"
-              min={0}
-              max={240}
-              step={5}
-              value={bufferBefore}
-              disabled={!mayWrite || busy}
-              onChange={(event) => {
-                setBufferBefore(Number(event.target.value));
-                setSaved(false);
-              }}
-              className={`mt-1.5 w-24 ${field}`}
-            />
-          </div>
-          <div>
-            <label htmlFor="buffer-after" className={label}>
-              Gap after
-            </label>
-            <input
-              id="buffer-after"
-              type="number"
-              min={0}
-              max={240}
-              step={5}
-              value={bufferAfter}
-              disabled={!mayWrite || busy}
-              onChange={(event) => {
-                setBufferAfter(Number(event.target.value));
-                setSaved(false);
-              }}
-              className={`mt-1.5 w-24 ${field}`}
-            />
-          </div>
-          <div>
-            <label htmlFor="notice" className={label}>
-              Least notice, hours
-            </label>
-            <input
-              id="notice"
-              type="number"
-              min={0}
-              max={720}
-              value={notice}
-              disabled={!mayWrite || busy}
-              onChange={(event) => {
-                setNotice(Number(event.target.value));
-                setSaved(false);
-              }}
-              className={`mt-1.5 w-24 ${field}`}
-            />
-          </div>
+    <div className="flex flex-col gap-6">
+      <Section id="availability-call" title="The call" description="How long a call lasts, and the room to leave around it.">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+          <NumberField
+            id="duration"
+            label="Call length (minutes)"
+            min={5}
+            max={480}
+            step={5}
+            value={duration}
+            disabled={locked}
+            onChange={(value) => {
+              setDuration(value);
+              setSaved(false);
+            }}
+          />
+          <NumberField
+            id="buffer-before"
+            label="Gap before (minutes)"
+            min={0}
+            max={240}
+            step={5}
+            value={bufferBefore}
+            disabled={locked}
+            onChange={(value) => {
+              setBufferBefore(value);
+              setSaved(false);
+            }}
+          />
+          <NumberField
+            id="buffer-after"
+            label="Gap after (minutes)"
+            min={0}
+            max={240}
+            step={5}
+            value={bufferAfter}
+            disabled={locked}
+            onChange={(value) => {
+              setBufferAfter(value);
+              setSaved(false);
+            }}
+          />
+          <NumberField
+            id="notice"
+            label="Least notice (hours)"
+            min={0}
+            max={720}
+            value={notice}
+            disabled={locked}
+            onChange={(value) => {
+              setNotice(value);
+              setSaved(false);
+            }}
+          />
         </div>
-        <p className="mt-2 text-[12.5px] text-admin-body">
+        <p className="mt-4 text-[14px] leading-[1.6] text-ink-invert-muted">
           {`One start every ${String(stride)} minutes, and nothing sooner than ${String(notice)} hours from now. Times are ${availability.timeZone}, and the page shows each visitor their own clock.`}
         </p>
-      </section>
+      </Section>
 
-      <section className="mt-7 border-t border-admin-line pt-5">
-        <h2 className="text-[9.5px] font-bold tracking-[0.12em] text-admin-muted uppercase">The week</h2>
-        <ul className="mt-3 divide-y divide-admin-line">
+      <Section
+        id="availability-week"
+        title="The week"
+        description="The hours visitors can choose from on each day. A day with no window is closed."
+      >
+        <ul className="-my-1 divide-y divide-admin-line2">
           {WEEKDAYS.map((name, weekday) => {
             const windows = week[weekday] ?? [];
             return (
-              <li key={name} className="flex flex-wrap items-center gap-x-4 gap-y-2 py-2.5">
-                <span className="w-[5.5rem] text-[13px] font-semibold text-admin-ink">{name}</span>
+              <li key={name} className="flex flex-col gap-3 py-4 sm:flex-row sm:items-start sm:gap-5">
+                <span className="w-28 shrink-0 text-[14.5px] font-semibold text-ink-invert sm:pt-2">{name}</span>
 
-                {windows.length === 0 ? (
-                  <span className="text-[12.5px] text-admin-muted">Closed</span>
-                ) : (
-                  <ul className="flex flex-wrap items-center gap-2">
-                    {windows.map((window, index) => (
-                      // The index is the identity: two windows can hold the same hours while
-                      // one of them is being typed into.
-                      <li key={`${name}-${String(index)}`} className="flex items-center gap-1.5">
-                        <input
-                          type="time"
-                          aria-label={`${name} opens`}
-                          value={clock(window.startMinute)}
-                          disabled={!mayWrite || busy}
-                          onChange={(event) => {
-                            editWeek(
-                              weekday,
-                              windows.map((entry, at) =>
-                                at === index ? { ...entry, startMinute: minutesOf(event.target.value) } : entry,
-                              ),
-                            );
-                          }}
-                          className={field}
-                        />
-                        <span className="text-[12.5px] text-admin-muted">to</span>
-                        <input
-                          type="time"
-                          aria-label={`${name} closes`}
-                          value={clock(window.endMinute)}
-                          disabled={!mayWrite || busy}
-                          onChange={(event) => {
-                            editWeek(
-                              weekday,
-                              windows.map((entry, at) =>
-                                at === index ? { ...entry, endMinute: minutesOf(event.target.value) } : entry,
-                              ),
-                            );
-                          }}
-                          className={field}
-                        />
-                        {mayWrite ? (
-                          <button
-                            type="button"
-                            disabled={busy}
-                            onClick={() => {
-                              editWeek(
-                                weekday,
-                                windows.filter((_, at) => at !== index),
-                              );
-                            }}
-                            className="h-8 rounded-[4px] border border-admin-line px-2 text-[12.5px] text-admin-body hover:border-admin-focus disabled:opacity-40"
-                          >
-                            {`Remove ${name} ${clock(window.startMinute)}`}
-                          </button>
-                        ) : null}
-                      </li>
-                    ))}
-                  </ul>
-                )}
+                <div className="flex min-w-0 flex-1 flex-col gap-2.5">
+                  {windows.length === 0 ? (
+                    <span className="text-[14px] text-admin-muted sm:pt-2">Closed</span>
+                  ) : (
+                    <ul className="flex flex-col gap-2">
+                      {windows.map((window, index) => (
+                        // The index is the identity: two windows can hold the same hours while
+                        // one of them is being typed into.
+                        <li key={`${name}-${String(index)}`} className="flex flex-wrap items-center gap-2">
+                          <span className={SLOT}>
+                            <input
+                              type="time"
+                              aria-label={`${name} opens`}
+                              value={clock(window.startMinute)}
+                              disabled={locked}
+                              onChange={(event) => {
+                                editWeek(
+                                  weekday,
+                                  windows.map((entry, at) =>
+                                    at === index ? { ...entry, startMinute: minutesOf(event.target.value) } : entry,
+                                  ),
+                                );
+                              }}
+                              className={INPUT}
+                            />
+                          </span>
+                          <span className="text-[13px] text-admin-muted">to</span>
+                          <span className={SLOT}>
+                            <input
+                              type="time"
+                              aria-label={`${name} closes`}
+                              value={clock(window.endMinute)}
+                              disabled={locked}
+                              onChange={(event) => {
+                                editWeek(
+                                  weekday,
+                                  windows.map((entry, at) =>
+                                    at === index ? { ...entry, endMinute: minutesOf(event.target.value) } : entry,
+                                  ),
+                                );
+                              }}
+                              className={INPUT}
+                            />
+                          </span>
+                          {mayWrite ? (
+                            <button
+                              type="button"
+                              disabled={busy}
+                              aria-label={`Remove ${name} ${clock(window.startMinute)}`}
+                              onClick={() => {
+                                editWeek(
+                                  weekday,
+                                  windows.filter((_, at) => at !== index),
+                                );
+                              }}
+                              className={button('ghost', 'sm')}
+                            >
+                              Remove
+                            </button>
+                          ) : null}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
 
-                {mayWrite ? (
-                  <button
-                    type="button"
-                    disabled={busy}
-                    onClick={() => {
-                      const last = windows.at(-1);
-                      editWeek(weekday, [
-                        ...windows,
-                        last
-                          ? { startMinute: Math.min(last.endMinute + 60, 23 * 60), endMinute: Math.min(last.endMinute + 60 + duration, 24 * 60) }
-                          : { startMinute: 9 * 60, endMinute: 17 * 60 },
-                      ]);
-                    }}
-                    className="h-8 rounded-[4px] border border-admin-line px-2.5 text-[12.5px] font-semibold text-admin-body hover:border-admin-focus disabled:opacity-40"
-                  >
-                    {windows.length === 0 ? `Open ${name}` : `Another window on ${name}`}
-                  </button>
-                ) : null}
+                  {mayWrite ? (
+                    <button
+                      type="button"
+                      disabled={busy}
+                      onClick={() => {
+                        const last = windows.at(-1);
+                        editWeek(weekday, [
+                          ...windows,
+                          last
+                            ? { startMinute: Math.min(last.endMinute + 60, 23 * 60), endMinute: Math.min(last.endMinute + 60 + duration, 24 * 60) }
+                            : { startMinute: 9 * 60, endMinute: 17 * 60 },
+                        ]);
+                      }}
+                      className={`${button('secondary', 'sm')} self-start`}
+                    >
+                      {windows.length === 0 ? `Open ${name}` : `Another window on ${name}`}
+                    </button>
+                  ) : null}
+                </div>
               </li>
             );
           })}
         </ul>
-        <p className="mt-2 text-[12.5px] text-admin-body">
+        <p className="mt-4 text-[14px] leading-[1.6] text-ink-invert-muted">
           {openDays === 0
             ? 'Every day is closed, so the page tells visitors there are no times rather than showing any.'
             : `${String(openDays)} of seven days are open. Two windows on one day sit either side of lunch; they may not overlap.`}
         </p>
-      </section>
+      </Section>
 
-      <section className="mt-7 border-t border-admin-line pt-5">
-        <h2 className="text-[9.5px] font-bold tracking-[0.12em] text-admin-muted uppercase">Days off</h2>
-        <p className="mt-1.5 text-[12.5px] text-admin-body">
-          A date here beats the week. Leave the hours empty to close the day completely, or set
-          them to open only then.
-        </p>
-        <ul className="mt-3 space-y-2">
-          {exceptions.map((entry, index) => (
-            <li key={`exception-${String(index)}`} className="flex flex-wrap items-center gap-2">
-              <input
-                type="date"
-                aria-label="Date"
-                value={entry.day}
-                disabled={!mayWrite || busy}
-                onChange={(event) => {
-                  setExceptions((current) =>
-                    current.map((item, at) => (at === index ? { ...item, day: event.target.value } : item)),
-                  );
-                  setSaved(false);
-                }}
-                className={field}
-              />
-              <input
-                type="time"
-                aria-label="Open from"
-                value={entry.startMinute === null ? '' : clock(entry.startMinute)}
-                disabled={!mayWrite || busy}
-                onChange={(event) => {
-                  const value = event.target.value === '' ? null : minutesOf(event.target.value);
-                  setExceptions((current) =>
-                    current.map((item, at) =>
-                      at === index
-                        ? { ...item, startMinute: value, endMinute: value === null ? null : (item.endMinute ?? 24 * 60) }
-                        : item,
-                    ),
-                  );
-                  setSaved(false);
-                }}
-                className={field}
-              />
-              <input
-                type="time"
-                aria-label="Open until"
-                value={entry.endMinute === null ? '' : clock(entry.endMinute)}
-                disabled={!mayWrite || busy || entry.startMinute === null}
-                onChange={(event) => {
-                  const value = event.target.value === '' ? null : minutesOf(event.target.value);
-                  setExceptions((current) => current.map((item, at) => (at === index ? { ...item, endMinute: value } : item)));
-                  setSaved(false);
-                }}
-                className={field}
-              />
-              <input
-                type="text"
-                aria-label="Why"
-                value={entry.reason}
-                placeholder="Public holiday"
-                maxLength={120}
-                disabled={!mayWrite || busy}
-                onChange={(event) => {
-                  setExceptions((current) =>
-                    current.map((item, at) => (at === index ? { ...item, reason: event.target.value } : item)),
-                  );
-                  setSaved(false);
-                }}
-                className={`w-52 ${field}`}
-              />
-              {mayWrite ? (
-                <button
-                  type="button"
-                  disabled={busy}
-                  onClick={() => {
-                    setExceptions((current) => current.filter((_, at) => at !== index));
-                    setSaved(false);
-                  }}
-                  className="h-8 rounded-[4px] border border-admin-line px-2 text-[12.5px] text-admin-body hover:border-admin-focus disabled:opacity-40"
-                >
-                  {`Remove ${entry.day === '' ? 'this date' : entry.day}`}
-                </button>
-              ) : null}
-            </li>
-          ))}
-        </ul>
+      <Section
+        id="availability-days-off"
+        title="Days off"
+        description="A date here beats the week. Leave the hours empty to close the day completely, or set them to open only then."
+      >
+        {exceptions.length === 0 ? (
+          <p className="text-[14px] text-ink-invert-muted">No days off yet. Every date follows the week above.</p>
+        ) : (
+          <ul className="-my-1 divide-y divide-admin-line2">
+            {exceptions.map((entry, index) => (
+              <li key={`exception-${String(index)}`} className="flex flex-wrap items-end gap-3 py-4">
+                <label className={`flex flex-col gap-1.5 ${SLOT} max-sm:w-[calc(50%-6px)]`}>
+                  <span className={LABEL}>Date</span>
+                  <input
+                    type="date"
+                    aria-label="Date"
+                    value={entry.day}
+                    disabled={locked}
+                    onChange={(event) => {
+                      setExceptions((current) =>
+                        current.map((item, at) => (at === index ? { ...item, day: event.target.value } : item)),
+                      );
+                      setSaved(false);
+                    }}
+                    className={INPUT}
+                  />
+                </label>
+                <label className={`flex flex-col gap-1.5 ${SLOT} max-sm:w-[calc(50%-6px)]`}>
+                  <span className={LABEL}>Open from</span>
+                  <input
+                    type="time"
+                    aria-label="Open from"
+                    value={entry.startMinute === null ? '' : clock(entry.startMinute)}
+                    disabled={locked}
+                    onChange={(event) => {
+                      const value = event.target.value === '' ? null : minutesOf(event.target.value);
+                      setExceptions((current) =>
+                        current.map((item, at) =>
+                          at === index
+                            ? { ...item, startMinute: value, endMinute: value === null ? null : (item.endMinute ?? 24 * 60) }
+                            : item,
+                        ),
+                      );
+                      setSaved(false);
+                    }}
+                    className={INPUT}
+                  />
+                </label>
+                <label className={`flex flex-col gap-1.5 ${SLOT} max-sm:w-[calc(50%-6px)]`}>
+                  <span className={LABEL}>Open until</span>
+                  <input
+                    type="time"
+                    aria-label="Open until"
+                    value={entry.endMinute === null ? '' : clock(entry.endMinute)}
+                    disabled={locked || entry.startMinute === null}
+                    onChange={(event) => {
+                      const value = event.target.value === '' ? null : minutesOf(event.target.value);
+                      setExceptions((current) => current.map((item, at) => (at === index ? { ...item, endMinute: value } : item)));
+                      setSaved(false);
+                    }}
+                    className={INPUT}
+                  />
+                </label>
+                <label className="flex min-w-[180px] flex-1 flex-col gap-1.5">
+                  <span className={LABEL}>Reason</span>
+                  <input
+                    type="text"
+                    aria-label="Why"
+                    value={entry.reason}
+                    placeholder="Public holiday"
+                    maxLength={120}
+                    disabled={locked}
+                    onChange={(event) => {
+                      setExceptions((current) =>
+                        current.map((item, at) => (at === index ? { ...item, reason: event.target.value } : item)),
+                      );
+                      setSaved(false);
+                    }}
+                    className={INPUT}
+                  />
+                </label>
+                {mayWrite ? (
+                  <button
+                    type="button"
+                    disabled={busy}
+                    aria-label={`Remove ${entry.day === '' ? 'this date' : entry.day}`}
+                    onClick={() => {
+                      setExceptions((current) => current.filter((_, at) => at !== index));
+                      setSaved(false);
+                    }}
+                    className={`${button('ghost', 'sm')} mb-1`}
+                  >
+                    Remove
+                  </button>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        )}
         {mayWrite ? (
           <button
             type="button"
@@ -390,38 +392,94 @@ export function AvailabilityForm({ availability, mayWrite }: { availability: Adm
               setExceptions((current) => [...current, { day: '', startMinute: null, endMinute: null, reason: '' }]);
               setSaved(false);
             }}
-            className="mt-3 h-8 rounded-[4px] border border-admin-line px-2.5 text-[12.5px] font-semibold text-admin-body hover:border-admin-focus disabled:opacity-40"
+            className={`${button('secondary', 'sm')} ${exceptions.length === 0 ? 'mt-4' : 'mt-5'}`}
           >
             Add a date
           </button>
         ) : null}
-      </section>
+      </Section>
 
       {problem ? (
-        <p role="alert" className="mt-5 text-[12.5px] text-danger">
+        <p role="alert" className={ERROR}>
           {problem}
         </p>
       ) : null}
 
       {mayWrite ? (
-        <div className="mt-6 flex items-center gap-3 border-t border-admin-line pt-5">
-          <button
-            type="button"
-            disabled={busy}
-            onClick={save}
-            className="h-9 rounded-[4px] bg-admin-ink px-4 text-[12.5px] font-semibold text-admin-invert disabled:opacity-40"
-          >
+        <div className={`${CARD} flex flex-wrap items-center justify-between gap-4 px-4 py-4 sm:px-6`}>
+          <p role="status" className="flex items-center gap-2 text-[14px] text-ink-invert-muted">
+            {saved ? (
+              <>
+                <span aria-hidden className="size-2 shrink-0 rounded-full bg-result" />
+                Saved. The page offers the new hours from the next visit.
+              </>
+            ) : (
+              'Everything above is saved together, as one week.'
+            )}
+          </p>
+          <button type="button" disabled={busy} onClick={save} className={button('primary')}>
             {busy ? 'Saving…' : 'Save availability'}
           </button>
-          <p role="status" className="text-[12.5px] text-admin-body">
-            {saved ? 'Saved. The page offers the new hours from the next visit.' : ''}
-          </p>
         </div>
       ) : (
-        <p className="mt-6 border-t border-admin-line pt-5 text-[12.5px] text-admin-muted">
-          You can read these hours but not change them.
-        </p>
+        <p className={HELP}>You can read these hours but not change them.</p>
       )}
+    </div>
+  );
+}
+
+/** A card with a heading and one line on what it holds, the shape every group here sits in. */
+function Section({ id, title, description, children }: { id: string; title: string; description: string; children: ReactNode }) {
+  return (
+    <section aria-labelledby={id} className={`${CARD} ${CARD_PAD}`}>
+      <div className="mb-5 flex flex-col gap-1">
+        <h2 id={id} className={H2}>
+          {title}
+        </h2>
+        <p className="text-[13.5px] leading-[1.55] text-ink-invert-muted">{description}</p>
+      </div>
+      {children}
+    </section>
+  );
+}
+
+function NumberField({
+  id,
+  label,
+  value,
+  onChange,
+  disabled,
+  min,
+  max,
+  step,
+}: {
+  id: string;
+  label: string;
+  value: number;
+  onChange: (value: number) => void;
+  disabled: boolean;
+  min: number;
+  max: number;
+  step?: number;
+}) {
+  return (
+    <div className="flex min-w-0 flex-col gap-1.5">
+      <label htmlFor={id} className={LABEL}>
+        {label}
+      </label>
+      <input
+        id={id}
+        type="number"
+        min={min}
+        max={max}
+        step={step}
+        value={value}
+        disabled={disabled}
+        onChange={(event) => {
+          onChange(Number(event.target.value));
+        }}
+        className={INPUT}
+      />
     </div>
   );
 }

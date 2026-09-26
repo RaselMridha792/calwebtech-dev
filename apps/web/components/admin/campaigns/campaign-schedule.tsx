@@ -4,10 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { MutationError, adminMutate } from '@/lib/admin/mutate';
-
-const LABEL = 'text-[9.5px] font-bold tracking-[0.12em] text-admin-muted uppercase';
-const BUTTON =
-  'h-8 rounded-[4px] border border-admin-line px-3 text-[12.5px] font-semibold text-admin-body hover:border-admin-focus disabled:opacity-40';
+import { CARD, CARD_PAD, ERROR, H2, HELP, INPUT, LABEL, LINK, button } from '../ui/styles';
 
 /** `2026-10-01T09:30` in this browser's zone, the format a datetime-local input reads. */
 function localInputValue(date: Date): string {
@@ -74,20 +71,30 @@ export function CampaignSchedulePanel({
 
   const total = campaign.recipientCount;
   const { sent, failed } = campaign.progress;
+  const finished = campaign.status === 'SENDING' || campaign.status === 'SENT' || campaign.status === 'FAILED';
 
   return (
-    <section className="border-t border-admin-line pt-4">
-      <h2 className="text-[10px] font-bold tracking-[0.14em] text-admin-muted uppercase">Send</h2>
+    <section aria-labelledby="campaign-send" className={`${CARD} ${CARD_PAD}`}>
+      <h2 id="campaign-send" className={H2}>
+        Send
+      </h2>
+      <p className={`${HELP} mt-1`}>
+        {campaign.status === 'DRAFT'
+          ? 'Pick a time, or send it now. The segment is counted again when the send starts.'
+          : campaign.status === 'SCHEDULED'
+            ? 'Waiting for its time. Until then it can go back to being a draft.'
+            : 'How far the send has got, in people.'}
+      </p>
 
       {campaign.status === 'DRAFT' ? (
         mayWrite ? (
-          <div className="mt-2 flex flex-col gap-2">
+          <div className="mt-4 flex flex-col gap-3">
             {!campaign.segment ? (
-              <p className="text-[12px] text-admin-body">Choose a segment and save before scheduling.</p>
+              <p className="text-[13.5px] leading-[1.5] text-ink-invert-muted">Choose a segment and save before scheduling.</p>
             ) : unsaved ? (
-              <p className="text-[12px] text-admin-body">Save your changes first: the saved draft is what gets sent.</p>
+              <p className="text-[13.5px] leading-[1.5] text-ink-invert-muted">Save your changes first: the saved draft is what gets sent.</p>
             ) : null}
-            <label className="flex flex-col gap-[3px]">
+            <label className="flex flex-col gap-1.5">
               <span className={LABEL}>Send at (your time)</span>
               <input
                 type="datetime-local"
@@ -97,7 +104,7 @@ export function CampaignSchedulePanel({
                 onChange={(event) => {
                   setSendAt(event.target.value);
                 }}
-                className="h-[30px] w-full rounded-[4px] border border-admin-line bg-admin-surface px-2 text-[12.5px] text-admin-ink outline-none focus-visible:border-admin-focus"
+                className={INPUT}
               />
             </label>
             <div className="flex flex-wrap gap-2">
@@ -107,7 +114,7 @@ export function CampaignSchedulePanel({
                 onClick={() => {
                   post('schedule', { sendAt: new Date(sendAt).toISOString() });
                 }}
-                className="h-8 rounded-[4px] bg-primary px-3 text-[12.5px] font-semibold text-white hover:bg-admin-primaryh disabled:opacity-40"
+                className={button('primary')}
               >
                 Schedule
               </button>
@@ -118,7 +125,7 @@ export function CampaignSchedulePanel({
                   if (confirmingNow) post('schedule', { sendAt: null });
                   else setConfirmingNow(true);
                 }}
-                className={BUTTON}
+                className={button(confirmingNow ? 'danger' : 'secondary')}
               >
                 {confirmingNow ? 'Yes, send it now' : 'Send now'}
               </button>
@@ -128,27 +135,27 @@ export function CampaignSchedulePanel({
                   onClick={() => {
                     setConfirmingNow(false);
                   }}
-                  className={BUTTON}
+                  className={button('ghost')}
                 >
                   Not yet
                 </button>
               ) : null}
             </div>
             {confirmingNow && campaign.segment ? (
-              <p role="status" className="text-[12px] text-admin-ink">
+              <p role="status" className="rounded-lg border border-admin-line2 bg-admin-sunken px-3.5 py-3 text-[13.5px] leading-[1.55] text-ink-invert">
                 {`This sends to ${campaign.segment.name}${segmentCount === null ? '' : `, ${segmentCount.toLocaleString()} ${segmentCount === 1 ? 'person' : 'people'} today`}, within a minute. It cannot be stopped once it starts.`}
               </p>
             ) : null}
           </div>
         ) : (
-          <p className="mt-2 text-[12px] text-admin-body">Not scheduled.</p>
+          <p className="mt-4 text-[14px] text-ink-invert-muted">Not scheduled.</p>
         )
       ) : null}
 
       {campaign.status === 'SCHEDULED' && campaign.scheduledAt ? (
-        <div className="mt-2 flex flex-col gap-2">
-          <p className="text-[12.5px] text-admin-ink">{`Scheduled for ${when(campaign.scheduledAt)}, to ${campaign.segment?.name ?? 'its segment'}.`}</p>
-          <p className="text-[11.5px] text-admin-muted">The segment is counted again when it starts.</p>
+        <div className="mt-4 flex flex-col gap-3">
+          <p className="text-[14.5px] leading-[1.55] font-semibold text-ink-invert">{`Scheduled for ${when(campaign.scheduledAt)}, to ${campaign.segment?.name ?? 'its segment'}.`}</p>
+          <p className={HELP}>The segment is counted again when it starts.</p>
           {mayWrite ? (
             <div>
               <button
@@ -157,7 +164,7 @@ export function CampaignSchedulePanel({
                 onClick={() => {
                   post('unschedule');
                 }}
-                className={BUTTON}
+                className={button('secondary')}
               >
                 Back to draft
               </button>
@@ -166,31 +173,37 @@ export function CampaignSchedulePanel({
         </div>
       ) : null}
 
-      {campaign.status === 'SENDING' || campaign.status === 'SENT' || campaign.status === 'FAILED' ? (
-        <div className="mt-2" aria-live="polite">
-          <p className="font-display text-[21px] font-bold tracking-[-0.02em] text-admin-ink tabular-nums">
-            {`${sent.toLocaleString()} of ${total.toLocaleString()} sent`}
+      {finished ? (
+        <div className="mt-4" aria-live="polite">
+          <p className="font-display text-[28px] leading-none font-extrabold tracking-[-0.02em] text-ink-invert tabular-nums">
+            {sent.toLocaleString()}
+            <span className="text-[15px] font-semibold tracking-normal text-ink-invert-muted">{` of ${total.toLocaleString()} sent`}</span>
           </p>
-          <p className="text-[12px] text-admin-body">
-            {[
-              campaign.status === 'SENDING' ? 'Sending now' : campaign.status === 'SENT' ? 'Sent' : 'Failed',
-              failed > 0 ? `${failed.toLocaleString()} not sent (failed, or suppressed before their turn)` : null,
-              campaign.sentAt ? `finished ${when(campaign.sentAt)}` : null,
-            ]
-              .filter(Boolean)
-              .join(' · ')}
+          <p className="mt-2 flex items-start gap-2 text-[13.5px] leading-[1.5] text-ink-invert-muted">
+            <span
+              aria-hidden
+              className={`mt-[5px] size-2 shrink-0 rounded-full ${
+                campaign.status === 'SENT' ? 'bg-result' : campaign.status === 'FAILED' ? 'bg-danger' : 'bg-gold-500'
+              }`}
+            />
+            <span>
+              {[
+                campaign.status === 'SENDING' ? 'Sending now' : campaign.status === 'SENT' ? 'Sent' : 'Failed',
+                failed > 0 ? `${failed.toLocaleString()} not sent (failed, or suppressed before their turn)` : null,
+                campaign.sentAt ? `finished ${when(campaign.sentAt)}` : null,
+              ]
+                .filter(Boolean)
+                .join(' · ')}
+            </span>
           </p>
-          <Link
-            href={`/admin/campaigns/${encodeURIComponent(campaign.id)}/report/`}
-            className="mt-2 inline-block text-[12.5px] font-semibold text-admin-link hover:underline"
-          >
-            View the report
+          <Link href={`/admin/campaigns/${encodeURIComponent(campaign.id)}/report/`} className={`${LINK} mt-3 inline-block text-[13.5px]`}>
+            View the report →
           </Link>
         </div>
       ) : null}
 
       {error ? (
-        <p role="alert" className="mt-2 text-[12px] text-danger">
+        <p role="alert" className={`${ERROR} mt-3`}>
           {error}
         </p>
       ) : null}

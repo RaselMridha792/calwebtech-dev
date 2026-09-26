@@ -1,10 +1,12 @@
 import { INDUSTRY_SETTING_KEYS, type IndustriesIndexView, type IndustryDetailView } from '@calwebtech/shared';
 import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
+import { publishedAsOf } from '../common/published';
 import { ViewCache } from '../common/view-cache';
 import { PrismaService } from '../prisma/prisma.service';
 import {
   industryCardSelect,
   industryDetailInclude,
+  namedServiceSlugs,
   toIndustriesIndexView,
   toIndustryDetailView,
 } from './industries.mapper';
@@ -38,7 +40,7 @@ export class IndustriesService {
     const [setting, industries] = await Promise.all([
       db.setting.findUnique({ where: { key: INDUSTRY_SETTING_KEYS.index } }),
       db.industry.findMany({
-        where: { status: 'PUBLISHED' },
+        where: { status: 'PUBLISHED', deletedAt: null },
         orderBy: [{ order: 'asc' }, { name: 'asc' }],
         select: industryCardSelect,
       }),
@@ -56,14 +58,25 @@ export class IndustriesService {
   }
 
   private async buildDetail(slug: string): Promise<IndustryDetailView | null> {
+    const now = new Date();
     const industry = await this.prisma.client.industry.findFirst({
-      where: { slug, status: 'PUBLISHED' },
-      include: industryDetailInclude(new Date()),
+      where: { slug, status: 'PUBLISHED', deletedAt: null },
+      include: industryDetailInclude(now),
     });
     if (!industry) return null;
 
     try {
-      return toIndustryDetailView(industry);
+      // The services the page's copy names, which need not be the ones linked to it
+      // (`matchedServices`). Loaded by slug, published ones only.
+      const named = namedServiceSlugs(industry.content);
+      const services =
+        named.length === 0
+          ? industry.services
+          : await this.prisma.client.service.findMany({
+              where: { slug: { in: named }, ...publishedAsOf(now), deletedAt: null },
+              select: { slug: true, title: true, shortDescription: true },
+            });
+      return toIndustryDetailView({ ...industry, services });
     } catch (error) {
       this.logger.error(
         `Industry "${slug}" failed contract validation. Check its content, seo, answer block, FAQs and published projects.`,

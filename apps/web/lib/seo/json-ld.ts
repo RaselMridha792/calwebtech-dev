@@ -94,12 +94,13 @@ export function organizationJsonLd({ contact, offices, sameAs = [] }: Organizati
     url: absoluteUrl('/'),
     logo: absoluteUrl('/icon.svg'),
     email: contact.email,
-    telephone: contact.phoneE164,
+    // A telephone property with no number is worse than none: structured data is read as fact.
+    ...(contact.phoneE164 ? { telephone: contact.phoneE164 } : {}),
     contactPoint: [
       {
         '@type': 'ContactPoint',
         contactType: 'sales',
-        telephone: contact.phoneE164,
+        ...(contact.phoneE164 ? { telephone: contact.phoneE164 } : {}),
         email: contact.email,
         availableLanguage: ['English'],
       },

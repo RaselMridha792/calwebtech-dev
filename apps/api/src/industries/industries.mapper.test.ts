@@ -13,6 +13,8 @@ import { CONSENTED } from '../common/published';
 import {
   INDUSTRY_FALLBACK_HEADINGS,
   industryDetailInclude,
+  matchedServices,
+  namedServiceSlugs,
   shorten,
   toIndustriesIndexView,
   toIndustryDetailView,
@@ -106,6 +108,7 @@ function project(overrides: Partial<ProjectRecord> = {}): ProjectRecord {
     beforeImageUrl: null,
     afterImageUrl: null,
     beforeAfterMetrics: null,
+    content: null,
     status: 'PUBLISHED',
     seo: null,
     createdAt: at,
@@ -147,6 +150,7 @@ function industry(overrides: Partial<IndustryDetailRecord> = {}): IndustryDetail
     seo: null,
     createdAt: at,
     updatedAt: at,
+    deletedAt: null,
     services: [],
     projects: [],
     faqs: [],
@@ -208,13 +212,13 @@ describe('toIndustryDetailView', () => {
     expect(view.integrations?.items[0]).toEqual({ name: 'Test system 0', body: null });
   });
 
-  it('describes matched services for the industry, falling back to the service summary', () => {
+  it('lists the services its copy names, described for the industry, and no others', () => {
     const view = toIndustryDetailView(
       industry({
         content: CONTENT,
         services: [
-          { slug: 'test-service-a', title: 'Test service A', shortDescription: 'Generic summary A.' },
           { slug: 'test-service-b', title: 'Test service B', shortDescription: 'Generic summary B.' },
+          { slug: 'test-service-a', title: 'Test service A', shortDescription: 'Generic summary A.' },
         ],
       }),
     );
@@ -222,10 +226,34 @@ describe('toIndustryDetailView', () => {
     expect(view.seo.ogImage).toBe('/media/test-industry.jpg');
     expect(view.services?.items).toEqual([
       { slug: 'test-service-a', title: 'Test service A', body: 'Test service described for this industry.' },
-      { slug: 'test-service-b', title: 'Test service B', body: 'Generic summary B.' },
     ]);
     expect(view.compliance?.notes).toHaveLength(1);
     expect(view.hero.primaryCta).toEqual({ label: 'Test call', href: '/contact/' });
+  });
+
+  it('keeps the order its copy names services in, and skips one that is not published', () => {
+    const named = [
+      { slug: 'test-service-c', body: 'Test C for this industry.' },
+      { slug: 'test-service-gone', body: 'Test gone for this industry.' },
+      { slug: 'test-service-a', body: 'Test A for this industry.' },
+    ];
+    const services = [
+      { slug: 'test-service-a', title: 'Test service A', shortDescription: 'Generic summary A.' },
+      { slug: 'test-service-c', title: 'Test service C', shortDescription: 'Generic summary C.' },
+    ];
+    expect(matchedServices(services, named)).toEqual([
+      { slug: 'test-service-c', title: 'Test service C', body: 'Test C for this industry.' },
+      { slug: 'test-service-a', title: 'Test service A', body: 'Test A for this industry.' },
+    ]);
+  });
+
+  it('lists the linked services by their own summary when its copy names none', () => {
+    const services = [{ slug: 'test-service-a', title: 'Test service A', shortDescription: 'Generic summary A.' }];
+    expect(matchedServices(services, [])).toEqual([
+      { slug: 'test-service-a', title: 'Test service A', body: 'Generic summary A.' },
+    ]);
+    expect(namedServiceSlugs(CONTENT)).toEqual(['test-service-a']);
+    expect(namedServiceSlugs(null)).toEqual([]);
   });
 
   it('shows up to three case studies with figures, links to the filtered work listing, and shares the band', () => {

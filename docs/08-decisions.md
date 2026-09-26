@@ -356,18 +356,815 @@ recipient's event columns were already in the schema.
   (`campaign-report.ts`); its filters use the same rule, so a list and its labels agree.
 - The report, like every list in the dashboard, is state in the URL with no client script.
 
+## 53. "Subscribe now" on the homepage is where subscribers come from
+
+*2026-09-24.* The owner's answer to the question decision 49 left open. The homepage carries a
+"Subscribe now" band above the footer: a call to action that takes one thing, an email
+address. That is the campaign engine's first source of `Subscriber` rows; until it, the
+audience builder had no audience.
+
+- **One field.** No name, no company, nothing else asked of the visitor. `Subscriber.name`
+  stays empty, and the personalisation tokens fall back (`{{firstName|there}}`), which is what
+  the fallback syntax is for.
+- **Its own endpoint, not the lead flow.** `POST /subscribers` (`apps/api/src/subscribers/`,
+  contract in `packages/shared/src/subscribe.ts`) writes a `Subscriber` and a `Contact`. The
+  insights article's newsletter block used to store a `RESOURCE` lead; since decision 55 it
+  posts here too, with the article's path as the source page.
+- **The answer is always the same.** A new address, one already subscribed, one that
+  unsubscribed and one on the suppression list all get `subscribed`. A public form that
+  answered differently would tell a stranger whether somebody else's address is on a list.
+- **Suppression is never lifted from the form.** It is unauthenticated and sends nothing to
+  confirm the address, so anyone can type anyone's address into it. If that could re-enable an
+  address that had unsubscribed, bounced or complained, a stranger could undo a person's
+  request to be left alone. Such an address is left exactly as it is; only the owner decides
+  who may lift a suppression (decision 49). Nothing already stored is overwritten either: the
+  first consent time, address and source page stay the record.
+- **Protected like every public form:** Turnstile, a honeypot under the lead forms' field name
+  (`referenceCode`), five a minute per visitor address, and one row per address, settled by
+  the unique constraint when two arrive together.
+- **The words are homepage content.** `content.subscribe` in the homepage snapshot, with a
+  default in the schema so a `home.content` stored before the band existed still parses.
+  The success line says "You are on the list" and not "check your inbox": no confirmation
+  email is sent, so it would not be true.
+- **The source page is stored** (`/` for the homepage), so a segment can address the people
+  who subscribed there (decision 49's `sourcePage` rule).
+
+**What this does not do, and the owner should know.** It is a single opt-in. Nothing confirms
+that the address belongs to the person who typed it, so somebody can subscribe another
+person's address. Turnstile and the rate limit make that costly at scale, and every campaign
+carries a working unsubscribe link, but the right fix is a confirmation email (double
+opt-in), which needs email to be sending. Production sends none today (`EMAIL_TRANSPORT=log`,
+no Resend account), so this should be done before the first real campaign goes out, not
+after.
+
+## 54. The owner's revision of 2026-09-22, and no scroll reveal
+
+*2026-09-24.* The owner's written revision (a PDF dated 22/09) and the footer details sent
+with it. What it changed, in one place:
+
+- **Technology moved into Resources.** The bar carries no plain links any more; the
+  Resources menu gained a Technology column — the overview and its six parts, each an
+  anchor on `/technology/` (`#frontend` to `#mobile-and-ai`, `scroll-mt-28` so the fixed
+  header does not cover the heading). The menu lays four lists out in two-column spans when
+  a promo shares the panel, and the home content allows four resource columns.
+- **A booked call lands on `/thank-you/booking/`**, titled "Thank you for booking a
+  consultation with us.", and repeats the booked time back from the address (`?at=` and
+  `?tz=`: the instant and the visitor's zone, nothing about who booked it, since a
+  thank-you URL ends up in histories and referrers). The page's promises were corrected to
+  what happens: no calendar invite and no reschedule link are sent today.
+- **Industries in the owner's order:** Hotels and resorts (the renamed Hospitality),
+  Real estate, Spa centres, Media, Law, Healthcare, then the rest as they were. Spa centres,
+  Media and Law are new pages written for this — **their copy, including its statements
+  about HIPAA, lawyer-advertising rules and subscription law, is Calwebtech's draft and the
+  owner has not reviewed it**. Review it before the next deploy.
+- **Contact:** the telephone number is off the site until there is one to publish
+  (`siteContactSchema.phone` and `phoneE164` are nullable together, and every place that
+  showed a number leaves it out), and the mailbox is `calidigi62@gmail.com`. The footer
+  shows "California / United States", the owner's own words, through the collaborator's
+  `footer.offices` and `footer.contactEmail` (see Open): the two of us built the footer
+  change separately on the same day, and the merge kept that design rather than a second
+  field doing the same job. The snapshots carry it; **production's `site.contact` setting
+  still has the old values and must be changed with settings-cli after the deploy**, or lead
+  emails and the API's views keep the demo number.
+- **"The pages load, then change" — the scroll reveal is gone.** Sections faded in as they
+  scrolled into view, but the fade was gated on script: an inline script hid every
+  `[data-reveal]` element until the React bundle had hydrated and an IntersectionObserver
+  ran, so a slow connection saw blank sections for up to three seconds and then everything
+  at once. A CSS view-timeline replacement was tried and refused by the anchor tests: it
+  forces layout of sections `content-visibility: auto` had skipped, so `/#services` landed
+  hundreds of pixels away. Content present at first paint beats a fade, so nothing is hidden
+  and nothing animates in. `reveal()` still marks elements and nothing styles them. The rest
+  of the slowness is distance — the server answers in 30–60 ms, the round trip from Dhaka is
+  about 290 ms — which a CDN in front of the real domain would address, not code.
+
+## 55. The article's subscribe block creates a subscriber
+
+*2026-09-25.* Task 1 of `docs/14-remaining-work.md`. The inline block in every insights
+article posted a `RESOURCE` lead through the lead flow, so nobody who subscribed from an
+article reached the campaign engine.
+
+- **One path for subscribing.** The block's form now posts through the homepage's server
+  action (`components/subscribe/actions.ts`, `subscribeToNewsletter`) to `POST /subscribers`,
+  with the article's path (`/insights/<slug>/`) as `sourcePage`. Everything decision 53
+  promises holds for it: the same answer for every address, suppression never lifted,
+  Turnstile, the honeypot and the rate limit. `components/insights/subscribe-action.ts`, the
+  lead-flow copy of that path, is gone.
+- **An address and nothing else.** The name field is removed, and so is the hidden
+  `attribution` field: the subscriber contract has neither. `nameLabel` left
+  `insightsNewsletterCopySchema`, the eight article snapshots, the seed and the API test
+  fixtures. A stored `insights.copy` that still has it parses, because Zod drops unknown keys.
+  `INSIGHTS_NEWSLETTER_FORM_ID`, which named the lead, went with the action.
+- **What changes for the owner:** a subscription from an article no longer appears in the
+  leads inbox and no longer sends a confirmation email (a subscriber gets none, decision 53).
+  It appears under Subscribers, and a segment can select it with the "signed up on" rule
+  (a page containing `/insights/`).
+- **The copy stays in the `insights.copy` setting**, as before. Its `success` comment no longer
+  says the words are repeated in an email.
+- **Found while checking 360px:** in every article the body column was 514px wide on a
+  360px screen, because a grid item is as wide as its widest content and each article's table
+  set it; the section's `overflow-hidden` then cut the text and the subscribe block off at the
+  right edge. `min-w-0` on the column fixes it (`components/insights/article-page.tsx`); the
+  tables scroll inside their own wrappers, as they were built to.
+- Checked in Chrome at 360, 768 and 1440 (one input, no horizontal overflow, the column
+  312px at 360 on all eight articles) and by keyboard: Tab from the field reaches the button,
+  a bad address puts focus back on the field with `aria-invalid` and keeps what was typed, and
+  a good one moves focus to the success line. A subscription from
+  `/insights/core-web-vitals-in-plain-english/` stored that path and created no lead.
+
+## 56. The start a project page
+
+*2026-09-25.* Task 2 of `docs/14-remaining-work.md` (build plan task 5.2). `/start-a-project/`
+answered 404: the contract (`packages/shared/src/pages/forms.ts`), the API's page view and
+progressive saving (`apps/api/src/forms/`), the getter (`lib/api/forms.ts`) and the copy
+snapshot came back in PR #11, and the page was never built. It is built on them unchanged.
+
+- **Six steps, one question each**, in the contract's order: project type, contact, services,
+  budget, timeline, the brief in the visitor's words (`FORMS_PROJECT_STEPS`). Only a name and
+  an email are required, as the copy promises.
+- **The booking form's pattern (decision 47).** Every step is in the DOM and only the current
+  one is shown; a step's own fields are checked with `reportValidity()` before it hides; focus
+  moves to the new step's question; Turnstile runs once, on the send. The form is `noValidate`:
+  with native validation on, pressing Next made the browser check the required fields of the
+  hidden contact step and refuse to submit at all. The option lists (`LEAD_PROJECT_TYPES`,
+  `BUDGET_BANDS`, `START_TIMELINES`) are passed in as props, so the client component imports
+  only types from the shared barrel.
+- **Abandonment is measurable per step, the build plan's gate.** From the contact step on,
+  each move forward saves the brief through a server action (`components/forms-pages/actions.ts`)
+  to the existing `POST /forms/project-draft`, with the step reached. That writes the
+  `PROJECT` lead on the first save (`draft_started`) and a `draft_saved` activity with the
+  step on each later one; the send goes through the site's lead action with the draft's id and
+  token and completes the same lead (`form_submitted`), so one brief is one row. A brief left
+  on step five is a lead whose draft step is 5. The saves run one after another so each reads
+  the draft the one before created, never block the visitor, and the page says "Saved" only
+  when the API returned a draft.
+- **The lead mapper reads the brief's fields.** `lib/lead-form.ts` never read `projectType`,
+  `projectLinks`, `draftId` or `draftToken`, although the shared contract had them; it does
+  now. That file is on docs/10's foundation list; the change was needed for the task.
+- **Where the family's components live.** docs/10 puts a family's components in
+  `components/<family>/`, but `components/forms/` is the foundation's (`LeadForm`,
+  `use-turnstile`), so this family's are in `components/forms-pages/`.
+- The page: hero with the answer block, the brief with the page's assurances beside it, what
+  happens next, what a quote needs, the other ways in, and the questions as FAQPage. Grounds
+  alternate white and tint. The closing conversion band is hidden: the page is the form.
+- **Verified.** Unit tests (`forms-pages.test.tsx`, `lib/lead-form.test.ts`) and
+  `e2e/forms.spec.ts`, run against the dev stack at 360 and 1440 (7 passed, the send skipped
+  on mobile for the rate limit). In Chrome at 360, 768 and 1440: one `h1`, no horizontal
+  overflow, the lower sections rendered. By keyboard: Space picks an answer, Tab reaches Next,
+  Enter moves on and focus lands on the new question; an empty name keeps the contact step
+  with focus on the field. A sent brief was one `PROJECT` lead with `draft_started:3,
+  draft_saved:4…6, form_submitted` and landed on `/thank-you/project/`; an abandoned one
+  stayed a lead at draft step 5. The route's own client JavaScript is 8.1 kB of the 20 kB budget.
+
+## 57. The free website audit page
+
+*2026-09-25.* Task 3 of `docs/14-remaining-work.md`. `/free-website-audit/` answered 404
+although its contract, API view (`GET /pages/free-website-audit`), getter and copy snapshot
+came back in PR #11. The page is built on them unchanged.
+
+- **One step, one lead.** The site, what worries the visitor about it (one of
+  `LEAD_AUDIT_CONCERNS`), a competitor to compare against, a name, an email, a company and a
+  note. Only the site, the name and the email are required. It posts as an `AUDIT` lead through
+  the site's lead action, so the API's Turnstile, honeypot, rate limit, storage and emails
+  handle it as they handle every form. The browser checks the required fields on send, then
+  Turnstile runs once; the action is dispatched by hand so a refused send keeps what was typed.
+  A sent request lands on `/thank-you/audit/`, which already existed.
+- **The lead mapper reads the audit's fields.** `lib/lead-form.ts` never read `mainConcern`
+  or `competitorUrl`, although the shared contract had them; it does now, and the lead stores
+  them in `answers`. Same foundation file as decision 56, changed for the same reason.
+- **The two forms share their controls.** The labelled input, textarea and choice list moved
+  out of the brief into `components/forms-pages/fields.tsx`, with an id prefix so the two
+  forms never share an id.
+- **Fields side by side stay level.** At 1440 the competitor's label ("… (optional)") wraps
+  to two lines and pushed its input below the site address's. Each field now spans three rows
+  of its grid (label, control, note) with `subgrid`, and the label sits on its input, so a
+  longer label moves its neighbour's input down with it. The brief's contact step had the same
+  grid and gets the same fix.
+- **The menus now open the page.** The Resources menu and the footer's resources linked "Free
+  website audit" to `/contact/` while the page did not exist; they link to
+  `/free-website-audit/` in the site chrome and homepage snapshots. The contact form keeps
+  its own "Free website audit" topic, and the start a project page's "Ask for a free website
+  audit" alternative now resolves.
+- The page: hero with the answer block, the request with the page's assurances beside it,
+  what the audit covers (rows on hairlines), how it arrives (timed steps beside the page's
+  picture), what it is not, and the questions as FAQPage. Grounds alternate white and tint.
+  The closing conversion band is hidden: the page is the form.
+- **Verified.** Unit tests (`forms-pages.test.tsx`, 7 new) and `e2e/forms.spec.ts` (3 new),
+  run against the dev stack at 360 and 1440: 10 passed, the two sends skipped on mobile for
+  the rate limit. In Chrome at 360, 768 and 1440: one `h1`, no horizontal overflow, the inputs
+  of each row on the same pixel at 768 and 1440 and stacked at 360, the delivery picture
+  loaded. By keyboard: Tab runs site, competitor, the concerns, name, email, company, note,
+  send; an empty send puts focus on the site address. A sent request was one `AUDIT` lead
+  with `answers {"mainConcern":"slow-on-mobile","competitorUrl":"https://rival.com"}`. The
+  route's own client JavaScript is 7.2 kB of the 20 kB budget.
+
+## 58. Industries and case studies are edited in the admin, and can read the database first
+
+*2026-09-25.* Task 4 of `docs/14-remaining-work.md`, first part. Non-negotiable 3 says publishing
+never needs a deploy, and industries and case studies still did. Both now work the way services
+do (decision 44). They have their own importer families, an equality test against the snapshots,
+a database-first getter, and admin screens to add, edit, publish, unpublish and remove.
+
+- **Three new importer families, appended to the registry.** A live database that ran the older
+  families runs only these on its next deploy.
+  - `industries` writes the index copy, each page's copy into `Industry.content`, the card image,
+    the SEO and the FAQs.
+  - `case-studies` writes the `work.copy` setting, with headings stored using the `{client}`
+    token. For each project it adds the platforms, the segment (read from the card's tags), the
+    gallery with alt text and the order of its services.
+  - `page-copy` is decision 59.
+
+  Copy already stored, whether written by the family before or edited in the admin since, is
+  left alone even on a forced run.
+- **The pages built from the imported rows are the approved ones.** `industries-import` and
+  `work-import` check this section by section. The only exceptions are named in the tests:
+  - **Card tags and alt text.** Same as the service pages.
+  - **The work proof band.** Its figures and rating are the homepage's too, and the snapshots
+    disagree about them (decision 43). The web app keeps the snapshot's band until the database
+    has figures.
+  - **"headless CMS" versus "Headless CMS".** The technology row takes the service pages'
+    spelling (decision 45).
+  - **A related service's summary.** A case study describes each service in its own words; the
+    row holds one summary, the one on the services index.
+- **A page's own order, again (decision 45).** One relation links a service and an industry, read
+  from both sides. The approved pages disagree about it on all twelve industries:
+  - a service page lists the sectors it serves best;
+  - an industry page lists the services a buyer in that sector needs.
+
+  An industry page now lists the services its copy names, in that order (`matchedServices`).
+  Case studies list their services in their own order too, kept in the new `Project.content`
+  column (migration `20260925130000_project_content`). `/work/` lists featured case studies
+  first, then the most recently changed. Every approved case study carries the same date, so the
+  import stamps them a second apart in the approved order. **Saving a case study moves it to the
+  top of /work/**; Featured is how to keep one first.
+- **Removal keeps the row.** Industry gains `deletedAt` (migration
+  `20260925120000_industry_deleted_at`), as Service and Project have. For both editors:
+  - a removed record keeps its slug, so nothing else can inherit its redirect;
+  - a published address that moves leaves a 301 to the new address;
+  - a published address that is removed leaves a 301 to its index;
+  - every change is audited: `industry.*` and `case_study.*`.
+- **Case studies publish only when their page can render.** That means three outcome figures
+  and an answer block (`caseStudyReadiness`). The API refuses to publish otherwise and gives the
+  reason. A link to a service, platform or industry that does not exist is refused, not dropped.
+- **Editing copy without editing JSON.** `components/admin/content/copy-editor.tsx` renders a
+  page's copy as fields, following the page's schema:
+  - a line or text area for each piece of copy;
+  - a named group for each section;
+  - lists that can be added to, reordered and trimmed;
+  - each API error shown under the field whose path it names.
+
+  A section can be added or left out only where the page describes its shape
+  (`INDUSTRY_CONTENT_SHAPES`, `CASE_STUDY_SHAPES`), so the editor never invents structure. The
+  service editor's controls moved to `editor-parts.tsx` so all the editors share them.
+- **Switching it on.** Add `industries` and `work` to `CONTENT_DATABASE_FIRST`, and only after the
+  deploy's import has run those families on that database. `/before-and-after/` keeps its
+  snapshot, because its approved comparison describes its screenshots in words no row holds.
+- **Verified.**
+  - Tests:
+    - unit tests for the mapper, getters and copy editor;
+    - integration tests for the import equality, both admin services end to end with their
+      audit entries, and the whole API suite (149).
+  - In Chrome at 360 and 1440:
+    - both lists and both editors have no overflow, no console errors, and every control
+      labelled;
+    - an industry title and a case study summary changed in the editor reached
+      `/industries/healthcare/` and `/work/` with the families read from the database first;
+    - emptied copy was refused with the reason under the field.
+  - Own JavaScript on the new admin routes is 3.4 to 9.6 kB of the 20 kB budget. The public
+    routes did not change.
+
+## 59. Page copy is edited in the admin and audited
+
+*2026-09-25.* Task 4, second part. Some page copy belongs to no record, and only `settings-cli`
+on the server could change it. That tool writes no audit entry. The copy in question:
+
+- the homepage (`home.content`);
+- the booking page (`booking.page`);
+- the thank-you pages (`static.thank-you`);
+- the copy around the services, industries and work indexes.
+
+- **The six rows and the screen.**
+  - `PAGE_COPY_KEYS` lists the six rows, each with the schema its page reads it with.
+  - `/admin/page-copy/` lists them. Each opens in the copy editor.
+  - The API checks the whole value with the page's own schema before storing it, and refuses it
+    with each refused field's path.
+  - Every change is audited as `page_copy.updated`, with the sections it touched. Sections are
+    compared regardless of the order Postgres keeps keys in.
+- **The copy had to be stored first.** The launch never wrote `home.content` or
+  `static.thank-you` (decision 43). The `page-copy` family writes them from the snapshots, only
+  where no row exists. The thank-you copy is read back out of its seven pages. A test builds each
+  thank-you page from the stored copy and checks that it equals its snapshot.
+- **The site lays the stored copy over the snapshot.** This applies while pages render from
+  snapshots and `home` or `thank-you` is in `CONTENT_DATABASE_FIRST`. `GET /pages/copy/:key`
+  serves the two stored copies, and the web app uses them as follows:
+  - **The homepage** takes its words from the database and keeps its records from the snapshot.
+  - **The header, menus, footer and closing band** of every page are rebuilt from those words
+    with `buildSiteChrome`. Built from the snapshots alone, that rebuild is byte for byte the
+    committed chrome.
+  - **Each thank-you page** is built from the stored copy. A type the copy lacks keeps its
+    snapshot, so a form never sends anyone to a page that went missing.
+
+  With the approved copy stored, every page equals the committed one. The booking page reads
+  its copy from the database already.
+- **Verified.**
+  - Tests:
+    - integration tests: import, refusal by path, audit, served copy, and edits kept by a forced
+      import;
+    - web unit tests: an unchanged site with the approved copy stored, the edited words
+      reaching the homepage and the chrome, and a thank-you type the copy lacks keeping its
+      snapshot.
+  - In Chrome at 360 and 1440:
+    - the homepage copy opens as 451 labelled fields, with no overflow and no console errors;
+    - a hero heading and a footer address changed in the screen reached the homepage and the
+      footer of `/pricing/`, and were put back.
+
+## 60. Reminders, a calendar entry, and moving or cancelling a call
+
+*2026-09-25.* Task 5 of `docs/14-remaining-work.md`, the rest of build plan task 5.1. All of it
+works with `EMAIL_TRANSPORT=log`, so no provider was added (Task 6.2).
+
+- **A calendar entry, never a meeting link.** The emails that carry an iCalendar file
+  (`packages/emails/src/invite.ts`):
+  - the confirmation, with the time;
+  - a moved call's email, with the new time;
+  - a cancelled call's email, with the entry's cancellation.
+
+  The UID stays with the booking and SEQUENCE only grows, so a calendar updates the entry it
+  holds instead of adding another. The organiser is the site's contact address when one is set.
+  The entry states that the meeting link comes from a person. Decision 47 stands: the system
+  arranges no meeting.
+- **Reminders a day and an hour before.** These are delayed jobs on the email queue, one per
+  window. Their ids name the booking, the window and the call's time. Moving a call removes its
+  old reminders and queues new ones. Cancelling it removes them, whether the visitor cancels from
+  the link or the team cancels or closes it in the dashboard. A reminder whose time has already
+  passed is not queued. **Before sending, the worker reads the booking again** and skips a call
+  that was cancelled, moved to another time or deleted. That covers a removal that could not
+  happen, such as a job already being sent or Redis briefly unavailable. A sent reminder is
+  written on the booking's timeline as `reminded_24h` or `reminded_1h`, the names the schema
+  gives them.
+- **The signed links.** Every booking already stored two random 192-bit tokens. They are now
+  links in the confirmation and the reminders:
+  - `/book-a-consultation/reschedule/<token>/` moves the call;
+  - `/book-a-consultation/cancel/<token>/` cancels it.
+
+  Each token allows only its own action. The other link's token, or one that names nothing,
+  answers 404. Both pages are noindex, send no referrer (the address is the credential) and hide
+  the closing band.
+- **Moving follows the same rules as booking.** The new time must be one the engine offers now,
+  and the database's unique index settles two people choosing it at once. The call keeps its
+  tokens, becomes `RESCHEDULED`, and gets a `rescheduled` event with both times. The visitor and
+  the team are each emailed.
+- **Cancelling is idempotent.** A second cancel answers the same way as the first. A call whose
+  time has passed can neither move nor cancel.
+- **A cancelled call gives its time back.** This fixes a bug found while building the feature:
+  the unique index on `(consultationTypeId, startsAt)` kept a cancelled call's row holding its
+  slot. The slot was offered to the next visitor, and booking it failed. The index is now on
+  `slotStartsAt`, the time a call holds while it is on: null once it is cancelled, so the
+  database still refuses two calls at one time (migration
+  `20260925150000_booking_slot_released_on_cancel`, which fills the column for every call that
+  is not cancelled). Bringing a cancelled call back in the dashboard over a time booked since is
+  refused.
+- **The booking page's calendar became `SlotPicker`,** with no change to its markup or behaviour,
+  so the move page offers the same one. Its weekday headings were keyed by their narrow names,
+  and two days share "T" and two share "S". That filled the console with duplicate-key errors on
+  every visit to `/book-a-consultation/`. They are keyed by the full name now.
+- **Verified.**
+  - Unit tests: the calendar file, the four email templates and their links, the worker's
+    reminder check, and the pages.
+  - Integration tests:
+    - reminders delayed at both windows;
+    - each link allowing its own action only;
+    - a refused and then a successful move, with its reminders replaced and both sides told;
+    - a cancel freeing the time for somebody else;
+    - the dashboard's cancel removing the reminders;
+    - the whole API suite (156) and the worker's (5).
+  - The booking e2e suite at 360 and 1440.
+  - In Chrome at 360 and 1440:
+    - both pages have one `h1`, no overflow and no console errors;
+    - a call booked on the site was moved by keyboard, with focus landing on the review, and
+      then cancelled;
+    - the log transport recorded the confirmation, the moved and cancelled emails with
+      `calwebtech-call.ics`, and the team's three notifications.
+  - Own JavaScript is 6.9 kB on the move page and 4.3 kB on the cancel page. The booking page is
+    unchanged at 8.4 kB.
+
+## 61. Anti-spam beyond Turnstile and the honeypot
+
+*2026-09-25.* Task 6 of `docs/14-remaining-work.md` (build plan task 6.1). One guard in the API
+(`apps/api/src/antispam/`) sits in front of leads, bookings and subscriptions alike. The numbers
+and the throwaway-inbox list live in the shared contract (`packages/shared/src/antispam.ts`).
+Every failure of the machinery itself — Redis away, DNS slow — lets the submission through,
+because losing a real enquiry costs more than the spam the check stops.
+
+- **Timing.** `FormClock` is a hidden field in every form. It times the form from when it
+  appears, using `performance.now()` so a wrong clock changes nothing. The API refuses a form
+  sent sooner than its minimum: two seconds for a lead or a booking, one for a subscription.
+  The refusal is a failed bot check, so a person who really was that quick is told to try
+  again and their retry goes through. A form without the figure, loaded before the field
+  existed or sent without script, is not timed.
+
+  The calculator's gate carries no clock. It appears after eight answers, where an autofilled
+  name and email could be quicker than the minimum.
+- **Addresses.** A throwaway inbox provider, from a short list matched on whole labels, is
+  refused with a message under the email field. So is a domain that cannot receive mail. The
+  API asks DNS for the domain's mail servers and falls back to its address records, as a
+  sending server would, and refuses only a domain that does not exist or has neither. A null
+  MX is let through: it exists, and a mistyped domain is what the check is for. Answers are
+  cached for six hours. `EMAIL_DOMAIN_CHECK=off` skips the lookup alone.
+- **Per-address limits.** These sit on top of the per-IP ones:
+  - five leads an hour;
+  - three bookings a day;
+  - five subscriptions an hour.
+
+  They are counted in Redis under a hash, so no address is stored there. Counting happens
+  after the bot check, so a script cannot spend a real person's allowance. Past the limit a
+  lead or a booking answers 429. A subscription is answered as always and writes nothing,
+  since subscribing twice changes nothing (decision 53).
+- **Duplicates join what is already there.**
+  - **Leads.** A lead from the same address, of the same type, updates the open lead instead
+    of creating a second. The open lead is one from new to proposal sent, created within
+    thirty days, with a form actually sent. The update writes what the new submission says,
+    adds its services and records `form_resubmitted` with its message. Its emails carry the
+    submission's id so they are sent, and the team's notification reads "Lead updated".
+
+    An unfinished brief is never joined, and a won or lost lead starts a new one. The
+    Contact was already one per address; a subscriber was already one per address.
+  - **Bookings.** An address with a call still to come cannot book a second. The page names
+    that call's time and points at the link in its email that moves it (decision 60).
+- **Found while checking in Chrome.** The clock's hidden input first carried `defaultValue=""`.
+  A hidden input's value is its default, so React cleared the figure on the render every form
+  does when it shows it is sending, and the API never saw it. The field has no value prop now.
+- **Verified.**
+  - Unit tests: the DNS check (a domain with mail servers, one with only an address, one that
+    does not exist, a failure and a timeout passing, the cache and its expiry), the guard and
+    the contract.
+  - An integration test through the three services:
+    - a resubmission merged, with emails of its own;
+    - another type and a closed lead starting anew;
+    - a form sent in 200 ms refused with nothing stored;
+    - a throwaway inbox and an undeliverable domain named under the field;
+    - the lead limit ending in 429;
+    - a subscriber past the limit answered as always;
+    - a second booking refused with the first one's time;
+    - the whole API suite (163).
+  - In Chrome:
+    - an audit sent at once was refused as automated and went through on a retry;
+    - a second audit from the same address became one lead with `form_resubmitted`;
+    - a mailinator address was named under the homepage field at 360;
+    - a second booking from one address was refused with the first call's time.
+  - The e2e specs that send forms pause as a person would (`e2e/pause.ts`). The clock adds
+    about 0.2 kB to a form's route.
+
+## 62. llms.txt and site search
+
+*2026-09-25.* Task 7 of `docs/14-remaining-work.md`: build plan tasks 1.4 (its last piece) and
+4.3.
+
+- **`/llms.txt`** follows the format llmstxt.org proposes: a title, then a one-line summary,
+  then sections of links with a line each. It is built per request from the pages' own words:
+  - the summary is the homepage's description;
+  - then the footer's line about the company, the service area, the offices and the contact
+    address;
+  - then every published service and industry with its own summary;
+  - then the key pages, and optional ones such as insights, the glossary and the sitemap.
+
+  Nothing in it is written separately, so it cannot drift from the pages or claim what they do
+  not. While `site.indexing` is off it answers 404, as robots.txt disallows everything then.
+- **Site search** covers the five kinds the page spec names: services, case studies, insights,
+  glossary terms and questions. Results are typed, and filtered by kind with a count for each.
+  - **In Postgres, with no vendor.** `GET /search` uses Postgres's own full-text engine, weights
+    the title above the text and reads the query with `websearch_to_tsquery`, so quotes, `or`
+    and a minus work as people type them. It finds only what has a page:
+    - live services and posts;
+    - case studies with the figures their page needs;
+    - published terms;
+    - questions on the FAQ page or on a live service, industry or location page.
+
+    The tables are small enough to need no index: a three-word query answers in well under
+    300 ms against the imported content, the build plan's gate. If the content grows into
+    thousands of rows, add GIN indexes on the same expressions.
+  - **From the snapshots while pages render from them.** In the launch mode (decision 43) the
+    database does not hold what the visitor reads, the articles and the glossary above all, so
+    the web app searches the same five kinds in the snapshots. Every word must match, and a word
+    in a title counts three times one in the text. The answer has the same shape, so the page
+    cannot tell which engine answered. A record created in the dashboard is found once pages
+    read the API; until then the snapshot search covers the snapshots' content.
+  - **`/search/`**: a photograph hero, a labelled GET form, the filter as links, and results as
+    rows on hairlines that name their kind first. It has no script, 3.2 kB of own JavaScript
+    (the framework's floor), is never indexed and is not in the sitemap. Nothing links to it yet
+    except a query that sends someone there. A search link in the header or footer is the
+    owner's copy (`home.content`), editable from the page copy screen (decision 59).
+- **Not built: the service-by-city matrix** (task 3.2). docs/14 says to ask the owner whether
+  it is still wanted, and this pass asks nothing, so it waits for that answer.
+- **Verified.**
+  - Tests:
+    - unit tests for the file's format, the contract, the snapshot search and the page;
+    - an integration test of the Postgres search: a service found by its name first, drafts
+      left out, a case study found by its client, the filter keeping every count, and the
+      300 ms gate;
+    - the whole API suite (167).
+  - In Chrome at 360 and 1440, `/search/` has one `h1`, is noindex, has no overflow and no
+    console errors. A query was typed and sent by keyboard, and the Questions filter was
+    followed by keyboard.
+
+## 63. The dashboard is rebuilt: one visual system, an overview, and search
+
+*2026-09-26.* The collaborator found the dashboard flat and hard to read — navy on navy, 9px
+labels, every screen laid out its own way, and an overview that was still a placeholder — and
+asked for it to be rebuilt as a modern, interactive tool a non-coder can use, as polished as
+the public site, with nothing it does taken away. Before building, a dozen admin products were
+looked at (Linear, Vercel, Stripe, Resend, Supabase, Attio, Payload, Sanity, Strapi, Shopify
+Polaris, Tailwind Catalyst, shadcn and Tremor), along with the dashboard guidance from Nielsen
+Norman Group and Smashing Magazine. A design was drawn first on a Claude Design canvas
+(https://claude.ai/artifact/6PQPCodDy9Sz39HjLExZq2, private to the owner's account), then
+built.
+
+- **No token was added or changed.** RULES.md, section 1 puts tokens with the owner, so the
+  rebuild uses only what `theme.css` already has:
+  - the admin's navy steps for surfaces;
+  - the brand's cream (`ink-invert`, `ink-invert-muted`) for text, where the old screens used
+    the cooler `admin-ink` and `admin-body`;
+  - the brand's champagne on a dark ground for the one primary action per screen. That is the
+    same gold-on-navy button as the homepage hero (`bg-gold-500 text-on-gold`), and the rule
+    the teal lint cites allows it.
+
+  Gold also marks the current place (the active menu item, the current tab) and the small
+  eyebrow over each title. Teal stays on round dots and bold figures, as the lint allows. A
+  light theme would need light values for `result` and `danger` inside the admin, which is a
+  token decision, so it was not built (see Open).
+- **One kit, `apps/web/components/admin/ui/`.**
+  - `styles.ts` holds class strings for cards, controls, buttons, pills, tags and tables:
+    - controls are 40px, and 44px on a touch screen (RULES.md, section 7);
+    - labels sit above fields at 13px, not in 9px capitals;
+    - body text is 14px.
+  - `page.tsx` has the frame every screen uses: `AdminPage`, `PageHeader`, `Panel`,
+    `EmptyState`, `LinkTabs`, `ChipLinks`, `Facts` and `BackLink`.
+  - `charts.tsx` draws stat cards, sparklines and daily bars as SVG on the server, because a
+    chart library would be most of a route's own-code budget.
+
+  The kit's column is `#admin-main`, not `#main`: the marketing layout pads `#main` for its
+  fixed header, and that padding showed up as a gap above every admin title.
+- **The shell.**
+  - The sidebar carries the real logo instead of a typed wordmark, as CLAUDE.md requires.
+  - The Dashboard item no longer lights up on every screen. It matched every path by prefix.
+  - Settings moved into the Site group.
+  - The sidebar narrows to a rail of icons. A cookie remembers it, so a reload draws the page
+    the way it was left.
+  - The user menu at its foot holds sign-out, and keeps the keyboard contract RULES.md sets:
+    Escape closes it and focus returns to its button.
+  - The top bar has a real breadcrumb, a "View site" link, and **search or jump to**, opened
+    with Ctrl K or ⌘K. It lists:
+    - every screen the role can open;
+    - the "New …" actions the role can take;
+    - a search of leads or subscribers for the words typed.
+
+    It is a native `<dialog>`, loaded only when first opened, so no screen pays for it
+    beforehand.
+  - A skip link comes first in the tab order. Browser controls are dark
+    (`color-scheme: dark`). The focus ring is the admin's own focus tone, because cobalt did
+    not show on navy.
+- **The overview is built** (docs/12, screen 1). `GET /admin/overview` answers in one read,
+  and a section is null when the role cannot open its module, so the API decides what each
+  role's first screen shows. It carries:
+  - leads this week and this month, each against the period before;
+  - thirty days of daily counts in the business timezone;
+  - where leads stand, and where they came from;
+  - the latest five leads, with no addresses, since a viewer reads this screen too;
+  - the next calls, the audience, the last campaign's delivery, open and click rates;
+  - recently edited content, and scheduled services past their time.
+
+  The page greets by the business's clock and says in one sentence what is waiting. It lists
+  what needs attention, each item linked to where it is dealt with: overdue follow-ups, new
+  leads with no owner, unpublished pages, draft campaigns, and a site still hidden from
+  search engines. It is tested against the imported content and leads placed at known ages.
+- **The leads inbox.**
+  - Status tabs with counts. Choosing Won or Lost brings closed leads into the counts, or
+    theirs would read zero.
+  - Filters are pills with their labels inside them.
+  - While a lead is open, the table drops its secondary columns.
+  - The panel leads with the pipeline and offers "Email" and "Call".
+  - The page scrolls as one, with the table's header row sticking. At first the table
+    scrolled in a box of its own, and a short window squeezed it to two rows (the
+    collaborator caught it).
+- **Every other screen** — bookings and availability, subscribers, segments and suppression,
+  campaigns, the composer and the report, services, industries, case studies and page copy,
+  media, team, settings, the audit log, the two placeholders, and sign-in — moved onto the
+  same frame. Each one follows one of two patterns:
+  - **Listings:** a header with the count and the one primary action, then link tabs or filter
+    chips, then rows in a card. The whole row is clickable, carries its state as a pill with a
+    dot, and has a real empty state.
+  - **Editors:** the fields in cards on the left, with a plain line of help for each group.
+    Publishing, save, delete and the search result sit in a column on the right that stays
+    in view as the page scrolls.
+
+  A few things were added in passing:
+  - The bookings list pages; it used to stop at twenty-five.
+  - The bookings list and a booking's record read times on the business's clock.
+  - The media library gets a search box. The page already read the parameter.
+  - A segment's field errors are shown as words.
+  - Sign-in shows the logo, and the typed wordmark component is deleted.
+
+  Copy that only explained the machinery ("committed snapshot", "CONTENT_DATABASE_FIRST") now
+  says what a visitor sees, and where a server setting has to change it still names it. No
+  string a test asserts was changed except two in `copy-editor.test.tsx`, which followed its
+  groups from `fieldset`/`legend` to headed sections.
+
+  Moving between screens shows a skeleton at once (`(shell)/loading.tsx`). A leads filter is
+  a client-side navigation through Next's `Form`, so it no longer reloads the page.
+- **Verified.**
+  - Every admin screen, 35 routes, at 360, 768 and 1440 in Chrome: no horizontal overflow,
+    exactly one `h1` and one `main`, and no console errors. The full lead record had no `h1`
+    before this pass either; it has one now.
+  - By keyboard:
+    - the skip link is the first stop;
+    - Ctrl K opens the palette with focus in its combobox, the arrows and Enter go to a screen,
+      and Escape closes it;
+    - the rail survives a reload;
+    - the user menu and the phone drawer close on Escape and hand focus back.
+  - Own JavaScript per route stays under the 20 kB gate: 5.9 to 13.2 kB on admin routes, up
+    from 3.4 to 9.6 kB. Every marketing route's figures are byte for byte what they were.
+  - Tests: web 465, API 260, shared 259, plus the overview's integration test. Lint and type
+    checks are clean.
+
+## 64. AI providers are connected from the dashboard, with the key encrypted
+
+*2026-09-26.* The collaborator asked for AI in the admin. Its API key should be entered in the
+dashboard, not the server's environment, so the provider or the key can change at any time
+without a developer. Every provider should be offered, and there should be a way to send a
+message and see the reply, to prove a key works. What the AI will do on the site is not
+decided yet, so this builds the connection and nothing that depends on it.
+
+- **Every provider, through three protocols.** `packages/shared/src/ai-providers.ts` lists
+  them:
+  - Anthropic Claude, on the Messages API;
+  - Google Gemini, on `generateContent`;
+  - OpenAI, OpenRouter, Groq, DeepSeek, Mistral, xAI, Together, Perplexity and Fireworks, all
+    on the OpenAI chat shape;
+  - Azure OpenAI, and "any other service", which ask for their own address.
+
+  Each has a few suggested models. The names age, so a saved connection can also ask the
+  provider for its current list. The API talks to them with plain `fetch`: no SDKs, no new
+  dependencies. Each call has a 45 second timeout and refuses redirects, so a provider cannot
+  bounce the key elsewhere.
+- **Where the key lives.** In Postgres (`AiConnection`), sealed with AES-256-GCM, a fresh
+  nonce each time, and the provider's id as associated data. A sealed key copied onto another
+  provider's row does not open.
+  - The secret that seals it is `CREDENTIALS_KEY` (32 random bytes, base64) in the server's
+    environment. That is set once and never touched again; the provider keys themselves come
+    and go from the dashboard.
+  - A server without `CREDENTIALS_KEY` derives one from `AUTH_SECRET` with HKDF, so production
+    works today without an env change. Each key records which secret sealed it, so adding
+    `CREDENTIALS_KEY` later still opens the old ones, and each moves across when next saved.
+  - A server with neither secret says so on the screen and stores nothing.
+  - If the secret is lost or changed, a stored key cannot be opened. The screen says "enter
+    it again" rather than failing silently.
+- **A key never comes back out.**
+  - The API accepts one on create and update. No response carries more than its last four
+    characters.
+  - The key field is never filled from the server; left empty on an edit, it keeps the stored
+    key.
+  - Only the call that needs a key opens it.
+  - The audit log records every connection that is created, changed, made the default,
+    tested or removed, with the key left out.
+  - A removed connection is deleted outright, key and all, not soft-deleted: a key nobody
+    wants should not survive in a backup's future.
+  - Error text from a provider has the key, and anything shaped like one, taken out before
+    it is shown.
+- **The owner's alone.** A new `ai` module in the permission matrix reaches only `OWNER`:
+  whoever holds these keys spends the business's money. Tests and model lists are limited to
+  12 a minute, because each is a real request on the owner's account.
+- **Custom addresses are kept public.** The address of Azure or a custom service is the one
+  place the dashboard chooses where the API sends a request. It must:
+  - be https, with no credentials in it;
+  - not be `localhost`, `.local` or `.internal`;
+  - resolve only to public addresses. Loopback, private, link-local (the cloud metadata
+    address), carrier-grade NAT, unique-local and multicast are refused.
+
+  It is checked when saved and again before every call, so the admin cannot be used to reach
+  Postgres, Redis or anything else on the stack's own network. A known provider's address is
+  fixed, and never taken from the request.
+- **The screen, `/admin/ai/`** (Site group, and "AI" in Ctrl K).
+  - Connections are listed with their provider, model, key ending, whether they are in use,
+    and how the last test went. Each can be tested, made the one in use, changed or removed,
+    with a confirmation before removal.
+  - Adding one starts with a picker of every provider, then:
+    - a name;
+    - a model, with suggestions or any name typed;
+    - the address, when the provider needs one;
+    - the key, with a show/hide control and a link to where that provider issues keys.
+
+    A key that does not look like the chosen provider's is flagged before saving. Saving a
+    new connection tests it at once.
+  - The test bench sends a message through any connection, with optional instructions and
+    a reply length. It shows the reply as the provider gave it, with the model the provider
+    says it used, the time taken and the tokens in and out. When it fails, it says why in
+    plain words.
+- **For the features to come.** `AdminAiService.complete({ system, prompt, maxTokens })`
+  calls whichever connection is in use, whatever the provider, and says plainly when none is
+  set up. `AdminAiModule` exports it. Nothing on the site calls it yet.
+- **Verified.**
+  - Unit tests (16):
+    - the box: a round trip, a fresh nonce each time, a key moved to another provider's row,
+      a tampered key, another server's secret, the AUTH_SECRET fallback and the move across;
+    - the address check: private, loopback and metadata addresses, http, local names;
+    - each protocol's request and reply as its provider documents them, with no network;
+    - a refused key's message with the key taken out.
+  - An integration test (8) on a real database:
+    - the key never appears in the view or the audit log;
+    - a known provider ignores an address sent with it, and a private custom address is
+      refused;
+    - the default moves, and passes on when the default is removed;
+    - a replaced key forgets its old test;
+    - a test call reaches the provider with the decrypted key;
+    - a refused key is a failed test, not an error;
+    - a changed secret reads as "enter it again".
+  - In Chrome, end to end with a made-up key: saving and testing reached Anthropic, which
+    refused the key, and the screen said so. The key was nowhere in the page, only its last
+    four characters. The connection was then removed. No overflow at 360, no console errors.
+  - `/admin/ai` carries 13.2 kB of own JavaScript, under the 20 kB gate. Every marketing route
+    is unchanged.
+- **Owner's call (RULES.md, section 1): this is a third-party service.** Nothing is sent to any
+  provider until someone with the owner's role saves a key. Once a feature uses it, what that
+  feature sends is the owner's decision too: sending lead or subscriber data to a provider
+  moves it outside our database, which CLAUDE.md puts with the owner.
+
+## 65. The before and after comparison shows two photographs
+
+*2026-09-26.* At the collaborator's request, the homepage's comparison ("Drag it and see the
+difference") shows two pictures they made, in place of the two drawn SVG mock-ups. Both are
+the same laptop, photographed the same way:
+- before: a crowded early-2000s travel site called HelloWay;
+- after: its modern redesign.
+
+Dragging the handle across one laptop turns the old site into the new.
+
+- **The files.** They were PNGs at 1448×1086, 1.7 and 1.9 MB. They are now high-quality
+  progressive JPEGs at the same size, 165 and 208 kB, in `apps/web/public/media/`:
+  `home-before-helloway.jpg` and `home-after-helloway.jpg`. The page serves them through the
+  image optimiser, like every other local picture. Each carries alt text describing what it
+  shows.
+- **The frame takes the pictures' shape.** The slider's frame was 16:10, the shape of the
+  drawn mock-ups. A 4:3 photograph in it lost the bottom of the laptop to `object-cover`. An
+  image may now state its `width` and `height`: optional on `imageSchema`, so nothing else
+  changes. The slider then takes that shape; without them it is 16:10 as before, so the
+  landing pages and the case studies' comparisons look exactly as they did.
+- **The same pair on `/before-and-after/`.** That page leads with the homepage's comparison
+  and `work.test.ts` holds the two equal, so it shows the same pictures.
+- **"Before" is readable.** Its label's background was `bg-navy-900-invert/80`, a class for
+  a token that does not exist, so it never had one. It is a cream chip now. The same
+  non-token is used in a dozen other places on the site, where it also draws nothing (see
+  Open).
+- **Verified.** On the homepage and `/before-and-after/`, at 360, 768 and 1440 in Chrome:
+  - the frame is 4:3 and both pictures load;
+  - dragging and the arrow keys move the handle;
+  - no overflow and no console errors.
+
+  Tests: web 465, shared 259, API 276.
+
 ## Open
+
+- **Nothing reports abandonment yet.** The drop-off per step is in the data (each draft lead's
+  step and its `draft_*` activities) but no screen counts it; the leads inbox shows an
+  unfinished brief as an ordinary new lead. A small report in the dashboard, or a filter for
+  unfinished briefs, would make the gate visible to the owner.
+- **The floating "Start a project" button goes to `/book-a-consultation/`**, not to this page
+  (`floatingCta` in the homepage copy). That is the owner's content, so it was left.
+
+- **The article block's privacy line still mentions a name.** `insights.copy`'s
+  `newsletter.privacyNote` reads "Your name and email are stored in our own database…", and
+  the block no longer asks for a name (decision 55). The words are the owner's (RULES.md,
+  section 1), so they were left; the owner may want "Your email is stored…".
+
+- **The footer's office and contact are set in the homepage copy**, not taken from the
+  locations and the site contact (2026-09-24, at the collaborator's request). `home.content`'s
+  `footer.offices` and `footer.contactEmail` are optional: empty, the footer falls back to the
+  published locations with an address and to `contact.email`, as before. The snapshot sets one
+  office, "California" / "United States" — the owner's words, with no street address, since
+  the owner gave none — and `calidigi62@gmail.com` as the footer's only contact. The
+  telephone number is off the whole site, not only the footer (decision 54). The homepage's
+  locations section still lists the published locations; if the owner wants a street address
+  shown, it goes in `footer.offices`.
+
+- **Northmark Supply's image is not stock photography.** On 2026-09-24 the case study's
+  picture was replaced, at the collaborator's request, by an image supplied as a file
+  (`apps/web/public/media/northmark-supply.jpg`, 1536×1024, served through the Next image
+  optimiser) on the homepage, `/work/`, the case study's cover and Open Graph image, and every
+  related card except one. Decision 41 says imagery comes from Unsplash and Pexels, with each
+  URL checked; this file's origin and licence are not recorded. The insights snapshot test
+  enforces that rule, so the Northmark card inside the insight "b2b-ecommerce-what-a-stock-
+  theme-cannot-do" still shows the old Unsplash photo. The owner decides: keep the new image
+  (record its licence, allow `/media/` in `insights.test.ts`, and update that card), or
+  return to a stock photograph everywhere.
 
 - Staging sits behind basic auth (`infra/traefik/dynamic/access.yml`), which covers `/api`
   too, so Resend cannot reach `/api/webhooks/resend` there and a one-click unsubscribe from a
   staging email is refused. Production has no basic auth. If staging needs delivery events,
   exempt those two paths from the basic-auth middleware.
 
-- Nothing creates `Subscriber` rows yet. The insights newsletter form stores a `RESOURCE`
-  lead (`subscribe-action.ts`), and no import exists. Until the owner decides where
-  subscribers come from (newsletter signups, calculator leads who consented, an import),
-  the subscriber screens and segment counts are empty on every real database. Task 5.4's
-  gate needs somebody to send to.
+- The homepage's "Subscribe now" creates subscribers (decision 53), and since decision 55 so
+  does the insights article's block. Still open: calculator leads who consented are not
+  subscribers, and no import exists. And the form is single opt-in, so a
+  confirmation email should come before the first real campaign; it needs email to be
+  sending, which production does not do today.
 
 - The approved demo proof gives two names two identities. "Priya Raman" is Calwebtech's
   Design Lead on the landing page and Truvia Labs' VP Marketing in a testimonial. "Dana
@@ -404,6 +1201,51 @@ recipient's event columns were already in the schema.
   Switching it on earlier fails every push to `main`. The bootstrap script prints them.
 - The owner's server has 4 GB, which runs one stack. Staging and production side by side
   need 8 GB or a second server.
+- **Turning the database-first families on in production is the owner's step.** Services,
+  industries, case studies (`work`), the homepage copy (`home`) and the thank-you copy
+  (`thank-you`) can each read the database first (decisions 44, 58 and 59). Each needs the
+  deploy's import to have run its family on that database first, then its name in
+  `CONTENT_DATABASE_FIRST`; production names `services` alone today. Until a family is named,
+  what the dashboard saves for it is stored and audited but the site keeps its snapshot, and the
+  page copy screen says so beside each row.
+- **The comparison's words name another client** (decision 65). The pictures show "HelloWay",
+  a travel site. The text beside them, and on `/before-and-after/`, says "Halloway Group's
+  homepage", with its figures (6.8s to 1.6s, 71% to 38%, 9 to 54). The words and figures are
+  the owner's. Whether HelloWay is Halloway Group, and whether those figures are this
+  redesign's, is the owner's to say. Like Northmark's picture, where the two images came from
+  and under what licence is not recorded.
+- **`navy-900-invert` is not a token**, and a dozen marketing components use it in a
+  background class (`bg-navy-900-invert/5` to `/95`), which therefore draws nothing. Among
+  them are the landing page's sticky header, the reviews table and several bordered notes.
+  Decision 65 fixed only the slider's label. Replacing the rest changes how those sections
+  look, which is the owner's call (RULES.md, section 1).
+- **AI is connected but used by nothing yet** (decision 64). Which feature comes first is the
+  owner's choice, as is whether any lead or subscriber data may be sent to a provider (CLAUDE.md,
+  "Ask before deciding"). Production can store keys today through its `AUTH_SECRET`; setting a
+  dedicated `CREDENTIALS_KEY` is better (docs/11-vps-deploy.md, "AI providers").
+- **The dashboard has one theme, the dark one** (decision 63). A light theme would need light
+  values for `result` and `danger` inside `[data-theme='admin']`, which is a token decision for
+  the owner (RULES.md, section 1).
+- **Page sections and Forms and routing are still placeholders** (decision 63 restyled them,
+  nothing more). The enquiry types behind the contact form are live data that a Forms screen
+  could edit.
+- **The service-by-city matrix (task 3.2) is not built** and waits for the owner to say whether
+  it is still wanted (docs/14, task 7). The locations index and the two city pages are live.
+- **Nothing links to `/search/` yet** (decision 62). A search link in the header or footer is a
+  change to the homepage copy, the owner's to make from the page copy screen.
+- **The antispam figures are first guesses** (decision 61): two seconds before a lead or a
+  booking, five leads an hour and three bookings a day per address. Once the site takes real
+  enquiries, the `form_resubmitted` and refused-submission patterns will say whether they are
+  right; they live in `packages/shared/src/antispam.ts`.
+- **Saving a case study moves it to the top of /work/**, which lists featured first and then the
+  most recently changed (decision 58). The approved order was stamped in at import; mark the case
+  studies that must stay first as Featured.
+- **Not editable from the dashboard yet:** a case study's quote and video testimonial (their own
+  records), the proof band's figures and rating (shared with the homepage), and
+  `/before-and-after/`, which keeps its snapshot.
+- **In the dashboard's sidebar, Dashboard is marked as the current page on every screen**,
+  because its link (`/admin/`) is the start of every other one (`components/admin/sidebar.tsx`,
+  `isCurrent`). Seen while checking task 4; left as it was.
 - Content is still edited by changing a snapshot and deploying (decision 43). Families move
   into the database one at a time once the admin exists (Task 5.3). Each needs its mapper
   extended or its snapshot corrected where the two disagree, and an owner's decision for
@@ -439,23 +1281,22 @@ recipient's event columns were already in the schema.
   rows first, requeued by the sweep); lead and booking emails still do.
 - Settings changed with `settings-cli` are not written to the audit log yet. The admin
   settings screen (Task 5.3) must write the audit entry.
-- Of task 5.1, what is built is: consultation types, weekly hours and date overrides edited
-  from `/admin/bookings/availability`, minimum notice, the horizon, server-side slots, the
-  visitor's timezone, the double-booking constraint, the confirmation and internal
-  notification emails, and the dashboard's list, detail, status and notes. Still to build:
-  the `.ics` invite, reminders at 24h and 1h, and signed reschedule and cancel link pages.
-  The build plan's gate for 5.1 names reminders, reschedule and cancel, so 5.1 is not
-  closed.
+- Task 5.1 is complete on `tumit` (decision 60): the `.ics` entry, the 24h and 1h reminders
+  and the signed reschedule and cancel pages were the last of it. None of the booking emails
+  reaches anyone until production sends email (Task 6.2); until then the reminders are
+  queued, checked and logged like every other email.
+- **The booking emails carry the move and cancel links only where `APP_ORIGIN` is set on the
+  worker**, since the job holds paths and never a host. Without it they fall back to "reply to
+  this email", as before.
 - Production books in `America/Los_Angeles`, and that is the owner's choice, asked and
   answered on 2026-09-23: the calls are taken in US West Coast hours. Every availability
   rule is written in that zone, so `/admin/bookings/availability` reads as Pacific, and a
   visitor in Dhaka is offered 2:30 AM. That is the intended offer, not a bug to fix. The
   setting is `booking.page`'s `timeZone`, changeable with settings-cli if the answer ever
   changes.
-- The booking page's own copy is the `booking.page` setting, and like `home.content` it is
-  not one of the five settings the admin screen exposes, so it changes with `settings-cli`
-  until the content manager reaches singleton pages (Task 5.3). The hours, which change
-  far more often, are editable from `/admin/bookings/availability`.
+- The booking page's own copy is the `booking.page` setting. Since decision 59 it is edited
+  from `/admin/page-copy/` with the homepage and thank-you copy, and audited; the hours, which
+  change far more often, are editable from `/admin/bookings/availability`.
 - The availability screen edits the one active consultation type. A second type would need
   a chooser there and a type per booking link; nothing depends on that yet.
 - The Lighthouse gate runs against `/` and `/lp/[campaign]` only (docs/09). The booking

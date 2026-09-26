@@ -9,6 +9,7 @@ import {
   caseStudyTags,
   fitText,
   galleryImages,
+  orderedServices,
   paragraphs,
   toBeforeAndAfterView,
   toCaseStudyView,
@@ -146,6 +147,7 @@ function project(slug: string, overrides: Partial<WorkProjectRecord> = {}): Work
     beforeImageUrl: null,
     afterImageUrl: null,
     beforeAfterMetrics: null,
+    content: null,
     status: 'PUBLISHED',
     seo: null,
     createdAt: at,
@@ -287,6 +289,29 @@ describe('toWorkIndexView', () => {
       });
     expect(broken).toThrow(WorkContractError);
     expect(broken).toThrow('Project "broken"');
+  });
+});
+
+describe('orderedServices', () => {
+  const services = [
+    { slug: 'test-a', title: 'Test A', shortDescription: 'Test A summary.' },
+    { slug: 'test-b', title: 'Test B', shortDescription: 'Test B summary.' },
+    { slug: 'test-c', title: 'Test C', shortDescription: 'Test C summary.' },
+  ];
+
+  it("lists a case study's services in the order its copy names, and the rest after in their own order", () => {
+    const record = project('ordered', { services, content: { order: { services: ['test-c', 'test-a'] } } });
+    expect(orderedServices(record).map((service) => service.slug)).toEqual(['test-c', 'test-a', 'test-b']);
+
+    const view = toCaseStudyView({ copySetting: COPY, project: record, others: [] });
+    expect(view.atAGlance.services.map((service) => service.slug)).toEqual(['test-c', 'test-a', 'test-b']);
+    expect(view.relatedServices.map((service) => service.slug)).toEqual(['test-c', 'test-a', 'test-b']);
+  });
+
+  it("keeps the services' own order without copy, or with copy the schema refuses", () => {
+    expect(orderedServices(project('plain', { services })).map((service) => service.slug)).toEqual(['test-a', 'test-b', 'test-c']);
+    const broken = project('broken', { services, content: { order: { services: 'test-c' } } });
+    expect(orderedServices(broken).map((service) => service.slug)).toEqual(['test-a', 'test-b', 'test-c']);
   });
 });
 

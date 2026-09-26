@@ -152,6 +152,17 @@ const workBeforeAndAfterCopySchema = z.object({
   emptyAction: siteLinkSchema,
 });
 
+/**
+ * `Project.content`: what a case study orders its own way (docs/08-decisions.md, 58). The
+ * services a project used are one relation shared with the service pages, loaded in the
+ * services' own order; the case study lists them in the order its page names here, and a
+ * service it does not name follows.
+ */
+export const workProjectContentSchema = z.object({
+  order: z.object({ services: z.array(slugSchema).max(24).default([]) }).default({ services: [] }),
+});
+export type WorkProjectContent = z.output<typeof workProjectContentSchema>;
+
 /** The `work.copy` setting: copy around the proof on every page of the family. */
 export const workCopySchema = z.object({
   index: workIndexCopySchema,

@@ -1,7 +1,34 @@
-import type { BookingConfirmation, BookingPageView, BookingSlotsView, BookingSubmission } from '@calwebtech/shared';
-import { bookingSubmissionSchema } from '@calwebtech/shared';
-import { Body, Controller, Get, HttpCode, HttpStatus, Ip, Module, Post, Query } from '@nestjs/common';
+import type {
+  BookingCancel,
+  BookingConfirmation,
+  BookingManageView,
+  BookingPageView,
+  BookingReschedule,
+  BookingSlotsView,
+  BookingSubmission,
+} from '@calwebtech/shared';
+import {
+  BOOKING_ERRORS,
+  bookingCancelSchema,
+  bookingRescheduleSchema,
+  bookingSubmissionSchema,
+  bookingTokenSchema,
+} from '@calwebtech/shared';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Ip,
+  Module,
+  NotFoundException,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { SkipThrottle, Throttle } from '@nestjs/throttler';
+import { submissionGuardProvider } from '../antispam/antispam.provider';
 import { ZodValidationPipe } from '../common/zod-validation.pipe';
 import { API_ENV, type ApiEnv } from '../config/env';
 import { EmailQueue } from '../queue/email-queue';
@@ -51,12 +78,45 @@ export class BookingController {
   ): Promise<BookingConfirmation> {
     return this.booking.create(body, visitorIp);
   }
+
+  /**
+   * The call a signed link names, and whether the link moves or cancels it
+   * (docs/08-decisions.md, 60). 404 for a token that is malformed or names nothing, so the
+   * two cannot be told apart.
+   */
+  @Get('manage/:token')
+  @Throttle({ default: { limit: 30, ttl: 60_000 } })
+  manage(@Param('token') token: string): Promise<BookingManageView> {
+    const parsed = bookingTokenSchema.safeParse(token);
+    if (!parsed.success) throw new NotFoundException({ error: BOOKING_ERRORS.linkUnknown });
+    return this.booking.manage(parsed.data);
+  }
+
+  /** 200 with the cancelled call; 409 `booking_closed` for one already held or closed. */
+  @Post('cancel')
+  @HttpCode(HttpStatus.OK)
+  @Throttle({ default: { limit: 5, ttl: 60_000 } })
+  cancel(@Body(new ZodValidationPipe(bookingCancelSchema)) body: BookingCancel): Promise<BookingManageView> {
+    return this.booking.cancel(body.token);
+  }
+
+  /**
+   * 200 with the call at its new time; 409 when the time is not offered or went meanwhile,
+   * as for a new booking, or when the call can no longer move.
+   */
+  @Post('reschedule')
+  @HttpCode(HttpStatus.OK)
+  @Throttle({ default: { limit: 5, ttl: 60_000 } })
+  reschedule(@Body(new ZodValidationPipe(bookingRescheduleSchema)) body: BookingReschedule): Promise<BookingManageView> {
+    return this.booking.reschedule(body);
+  }
 }
 
 @Module({
   controllers: [BookingPageController, BookingController],
   providers: [
     BookingService,
+    submissionGuardProvider,
     SettingsService,
     {
       provide: TurnstileService,

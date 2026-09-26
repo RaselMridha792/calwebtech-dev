@@ -18,9 +18,9 @@
   },
   "address": "1201 J Street, Suite 200\nSacramento, CA 95814",
   "contact": {
-    "phone": "+1 (800) 555-0188",
-    "phoneE164": "+18005550188",
-    "email": "hello@calwebtech.com"
+    "phone": null,
+    "phoneE164": null,
+    "email": "calidigi62@gmail.com"
   },
   "localContext": {
     "heading": "What makes the Sacramento market different?",
@@ -42,7 +42,9 @@
   "clients": {
     "heading": "Which California clients have we worked with?",
     "intro": "Verona Home, a California furniture brand, is the client in this state whose results we can publish. It sold made-to-order pieces through a page builder that could not handle them, and now runs on Shopify with a configurator built for how its furniture is actually ordered.",
-    "names": ["Verona Home"]
+    "names": [
+      "Verona Home"
+    ]
   },
   "caseStudies": {
     "heading": "What have we built that fits Central Valley businesses?",
@@ -52,45 +54,84 @@
         "slug": "verona-home",
         "clientName": "Verona Home",
         "summary": "A furniture brand stuck on a page builder, replatformed with a configurator for made-to-order pieces.",
-        "tags": ["California, USA", "D2C", "Shopify"],
+        "tags": [
+          "California, USA",
+          "D2C",
+          "Shopify"
+        ],
         "image": {
           "src": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=900&q=70",
           "alt": "Home furnishing retail display"
         },
         "metrics": [
-          { "value": "$2.4M", "label": "First-year revenue" },
-          { "value": "+68%", "label": "Add to cart" },
-          { "value": "1.4s", "label": "Mobile LCP" }
+          {
+            "value": "$2.4M",
+            "label": "First-year revenue"
+          },
+          {
+            "value": "+68%",
+            "label": "Add to cart"
+          },
+          {
+            "value": "1.4s",
+            "label": "Mobile LCP"
+          }
         ]
       },
       {
         "slug": "cascadia-health",
         "clientName": "Cascadia Health",
         "summary": "Fourteen clinic sites merged into one accessible platform with location-aware appointment booking.",
-        "tags": ["Oregon, USA", "Healthcare", "WordPress"],
+        "tags": [
+          "Oregon, USA",
+          "Healthcare",
+          "WordPress"
+        ],
         "image": {
           "src": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=900&q=70",
           "alt": "Clinician working at a healthcare facility"
         },
         "metrics": [
-          { "value": "+91%", "label": "Online bookings" },
-          { "value": "14→1", "label": "Sites to maintain" },
-          { "value": "AA", "label": "WCAG 2.2 verified" }
+          {
+            "value": "+91%",
+            "label": "Online bookings"
+          },
+          {
+            "value": "14→1",
+            "label": "Sites to maintain"
+          },
+          {
+            "value": "AA",
+            "label": "WCAG 2.2 verified"
+          }
         ]
       },
       {
         "slug": "meridian-parts",
         "clientName": "Meridian Parts",
         "summary": "Fitment search across 90,000 SKUs, so a technician finds the right part on a phone in a workshop.",
-        "tags": ["Michigan, USA", "Manufacturing", "Headless"],
+        "tags": [
+          "Michigan, USA",
+          "Manufacturing",
+          "Headless"
+        ],
         "image": {
           "src": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=900&q=70",
           "alt": "Engineer inspecting equipment on a production floor"
         },
         "metrics": [
-          { "value": "+207%", "label": "Organic traffic" },
-          { "value": "−63%", "label": "Wrong-part returns" },
-          { "value": "4.2x", "label": "Repeat orders" }
+          {
+            "value": "+207%",
+            "label": "Organic traffic"
+          },
+          {
+            "value": "−63%",
+            "label": "Wrong-part returns"
+          },
+          {
+            "value": "4.2x",
+            "label": "Repeat orders"
+          }
         ]
       }
     ]
@@ -177,7 +218,12 @@
     "heading": "Where else does Calwebtech have an office?",
     "intro": "Our second office is in Austin, Texas, run with the same team and the same process as the head office.",
     "items": [
-      { "slug": "austin", "city": "Austin", "state": "TX", "serviceArea": null }
+      {
+        "slug": "austin",
+        "city": "Austin",
+        "state": "TX",
+        "serviceArea": null
+      }
     ]
   },
   "faq": {

@@ -1,5 +1,6 @@
-import type { Prisma } from '@calwebtech/db';
+import { Prisma } from '@calwebtech/db';
 import {
+  BOOKING_ERRORS,
   BOOKING_HORIZON_DAYS,
   BOOKING_SETTING_KEYS,
   type AdminAvailability,
@@ -14,9 +15,11 @@ import {
   adminBookingListSchema,
   bookingPageContentSchema,
 } from '@calwebtech/shared';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, Logger, NotFoundException, Optional } from '@nestjs/common';
 import { AuditService } from '../../auth/audit.service';
+import { reminderJobIds } from '../../booking/booking-reminders';
 import { PrismaService } from '../../prisma/prisma.service';
+import { EmailQueue } from '../../queue/email-queue';
 import { SettingsService } from '../../settings/settings.service';
 
 const WITH_TYPE = {
@@ -52,10 +55,14 @@ function toView(booking: BookingRecord): AdminBooking {
  */
 @Injectable()
 export class AdminBookingsService {
+  private readonly logger = new Logger(AdminBookingsService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly audit: AuditService,
     private readonly settings: SettingsService,
+    /** Takes a closed call's reminders off the queue. Optional where no queue is wired, as in tests. */
+    @Optional() private readonly emailQueue?: EmailQueue,
   ) {}
 
   async list(query: AdminBookingQuery): Promise<AdminBookingList> {
@@ -115,23 +122,35 @@ export class AdminBookingsService {
    * detail screen shows how a call reached the state it is in rather than only the state.
    */
   async update(id: string, input: AdminBookingUpdate, actorId: string): Promise<AdminBookingDetail> {
-    const before = await this.prisma.client.booking.findUnique({ where: { id }, select: { status: true } });
+    const before = await this.prisma.client.booking.findUnique({
+      where: { id },
+      select: { status: true, startsAt: true },
+    });
     if (!before) throw new NotFoundException();
 
-    await this.prisma.client.$transaction(async (tx) => {
-      await tx.booking.update({
-        where: { id },
-        data: {
-          ...(input.status ? { status: input.status } : {}),
-          ...(input.notes === undefined ? {} : { notes: input.notes }),
-        },
-      });
-      if (input.status && input.status !== before.status) {
-        await tx.bookingEvent.create({
-          data: { bookingId: id, type: 'status_changed', detail: { from: before.status, to: input.status } },
+    // A cancelled call gives its time back, and one brought back takes it again — refused if
+    // somebody has booked it since (the unique index on the held slot).
+    const holds = input.status ? input.status !== 'CANCELLED' : undefined;
+    try {
+      await this.transitionTo(id, input, before, holds);
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+        throw new ConflictException({
+          error: BOOKING_ERRORS.slotGone,
+          message: 'Somebody else has booked that time since the call was cancelled.',
         });
       }
-    });
+      throw error;
+    }
+
+
+    // A call the team cancels or closes is not reminded about (docs/08-decisions.md, 60). The
+    // worker checks again before sending, so a removal that fails here reminds nobody either.
+    if (input.status && !['CONFIRMED', 'RESCHEDULED'].includes(input.status) && this.emailQueue) {
+      await this.emailQueue.remove(reminderJobIds({ id, startsAt: before.startsAt })).catch((error: unknown) => {
+        this.logger.warn(`Booking ${id}: its reminders could not be removed; the worker will skip them.`, error);
+      });
+    }
 
     await this.audit.recordQuietly({
       userId: actorId,
@@ -142,6 +161,29 @@ export class AdminBookingsService {
       after: { status: input.status ?? before.status, notes: input.notes === undefined ? 'unchanged' : 'changed' },
     });
     return this.find(id);
+  }
+
+  private async transitionTo(
+    id: string,
+    input: AdminBookingUpdate,
+    before: { status: string; startsAt: Date },
+    holds: boolean | undefined,
+  ): Promise<void> {
+    await this.prisma.client.$transaction(async (tx) => {
+      await tx.booking.update({
+        where: { id },
+        data: {
+          ...(input.status ? { status: input.status } : {}),
+          ...(holds === undefined ? {} : { slotStartsAt: holds ? before.startsAt : null }),
+          ...(input.notes === undefined ? {} : { notes: input.notes }),
+        },
+      });
+      if (input.status && input.status !== before.status) {
+        await tx.bookingEvent.create({
+          data: { bookingId: id, type: 'status_changed', detail: { from: before.status, to: input.status } },
+        });
+      }
+    });
   }
 
   /**

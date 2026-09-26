@@ -19,6 +19,7 @@ import { SettingsService } from '../settings/settings.service';
 import { TURNSTILE_TEST } from '../turnstile/turnstile-test-keys';
 import { TurnstileService } from '../turnstile/turnstile.service';
 import { BookingService } from './booking.service';
+import { SubmissionGuard } from '../antispam/submission-guard';
 
 /**
  * The one thing about a booking engine that cannot be proved without a database: two
@@ -52,6 +53,7 @@ const booking = new BookingService(
   new TurnstileService(TURNSTILE_TEST.alwaysPassesSecret, fetch, 15_000),
   settings,
   emailQueue,
+  SubmissionGuard.off(),
 );
 
 function withDatabase(url: string, name: string): string {

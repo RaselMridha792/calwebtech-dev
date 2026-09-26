@@ -2,6 +2,7 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { MutationError, adminMutate } from '@/lib/admin/mutate';
+import { ERROR, LABEL, TEXTAREA, button } from '../ui/styles';
 
 /**
  * A note on the lead. Notes are what turn a status history into a record someone else can
@@ -32,21 +33,21 @@ export function NoteForm({ leadId }: { leadId: string }) {
   }
 
   return (
-    <div className="mt-3 flex flex-col gap-[3px]">
-      <label htmlFor="lead-note" className="text-[9.5px] font-bold tracking-[0.12em] text-admin-muted uppercase">
-        Add a note — type @ to mention a team member
+    <div className="mt-5 flex flex-col gap-1.5">
+      <label htmlFor="lead-note" className={LABEL}>
+        Add a note <span className="font-normal text-admin-muted">— type @ to mention a team member</span>
       </label>
       <textarea
         id="lead-note"
-        rows={2}
+        rows={3}
         value={body}
         onChange={(event) => {
           setBody(event.target.value);
         }}
-        className="rounded-[4px] border border-admin-line bg-admin-surface px-2 py-1.5 text-[12.5px] text-admin-ink outline-none focus-visible:border-admin-focus"
+        className={TEXTAREA}
       />
       {error ? (
-        <p role="alert" className="text-[11px] text-danger">
+        <p role="alert" className={ERROR}>
           {error}
         </p>
       ) : null}
@@ -55,7 +56,7 @@ export function NoteForm({ leadId }: { leadId: string }) {
           type="button"
           onClick={add}
           disabled={busy || body.trim().length === 0}
-          className="mt-1.5 h-[29px] rounded-[4px] border border-admin-line px-3 text-[12px] font-semibold text-admin-body hover:border-admin-focus hover:text-admin-ink disabled:opacity-40"
+          className={`${button('secondary', 'sm')} mt-1.5`}
         >
           {busy ? 'Adding…' : 'Add note'}
         </button>

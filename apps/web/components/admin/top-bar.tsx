@@ -1,48 +1,90 @@
 'use client';
-import { usePathname, useRouter } from 'next/navigation';
-import { useState, type ReactNode } from 'react';
-import { adminMutate } from '@/lib/admin/mutate';
+import dynamic from 'next/dynamic';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useEffect, useState, type ReactNode } from 'react';
+import type { PaletteCommand } from './command-palette';
+import { ExternalIcon, SearchIcon } from './icons';
+import { button, iconButton } from './ui/styles';
 
 /**
- * The top bar: where you are, who you are, and the way out.
+ * Loaded the first time someone opens it, so no screen pays for the palette until it is
+ * wanted. Ctrl K and the button are all this bar carries for it.
+ */
+const CommandPalette = dynamic(() => import('./command-palette').then((module) => module.CommandPalette), {
+  ssr: false,
+});
+
+/**
+ * The top bar: where you are, a way to jump anywhere, and the public site.
  *
  * The breadcrumb is derived from the path rather than passed down, because a layout in the
- * App Router cannot be told anything by the page inside it. A record's own name is shown by
- * the panel that opens it, which is where the design puts it as a heading anyway.
- *
- * There is deliberately no global search here: search belongs to the leads filter bar.
+ * App Router cannot be told anything by the page inside it. A record's own name is the
+ * heading of its screen, so the bar calls it by its kind.
  */
 export function TopBar({
   menu,
-  name,
-  role,
   labels,
+  commands,
+  searchable,
 }: {
   /** The sidebar, which also renders the button that opens it under 1024px. */
   menu: ReactNode;
-  name: string;
-  role: string;
   /** Path segment to page name, so the bar has no second copy of the module list. */
   labels: Record<string, string>;
+  /** Everywhere the palette can go, already filtered to what this role reaches. */
+  commands: PaletteCommand[];
+  /** Listings the palette can search by the words typed. */
+  searchable: { label: string; href: string }[];
 }) {
   const pathname = usePathname();
   const crumbs = trail(pathname, labels);
+  const [palette, setPalette] = useState<'closed' | 'open'>('closed');
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent): void => {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault();
+        setLoaded(true);
+        setPalette('open');
+      }
+    };
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+    };
+  }, []);
+
+  const openPalette = (): void => {
+    setLoaded(true);
+    setPalette('open');
+  };
 
   return (
-    <header className="flex h-14 shrink-0 items-center gap-3 border-b border-admin-line bg-admin-surface px-4">
+    <header className="flex h-16 shrink-0 items-center gap-3 border-b border-admin-line2 px-4 sm:px-6 lg:px-8">
       {menu}
 
       <nav aria-label="Breadcrumb" className="min-w-0 flex-1">
-        <ol className="flex items-center gap-1.5 text-[12.5px]">
+        <ol className="flex min-w-0 items-center gap-2 text-[13.5px]">
           {crumbs.map((crumb, index) => {
             const last = index === crumbs.length - 1;
             return (
-              <li key={crumb} className="flex items-center gap-1.5">
-                <span className={last ? 'font-semibold text-white' : 'text-admin-body'} aria-current={last ? 'page' : undefined}>
-                  {crumb}
-                </span>
+              <li key={crumb.label + String(index)} className={`min-w-0 items-center gap-2 ${last ? 'flex' : 'hidden sm:flex'}`}>
+                {last || !crumb.href ? (
+                  <span
+                    aria-current={last ? 'page' : undefined}
+                    className={`truncate ${last ? 'font-semibold text-ink-invert' : 'text-ink-invert-muted'}`}
+                  >
+                    {crumb.label}
+                  </span>
+                ) : (
+                  <Link href={crumb.href} className="truncate text-ink-invert-muted transition-colors duration-150 hover:text-ink-invert">
+                    {crumb.label}
+                  </Link>
+                )}
                 {last ? null : (
-                  <span aria-hidden className="text-admin-body">
+                  <span aria-hidden className="text-admin-muted">
                     /
                   </span>
                 )}
@@ -52,63 +94,64 @@ export function TopBar({
         </ol>
       </nav>
 
-      <div className="flex items-center gap-3 border-l border-admin-line pl-3">
-        <span aria-hidden className="flex size-7 items-center justify-center rounded-full bg-admin-mist text-[11px] font-bold text-admin-ink">
-          {initials(name)}
-        </span>
-        <span className="hidden flex-col leading-tight lg:flex">
-          <span className="text-[12px] text-admin-body">{name}</span>
-          <span className="text-[10px] tracking-[0.08em] text-admin-muted uppercase">{role}</span>
-        </span>
-        <SignOutButton />
-      </div>
+      <button
+        type="button"
+        onClick={openPalette}
+        aria-keyshortcuts="Control+K Meta+K"
+        className="hidden h-10 w-[300px] items-center gap-2.5 rounded-lg border border-admin-line bg-admin-sunken px-3 text-[13.5px] text-ink-invert-muted transition-colors duration-150 hover:border-admin-edge hover:text-ink-invert md:flex xl:w-[340px]"
+      >
+        <SearchIcon className="size-4 shrink-0" />
+        <span className="flex-1 text-left">Search or jump to…</span>
+        <kbd className="rounded-md border border-admin-line px-1.5 py-0.5 font-sans text-[11.5px] text-admin-muted">Ctrl K</kbd>
+      </button>
+      <button type="button" onClick={openPalette} className={`${iconButton()} md:hidden`}>
+        <SearchIcon className="size-[18px]" />
+        <span className="sr-only">Search or jump to a screen</span>
+      </button>
+
+      <a href="/" target="_blank" rel="noopener" className={`${button('secondary')} max-sm:hidden`}>
+        View site
+        <ExternalIcon className="size-4" />
+        <span className="sr-only">(opens in a new tab)</span>
+      </a>
+
+      {loaded ? (
+        <CommandPalette
+          open={palette === 'open'}
+          onClose={() => {
+            setPalette('closed');
+          }}
+          commands={commands}
+          searchable={searchable}
+        />
+      ) : null}
     </header>
   );
 }
 
-function SignOutButton() {
-  const router = useRouter();
-  const [busy, setBusy] = useState(false);
-  return (
-    <button
-      type="button"
-      disabled={busy}
-      onClick={() => {
-        setBusy(true);
-        void adminMutate('/auth/logout', { method: 'POST' })
-          .catch(() => undefined)
-          // Whatever the API answered, the way out is the sign-in screen. `refresh` clears
-          // what was rendered for the old session out of the client cache.
-          .finally(() => {
-            router.replace('/admin/login/');
-            router.refresh();
-          });
-      }}
-      className="h-[30px] rounded-[4px] border border-admin-line bg-admin-surface px-2.5 text-[12px] font-semibold text-admin-body hover:border-admin-focus hover:text-admin-ink disabled:opacity-40"
-    >
-      {busy ? 'Signing out…' : 'Sign out'}
-    </button>
-  );
+/** Screens that belong to a record rather than naming one: `/campaigns/<id>/report/`. */
+const SCREENS: Record<string, string> = { new: 'New', report: 'Report' };
+
+interface Crumb {
+  label: string;
+  href: string | null;
 }
 
-/** `/admin/leads/abc/` becomes Admin / Leads / Lead. Unknown segments are left out. */
-function trail(pathname: string, labels: Record<string, string>): string[] {
+/**
+ * `/admin/leads/abc/` becomes Dashboard / Leads / Lead. A segment with no name of its own
+ * is a record, and is named by the kind of screen it opens.
+ */
+function trail(pathname: string, labels: Record<string, string>): Crumb[] {
   const segments = pathname.split('/').filter(Boolean).slice(1);
-  const crumbs = ['Admin'];
+  const crumbs: Crumb[] = [{ label: 'Dashboard', href: '/admin/' }];
   let seen = '';
   for (const segment of segments) {
     seen = seen ? `${seen}/${segment}` : segment;
     const label = labels[seen];
-    if (label) crumbs.push(label);
-    else if (crumbs.length > 1) crumbs.push('Record');
+    // An empty name is a path segment that only groups records, such as `content/services`.
+    if (label === '') continue;
+    if (label) crumbs.push({ label, href: `/admin/${seen}/` });
+    else if (crumbs.length > 1) crumbs.push({ label: SCREENS[segment] ?? 'Record', href: null });
   }
   return crumbs;
-}
-
-function initials(name: string): string {
-  return name
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((part) => part.charAt(0).toUpperCase())
-    .join('');
 }

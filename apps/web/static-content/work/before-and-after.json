@@ -28,12 +28,16 @@
       "heading": "What changed when Halloway Group's website was redesigned?",
       "summary": "A dated homepage rebuilt around a clear headline, a photograph and result figures, compared at the same scroll position on the same screen.",
       "before": {
-        "src": "/media/home-before-halloway.svg",
-        "alt": "Halloway Group homepage before the redesign: a dated layout with a navy bar, grey banner and orange button"
+        "src": "/media/home-before-helloway.jpg",
+        "alt": "The HelloWay travel website before the redesign, on a laptop: a crowded early-2000s page with a yellow banner, a blue sidebar of links, a scrolling offer and a visitor counter",
+        "width": 1448,
+        "height": 1086
       },
       "after": {
-        "src": "/media/home-after-halloway.svg",
-        "alt": "Halloway Group homepage after the redesign: a clean layout with a clear headline, photograph and result figures"
+        "src": "/media/home-after-helloway.jpg",
+        "alt": "The HelloWay travel website after the redesign, on the same laptop: a clean menu, a full-width photograph under the headline Your Next Adventure Starts Here, and a row of destination photographs",
+        "width": 1448,
+        "height": 1086
       },
       "metrics": [
         {

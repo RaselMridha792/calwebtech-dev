@@ -21,9 +21,24 @@
         "We sign your NDA before the first call, not after"
       ],
       "stats": [
-        { "value": 240, "suffix": "+", "label": "Projects delivered", "isOutcome": false },
-        { "value": 187, "suffix": "%", "label": "Average lead uplift", "isOutcome": true },
-        { "value": 12, "suffix": " yrs", "label": "Building for B2B", "isOutcome": false }
+        {
+          "value": 240,
+          "suffix": "+",
+          "label": "Projects delivered",
+          "isOutcome": false
+        },
+        {
+          "value": 187,
+          "suffix": "%",
+          "label": "Average lead uplift",
+          "isOutcome": true
+        },
+        {
+          "value": 12,
+          "suffix": " yrs",
+          "label": "Building for B2B",
+          "isOutcome": false
+        }
       ],
       "backgroundImage": {
         "src": "/media/landing-hero-poster.jpg"
@@ -34,7 +49,11 @@
       "heading": "Get a free proposal",
       "subheading": "Two business days. No obligation, no drip sequence.",
       "submitLabel": "Send me a free proposal",
-      "assurances": ["NDA on request", "No spam, ever", "Reply in 2 days"]
+      "assurances": [
+        "NDA on request",
+        "No spam, ever",
+        "Reply in 2 days"
+      ]
     },
     "formSuccess": {
       "heading": "Thanks. Your request is with us.",
@@ -223,55 +242,100 @@
     }
   },
   "contact": {
-    "phone": "+1 (800) 555-0188",
-    "phoneE164": "+18005550188",
-    "email": "hello@calwebtech.com"
+    "phone": null,
+    "phoneE164": null,
+    "email": "calidigi62@gmail.com"
   },
   "reviews": {
     "averageRating": 4.9,
     "totalReviews": 217,
     "sources": [
-      { "platform": "Google", "rating": 4.9 },
-      { "platform": "Clutch", "rating": 4.9 }
+      {
+        "platform": "Google",
+        "rating": 4.9
+      },
+      {
+        "platform": "Clutch",
+        "rating": 4.9
+      }
     ],
     "npsScore": 9.6
   },
   "clients": [
-    { "name": "NORTHMARK", "logo": null },
-    { "name": "Verona Home", "logo": null },
-    { "name": "HALLOWAY", "logo": null },
-    { "name": "Bridgeline", "logo": null },
-    { "name": "Cascadia Health", "logo": null },
-    { "name": "Truvia Labs", "logo": null },
-    { "name": "Meridian Parts", "logo": null }
+    {
+      "name": "NORTHMARK",
+      "logo": null
+    },
+    {
+      "name": "Verona Home",
+      "logo": null
+    },
+    {
+      "name": "HALLOWAY",
+      "logo": null
+    },
+    {
+      "name": "Bridgeline",
+      "logo": null
+    },
+    {
+      "name": "Cascadia Health",
+      "logo": null
+    },
+    {
+      "name": "Truvia Labs",
+      "logo": null
+    },
+    {
+      "name": "Meridian Parts",
+      "logo": null
+    }
   ],
   "results": [
     {
       "slug": "northmark-supply",
       "clientName": "Northmark Supply",
       "summary": "40,000 parts behind a contact form, rebuilt as an account-priced quoting platform.",
-      "tags": ["Ohio", "Distribution"],
+      "tags": [
+        "Ohio",
+        "Distribution"
+      ],
       "image": {
         "src": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=700&q=70",
         "alt": "Industrial distribution facility"
       },
       "metrics": [
-        { "value": "+312%", "label": "Quote requests" },
-        { "value": "12 min", "label": "Turnaround, from 3 days" }
+        {
+          "value": "+312%",
+          "label": "Quote requests"
+        },
+        {
+          "value": "12 min",
+          "label": "Turnaround, from 3 days"
+        }
       ]
     },
     {
       "slug": "truvia-labs",
       "clientName": "Truvia Labs",
       "summary": "Marketing site, docs and onboarding rebuilt on one design system.",
-      "tags": ["Texas", "SaaS"],
+      "tags": [
+        "Texas",
+        "SaaS"
+      ],
       "image": {
         "src": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=700&q=70",
         "alt": "Software product team at work"
       },
       "metrics": [
-        { "value": "+140%", "label": "Demo bookings" },
-        { "value": "3.1x", "label": "Organic sessions" }
+        {
+          "value": "+140%",
+          "label": "Demo bookings"
+        },
+        {
+          "value": "3.1x",
+          "label": "Organic sessions"
+        }
       ]
     }
   ],
@@ -281,8 +345,16 @@
       "timing": "Week 1",
       "heading": "We work out what is actually wrong",
       "body": "A working session on positioning, buyers and the service catalogue. We map the primary action for every page and agree the sitemap before anyone opens a design tool.",
-      "youGet": ["Sitemap and conversion map", "Content inventory", "A fixed price, in writing"],
-      "weNeed": ["90 minutes of your team", "Your service list", "A named decision maker"],
+      "youGet": [
+        "Sitemap and conversion map",
+        "Content inventory",
+        "A fixed price, in writing"
+      ],
+      "weNeed": [
+        "90 minutes of your team",
+        "Your service list",
+        "A named decision maker"
+      ],
       "image": {
         "src": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=72",
         "alt": "Discovery workshop with the client team"
@@ -293,8 +365,16 @@
       "timing": "Weeks 2 to 3",
       "heading": "You see real screens, not a mood board",
       "body": "Design tokens and a component library first, then high-fidelity screens for the pages that carry the money. Everything else is assembled from approved patterns, which is why this stage does not drag.",
-      "youGet": ["Figma file with edit access", "7 high-fidelity screens", "One revision round included"],
-      "weNeed": ["Logo and brand assets", "Copy, or approval to draft", "Feedback within 2 days"],
+      "youGet": [
+        "Figma file with edit access",
+        "7 high-fidelity screens",
+        "One revision round included"
+      ],
+      "weNeed": [
+        "Logo and brand assets",
+        "Copy, or approval to draft",
+        "Feedback within 2 days"
+      ],
       "image": {
         "src": "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=900&q=72",
         "alt": "Interface design work in progress"
@@ -305,8 +385,16 @@
       "timing": "Weeks 3 to 7",
       "heading": "A staging URL you can open any day",
       "body": "Front end, API, dashboard and integrations, built in the open. Weekly progress notes, no black box, and nothing that only works on a demo day.",
-      "youGet": ["Live staging environment", "Weekly progress call", "Dashboard access early"],
-      "weNeed": ["Project content and images", "Integration credentials", "One consolidated review"],
+      "youGet": [
+        "Live staging environment",
+        "Weekly progress call",
+        "Dashboard access early"
+      ],
+      "weNeed": [
+        "Project content and images",
+        "Integration credentials",
+        "One consolidated review"
+      ],
       "image": {
         "src": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=72",
         "alt": "Developer building the platform"
@@ -317,8 +405,16 @@
       "timing": "Week 8",
       "heading": "We try to break it before your customers do",
       "body": "Cross-browser and cross-device QA, an accessibility audit, a performance pass against the written budget, structured data validation, redirect verification, and one tested backup restore.",
-      "youGet": ["Lighthouse 90+ on mobile", "WCAG 2.2 AA audit report", "A restore proven in front of you"],
-      "weNeed": ["Final copy sign-off", "Legal page approval", "A test run of your own"],
+      "youGet": [
+        "Lighthouse 90+ on mobile",
+        "WCAG 2.2 AA audit report",
+        "A restore proven in front of you"
+      ],
+      "weNeed": [
+        "Final copy sign-off",
+        "Legal page approval",
+        "A test run of your own"
+      ],
       "image": {
         "src": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=72",
         "alt": "Performance and analytics review before launch"
@@ -329,8 +425,16 @@
       "timing": "Week 9",
       "heading": "You leave owning all of it",
       "body": "DNS cutover, monitoring switched on, two recorded training sessions, a written operations manual, and every account transferred into your name through a password manager.",
-      "youGet": ["Code, database, design files", "Two recorded training sessions", "60 day warranty"],
-      "weNeed": ["DNS access", "Two people at training", "Final acceptance sign-off"],
+      "youGet": [
+        "Code, database, design files",
+        "Two recorded training sessions",
+        "60 day warranty"
+      ],
+      "weNeed": [
+        "DNS access",
+        "Two people at training",
+        "Final acceptance sign-off"
+      ],
       "image": {
         "src": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=900&q=72",
         "alt": "Handover and training session with the client team"
@@ -348,26 +452,66 @@
       "alt": "The client homepage after the redesign: a clear headline, a primary call to action and outcome figures"
     },
     "metrics": [
-      { "label": "Mobile load time", "before": "6.8s", "after": "1.6s" },
-      { "label": "Bounce rate", "before": "71%", "after": "38%" },
-      { "label": "Enquiries per month", "before": "9", "after": "54" }
+      {
+        "label": "Mobile load time",
+        "before": "6.8s",
+        "after": "1.6s"
+      },
+      {
+        "label": "Bounce rate",
+        "before": "71%",
+        "after": "38%"
+      },
+      {
+        "label": "Enquiries per month",
+        "before": "9",
+        "after": "54"
+      }
     ]
   },
   "partners": [
-    { "name": "Shopify", "note": "Partner since 2019" },
-    { "name": "Google", "note": "Partner, Ads & Analytics" },
-    { "name": "Vercel", "note": "Agency partner" },
-    { "name": "Cloudflare", "note": "Certified deployment" }
+    {
+      "name": "Shopify",
+      "note": "Partner since 2019"
+    },
+    {
+      "name": "Google",
+      "note": "Partner, Ads & Analytics"
+    },
+    {
+      "name": "Vercel",
+      "note": "Agency partner"
+    },
+    {
+      "name": "Cloudflare",
+      "note": "Certified deployment"
+    }
   ],
   "technologies": [
-    { "name": "Next.js" },
-    { "name": "React" },
-    { "name": "TypeScript" },
-    { "name": "WordPress" },
-    { "name": "Shopify" },
-    { "name": "PostgreSQL" },
-    { "name": "Docker" },
-    { "name": "React Native" }
+    {
+      "name": "Next.js"
+    },
+    {
+      "name": "React"
+    },
+    {
+      "name": "TypeScript"
+    },
+    {
+      "name": "WordPress"
+    },
+    {
+      "name": "Shopify"
+    },
+    {
+      "name": "PostgreSQL"
+    },
+    {
+      "name": "Docker"
+    },
+    {
+      "name": "React Native"
+    }
   ],
   "team": [
     {

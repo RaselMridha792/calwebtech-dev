@@ -26,7 +26,9 @@ function frame(image: Image) {
  * the server-rendered screenshots inside it. Only the slider ships client code.
  */
 export function ComparisonSlider({ before, after, clientName }: { before: Image; after: Image; clientName: string }) {
-  return <BeforeAfterSlider before={frame(before)} after={frame(after)} clientName={clientName} />;
+  // The frame takes the pictures' shape when they say it, so a photograph is not cropped.
+  const aspectRatio = before.width && before.height ? before.width / before.height : undefined;
+  return <BeforeAfterSlider before={frame(before)} after={frame(after)} clientName={clientName} aspectRatio={aspectRatio} />;
 }
 
 /**

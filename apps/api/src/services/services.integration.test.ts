@@ -18,6 +18,7 @@ import type { EmailQueue } from '../queue/email-queue';
 import { SettingsService } from '../settings/settings.service';
 import { TurnstileService } from '../turnstile/turnstile.service';
 import { ServicesService } from './services.service';
+import { SubmissionGuard } from '../antispam/submission-guard';
 
 // Needs a migrated Postgres: infra/docker-compose.yml with the dev overrides locally, services
 // in CI. Every row it writes carries this run's prefix and is removed afterwards, so parallel
@@ -193,7 +194,13 @@ describe('service enquiries against Postgres', () => {
   // No Turnstile secret outside production stores the lead without a verdict; no emails are sent.
   const queued: unknown[] = [];
   const emailQueue = { enqueue: (jobs: unknown[]) => Promise.resolve(void queued.push(...jobs)) } as unknown as EmailQueue;
-  const leads = new LeadsService(prisma, new TurnstileService('', fetch, 15_000), new SettingsService(prisma), emailQueue);
+  const leads = new LeadsService(
+    prisma,
+    new TurnstileService('', fetch, 15_000),
+    new SettingsService(prisma),
+    emailQueue,
+    SubmissionGuard.off(),
+  );
 
   function enquiry(name: string, serviceSlug: string): LeadSubmission {
     return {

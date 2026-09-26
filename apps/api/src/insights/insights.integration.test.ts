@@ -66,7 +66,6 @@ const COPY: InsightsCopyInput = {
     newsletter: {
       heading: 'Want the next one by email?',
       body: 'One article a month.',
-      nameLabel: 'Full name',
       emailLabel: 'Work email',
       submitLabel: 'Subscribe',
       privacyNote: 'Stored in our own database.',

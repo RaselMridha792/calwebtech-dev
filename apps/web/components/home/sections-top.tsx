@@ -475,6 +475,11 @@ export function MidCta({ midCta }: { midCta: Content['midCta'] }) {
   );
 }
 
+/** Width over height, when the picture says its size. */
+function shapeOf(image: { width?: number | undefined; height?: number | undefined }): number | undefined {
+  return image.width && image.height ? image.width / image.height : undefined;
+}
+
 export function BeforeAfterHome({
   beforeAfter,
   comparison,
@@ -530,6 +535,7 @@ export function BeforeAfterHome({
               before={frame(comparison.before)}
               after={frame(comparison.after)}
               clientName={comparison.clientName}
+              aspectRatio={shapeOf(comparison.before)}
             />
           ) : (
             <EmptyNote tone="dark">

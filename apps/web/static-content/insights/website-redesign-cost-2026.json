@@ -171,7 +171,6 @@
     "newsletter": {
       "heading": "Would you like the next article by email?",
       "body": "One article a fortnight, on what B2B websites cost, what breaks and what to ask for. No sequences, no upsells, and one click to stop.",
-      "nameLabel": "Full name",
       "emailLabel": "Work email",
       "submitLabel": "Subscribe",
       "privacyNote": "Your name and email are stored in our own database, never sold or passed to a list vendor. Unsubscribe from any email and the record is removed.",

@@ -2,6 +2,9 @@
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { MutationError, adminMutate, adminUpload } from '@/lib/admin/mutate';
+import { MediaIcon } from '../icons';
+import { EmptyState } from '../ui/page';
+import { CARD, CARD_PAD, ERROR, H2, HELP, INPUT, LABEL, MUTED, button } from '../ui/styles';
 
 /**
  * The media library (docs/12-admin-dashboard.md, module 7).
@@ -31,7 +34,7 @@ export function MediaLibrary({ assets, accept, maxBytes }: { assets: Asset[]; ac
   const [error, setError] = useState<string | null>(null);
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-6">
       <UploadForm
         accept={accept}
         maxBytes={maxBytes}
@@ -43,17 +46,20 @@ export function MediaLibrary({ assets, accept, maxBytes }: { assets: Asset[]; ac
       />
 
       {error ? (
-        <p role="alert" className="text-[12.5px] text-danger">
+        <p role="alert" className={`${ERROR} motion-safe:animate-[admin-rise_180ms_var(--ease-out-quint)]`}>
           {error}
         </p>
       ) : null}
 
       {assets.length === 0 ? (
-        <p className="py-12 text-center text-[13px] text-admin-body">
-          Nothing uploaded yet. Images added here can be used by every content type.
-        </p>
+        <div className={CARD}>
+          <EmptyState icon={<MediaIcon className="size-5" />} title="No images yet">
+            Add the first one above. Once an image is in the library it can be picked for any service, industry,
+            case study or page.
+          </EmptyState>
+        </div>
       ) : (
-        <ul className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-3">
+        <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {assets.map((asset) => (
             <AssetCard
               key={asset.id}
@@ -110,57 +116,102 @@ function UploadForm({
   }
 
   const described = altText.trim().length > 0;
+  const megabytes = String(Math.round(maxBytes / 1024 / 1024));
 
   return (
-    <div className="flex flex-wrap items-end gap-3 rounded-[4px] border border-admin-line bg-admin-sunken p-3">
-      <div className="flex min-w-[260px] flex-1 flex-col gap-[3px]">
-        <label htmlFor="media-alt" className="text-[9.5px] font-bold tracking-[0.12em] text-admin-muted uppercase">
-          What does the image show?
-        </label>
-        <input
-          id="media-alt"
-          value={altText}
-          onChange={(event) => {
-            setAltText(event.target.value);
-          }}
-          placeholder="A description someone who cannot see it would need"
-          className="h-[30px] rounded-[4px] border border-admin-line bg-admin-surface px-2 text-[12.5px] text-admin-ink outline-none focus-visible:border-admin-focus"
-        />
+    <section aria-labelledby="media-upload" className={`${CARD} ${CARD_PAD}`}>
+      <div className="mb-5 flex flex-col gap-1">
+        <h2 id="media-upload" className={H2}>
+          Add an image
+        </h2>
+        <p className="text-[13.5px] leading-[1.55] text-ink-invert-muted">
+          Describe the picture first, then choose the file. {formats(accept)}, up to {megabytes} MB.
+        </p>
       </div>
 
-      <div className="flex flex-col gap-[3px]">
-        <label htmlFor="media-file" className="text-[9.5px] font-bold tracking-[0.12em] text-admin-muted uppercase">
-          Image
-        </label>
-        <input
-          id="media-file"
-          ref={fileRef}
-          type="file"
-          accept={accept}
-          disabled={!described}
-          onChange={(event) => {
-            setFileName(event.target.files?.[0]?.name ?? null);
-          }}
-          className="h-[30px] text-[12px] text-admin-body file:mr-2 file:h-[30px] file:rounded-[4px] file:border file:border-admin-line file:bg-admin-surface file:px-2 file:text-[12px] file:font-semibold file:text-admin-body disabled:opacity-40"
-        />
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="media-alt" className={LABEL}>
+            What does the image show?
+          </label>
+          <input
+            id="media-alt"
+            value={altText}
+            onChange={(event) => {
+              setAltText(event.target.value);
+            }}
+            placeholder="A description someone who cannot see it would need"
+            aria-describedby="media-alt-help"
+            className={INPUT}
+          />
+          <p id="media-alt-help" className={HELP}>
+            This is read aloud to visitors who use a screen reader and shown to search engines, so it is required:
+            the library will not take an image without it.
+          </p>
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="media-file" className={LABEL}>
+            Image
+          </label>
+          {/*
+            The real file input covers the whole zone, invisible, so a click or a dropped file
+            anywhere on it reaches the browser's own picker. The ring and the dimming follow
+            the input's own state through `has-`.
+          */}
+          <div
+            className={`relative flex min-h-[124px] flex-col items-center justify-center gap-1.5 rounded-xl border border-dashed px-4 py-5 text-center transition-colors duration-150 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-admin-focus has-disabled:opacity-50 ${
+              fileName ? 'border-admin-edge bg-admin-nav' : 'border-admin-line bg-admin-sunken hover:border-admin-edge'
+            }`}
+          >
+            <input
+              id="media-file"
+              ref={fileRef}
+              type="file"
+              accept={accept}
+              disabled={!described}
+              aria-describedby="media-file-help"
+              onChange={(event) => {
+                setFileName(event.target.files?.[0]?.name ?? null);
+              }}
+              className="absolute inset-0 size-full cursor-pointer opacity-0 disabled:cursor-not-allowed"
+            />
+            <span aria-hidden className="flex size-9 items-center justify-center rounded-full bg-admin-mist text-admin-link">
+              <MediaIcon className="size-4" />
+            </span>
+            <span className="text-[14px] font-semibold text-ink-invert">
+              {fileName ?? 'Choose an image or drop one here'}
+            </span>
+            <span id="media-file-help" className={HELP}>
+              {fileName
+                ? 'Chosen. Change it by choosing again.'
+                : described
+                  ? `Up to ${megabytes} MB. Copies are made at four sizes.`
+                  : 'Describe the image first — the library will not take one without a description.'}
+            </span>
+          </div>
+        </div>
       </div>
 
-      <button
-        type="button"
-        onClick={submit}
-        disabled={busy || !described || !fileName}
-        className="h-[30px] rounded-[4px] bg-primary px-3 text-[12.5px] font-semibold text-white hover:bg-admin-primaryh disabled:opacity-40"
-      >
-        {busy ? 'Uploading…' : 'Upload'}
-      </button>
-
-      <p className="w-full text-[11px] text-admin-muted">
-        {described
-          ? `Up to ${String(Math.round(maxBytes / 1024 / 1024))} MB. AVIF and WebP copies are generated at four widths.`
-          : 'Describe the image first — the library will not take one without a description.'}
-      </p>
-    </div>
+      <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-admin-line2 pt-4">
+        <p className={HELP}>The original is kept, and AVIF and WebP copies are made at four widths for the site to use.</p>
+        <button type="button" onClick={submit} disabled={busy || !described || !fileName} className={button('primary')}>
+          {busy ? 'Uploading…' : 'Upload'}
+        </button>
+      </div>
+    </section>
   );
+}
+
+/** "image/jpeg,image/png" as the words a person would use: "JPEG, PNG". */
+function formats(accept: string): string {
+  const names: Record<string, string> = { jpeg: 'JPEG', png: 'PNG', webp: 'WebP', avif: 'AVIF', gif: 'GIF', svg: 'SVG' };
+  return accept
+    .split(',')
+    .map((type) => type.trim().split('/')[1] ?? '')
+    .filter(Boolean)
+    .map((subtype) => names[subtype.replace('+xml', '')] ?? subtype.toUpperCase())
+    .join(', ');
 }
 
 function AssetCard({
@@ -192,16 +243,16 @@ function AssetCard({
   }
 
   return (
-    <li className="flex flex-col overflow-hidden rounded-[4px] border border-admin-line bg-admin-surface">
+    <li className={`${CARD} flex flex-col overflow-hidden`}>
       {/* eslint-disable-next-line @next/next/no-img-element -- the admin previews the file
           as uploaded; next/image would re-optimise an image the library has already
           encoded, and its loader cannot reach an API path at build time. */}
       <img src={asset.url} alt={asset.altText} className="aspect-[4/3] w-full bg-admin-sunken object-cover" />
 
-      <div className="flex flex-1 flex-col gap-1.5 p-2.5">
+      <div className="flex flex-1 flex-col gap-2 p-4">
         {editing ? (
           <>
-            <label className="sr-only" htmlFor={`alt-${asset.id}`}>
+            <label className={LABEL} htmlFor={`alt-${asset.id}`}>
               Alt text
             </label>
             <input
@@ -210,53 +261,65 @@ function AssetCard({
               onChange={(event) => {
                 setAltText(event.target.value);
               }}
-              className="h-[28px] rounded-[4px] border border-admin-line bg-admin-sunken px-2 text-[12px] text-admin-ink outline-none focus-visible:border-admin-focus"
+              className={INPUT}
             />
-            <div className="flex gap-1.5">
-              <Small
-                busy={busy}
+            <div className="mt-1 flex flex-wrap gap-2">
+              <button
+                type="button"
+                disabled={busy}
+                className={button('primary', 'sm')}
                 onClick={() => {
                   run(adminMutate(`/admin/media/${encodeURIComponent(asset.id)}`, { method: 'PATCH', body: { altText } }));
                 }}
               >
                 Save
-              </Small>
-              <Small
-                busy={busy}
+              </button>
+              <button
+                type="button"
+                disabled={busy}
+                className={button('ghost', 'sm')}
                 onClick={() => {
                   setAltText(asset.altText);
                   setEditing(false);
                 }}
               >
                 Cancel
-              </Small>
+              </button>
             </div>
           </>
         ) : (
           <>
-            <p className="line-clamp-2 text-[12px] text-admin-ink">{asset.altText}</p>
-            <p className="text-[10.5px] text-admin-muted tabular-nums">
-              {asset.width && asset.height ? `${String(asset.width)}×${String(asset.height)}` : 'unknown size'}
+            <p className="line-clamp-2 text-[14px] leading-[1.45] font-semibold text-ink-invert">{asset.altText}</p>
+            <p className={`${MUTED} tabular-nums`}>
+              {asset.width && asset.height ? `${String(asset.width)} × ${String(asset.height)}` : 'Size unknown'}
               {asset.sizeBytes ? ` · ${String(Math.round(asset.sizeBytes / 1024))} kB` : ''} · {asset.variantCount}{' '}
-              variants
+              {asset.variantCount === 1 ? 'copy' : 'copies'}
             </p>
-            <div className="mt-auto flex gap-1.5 pt-1.5">
-              <Small
-                busy={busy}
+            <p className={MUTED}>
+              Added {added(asset.createdAt)}
+              {asset.uploadedBy ? ` by ${asset.uploadedBy}` : ''}
+            </p>
+            <div className="mt-auto flex flex-wrap gap-2 pt-2">
+              <button
+                type="button"
+                disabled={busy}
+                className={button('secondary', 'sm')}
                 onClick={() => {
                   setEditing(true);
                 }}
               >
                 Edit text
-              </Small>
-              <Small
-                busy={busy}
+              </button>
+              <button
+                type="button"
+                disabled={busy}
+                className={button('danger', 'sm')}
                 onClick={() => {
                   run(adminMutate(`/admin/media/${encodeURIComponent(asset.id)}`, { method: 'DELETE' }));
                 }}
               >
                 Delete
-              </Small>
+              </button>
             </div>
           </>
         )}
@@ -265,15 +328,6 @@ function AssetCard({
   );
 }
 
-function Small({ busy, onClick, children }: { busy: boolean; onClick: () => void; children: React.ReactNode }) {
-  return (
-    <button
-      type="button"
-      disabled={busy}
-      onClick={onClick}
-      className="h-[26px] rounded-[4px] border border-admin-line px-2 text-[11.5px] font-semibold text-admin-body hover:border-admin-focus hover:text-admin-ink disabled:opacity-40"
-    >
-      {children}
-    </button>
-  );
+function added(iso: string): string {
+  return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
 }

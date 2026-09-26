@@ -27,7 +27,7 @@ import {
   ServicesGrid,
 } from '@/components/home/sections-top';
 import { AnchorScroll } from '@/components/motion/anchor-scroll';
-import { RevealObserver } from '@/components/motion/reveal-observer';
+import { SubscribeBand } from '@/components/home/subscribe-band';
 import { FloatingCta } from '@/components/site/floating-cta';
 import { SiteFooter } from '@/components/site/site-footer';
 import { HeaderScrollState } from '@/components/site/header-scroll';
@@ -131,11 +131,11 @@ export default async function HomePage() {
             </div>
           }
         />
+        <SubscribeBand copy={content.subscribe} turnstileSiteKey={turnstileSiteKey} />
       </main>
 
       <SiteFooter chrome={chrome} />
       <FloatingCta link={content.floatingCta} />
-      <RevealObserver />
       <AnchorScroll />
     </>
   );

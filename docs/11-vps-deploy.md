@@ -319,6 +319,22 @@ $C logs --tail 50 worker | grep campaign   # "started for N recipient(s)", "fini
 Staging sits behind basic auth, `/api` included, so Resend's webhook and mail clients'
 one-click unsubscribe cannot reach it there (docs/08-decisions.md, Open).
 
+## AI providers
+
+The AI keys are entered in `/admin/ai/`, never in the env file (docs/08-decisions.md, 64).
+The server needs one secret to encrypt them with:
+
+1. **`CREDENTIALS_KEY`**, 32 random bytes in base64: `openssl rand -base64 32`. Put it in
+   the stack's env file and redeploy the API. Set it once. Changing it means entering every
+   AI key again, and losing it loses them, so keep a copy with the other secrets.
+2. Without it, the keys are encrypted with a key derived from `AUTH_SECRET`, so the screen
+   works on a stack that has only that. Keys stored this way keep working after
+   `CREDENTIALS_KEY` is added, and move across the next time each is saved.
+
+The API calls the providers directly from the `api` container. Only https addresses on the
+public internet are allowed, so nothing needs opening on the firewall beyond ordinary
+outbound https.
+
 ## Known limits
 
 - One stack per 4 GB server. The bootstrap script adds swap so a spike degrades instead of

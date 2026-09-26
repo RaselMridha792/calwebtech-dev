@@ -49,6 +49,7 @@ function project(slug: string, outcomeMetrics: HomeProjectRecord['outcomeMetrics
     beforeImageUrl: null,
     afterImageUrl: null,
     beforeAfterMetrics: null,
+    content: null,
     status: 'PUBLISHED',
     seo: null,
     createdAt: at,

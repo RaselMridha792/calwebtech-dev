@@ -43,9 +43,6 @@ export const INSIGHTS_SUBSCRIBE_SHARE = 0.6;
 /** The heading whose list becomes the key takeaways block, and is never rendered as a section. */
 export const INSIGHTS_TAKEAWAYS_HEADING = 'Key takeaways';
 
-/** `formId` of the inline subscribe block; the API answers it with this family's copy. */
-export const INSIGHTS_NEWSLETTER_FORM_ID = 'insights-newsletter';
-
 export const INSIGHTS_ROUTE = SITE_ROUTES.insights;
 
 /** `/insights/<slug>/`: an article, or a topic. One slug space, so the two never collide. */
@@ -373,11 +370,10 @@ const successSchema = z.object({ heading: requiredText(120), body: requiredText(
 export const insightsNewsletterCopySchema = z.object({
   heading: requiredText(120),
   body: requiredText(400),
-  nameLabel: requiredText(40),
   emailLabel: requiredText(40),
   submitLabel: requiredText(40),
   privacyNote: requiredText(300),
-  /** Shown in place of the form, and repeated in the confirmation email. */
+  /** Shown in place of the form. No email is sent: a subscriber gets none (decision 53). */
   success: successSchema,
   /** Shown when the API is not reachable, so the block never pretends to have sent. */
   unavailable: requiredText(300),

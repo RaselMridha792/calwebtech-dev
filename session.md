@@ -116,8 +116,8 @@ from the dead worktrees under the old `calwebtech/.claude/worktrees/`.
 - **The forms family** (`/start-a-project/`, `/free-website-audit/`) had been built to the
   contract, API, getters, copy snapshots and seed but never pushed. Recovered as PR #11
   (`recover/pages2-forms`), with the lead path merged so both the calculator's answers
-  and the brief's progressive draft survive. **Its web routes and components were never
-  built**: nothing renders those pages yet. That is the next content task.
+  and the brief's progressive draft survive. Its web routes and components were never
+  built; on `tumit` both pages now are (decisions 56 and 57).
 - **Booking** (Task 5.1) was part built in a worktree whose `packages/` did not survive.
   Not recovered, by the owner's decision; the 900 lines of API code in the old folder are
   a blueprint for rebuilding it, nothing more.
@@ -344,40 +344,41 @@ Notes on the machine this session used:
 
 ### Build plan status (`docs/06-build-plan.md`)
 
+As of 2026-09-24. Production runs `main` at `003150c`; the revision batch and "Subscribe now"
+(decisions 53 and 54) are merged after it but not yet deployed. What is still open is
+handed to the second collaborator in `docs/14-remaining-work.md` on the `tumit` branch.
+
 | Task | Status |
 |---|---|
-| 0.1 Monorepo | Done |
-| 0.2 Local infrastructure | Done (Compose with dev overrides; proxy moved to `infra/proxy`) |
-| 0.3 Design tokens | Done (`packages/config/tailwind/theme.css`) |
-| 0.4 Prisma schema and seed | Done; the seed is placeholder-only by decision 28 |
-| 1.1 Layout shell | Partial: utility bar, header with mega menus, footer and floating CTA on the homepage. Missing: breadcrumbs, cookie consent, announcement bar, shared conversion band |
-| 1.2 Homepage | Done against the placeholder database; demo content via the snapshot. The estimate band is a static preview until 4.1 |
-| 1.3 Services | Not started. Homepage links to `/services/...` return 404 |
-| 1.4 Metadata and schema layer | Not started (per-page metadata exists; no sitemap, `robots.txt`, `llms.txt` or structured data) |
-| 1.5 Pricing, process, contact, legal | Not started. Legal links in the footers return 404 |
-| 2.1 to 2.3 Work, case studies, industries, team | Not started (the API already maps projects and testimonials for the homepage) |
-| 3.1, 3.2 Locations, service-by-city | Not started |
-| 3.3 Before/after, awards, partners | Partial: accessible slider component; awards and partners appear only as page data |
-| 4.1 Calculator | Done (PR #10). Its result panel points at `/contact/` until the booking page exists |
-| 4.2 Free audit, guides, insights, glossary, FAQ | Done except the free audit page, which is the forms family (PR #11): contract, API and copy exist, the page does not |
-| 4.3 Search | Not started |
-| 5.1 Booking | Not started. A partial API blueprint survives in the old folder, unrecovered |
-| 5.2 Start a project and landing | Partial: landing template done; the start-a-project API with progressive saving is in PR #11, the multi-step page is not built |
-| 5.3 Admin dashboard, auth, RBAC | Not started. No login exists yet; settings change through `settings-cli` |
-| 5.4 Campaign engine | Built on `tumit`, awaiting the PR (decisions 49 to 52): subscribers, tags, segments with a live count, the suppression list, the campaign composer with two branded templates, personalisation tokens, preview and test send, scheduling, a rate-limited per-recipient send with suppression checked again at send time, signed unsubscribe links with one-click, Resend's delivery webhook and the per-campaign report. Nothing creates subscribers yet; that is the owner's decision |
-| 6.1 Anti-spam | Partial: Turnstile, honeypot, per-IP rate limit. Missing: timing checks, per-email limits, MX and disposable-domain checks, duplicate-lead merging |
-| 6.2 Deliverability | Not started |
-| 6.3 Hardening and observability | Partial: Traefik TLS config, staging auth and noindex; on `feat/vps-deploy` the server hardening (UFW, fail2ban, key-only SSH, unattended upgrades) and HSTS plus the other security headers, with a report-only CSP. Sentry, Uptime Kuma and Umami not set up |
-| 6.4 Backup and restore | Built on `feat/vps-deploy` (restic sidecar, nightly, 7/4/6, restore drill script); not running until a provider is chosen. The drill into staging has not been done |
-| 6.5 Launch | Not started |
+| 0.1 to 0.4 Foundation | Done |
+| 1.1 Layout shell | Done: floating header with mega menus, footer, breadcrumbs, closing conversion band, floating CTA. Not built: cookie consent, announcement bar |
+| 1.2 Homepage | Done on the 2026 brand; content from the snapshot (decision 43), plus "Subscribe now" (decision 53) |
+| 1.3 Services | Done and live; services are in the database and edited from `/admin` (decision 44) |
+| 1.4 Metadata and schema layer | Done: per-page metadata, structured data, `sitemap.xml`, `/sitemap/`, `robots.txt`. On `tumit`: `llms.txt` (decision 62) |
+| 1.5 Pricing, process, contact, legal | Done and live |
+| 2.1 to 2.3 Work, case studies, industries, team | Done and live from snapshots. Industries in the owner's order with Spa centres, Media and Law added (decision 54). On `tumit`: industries and case studies are edited from `/admin` and can read the database first, their imported rows proven equal to the snapshots (decision 58) |
+| 3.1, 3.2 Locations | Location index and city pages live. Service-by-city matrix not built: waiting for the owner to say whether it is still wanted |
+| 3.3 Before/after, awards, partners | Done and live |
+| 4.1 Calculator | Done and live |
+| 4.2 Free audit, guides, insights, glossary, FAQ | Done and live. On `tumit`: `/free-website-audit/` is built on the PR #11 API, one step posting an `AUDIT` lead, and the menus link to it (decision 57); an article's subscribe block creates a subscriber (decision 55) |
+| 4.3 Search | On `tumit`: `/search/` across services, case studies, insights, glossary and questions, typed and filterable; Postgres full text in the API, the snapshots while pages render from them (decision 62) |
+| 5.1 Booking | Built and live (decisions 47, 48): its own page with a calendar, server-side slots, the double-booking constraint, availability edited from `/admin`, bookings in the dashboard, a thank-you page. On `tumit`: the `.ics` entry, 24h and 1h reminders, signed reschedule and cancel pages, and a cancelled call giving its time back (decision 60) |
+| 5.2 Start a project and landing | Landing template done. On `tumit`, `/start-a-project/` is built on the PR #11 API: six steps, saved per step, abandonment measurable per step (decision 56) |
+| 5.3 Admin dashboard, auth, RBAC | Done: login, roles, leads, bookings, availability, services, subscribers, campaigns, settings, audit. On `tumit`: industries, case studies and page copy (homepage, booking page, thank-you pages, index copy) edited and audited from `/admin` (decisions 58, 59); every screen rebuilt on one kit, with the overview built, search or jump to (Ctrl K), a rail, and loading skeletons (decision 63); AI providers connected from `/admin/ai/` with encrypted keys and a test bench, used by no feature yet (decision 64) |
+| 5.4 Campaign engine | Done by the second collaborator (decisions 49 to 52), merged in PR #31 and live. Nothing is sent while production has `EMAIL_TRANSPORT=log` |
+| 6.1 Anti-spam | Turnstile, honeypot, per-IP rate limits live. On `tumit`: timing checks, per-address limits, throwaway-inbox and DNS domain checks, a resubmitted lead joining its open lead, and one upcoming call per address (decision 61) |
+| 6.2 Deliverability | Not started, and blocked: the owner has not chosen to set up an email provider, so no email leaves production |
+| 6.3 Hardening and observability | Server hardening, TLS, HSTS and security headers live. Sentry, Uptime Kuma and Umami not set up; Sentry is a third-party service and needs the owner's approval |
+| 6.4 Backup and restore | Restic sidecar deployed; not running until the owner chooses an off-site provider. The restore drill has not been done |
+| 6.5 Launch | Not started: waiting for the client's domain (DNS records sent 2026-09-23); every page is still noindex |
 
 ### Known gaps and risks
 - **Demo claims on a public URL.** The Vercel pages show demo ratings, client names, metrics, testimonials and partner claims naming Shopify, Google, Vercel and Cloudflare. They are noindex, but anyone with the link can read them. Replace before any public promotion.
 - **Lost email jobs.** Emails are queued after the lead commits. If the API process dies in between, the lead is stored and its emails are never queued. A transactional outbox would close this. Campaign sends do not have the gap: their recipient rows are written first and the sweep requeues them (decision 51).
-- **No audit trail for settings.** `settings-cli` changes are not written to the audit log; the admin settings screen must do this.
+- **No audit trail for settings-cli.** `settings-cli` changes are not written to the audit log. The settings screen and, on `tumit`, the page copy screen (decision 59) are audited, so the CLI is only needed without the dashboard.
 - **Staging and production on one server.** On a single 4 GB server their memory limits overlap. Confirm the server size.
 - **Lighthouse behind the real edge.** Once staging is live, run the gate against real Traefik and compare (`docs/09`, "Checking the lab against real Traefik").
-- **No subscriber source.** The campaign engine exists, but nothing creates `Subscriber` rows: the insights newsletter form stores a lead. Where subscribers come from is the owner's decision (docs/08-decisions.md, Open).
+- **Single opt-in.** The homepage's "Subscribe now" creates subscribers (decision 53) but nothing confirms the address belongs to the person who typed it. A confirmation email needs email to be sending, which production does not do; it should come before the first real campaign.
 - **Known demo gaps.** The newsletter box is left out (no subscriber backend). The video testimonial card has no video. Links to planned routes return 404.
 
 ## Where the code is

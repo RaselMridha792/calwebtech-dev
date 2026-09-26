@@ -98,12 +98,14 @@ export function FaqSection({
             {faq.heading}
           </h2>
           <p className="mt-5 text-[17px] leading-relaxed">{faq.intro}</p>
-          <a
-            href={`tel:${contact.phoneE164}`}
-            className="mt-7 inline-flex h-12 items-center border border-hairline px-6 font-semibold text-ink hover:border-ink hover:bg-canvas-raised"
-          >
-            {faq.callLabel}
-          </a>
+          {contact.phoneE164 ? (
+            <a
+              href={`tel:${contact.phoneE164}`}
+              className="mt-7 inline-flex h-12 items-center border border-hairline px-6 font-semibold text-ink hover:border-ink hover:bg-canvas-raised"
+            >
+              {faq.callLabel}
+            </a>
+          ) : null}
         </div>
         <div className="lg:col-span-8">
           <FaqAccordion items={items} group="landing-faq" />
@@ -163,12 +165,16 @@ export function LandingFooter({ contact }: { contact: LandingPageView['contact']
       <div className="shell-narrow flex flex-wrap items-center justify-between gap-8">
         <Logo tone="dark" layout="horizontal" height={46} />
         <p className="text-[14px] leading-relaxed">
-          <a href={`tel:${contact.phoneE164}`} className="hover:text-ink-invert">
-            {contact.phone}
-          </a>
-          <span className="mx-2 text-ink-invert-muted" aria-hidden="true">
-            |
-          </span>
+          {contact.phone && contact.phoneE164 ? (
+            <>
+              <a href={`tel:${contact.phoneE164}`} className="hover:text-ink-invert">
+                {contact.phone}
+              </a>
+              <span className="mx-2 text-ink-invert-muted" aria-hidden="true">
+                |
+              </span>
+            </>
+          ) : null}
           <a href={`mailto:${contact.email}`} className="hover:text-ink-invert">
             {contact.email}
           </a>
@@ -201,13 +207,15 @@ export function StickyMobileCta({
   return (
     <>
       <div className="fixed inset-x-0 bottom-0 z-50 flex gap-3 border-t border-hairline bg-canvas-raised p-3 lg:hidden">
-        <a
-          href={`tel:${contact.phoneE164}`}
-          className="grid w-14 shrink-0 place-items-center border border-hairline text-ink"
-          aria-label={`Call Calwebtech on ${contact.phone}`}
-        >
-          <PhoneIcon className="h-5 w-5" />
-        </a>
+        {contact.phone && contact.phoneE164 ? (
+          <a
+            href={`tel:${contact.phoneE164}`}
+            className="grid w-14 shrink-0 place-items-center border border-hairline text-ink"
+            aria-label={`Call Calwebtech on ${contact.phone}`}
+          >
+            <PhoneIcon className="h-5 w-5" />
+          </a>
+        ) : null}
         <a
           href="#form"
           className="inline-flex h-14 flex-1 items-center justify-center bg-navy-900 font-semibold text-ink-invert"

@@ -10,6 +10,14 @@ export interface DeliveryRecord {
   providerId: string;
   /** The real recipients, when EMAIL_REDIRECT_TO sent the email elsewhere. */
   redirectedFrom?: string[];
+  /** Which reminder this was, for a booking's timeline. */
+  window?: string;
+}
+
+/** A booking as the reminder check needs it: whether it is still on, and when. */
+export interface BookingState {
+  status: string;
+  startsAt: Date;
 }
 
 /** What the processor needs from the database. */
@@ -18,6 +26,21 @@ export interface DeliveryStore {
   recordDelivery(leadId: string, record: DeliveryRecord): Promise<void>;
   /** A booking has no lead, so its emails are recorded on its own timeline. */
   recordBookingDelivery(bookingId: string, record: DeliveryRecord): Promise<void>;
+  /** The booking as it stands now, or null when there is none. */
+  bookingState(bookingId: string): Promise<BookingState | null>;
+}
+
+/** A booking in one of these still happens at its time; any other is over or cancelled. */
+const ACTIVE_BOOKING = new Set(['CONFIRMED', 'RESCHEDULED']);
+
+/**
+ * Whether a reminder queued for a call's time still describes the call. The API removes a
+ * cancelled or moved call's reminders, but a removal that failed, or one that raced the
+ * worker picking the job up, must not remind anyone of a call that is not happening then
+ * (docs/08-decisions.md, 60).
+ */
+export function reminderStillDue(state: BookingState | null, startsAt: string): boolean {
+  return state !== null && ACTIVE_BOOKING.has(state.status) && state.startsAt.getTime() === Date.parse(startsAt);
 }
 
 export interface EmailJobProcessorOptions {
@@ -44,6 +67,11 @@ export function createEmailJobProcessor({ transport, store, from, redirectTo, si
     }
     const email = parsed.data;
 
+    if (email.template === 'booking-reminder') {
+      const state = await store.bookingState(email.bookingId);
+      if (!reminderStillDue(state, email.startsAt)) return { providerId: 'skipped: the call was moved or cancelled' };
+    }
+
     const contact = await store.siteContact();
     const rendered = await renderEmail(email, { contact, siteOrigin: siteOrigin ?? null });
     // An internal notification is replied to by us, to the person it is about; everything
@@ -62,6 +90,7 @@ export function createEmailJobProcessor({ transport, store, from, redirectTo, si
       html: rendered.html,
       text: rendered.text,
       ...(replyTo ? { replyTo } : {}),
+      ...(rendered.attachments ? { attachments: rendered.attachments } : {}),
       idempotencyKey: emailJobId(email),
     });
 
@@ -71,6 +100,7 @@ export function createEmailJobProcessor({ transport, store, from, redirectTo, si
       transport: transport.name,
       providerId: id,
       ...(redirectTo ? { redirectedFrom: email.to } : {}),
+      ...(email.template === 'booking-reminder' ? { window: email.window } : {}),
     };
     // A campaign test belongs to no lead or booking. The API audited the request, and the
     // provider id is in the job's return value; a test writes no delivery row, because the

@@ -44,6 +44,46 @@ describe('leadSubmissionFromForm', () => {
     const form = formWith([...base, ['type', 'CONTACT'], ['enquiryType', 'free-website-audit']]);
     expect(leadSubmissionSchema.parse(leadSubmissionFromForm(form, null)).enquiryType).toBe('free-website-audit');
   });
+
+  it('carries the start a project brief: its type, its links and the draft it completes', () => {
+    const form = formWith([
+      ...base,
+      ['formId', 'start-a-project'],
+      ['projectType', 'redesign'],
+      ['projectLinks', 'https://example.com/brief\nhttps://example.com/figma'],
+      ['draftId', 'cmdraft0001'],
+      ['draftToken', 'a-draft-token'],
+    ]);
+    const lead = leadSubmissionSchema.parse(leadSubmissionFromForm(form, null));
+    expect(lead.projectType).toBe('redesign');
+    expect(lead.projectLinks).toBe('https://example.com/brief\nhttps://example.com/figma');
+    expect(lead.draftId).toBe('cmdraft0001');
+    expect(lead.draftToken).toBe('a-draft-token');
+  });
+
+  it('carries the free website audit: the concern and a competitor to compare against', () => {
+    const form = formWith([
+      ...base,
+      ['type', 'AUDIT'],
+      ['formId', 'free-website-audit'],
+      ['siteUrl', 'halloway.com'],
+      ['mainConcern', 'not-enough-enquiries'],
+      ['competitorUrl', 'rival.com'],
+    ]);
+    const lead = leadSubmissionSchema.parse(leadSubmissionFromForm(form, null));
+    expect(lead.mainConcern).toBe('not-enough-enquiries');
+    expect(lead.competitorUrl).toBe('https://rival.com');
+  });
+});
+
+describe('how long the form was open', () => {
+  it('travels as a number of milliseconds, and not at all when the clock never ran', () => {
+    const timed = leadSubmissionSchema.parse(leadSubmissionFromForm(formWith([...base, ['formElapsedMs', '8421']]), null));
+    expect(timed.formElapsedMs).toBe(8421);
+    // An empty field is no figure, never zero: zero would read as a form sent instantly.
+    const empty = leadSubmissionSchema.parse(leadSubmissionFromForm(formWith([...base, ['formElapsedMs', '']]), null));
+    expect(empty.formElapsedMs).toBeUndefined();
+  });
 });
 
 describe('attributionFromForm', () => {

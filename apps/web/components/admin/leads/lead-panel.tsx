@@ -1,6 +1,7 @@
 import type { AdminLeadDetail, AdminLeadQuery, AdminLeadTimelineEntry } from '@calwebtech/shared';
 import Link from 'next/link';
 import { CloseIcon } from '../icons';
+import { KICKER, button, iconButton } from '../ui/styles';
 import { budgetLabel, channelLabel, dateInputValue, receivedLong, timelineLabel, typeLabel } from './format';
 import { NoteForm } from './note-form';
 import { PipelineForm } from './pipeline-form';
@@ -29,165 +30,180 @@ export function LeadPanel({
   mayWrite: boolean;
   full?: boolean;
 }) {
+  const firstName = lead.name.split(/\s+/)[0] ?? lead.name;
+  const Heading = full ? 'h1' : 'h2';
+
+  const sections = (
+    <>
+      <Section heading="Pipeline" id="lead-pipeline">
+        {mayWrite ? (
+          <PipelineForm
+            leadId={lead.id}
+            status={lead.status}
+            statuses={statuses}
+            ownerId={lead.owner?.id ?? ''}
+            owners={owners}
+            nextActionDate={dateInputValue(lead.nextActionDate)}
+          />
+        ) : (
+          <Fields
+            rows={[
+              ['Status', statuses.find((entry) => entry.value === lead.status)?.label ?? lead.status],
+              ['Owner', lead.owner?.name ?? 'Unassigned'],
+              ['Next action', dateInputValue(lead.nextActionDate) || '—'],
+            ]}
+          />
+        )}
+      </Section>
+
+      <Section heading={submissionHeading(lead.type)} id="lead-submission">
+        <Fields rows={submissionRows(lead)} />
+      </Section>
+
+      <Section heading="Who they are" id="lead-identity">
+        <Fields
+          rows={[
+            ['Name', lead.name],
+            ['Email', lead.email],
+            ['Phone', lead.phone ?? '—'],
+            ['Company', lead.company ?? '—'],
+            ['Value band', budgetLabel(lead.budgetBand)],
+            ['Reference', lead.id],
+          ]}
+        />
+        {lead.contact ? (
+          <p className="mt-3.5 rounded-lg border border-admin-line2 bg-admin-surface px-3 py-2.5 text-[13px] leading-[1.55] text-ink-invert-muted">
+            Linked to one contact — {lead.contact.submissions}{' '}
+            {lead.contact.submissions === 1 ? 'submission' : 'submissions'} from this person resolve to the same record,
+            so they are not counted twice.
+          </p>
+        ) : null}
+      </Section>
+
+      <Section heading="How they found us" id="lead-attribution">
+        {lead.attribution ? (
+          <>
+            <div className="grid grid-cols-2 gap-2.5">
+              <TouchCard label="First visit" utm={lead.attribution.firstTouch} fallback={channelLabel(lead.channel)} />
+              <TouchCard label="Last visit" utm={lead.attribution.lastTouch} fallback={channelLabel(lead.channel)} />
+            </div>
+            <div className="mt-4">
+              <Fields
+                rows={[
+                  ['Channel', channelLabel(lead.channel)],
+                  ['Referrer', lead.attribution.referrer ?? '—'],
+                  ['Landing page', lead.attribution.landingPage ?? '—'],
+                  ['Campaign', lead.attribution.campaign ?? '—'],
+                  ['Form', lead.attribution.formId ?? '—'],
+                  ['Device', lead.attribution.device ?? '—'],
+                ]}
+                breakAll
+              />
+            </div>
+          </>
+        ) : (
+          <p className="text-[14px] text-ink-invert-muted">
+            Nothing was recorded for this submission, which is what a direct visit with no campaign looks like.
+          </p>
+        )}
+      </Section>
+
+      <Section heading="Timeline and notes" id="lead-timeline">
+        {lead.entries.length === 0 ? (
+          <p className="text-[14px] text-ink-invert-muted">Nothing has happened to this lead since it arrived.</p>
+        ) : (
+          <ol className="flex flex-col">
+            {lead.entries.map((entry) => (
+              <TimelineRow key={`${entry.kind}-${entry.id}`} entry={entry} />
+            ))}
+          </ol>
+        )}
+        {mayWrite ? <NoteForm leadId={lead.id} /> : null}
+      </Section>
+
+      <Section heading="Emails sent" id="lead-emails">
+        {lead.emails.length === 0 ? (
+          <p className="text-[14px] text-ink-invert-muted">
+            No delivery events yet. Nothing is recorded here until the sending domain and its webhooks are live.
+          </p>
+        ) : (
+          <ul className="flex flex-col gap-3">
+            {lead.emails.map((email) => (
+              <li key={email.id} className="flex items-start justify-between gap-3">
+                <span className="min-w-0">
+                  <span className="block truncate text-[14px] text-ink-invert">{email.subject}</span>
+                  <span className="block text-[12.5px] text-admin-muted">
+                    {receivedLong(email.occurredAt)} · to {email.to}
+                  </span>
+                </span>
+                <span className="flex shrink-0 items-center gap-1.5 text-[12.5px] text-ink-invert-muted">
+                  <span aria-hidden className="size-2 rounded-full bg-result" />
+                  {email.state}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </Section>
+    </>
+  );
+
   return (
     <aside
       aria-label="Lead detail"
       className={
         full
-          ? 'flex min-h-0 flex-1 flex-col bg-admin-surface'
-          : 'flex min-h-0 w-full shrink-0 flex-col border-admin-line bg-admin-surface lg:w-[428px] lg:border-l'
+          ? 'flex flex-col rounded-xl border border-admin-line2 bg-admin-surface p-4 sm:p-6'
+          : 'flex w-full shrink-0 flex-col bg-admin-sunken lg:sticky lg:top-0 lg:h-[calc(100dvh-4rem)] lg:w-[440px] lg:border-l lg:border-admin-line2'
       }
     >
-      <header className="flex shrink-0 items-start gap-3 border-b border-admin-line px-[18px] py-3.5">
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-2">
-            <h2 className="font-display text-[18px] font-bold tracking-[-0.02em] text-admin-ink">{lead.name}</h2>
-            <StatusPill status={lead.status} />
+      <header className={`flex shrink-0 flex-col gap-4 border-b border-admin-line2 ${full ? 'pb-6' : 'px-4 pt-6 pb-5 sm:px-6'}`}>
+        <div className="flex items-start gap-3">
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-2.5">
+              {/* The full record is its own page, so the name is that page's one h1. */}
+              <Heading className="font-display text-[22px] leading-tight font-extrabold tracking-[-0.02em] text-ink-invert">
+                {lead.name}
+              </Heading>
+              <StatusPill status={lead.status} />
+            </div>
+            <p className="mt-1.5 text-[13.5px] text-ink-invert-muted">
+              {[lead.company, typeLabel(lead.type), `received ${receivedLong(lead.createdAt)}`].filter(Boolean).join(' · ')}
+            </p>
           </div>
-          <p className="mt-1 text-[12.5px] text-admin-body">
-            {[lead.company, typeLabel(lead.type), `received ${receivedLong(lead.createdAt)}`, lead.id]
-              .filter(Boolean)
-              .join(' · ')}
-          </p>
+          {full ? null : (
+            <Link href={leadsUrl(query)} className={iconButton('sm')}>
+              <CloseIcon className="size-4" />
+              <span className="sr-only">Close lead detail</span>
+            </Link>
+          )}
         </div>
-        {full ? null : (
-          <div className="flex shrink-0 items-center gap-2">
-            <Link
-              href={`/admin/leads/${encodeURIComponent(lead.id)}/`}
-              className="flex h-[29px] items-center rounded-[4px] border border-admin-line px-2.5 text-[12px] font-semibold text-admin-body hover:border-admin-focus hover:text-admin-ink"
-            >
+        <div className="flex flex-wrap gap-2">
+          <a href={`mailto:${lead.email}`} className={button('secondary', 'sm')}>
+            Email {firstName}
+          </a>
+          {lead.phone ? (
+            <a href={`tel:${lead.phone.replace(/[^+\d]/g, '')}`} className={button('secondary', 'sm')}>
+              Call
+            </a>
+          ) : null}
+          {full ? null : (
+            <Link href={`/admin/leads/${encodeURIComponent(lead.id)}/`} className={button('ghost', 'sm')}>
               Open full record
             </Link>
-            <Link
-              href={leadsUrl(query)}
-              aria-label="Close lead detail"
-              className="flex size-[29px] items-center justify-center rounded-[4px] border border-admin-line text-admin-body hover:border-admin-focus hover:text-admin-ink"
-            >
-              <CloseIcon className="size-3.5" />
-            </Link>
-          </div>
-        )}
+          )}
+        </div>
       </header>
 
-      <div className={`min-h-0 flex-1 overflow-auto px-[18px] pb-7 ${full ? 'mx-auto w-full max-w-[860px]' : ''}`}>
-        <Section heading="Identity" id="lead-identity">
-          <Fields
-            rows={[
-              ['Name', lead.name],
-              ['Email', lead.email],
-              ['Phone', lead.phone ?? '—'],
-              ['Company', lead.company ?? '—'],
-              ['Value band', budgetLabel(lead.budgetBand)],
-            ]}
-          />
-          {lead.contact ? (
-            <p className="mt-2.5 rounded-[4px] bg-admin-sunken px-2.5 py-2 text-[11.5px] text-admin-body">
-              Linked to one contact — {lead.contact.submissions}{' '}
-              {lead.contact.submissions === 1 ? 'submission' : 'submissions'} from this person resolve to the same
-              record, so they are not counted twice.
-            </p>
-          ) : null}
-        </Section>
-
-        <Section heading={submissionHeading(lead.type)} id="lead-submission">
-          <Fields rows={submissionRows(lead)} />
-        </Section>
-
-        <Section heading="Attribution trail" id="lead-attribution">
-          {lead.attribution ? (
-            <>
-              <div className="flex gap-2.5">
-                <TouchCard label="First touch" utm={lead.attribution.firstTouch} fallback={channelLabel(lead.channel)} />
-                <TouchCard label="Last touch" utm={lead.attribution.lastTouch} fallback={channelLabel(lead.channel)} />
-              </div>
-              <div className="mt-2.5">
-                <Fields
-                  rows={[
-                    ['Channel', channelLabel(lead.channel)],
-                    ['Referrer', lead.attribution.referrer ?? '—'],
-                    ['Landing page', lead.attribution.landingPage ?? '—'],
-                    ['Campaign', lead.attribution.campaign ?? '—'],
-                    ['Form', lead.attribution.formId ?? '—'],
-                    ['Device', lead.attribution.device ?? '—'],
-                  ]}
-                  breakAll
-                />
-              </div>
-            </>
-          ) : (
-            <p className="text-[12.5px] text-admin-body">
-              Nothing was recorded for this submission, which is what a direct visit with no campaign looks like.
-            </p>
-          )}
-        </Section>
-
-        <Section heading="Pipeline" id="lead-pipeline">
-          {mayWrite ? (
-            <PipelineForm
-              leadId={lead.id}
-              status={lead.status}
-              statuses={statuses}
-              ownerId={lead.owner?.id ?? ''}
-              owners={owners}
-              nextActionDate={dateInputValue(lead.nextActionDate)}
-            />
-          ) : (
-            <Fields
-              rows={[
-                ['Status', statuses.find((entry) => entry.value === lead.status)?.label ?? lead.status],
-                ['Owner', lead.owner?.name ?? 'Unassigned'],
-                ['Next action', dateInputValue(lead.nextActionDate) || '—'],
-              ]}
-            />
-          )}
-        </Section>
-
-        <Section heading="Timeline" id="lead-timeline">
-          {lead.entries.length === 0 ? (
-            <p className="text-[12.5px] text-admin-body">Nothing has happened to this lead since it arrived.</p>
-          ) : (
-            <ol className="flex flex-col">
-              {lead.entries.map((entry) => (
-                <TimelineRow key={`${entry.kind}-${entry.id}`} entry={entry} />
-              ))}
-            </ol>
-          )}
-          {mayWrite ? <NoteForm leadId={lead.id} /> : null}
-        </Section>
-
-        <Section heading="Emails sent" id="lead-emails">
-          {lead.emails.length === 0 ? (
-            <p className="text-[12.5px] text-admin-body">
-              No delivery events yet. Nothing is recorded here until the sending domain and its webhooks are live.
-            </p>
-          ) : (
-            <ul className="flex flex-col gap-2">
-              {lead.emails.map((email) => (
-                <li key={email.id} className="flex items-start justify-between gap-3">
-                  <span className="min-w-0">
-                    <span className="block truncate text-[12.5px] text-admin-ink">{email.subject}</span>
-                    <span className="block text-[11px] text-admin-muted">
-                      {receivedLong(email.occurredAt)} · to {email.to}
-                    </span>
-                  </span>
-                  <span className="flex shrink-0 items-center gap-1.5 text-[11px] text-admin-body">
-                    <span aria-hidden className="size-2 rounded-full bg-result" />
-                    {email.state}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </Section>
-      </div>
+      <div className={full ? '' : 'px-4 pb-8 sm:px-6 lg:min-h-0 lg:flex-1 lg:overflow-y-auto'}>{sections}</div>
     </aside>
   );
 }
 
 function Section({ heading, id, children }: { heading: string; id: string; children: React.ReactNode }) {
   return (
-    <section aria-labelledby={id} className="border-b border-admin-line py-4 last:border-b-0">
-      <h3 id={id} className="mb-2.5 text-[10px] font-bold tracking-[0.14em] text-admin-muted uppercase">
+    <section aria-labelledby={id} className="border-b border-admin-line2 py-5 last:border-b-0">
+      <h3 id={id} className={`${KICKER} mb-3.5`}>
         {heading}
       </h3>
       {children}
@@ -197,11 +213,11 @@ function Section({ heading, id, children }: { heading: string; id: string; child
 
 function Fields({ rows, breakAll }: { rows: [string, string][]; breakAll?: boolean }) {
   return (
-    <dl className="grid grid-cols-[104px_minmax(0,1fr)] gap-x-3 gap-y-[7px] text-[12.5px]">
+    <dl className="grid grid-cols-[112px_minmax(0,1fr)] gap-x-4 gap-y-2.5 text-[14px]">
       {rows.map(([term, value]) => (
         <div key={term} className="contents">
           <dt className="text-admin-muted">{term}</dt>
-          <dd className={`text-admin-ink ${breakAll ? 'break-all' : ''}`}>{value}</dd>
+          <dd className={`text-ink-invert ${breakAll ? 'break-all' : 'break-words'}`}>{value}</dd>
         </div>
       ))}
     </dl>
@@ -218,30 +234,33 @@ function TouchCard({
   fallback: string;
 }) {
   return (
-    <div className="flex-1 rounded-[4px] bg-admin-sunken px-2.5 py-2.5">
-      <p className="text-[9.5px] font-bold tracking-[0.12em] text-admin-muted uppercase">{label}</p>
-      <p className="mt-1 text-[12.5px] font-semibold text-admin-ink">{utm?.source ?? fallback}</p>
-      <p className="text-[11px] text-admin-muted">
+    <div className="min-w-0 rounded-lg border border-admin-line2 bg-admin-surface px-3 py-3">
+      <p className="text-[12px] text-admin-muted">{label}</p>
+      <p className="mt-1 truncate text-[14px] font-semibold text-ink-invert">{utm?.source ?? fallback}</p>
+      <p className="truncate text-[12.5px] text-admin-muted">
         {[utm?.medium, utm?.campaign].filter(Boolean).join(' · ') || 'no campaign recorded'}
       </p>
     </div>
   );
 }
 
-/** A note is a square mark, an activity a round one, so the two read apart at a glance. */
+/**
+ * A note is a square mark, an activity a round one, so the two read apart at a glance. A
+ * thin rule joins the marks into one line down the page.
+ */
 function TimelineRow({ entry }: { entry: AdminLeadTimelineEntry }) {
   const note = entry.kind === 'note';
   return (
-    <li className="flex gap-2.5 border-t border-admin-mist py-2.5 first:border-t-0">
+    <li className="relative flex gap-3 pb-4 before:absolute before:top-4 before:bottom-0 before:left-[3.5px] before:w-px before:bg-admin-line2 last:pb-0 last:before:hidden">
       <span
         aria-hidden
-        className={`mt-1.5 size-[7px] shrink-0 ${note ? 'rounded-[1px] bg-primary' : 'rounded-full bg-admin-body'}`}
+        className={`relative mt-[7px] size-2 shrink-0 ${note ? 'rounded-[2px] bg-admin-dot' : 'rounded-full bg-admin-muted'}`}
       />
       <span className="min-w-0">
-        <span className="block text-[12.5px] leading-[19px] text-admin-ink">
+        <span className="block text-[14px] leading-[1.55] break-words text-ink-invert">
           {note ? entry.body : activityText(entry)}
         </span>
-        <span className="block text-[11px] text-admin-muted">
+        <span className="mt-0.5 block text-[12.5px] text-admin-muted">
           {note ? `${entry.author?.name ?? 'Someone'} · ` : ''}
           {receivedLong(entry.createdAt)} · {note ? 'note' : 'activity'}
         </span>
@@ -289,7 +308,7 @@ function submissionHeading(type: AdminLeadDetail['type']): string {
     case 'CAREERS':
       return 'Application';
     default:
-      return 'Submission';
+      return 'What they sent';
   }
 }
 

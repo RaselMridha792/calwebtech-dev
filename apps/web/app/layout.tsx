@@ -55,12 +55,6 @@ export const metadata: Metadata = {
   title: 'Calwebtech',
 };
 
-/**
- * Hides reveal targets only once we know script runs. If the reveal observer has
- * not started within three seconds (a failed hydration), everything is shown.
- */
-const MOTION_BOOTSTRAP = `(function(d){var h=d.documentElement;if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;h.classList.add('js-motion');setTimeout(function(){if(!h.hasAttribute('data-reveal-ready'))h.classList.remove('js-motion')},3000)})(document)`;
-
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html
@@ -68,9 +62,6 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
       className={`${archivo.variable} ${manrope.variable} ${plexMono.variable} ${jakarta.variable} ${plex.variable}`}
       suppressHydrationWarning
     >
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: MOTION_BOOTSTRAP }} />
-      </head>
       <body className="bg-canvas font-sans text-ink">{children}</body>
     </html>
   );

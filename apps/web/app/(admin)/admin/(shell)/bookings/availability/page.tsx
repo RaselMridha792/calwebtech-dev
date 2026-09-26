@@ -1,7 +1,7 @@
 import { adminAvailabilitySchema } from '@calwebtech/shared';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { AvailabilityForm } from '@/components/admin/bookings/availability-form';
+import { AdminPage, BackLink, PageHeader } from '@/components/admin/ui/page';
 import { adminFind } from '@/lib/admin/api';
 import { requireModule } from '@/lib/admin/session';
 
@@ -25,19 +25,14 @@ export default async function AdminAvailabilityPage() {
   const mayWrite = user.modules.includes('bookings') && user.role !== 'VIEWER';
 
   return (
-    <main className="min-h-0 flex-1 overflow-auto px-4 py-5">
-      <div className="mx-auto w-full max-w-[900px]">
-        <Link href="/admin/bookings/" className="text-[12.5px] font-semibold text-admin-link hover:underline">
-          Bookings
-        </Link>
-
-        <h1 className="mt-2 font-display text-[21px] font-bold tracking-[-0.02em] text-admin-ink">Availability</h1>
-        <p className="mt-0.5 text-[12.5px] text-admin-body">
-          {`${availability.consultationType.name} · booked up to ${String(availability.horizonDays)} days ahead · hours in ${availability.timeZone}`}
-        </p>
-
-        <AvailabilityForm availability={availability} mayWrite={mayWrite} />
-      </div>
-    </main>
+    <AdminPage width="medium">
+      <BackLink href="/admin/bookings/">Back to bookings</BackLink>
+      <PageHeader
+        eyebrow="Sales"
+        title="Availability"
+        description={`When a ${availability.consultationType.name.toLowerCase()} can be booked. Hours are written in ${availability.timeZone}, and the page offers times up to ${String(availability.horizonDays)} days ahead.`}
+      />
+      <AvailabilityForm availability={availability} mayWrite={mayWrite} />
+    </AdminPage>
   );
 }

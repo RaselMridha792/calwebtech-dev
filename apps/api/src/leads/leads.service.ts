@@ -1,6 +1,7 @@
 import type { Prisma } from '@calwebtech/db';
 import {
   DEFAULT_ACKNOWLEDGEMENT,
+  EMAIL_DOMAIN_MESSAGES,
   SETTING_KEYS,
   acknowledgementSchema,
   type Acknowledgement,
@@ -12,7 +13,8 @@ import {
   type LeadSummary,
   type ValidationErrorResponse,
 } from '@calwebtech/shared';
-import { BadRequestException, ForbiddenException, Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { SubmissionGuard } from '../antispam/submission-guard';
 import { calculatorLeadOutcome, type CalculatorLeadOutcome } from '../calculator/calculator-lead';
 import { publishedAsOf } from '../common/published';
 import { completedDraftAnswers, openProjectDraft } from '../forms/forms.draft';
@@ -48,6 +50,7 @@ export class LeadsService {
     private readonly turnstile: TurnstileService,
     private readonly settings: SettingsService,
     private readonly emailQueue: EmailQueue,
+    private readonly guard: SubmissionGuard,
   ) {}
 
   /**
@@ -72,10 +75,17 @@ export class LeadsService {
       return received();
     }
 
+    // Timing, throwaway inboxes and undeliverable domains, before the bot check is spent
+    // (docs/08-decisions.md, 61). Too fast reads as automated, so a person can simply retry.
+    await refuseUnlessPlausible(this.guard, 'lead', input.email, input.formElapsedMs);
+
     const botCheck = await this.turnstile.verify(input.turnstileToken, visitorIp);
     if (botCheck === 'failed') {
       const body: BotCheckFailedResponse = { error: 'bot_check_failed' };
       throw new ForbiddenException(body);
+    }
+    if (!(await this.guard.withinLimit('lead', input.email))) {
+      throw new HttpException({ error: 'rate_limited' }, HttpStatus.TOO_MANY_REQUESTS);
     }
 
     // A routed enquiry must name a type that exists, since its mailbox receives the notification.
@@ -129,6 +139,24 @@ export class LeadsService {
       : null;
     const draft = draftLead ? openProjectDraft(draftLead.answers, input.draftToken) : null;
     const now = new Date();
+    // The same person sending the same kind of form again while their lead is still open is
+    // one conversation, not two leads (docs/08-decisions.md, 61). Only a lead a form was sent
+    // for counts, so an unfinished brief is never taken over by it.
+    const openLead =
+      draftLead && draft
+        ? null
+        : await db.lead.findFirst({
+            where: {
+              email: { equals: input.email, mode: 'insensitive' },
+              type: input.type,
+              deletedAt: null,
+              status: { in: [...OPEN_STATUSES] },
+              createdAt: { gte: new Date(now.getTime() - MERGE_WINDOW_MS) },
+              activities: { some: { type: 'form_submitted' } },
+            },
+            orderBy: { createdAt: 'desc' },
+            select: { id: true, answers: true, serviceInterest: true },
+          });
     const attribution = {
       firstTouchUtm: input.attribution.firstTouch,
       lastTouchUtm: input.attribution.lastTouch,
@@ -179,6 +207,34 @@ export class LeadsService {
         serviceInterest,
       };
 
+      if (openLead) {
+        // Only what this submission says is written; what it leaves out stays as it was.
+        const provided = Object.fromEntries(Object.entries(fields).filter(([, value]) => value !== undefined));
+        const updated = await tx.lead.update({
+          where: { id: openLead.id },
+          data: {
+            ...provided,
+            serviceInterest: [...new Set([...openLead.serviceInterest, ...serviceInterest])],
+            ...(answers ? { answers: mergedAnswers(openLead.answers, answers, calculator !== null) } : {}),
+            contactId: contact.id,
+            ...(service ? { serviceId: service.id } : {}),
+          },
+          select: { id: true, createdAt: true },
+        });
+        const [resubmitted] = await Promise.all([
+          tx.leadActivity.create({
+            data: {
+              leadId: openLead.id,
+              type: 'form_resubmitted',
+              detail: { formId: input.formId, ...(input.message ? { message: input.message } : {}) },
+            },
+            select: { id: true },
+          }),
+          ...activities.map((activity) => tx.leadActivity.create({ data: { leadId: openLead.id, ...activity } })),
+        ]);
+        return { ...updated, resubmission: resubmitted.id };
+      }
+
       if (draftLead && draft) {
         // The row already exists with this brief's attribution, so it is completed in place.
         return tx.lead.update({
@@ -224,7 +280,7 @@ export class LeadsService {
 
   private async queueEmails(
     input: LeadSubmission,
-    lead: { id: string; createdAt: Date },
+    lead: { id: string; createdAt: Date; resubmission?: string },
     acknowledgement: Acknowledgement,
     calculator: CalculatorLeadOutcome | null,
     enquiryType: { name: string; mailbox: string } | null,
@@ -250,10 +306,13 @@ export class LeadsService {
     };
     // A calculator lead gets its result instead of the standard confirmation, so the
     // visitor's copy carries the same figures the page showed them.
+    // A merged resubmission's emails carry its id, so they are sent rather than taken for a
+    // repeat of the first submission's.
+    const again = lead.resubmission ? { resubmission: lead.resubmission } : {};
     const jobs: EmailJob[] =
       calculator?.email
-        ? [{ template: 'calculator-result', to: [input.email], lead: summary, result: calculator.email }]
-        : [{ template: 'lead-confirmation', to: [input.email], lead: summary, acknowledgement }];
+        ? [{ template: 'calculator-result', to: [input.email], lead: summary, result: calculator.email, ...again }]
+        : [{ template: 'lead-confirmation', to: [input.email], lead: summary, acknowledgement, ...again }];
 
     try {
       // The enquiry type's own mailbox joins the usual recipients, which is how enquiries are routed.
@@ -261,7 +320,7 @@ export class LeadsService {
       const mailbox = enquiryType?.mailbox.trim().toLowerCase();
       const recipients = [...new Set([...configured, ...(mailbox && mailbox.includes('@') ? [mailbox] : [])])];
       if (recipients.length > 0) {
-        jobs.push({ template: 'lead-notification', to: recipients, lead: summary });
+        jobs.push({ template: 'lead-notification', to: recipients, lead: summary, ...again });
       } else {
         this.logger.warn(`Lead ${lead.id}: no internal notification, leads.notificationRecipients is empty`);
         await this.recordActivity(lead.id, 'notification_skipped', { reason: 'no notification recipients set' });
@@ -280,5 +339,51 @@ export class LeadsService {
 
   private async recordActivity(leadId: string, type: string, detail: Prisma.InputJsonObject): Promise<void> {
     await this.prisma.client.leadActivity.create({ data: { leadId, type, detail } });
+  }
+}
+
+/** A lead still being worked, which a second submission joins rather than starting another. */
+const OPEN_STATUSES = ['NEW', 'CONTACTED', 'QUALIFIED', 'PROPOSAL_SENT'] as const;
+
+/** How far back a submission looks for an open lead of the same person and type. */
+const MERGE_WINDOW_MS = 30 * 24 * 60 * 60 * 1000;
+
+/**
+ * A resubmission's structured answers laid over the lead's. A calculator's answers are one
+ * estimate, so the newer replaces the older whole; a form's add to what was there.
+ */
+export function mergedAnswers(
+  existing: Prisma.JsonValue,
+  incoming: Prisma.InputJsonValue,
+  replace: boolean,
+): Prisma.InputJsonValue {
+  const isObject = (value: unknown): value is Record<string, unknown> =>
+    typeof value === 'object' && value !== null && !Array.isArray(value);
+  if (replace || !isObject(existing) || !isObject(incoming)) return incoming;
+  return { ...existing, ...incoming };
+}
+
+/**
+ * Throws what the form shows for an implausible submission: a bot check failure for one sent
+ * faster than a person could (so a person can simply try again), and a message under the email
+ * field for a throwaway inbox or a domain that cannot receive mail.
+ */
+export async function refuseUnlessPlausible(
+  guard: SubmissionGuard,
+  form: 'lead' | 'booking' | 'subscribe',
+  email: string,
+  elapsedMs: number | undefined,
+): Promise<void> {
+  const verdict = await guard.precheck(form, email, elapsedMs);
+  if (verdict === 'too_fast') {
+    const body: BotCheckFailedResponse = { error: 'bot_check_failed' };
+    throw new ForbiddenException(body);
+  }
+  if (verdict === 'disposable' || verdict === 'no_mail') {
+    const body: ValidationErrorResponse = {
+      error: 'validation_failed',
+      fieldErrors: { email: [verdict === 'disposable' ? EMAIL_DOMAIN_MESSAGES.disposable : EMAIL_DOMAIN_MESSAGES.noMail] },
+    };
+    throw new BadRequestException(body);
   }
 }

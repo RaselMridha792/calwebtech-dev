@@ -46,8 +46,8 @@ describe('the permission matrix', () => {
     expect(canRead('EDITOR', 'bookings')).toBe(false);
   });
 
-  it('reserves the three administrative modules for the owner', () => {
-    for (const module of ['team', 'settings', 'auditLog'] as const) {
+  it('reserves the administrative modules and the AI keys for the owner', () => {
+    for (const module of ['team', 'settings', 'auditLog', 'ai'] as const) {
       for (const role of ADMIN_ROLES) {
         expect(canRead(role, module)).toBe(role === 'OWNER');
       }

@@ -7,7 +7,7 @@ export default async function FormsAndRoutingPage() {
     <ModuleStub
       group="Site"
       title="Forms and routing"
-      note="Not in this pass. The six enquiry types behind the contact form are live already; this screen is what makes their mailboxes editable."
+      note="Forms and routing will let you choose which mailbox each kind of enquiry goes to. The six enquiry types behind the contact form already work today; this is where their mailboxes will be changed."
     />
   );
 }

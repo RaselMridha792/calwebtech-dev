@@ -6,6 +6,7 @@ import {
 } from '@calwebtech/shared';
 import { Body, Controller, HttpCode, HttpStatus, Ip, Module, Post } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
+import { submissionGuardProvider } from '../antispam/antispam.provider';
 import { ZodValidationPipe } from '../common/zod-validation.pipe';
 import { API_ENV, type ApiEnv } from '../config/env';
 import { EmailQueue } from '../queue/email-queue';
@@ -40,6 +41,7 @@ export class LeadsController {
   controllers: [LeadsController],
   providers: [
     LeadsService,
+    submissionGuardProvider,
     SettingsService,
     {
       provide: TurnstileService,

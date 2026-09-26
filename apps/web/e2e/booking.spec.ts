@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { personPause } from './pause';
 
 const PAGE = '/book-a-consultation/';
 
@@ -49,18 +50,25 @@ test.describe('book a consultation', () => {
     await expect(page.getByRole('heading', { name: /how do we reach you/i })).toBeVisible();
 
     await page.getByLabel('Full name').fill('E2E Booking');
-    await page.getByLabel('Work email').fill(`booking.${testInfo.project.name}@example.com`);
+    // An address of its own each run: one with a call still to come cannot book another (decision 61).
+    await page.getByLabel('Work email').fill(`booking.${Date.now().toString(36)}@example.com`);
     await page.getByLabel(/what would you like to talk about/i).fill('Our enquiries go missing between the form and the inbox.');
     await page.getByRole('button', { name: 'Review' }).click();
 
     // Step three shows the time back before anything is sent.
     await expect(page.getByRole('heading', { name: /does this look right/i })).toBeVisible();
+    await personPause(page);
     await page.getByRole('button', { name: /confirm this time/i }).click();
 
-    // The confirmation replaces the form: leaving it up invites a second booking of a
-    // slot that has already gone.
-    await expect(page.getByRole('status')).toContainText(/that time is yours/i, { timeout: 20_000 });
-    await expect(page.getByRole('button', { name: /confirm this time/i })).toHaveCount(0);
+    // A booked call lands on a page of its own, which says so and repeats the time back.
+    // Leaving the form up would invite a second booking of a slot that has already gone.
+    await expect(page).toHaveURL(/\/thank-you\/booking\/\?at=/, { timeout: 20_000 });
+    // The heading's words come from the thank-you copy, which is the snapshot's on production
+    // and the database's here, so this asks that the page is a page and not that it says one
+    // sentence. What must hold everywhere is that the time is repeated back.
+    await expect(page.locator('h1')).toHaveCount(1);
+    await expect(page.getByText('Your call')).toBeVisible();
+    await expect(page.getByText(/ at \d{1,2}:\d{2}\s?(AM|PM)/)).toBeVisible();
   });
 
   test('is listed in sitemap.xml and on the sitemap page', async ({ request, page }) => {

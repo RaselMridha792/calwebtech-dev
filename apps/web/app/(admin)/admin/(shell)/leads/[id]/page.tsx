@@ -6,9 +6,9 @@ import {
   adminLeadQuerySchema,
   canWrite,
 } from '@calwebtech/shared';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { LeadPanel } from '@/components/admin/leads/lead-panel';
+import { AdminPage, BackLink } from '@/components/admin/ui/page';
 import { adminFind, adminGet } from '@/lib/admin/api';
 import { requireModule } from '@/lib/admin/session';
 
@@ -29,12 +29,8 @@ export default async function LeadRecordPage({ params }: PageProps<'/admin/leads
   if (!lead) notFound();
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col">
-      <div className="shrink-0 px-4 pt-4">
-        <Link href="/admin/leads/" className="text-[12.5px] font-semibold text-admin-link hover:underline">
-          ← Back to the inbox
-        </Link>
-      </div>
+    <AdminPage width="medium">
+      <BackLink href="/admin/leads/">Back to the inbox</BackLink>
       <LeadPanel
         lead={lead}
         query={adminLeadQuerySchema.parse({})}
@@ -43,6 +39,6 @@ export default async function LeadRecordPage({ params }: PageProps<'/admin/leads
         mayWrite={canWrite(user.role, 'leads')}
         full
       />
-    </div>
+    </AdminPage>
   );
 }

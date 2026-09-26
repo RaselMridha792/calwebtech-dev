@@ -4,6 +4,9 @@ import {
   type AvailabilityRule,
   type SlotSources,
   addDays,
+  bookingLinkPath,
+  bookingRescheduleSchema,
+  bookingTokenSchema,
   dayKeyOf,
   adminAvailabilityUpdateSchema,
   generateSlots,
@@ -227,5 +230,25 @@ describe('what the dashboard may save as availability', () => {
   it('refuses a date that is not one', () => {
     const wrong = [{ day: '25/12/2026', blocked: true, startMinute: null, endMinute: null, reason: null }];
     expect(adminAvailabilityUpdateSchema.safeParse({ ...base, overrides: wrong }).success).toBe(false);
+  });
+});
+
+describe('the signed links to move or cancel a call', () => {
+  it('lives under the booking page, one address per action', () => {
+    expect(bookingLinkPath('reschedule', 'abcDEF123_-abcDEF123')).toBe('/book-a-consultation/reschedule/abcDEF123_-abcDEF123/');
+    expect(bookingLinkPath('cancel', 'abcDEF123_-abcDEF123')).toBe('/book-a-consultation/cancel/abcDEF123_-abcDEF123/');
+  });
+
+  it('accepts a token as the API makes them, and nothing that could be a path', () => {
+    expect(bookingTokenSchema.safeParse('Qx7_1bXg-2kLmN0pQrStUvWxYz0123456789').success).toBe(true);
+    for (const bad of ['short', '../../etc/passwd-aaaaaaa', 'with space in it aaaaaaa', 'a'.repeat(65)]) {
+      expect(bookingTokenSchema.safeParse(bad).success, bad).toBe(false);
+    }
+  });
+
+  it('moves a call to an instant in a zone the runtime knows', () => {
+    const move = { token: 'Qx7_1bXg-2kLmN0pQrStUvWx', startsAt: '2026-10-01T16:00:00.000Z', timezone: 'Europe/London' };
+    expect(bookingRescheduleSchema.safeParse(move).success).toBe(true);
+    expect(bookingRescheduleSchema.safeParse({ ...move, timezone: 'Mars/Olympus' }).success).toBe(false);
   });
 });

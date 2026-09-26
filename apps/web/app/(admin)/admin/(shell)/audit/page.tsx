@@ -1,6 +1,10 @@
 import { adminAuditListSchema, adminAuditQuerySchema, type AdminAuditEntry, type AdminAuditQuery } from '@calwebtech/shared';
 import Link from 'next/link';
+import type { ReactNode } from 'react';
+import { AuditIcon, ChevronRightIcon } from '@/components/admin/icons';
 import { AutoSubmit } from '@/components/admin/leads/auto-submit';
+import { AdminPage, EmptyState, PageHeader } from '@/components/admin/ui/page';
+import { CARD, KICKER, LINK, TAG, button } from '@/components/admin/ui/styles';
 import { adminGet } from '@/lib/admin/api';
 import { requireModule } from '@/lib/admin/session';
 
@@ -18,105 +22,129 @@ export default async function AdminAuditPage({ searchParams }: PageProps<'/admin
   const list = await adminGet(`/admin/audit?${toSearch(query)}`, adminAuditListSchema);
 
   const pages = Math.max(1, Math.ceil(list.total / list.pageSize));
+  const first = list.total === 0 ? 0 : (list.page - 1) * list.pageSize + 1;
+  const last = Math.min(list.total, list.page * list.pageSize);
+  const narrowed = Boolean(query.userId || query.action || query.entityType || query.from || query.to);
 
   return (
-    <main className="flex min-h-0 flex-1 flex-col">
-      <div className="shrink-0 px-4 pt-4">
-        <h1 className="font-display text-[21px] font-bold tracking-[-0.02em] text-admin-ink">Audit log</h1>
-        <p className="mt-0.5 text-[12.5px] text-admin-body">
-          {list.total} {list.total === 1 ? 'entry' : 'entries'} · every sign-in, pipeline change, note, setting and
-          export
-        </p>
-      </div>
+    <AdminPage>
+      <PageHeader
+        eyebrow="Admin"
+        title="Audit log"
+        count={list.total}
+        description="A record of everything done in this dashboard — every sign-in, change to a lead, note, setting and export — with who did it and when. Nothing here can be edited."
+      />
 
-      <form
-        role="search"
-        method="get"
-        action="/admin/audit/"
-        className="mt-3 flex shrink-0 flex-wrap items-end gap-2.5 border-y border-admin-line bg-admin-surface px-4 py-2.5"
-      >
+      <form role="search" method="get" action="/admin/audit/" className="flex flex-wrap items-center gap-2">
         <AutoSubmit />
-        <Select label="Who" name="userId" value={query.userId ?? ''} width="w-[160px]" placeholder="Anyone">
+        <Pick label="Who" name="userId" value={query.userId ?? ''} placeholder="Anyone">
           {list.actors.map((actor) => (
             <option key={actor.id} value={actor.id}>
               {actor.name}
             </option>
           ))}
-        </Select>
-        <Select label="Action" name="action" value={query.action ?? ''} width="w-[190px]" placeholder="Any action">
+        </Pick>
+        <Pick label="Action" name="action" value={query.action ?? ''} placeholder="Any action">
           {list.actions.map((action) => (
             <option key={action} value={action}>
-              {action}
+              {actionLabel(action)}
             </option>
           ))}
-        </Select>
-        <Select label="Record" name="entityType" value={query.entityType ?? ''} width="w-[140px]" placeholder="Any record">
+        </Pick>
+        <Pick label="Record" name="entityType" value={query.entityType ?? ''} placeholder="Any record">
           {list.entityTypes.map((entity) => (
             <option key={entity} value={entity}>
               {entity}
             </option>
           ))}
-        </Select>
-        <DateField label="From" name="from" value={query.from ?? ''} />
-        <DateField label="To" name="to" value={query.to ?? ''} />
-        <button type="submit" className="sr-only">
+        </Pick>
+        <DatePick label="From" name="from" value={query.from ?? ''} />
+        <DatePick label="To" name="to" value={query.to ?? ''} />
+        {/* Reachable by keyboard and the only way to apply the filters without JavaScript. */}
+        <button type="submit" className="sr-only focus:not-sr-only focus:rounded-lg focus:px-3 focus:py-2 focus:text-ink-invert">
           Apply filters
         </button>
-        <Link href="/admin/audit/" className="h-[30px] self-end text-[12.5px] font-semibold text-admin-link hover:underline">
-          Clear all
-        </Link>
+        {narrowed ? (
+          <Link href="/admin/audit/" className={`${LINK} ml-1 text-[13.5px]`}>
+            Clear all
+          </Link>
+        ) : null}
       </form>
 
-      <div className="min-h-0 flex-1 overflow-auto bg-admin-surface">
+      <div className={`${CARD} overflow-hidden`}>
         {list.items.length === 0 ? (
-          <p className="px-4 py-16 text-center text-[13px] text-admin-body">
-            Nothing matches these filters.
-          </p>
+          <EmptyState
+            icon={<AuditIcon className="size-5" />}
+            title={narrowed ? 'Nothing matches these filters' : 'Nothing recorded yet'}
+            actions={
+              narrowed ? (
+                <Link href="/admin/audit/" className={button('secondary')}>
+                  Clear filters
+                </Link>
+              ) : undefined
+            }
+          >
+            {narrowed
+              ? 'Widen the dates or clear a filter to see more of the log.'
+              : 'Entries appear here as soon as anyone signs in or changes something.'}
+          </EmptyState>
         ) : (
-          <ul>
+          <ol className="divide-y divide-admin-line2">
             {list.items.map((entry) => (
               <Entry key={entry.id} entry={entry} />
             ))}
-          </ul>
+          </ol>
         )}
-      </div>
 
-      <div className="flex shrink-0 items-center justify-between gap-3 bg-admin-surface px-4 py-2">
-        <p className="text-[12px] text-admin-body tabular-nums">
-          Page {list.page} of {pages}
-        </p>
-        <div className="flex gap-2">
-          <Page href={pageUrl(query, list.page - 1)} disabled={list.page <= 1}>
-            Previous
-          </Page>
-          <Page href={pageUrl(query, list.page + 1)} disabled={list.page >= pages}>
-            Next
-          </Page>
-        </div>
+        <nav
+          aria-label="Pages"
+          className="flex flex-wrap items-center justify-between gap-3 border-t border-admin-line2 px-4 py-3 sm:px-5"
+        >
+          <p className="text-[13px] text-ink-invert-muted tabular-nums">
+            Showing {first}–{last} of {list.total}
+          </p>
+          <div className="flex items-center gap-2">
+            <Page href={pageUrl(query, list.page - 1)} disabled={list.page <= 1}>
+              Previous
+            </Page>
+            <span className="px-1 text-[13px] text-ink-invert-muted tabular-nums">
+              Page {list.page} of {pages}
+            </span>
+            <Page href={pageUrl(query, list.page + 1)} disabled={list.page >= pages}>
+              Next
+            </Page>
+          </div>
+        </nav>
       </div>
-    </main>
+    </AdminPage>
   );
 }
 
 function Entry({ entry }: { entry: AdminAuditEntry }) {
   const changed = entry.before !== null || entry.after !== null;
   return (
-    <li className="border-b border-admin-mist px-4 py-2.5">
-      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <span className="text-[12.5px] font-semibold text-admin-ink">{entry.action}</span>
-        <span className="text-[11.5px] text-admin-body">
-          {entry.actor ? entry.actor.name : 'no signed-in user'} · {entry.entityType}
-          {entry.entityId ? ` ${entry.entityId}` : ''}
+    <li className="px-4 py-3.5 sm:px-5">
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+        <span className={TAG}>{actionLabel(entry.action)}</span>
+        <span className="text-[14px] font-semibold text-ink-invert">{entry.actor ? entry.actor.name : 'No signed-in user'}</span>
+        <span className="min-w-0 text-[13.5px] text-ink-invert-muted">
+          {entry.entityType}
+          {entry.entityId ? (
+            <span className="ml-1.5 font-mono text-[12px] break-all text-admin-muted">{entry.entityId}</span>
+          ) : null}
         </span>
-        <span className="ml-auto text-[11px] text-admin-muted tabular-nums">
-          {new Date(entry.createdAt).toLocaleString('en-GB', { timeZone: 'UTC' })}
+        <span className="ml-auto text-[12.5px] whitespace-nowrap text-admin-muted tabular-nums">
+          {when(entry.createdAt)}
           {entry.ip ? ` · ${entry.ip}` : ''}
         </span>
       </div>
       {changed ? (
-        <details className="mt-1.5">
-          <summary className="cursor-pointer text-[11.5px] text-admin-link">What changed</summary>
-          <div className="mt-1.5 flex flex-wrap gap-2.5">
+        <details className="group mt-2">
+          <summary className="inline-flex h-8 cursor-pointer list-none items-center gap-1 rounded-md pr-2 text-[13px] font-semibold text-admin-link transition-colors duration-150 hover:text-ink-invert [&::-webkit-details-marker]:hidden">
+            <ChevronRightIcon className="size-4 transition-transform duration-150 group-open:rotate-90 motion-reduce:transition-none" />
+            What changed
+          </summary>
+          <div className="mt-2 grid grid-cols-1 gap-3 md:grid-cols-2">
             <Side label="Before" value={entry.before} />
             <Side label="After" value={entry.after} />
           </div>
@@ -128,40 +156,43 @@ function Entry({ entry }: { entry: AdminAuditEntry }) {
 
 function Side({ label, value }: { label: string; value: unknown }) {
   return (
-    <div className="min-w-[220px] flex-1">
-      <p className="text-[9.5px] font-bold tracking-[0.12em] text-admin-muted uppercase">{label}</p>
-      <pre className="mt-1 overflow-auto rounded-[4px] bg-admin-sunken px-2 py-1.5 text-[11.5px] whitespace-pre-wrap text-admin-body">
+    <div className="flex min-w-0 flex-col gap-1.5">
+      <p className={KICKER}>{label}</p>
+      <pre className="max-h-[360px] overflow-auto rounded-lg border border-admin-line2 bg-admin-sunken px-3 py-2.5 font-mono text-[12.5px] leading-[1.55] break-words whitespace-pre-wrap text-ink-invert-muted">
         {value === null || value === undefined ? '—' : JSON.stringify(value, null, 2)}
       </pre>
     </div>
   );
 }
 
-function Select({
+/**
+ * A select with its label inside the same pill, as the inbox's filter bar draws them, so
+ * the row reads as a sentence of choices ("Who: Anyone"). A lit pill is one that narrows
+ * the view.
+ */
+function Pick({
   label,
   name,
   value,
-  width,
   placeholder,
   children,
 }: {
   label: string;
   name: string;
   value: string;
-  width: string;
   placeholder: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
-    <div className={`flex flex-col gap-[3px] ${width}`}>
-      <label htmlFor={`audit-${name}`} className="text-[9.5px] font-bold tracking-[0.12em] text-admin-muted uppercase">
+    <div className={pill(Boolean(value))}>
+      <label htmlFor={`audit-${name}`} className="pl-3 text-[13px] text-admin-muted">
         {label}
       </label>
       <select
         id={`audit-${name}`}
         name={name}
         defaultValue={value}
-        className={`${CONTROL} ${value ? 'border-admin-edge' : ''}`}
+        className="h-full max-w-[200px] cursor-pointer truncate rounded-lg bg-transparent pr-2 pl-1.5 text-[13.5px] font-semibold text-ink-invert outline-none focus-visible:outline-none"
       >
         <option value="">{placeholder}</option>
         {children}
@@ -170,10 +201,10 @@ function Select({
   );
 }
 
-function DateField({ label, name, value }: { label: string; name: string; value: string }) {
+function DatePick({ label, name, value }: { label: string; name: string; value: string }) {
   return (
-    <div className="flex w-[140px] flex-col gap-[3px]">
-      <label htmlFor={`audit-${name}`} className="text-[9.5px] font-bold tracking-[0.12em] text-admin-muted uppercase">
+    <div className={pill(Boolean(value))}>
+      <label htmlFor={`audit-${name}`} className="pl-3 text-[13px] text-admin-muted">
         {label}
       </label>
       <input
@@ -181,29 +212,49 @@ function DateField({ label, name, value }: { label: string; name: string; value:
         name={name}
         type="date"
         defaultValue={value}
-        className={`${CONTROL} ${value ? 'border-admin-edge' : ''}`}
+        className="h-full rounded-lg bg-transparent pr-2 pl-1.5 text-[13.5px] font-semibold text-ink-invert outline-none scheme-dark focus-visible:outline-none"
       />
     </div>
   );
 }
 
-const CONTROL =
-  'h-[30px] w-full rounded-[4px] border border-admin-line bg-admin-surface px-2 text-[12.5px] text-admin-ink outline-none focus-visible:border-admin-focus';
+function pill(lit: boolean): string {
+  return `flex h-10 items-center rounded-lg border transition-colors duration-150 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-admin-focus pointer-coarse:h-11 ${
+    lit ? 'border-admin-edge bg-admin-nav' : 'border-admin-line hover:border-admin-edge'
+  }`;
+}
 
-function Page({ href, disabled, children }: { href: string; disabled: boolean; children: React.ReactNode }) {
-  const style = 'flex h-7 items-center rounded-[4px] border border-admin-line px-2.5 text-[12px] font-semibold';
+function Page({ href, disabled, children }: { href: string; disabled: boolean; children: ReactNode }) {
   if (disabled) {
     return (
-      <span aria-disabled className={`${style} text-admin-muted opacity-40`}>
+      <span aria-disabled className={button('secondary', 'sm')}>
         {children}
       </span>
     );
   }
   return (
-    <Link href={href} className={`${style} text-admin-body hover:border-admin-focus hover:text-admin-ink`}>
+    <Link href={href} className={button('secondary', 'sm')}>
       {children}
     </Link>
   );
+}
+
+/** "page_copy.updated" as a person would say it: "Page copy updated". The filter value is unchanged. */
+function actionLabel(action: string): string {
+  const words = action.replace(/[._]+/g, ' ').trim();
+  return words.charAt(0).toUpperCase() + words.slice(1);
+}
+
+function when(iso: string): string {
+  return new Date(iso).toLocaleString('en-GB', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    timeZone: 'UTC',
+  });
 }
 
 function toSearch(query: AdminAuditQuery): string {

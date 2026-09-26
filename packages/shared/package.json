@@ -22,6 +22,10 @@
       "types": "./dist/booking-status.d.ts",
       "default": "./dist/booking-status.js"
     },
+    "./ai-providers": {
+      "types": "./dist/ai-providers.d.ts",
+      "default": "./dist/ai-providers.js"
+    },
     "./unsubscribe-token": {
       "types": "./dist/unsubscribe-token.d.ts",
       "default": "./dist/unsubscribe-token.js"

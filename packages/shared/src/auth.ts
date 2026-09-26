@@ -30,6 +30,7 @@ export const ADMIN_MODULES = [
   'settings',
   'auditLog',
   'export',
+  'ai',
 ] as const;
 export const adminModuleSchema = z.enum(ADMIN_MODULES);
 export type AdminModule = z.infer<typeof adminModuleSchema>;
@@ -56,6 +57,8 @@ const PERMISSIONS: Record<AdminModule, Partial<Record<AdminRole, AdminAccess>>> 
   auditLog: { OWNER: 'full' },
   // A VIEWER cannot export: it would hand them the lead addresses the listing redacts.
   export: { OWNER: 'full', EDITOR: 'full', SALES: 'full' },
+  // The AI providers' keys: whoever holds them spends the business's money (decision 64).
+  ai: { OWNER: 'full' },
 };
 
 /** What this role may do in this module, or null when the module is closed to it. */

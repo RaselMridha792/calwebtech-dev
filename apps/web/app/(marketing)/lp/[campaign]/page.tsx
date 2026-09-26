@@ -21,7 +21,6 @@ import {
 import { ProblemSection, ServicesSection, SolutionSection } from '@/components/landing/story';
 import { LandingHeader, LandingHero, TrustBar } from '@/components/landing/top';
 import { AnchorScroll } from '@/components/motion/anchor-scroll';
-import { RevealObserver } from '@/components/motion/reveal-observer';
 import { getLandingPage } from '@/lib/api';
 
 // Campaign pages are rendered on first request and cached. Records come from the
@@ -150,7 +149,6 @@ export default async function CampaignLandingPage({ params }: PageProps<'/lp/[ca
 
       <LandingFooter contact={contact} />
       <StickyMobileCta contact={contact} ctaLabel={content.header.ctaLabel} />
-      <RevealObserver />
       <AnchorScroll />
     </>
   );

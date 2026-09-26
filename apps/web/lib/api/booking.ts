@@ -3,9 +3,12 @@ import {
   BOOKING_ERRORS,
   CONSULTATION_PATH,
   type BookingConfirmation,
+  type BookingManageView,
   type BookingPageView,
+  type BookingReschedule,
   type BookingSubmission,
   bookingConfirmationSchema,
+  bookingManageViewSchema,
   bookingPageViewSchema,
   bookingSlotsViewSchema,
 } from '@calwebtech/shared';
@@ -51,7 +54,9 @@ export type BookingResult =
   | { status: 'booked'; confirmation: BookingConfirmation }
   | { status: 'slot-taken' }
   | { status: 'bot-check' }
-  | { status: 'error'; message: string };
+  /** The address has a call still to come; its emails carry the link to move it. */
+  | { status: 'already-booked'; startsAt: string }
+  | { status: 'error'; message: string; fieldErrors?: Record<string, string[]> };
 
 /**
  * Sends a booking and reports what happened in the page's own terms.
@@ -82,5 +87,69 @@ export async function createBooking(input: BookingSubmission, visitorIp: string 
   const error = typeof body === 'object' && body !== null && 'error' in body ? String(body.error) : '';
   if (response.status === 403 && error === 'bot_check_failed') return { status: 'bot-check' };
   if (error === BOOKING_ERRORS.slotGone || error === BOOKING_ERRORS.slotUnknown) return { status: 'slot-taken' };
+  if (error === BOOKING_ERRORS.alreadyBooked && typeof body === 'object' && body !== null && 'startsAt' in body) {
+    return { status: 'already-booked', startsAt: String(body.startsAt) };
+  }
+  if (response.status === 429) {
+    return { status: 'error', message: 'Several bookings came from this address today. Please reply to your confirmation email instead.' };
+  }
+  if (response.status === 400 && typeof body === 'object' && body !== null && 'fieldErrors' in body) {
+    const fieldErrors = body.fieldErrors as Record<string, string[]>;
+    return { status: 'error', message: fieldErrors.email?.[0] ?? 'Some details are missing.', fieldErrors };
+  }
   return { status: 'error', message: 'That could not be booked. Please try again.' };
+}
+
+// ---------------------------------------------------------------- the signed links
+
+/**
+ * The call a signed link names, or null when it names none (docs/08-decisions.md, 60). The
+ * page answers 404 for that, the same as for a link that never existed.
+ */
+export async function getBookingLink(token: string): Promise<BookingManageView | null> {
+  if (!hasApi()) return null;
+  const response = await fetch(apiUrl(`/booking/manage/${encodeURIComponent(token)}`), { cache: 'no-store' });
+  if (response.status === 404 || response.status === 400) return null;
+  if (!response.ok) throw new Error(`API responded ${String(response.status)} for a booking link`);
+  return bookingManageViewSchema.parse(await response.json());
+}
+
+export type BookingLinkResult =
+  | { status: 'done'; view: BookingManageView }
+  /** The new time is not offered, or somebody took it meanwhile. */
+  | { status: 'taken' }
+  /** The call is cancelled or has happened, so it cannot change. */
+  | { status: 'closed' }
+  /** The link names nothing. */
+  | { status: 'gone' }
+  | { status: 'unavailable' };
+
+async function postBookingLink(path: string, body: unknown): Promise<BookingLinkResult> {
+  if (!hasApi()) return { status: 'unavailable' };
+  let response: Response;
+  try {
+    response = await fetch(apiUrl(path), {
+      method: 'POST',
+      cache: 'no-store',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+  } catch {
+    return { status: 'unavailable' };
+  }
+  if (response.ok) return { status: 'done', view: bookingManageViewSchema.parse(await response.json()) };
+  if (response.status === 404 || response.status === 400) return { status: 'gone' };
+  if (response.status === 409) {
+    const error = ((await response.json().catch(() => ({}))) as { error?: string }).error;
+    return error === BOOKING_ERRORS.closed ? { status: 'closed' } : { status: 'taken' };
+  }
+  return { status: 'unavailable' };
+}
+
+export function moveBooking(input: BookingReschedule): Promise<BookingLinkResult> {
+  return postBookingLink('/booking/reschedule', input);
+}
+
+export function cancelBooking(token: string): Promise<BookingLinkResult> {
+  return postBookingLink('/booking/cancel', { token });
 }
