@@ -985,6 +985,108 @@ built.
   - Tests: web 465, API 260, shared 259, plus the overview's integration test. Lint and type
     checks are clean.
 
+## 64. AI providers are connected from the dashboard, with the key encrypted
+
+*2026-09-26.* The collaborator asked for AI in the admin. Its API key should be entered in the
+dashboard, not the server's environment, so the provider or the key can change at any time
+without a developer. Every provider should be offered, and there should be a way to send a
+message and see the reply, to prove a key works. What the AI will do on the site is not
+decided yet, so this builds the connection and nothing that depends on it.
+
+- **Every provider, through three protocols.** `packages/shared/src/ai-providers.ts` lists
+  them:
+  - Anthropic Claude, on the Messages API;
+  - Google Gemini, on `generateContent`;
+  - OpenAI, OpenRouter, Groq, DeepSeek, Mistral, xAI, Together, Perplexity and Fireworks, all
+    on the OpenAI chat shape;
+  - Azure OpenAI, and "any other service", which ask for their own address.
+
+  Each has a few suggested models. The names age, so a saved connection can also ask the
+  provider for its current list. The API talks to them with plain `fetch`: no SDKs, no new
+  dependencies. Each call has a 45 second timeout and refuses redirects, so a provider cannot
+  bounce the key elsewhere.
+- **Where the key lives.** In Postgres (`AiConnection`), sealed with AES-256-GCM, a fresh
+  nonce each time, and the provider's id as associated data. A sealed key copied onto another
+  provider's row does not open.
+  - The secret that seals it is `CREDENTIALS_KEY` (32 random bytes, base64) in the server's
+    environment. That is set once and never touched again; the provider keys themselves come
+    and go from the dashboard.
+  - A server without `CREDENTIALS_KEY` derives one from `AUTH_SECRET` with HKDF, so production
+    works today without an env change. Each key records which secret sealed it, so adding
+    `CREDENTIALS_KEY` later still opens the old ones, and each moves across when next saved.
+  - A server with neither secret says so on the screen and stores nothing.
+  - If the secret is lost or changed, a stored key cannot be opened. The screen says "enter
+    it again" rather than failing silently.
+- **A key never comes back out.**
+  - The API accepts one on create and update. No response carries more than its last four
+    characters.
+  - The key field is never filled from the server; left empty on an edit, it keeps the stored
+    key.
+  - Only the call that needs a key opens it.
+  - The audit log records every connection that is created, changed, made the default,
+    tested or removed, with the key left out.
+  - A removed connection is deleted outright, key and all, not soft-deleted: a key nobody
+    wants should not survive in a backup's future.
+  - Error text from a provider has the key, and anything shaped like one, taken out before
+    it is shown.
+- **The owner's alone.** A new `ai` module in the permission matrix reaches only `OWNER`:
+  whoever holds these keys spends the business's money. Tests and model lists are limited to
+  12 a minute, because each is a real request on the owner's account.
+- **Custom addresses are kept public.** The address of Azure or a custom service is the one
+  place the dashboard chooses where the API sends a request. It must:
+  - be https, with no credentials in it;
+  - not be `localhost`, `.local` or `.internal`;
+  - resolve only to public addresses. Loopback, private, link-local (the cloud metadata
+    address), carrier-grade NAT, unique-local and multicast are refused.
+
+  It is checked when saved and again before every call, so the admin cannot be used to reach
+  Postgres, Redis or anything else on the stack's own network. A known provider's address is
+  fixed, and never taken from the request.
+- **The screen, `/admin/ai/`** (Site group, and "AI" in Ctrl K).
+  - Connections are listed with their provider, model, key ending, whether they are in use,
+    and how the last test went. Each can be tested, made the one in use, changed or removed,
+    with a confirmation before removal.
+  - Adding one starts with a picker of every provider, then:
+    - a name;
+    - a model, with suggestions or any name typed;
+    - the address, when the provider needs one;
+    - the key, with a show/hide control and a link to where that provider issues keys.
+
+    A key that does not look like the chosen provider's is flagged before saving. Saving a
+    new connection tests it at once.
+  - The test bench sends a message through any connection, with optional instructions and
+    a reply length. It shows the reply as the provider gave it, with the model the provider
+    says it used, the time taken and the tokens in and out. When it fails, it says why in
+    plain words.
+- **For the features to come.** `AdminAiService.complete({ system, prompt, maxTokens })`
+  calls whichever connection is in use, whatever the provider, and says plainly when none is
+  set up. `AdminAiModule` exports it. Nothing on the site calls it yet.
+- **Verified.**
+  - Unit tests (16):
+    - the box: a round trip, a fresh nonce each time, a key moved to another provider's row,
+      a tampered key, another server's secret, the AUTH_SECRET fallback and the move across;
+    - the address check: private, loopback and metadata addresses, http, local names;
+    - each protocol's request and reply as its provider documents them, with no network;
+    - a refused key's message with the key taken out.
+  - An integration test (8) on a real database:
+    - the key never appears in the view or the audit log;
+    - a known provider ignores an address sent with it, and a private custom address is
+      refused;
+    - the default moves, and passes on when the default is removed;
+    - a replaced key forgets its old test;
+    - a test call reaches the provider with the decrypted key;
+    - a refused key is a failed test, not an error;
+    - a changed secret reads as "enter it again".
+  - In Chrome, end to end with a made-up key: saving and testing reached Anthropic, which
+    refused the key, and the screen said so. The key was nowhere in the page, only its last
+    four characters. The connection was then removed. No overflow at 360, no console errors.
+  - `/admin/ai` carries 13.2 kB of own JavaScript, under the 20 kB gate. Every marketing route
+    is unchanged.
+- **Owner's call (RULES.md, section 1): this is a third-party service.** Nothing is sent to any
+  provider until someone with the owner's role saves a key. Once a feature uses it, what that
+  feature sends is the owner's decision too: sending lead or subscriber data to a provider
+  moves it outside our database, which CLAUDE.md puts with the owner.
+
 ## Open
 
 - **Nothing reports abandonment yet.** The drop-off per step is in the data (each draft lead's
@@ -1073,6 +1175,10 @@ built.
   `CONTENT_DATABASE_FIRST`; production names `services` alone today. Until a family is named,
   what the dashboard saves for it is stored and audited but the site keeps its snapshot, and the
   page copy screen says so beside each row.
+- **AI is connected but used by nothing yet** (decision 64). Which feature comes first is the
+  owner's choice, as is whether any lead or subscriber data may be sent to a provider (CLAUDE.md,
+  "Ask before deciding"). Production can store keys today through its `AUTH_SECRET`; setting a
+  dedicated `CREDENTIALS_KEY` is better (docs/11-vps-deploy.md, "AI providers").
 - **The dashboard has one theme, the dark one** (decision 63). A light theme would need light
   values for `result` and `danger` inside `[data-theme='admin']`, which is a token decision for
   the owner (RULES.md, section 1).
