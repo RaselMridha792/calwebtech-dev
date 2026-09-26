@@ -468,12 +468,7 @@ export function Whitepaper({ whitepaper, guide }: { whitepaper: Content['whitepa
           {guide.title}
         </h2>
         <p className="mt-4 max-w-[56ch] text-[16.5px] leading-relaxed text-ink-invert-muted">{guide.summary}</p>
-        <a
-          href={guide.fileUrl}
-          className="mt-7 inline-flex h-14 items-center bg-canvas-raised px-7 font-semibold text-ink hover:bg-canvas-sunken"
-        >
-          {whitepaper.ctaLabel}
-        </a>
+        <ActionLink link={{ label: whitepaper.ctaLabel, href: guide.fileUrl }} tone="cream" size="lg" className="mt-7" />
       </div>
     </section>
   );
