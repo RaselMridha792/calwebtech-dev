@@ -1302,6 +1302,146 @@ abandonment must be measurable per step.
     - the inbox, filtered to unfinished briefs, showed the one left at step 5, marked;
     - its panel said so.
 
+## 70. A case study's testimonials and `/before-and-after/` are edited in the dashboard
+
+*2026-09-26.* Task 4 of `docs/15-next-tasks.md`. Non-negotiable 3 says publishing never needs
+a deploy, and two things on the site still did: a case study's quote and video testimonial,
+which are records of their own, and `/before-and-after/`, which kept its snapshot because its
+comparison describes its pictures in words no row held (decision 58).
+
+- **A case study's testimonials.** The case study editor has a new section, "The client's
+  words", below the story.
+  - Each testimonial is a `Testimonial` row on the project: the words, the name, role and
+    company, a rating, a portrait, a video and a consent date, and Featured. Each one is
+    added, changed or removed on its own, at `/admin/case-studies/:id/testimonials`, and
+    saves straight away; the case study's own Save does not touch them.
+  - **`consentAt` is the permission to publish.** A testimonial saved without it is kept and
+    shown nowhere. Entering the date shows it; clearing it takes it off the site. The screen
+    says which, on each row, with the date.
+  - The page picks as it did: the first consented testimonial, featured first and then the
+    newest, is its quote, and the first consented one with a video is its video. The API
+    works out which row is which with the page's own two queries, and each row in the editor
+    says so ("The page's quote", "The page's video").
+  - **Removing one keeps the row.** `Testimonial` gains `deletedAt`, and `CONSENTED`, the
+    filter every public query uses, now also requires `deletedAt: null`. The homepage and
+    landing page queries, which spelled the consent filter out, use `CONSENTED` too, so a
+    removed testimonial leaves every page it was on. Removal asks for confirmation first.
+  - Nothing about how the page renders them changed. The video is the case study's cover
+    with a play button; the video itself is `preload="none"` inside a dialog, so the page asks
+    for it only when it is played.
+- **`/before-and-after/` is a list of `Comparison` records.**
+  - A comparison holds the client's name, a heading written as a question, a summary, two
+    pictures each with its description and, optionally, its width and height (decision 65),
+    up to four figures, its position, whether it is shown on the homepage, a draft or
+    published state, and optionally the case study it links to. The link shows only while
+    that case study is published and complete.
+  - Every bound is the page's own, in `comparisonInputSchema`, so the screen cannot store a
+    comparison the page would refuse. A picture's size is both numbers or neither, since the
+    slider uses the pair.
+  - `/admin/before-and-after/` lists them in the page's order, with their state and the one
+    the homepage shows; each opens in an editor like the case study's. It is in the sidebar
+    under Content and in the Ctrl K palette ("New comparison").
+  - New comparisons are drafts. Publishing, unpublishing and deleting are their own steps,
+    and deleting keeps the row.
+  - The page lists published comparisons only. A project's own before and after pictures
+    (`Project.beforeImageUrl`) stay on its case study page and no longer appear on
+    `/before-and-after/` by themselves: a comparison that links the case study does that.
+    Neither the snapshots nor production had a project with a pair.
+  - Each comparison has its own heading now, so `work.copy`'s `comparisonHeading` template
+    is no longer read. It stays in the setting.
+- **How an edit reaches both pages.** The homepage shows the first published comparison
+  marked "Show on the homepage", in the page's order. Both pages read one list, so the
+  homepage never shows a comparison `/before-and-after/` does not.
+  - A mark, rather than simply the first comparison, because it is the rule the homepage
+    already used for its proof (featured projects, featured testimonials). It also lets a
+    comparison go on `/before-and-after/` without taking the homepage's place. The
+    end-to-end fixtures depend on that: they publish a comparison for the slider's test,
+    while the homepage's test expects its empty state.
+  - Where each page gets it:
+    - **With `CONTENT_SOURCE=api`**, the API's homepage view takes the same row.
+    - **In the launch mode** (`CONTENT_SOURCE=snapshot`, as production runs), the homepage
+      keeps its snapshot's proof and lays the database's comparison over it, as decision 59
+      lays the database's words. It does this only while `CONTENT_DATABASE_FIRST` names
+      `before-and-after`.
+    - **With the family off**, both pages read their snapshots. The comparison in
+      `work/before-and-after.json` now carries `"onHomepage": true`, and `work.test.ts` holds
+      the homepage's comparison equal to the one the page marks. Switching the family on
+      therefore changes nothing until somebody edits.
+  - Unticking the mark, or unpublishing the comparison, leaves the homepage's section with
+    its empty sentence ("No before and after comparison is published yet").
+- **A new family, `before-and-after`.**
+  - It is both the import family and the `CONTENT_DATABASE_FIRST` name.
+  - Unlike the others it has no per-record fallback: the page is one list, so with the family
+    named the dashboard's list is the page, empty or not.
+  - The importer is appended to the registry after `page-copy`, so a live database runs only
+    it on the next deploy. It writes the snapshot's comparisons, published, in order, with the
+    homepage's marked. It writes them only into a table that has never held a comparison,
+    removed ones included, so once somebody has edited the list it is theirs, even on a
+    forced run.
+  - The page's copy around the comparisons was already in the database: `work.copy`, which
+    the `case-studies` family writes and page copy edits.
+  - The `work` family already imported each case study's quote. It now leaves a testimonial
+    that is already stored alone: one somebody has edited or removed is not written back on a
+    forced run.
+- **Audited, and enforced in the API.**
+  - Every change writes its audit entry in the same transaction:
+    - `testimonial.created`, `.updated` and `.deleted`. An update records the fields that
+      changed, before and after. A removal records everything the testimonial said, with its
+      consent date.
+    - `comparison.created`, `.updated` (with the fields that changed), `.published`,
+      `.unpublished` and `.deleted`.
+  - Both screens need `content: read` to look and `content: full` to change, like the other
+    content editors. A link to a case study that no longer exists is refused, not dropped.
+  - The editors show the API's field errors in plain words ("This cannot be empty.") under
+    the field they name.
+- **Migration** `20260926150000_before_after_comparisons`, forward-only: `Testimonial.deletedAt`
+  and the `Comparison` table.
+- **What production needs.**
+  - **No dashboard edits for words.** No copy changed; the snapshot gained only the homepage
+    mark.
+  - The deploy runs the migration and, with `IMPORT_SNAPSHOTS_ON_DEPLOY=true`, the
+    `before-and-after` import family.
+  - **Testimonials are live after the deploy**, because production already names `work`. The
+    three imported quotes (Northmark Supply, Truvia Labs, Cascadia Health) appear in their
+    case studies' editors, with their consent dates.
+  - **After the deploy, add `before-and-after` to production's `CONTENT_DATABASE_FIRST`**:
+    `services,industries,work,home,thank-you,before-and-after`. Until then `/before-and-after/`
+    and the homepage keep their snapshots, and the new screen says that an edit there is saved
+    but not yet shown.
+- **Verified.**
+  - Tests:
+    - shared: the comparison and testimonial inputs, and `homepageComparison`;
+    - web: the getters with the family on and off, the homepage taking the marked
+      comparison and none when none is marked, the snapshots agreeing, and the plain field
+      errors;
+    - API unit: the mapper, the homepage's comparison, and a comparison whose pictures
+      break the contract, named in the log;
+    - integration on a database of their own:
+      - a comparison from draft to both pages, the homepage following the mark in the
+        list's order, the case study link only while that page is live, removal kept, and
+        every audit entry;
+      - a testimonial kept but not shown without consent, shown with it, the video from a
+        second one, cleared consent taking it off, removal kept, and the audit entries;
+    - the import: `/before-and-after/` and the homepage's comparison built from the
+      imported rows equal their snapshots, and a forced run keeps edited comparisons and
+      testimonials.
+    - The existing case study, page copy, work and import suites pass. Totals: shared 270,
+      db 77, web 471, API unit 280, and 192 in the 21 integration files touched.
+  - On the local stack, the deploy's import ran only `before-and-after` and wrote the HelloWay
+    comparison. A second web server ran production's families plus `before-and-after`:
+    - `/` and `/before-and-after/` were unchanged;
+    - a summary and a figure saved from the dashboard reached both pages, and were put back;
+    - a video testimonial added to Meridian Parts showed its quote and play button. The page
+      requested no video until Enter on the play button opened the dialog, and Escape closed
+      it with focus back on the button. It was then removed.
+  - In Chrome at 360 and 1440: the new list and editor, and the case study's testimonials
+    open, confirming a removal and refused. No overflow, and no console errors beyond the
+    refused saves' 400s. By keyboard, every field is labelled and reached in reading order,
+    and the palette finds "Before and after" and "New comparison".
+  - Own JavaScript: `/admin/before-and-after/[id]` 10.8 kB, `/admin/case-studies/[id]` 16.4 kB
+    (was 13.4), the list 6.0 kB, all under 20. `/`, `/before-and-after/` and `/work/[slug]`
+    did not change.
+
 ## 71. An outbox for lead and booking emails
 
 *2026-09-26.* Task 5 of `docs/15-next-tasks.md`, and the Open entry "Emails are queued after the
@@ -1544,9 +1684,12 @@ additive, and nothing is lost.
 - **Saving a case study moves it to the top of /work/**, which lists featured first and then the
   most recently changed (decision 58). The approved order was stamped in at import; mark the case
   studies that must stay first as Featured.
-- **Not editable from the dashboard yet:** a case study's quote and video testimonial (their own
-  records), the proof band's figures and rating (shared with the homepage), and
-  `/before-and-after/`, which keeps its snapshot. The first and the last are docs/15, task 4.
+- **Not editable from the dashboard yet:** the proof band's figures and rating (shared with the
+  homepage). A case study's testimonials and `/before-and-after/` are (decision 70).
+- **The "after" figure of a comparison is hard to read.** On `/before-and-after/` and the
+  homepage it is `text-gold-ink` on navy. It shows only when a comparison has figures, and
+  HelloWay's have none (decision 67). The owner's call: `gold-500` is the brand's gold for dark
+  grounds.
 - Outside the five database-first families, content is still edited by changing a snapshot
   and deploying (decision 43). Families move into the database one at a time. Each needs its mapper
   extended or its snapshot corrected where the two disagree, and an owner's decision for

@@ -84,6 +84,12 @@ Open entry "Nothing reports abandonment yet", and the gate of Task 5.2 in
   (decision 63).
 
 ### 4. A case study's testimonial, and `/before-and-after/`, from the dashboard
+**Done on `tumit`, 2026-09-26 (decision 70). No word edits in the dashboard. After the deploy
+(migration `20260926150000_before_after_comparisons`, then the import with
+`IMPORT_SNAPSHOTS_ON_DEPLOY=true`), add `before-and-after` to production's
+`CONTENT_DATABASE_FIRST`. Testimonial edits are live at the deploy, because `work` is already
+on.**
+
 Open entry "Not editable from the dashboard yet". Non-negotiable 3: publishing never
 requires a deploy.
 - **The case study editor** (decision 58) edits the case study's quote and video testimonial.
