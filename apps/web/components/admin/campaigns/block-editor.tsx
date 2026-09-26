@@ -1,5 +1,7 @@
 'use client';
 import type { CampaignBlock, CampaignBlockType } from '@calwebtech/shared';
+import { PlusIcon } from '../icons';
+import { ERROR, INPUT, KICKER, LABEL, TAG, TEXTAREA, button, iconButton } from '../ui/styles';
 
 /**
  * The campaign body as a list of blocks: heading, paragraph, button, divider. Each can be
@@ -48,12 +50,6 @@ export function toBlock(draft: DraftBlock): CampaignBlock {
   }
 }
 
-const LABEL = 'text-[9.5px] font-bold tracking-[0.12em] text-admin-muted uppercase';
-const INPUT =
-  'h-[30px] w-full rounded-[4px] border bg-admin-surface px-2 text-[12.5px] text-admin-ink outline-none focus-visible:border-admin-focus disabled:opacity-60';
-const SMALL_BUTTON =
-  'h-[30px] rounded-[4px] border border-admin-line px-2.5 text-[12px] font-semibold text-admin-body hover:border-admin-focus disabled:opacity-40';
-
 export function BlockEditor({
   blocks,
   onChange,
@@ -85,18 +81,25 @@ export function BlockEditor({
 
   return (
     <div>
-      {blocks.length === 0 ? <p className="text-[12.5px] text-admin-body">No blocks yet. Add one below.</p> : null}
-      <ol className="border-t border-admin-line">
+      {blocks.length === 0 ? (
+        <p className="rounded-lg border border-dashed border-admin-line px-4 py-6 text-center text-[14px] text-ink-invert-muted">
+          No blocks yet. Add one below.
+        </p>
+      ) : null}
+      <ol className="flex flex-col gap-3">
         {blocks.map((block, index) => {
           const problem = errorFor(index);
           const id = `block-${String(block.key)}`;
           const describedBy = problem ? `${id}-error` : undefined;
           return (
-            <li key={block.key} className="border-b border-admin-line py-3">
-              <div className="mb-2 flex flex-wrap items-center gap-2">
-                <span className={LABEL}>{`${String(index + 1)}. ${BLOCK_LABELS[block.type]}`}</span>
+            <li key={block.key} className={`rounded-lg border bg-admin-sunken p-3.5 sm:p-4 ${problem ? 'border-danger' : 'border-admin-line2'}`}>
+              <div className="mb-3 flex flex-wrap items-center gap-2">
+                <span className={TAG}>
+                  <span className="mr-1.5 text-admin-muted tabular-nums">{index + 1}</span>
+                  {BLOCK_LABELS[block.type]}
+                </span>
                 {disabled ? null : (
-                  <span className="ms-auto flex gap-1.5">
+                  <span className="ms-auto flex items-center gap-1.5">
                     <button
                       type="button"
                       onClick={() => {
@@ -104,7 +107,7 @@ export function BlockEditor({
                       }}
                       disabled={index === 0}
                       aria-label={`Move block ${String(index + 1)} up`}
-                      className={SMALL_BUTTON}
+                      className={iconButton('sm')}
                     >
                       ↑
                     </button>
@@ -115,7 +118,7 @@ export function BlockEditor({
                       }}
                       disabled={index === blocks.length - 1}
                       aria-label={`Move block ${String(index + 1)} down`}
-                      className={SMALL_BUTTON}
+                      className={iconButton('sm')}
                     >
                       ↓
                     </button>
@@ -125,7 +128,7 @@ export function BlockEditor({
                         onChange(blocks.filter((entry) => entry.key !== block.key));
                       }}
                       aria-label={`Remove block ${String(index + 1)}`}
-                      className={SMALL_BUTTON}
+                      className={button('ghost', 'sm')}
                     >
                       Remove
                     </button>
@@ -140,12 +143,13 @@ export function BlockEditor({
                   value={block.text}
                   disabled={disabled}
                   maxLength={200}
+                  placeholder="A heading"
                   aria-invalid={problem ? true : undefined}
                   aria-describedby={describedBy}
                   onChange={(event) => {
                     update(block.key, { text: event.target.value });
                   }}
-                  className={`${INPUT} font-semibold ${problem ? 'border-danger' : 'border-admin-line'}`}
+                  className={`${INPUT} font-display text-[16px] font-bold`}
                 />
               ) : null}
 
@@ -157,35 +161,35 @@ export function BlockEditor({
                   disabled={disabled}
                   rows={4}
                   maxLength={5000}
+                  placeholder="What you want to say"
                   aria-invalid={problem ? true : undefined}
                   aria-describedby={describedBy}
                   onChange={(event) => {
                     update(block.key, { text: event.target.value });
                   }}
-                  className={`w-full rounded-[4px] border bg-admin-surface px-2 py-1.5 text-[12.5px] text-admin-ink outline-none focus-visible:border-admin-focus disabled:opacity-60 ${
-                    problem ? 'border-danger' : 'border-admin-line'
-                  }`}
+                  className={TEXTAREA}
                 />
               ) : null}
 
               {block.type === 'button' ? (
-                <div className="flex flex-wrap gap-2">
-                  <label className="flex min-w-[160px] flex-1 flex-col gap-[3px]">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
+                  <label className="flex min-w-0 flex-col gap-1.5">
                     <span className={LABEL}>Label</span>
                     <input
                       id={id}
                       value={block.label}
                       disabled={disabled}
                       maxLength={60}
+                      placeholder="Read more"
                       aria-invalid={problem ? true : undefined}
                       aria-describedby={describedBy}
                       onChange={(event) => {
                         update(block.key, { label: event.target.value });
                       }}
-                      className={`${INPUT} ${problem ? 'border-danger' : 'border-admin-line'}`}
+                      className={INPUT}
                     />
                   </label>
-                  <label className="flex min-w-[220px] flex-[2] flex-col gap-[3px]">
+                  <label className="flex min-w-0 flex-col gap-1.5">
                     <span className={LABEL}>Link</span>
                     <input
                       type="url"
@@ -197,16 +201,22 @@ export function BlockEditor({
                       onChange={(event) => {
                         update(block.key, { url: event.target.value });
                       }}
-                      className={`${INPUT} ${problem ? 'border-danger' : 'border-admin-line'}`}
+                      className={INPUT}
                     />
                   </label>
                 </div>
               ) : null}
 
-              {block.type === 'divider' ? <hr className="border-admin-line" aria-hidden="true" /> : null}
+              {block.type === 'divider' ? (
+                <div className="flex items-center gap-3 py-1">
+                  <hr className="flex-1 border-admin-line" aria-hidden="true" />
+                  <span className="text-[12px] text-admin-muted">A thin rule between two parts of the email</span>
+                  <hr className="flex-1 border-admin-line" aria-hidden="true" />
+                </div>
+              ) : null}
 
               {problem ? (
-                <p id={`${id}-error`} role="alert" className="mt-1 text-[11px] text-danger">
+                <p id={`${id}-error`} role="alert" className={`${ERROR} mt-2`}>
                   {problem}
                 </p>
               ) : null}
@@ -216,8 +226,8 @@ export function BlockEditor({
       </ol>
 
       {disabled ? null : (
-        <div className="mt-3 flex flex-wrap items-center gap-2">
-          <span className={LABEL}>Add</span>
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          <span className={`${KICKER} mr-1`}>Add a block</span>
           {BLOCK_TYPES.map((type) => (
             <button
               key={type}
@@ -226,8 +236,9 @@ export function BlockEditor({
                 onAdd(type);
               }}
               disabled={blocks.length >= 60}
-              className="h-8 rounded-[4px] border border-admin-line px-3 text-[12.5px] font-semibold text-admin-body hover:border-admin-focus disabled:opacity-40"
+              className={button('secondary', 'sm')}
             >
+              <PlusIcon className="size-3.5" />
               {BLOCK_LABELS[type]}
             </button>
           ))}

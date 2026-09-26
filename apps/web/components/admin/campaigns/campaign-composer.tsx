@@ -1,8 +1,9 @@
 'use client';
 import type { AdminCampaign, CampaignBlockType, CampaignContent, CampaignTemplate, CampaignToken } from '@calwebtech/shared';
 import { useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useRef, useState, type ReactNode } from 'react';
 import { MutationError, adminMutate } from '@/lib/admin/mutate';
+import { CARD, CARD_PAD, CHECK, ERROR, H2, HELP, INPUT, LABEL, SELECT, button } from '../ui/styles';
 import { BlockEditor, toBlock, toDraftBlock, type DraftBlock } from './block-editor';
 import { CampaignPreviewPanel } from './campaign-preview';
 import { CampaignSchedulePanel } from './campaign-schedule';
@@ -13,6 +14,10 @@ import { CampaignSchedulePanel } from './campaign-schedule';
  * Saving is separate from sending: nothing here reaches a subscriber. The screen writes a
  * draft, previews it and sends tests to the team; scheduling comes after, from a saved
  * draft.
+ *
+ * The words are on the left and everything that acts on them — saving, sending, the
+ * preview and the test — in a column on the right that stays in view while the body is
+ * being written.
  */
 
 interface Segment {
@@ -20,10 +25,6 @@ interface Segment {
   name: string;
   count: number;
 }
-
-const LABEL = 'text-[9.5px] font-bold tracking-[0.12em] text-admin-muted uppercase';
-const INPUT =
-  'h-[30px] w-full rounded-[4px] border bg-admin-surface px-2 text-[12.5px] text-admin-ink outline-none focus-visible:border-admin-focus disabled:opacity-60';
 
 const STARTER: DraftBlock[] = [
   { key: 0, type: 'heading', text: '', label: '', url: '' },
@@ -143,51 +144,55 @@ export function CampaignComposer({
   const segment = segments.find((entry) => entry.id === segmentId);
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,420px)]">
-      <div className="flex flex-col gap-5">
-        <section className="flex flex-col gap-3 border-t border-admin-line pt-4">
-          <Field
-            id="campaign-name"
-            label="Name"
-            help="For the team only. Subscribers never see it."
-            value={name}
-            onChange={edit(setName)}
-            disabled={disabled}
-            error={fieldError('name')}
-            maxLength={120}
-          />
-          <Field
-            id="campaign-subject"
-            label="Subject line"
-            value={subject}
-            onChange={edit(setSubject)}
-            disabled={disabled}
-            error={fieldError('subject')}
-            maxLength={150}
-          />
-          <Field
-            id="campaign-preheader"
-            label="Preview text"
-            help="The line an inbox shows after the subject. Optional."
-            value={preheader}
-            onChange={edit(setPreheader)}
-            disabled={disabled}
-            error={fieldError('preheader')}
-            maxLength={150}
-          />
-        </section>
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,400px)] xl:grid-cols-[minmax(0,1fr)_minmax(0,460px)]">
+      <div className="flex min-w-0 flex-col gap-6">
+        <Card id="campaign-email" title="The email" description="What the team calls it, and what the inbox shows before it is opened.">
+          <div className="flex flex-col gap-4">
+            <Field
+              id="campaign-name"
+              label="Name"
+              help="For the team only. Subscribers never see it."
+              value={name}
+              onChange={edit(setName)}
+              disabled={disabled}
+              error={fieldError('name')}
+              maxLength={120}
+            />
+            <Field
+              id="campaign-subject"
+              label="Subject line"
+              value={subject}
+              onChange={edit(setSubject)}
+              disabled={disabled}
+              error={fieldError('subject')}
+              maxLength={150}
+            />
+            <Field
+              id="campaign-preheader"
+              label="Preview text"
+              help="The line an inbox shows after the subject. Optional."
+              value={preheader}
+              onChange={edit(setPreheader)}
+              disabled={disabled}
+              error={fieldError('preheader')}
+              maxLength={150}
+            />
+          </div>
+        </Card>
 
-        <section className="flex flex-col gap-3 border-t border-admin-line pt-4">
+        <Card id="campaign-audience" title="Look and audience" description="Which branded template dresses the words, and which subscribers receive them.">
           <fieldset>
-            <legend className="text-[10px] font-bold tracking-[0.14em] text-admin-muted uppercase">Template</legend>
-            <div className="mt-2 grid gap-2 sm:grid-cols-2">
+            <legend className={LABEL}>Template</legend>
+            <div className="mt-2 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
               {(Object.entries(templates) as [CampaignTemplate, { label: string; description: string }][]).map(
                 ([key, template]) => (
                   <label
                     key={key}
-                    className={`flex cursor-pointer gap-2 rounded-[4px] border p-3 ${
-                      templateKey === key ? 'border-admin-edge bg-admin-nav' : 'border-admin-line'
-                    }`}
+                    className={`flex cursor-pointer gap-3 rounded-lg border p-3.5 transition-colors duration-150 ${
+                      templateKey === key
+                        ? 'border-admin-edge bg-admin-nav'
+                        : 'border-admin-line bg-admin-sunken hover:border-admin-edge'
+                    } ${disabled ? 'cursor-not-allowed opacity-70' : ''}`}
                   >
                     <input
                       type="radio"
@@ -198,11 +203,11 @@ export function CampaignComposer({
                       onChange={() => {
                         edit(setTemplateKey)(key);
                       }}
-                      className="mt-0.5"
+                      className={`${CHECK} mt-0.5`}
                     />
-                    <span>
-                      <span className="block text-[12.5px] font-semibold text-admin-ink">{template.label}</span>
-                      <span className="block text-[11.5px] text-admin-body">{template.description}</span>
+                    <span className="flex min-w-0 flex-col gap-0.5">
+                      <span className="text-[14px] font-semibold text-ink-invert">{template.label}</span>
+                      <span className="text-[12.5px] leading-[1.5] text-ink-invert-muted">{template.description}</span>
                     </span>
                   </label>
                 ),
@@ -210,7 +215,7 @@ export function CampaignComposer({
             </div>
           </fieldset>
 
-          <label className="flex flex-col gap-[3px]">
+          <label className="mt-5 flex flex-col gap-1.5">
             <span className={LABEL}>Send to</span>
             <select
               value={segmentId}
@@ -219,7 +224,7 @@ export function CampaignComposer({
               onChange={(event) => {
                 edit(setSegmentId)(event.target.value);
               }}
-              className={`${INPUT} ${fieldError('segmentId') ? 'border-danger' : 'border-admin-line'}`}
+              className={SELECT}
             >
               <option value="">Choose a segment later</option>
               {segments.map((entry) => (
@@ -228,86 +233,102 @@ export function CampaignComposer({
                 </option>
               ))}
             </select>
-            <span className="text-[11px] text-admin-muted">
-              {segment
-                ? `${segment.count.toLocaleString()} ${segment.count === 1 ? 'subscriber' : 'subscribers'} today. Counted again at send time.`
-                : segments.length === 0
-                  ? 'No segments yet. Build one under Subscribers.'
-                  : 'A campaign cannot be scheduled without a segment.'}
+            <span className={fieldError('segmentId') ? ERROR : HELP}>
+              {fieldError('segmentId') ??
+                (segment
+                  ? `${segment.count.toLocaleString()} ${segment.count === 1 ? 'subscriber' : 'subscribers'} today. Counted again at send time.`
+                  : segments.length === 0
+                    ? 'No segments yet. Build one under Subscribers.'
+                    : 'A campaign cannot be scheduled without a segment.')}
             </span>
           </label>
-        </section>
+        </Card>
 
-        <section className="flex flex-col gap-3 border-t border-admin-line pt-4">
-          <div>
-            <h2 className="text-[10px] font-bold tracking-[0.14em] text-admin-muted uppercase">Body</h2>
-            <p className="mt-1 text-[11.5px] text-admin-body">
-              Tokens fill in per subscriber. Add a fallback after a bar for anyone who left it blank:{' '}
-              <code className="text-admin-ink">{'{{firstName|there}}'}</code>.
+        <Card
+          id="campaign-body"
+          title="Body"
+          description="The email as a list of blocks. The template decides how each one looks, so it is on brand without any markup."
+        >
+          <div className="mb-5 rounded-lg border border-admin-line2 bg-admin-sunken px-3.5 py-3 text-[13px] leading-[1.6] text-ink-invert-muted">
+            <p>
+              Personalise with a token, and add a fallback after a bar for anyone who left it blank:{' '}
+              <code className="rounded-md bg-admin-mist px-1.5 py-0.5 text-[12.5px] text-ink-invert">{'{{firstName|there}}'}</code>
             </p>
-            <ul className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1 text-[11.5px] text-admin-muted">
+            <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[12.5px] text-admin-muted">
               {(Object.entries(tokens) as [CampaignToken, string][]).map(([token, help]) => (
                 <li key={token}>
-                  <code className="text-admin-ink">{`{{${token}}}`}</code> {help.toLowerCase()}
+                  <code className="text-ink-invert">{`{{${token}}}`}</code> {help.toLowerCase()}
                 </li>
               ))}
             </ul>
           </div>
           <BlockEditor blocks={blocks} onChange={edit(setBlocks)} onAdd={addBlock} disabled={disabled} errorFor={blockError} />
           {bodyError ? (
-            <p role="alert" className="text-[11px] text-danger">
+            <p role="alert" className={`${ERROR} mt-3`}>
               {bodyError}
             </p>
           ) : null}
-        </section>
+        </Card>
+      </div>
 
-        {error ? (
-          <p role="alert" className="text-[12.5px] text-danger">
-            {error}
-          </p>
-        ) : null}
-
+      <div className="flex min-w-0 flex-col gap-4 lg:sticky lg:top-6 lg:max-h-[calc(100dvh-7rem)] lg:self-start lg:overflow-y-auto">
         {mayWrite ? (
-          <div className="flex flex-wrap items-center gap-2 border-t border-admin-line pt-4">
-            <button
-              type="button"
-              onClick={save}
-              disabled={disabled}
-              className="h-9 rounded-[4px] bg-primary px-4 text-[12.5px] font-semibold text-white hover:bg-admin-primaryh disabled:opacity-40"
-            >
-              {busy === 'save' ? 'Saving…' : campaign ? 'Save draft' : 'Create draft'}
-            </button>
-            <span role="status" className="text-[12px] text-admin-body">
-              {saved ? 'Saved.' : unsaved && campaign ? 'Unsaved changes.' : ''}
-            </span>
+          <section aria-labelledby="campaign-draft" className={`${CARD} ${CARD_PAD}`}>
+            <h2 id="campaign-draft" className={H2}>
+              {campaign ? 'Draft' : 'Create the draft'}
+            </h2>
+            <p className={`${HELP} mt-1`}>
+              {campaign
+                ? 'Saving keeps the draft; nothing is sent until it is scheduled below.'
+                : 'Saving creates the draft. Previews and tests come from the saved copy.'}
+            </p>
+            {error ? (
+              <p role="alert" className={`${ERROR} mt-3`}>
+                {error}
+              </p>
+            ) : null}
+            <div className="mt-4 flex flex-wrap items-center gap-3">
+              <button type="button" onClick={save} disabled={disabled} className={button('primary')}>
+                {busy === 'save' ? 'Saving…' : campaign ? 'Save draft' : 'Create draft'}
+              </button>
+              <span role="status" className="flex items-center gap-2 text-[13px] text-ink-invert-muted">
+                {saved ? (
+                  <>
+                    <span aria-hidden className="size-2 shrink-0 rounded-full bg-result" />
+                    Saved.
+                  </>
+                ) : unsaved && campaign ? (
+                  'Unsaved changes.'
+                ) : (
+                  ''
+                )}
+              </span>
+            </div>
             {campaign ? (
-              <span className="ms-auto flex flex-wrap items-center gap-2">
+              <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-admin-line2 pt-4">
+                <button type="button" onClick={destroy} disabled={disabled} className={button('danger', 'sm')}>
+                  {busy === 'delete' ? 'Deleting…' : confirmingDelete ? 'Yes, delete the draft' : 'Delete draft'}
+                </button>
                 {confirmingDelete ? (
                   <button
                     type="button"
                     onClick={() => {
                       setConfirmingDelete(false);
                     }}
-                    className="h-9 rounded-[4px] border border-admin-line px-3 text-[12.5px] font-semibold text-admin-body hover:border-admin-focus"
+                    className={button('ghost', 'sm')}
                   >
                     Keep it
                   </button>
                 ) : null}
-                <button
-                  type="button"
-                  onClick={destroy}
-                  disabled={disabled}
-                  className="h-9 rounded-[4px] border border-admin-line px-3 text-[12.5px] font-semibold text-danger hover:border-danger disabled:opacity-40"
-                >
-                  {busy === 'delete' ? 'Deleting…' : confirmingDelete ? 'Yes, delete the draft' : 'Delete draft'}
-                </button>
-              </span>
+              </div>
             ) : null}
-          </div>
+          </section>
+        ) : error ? (
+          <p role="alert" className={ERROR}>
+            {error}
+          </p>
         ) : null}
-      </div>
 
-      <div className="flex flex-col gap-5 border-t border-admin-line pt-4 lg:sticky lg:top-0 lg:self-start">
         {campaign ? (
           <CampaignSchedulePanel
             campaign={campaign}
@@ -326,6 +347,21 @@ export function CampaignComposer({
         />
       </div>
     </div>
+  );
+}
+
+/** A card with a heading and one line on what it holds, the shape every group here sits in. */
+function Card({ id, title, description, children }: { id: string; title: string; description: string; children: ReactNode }) {
+  return (
+    <section aria-labelledby={id} className={`${CARD} ${CARD_PAD}`}>
+      <div className="mb-5 flex flex-col gap-1">
+        <h2 id={id} className={H2}>
+          {title}
+        </h2>
+        <p className="text-[13.5px] leading-[1.55] text-ink-invert-muted">{description}</p>
+      </div>
+      {children}
+    </section>
   );
 }
 
@@ -349,7 +385,7 @@ function Field({
   maxLength: number;
 }) {
   return (
-    <div className="flex flex-col gap-[3px]">
+    <div className="flex flex-col gap-1.5">
       <label htmlFor={id} className={LABEL}>
         {label}
       </label>
@@ -363,14 +399,14 @@ function Field({
         onChange={(event) => {
           onChange(event.target.value);
         }}
-        className={`${INPUT} ${error ? 'border-danger' : 'border-admin-line'}`}
+        className={INPUT}
       />
       {error ? (
-        <p id={`${id}-note`} role="alert" className="text-[11px] text-danger">
+        <p id={`${id}-note`} role="alert" className={ERROR}>
           {error}
         </p>
       ) : help ? (
-        <p id={`${id}-note`} className="text-[11px] text-admin-muted">
+        <p id={`${id}-note`} className={HELP}>
           {help}
         </p>
       ) : null}
