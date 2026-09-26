@@ -1,5 +1,7 @@
 import { PAGE_COPY_LABELS, adminPageCopyListSchema } from '@calwebtech/shared';
 import Link from 'next/link';
+import { AdminPage, PageHeader } from '@/components/admin/ui/page';
+import { LIST, LIST_ROW, MUTED, TAG, button } from '@/components/admin/ui/styles';
 import { adminGet } from '@/lib/admin/api';
 import { pageCopyLiveNote } from '@/lib/admin/page-copy';
 import { requireModule } from '@/lib/admin/session';
@@ -13,44 +15,57 @@ export default async function AdminPageCopyPage() {
   const list = await adminGet('/admin/page-copy', adminPageCopyListSchema);
 
   return (
-    <main className="min-h-0 flex-1 overflow-auto px-4 py-5">
-      <div className="mx-auto w-full max-w-[1000px]">
-        <h1 className="font-display text-[21px] font-bold tracking-[-0.02em] text-admin-ink">Page copy</h1>
-        <p className="mt-0.5 text-[12.5px] text-admin-body">
-          The words on pages that are not a service, an industry or a case study. Each change is checked against the
-          page before it is stored, and written to the audit log.
-        </p>
-        <ul className="mt-5">
-          {list.items.map((item) => {
-            const label = PAGE_COPY_LABELS[item.key];
-            return (
-              <li key={item.key} className="flex flex-wrap items-center gap-3 border-b border-admin-line py-3 first:border-t">
-                <div className="min-w-[240px] flex-1">
-                  {item.stored ? (
-                    <Link
-                      href={`/admin/page-copy/${encodeURIComponent(item.key)}/`}
-                      className="text-[13px] font-semibold text-admin-ink hover:underline"
-                    >
-                      {label.title}
-                    </Link>
-                  ) : (
-                    <span className="text-[13px] font-semibold text-admin-ink">{label.title}</span>
-                  )}
-                  <p className="text-[11.5px] text-admin-muted">{label.help}</p>
-                  <p className="text-[11px] text-admin-muted">
-                    {item.stored ? pageCopyLiveNote(item.key) : 'Not stored yet: the snapshot import writes it on the next deploy.'}
-                  </p>
-                </div>
-                {item.updatedAt ? (
-                  <span className="text-[11px] text-admin-muted tabular-nums">
-                    {new Date(item.updatedAt).toLocaleDateString('en-GB', { timeZone: 'UTC' })}
-                  </span>
-                ) : null}
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-    </main>
+    <AdminPage>
+      <PageHeader
+        eyebrow="Content"
+        title="Page copy"
+        count={list.items.length}
+        description="The words on the pages that are not a service, an industry or a case study: the homepage, the booking page, the thank-you pages and the index pages. Every change is checked against the page before it is stored, and written to the audit log."
+      />
+
+      <ul className={LIST}>
+        {list.items.map((item) => {
+          const label = PAGE_COPY_LABELS[item.key];
+          return (
+            <li key={item.key} className={LIST_ROW}>
+              <div className="flex min-w-0 flex-1 basis-60 flex-col gap-1">
+                {item.stored ? (
+                  <Link
+                    href={`/admin/page-copy/${encodeURIComponent(item.key)}/`}
+                    className="text-[14.5px] font-semibold text-ink-invert before:absolute before:inset-0"
+                  >
+                    {label.title}
+                  </Link>
+                ) : (
+                  <span className="text-[14.5px] font-semibold text-ink-invert">{label.title}</span>
+                )}
+                <p className="text-[13.5px] leading-[1.5] text-ink-invert-muted">{label.help}</p>
+                <p className={MUTED}>
+                  {item.stored
+                    ? pageCopyLiveNote(item.key)
+                    : 'Not stored yet. It is written on the next deploy, and can be edited here after that.'}
+                </p>
+              </div>
+              {item.updatedAt ? (
+                <span className="text-[12.5px] whitespace-nowrap text-admin-muted tabular-nums sm:text-right">
+                  Changed {when(item.updatedAt)}
+                </span>
+              ) : null}
+              {item.stored ? (
+                <span aria-hidden className={button('secondary', 'sm')}>
+                  Edit
+                </span>
+              ) : (
+                <span className={TAG}>Not editable yet</span>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </AdminPage>
   );
+}
+
+function when(iso: string): string {
+  return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
 }
