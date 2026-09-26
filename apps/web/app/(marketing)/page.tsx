@@ -27,6 +27,7 @@ import {
   ServicesGrid,
 } from '@/components/home/sections-top';
 import { AnchorScroll } from '@/components/motion/anchor-scroll';
+import { ActionLink } from '@/components/home/parts';
 import { SubscribeBand } from '@/components/home/subscribe-band';
 import { FloatingCta } from '@/components/site/floating-cta';
 import { SiteFooter } from '@/components/site/site-footer';
@@ -119,15 +120,22 @@ export default async function HomePage() {
         <BookSection
           book={content.book}
           action={
-            <div className="border border-hairline bg-canvas-raised p-7 sm:p-9">
-              <p className="heading-md text-ink">{content.book.heading}</p>
-              <p className="body-base mt-3 text-ink-muted">{content.book.footnote}</p>
-              <a
-                href={CONSULTATION_PATH}
-                className="button-label mt-7 inline-flex min-h-12 items-center bg-navy-900 px-6 text-ink-invert transition-colors duration-150 hover:bg-navy-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
-              >
-                {content.book.submitLabel}
-              </a>
+            // A navy plate on the sunken ground, the brand's grid fading from its corner, so the
+            // page's last ask reads as the destination rather than one more box.
+            <div className="relative overflow-hidden bg-navy-900 p-8 text-ink-invert sm:p-10 lg:sticky lg:top-28">
+              <div
+                aria-hidden
+                className="grid-lines-light pointer-events-none absolute inset-0"
+                style={{ maskImage: 'radial-gradient(ellipse 70% 90% at 100% 0%, black, transparent)' }}
+              />
+              <p className="heading-lg relative">{content.book.heading}</p>
+              <p className="body-base relative mt-3 max-w-[52ch] text-ink-invert-muted">{content.book.footnote}</p>
+              <ActionLink
+                link={{ label: content.book.submitLabel, href: CONSULTATION_PATH }}
+                tone="cream"
+                size="lg"
+                className="relative mt-8"
+              />
             </div>
           }
         />
