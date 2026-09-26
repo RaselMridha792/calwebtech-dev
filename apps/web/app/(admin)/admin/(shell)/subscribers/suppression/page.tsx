@@ -8,6 +8,9 @@ import {
 import Link from 'next/link';
 import { AudienceTabs } from '@/components/admin/audience/audience-tabs';
 import { SuppressionForm } from '@/components/admin/audience/suppression-form';
+import { SearchIcon, SubscribersIcon } from '@/components/admin/icons';
+import { AdminPage, ChipLinks, EmptyState, PageHeader } from '@/components/admin/ui/page';
+import { INPUT, KICKER, LIST, TAG, button } from '@/components/admin/ui/styles';
 import { adminGet } from '@/lib/admin/api';
 import { requireModule } from '@/lib/admin/session';
 
@@ -33,6 +36,9 @@ export default async function AdminSuppressionPage({ searchParams }: PageProps<'
   const query = new URLSearchParams({ ...(reason ? { reason } : {}), ...(search ? { search } : {}), page: String(page) });
   const list = await adminGet(`/admin/suppressions?${query.toString()}`, adminSuppressionListSchema);
   const pages = Math.max(1, Math.ceil(list.total / list.pageSize));
+  const narrowed = Boolean(reason || search);
+  const first = list.total === 0 ? 0 : (list.page - 1) * list.pageSize + 1;
+  const last = Math.min(list.total, list.page * list.pageSize);
 
   const href = (change: Record<string, string>): string => {
     const next = new URLSearchParams({ ...(reason ? { reason } : {}), ...(search ? { search } : {}), ...change });
@@ -42,61 +48,86 @@ export default async function AdminSuppressionPage({ searchParams }: PageProps<'
   };
 
   return (
-    <main className="min-h-0 flex-1 overflow-auto px-4 py-5">
-      <div className="mx-auto w-full max-w-[1100px]">
-        <h1 className="font-display text-[21px] font-bold tracking-[-0.02em] text-admin-ink">Suppression list</h1>
-        <p className="mt-0.5 mb-4 text-[12.5px] text-admin-body">
-          {list.total} {list.total === 1 ? 'address' : 'addresses'}. No campaign, segment or import can send to an address
-          on this list, and nothing here takes one off it.
-        </p>
+    <AdminPage>
+      <PageHeader
+        eyebrow="Sales"
+        title="Suppression list"
+        count={list.total}
+        description="Addresses that no campaign, segment or import can send to. Bounces, complaints and unsubscribes land here on their own, and nothing here takes an address off the list."
+      />
 
-        <AudienceTabs current="suppression" />
+      <AudienceTabs current="suppression" />
 
-        {canWrite(user.role, 'subscribers') ? <SuppressionForm /> : null}
+      {canWrite(user.role, 'subscribers') ? <SuppressionForm /> : null}
 
-        <form method="get" action="/admin/subscribers/suppression/" className="mb-3 flex flex-wrap items-end gap-2">
+      <div className="flex flex-col gap-4">
+        <form role="search" method="get" action="/admin/subscribers/suppression/" className="flex flex-wrap items-center gap-2">
           {reason ? <input type="hidden" name="reason" value={reason} /> : null}
-          <label className="flex min-w-[220px] flex-1 flex-col gap-[3px]">
-            <span className="text-[9.5px] font-bold tracking-[0.12em] text-admin-muted uppercase">Search</span>
+          <div className="relative w-full sm:w-[320px]">
+            <label htmlFor="suppression-search" className="sr-only">
+              Search the list
+            </label>
+            <SearchIcon className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-admin-muted" />
             <input
+              id="suppression-search"
               type="search"
               name="search"
               defaultValue={search}
               placeholder="Email address"
-              className="h-[30px] w-full rounded-[4px] border border-admin-line bg-admin-surface px-2 text-[12.5px] text-admin-ink outline-none focus-visible:border-admin-focus"
+              className={`${INPUT} pl-9 ${search ? 'border-admin-edge' : ''}`}
             />
-          </label>
-          <button
-            type="submit"
-            className="h-8 rounded-[4px] border border-admin-line px-3 text-[12.5px] font-semibold text-admin-body hover:border-admin-focus"
-          >
+          </div>
+          <button type="submit" className={button('secondary')}>
             Search
           </button>
+          {narrowed ? (
+            <Link href="/admin/subscribers/suppression/" className={button('ghost')}>
+              Clear all
+            </Link>
+          ) : null}
         </form>
 
-        <nav aria-label="Why an address is suppressed" className="mb-4 flex flex-wrap gap-2">
-          <FilterLink href={href({ reason: '', page: '' })} current={!reason}>
-            Every reason
-          </FilterLink>
-          {SUPPRESSION_REASONS.map((option) => (
-            <FilterLink key={option} href={href({ reason: option, page: '' })} current={reason === option}>
-              {SUPPRESSION_REASON_LABELS[option]}
-            </FilterLink>
-          ))}
-        </nav>
+        <div className="flex flex-wrap items-center gap-3">
+          <span className={KICKER}>Reason</span>
+          <ChipLinks
+            label="Why an address is suppressed"
+            chips={[
+              { href: href({ reason: '', page: '' }), label: 'Every reason', current: !reason },
+              ...SUPPRESSION_REASONS.map((option) => ({
+                href: href({ reason: option, page: '' }),
+                label: SUPPRESSION_REASON_LABELS[option],
+                current: reason === option,
+              })),
+            ]}
+          />
+        </div>
+      </div>
 
+      <div className={LIST}>
         {list.items.length === 0 ? (
-          <p className="py-12 text-center text-[13px] text-admin-body">
-            {reason || search ? 'No address matches this view.' : 'The list is empty.'}
-          </p>
+          <EmptyState
+            icon={<SubscribersIcon className="size-5" />}
+            title={narrowed ? 'No address matches this view' : 'The list is empty'}
+            actions={
+              narrowed ? (
+                <Link href="/admin/subscribers/suppression/" className={button('secondary')}>
+                  Clear filters
+                </Link>
+              ) : null
+            }
+          >
+            {narrowed
+              ? 'Try a different spelling, or show every reason.'
+              : 'Nobody has bounced, complained or unsubscribed yet, and no address has been added by hand.'}
+          </EmptyState>
         ) : (
-          <ul className="border-t border-admin-line">
+          <ul className="divide-y divide-admin-line2">
             {list.items.map((entry) => (
-              <li key={entry.id} className="flex flex-wrap items-baseline gap-x-4 gap-y-1 border-b border-admin-line py-3">
-                <span className="text-[13px] font-semibold break-all text-admin-ink">{entry.email}</span>
-                <span className="text-[12px] text-admin-muted">{REASON_LABELS[entry.reason] ?? entry.reason}</span>
-                <span className="ms-auto text-[12px] text-admin-body tabular-nums">
-                  {new Date(entry.createdAt).toLocaleDateString(undefined, { dateStyle: 'medium' })}
+              <li key={entry.id} className="flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3.5 sm:px-5">
+                <span className="min-w-0 flex-1 basis-60 text-[14.5px] font-semibold break-all text-ink-invert">{entry.email}</span>
+                <span className={TAG}>{REASON_LABELS[entry.reason] ?? entry.reason}</span>
+                <span className="text-[13px] text-admin-muted tabular-nums sm:min-w-27.5 sm:text-right">
+                  {new Date(entry.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
                 </span>
               </li>
             ))}
@@ -104,38 +135,39 @@ export default async function AdminSuppressionPage({ searchParams }: PageProps<'
         )}
 
         {pages > 1 ? (
-          <nav aria-label="Pages" className="mt-4 flex items-center justify-between text-[12.5px] text-admin-body">
-            {page > 1 ? (
-              <Link href={href({ page: String(page - 1) })} className="font-semibold text-admin-link hover:underline">
+          <nav
+            aria-label="Pages"
+            className="flex flex-wrap items-center justify-between gap-3 border-t border-admin-line2 px-4 py-3 sm:px-5"
+          >
+            <p className="text-[13px] text-ink-invert-muted tabular-nums">
+              Showing {first}–{last} of {list.total}
+            </p>
+            <div className="flex items-center gap-2">
+              <PageLink href={href({ page: String(page - 1) })} disabled={page <= 1}>
                 Previous
-              </Link>
-            ) : (
-              <span />
-            )}
-            <span className="tabular-nums">{`Page ${String(page)} of ${String(pages)}`}</span>
-            {page < pages ? (
-              <Link href={href({ page: String(page + 1) })} className="font-semibold text-admin-link hover:underline">
+              </PageLink>
+              <span className="px-1 text-[13px] text-ink-invert-muted tabular-nums">{`Page ${String(page)} of ${String(pages)}`}</span>
+              <PageLink href={href({ page: String(page + 1) })} disabled={page >= pages}>
                 Next
-              </Link>
-            ) : (
-              <span />
-            )}
+              </PageLink>
+            </div>
           </nav>
         ) : null}
       </div>
-    </main>
+    </AdminPage>
   );
 }
 
-function FilterLink({ href, current, children }: { href: string; current: boolean; children: React.ReactNode }) {
+function PageLink({ href, disabled, children }: { href: string; disabled: boolean; children: React.ReactNode }) {
+  if (disabled) {
+    return (
+      <span aria-disabled className={button('secondary', 'sm')}>
+        {children}
+      </span>
+    );
+  }
   return (
-    <Link
-      href={href}
-      aria-current={current ? 'page' : undefined}
-      className={`h-8 rounded-[4px] border px-3 text-[12.5px] leading-[30px] font-semibold ${
-        current ? 'border-admin-edge bg-admin-nav text-admin-ink' : 'border-admin-line text-admin-body hover:border-admin-focus'
-      }`}
-    >
+    <Link href={href} className={button('secondary', 'sm')}>
       {children}
     </Link>
   );
