@@ -33,6 +33,10 @@ Each is one PR, or a few small ones. The first two are small; the matrix is last
 starts with questions for the owner.
 
 ### 1. The comparison's words: HelloWay, and no invented figures
+**Done on `tumit`, 2026-09-26 (decision 67). Production needs one dashboard edit: the
+homepage's before and after introduction, "Halloway Group's homepage" → "HelloWay's
+homepage".**
+
 Decision 66. The homepage comparison and `/before-and-after/` say "Halloway Group" beside
 photographs of a site called HelloWay, with three figures nobody measured.
 - In `apps/web/static-content/home.json`, `beforeAfter`:

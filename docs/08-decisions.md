@@ -1176,6 +1176,41 @@ Each answer, and what it changed:
   screen. The new shell (decision 63, `9baf7d6`) matches `/admin/` exactly; its Open entry
   is removed.
 
+## 67. The comparison is HelloWay's, with no figures
+
+*2026-09-26.* Task 1 of `docs/15-next-tasks.md`, as decision 66 settled it.
+
+- **The proof, in the snapshots, reaches production with the next deploy.**
+  - The homepage's comparison (`home.json`, `beforeAfter`) names `HelloWay`, not "Halloway
+    Group", and its three figures are gone (`metrics: []`).
+  - The comparison `/before-and-after/` leads with (`work/before-and-after.json`) makes the
+    same two changes, and its heading asks "What changed when HelloWay's website was
+    redesigned?". `work.test.ts` still holds the two equal.
+- **The sentence that introduces it** (`content.beforeAfter.intro`) now says "Here is
+  HelloWay's homepage…" in `home.json`. That reaches a new or empty database and the tests.
+  Production reads the homepage copy from its database, so **it needs the same edit by
+  hand**:
+  - where: `/admin/page-copy/` → Homepage → the before and after section's introduction;
+  - what: "Halloway Group's homepage" becomes "HelloWay's homepage".
+- **No figures, no empty panel.** On `/before-and-after/`, a light-ground comparison wraps
+  its figures in a navy panel, and the panel stayed when the table inside it rendered
+  nothing: a padded navy strip under the heading. It now renders only when there are figures.
+  The page test counts one table per comparison with figures, where it used to require one.
+  The homepage already left its figures out when there were none.
+- **Left alone, as the task says:**
+  - the landing page's comparison, with its own mock-ups and figures;
+  - the video testimonial credited to Halloway Group, which is demo proof;
+  - the comparison's summary on `/before-and-after/`, which still speaks of "result figures"
+    (see Open).
+- **Verified.** On `/` and `/before-and-after/`, at 360, 768 and 1440 in Chrome:
+  - "HelloWay" appears and "Halloway" does not;
+  - no figures, no table and no empty navy box;
+  - the slider's label reads "Reveal the redesigned HelloWay website", and the arrow keys
+    move it;
+  - no overflow and no console errors.
+
+  Web unit tests pass (465).
+
 ## Open
 
 - **Nothing reports abandonment yet.** The drop-off per step is in the data (each draft lead's
@@ -1265,11 +1300,15 @@ Each answer, and what it changed:
   words is made from the dashboard, and a PR that changes one of those snapshots says which
   dashboard edit production needs. A new family is named in `CONTENT_DATABASE_FIRST` only
   after the deploy's import has run it on that database.
-- **The comparison's words name another client** (decision 65). The owner answered on
-  2026-09-26 (decision 66): the client is "HelloWay" and the figures are invented. The snapshot
-  side is docs/15, task 1; the homepage's introducing sentence is the owner's edit on the page
-  copy screen. Like Northmark's picture, where the two images came from and under what licence
-  is not recorded.
+- **The comparison's words** (decisions 65 to 67). The snapshots name HelloWay, with no
+  figures (decision 67). Still open:
+  - the homepage's introducing sentence in production, the owner's edit on the page copy
+    screen;
+  - the summary on `/before-and-after/`, which says the homepage was "rebuilt around a clear
+    headline, a photograph and result figures". The new pictures show no result figures. It
+    is the owner's copy.
+  - Like Northmark's picture, where the two images came from and under what licence is not
+    recorded.
 - **`navy-900-invert` is not a token**, and a dozen marketing components use it in a
   background class (`bg-navy-900-invert/5` to `/95`), which therefore draws nothing. Among
   them are the landing page's sticky header, the reviews table and several bordered notes.
