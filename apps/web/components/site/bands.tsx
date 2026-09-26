@@ -120,7 +120,7 @@ export function CtaBand({
               href={secondaryCta.href}
               className={
                 band
-                  ? 'glass inline-flex h-14 items-center  px-7 text-[16px] font-semibold text-ink-invert hover:bg-navy-900-invert/15'
+                  ? 'glass inline-flex h-14 items-center  px-7 text-[16px] font-semibold text-ink-invert hover:bg-ink-invert/15'
                   : 'inline-flex h-14 items-center  border border-hairline px-7 text-[16px] font-semibold text-ink hover:border-ink hover:bg-canvas-raised'
               }
             >
