@@ -10,6 +10,12 @@ interface BeforeAfterSliderProps {
   before: ReactNode;
   after: ReactNode;
   clientName: string;
+  /**
+   * The pictures' shape, width over height, when it is known. The frame takes it, so
+   * `object-cover` has nothing to crop; without it the frame is 16:10, the shape the drawn
+   * comparisons are made in.
+   */
+  aspectRatio?: number | undefined;
 }
 
 /**
@@ -17,7 +23,7 @@ interface BeforeAfterSliderProps {
  * technology; the handle mirrors its focus ring. Movement uses clip-path and
  * transform only, so nothing reflows while dragging.
  */
-export function BeforeAfterSlider({ before, after, clientName }: BeforeAfterSliderProps) {
+export function BeforeAfterSlider({ before, after, clientName, aspectRatio }: BeforeAfterSliderProps) {
   // Unique per slider, so several on one page keep their own label.
   const inputId = useId();
   const [position, setPosition] = useState(50);
@@ -34,7 +40,8 @@ export function BeforeAfterSlider({ before, after, clientName }: BeforeAfterSlid
   return (
     <div
       ref={boxRef}
-      className="group relative aspect-[16/10] touch-pan-y overflow-hidden bg-canvas-raised  ring-1 ring-hairline select-none"
+      className={`group relative ${aspectRatio ? '' : 'aspect-[16/10]'} touch-pan-y overflow-hidden bg-canvas-raised ring-1 ring-hairline select-none`}
+      style={aspectRatio ? { aspectRatio } : undefined}
       onPointerDown={(event) => {
         dragging.current = true;
         event.currentTarget.setPointerCapture(event.pointerId);
@@ -51,7 +58,8 @@ export function BeforeAfterSlider({ before, after, clientName }: BeforeAfterSlid
       }}
     >
       {before}
-      <span className="absolute right-5 bottom-4 rounded bg-navy-900-invert/80 px-2 py-1 text-[11px] font-bold text-ink">
+      {/* A cream chip, readable on any picture. `navy-900-invert` was never a token, so it had none. */}
+      <span className="absolute right-5 bottom-4 rounded bg-canvas-raised/90 px-2 py-1 text-[11px] font-bold text-ink">
         Before
       </span>
 
