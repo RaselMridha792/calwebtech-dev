@@ -80,6 +80,7 @@ function testimonial(overrides: Partial<Testimonial> = {}): Testimonial {
     videoUrl: null,
     featured: false,
     consentAt: at,
+    deletedAt: null,
     date: null,
     createdAt: at,
     updatedAt: at,

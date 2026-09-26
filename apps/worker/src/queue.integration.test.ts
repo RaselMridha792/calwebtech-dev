@@ -59,6 +59,8 @@ describe('email queue against Redis', () => {
       recordDelivery: () => Promise.resolve(),
       recordBookingDelivery: () => Promise.resolve(),
       bookingState: () => Promise.resolve(null),
+      outboxEmail: () => Promise.resolve(null),
+      withdrawOutboxEmail: () => Promise.resolve(),
     };
 
     const queue = new Queue(queueName, { connection: connect() });

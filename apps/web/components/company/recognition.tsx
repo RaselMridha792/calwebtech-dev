@@ -12,11 +12,15 @@ const awardDetail = (award: CompanyAward) =>
 export function AwardList({ awards, compact = false }: { awards: readonly CompanyAward[]; compact?: boolean }) {
   if (compact) {
     return (
-      <ul data-company-list="awards" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      // As on the homepage: awards on rules, not in boxes.
+      <ul data-company-list="awards" className="grid gap-x-8 gap-y-2 sm:grid-cols-2 lg:grid-cols-4">
         {awards.map((award, index) => (
-          <li key={award.id} data-award="" className="border border-hairline bg-canvas-raised p-6" {...reveal(index)}>
-            <h3 className="font-display text-[16.5px] font-bold text-ink">{award.name}</h3>
-            <p className="mt-2 text-[14px] leading-relaxed">{awardDetail(award)}</p>
+          <li key={award.id} data-award="" className="group relative border-t border-hairline pt-6 pb-4 before:absolute before:inset-x-0 before:-top-px before:h-0.5 before:origin-left before:scale-x-0 before:bg-gold-ink before:transition-transform before:duration-500 before:ease-out-quint hover:before:scale-x-100" {...reveal(index)}>
+            <span className="meta text-ink-muted transition-colors duration-150 group-hover:text-gold-ink">
+              {String(index + 1).padStart(2, '0')}
+            </span>
+            <h3 className="heading-sm mt-3 text-ink">{award.name}</h3>
+            <p className="body-sm mt-2 text-ink-muted">{awardDetail(award)}</p>
           </li>
         ))}
       </ul>

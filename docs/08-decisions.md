@@ -1120,14 +1120,611 @@ Dragging the handle across one laptop turns the old site into the new.
 
   Tests: web 465, shared 259, API 276.
 
+## 66. The owner's answers of 2026-09-26
+
+*2026-09-26.* The owner answered the questions left open by decisions 56 to 65 in one sitting.
+Each answer, and what it changed:
+
+- **The database-first families are on in production:**
+  `CONTENT_DATABASE_FIRST=services,industries,work,home,thank-you`. The deploy's import had
+  already run each family. The visible text of 27 pages was captured before and after the
+  switch: the homepage, `/industries/` and its twelve pages, `/work/` and its five case
+  studies, and the seven thank-you pages.
+  - 16 are identical.
+  - The other 11 differ only in their related cards: a service's summary as the database
+    holds it, a tag's capitalisation, an image's alt text. Word, link and image counts are
+    unchanged, and every sampled image answers 200.
+
+  **From now on these five families are edited from the dashboard.** A change to their
+  snapshot files still reaches a new or empty database through the import, and the tests, but
+  never the live site. The env file from before the switch is kept on the server
+  (`production.env.bak-20260926-113954`) for a rollback.
+- **The floating "Start a project" button goes to `/start-a-project/`.** It is `floatingCta`
+  in the homepage copy, so the owner changes it from `/admin/page-copy/`.
+- **Search is linked from the footer.** Also homepage copy: a "Search" link to `/search/` among
+  the footer's resources.
+- **Monitoring (Task 6.3) waits until just before launch, and off-site backups (Task 6.4) wait
+  too.** No provider is chosen for either.
+- **No AI feature yet.** When one comes, lead and subscriber data may be sent to the provider in
+  use, in full: names, email addresses and messages included. This answers the question
+  decision 64 left with the owner. It sends nothing by itself; each feature's decision still
+  says what it sends.
+- **`navy-900-invert` stays as it is.** Its classes draw nothing, and the owner is content with
+  how those sections look.
+- **The demo proof stays until the owner supplies the real one**: client names, figures,
+  testimonials and portraits. Every page stays noindex until then.
+- **The comparison's pictures are right and its words are demo.** The client is "HelloWay", as
+  in the pictures, not "Halloway Group". The three figures (6.8s to 1.6s, 71% to 38%, 9 to 54)
+  are invented and come out; `beforeAfterViewSchema` sets only a maximum, so an empty list is
+  valid.
+  - The name and figures are proof, in the snapshot: `home.json`'s `beforeAfter` and
+    `work/before-and-after.json`.
+  - The sentence that introduces them, `content.beforeAfter.intro` ("Here is Halloway Group's
+    homepage…"), is homepage copy, which production now reads from the database.
+  - Untouched: the landing page's comparison, which keeps its drawn mock-ups and its own
+    figures, and the video testimonial credited to Halloway Group, which is demo proof.
+- **The service-by-city matrix (Task 3.2) is wanted.**
+- **Given to the collaborator** in `docs/15-next-tasks.md`:
+  - the comparison's words;
+  - `settings-cli` writing to the audit log;
+  - a report of where start-a-project briefs are abandoned;
+  - editing a case study's quote and video testimonial, and `/before-and-after/`, from the
+    dashboard;
+  - an outbox for lead and booking emails;
+  - the service-by-city matrix.
+- **Already fixed:** the sidebar no longer marks Dashboard as the current page on every
+  screen. The new shell (decision 63, `9baf7d6`) matches `/admin/` exactly; its Open entry
+  is removed.
+
+## 67. The comparison is HelloWay's, with no figures
+
+*2026-09-26.* Task 1 of `docs/15-next-tasks.md`, as decision 66 settled it.
+
+- **The proof, in the snapshots, reaches production with the next deploy.**
+  - The homepage's comparison (`home.json`, `beforeAfter`) names `HelloWay`, not "Halloway
+    Group", and its three figures are gone (`metrics: []`).
+  - The comparison `/before-and-after/` leads with (`work/before-and-after.json`) makes the
+    same two changes, and its heading asks "What changed when HelloWay's website was
+    redesigned?". `work.test.ts` still holds the two equal.
+- **The sentence that introduces it** (`content.beforeAfter.intro`) now says "Here is
+  HelloWay's homepage…" in `home.json`. That reaches a new or empty database and the tests.
+  Production reads the homepage copy from its database, so **it needs the same edit by
+  hand**:
+  - where: `/admin/page-copy/` → Homepage → the before and after section's introduction;
+  - what: "Halloway Group's homepage" becomes "HelloWay's homepage".
+- **No figures, no empty panel.** On `/before-and-after/`, a light-ground comparison wraps
+  its figures in a navy panel, and the panel stayed when the table inside it rendered
+  nothing: a padded navy strip under the heading. It now renders only when there are figures.
+  The page test counts one table per comparison with figures, where it used to require one.
+  The homepage already left its figures out when there were none.
+- **Left alone, as the task says:**
+  - the landing page's comparison, with its own mock-ups and figures;
+  - the video testimonial credited to Halloway Group, which is demo proof;
+  - the comparison's summary on `/before-and-after/`, which still speaks of "result figures"
+    (see Open).
+- **Verified.** On `/` and `/before-and-after/`, at 360, 768 and 1440 in Chrome:
+  - "HelloWay" appears and "Halloway" does not;
+  - no figures, no table and no empty navy box;
+  - the slider's label reads "Reveal the redesigned HelloWay website", and the arrow keys
+    move it;
+  - no overflow and no console errors.
+
+  Web unit tests pass (465).
+
+## 68. `settings-cli` writes to the audit log
+
+*2026-09-26.* Task 2 of `docs/15-next-tasks.md`. CLAUDE.md asks for an audit entry on every
+content change, and the command line changed settings without one.
+
+- **The same writer.** The row the dashboard writes goes through one function now,
+  `writeAudit` (`apps/api/src/auth/audit-writer.ts`), which `AuditService.record` calls.
+  `settings-cli` calls it too. It lives outside the Nest service so a command line, which
+  has no API process, can use it without loading one.
+- **What a `set` records:**
+  - the action the settings screen writes, `setting.changed`, on the `Setting` whose key was
+    set, so both show in one place on the audit screen;
+  - no user, since the actor is the command line, and `via: 'settings-cli'` in the entry, as
+    `admin-cli` marks its own;
+  - the top-level fields that changed, the same comparison the page copy screen records,
+    moved to `apps/api/src/common/changed-fields.ts` so both use one;
+  - the value before and after.
+
+  The setting and its row are written in one transaction, so a change is never made
+  unrecorded. A `get`, and a value the schema refuses, write nothing.
+- **No secret reaches the log.** A setting can hold a secret. Before either value is written,
+  any field whose name reads like a secret, at any depth, has its value replaced with
+  `[redacted]`: secret, token, password, passphrase, API key, private key, credential,
+  signing. The field's name stays, so the log still says it changed. None of the five
+  settings the command line can set holds a secret today; the rule is for the one that will.
+- **The audit screen names the tool.** An entry with no user but a `via` reads "Command line
+  (settings-cli)" where it used to read "No signed-in user". The same goes for
+  `admin-cli`'s, which carry `via: 'admin-cli'`.
+- **The command** moved into `apps/api/src/settings/settings-command.ts`, so it can be tested
+  against a database. `settings-cli.ts` is the process around it: the env file, the client,
+  and the output. Its usage and output are unchanged.
+- **Verified.**
+  - Unit tests: which fields changed, whatever the key order; a secret-named field redacted
+    at any depth, with its name kept and the original untouched.
+  - An integration test on a real database:
+    - two sets leave the setting and two rows, the second with its before, `via`, the
+      changed field and its after;
+    - a larger setting records only the field that changed;
+    - a get, a refused value and an unknown key write nothing.
+  - The page copy integration test still passes on the moved comparison. API unit tests: 278.
+  - On the local stack, `node dist/settings-cli.js set site.indexing` wrote the row, and the
+    audit screen showed "Command line (settings-cli)" with its before and after, at 360 and
+    1440, with no overflow and no console errors.
+
+## 69. Where start-a-project briefs stop
+
+*2026-09-26.* Task 3 of `docs/15-next-tasks.md`, and the gate of build plan task 5.2:
+abandonment must be measurable per step.
+
+- **A report for a chosen period**, `/admin/leads/briefs/` ("Where briefs stop"). It is reached
+  from a button on the inbox's header and from Ctrl K.
+  - The period is the last 7, 30 or 90 days, by when the brief was begun.
+  - Four figures: begun, sent, not sent (with the step most stopped at), and the share
+    finished.
+  - A row for each of the six steps: how many reached it, a bar for their share of those
+    begun, and how many stopped there without sending.
+  - Read only. `GET /admin/leads/brief-funnel?days=` needs the leads module's read access.
+- **Steps 1 and 2 are not measured, and the report says so.** A brief is first stored when its
+  visitor leaves the contact step, the first moment there is an address to keep it under
+  (decision 56). Every stored brief has passed steps 1 and 2, and nobody who left there leaves
+  a row. Those two steps show everyone counted as having reached them, and "not measured".
+- **The data was already there.** A stored brief is a `PROJECT` lead whose `answers.draft`
+  holds `furthestStep`, which never goes back, and `completedAt` once it is sent.
+  `briefProgress` (`apps/api/src/forms/forms.draft.ts`, the family's own module) reads them for
+  both the report and the inbox. No migration.
+- **In the inbox, an unsent brief is not an ordinary new lead:**
+  - A "Brief" filter offers unfinished briefs and sent briefs. It is `brief=` in the URL, and
+    counts as a narrowing filter.
+  - An unfinished brief's form column reads "Unfinished", with a dashed edge, in place of
+    "Brief", and says the step in words for a pointer and a screen reader.
+  - Its panel says "Not sent" and the step it stopped at, above what the visitor had typed.
+- **How the filter matches.** Prisma's JSON path filters, with `AnyNull` for a key that is
+  absent, which is how an unsent brief is stored. They were checked against the local rows
+  before use. The inbox's other fragments that are AND or OR clauses (the channel filter) now
+  go into one `AND` list with this one, so neither overwrites the other.
+- **Verified.**
+  - An integration test on a real database. Seven briefs were begun in the period: two left
+    at step 3, one each at 4, 5 and 6, and two sent. One more was begun outside the period, and
+    two leads are not briefs. The test checks:
+    - every step's reached and stopped counts, and the wider period taking in the older brief;
+    - the unfinished and sent filters, each with its marker or none;
+    - the brief filter combined with search;
+    - no marker on a lead that is not a brief.
+  - Unit tests: API 278, shared 259, and the admin and lib web tests. One web test,
+    `lib/api/search.test.ts`, timed out at 5 seconds while other work loaded the machine; run
+    on its own it passes. It is not touched by this change.
+  - In Chrome at 360 and 1440, with no overflow and no console errors:
+    - the report showed the local stack's seven briefs over 90 days;
+    - the inbox, filtered to unfinished briefs, showed the one left at step 5, marked;
+    - its panel said so.
+
+## 70. A case study's testimonials and `/before-and-after/` are edited in the dashboard
+
+*2026-09-26.* Task 4 of `docs/15-next-tasks.md`. Non-negotiable 3 says publishing never needs
+a deploy, and two things on the site still did: a case study's quote and video testimonial,
+which are records of their own, and `/before-and-after/`, which kept its snapshot because its
+comparison describes its pictures in words no row held (decision 58).
+
+- **A case study's testimonials.** The case study editor has a new section, "The client's
+  words", below the story.
+  - Each testimonial is a `Testimonial` row on the project: the words, the name, role and
+    company, a rating, a portrait, a video and a consent date, and Featured. Each one is
+    added, changed or removed on its own, at `/admin/case-studies/:id/testimonials`, and
+    saves straight away; the case study's own Save does not touch them.
+  - **`consentAt` is the permission to publish.** A testimonial saved without it is kept and
+    shown nowhere. Entering the date shows it; clearing it takes it off the site. The screen
+    says which, on each row, with the date.
+  - The page picks as it did: the first consented testimonial, featured first and then the
+    newest, is its quote, and the first consented one with a video is its video. The API
+    works out which row is which with the page's own two queries, and each row in the editor
+    says so ("The page's quote", "The page's video").
+  - **Removing one keeps the row.** `Testimonial` gains `deletedAt`, and `CONSENTED`, the
+    filter every public query uses, now also requires `deletedAt: null`. The homepage and
+    landing page queries, which spelled the consent filter out, use `CONSENTED` too, so a
+    removed testimonial leaves every page it was on. Removal asks for confirmation first.
+  - Nothing about how the page renders them changed. The video is the case study's cover
+    with a play button; the video itself is `preload="none"` inside a dialog, so the page asks
+    for it only when it is played.
+- **`/before-and-after/` is a list of `Comparison` records.**
+  - A comparison holds the client's name, a heading written as a question, a summary, two
+    pictures each with its description and, optionally, its width and height (decision 65),
+    up to four figures, its position, whether it is shown on the homepage, a draft or
+    published state, and optionally the case study it links to. The link shows only while
+    that case study is published and complete.
+  - Every bound is the page's own, in `comparisonInputSchema`, so the screen cannot store a
+    comparison the page would refuse. A picture's size is both numbers or neither, since the
+    slider uses the pair.
+  - `/admin/before-and-after/` lists them in the page's order, with their state and the one
+    the homepage shows; each opens in an editor like the case study's. It is in the sidebar
+    under Content and in the Ctrl K palette ("New comparison").
+  - New comparisons are drafts. Publishing, unpublishing and deleting are their own steps,
+    and deleting keeps the row.
+  - The page lists published comparisons only. A project's own before and after pictures
+    (`Project.beforeImageUrl`) stay on its case study page and no longer appear on
+    `/before-and-after/` by themselves: a comparison that links the case study does that.
+    Neither the snapshots nor production had a project with a pair.
+  - Each comparison has its own heading now, so `work.copy`'s `comparisonHeading` template
+    is no longer read. It stays in the setting.
+- **How an edit reaches both pages.** The homepage shows the first published comparison
+  marked "Show on the homepage", in the page's order. Both pages read one list, so the
+  homepage never shows a comparison `/before-and-after/` does not.
+  - A mark, rather than simply the first comparison, because it is the rule the homepage
+    already used for its proof (featured projects, featured testimonials). It also lets a
+    comparison go on `/before-and-after/` without taking the homepage's place. The
+    end-to-end fixtures depend on that: they publish a comparison for the slider's test,
+    while the homepage's test expects its empty state.
+  - Where each page gets it:
+    - **With `CONTENT_SOURCE=api`**, the API's homepage view takes the same row.
+    - **In the launch mode** (`CONTENT_SOURCE=snapshot`, as production runs), the homepage
+      keeps its snapshot's proof and lays the database's comparison over it, as decision 59
+      lays the database's words. It does this only while `CONTENT_DATABASE_FIRST` names
+      `before-and-after`.
+    - **With the family off**, both pages read their snapshots. The comparison in
+      `work/before-and-after.json` now carries `"onHomepage": true`, and `work.test.ts` holds
+      the homepage's comparison equal to the one the page marks. Switching the family on
+      therefore changes nothing until somebody edits.
+  - Unticking the mark, or unpublishing the comparison, leaves the homepage's section with
+    its empty sentence ("No before and after comparison is published yet").
+- **A new family, `before-and-after`.**
+  - It is both the import family and the `CONTENT_DATABASE_FIRST` name.
+  - Unlike the others it has no per-record fallback: the page is one list, so with the family
+    named the dashboard's list is the page, empty or not.
+  - The importer is appended to the registry after `page-copy`, so a live database runs only
+    it on the next deploy. It writes the snapshot's comparisons, published, in order, with the
+    homepage's marked. It writes them only into a table that has never held a comparison,
+    removed ones included, so once somebody has edited the list it is theirs, even on a
+    forced run.
+  - The page's copy around the comparisons was already in the database: `work.copy`, which
+    the `case-studies` family writes and page copy edits.
+  - The `work` family already imported each case study's quote. It now leaves a testimonial
+    that is already stored alone: one somebody has edited or removed is not written back on a
+    forced run.
+- **Audited, and enforced in the API.**
+  - Every change writes its audit entry in the same transaction:
+    - `testimonial.created`, `.updated` and `.deleted`. An update records the fields that
+      changed, before and after. A removal records everything the testimonial said, with its
+      consent date.
+    - `comparison.created`, `.updated` (with the fields that changed), `.published`,
+      `.unpublished` and `.deleted`.
+  - Both screens need `content: read` to look and `content: full` to change, like the other
+    content editors. A link to a case study that no longer exists is refused, not dropped.
+  - The editors show the API's field errors in plain words ("This cannot be empty.") under
+    the field they name.
+- **Migration** `20260926150000_before_after_comparisons`, forward-only: `Testimonial.deletedAt`
+  and the `Comparison` table.
+- **What production needs.**
+  - **No dashboard edits for words.** No copy changed; the snapshot gained only the homepage
+    mark.
+  - The deploy runs the migration and, with `IMPORT_SNAPSHOTS_ON_DEPLOY=true`, the
+    `before-and-after` import family.
+  - **Testimonials are live after the deploy**, because production already names `work`. The
+    three imported quotes (Northmark Supply, Truvia Labs, Cascadia Health) appear in their
+    case studies' editors, with their consent dates.
+  - **After the deploy, add `before-and-after` to production's `CONTENT_DATABASE_FIRST`**:
+    `services,industries,work,home,thank-you,before-and-after`. Until then `/before-and-after/`
+    and the homepage keep their snapshots, and the new screen says that an edit there is saved
+    but not yet shown.
+- **Verified.**
+  - Tests:
+    - shared: the comparison and testimonial inputs, and `homepageComparison`;
+    - web: the getters with the family on and off, the homepage taking the marked
+      comparison and none when none is marked, the snapshots agreeing, and the plain field
+      errors;
+    - API unit: the mapper, the homepage's comparison, and a comparison whose pictures
+      break the contract, named in the log;
+    - integration on a database of their own:
+      - a comparison from draft to both pages, the homepage following the mark in the
+        list's order, the case study link only while that page is live, removal kept, and
+        every audit entry;
+      - a testimonial kept but not shown without consent, shown with it, the video from a
+        second one, cleared consent taking it off, removal kept, and the audit entries;
+    - the import: `/before-and-after/` and the homepage's comparison built from the
+      imported rows equal their snapshots, and a forced run keeps edited comparisons and
+      testimonials.
+    - The existing case study, page copy, work and import suites pass. Totals: shared 270,
+      db 77, web 471, API unit 280, and 192 in the 21 integration files touched.
+  - On the local stack, the deploy's import ran only `before-and-after` and wrote the HelloWay
+    comparison. A second web server ran production's families plus `before-and-after`:
+    - `/` and `/before-and-after/` were unchanged;
+    - a summary and a figure saved from the dashboard reached both pages, and were put back;
+    - a video testimonial added to Meridian Parts showed its quote and play button. The page
+      requested no video until Enter on the play button opened the dialog, and Escape closed
+      it with focus back on the button. It was then removed.
+  - In Chrome at 360 and 1440: the new list and editor, and the case study's testimonials
+    open, confirming a removal and refused. No overflow, and no console errors beyond the
+    refused saves' 400s. By keyboard, every field is labelled and reached in reading order,
+    and the palette finds "Before and after" and "New comparison".
+  - Own JavaScript: `/admin/before-and-after/[id]` 10.8 kB, `/admin/case-studies/[id]` 16.4 kB
+    (was 13.4), the list 6.0 kB, all under 20. `/`, `/before-and-after/` and `/work/[slug]`
+    did not change.
+
+## 71. An outbox for lead and booking emails
+
+*2026-09-26.* Task 5 of `docs/15-next-tasks.md`, and the Open entry "Emails are queued after the
+lead commits". Campaign sends already worked this way (decision 51): rows first, a sweep
+queues them. Migration `20260926160000_email_outbox` adds one table, `EmailOutbox`. It is
+additive, and nothing is lost.
+
+- **Each email is a row, written in the lead's or the booking's transaction.** A row holds
+  the whole job (`payload`, as `emailJobSchema` reads it), its owner (`leadId` or `bookingId`)
+  and its due time (`sendAt`). Deleting the lead or the booking deletes its rows. The rows
+  cover:
+  - for a lead, the team's notification and the acknowledgement. A calculator lead gets its
+    result instead of the acknowledgement;
+  - for a booking, the confirmation, the team's notification, and the reminders a day and an
+    hour before;
+  - for a move or a cancellation, the emails to the visitor and to the team (decision 60).
+
+  The rows commit with the lead or the booking, or not at all. A booking that loses its slot
+  to someone else is rolled back and leaves no email.
+- **The API queues the rows at once, and the worker sweeps.**
+  - After the commit, the API adds each row to the email queue and sets `queuedAt`.
+  - The worker's sweep runs every minute on its own queue, `email-outbox-sweep`. It adds
+    every row still to send: not sent, not withdrawn and not given up on.
+    - A row the API has queued is already waiting under its own id, so adding it again does
+      nothing.
+    - A row the API never queued is queued now, delayed to its time. This happens when the
+      process died between the commit and the queue, or Redis refused the job.
+    - Because every pending row is added, and not only the unqueued ones, a job Redis has
+      lost comes back too, such as a reminder due next week.
+  - The sweep logs how many rows the API had not queued.
+- **One row is one email.**
+  - The job id is `outbox-<row id>`. The job carries only that id; the email stays in
+    Postgres.
+  - The worker reads the row first. It skips a row that was already sent, withdrawn or given
+    up on, however the row came to be queued twice.
+  - The provider's idempotency key is `outbox-<row id>` as well.
+  - The delivery is written on the lead's or the booking's timeline, and the row is marked
+    sent, in one transaction.
+  - After the last failed attempt, or when the schema refuses the payload, the row gets
+    `failedAt` and the error, and the sweep stops queuing it.
+- **Reminders keep their timing and their removal.**
+  - A reminder row is due at its window. A reminder whose time has already passed is not
+    written, as before.
+  - Moving a call, cancelling it, or the team closing it withdraws its unsent reminder rows
+    (`cancelledAt`, with the reason) in the same transaction as the change. Their jobs are
+    then taken off the queue.
+  - The worker still reads the booking before it sends a reminder (decision 60). If the call
+    has been moved or cancelled, it now also withdraws the row.
+- **The emails and their words are unchanged.** Each payload is built as before; only the
+  route to the queue changed.
+  - The team's recipients are read before the transaction.
+  - `notification_skipped` is written in the lead's transaction.
+  - `email_queue_failed` is no longer written, because a queue failure now loses nothing.
+    This replaces decision 19's "a queue failure is recorded on the lead".
+- **Jobs from before the outbox still work.**
+  - The worker still sends a job that carries its own email. That covers a campaign's test
+    send, which the team requests and which belongs to no lead or booking, and any job
+    queued before this deploy.
+  - Moving or cancelling a call booked before this deploy also removes its reminders under
+    their old ids.
+- **Where the code is:**
+  - `packages/db/src/email-outbox.ts`: what a row is, and which rows are still to send. The
+    API and the worker share it, as they share `audience.ts`.
+  - `apps/api/src/queue/email-outbox.ts`: writing rows, withdrawing reminders, and queuing
+    after the commit.
+  - `apps/worker/src/email-outbox-sweep.ts`: the sweep.
+  - `emailOutboxQueueEntry` in `packages/shared/src/email-jobs.ts`: the API and the sweep
+    build the same job from it.
+- **Sent rows are kept.** A lead has two rows and a booking four, so the table stays small.
+- **Verified.**
+  - Unit tests:
+    - the queue entry's id, delay and retries;
+    - the processor sending a row's email keyed by the row;
+    - the processor skipping a row that was sent, withdrawn, given up on or deleted;
+    - the processor refusing a bad payload;
+    - the processor withdrawing a reminder for a cancelled call.
+  - An API integration test on its own database. Its queue never answers, which is the
+    process dying at the enqueue:
+    - a lead's acknowledgement and notification are committed, unqueued and pending for the
+      sweep;
+    - a booking's confirmation, notification and both reminders are committed, each
+      reminder due at its window;
+    - a move is committed with the old reminders withdrawn, and the new reminders and both
+      change emails written;
+    - with a live queue, each row is queued once, and adding it again adds nothing;
+    - the booking that loses a raced slot leaves no email.
+  - A worker integration test on its own database and queue, with the real sweep,
+    processor, store and log transport:
+    - a lead is committed with its two rows and never queued. The sweep queues both, and the
+      log transport sends each once. The rows are marked sent with `log-outbox-…`, and the
+      lead has two `email_sent` entries;
+    - a second sweep, and a job added again by hand, send nothing;
+    - a booking's confirmation is sent with its calendar file;
+    - its reminder is delayed to its time. After Redis loses the job, the next sweep puts it
+      back at the same time. When the call is cancelled, the reminder is withdrawn unsent.
+  - The existing lead, booking, move and cancel, antispam, import, calculator and service
+    enquiry integration tests now read the committed rows.
+    - The whole API integration suite ran: 33 files, 208 tests. Three files timed out under
+      load and passed when run again.
+    - The worker's suite: 5 files, 29 tests. API unit tests: 280.
+  - After `prisma migrate deploy`, `prisma migrate diff` from the database to the schema is
+    empty.
+  - On the local stack, with `EMAIL_TRANSPORT=log`:
+    - a lead sent to the running API left two rows, both queued;
+    - the confirmation's job was then taken out of Redis and its `queuedAt` cleared. That is
+      what a process that dies before the enqueue leaves behind;
+    - on start, the worker sent the notification and logged "outbox: queued 1 email(s) the
+      API had not". It then sent the confirmation;
+    - both rows were marked sent, and the lead's timeline shows both `email_sent` entries;
+    - with both jobs removed, both emails were sent.
+
+## 72. The mega menus are navy panels, and the bar shows where the reader is
+
+*2026-09-26.* Asked for by the owner's side: the four mega menus read as plain lists, too
+ordinary for a technology agency, and the bar did not show which part of the site was open.
+**This changes a section's layout and adds a few words of chrome, so under RULES.md
+section 1 it is the owner's to confirm or reverse.** No token, link, page or menu content
+changed, and the dashboard edits the menus as before.
+
+- **A panel is the brand's navy ground dropped from the bar** (`site-header.tsx`), in place
+  of the cream sheet with three kinds of promo box:
+  - the menu's name set at `display-md`, with a count over it in `meta` champagne ("18
+    services", counted from the menu's links) and, where the family has an index page, an
+    "All services" or "All industries" link beside it. Those two labels are new words;
+  - the lists under it, split evenly across the room, so Resources' four lists no longer
+    leave a column empty and wrap their links. Hairlines divide the columns;
+  - one promo form for every menu: a raised navy plate with a gold action, or a champagne link
+    for Industries' case study;
+  - Work's two projects as photographs darkened from the foot, the figure in champagne
+    `display-md` over the client's name.
+- **Motion, all opacity and transform, and none under reduced motion.** The panel settles from
+  4px, its heading and then each column rise a beat apart, a link row lifts, draws a champagne
+  rule down its edge and slides its label for an arrow, a project photograph slowly zooms, and
+  the label's chevron turns. The page behind an open panel dims (navy at 40%).
+- **A light follows the pointer across the panel**, over the brand's `grid-lines-light` fading
+  from the corner. MegaMenuState sets its position; it is the one piece of new script, a
+  pointer listener of a few lines.
+- **The bar shows where the reader is.** MegaMenuState marks the link to the current page
+  `aria-current="page"` and the menu or bar link whose section holds it `"true"`, with
+  `data-current` for the stylesheet: a 2px rule stays under that menu's label, the link inside
+  the panel keeps its lift and rule, and the small-screen menu underlines it. Pages load in
+  full, so it runs once. Where two menu entries lead to the same page (locally, "UI/UX" and
+  "Branding" both go to `/services/custom-website-development/`), both show as current: a
+  content fix, not a code one.
+- **The bar itself** (`globals.css`): once it has a ground it is frosted (canvas at 85% over a
+  blur, on a layer of its own, because a backdrop filter on the header would trap the fixed
+  dimming inside it); an open menu over a dark hero turns the bar navy, so bar and panel read
+  as one surface, and the navy action takes a light rule while it does; a champagne reading
+  progress rule runs along the bar's foot, driven by the scroll itself where the browser
+  supports scroll timelines; and the main action gains an arrow that steps on hover.
+- **Checked** at 1440 by hover and keyboard (every step `e2e/home.spec.ts` takes: open on
+  focus, Tab into the panel, Escape, Enter, Shift+Tab out), and at 360 and 768 with no
+  sideways scroll. The Playwright suite itself was not run: its browsers are not installed on
+  this machine. The own-script budget was not re-measured; the change to MegaMenuState is
+  about 1 kB of source.
+- **Locally the services promo leads to `/cost-calculator/`**, not `/#estimate`, which is what
+  `e2e/home.spec.ts` expects of it. That is the local database's menu, not this change.
+
+## 73. The marketing site loses its boxes: rows, rules, tiles and plates
+
+*2026-09-26.* Asked for by the owner's side: the site read as a template, a box around every
+list. **This changes section layouts across the marketing site, so under RULES.md section 1 it
+is the owner's to confirm or reverse.** No token, copy, link target or content model changed;
+everything the dashboard edits is edited as before, and each change is its own commit on
+`tumit` so any one can be reverted alone.
+
+- **The direction is the brand book's own rule 2, "no boxes"**, which most sections broke. A
+  list is now numbered rows on hairlines, entries on a rule that draws champagne from the left
+  under the pointer, photograph tiles under a navy fade, or a navy plate for the one thing a
+  section wants chosen. The `lift` hover (a shadow and a 4px rise) is gone from every card.
+- **The homepage**, section by section:
+  - services: a row fills with navy from the left on hover, its type turning cream; the old
+    hover animated padding, which moved layout;
+  - work: the filters are tabs on a rule; the lead case study is a spread beside a large
+    photograph; the other cards lose their box, the photograph slowly zooms, the tags are one
+    dotted line of `meta`;
+  - industries: photograph tiles with the sector's type on a navy fade. "Not listed here" is
+    the grid's last tile, and the first sector takes two columns when the count would leave a
+    gap, so seven sectors no longer leave one alone on the last row;
+  - the reasons to stay, awards, and the stack are numbered rows; the process is a timeline
+    with a marker at each step; client quotes stand on rules under a large quote mark;
+  - articles and locations lose their boxes. **The article entries now link to the article**:
+    they looked like links and went nowhere;
+  - pricing: shapes on a rule, the most common one a navy plate carrying its label;
+  - the closing booking ask is a navy plate; every filled action shares one form with an
+    arrow that steps on hover (`ActionLink` in `components/home/parts.tsx`);
+  - the client names fade at the band's edges; three raised-cream sections in a row now
+    alternate with canvas and sunken grounds (rule 3).
+- **Across the site**: the shared link, case study and testimonial cards (`site/cards.tsx`,
+  used by about 28 index and detail sections), the featured article, the team portraits, the
+  glossary terms, the industry and location cards, the company question answers, award preview
+  and technology groups, and the points on the industries and locations dark bands all take
+  the same forms. Landing pages (`/lp/`) are left alone: they are campaign pages with their own
+  approved design.
+- **The work filters** (`/work/`) were a box of chips in three columns, with dead options
+  showing "(0)". They are a toolbar of three menus (native `<details>`, so they work without
+  script), each naming its choice; the list shows every term with its count, and a term that
+  would lead to nothing is shown but not a link. The filters in force sit under the toolbar as
+  pills that remove themselves, beside Clear filters. Every option is still a link, so each
+  view is still a server-rendered, shareable URL. `FilterMenus` (a few hundred bytes of
+  script on `/work/` only) keeps one menu open at a time and closes it on an outside click or
+  Escape. The pagination is numbers on a rule. Insight topics are tabs on a rule to match.
+- **Fixes found on the way**:
+  - champagne on navy was `gold-ink` (the light-ground gold, 1.8:1) in the estimate band's
+    bullets, the work summary's figures and a comparison's "after" figure. They are `gold-500`.
+    **This closes the Open entry on the "after" figure**;
+  - four focus rings still drew the old cobalt `outline-primary`; they use `outline-focus`;
+  - `hover:bg-navy-900-invert/15` on two glass buttons named a colour that does not exist, so
+    they had no hover;
+  - champagne stays off headings and quote marks, which the brand test in
+    `services/sections.test.tsx` asserts for the shared cards.
+- **Checked**: type check, lint and the 471 web unit tests pass. Every page above answers 200
+  with no sideways scroll and no script error at 360, 768 and 1440; the work filter menus open,
+  close on an outside click and on Escape (focus returns to the button) at 360 and 1440. The
+  Playwright suite was not run (its browsers are not installed here), nor the budget build;
+  the only new script is `FilterMenus`.
+- **Production** reads the homepage, services, industries and work from the database
+  (decision 66). This changes only components, so it reaches production with the deploy; no
+  dashboard edit is needed.
+
+## 74. The owner's answers on the redesign and the service-by-city matrix
+
+*2026-09-26.* The owner answered the collaborator's questions: decisions 72 and 73, the Open
+entry on the comparison's summary, and Q1 to Q11 of `docs/16-service-city-matrix.md`.
+
+- **The redesign stays.** The navy mega menus (decision 72) and the site without boxes
+  (decision 73) are confirmed as they are, in full.
+- **The comparison's summary on `/before-and-after/` stays as written**, "result figures"
+  included.
+- **The matrix, question by question:**
+  1. **Address:** `/services/<service>/<city>/`, for example
+     `/services/ecommerce-development/sacramento/`. `docs/03` and `docs/04` are corrected to
+     match.
+  2. **How many:** exactly nine pages. This overrides the recommendation of no target.
+  3. **`b2b-web-design`:** not part of the matrix, and no B2B service is created. The campaign
+     page `/lp/b2b-website-design/` stays as it is, a landing page of its own.
+  4. **Cities:** the new city pages come first. San Francisco, Los Angeles and San Diego get
+     city pages before their matrix pages; Sacramento and Austin already have theirs.
+  5. **The nine pairs**, confirmed by the owner:
+     - ecommerce development in Sacramento, San Francisco, Los Angeles, San Diego and Austin;
+     - WordPress development in Sacramento, San Francisco, Los Angeles and San Diego.
+
+     Austin is in, although `docs/04` lists it as Tier 3; `docs/04`'s tiers are corrected to
+     match the site.
+  6. **Locations into the database:** yes, as recommended. The city pages keep rendering from
+     their snapshots until the owner names `locations` in `CONTENT_DATABASE_FIRST`.
+  7. **Stored redirects are served** for all four families (services, industries, case studies
+     and the matrix), as recommended.
+  8. **Sixty per cent:** the editor warns, and the API refuses to publish below it, as
+     recommended.
+  9. **Sections and structured data:** as proposed in Q9. No price, and no review or rating.
+  10. **Parent links:** as proposed. City cards link to the matrix page, and the service page
+      gets a short list. Nothing changes while none is published.
+  11. **Family name:** `service-locations`, as recommended.
+- **What answer 4 adds to the plan.** Three new city pages must be created, and publishing
+  never needs a deploy (non-negotiable 3), so the owner has to create them from the dashboard.
+  A location editor is therefore part of this work, with Task 3.1's sixty per cent warning.
+  `docs/16` listed it as out of scope. The order becomes:
+  1. serve redirects;
+  2. import the locations;
+  3. the location editor;
+  4. the matrix: type, page, editor, parent links.
+- **What does not change: no invented local content.** Nine is the number the owner will
+  fill, not a quota to fill with placeholder copy. Nothing is published until the owner
+  supplies the real local facts listed in `docs/16`, section 5, for each of the nine pairs
+  and each of the three new cities.
+
 ## Open
 
-- **Nothing reports abandonment yet.** The drop-off per step is in the data (each draft lead's
-  step and its `draft_*` activities) but no screen counts it; the leads inbox shows an
-  unfinished brief as an ordinary new lead. A small report in the dashboard, or a filter for
-  unfinished briefs, would make the gate visible to the owner.
+- **Stored redirects are written but never served** (found while planning task 6,
+  `docs/16-service-city-matrix.md`, Q7). The services, industries and case studies screens
+  write a `Redirect` row when a published slug changes. Nothing reads them: no web route, proxy
+  or API endpoint does, only integration tests. A moved address shows the old snapshot page or
+  a 404, against CLAUDE.md's rule that a slug change creates a permanent redirect. `fromPath`
+  is unique, so moving A→B→A→B fails on the second save, and A→B→A would loop once redirects
+  are served. The plan makes serving them its step 2.
+- **Production has no Location rows.** Sacramento and Austin exist only as snapshots; no
+  importer, seed or editor writes a Location. A matrix page points at one, so step 1 of
+  docs/16 imports them (Q6).
+
 - **The floating "Start a project" button goes to `/book-a-consultation/`**, not to this page
-  (`floatingCta` in the homepage copy). That is the owner's content, so it was left.
+  (`floatingCta` in the homepage copy). The owner chose `/start-a-project/` (decision 66) and
+  changes it from the page copy screen.
 
 - **The article block's privacy line still mentions a name.** `insights.copy`'s
   `newsletter.privacyNote` reads "Your name and email are stored in our own database…", and
@@ -1166,7 +1763,8 @@ Dragging the handle across one laptop turns the old site into the new.
   confirmation email should come before the first real campaign; it needs email to be
   sending, which production does not do today.
 
-- The approved demo proof gives two names two identities. "Priya Raman" is Calwebtech's
+- **The owner will supply the real proof** (decision 66); every page stays noindex until then.
+  The approved demo proof gives two names two identities. "Priya Raman" is Calwebtech's
   Design Lead on the landing page and Truvia Labs' VP Marketing in a testimonial. "Dana
   Whitfield" is Calwebtech's Delivery Manager and Halloway Group's Operations Lead. Several
   portrait photos are reused between a client and a team member. The owner decides which
@@ -1201,27 +1799,26 @@ Dragging the handle across one laptop turns the old site into the new.
   Switching it on earlier fails every push to `main`. The bootstrap script prints them.
 - The owner's server has 4 GB, which runs one stack. Staging and production side by side
   need 8 GB or a second server.
-- **Turning the database-first families on in production is the owner's step.** Services,
-  industries, case studies (`work`), the homepage copy (`home`) and the thank-you copy
-  (`thank-you`) can each read the database first (decisions 44, 58 and 59). Each needs the
-  deploy's import to have run its family on that database first, then its name in
-  `CONTENT_DATABASE_FIRST`; production names `services` alone today. Until a family is named,
-  what the dashboard saves for it is stored and audited but the site keeps its snapshot, and the
-  page copy screen says so beside each row.
-- **The comparison's words name another client** (decision 65). The pictures show "HelloWay",
-  a travel site. The text beside them, and on `/before-and-after/`, says "Halloway Group's
-  homepage", with its figures (6.8s to 1.6s, 71% to 38%, 9 to 54). The words and figures are
-  the owner's. Whether HelloWay is Halloway Group, and whether those figures are this
-  redesign's, is the owner's to say. Like Northmark's picture, where the two images came from
-  and under what licence is not recorded.
+- **Production reads all five database-first families from the database** (decision 66):
+  services, industries, case studies (`work`), the homepage copy (`home`) and the thank-you
+  copy (`thank-you`). Their snapshot files no longer reach the live site; a change to their
+  words is made from the dashboard, and a PR that changes one of those snapshots says which
+  dashboard edit production needs. A new family is named in `CONTENT_DATABASE_FIRST` only
+  after the deploy's import has run it on that database.
+- **The comparison's words** (decisions 65 to 67). The snapshots name HelloWay, with no
+  figures (decision 67). Still open:
+  - the homepage's introducing sentence in production, the owner's edit on the page copy
+    screen;
+  - Like Northmark's picture, where the two images came from and under what licence is not
+    recorded.
 - **`navy-900-invert` is not a token**, and a dozen marketing components use it in a
   background class (`bg-navy-900-invert/5` to `/95`), which therefore draws nothing. Among
   them are the landing page's sticky header, the reviews table and several bordered notes.
-  Decision 65 fixed only the slider's label. Replacing the rest changes how those sections
-  look, which is the owner's call (RULES.md, section 1).
-- **AI is connected but used by nothing yet** (decision 64). Which feature comes first is the
-  owner's choice, as is whether any lead or subscriber data may be sent to a provider (CLAUDE.md,
-  "Ask before deciding"). Production can store keys today through its `AUTH_SECRET`; setting a
+  Decision 65 fixed only the slider's label. The owner chose to leave the rest as it is
+  (decision 66).
+- **AI is connected but used by nothing yet** (decision 64). The owner has no feature in mind
+  yet, and has said lead and subscriber data may be sent to a provider in full when one comes
+  (decision 66). Production can store keys today through its `AUTH_SECRET`; setting a
   dedicated `CREDENTIALS_KEY` is better (docs/11-vps-deploy.md, "AI providers").
 - **The dashboard has one theme, the dark one** (decision 63). A light theme would need light
   values for `result` and `danger` inside `[data-theme='admin']`, which is a token decision for
@@ -1229,10 +1826,10 @@ Dragging the handle across one laptop turns the old site into the new.
 - **Page sections and Forms and routing are still placeholders** (decision 63 restyled them,
   nothing more). The enquiry types behind the contact form are live data that a Forms screen
   could edit.
-- **The service-by-city matrix (task 3.2) is not built** and waits for the owner to say whether
-  it is still wanted (docs/14, task 7). The locations index and the two city pages are live.
-- **Nothing links to `/search/` yet** (decision 62). A search link in the header or footer is a
-  change to the homepage copy, the owner's to make from the page copy screen.
+- **The service-by-city matrix (task 3.2) is not built.** The owner wants it (decision 66); it
+  is docs/15, task 6. The locations index and the two city pages are live.
+- **Nothing links to `/search/` yet** (decision 62). The owner chose the footer (decision 66),
+  a change to the homepage copy they make from the page copy screen.
 - **The antispam figures are first guesses** (decision 61): two seconds before a lead or a
   booking, five leads an hour and three bookings a day per address. Once the site takes real
   enquiries, the `form_resubmitted` and refused-submission patterns will say whether they are
@@ -1240,14 +1837,10 @@ Dragging the handle across one laptop turns the old site into the new.
 - **Saving a case study moves it to the top of /work/**, which lists featured first and then the
   most recently changed (decision 58). The approved order was stamped in at import; mark the case
   studies that must stay first as Featured.
-- **Not editable from the dashboard yet:** a case study's quote and video testimonial (their own
-  records), the proof band's figures and rating (shared with the homepage), and
-  `/before-and-after/`, which keeps its snapshot.
-- **In the dashboard's sidebar, Dashboard is marked as the current page on every screen**,
-  because its link (`/admin/`) is the start of every other one (`components/admin/sidebar.tsx`,
-  `isCurrent`). Seen while checking task 4; left as it was.
-- Content is still edited by changing a snapshot and deploying (decision 43). Families move
-  into the database one at a time once the admin exists (Task 5.3). Each needs its mapper
+- **Not editable from the dashboard yet:** the proof band's figures and rating (shared with the
+  homepage). A case study's testimonials and `/before-and-after/` are (decision 70).
+- Outside the five database-first families, content is still edited by changing a snapshot
+  and deploying (decision 43). Families move into the database one at a time. Each needs its mapper
   extended or its snapshot corrected where the two disagree, and an owner's decision for
   every conflict between snapshots; `wip/content-import-views` has the importers for proof,
   the homepage and the landing page, the view-equality harness, and the list of differences
@@ -1266,7 +1859,9 @@ Dragging the handle across one laptop turns the old site into the new.
   rate limit with everyone). The real domain is a `SITE_HOST` change and a redeploy.
 - Of the `ops` Compose profile, `backup` is deployable and started by hand once the env
   file has a restic destination (the owner deferred the choice of provider); Umami still
-  needs its own database (Task 6.3). A deploy does not move `backup` to the new tag.
+  needs its own database (Task 6.3). A deploy does not move `backup` to the new tag. On
+  2026-09-26 the owner put both off: monitoring until just before launch, backups for now
+  (decision 66).
 - The `media` volume is mounted only by `backup`; the API does not write uploads there
   until the media library exists (Task 5.3), so that snapshot is empty for now.
 - Every container reads the one stack env file, so the backup credentials are visible to
@@ -1275,12 +1870,6 @@ Dragging the handle across one laptop turns the old site into the new.
   Resend's test inbox (`delivered+leads@resend.dev`).
 - The client's Resend account, sending domain, SPF, DKIM and DMARC (Task 6.2). Until
   then development uses `EMAIL_TRANSPORT=log` or Resend's test sender.
-- Emails are queued after the lead commits. If the API process dies between the commit and
-  the enqueue, the lead is stored but its emails are not queued, and nothing marks it. A
-  transactional outbox would close that gap. Campaign sends do not have it (decision 51:
-  rows first, requeued by the sweep); lead and booking emails still do.
-- Settings changed with `settings-cli` are not written to the audit log yet. The admin
-  settings screen (Task 5.3) must write the audit entry.
 - Task 5.1 is complete on `tumit` (decision 60): the `.ics` entry, the 24h and 1h reminders
   and the signed reschedule and cancel pages were the last of it. None of the booking emails
   reaches anyone until production sends email (Task 6.2); until then the reminders are

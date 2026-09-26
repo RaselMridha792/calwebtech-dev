@@ -9,6 +9,7 @@ import {
 } from '@calwebtech/shared';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { AuditService } from '../../auth/audit.service';
+import { changedSections } from '../../common/changed-fields';
 import { PrismaService } from '../../prisma/prisma.service';
 import type { Actor } from '../leads/admin-leads.service';
 
@@ -79,23 +80,4 @@ export class AdminPageCopyService {
     });
     return this.detail(key);
   }
-}
-
-/**
- * The top-level sections whose copy changed, so the log says what an edit touched. Compared
- * with their keys sorted, because Postgres keeps a stored object's keys in an order of its own.
- */
-export function changedSections(before: unknown, after: object): string[] {
-  const previous = typeof before === 'object' && before !== null ? (before as Record<string, unknown>) : {};
-  const next = after as Record<string, unknown>;
-  const keys = new Set([...Object.keys(previous), ...Object.keys(next)]);
-  return [...keys].filter((key) => canonical(previous[key]) !== canonical(next[key])).sort();
-}
-
-function canonical(value: unknown): string {
-  return JSON.stringify(value, (_key, inner: unknown) =>
-    inner !== null && typeof inner === 'object' && !Array.isArray(inner)
-      ? Object.fromEntries(Object.entries(inner).sort(([a], [b]) => a.localeCompare(b)))
-      : inner,
-  );
 }

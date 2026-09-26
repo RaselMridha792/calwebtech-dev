@@ -69,24 +69,28 @@ export const workImporter: SnapshotImporter = {
 
       if (study.quote) {
         const quote = study.quote;
+        // A case study's testimonials are edited in the dashboard (decision 70). One already
+        // stored, edited or removed since, is left alone, even when the import is forced.
         const existing = await ctx.db.testimonial.findFirst({
           where: { projectId: project.id, clientName: quote.clientName },
           select: { id: true },
         });
-        const data = {
-          clientName: quote.clientName,
-          role: quote.role,
-          company: quote.company,
-          avatarUrl: quote.avatar?.src ?? null,
-          rating: quote.rating,
-          quote: quote.quote,
-          projectId: project.id,
-          featured: true,
-          // The page already publishes it, so consent is a matter of record, not a guess.
-          consentAt: new Date(study.publishedAt),
-        };
-        if (existing) await ctx.db.testimonial.update({ where: { id: existing.id }, data });
-        else await ctx.db.testimonial.create({ data });
+        if (!existing) {
+          await ctx.db.testimonial.create({
+            data: {
+              clientName: quote.clientName,
+              role: quote.role,
+              company: quote.company,
+              avatarUrl: quote.avatar?.src ?? null,
+              rating: quote.rating,
+              quote: quote.quote,
+              projectId: project.id,
+              featured: true,
+              // The page already publishes it, so consent is a matter of record, not a guess.
+              consentAt: new Date(study.publishedAt),
+            },
+          });
+        }
         quotes += 1;
       }
     }

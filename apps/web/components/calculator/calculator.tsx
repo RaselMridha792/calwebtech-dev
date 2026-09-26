@@ -329,7 +329,7 @@ export function Calculator({ copy, steps, events, permalink, turnstileSiteKey, a
                 return (
                   <li key={option.value}>
                     <label
-                      className={`flex cursor-pointer items-start gap-3.5  border px-5 py-3.5 text-[15.5px] has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-primary ${selected ? 'border-2 border-gold-ink bg-navy-500/5 px-[19px] py-[13px] font-semibold' : 'border-hairline hover:border-ink'}`}
+                      className={`flex cursor-pointer items-start gap-3.5  border px-5 py-3.5 text-[15.5px] has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-focus ${selected ? 'border-2 border-gold-ink bg-navy-500/5 px-[19px] py-[13px] font-semibold' : 'border-hairline hover:border-ink'}`}
                     >
                       <input
                         type={step.multiple ? 'checkbox' : 'radio'}

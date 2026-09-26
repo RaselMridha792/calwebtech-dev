@@ -19,6 +19,7 @@ import { ConflictException, Injectable, Logger, NotFoundException, Optional } fr
 import { AuditService } from '../../auth/audit.service';
 import { reminderJobIds } from '../../booking/booking-reminders';
 import { PrismaService } from '../../prisma/prisma.service';
+import { withdrawReminders } from '../../queue/email-outbox';
 import { EmailQueue } from '../../queue/email-queue';
 import { SettingsService } from '../../settings/settings.service';
 
@@ -131,8 +132,10 @@ export class AdminBookingsService {
     // A cancelled call gives its time back, and one brought back takes it again — refused if
     // somebody has booked it since (the unique index on the held slot).
     const holds = input.status ? input.status !== 'CANCELLED' : undefined;
+    const closes = input.status !== undefined && !['CONFIRMED', 'RESCHEDULED'].includes(input.status);
+    let withdrawn: string[];
     try {
-      await this.transitionTo(id, input, before, holds);
+      withdrawn = await this.transitionTo(id, input, before, holds, closes);
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
         throw new ConflictException({
@@ -143,13 +146,15 @@ export class AdminBookingsService {
       throw error;
     }
 
-
-    // A call the team cancels or closes is not reminded about (docs/08-decisions.md, 60). The
-    // worker checks again before sending, so a removal that fails here reminds nobody either.
-    if (input.status && !['CONFIRMED', 'RESCHEDULED'].includes(input.status) && this.emailQueue) {
-      await this.emailQueue.remove(reminderJobIds({ id, startsAt: before.startsAt })).catch((error: unknown) => {
-        this.logger.warn(`Booking ${id}: its reminders could not be removed; the worker will skip them.`, error);
-      });
+    // A call the team cancels or closes is not reminded about (docs/08-decisions.md, 60). Its
+    // reminders were withdrawn with the change (decision 71), and the worker checks the row and
+    // the booking before sending, so a removal that fails here reminds nobody either.
+    if (closes && this.emailQueue) {
+      await this.emailQueue
+        .remove([...withdrawn, ...reminderJobIds({ id, startsAt: before.startsAt })])
+        .catch((error: unknown) => {
+          this.logger.warn(`Booking ${id}: its reminders could not be removed; the worker will skip them.`, error);
+        });
     }
 
     await this.audit.recordQuietly({
@@ -163,13 +168,15 @@ export class AdminBookingsService {
     return this.find(id);
   }
 
+  /** Writes the change and its event; a call that closes has its reminders withdrawn with it. Returns their job ids. */
   private async transitionTo(
     id: string,
     input: AdminBookingUpdate,
     before: { status: string; startsAt: Date },
     holds: boolean | undefined,
-  ): Promise<void> {
-    await this.prisma.client.$transaction(async (tx) => {
+    closes: boolean,
+  ): Promise<string[]> {
+    return this.prisma.client.$transaction(async (tx) => {
       await tx.booking.update({
         where: { id },
         data: {
@@ -183,6 +190,7 @@ export class AdminBookingsService {
           data: { bookingId: id, type: 'status_changed', detail: { from: before.status, to: input.status } },
         });
       }
+      return closes ? withdrawReminders(tx, id, `the team marked the call ${String(input.status).toLowerCase()}`) : [];
     });
   }
 

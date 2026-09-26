@@ -1,10 +1,10 @@
-import type { FinalPointIcon, HomePageContent, HomePageView } from '@calwebtech/shared';
+import { insightsArticlePath, type FinalPointIcon, type HomePageContent, type HomePageView } from '@calwebtech/shared';
 import type { ReactNode } from 'react';
 import { BackdropImage } from '../ui/brand';
 import { CalendarIcon, ShieldIcon, TickIcon } from '../ui/icons';
 import { PillBadge, reveal } from '../ui/primitives';
 import { ResponsiveImage } from '../ui/responsive-image';
-import { EmptyNote, SectionHead, byline, h2Dark, h2Light } from './parts';
+import { ActionLink, EmptyNote, SectionHead, TextLink, byline, h2Dark, h2Light } from './parts';
 import { Showreel } from './showreel';
 
 type Content = HomePageContent;
@@ -30,7 +30,7 @@ export function EstimateBand({ estimate }: { estimate: Content['estimate'] }) {
             <ul className="mt-8 space-y-3 text-[15.5px] text-ink-invert-muted">
               {estimate.bullets.map((bullet) => (
                 <li key={bullet} className="flex gap-3">
-                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gold-ink" aria-hidden="true" />
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 bg-gold-500" aria-hidden="true" />
                   {bullet}
                 </li>
               ))}
@@ -64,12 +64,7 @@ export function EstimateBand({ estimate }: { estimate: Content['estimate'] }) {
                 ))}
               </ul>
             </figure>
-            <a
-              href={estimate.cta.href}
-              className="mt-7 flex h-14 items-center justify-center bg-navy-900 px-6 text-center font-semibold text-ink-invert hover:bg-navy-700"
-            >
-              {estimate.cta.label}
-            </a>
+            <ActionLink link={estimate.cta} size="lg" className="mt-7 w-full justify-center" />
           </div>
         </div>
       </div>
@@ -85,11 +80,19 @@ export function WhyUs({ whyUs }: { whyUs: Content['whyUs'] }) {
         <h2 className={`${h2Dark} max-w-[20ch]`} {...reveal()}>
           {whyUs.heading}
         </h2>
-        <ul className="mt-12 grid gap-x-12 gap-y-11 md:grid-cols-2 lg:grid-cols-3">
+        {/* Numbered on a rule, the rule drawing champagne from the left under the pointer. */}
+        <ul className="mt-14 grid gap-x-12 gap-y-4 md:grid-cols-2 lg:grid-cols-3">
           {whyUs.items.map((item, index) => (
-            <li key={item.title} {...reveal(index)}>
-              <h3 className="font-display text-[19px] font-bold text-ink">{item.title}</h3>
-              <p className="mt-2.5 text-[15.5px] leading-relaxed">{item.body}</p>
+            <li
+              key={item.title}
+              className="group relative border-t border-hairline pt-7 pb-8 before:absolute before:inset-x-0 before:-top-px before:h-0.5 before:origin-left before:scale-x-0 before:bg-gold-ink before:transition-transform before:duration-500 before:ease-out-quint hover:before:scale-x-100"
+              {...reveal(index)}
+            >
+              <span className="meta text-ink-muted transition-colors duration-150 group-hover:text-gold-ink">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <h3 className="heading-md mt-4 text-ink">{item.title}</h3>
+              <p className="body-base mt-3 text-ink-muted">{item.body}</p>
             </li>
           ))}
         </ul>
@@ -118,28 +121,36 @@ export function TechnologyProof({
             <dl className="mt-8 grid grid-cols-2 gap-6 border-t border-hairline pt-7">
               {technology.stats.map((stat) => (
                 <div key={stat.label} className="flex flex-col-reverse justify-end">
-                  <dt className="mt-2 text-[14px]">{stat.label}</dt>
-                  <dd className="font-display text-[30px] leading-none font-extrabold text-ink">{stat.value}</dd>
+                  <dt className="body-sm mt-2 text-ink-muted">{stat.label}</dt>
+                  <dd className="display-md leading-none text-ink">{stat.value}</dd>
                 </div>
               ))}
             </dl>
           ) : null}
-          {technology.cta ? (
-            <a
-              href={technology.cta.href}
-              className="mt-8 inline-flex h-12 items-center border border-hairline bg-canvas-raised px-6 font-semibold text-ink hover:border-ink"
-            >
-              {technology.cta.label}
-            </a>
-          ) : null}
+          {technology.cta ? <TextLink link={technology.cta} className="mt-9" /> : null}
         </div>
         <div className="lg:col-span-7" {...reveal(1)}>
           {groups.length > 0 ? (
-            <ul className="grid gap-5 sm:grid-cols-2">
-              {groups.map((group) => (
-                <li key={group.category} className="border border-hairline bg-canvas-raised p-6">
-                  <h3 className="font-display text-[17px] font-bold text-ink">{group.category}</h3>
-                  <p className="mt-3 text-[14.5px] leading-relaxed">{group.names.join(', ')}</p>
+            // The stack as rows on hairlines, a layer to a row: the layer in type, its tools in a
+            // dotted line of meta. A row warms and its numeral turns champagne under the pointer.
+            <ul className="border-t border-hairline">
+              {groups.map((group, index) => (
+                <li
+                  key={group.category}
+                  className="group grid gap-x-6 gap-y-2 border-b border-hairline py-5 transition-colors duration-200 hover:bg-canvas-raised sm:grid-cols-[3rem_11rem_1fr] sm:items-baseline"
+                >
+                  <span className="meta text-ink-muted transition-colors duration-150 group-hover:text-gold-ink max-sm:hidden">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <h3 className="heading-sm text-ink">{group.category}</h3>
+                  <ul className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[14.5px] text-ink-muted">
+                    {group.names.map((name, position) => (
+                      <li key={name} className="flex items-center gap-2.5">
+                        {position > 0 ? <span aria-hidden className="h-1 w-1 bg-hairline-strong" /> : null}
+                        {name}
+                      </li>
+                    ))}
+                  </ul>
                 </li>
               ))}
             </ul>
@@ -161,17 +172,24 @@ export function ProcessTimeline({ process, steps }: { process: Content['process'
           <p className="mt-4 max-w-[58ch] text-[17px] leading-relaxed">{process.intro}</p>
         </SectionHead>
         {steps.length > 0 ? (
-          <ol className="grid gap-6 md:grid-cols-2 lg:grid-cols-5">
+          // A timeline: one rule runs under every step with a marker where each begins, the
+          // first filled. Under the pointer a step's stretch of the rule draws in champagne and
+          // its marker fills.
+          <ol className="grid gap-x-6 gap-y-10 md:grid-cols-2 lg:grid-cols-5">
             {steps.map((step, index) => (
               <li
                 key={step.title}
-                className={`border-t-2 pt-5 ${index === 0 ? 'border-ink' : 'border-hairline'}`}
+                className="group relative border-t-2 border-hairline pt-8 before:absolute before:inset-x-0 before:-top-0.5 before:h-0.5 before:origin-left before:scale-x-0 before:bg-gold-ink before:transition-transform before:duration-500 before:ease-out-quint hover:before:scale-x-100"
                 {...reveal(index)}
               >
-                <p className="font-display text-[15px] font-extrabold text-ink">Step {index + 1}</p>
-                <h3 className="mt-1.5 font-display text-[19px] font-bold text-ink">{step.title}</h3>
-                <p className="mt-2.5 text-[14.5px] leading-relaxed">{step.summary}</p>
-                <p className="mt-3 text-[13px]">{step.timing}</p>
+                <span
+                  aria-hidden
+                  className={`absolute -top-[7px] left-0 h-3 w-3 border-2 border-ink transition-colors duration-200 group-hover:bg-gold-ink group-hover:border-gold-ink ${index === 0 ? 'bg-ink' : 'bg-canvas-raised'}`}
+                />
+                <p className="meta text-ink-muted uppercase">Step {index + 1}</p>
+                <h3 className="heading-md mt-2 text-ink">{step.title}</h3>
+                <p className="body-sm mt-3 text-ink-muted">{step.summary}</p>
+                <p className="meta mt-4 text-ink">{step.timing}</p>
               </li>
             ))}
           </ol>
@@ -191,15 +209,15 @@ function VideoTestimonialCard({ video, step }: { video: NonNullable<Home['videoT
     .join(' · ');
   const who = [video.clientName, video.company].filter((part): part is string => Boolean(part)).join(', ');
   return (
-    <figure className="relative min-h-[280px] overflow-hidden " {...reveal(step)}>
+    <figure className="group relative min-h-[320px] overflow-hidden lg:ml-8" {...reveal(step)}>
       <ResponsiveImage
         src={video.poster.src}
         alt={video.poster.alt}
         fill
         sizes="(min-width: 1024px) 33vw, 100vw"
-        className="object-cover"
+        className="object-cover transition-transform duration-[1600ms] ease-out-quint motion-safe:group-hover:scale-105"
       />
-      <div className="absolute inset-0 bg-scrim-strong" aria-hidden="true" />
+      <div className="absolute inset-0 bg-linear-to-t from-navy-900 via-navy-900/50 to-navy-900/10" aria-hidden="true" />
       {video.videoUrl ? (
         <Showreel variant="overlay" label={`Play video testimonial from ${who}`} videoUrl={video.videoUrl} poster={null} />
       ) : null}
@@ -251,13 +269,22 @@ export function TestimonialsBand({
         {items.length === 0 && !video ? (
           <EmptyNote tone="dark">{testimonials.empty}</EmptyNote>
         ) : (
-          <div className="mt-12 grid gap-6 lg:grid-cols-3">
+          // Quotes on rules, not glass cards: a large champagne mark opens each, a hairline
+          // divides them, and the person sits at the foot so the columns end together.
+          <div className="mt-14 grid gap-10 lg:grid-cols-3 lg:gap-0">
             {items.map((item, index) => {
               const itemByline = byline(item.role, item.company);
               return (
-                <figure key={item.id} className="glass p-7" {...reveal(index)}>
-                  <blockquote className="text-[16px] leading-relaxed">{`"${item.quote}"`}</blockquote>
-                  <figcaption className="mt-6 flex items-center gap-3 border-t border-ink-invert/15 pt-5">
+                <figure
+                  key={item.id}
+                  className="flex flex-col border-t border-ink-invert/15 pt-8 lg:border-t-0 lg:border-l lg:px-8 lg:pt-0 lg:first:border-l-0 lg:first:pl-0"
+                  {...reveal(index)}
+                >
+                  <span aria-hidden className="font-display text-[72px] leading-[0.6] font-extrabold text-ink-invert-muted">
+                    &ldquo;
+                  </span>
+                  <blockquote className="mt-5 text-[17px] leading-relaxed text-ink-invert">{item.quote}</blockquote>
+                  <figcaption className="mt-auto flex items-center gap-3 pt-8">
                     {item.avatar ? (
                       <ResponsiveImage
                         src={item.avatar.src}
@@ -298,7 +325,7 @@ export function TestimonialsBand({
 
 function RecognitionTab({ id, label, checked = false }: { id: string; label: string; checked?: boolean }) {
   return (
-    <label className="inline-flex h-11 cursor-pointer items-center border border-hairline bg-canvas-raised px-5 text-[14.5px] font-semibold text-ink hover:border-ink has-checked:border-ink has-checked:bg-navy-900 has-checked:text-ink-invert has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-primary">
+    <label className="relative -mb-px inline-flex cursor-pointer items-center py-3.5 text-[15px] font-semibold text-ink-muted transition-colors duration-150 after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:origin-left after:scale-x-0 after:bg-gold-ink after:transition-transform after:duration-420 after:ease-out-quint hover:text-ink has-checked:text-ink has-checked:after:scale-x-100 has-focus-visible:outline-2 has-focus-visible:outline-offset-4 has-focus-visible:outline-focus motion-reduce:after:transition-none">
       <input type="radio" name="recognition" id={id} defaultChecked={checked} className="sr-only" />
       {label}
     </label>
@@ -325,14 +352,12 @@ export function Recognition({
       <div className="shell">
         <SectionHead link={recognition.link}>
           {recognition.eyebrow ? <p className="mb-2 text-[14px]">{recognition.eyebrow}</p> : null}
-          <h2 className="font-display text-[30px] leading-[1.1] font-extrabold text-ink lg:text-[36px]">
-            {recognition.heading}
-          </h2>
+          <h2 className="display-md text-ink">{recognition.heading}</h2>
         </SectionHead>
         {tabs ? (
           <fieldset className="mt-9">
             <legend className="sr-only">Show</legend>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-x-8 border-b border-hairline">
               <RecognitionTab id="recognition-awards" label="Awards" checked />
               <RecognitionTab id="recognition-expertise" label="Expertise" />
             </div>
@@ -343,11 +368,19 @@ export function Recognition({
           className={tabs ? 'mt-8 group-has-[#recognition-expertise:checked]/recognition:hidden' : 'mt-10'}
         >
           {awards.length > 0 ? (
-            <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {awards.map((award) => (
-                <li key={`${award.name}${award.detail ?? ''}`} className="border border-hairline p-6">
-                  <p className="font-display text-[16px] font-bold text-ink">{award.name}</p>
-                  {award.detail ? <p className="mt-2 text-[14px] leading-relaxed">{award.detail}</p> : null}
+            // Awards on a rule, not in boxes, each drawing its stretch of the rule in champagne
+            // under the pointer.
+            <ul className="grid gap-x-8 gap-y-2 sm:grid-cols-2 lg:grid-cols-4">
+              {awards.map((award, index) => (
+                <li
+                  key={`${award.name}${award.detail ?? ''}`}
+                  className="group relative border-t border-hairline pt-6 pb-4 before:absolute before:inset-x-0 before:-top-px before:h-0.5 before:origin-left before:scale-x-0 before:bg-gold-ink before:transition-transform before:duration-500 before:ease-out-quint hover:before:scale-x-100"
+                >
+                  <span className="meta text-ink-muted transition-colors duration-150 group-hover:text-gold-ink">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <p className="heading-sm mt-3 text-ink">{award.name}</p>
+                  {award.detail ? <p className="body-sm mt-2 text-ink-muted">{award.detail}</p> : null}
                 </li>
               ))}
             </ul>
@@ -357,9 +390,10 @@ export function Recognition({
         </div>
         {tabs ? (
           <div data-pane="expertise" className="mt-8 hidden group-has-[#recognition-expertise:checked]/recognition:block">
-            <ul className="flex flex-wrap gap-2.5 border border-hairline bg-canvas-raised p-8">
-              {expertise.map((item) => (
-                <li key={item} className="bg-canvas-sunken px-4 py-2 text-[14px] font-medium text-ink">
+            <ul className="heading-sm flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-hairline pt-8 text-ink">
+              {expertise.map((item, index) => (
+                <li key={item} className="flex items-center gap-5">
+                  {index > 0 ? <span aria-hidden className="h-1.5 w-1.5 bg-hairline-strong" /> : null}
                   {item}
                 </li>
               ))}
@@ -373,35 +407,44 @@ export function Recognition({
 
 export function Insights({ insights, posts }: { insights: Content['insights']; posts: Home['posts'] }) {
   return (
-    <section id="insights" className="content-auto bg-canvas-raised py-20 lg:py-28">
+    <section id="insights" className="content-auto bg-canvas py-20 lg:py-28">
       <div className="shell">
         <SectionHead link={insights.link} className="mb-12">
           <h2 className={h2Dark}>{insights.heading}</h2>
         </SectionHead>
         {posts.length > 0 ? (
-          <ul className="grid gap-6 md:grid-cols-3">
+          // Articles without boxes: the photograph slowly zooms, the title underlines, and the
+          // whole entry is the link to the article.
+          <ul className="grid gap-x-10 gap-y-14 md:grid-cols-3">
             {posts.map((post, index) => {
               const meta = [post.category, post.readingTime ? `${String(post.readingTime)} min read` : null]
                 .filter((part): part is string => Boolean(part))
                 .join(' · ');
               return (
-                <li key={post.slug} className="overflow-hidden border border-hairline bg-canvas-raised" {...reveal(index)}>
-                  {post.image ? (
-                    <div className="relative aspect-video bg-canvas-sunken">
-                      <ResponsiveImage
-                        src={post.image.src}
-                        alt={post.image.alt}
-                        fill
-                        sizes="(min-width: 768px) 33vw, 100vw"
-                        className="object-cover"
-                      />
+                <li key={post.slug} {...reveal(index)}>
+                  <a
+                    href={insightsArticlePath(post.slug)}
+                    className="group block focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-focus"
+                  >
+                    {post.image ? (
+                      <div className="relative aspect-[16/10] overflow-hidden bg-canvas-sunken">
+                        <ResponsiveImage
+                          src={post.image.src}
+                          alt={post.image.alt}
+                          fill
+                          sizes="(min-width: 768px) 33vw, 100vw"
+                          className="object-cover transition-transform duration-[1600ms] ease-out-quint motion-safe:group-hover:scale-105"
+                        />
+                      </div>
+                    ) : null}
+                    <div className="pt-6">
+                      {meta ? <p className="meta text-ink-muted uppercase">{meta}</p> : null}
+                      <h3 className="heading-md mt-3 text-ink decoration-gold-ink decoration-2 underline-offset-[6px] group-hover:underline">
+                        {post.title}
+                      </h3>
+                      <p className="body-sm mt-3 text-ink-muted">{post.excerpt}</p>
                     </div>
-                  ) : null}
-                  <div className="p-6">
-                    {meta ? <p className="text-[13px]">{meta}</p> : null}
-                    <h3 className="mt-2 font-display text-[19px] leading-snug font-bold text-ink">{post.title}</h3>
-                    <p className="mt-2.5 text-[14.5px] leading-relaxed">{post.excerpt}</p>
-                  </div>
+                  </a>
                 </li>
               );
             })}
@@ -425,12 +468,7 @@ export function Whitepaper({ whitepaper, guide }: { whitepaper: Content['whitepa
           {guide.title}
         </h2>
         <p className="mt-4 max-w-[56ch] text-[16.5px] leading-relaxed text-ink-invert-muted">{guide.summary}</p>
-        <a
-          href={guide.fileUrl}
-          className="mt-7 inline-flex h-14 items-center bg-canvas-raised px-7 font-semibold text-ink hover:bg-canvas-sunken"
-        >
-          {whitepaper.ctaLabel}
-        </a>
+        <ActionLink link={{ label: whitepaper.ctaLabel, href: guide.fileUrl }} tone="cream" size="lg" className="mt-7" />
       </div>
     </section>
   );
@@ -438,24 +476,31 @@ export function Whitepaper({ whitepaper, guide }: { whitepaper: Content['whitepa
 
 export function Locations({ locations, items }: { locations: Content['locations']; items: Home['locations'] }) {
   return (
-    <section id="locations" className="content-auto bg-canvas-raised py-20 lg:py-28">
+    <section id="locations" className="content-auto bg-canvas-sunken py-20 lg:py-28">
       <div className="shell">
         <div className="max-w-[62ch]" {...reveal()}>
           <h2 className={h2Dark}>{locations.heading}</h2>
           <p className="mt-5 text-[17px] leading-relaxed">{locations.intro}</p>
         </div>
         {items.length > 0 ? (
-          <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          // A city to a row, set large, with what we cover there and the street address
+          // beside it: an index, not a row of cards with an empty slot.
+          <ul className="mt-12 border-t border-hairline">
             {items.map((location, index) => (
-              <li key={location.slug} className="border border-hairline p-6" {...reveal(index)}>
-                <h3 className="font-display text-[20px] font-bold text-ink">
+              <li
+                key={location.slug}
+                className="group grid gap-x-8 gap-y-3 border-b border-hairline py-8 lg:grid-cols-12 lg:items-baseline"
+                {...reveal(index)}
+              >
+                <span className="meta text-ink-muted transition-colors duration-150 group-hover:text-gold-ink lg:col-span-1">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <h3 className="display-md text-ink lg:col-span-4">
                   {[location.city, location.state].filter(Boolean).join(', ')}
                 </h3>
-                {location.serviceArea ? (
-                  <p className="mt-2.5 text-[14.5px] leading-relaxed">{location.serviceArea}</p>
-                ) : null}
+                <p className="body-base text-ink-muted lg:col-span-4">{location.serviceArea}</p>
                 {location.address ? (
-                  <p className="mt-4 border-t border-hairline pt-4 text-[14px] whitespace-pre-line">{location.address}</p>
+                  <p className="meta text-ink whitespace-pre-line lg:col-span-3 lg:text-right">{location.address}</p>
                 ) : null}
               </li>
             ))}
@@ -479,28 +524,27 @@ export function PricingBands({ pricing, tiers }: { pricing: Content['pricing']; 
         <div className="lg:col-span-5" {...reveal()}>
           <h2 className={h2Dark}>{pricing.heading}</h2>
           <p className="body-lg mt-5 text-ink-muted">{pricing.intro}</p>
-          <a
-            href={pricing.cta.href}
-            className="button-label mt-7 inline-flex h-12 items-center bg-navy-900 px-6 text-ink-invert transition-colors duration-150 hover:bg-navy-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
-          >
-            {pricing.cta.label}
-          </a>
+          <ActionLink link={pricing.cta} className="mt-7" />
         </div>
         {tiers.length > 0 ? (
+          // Three shapes side by side on a rule; the one most clients choose is a navy plate,
+          // its label in champagne at the top, instead of a box with a tab hanging off it.
           <ul className="grid gap-5 sm:grid-cols-3 lg:col-span-7">
             {tiers.map((tier, index) => (
               <li
                 key={tier.name}
-                className={`relative p-6 ${tier.highlighted ? 'border-2 border-ink' : 'border border-hairline'}`}
+                className={`group relative flex flex-col p-7 ${
+                  tier.highlighted
+                    ? 'bg-navy-900 text-ink-invert'
+                    : 'border-t-2 border-hairline-strong before:absolute before:inset-x-0 before:-top-0.5 before:h-0.5 before:origin-left before:scale-x-0 before:bg-gold-ink before:transition-transform before:duration-500 before:ease-out-quint hover:before:scale-x-100'
+                }`}
                 {...reveal(index)}
               >
-                {tier.highlighted && pricing.highlightLabel ? (
-                  <p className="eyebrow absolute -top-3 left-6 bg-navy-900 px-2.5 py-1.5 text-ink-invert">
-                    {pricing.highlightLabel}
-                  </p>
-                ) : null}
-                <h3 className="heading-md text-ink">{tier.name}</h3>
-                <p className="body-sm mt-3 text-ink-muted">{tier.summary}</p>
+                <p className={`meta uppercase ${tier.highlighted ? 'text-gold-500' : 'text-ink-muted'}`}>
+                  {tier.highlighted && pricing.highlightLabel ? pricing.highlightLabel : String(index + 1).padStart(2, '0')}
+                </p>
+                <h3 className={`heading-md mt-5 ${tier.highlighted ? 'text-ink-invert' : 'text-ink'}`}>{tier.name}</h3>
+                <p className={`body-sm mt-3 ${tier.highlighted ? 'text-ink-invert-muted' : 'text-ink-muted'}`}>{tier.summary}</p>
               </li>
             ))}
           </ul>
@@ -532,7 +576,7 @@ export function BookSection({ book, action }: { book: Content['book']; action: R
           <div className="absolute inset-0 bg-canvas-sunken/92" />
         ) : null}
       </div>
-      <div className="shell relative grid items-start gap-12 lg:grid-cols-12 lg:gap-16">
+      <div className="shell relative grid gap-12 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-5" {...reveal()}>
           <h2 className="display-lg text-ink">{book.heading}</h2>
           <p className="body-lg mt-5 max-w-[48ch] text-ink-muted">{book.intro}</p>
@@ -540,10 +584,7 @@ export function BookSection({ book, action }: { book: Content['book']; action: R
             <ul className="mt-9 space-y-5 border-t border-hairline pt-8">
               {book.points.map((point) => (
                 <li key={point.title} className="flex gap-4">
-                  <span
-                    className="grid h-10 w-10 shrink-0 place-items-center border border-hairline bg-canvas-raised text-ink"
-                    aria-hidden="true"
-                  >
+                  <span className="mt-1 shrink-0 text-gold-ink [&_svg]:h-5 [&_svg]:w-5" aria-hidden="true">
                     {POINT_ICONS[point.icon]}
                   </span>
                   <span>

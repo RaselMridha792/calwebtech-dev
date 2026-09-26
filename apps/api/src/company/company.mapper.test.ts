@@ -124,6 +124,7 @@ function testimonial(overrides: Partial<CompanyTestimonialRecord> = {}): Company
     videoUrl: null,
     featured: false,
     consentAt: at,
+    deletedAt: null,
     date: null,
     createdAt: at,
     updatedAt: at,

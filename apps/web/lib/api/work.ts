@@ -2,10 +2,13 @@ import 'server-only';
 import {
   SITE_ROUTES,
   caseStudyPath,
+  homepageComparison,
   workBeforeAndAfterViewSchema,
   workCaseStudyViewSchema,
   workIndexPath,
   workIndexViewSchema,
+  type BeforeAfterView,
+  type WorkBeforeAndAfterView,
   type WorkCaseStudyCard,
   type WorkIndexView,
   type WorkTerm,
@@ -13,14 +16,21 @@ import {
 import { cache } from 'react';
 import type { SitemapEntry } from '@/lib/sitemap';
 import { workBeforeAndAfterSnapshot, workCaseStudySnapshots, workIndexSnapshot } from '@/static-content/work';
-import { apiUrl, findViewDatabaseFirst, getView, isDatabaseFirst } from './core';
+import { apiUrl, findViewDatabaseFirst, getView, isDatabaseFirst, usesSnapshots } from './core';
 
 /**
  * `/work/` and the case studies read the database first and fall back to their snapshots
- * while `CONTENT_DATABASE_FIRST` names `work` (decisions 44 and 58). `/before-and-after/`
- * does not: its approved comparison describes its screenshots in words no row holds.
+ * while `CONTENT_DATABASE_FIRST` names `work` (decisions 44 and 58).
  */
 const FAMILY = 'work';
+
+/**
+ * `/before-and-after/` and the homepage's comparison read the database while
+ * `CONTENT_DATABASE_FIRST` names `before-and-after` (decision 70). The page is one list, so
+ * there is no single record to fall back for: the family is named once the import has
+ * written the snapshot's comparisons, and from then on the dashboard's list is the page.
+ */
+export const BEFORE_AND_AFTER_FAMILY = 'before-and-after';
 
 /** Every published case study, the filter values they carry, the proof band and the page copy. */
 export const getWorkIndex = cache(async (): Promise<WorkIndexView> => {
@@ -72,10 +82,26 @@ export function mergeWorkIndex(database: WorkIndexView, snapshot: WorkIndexView)
   };
 }
 
-/** Every published before and after comparison. */
-export const getBeforeAndAfter = cache(() =>
-  getView('/pages/before-and-after', workBeforeAndAfterViewSchema, workBeforeAndAfterSnapshot),
-);
+/** Every published before and after comparison, in the page's order. */
+export const getBeforeAndAfter = cache(async (): Promise<WorkBeforeAndAfterView> => {
+  if (!isDatabaseFirst(BEFORE_AND_AFTER_FAMILY)) {
+    return getView('/pages/before-and-after', workBeforeAndAfterViewSchema, workBeforeAndAfterSnapshot);
+  }
+  const response = await fetch(apiUrl('/pages/before-and-after'), { cache: 'no-store' });
+  if (!response.ok) throw new Error(`API responded ${String(response.status)} for /pages/before-and-after`);
+  return workBeforeAndAfterViewSchema.parse(await response.json());
+});
+
+/**
+ * The homepage's comparison from the database: the one `/before-and-after/` marks for it, or
+ * null when none is published and marked. Undefined while the homepage's own view already
+ * says it: with the family off, both pages read their snapshots, which agree (work.test.ts);
+ * with `CONTENT_SOURCE=api`, the API's homepage reads the same rows.
+ */
+export async function storedHomepageComparison(): Promise<BeforeAfterView | null | undefined> {
+  if (!usesSnapshots() || !isDatabaseFirst(BEFORE_AND_AFTER_FAMILY)) return undefined;
+  return homepageComparison(await getBeforeAndAfter());
+}
 
 export async function sitemapEntries(): Promise<SitemapEntry[]> {
   const index = await getWorkIndex();

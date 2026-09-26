@@ -6,6 +6,7 @@ import { AdminAudienceModule } from './admin/audience/admin-audience.controller'
 import { AdminBookingsModule } from './admin/bookings/admin-bookings.controller';
 import { AdminCampaignsModule } from './admin/campaigns/admin-campaigns.controller';
 import { AdminCaseStudiesModule } from './admin/case-studies/admin-case-studies.controller';
+import { AdminComparisonsModule } from './admin/comparisons/admin-comparisons.controller';
 import { AdminIndustriesModule } from './admin/industries/admin-industries.controller';
 import { AdminLeadsModule } from './admin/leads/admin-leads.controller';
 import { AdminMediaModule } from './admin/media/admin-media.controller';
@@ -57,6 +58,7 @@ import { WebhooksModule } from './webhooks/resend-webhook.controller';
     AdminServicesModule,
     AdminIndustriesModule,
     AdminCaseStudiesModule,
+    AdminComparisonsModule,
     AdminPageCopyModule,
     LandingPagesModule,
     HomePageModule,

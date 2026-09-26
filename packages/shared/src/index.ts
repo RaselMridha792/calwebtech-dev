@@ -6,6 +6,7 @@ export * from './admin-media';
 export * from './admin-services';
 export * from './admin-industries';
 export * from './admin-case-studies';
+export * from './admin-comparisons';
 export * from './admin-ops';
 export * from './admin-page-copy';
 export * from './admin-overview';

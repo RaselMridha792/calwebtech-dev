@@ -132,18 +132,44 @@ const FIXTURE_PROJECT = {
   featured: false,
 };
 
+const fixtureImage = (id: string, alt: string) => ({
+  src: `https://images.unsplash.com/${id}?auto=format&fit=crop&w=1400&q=70`,
+  alt,
+});
+
+/**
+ * A comparison on `/before-and-after/` for the slider's end-to-end test (decision 70). Not
+ * marked for the homepage, whose tests expect the placeholder empty state.
+ */
+const FIXTURE_COMPARISON = {
+  clientName: 'Test fixture client',
+  heading: 'What changed in the test fixture?',
+  summary: 'Test fixture for the before and after page.',
+  before: fixtureImage('photo-1498050108023-c5249f4df085', 'Test fixture picture before'),
+  after: fixtureImage('photo-1460925895917-afdab827c52f', 'Test fixture picture after'),
+  metrics: [{ label: 'Fixture measure', before: 'A', after: 'B' }],
+  order: 0,
+  onHomepage: false,
+  status: 'PUBLISHED' as const,
+};
+
 /**
  * A complete case study for the end-to-end tests (development only, `pnpm db:seed:fixtures`).
  * It has no testimonial, because the homepage lists every consented testimonial.
  */
 export const workFixtures: PageSeed = {
   family: 'work',
-  content: FIXTURE_PROJECT,
+  content: { project: FIXTURE_PROJECT, comparison: FIXTURE_COMPARISON },
   async seed(db: PrismaClient) {
-    await db.project.upsert({
+    const project = await db.project.upsert({
       where: { slug: WORK_FIXTURE_SLUG },
       create: { slug: WORK_FIXTURE_SLUG, ...FIXTURE_PROJECT },
       update: FIXTURE_PROJECT,
+      select: { id: true },
     });
+    const comparison = { ...FIXTURE_COMPARISON, projectId: project.id, deletedAt: null };
+    const existing = await db.comparison.findFirst({ where: { heading: FIXTURE_COMPARISON.heading }, select: { id: true } });
+    if (existing) await db.comparison.update({ where: { id: existing.id }, data: comparison });
+    else await db.comparison.create({ data: comparison });
   },
 };

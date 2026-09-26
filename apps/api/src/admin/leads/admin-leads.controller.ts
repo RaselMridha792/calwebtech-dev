@@ -1,5 +1,8 @@
 import {
+  adminBriefFunnelQuerySchema,
   adminLeadQuerySchema,
+  type AdminBriefFunnel,
+  type AdminBriefFunnelQuery,
   leadBulkSchema,
   leadNoteCreateSchema,
   leadPipelineUpdateSchema,
@@ -69,6 +72,16 @@ export class AdminLeadsController {
   @RequireModule('leads', 'read')
   filterOptions(): Promise<AdminLeadFilterOptions> {
     return this.leads.filterOptions();
+  }
+
+  /**
+   * Where start-a-project briefs stopped (decision 69). Read only, and a literal path, so it
+   * is declared before `:id`.
+   */
+  @Get('brief-funnel')
+  @RequireModule('leads', 'read')
+  briefFunnel(@Query(new ZodValidationPipe(adminBriefFunnelQuerySchema)) query: AdminBriefFunnelQuery): Promise<AdminBriefFunnel> {
+    return this.leads.briefFunnel(query.days);
   }
 
   /** The current filter as a CSV download. Also a literal path, for the same reason. */

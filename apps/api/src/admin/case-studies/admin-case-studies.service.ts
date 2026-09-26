@@ -5,6 +5,7 @@ import {
   workProjectContentSchema,
   type AdminCaseStudyDetail,
   type AdminCaseStudyList,
+  type AdminTestimonial,
   type CaseStudyInput,
 } from '@calwebtech/shared';
 import { Prisma } from '@calwebtech/db';
@@ -16,6 +17,7 @@ import { AuditService } from '../../auth/audit.service';
 import { PrismaService } from '../../prisma/prisma.service';
 import { caseStudyReadiness } from '../../work/work.mapper';
 import type { Actor } from '../leads/admin-leads.service';
+import { listTestimonials } from './case-study-testimonials';
 
 /**
  * Editing case studies (docs/14-remaining-work.md, task 4; docs/08-decisions.md, 58).
@@ -95,7 +97,9 @@ export class AdminCaseStudiesService {
 
   async detail(id: string): Promise<AdminCaseStudyDetail | null> {
     const row = await this.find(id);
-    return row ? toDetail(row, await this.snapshots()) : null;
+    if (!row) return null;
+    const [snapshots, testimonials] = await Promise.all([this.snapshots(), listTestimonials(this.prisma.client, row.id)]);
+    return toDetail(row, snapshots, testimonials);
   }
 
   /** A new case study starts as a draft. */
@@ -339,7 +343,7 @@ const metricsSchema = z.array(z.object({ value: z.string(), label: z.string() })
 const pairsSchema = z.array(z.object({ label: z.string(), before: z.string(), after: z.string() }));
 
 /** The record in the editor's shape. Stored values the input would refuse are shown, not dropped. */
-function toDetail(row: ProjectRecord, snapshots: Set<string>): AdminCaseStudyDetail {
+function toDetail(row: ProjectRecord, snapshots: Set<string>, testimonials: AdminTestimonial[]): AdminCaseStudyDetail {
   const order = workProjectContentSchema.safeParse(row.content ?? {});
   const named = order.success ? order.data.order.services : [];
   const linked = row.services.map((service) => service.slug);
@@ -390,5 +394,6 @@ function toDetail(row: ProjectRecord, snapshots: Set<string>): AdminCaseStudyDet
           : null,
       seo: seo.success ? seo.data : {},
     },
+    testimonials,
   };
 }

@@ -3,6 +3,7 @@ import { PrismaClient } from './generated/prisma/client';
 
 export * from './generated/prisma/client';
 export { audienceWhere, conditionWhere, eligibleWhere, segmentWhere, suppressedEmails } from './audience';
+export { PENDING_EMAIL_OUTBOX, emailOutboxData, type OutboxEmailJob } from './email-outbox';
 
 /**
  * One client per process. Prisma 7 talks to Postgres through the `pg` driver

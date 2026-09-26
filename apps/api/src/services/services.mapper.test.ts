@@ -121,6 +121,7 @@ function testimonial(id: string, featured: boolean): Testimonial {
     videoUrl: null,
     featured,
     consentAt: at,
+    deletedAt: null,
     date: at,
     createdAt: at,
     updatedAt: at,

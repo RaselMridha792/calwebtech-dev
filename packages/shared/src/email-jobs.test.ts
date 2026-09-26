@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { emailJobId, emailJobSchema, type EmailJob } from './email-jobs';
+import { emailJobId, emailJobSchema, emailOutboxJobSchema, emailOutboxQueueEntry, type EmailJob } from './email-jobs';
 
 const lead: Extract<EmailJob, { template: 'lead-notification' }>['lead'] = {
   leadId: 'cmf0lead0000abc',
@@ -148,5 +148,31 @@ describe('the jobs for a moved or cancelled call', () => {
       change: 'cancelled',
     };
     expect(emailJobSchema.safeParse(notification).success).toBe(true);
+  });
+});
+
+/** An outbox row as a job (docs/08-decisions.md, 71): the API and the worker's sweep add the same. */
+describe('emailOutboxQueueEntry', () => {
+  const now = new Date('2026-09-26T12:00:00.000Z');
+
+  it('names the row, keys the job by it, and sends an email due now at once', () => {
+    const entry = emailOutboxQueueEntry({ id: 'cmrow0001', template: 'lead-confirmation', sendAt: now }, now);
+    expect(entry).toMatchObject({ name: 'lead-confirmation', data: { outboxId: 'cmrow0001' } });
+    expect(entry.opts).toMatchObject({ jobId: 'outbox-cmrow0001', attempts: 5 });
+    expect(entry.opts).not.toHaveProperty('delay');
+    expect(emailOutboxJobSchema.safeParse(entry.data).success).toBe(true);
+  });
+
+  it('delays a reminder to its time, and sends one already due at once', () => {
+    const later = new Date(now.getTime() + 60 * 60 * 1000);
+    expect(emailOutboxQueueEntry({ id: 'r1', template: 'booking-reminder', sendAt: later }, now).opts).toMatchObject({
+      delay: 60 * 60 * 1000,
+    });
+    const past = new Date(now.getTime() - 1000);
+    expect(emailOutboxQueueEntry({ id: 'r2', template: 'booking-reminder', sendAt: past }, now).opts).not.toHaveProperty('delay');
+  });
+
+  it('is never mistaken for an email that carries its own payload', () => {
+    expect(emailOutboxJobSchema.safeParse({ template: 'lead-confirmation', to: ['a@example.com'] }).success).toBe(false);
   });
 });

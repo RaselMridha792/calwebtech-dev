@@ -192,8 +192,11 @@ describe('services views against Postgres', () => {
 
 describe('service enquiries against Postgres', () => {
   // No Turnstile secret outside production stores the lead without a verdict; no emails are sent.
-  const queued: unknown[] = [];
-  const emailQueue = { enqueue: (jobs: unknown[]) => Promise.resolve(void queued.push(...jobs)) } as unknown as EmailQueue;
+  // Nothing reaches Redis: a lead's emails are the outbox rows its transaction committed
+  // (docs/08-decisions.md, 71), read back here.
+  const emailQueue = { enqueueOutbox: () => Promise.resolve() } as unknown as EmailQueue;
+  const committed = async (email: string) =>
+    (await db.emailOutbox.findMany({ where: { lead: { email } } })).map((row) => row.payload);
   const leads = new LeadsService(
     prisma,
     new TurnstileService('', fetch, 15_000),
@@ -220,7 +223,7 @@ describe('service enquiries against Postgres', () => {
     const lead = await db.lead.findFirstOrThrow({ where: { email: input.email }, include: { service: true } });
     expect(lead.service?.slug).toBe(slug('published'));
     expect(lead.serviceInterest).toEqual(['Integration published']);
-    expect(JSON.stringify(queued)).toContain('Integration success heading.');
+    expect(JSON.stringify(await committed(input.email))).toContain('Integration success heading.');
   });
 
   it('stores the lead without a link when the service is not published', async () => {

@@ -6,7 +6,7 @@ import {
   EMAIL_QUEUE,
   SETTING_KEYS,
   acknowledgementSchema,
-  emailJobId,
+  emailOutboxJobId,
   homePageContentSchema,
   type LeadSubmission,
   type LeadSummary,
@@ -75,6 +75,15 @@ async function storedLead(email: string) {
   return db.lead.findFirstOrThrow({ where: { email }, include: { attribution: true, activities: true } });
 }
 
+/**
+ * A lead's email of one template, as its transaction committed it to the outbox, and the job
+ * that names it (docs/08-decisions.md, 71). The job carries only the row's id.
+ */
+async function outboxEmail(leadId: string, template: string) {
+  const row = await db.emailOutbox.findFirst({ where: { leadId, template } });
+  return { row, payload: row?.payload, job: row ? await inspect.getJob(emailOutboxJobId(row.id)) : undefined };
+}
+
 beforeAll(async () => {
   originalRecipients = (await db.setting.findUnique({ where: { key: recipientsKey } }))?.value;
 });
@@ -97,7 +106,7 @@ afterAll(async () => {
 });
 
 describe('LeadsService against Postgres, Redis and Turnstile test keys', () => {
-  it('stores the lead with attribution and queues both emails with the exact payloads', async () => {
+  it('stores the lead with attribution and both emails with the exact payloads, and queues them', async () => {
     await setRecipients(['leads@example.com']);
     const input = submission();
     await leadsWith(TURNSTILE_TEST.alwaysPassesSecret).create(input, '203.0.113.7');
@@ -122,23 +131,27 @@ describe('LeadsService against Postgres, Redis and Turnstile test keys', () => {
       submittedAt: lead.createdAt.toISOString(),
     };
 
-    const confirmation = await inspect.getJob(emailJobId({ template: 'lead-confirmation', lead: { ...expectedLead } }));
-    expect(confirmation?.name).toBe('lead-confirmation');
-    expect(confirmation?.data).toEqual({
+    const confirmation = await outboxEmail(lead.id, 'lead-confirmation');
+    expect(confirmation.payload).toEqual({
       template: 'lead-confirmation',
       to: [input.email],
       lead: expectedLead,
       acknowledgement,
     });
-    expect(confirmation?.opts.attempts).toBe(5);
+    expect(confirmation.job?.name).toBe('lead-confirmation');
+    expect(confirmation.job?.data).toEqual({ outboxId: confirmation.row?.id });
+    expect(confirmation.job?.opts.attempts).toBe(5);
+    expect(confirmation.row?.queuedAt).not.toBeNull();
 
-    const notification = await inspect.getJob(emailJobId({ template: 'lead-notification', lead: { ...expectedLead } }));
-    expect(notification?.data).toEqual({ template: 'lead-notification', to: ['leads@example.com'], lead: expectedLead });
+    const notification = await outboxEmail(lead.id, 'lead-notification');
+    expect(notification.payload).toEqual({ template: 'lead-notification', to: ['leads@example.com'], lead: expectedLead });
+    expect(notification.job?.data).toEqual({ outboxId: notification.row?.id });
   });
 
   it('refuses the always-fail Turnstile key and stores and queues nothing', async () => {
     await setRecipients(['leads@example.com']);
     const before = await inspect.getJobCounts('waiting', 'prioritized', 'delayed');
+    const outboxBefore = await db.emailOutbox.count();
     const input = submission();
 
     await expect(leadsWith(TURNSTILE_TEST.alwaysFailsSecret).create(input, '203.0.113.7')).rejects.toBeInstanceOf(
@@ -147,6 +160,7 @@ describe('LeadsService against Postgres, Redis and Turnstile test keys', () => {
 
     expect(await db.lead.count({ where: { email: input.email } })).toBe(0);
     expect(await db.contact.count({ where: { email: input.email } })).toBe(0);
+    expect(await db.emailOutbox.count()).toBe(outboxBefore);
     expect(await inspect.getJobCounts('waiting', 'prioritized', 'delayed')).toEqual(before);
   });
 
@@ -161,10 +175,10 @@ describe('LeadsService against Postgres, Redis and Turnstile test keys', () => {
     const second = submission();
     await leads.create(second, undefined);
 
-    const firstJob = await inspect.getJob(`lead-notification-${(await storedLead(first.email)).id}`);
-    const secondJob = await inspect.getJob(`lead-notification-${(await storedLead(second.email)).id}`);
-    expect(firstJob?.data).toMatchObject({ to: ['first@example.com'] });
-    expect(secondJob?.data).toMatchObject({ to: ['second@example.com', 'owner@example.com'] });
+    const firstEmail = await outboxEmail((await storedLead(first.email)).id, 'lead-notification');
+    const secondEmail = await outboxEmail((await storedLead(second.email)).id, 'lead-notification');
+    expect(firstEmail.payload).toMatchObject({ to: ['first@example.com'] });
+    expect(secondEmail.payload).toMatchObject({ to: ['second@example.com', 'owner@example.com'] });
   });
 
   it('still confirms to the visitor when no recipients are set, and records the skipped notification', async () => {
@@ -173,12 +187,13 @@ describe('LeadsService against Postgres, Redis and Turnstile test keys', () => {
     await leadsWith(TURNSTILE_TEST.alwaysPassesSecret).create(input, undefined);
 
     const lead = await storedLead(input.email);
-    const confirmation = await inspect.getJob(`lead-confirmation-${lead.id}`);
-    expect(confirmation?.data).toMatchObject({
+    const confirmation = await outboxEmail(lead.id, 'lead-confirmation');
+    expect(confirmation.payload).toMatchObject({
       to: [input.email],
       acknowledgement: { heading: 'Thanks. We have your request.' },
     });
-    expect(await inspect.getJob(`lead-notification-${lead.id}`)).toBeUndefined();
+    expect(confirmation.job).toBeTruthy();
+    expect((await outboxEmail(lead.id, 'lead-notification')).row).toBeNull();
     expect(lead.activities.map((activity) => activity.type)).toContain('notification_skipped');
   });
 
@@ -201,8 +216,8 @@ describe('LeadsService against Postgres, Redis and Turnstile test keys', () => {
 
     const home = await db.setting.findUniqueOrThrow({ where: { key: SETTING_KEYS.homeContent } });
     const acknowledgement = acknowledgementSchema.parse(homePageContentSchema.parse(home.value).formSuccess);
-    const confirmation = await inspect.getJob(`lead-confirmation-${lead.id}`);
-    expect(confirmation?.data).toMatchObject({ template: 'lead-confirmation', to: [input.email], acknowledgement });
+    const confirmation = await outboxEmail(lead.id, 'lead-confirmation');
+    expect(confirmation.payload).toMatchObject({ template: 'lead-confirmation', to: [input.email], acknowledgement });
   });
 
   it('stores the routed enquiry type of a contact lead and notifies its mailbox as well', async () => {
@@ -227,8 +242,8 @@ describe('LeadsService against Postgres, Redis and Turnstile test keys', () => {
       formId: 'contact-page',
       enquiryType: slug,
     });
-    const notification = await inspect.getJob(`lead-notification-${lead.id}`);
-    expect(notification?.data).toMatchObject({
+    const notification = await outboxEmail(lead.id, 'lead-notification');
+    expect(notification.payload).toMatchObject({
       to: ['leads@example.com', 'support@example.com'],
       lead: { enquiry: 'Support', message: 'A question about our care plan.' },
     });

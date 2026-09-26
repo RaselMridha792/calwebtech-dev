@@ -1,10 +1,12 @@
 'use client';
+import type { AdminTestimonial } from '@calwebtech/shared';
 import { slugify } from '@calwebtech/shared/slugify';
 import { useRouter } from 'next/navigation';
 import { useId, useState } from 'react';
 import { ExternalIcon, SortIcon } from '@/components/admin/icons';
 import { CHECK, ERROR, HELP, LABEL, SELECT, button, iconButton } from '@/components/admin/ui/styles';
 import { MutationError, adminMutate } from '@/lib/admin/mutate';
+import { CaseStudyTestimonials } from './case-study-testimonials';
 import { CopyEditor, type Json } from './copy-editor';
 import { Action, Area, Field, Section, StatusPill } from './editor-parts';
 
@@ -76,11 +78,14 @@ export function CaseStudyEditor({
   options,
   shapes,
   statusLabels,
+  testimonials,
 }: {
   draft: CaseStudyDraft;
   options: CaseStudyOptions;
   shapes: Record<string, Json>;
   statusLabels: Record<string, string>;
+  /** Saved on their own, so they come from the server rather than the form. */
+  testimonials: AdminTestimonial[];
 }) {
   const router = useRouter();
   const [record, setRecord] = useState(draft.record);
@@ -456,6 +461,8 @@ export function CaseStudyEditor({
             onChange={text('outcome')}
           />
         </Section>
+
+        <CaseStudyTestimonials caseStudyId={draft.id} clientName={record.clientName} testimonials={testimonials} />
 
         <Section
           heading="Search result"

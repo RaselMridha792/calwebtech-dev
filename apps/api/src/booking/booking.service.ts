@@ -32,11 +32,12 @@ import {
 } from '@nestjs/common';
 import { SubmissionGuard } from '../antispam/submission-guard';
 import { refuseUnlessPlausible } from '../leads/leads.service';
+import { dispatchOutbox, withdrawReminders, writeOutbox, type OutboxEmail, type OutboxRow } from '../queue/email-outbox';
 import { EmailQueue } from '../queue/email-queue';
 import { PrismaService } from '../prisma/prisma.service';
 import { SettingsService } from '../settings/settings.service';
 import { TurnstileService } from '../turnstile/turnstile.service';
-import { reminderJobIds, reminderJobs, type RemindedCall } from './booking-reminders';
+import { reminderEmails, reminderJobIds } from './booking-reminders';
 
 /**
  * The booking engine (docs/06-build-plan.md, task 5.1).
@@ -205,9 +206,13 @@ export class BookingService {
     const endsAt = new Date(startsAt.getTime() + type.durationMinutes * 60_000);
     const rescheduleToken = randomBytes(24).toString('base64url');
     const cancelToken = randomBytes(24).toString('base64url');
+    const manage = { rescheduleToken, cancelToken };
+    const recipients = await this.settings.leadNotificationRecipients();
 
+    let booking: { id: string };
+    let outbox: OutboxRow[];
     try {
-      const booking = await this.prisma.client.$transaction(async (tx) => {
+      ({ booking, outbox } = await this.prisma.client.$transaction(async (tx) => {
         const contact = await tx.contact.upsert({
           where: { email },
           create: { email, name: input.name, phone: input.phone ?? null },
@@ -232,101 +237,53 @@ export class BookingService {
         await tx.bookingEvent.create({
           data: { bookingId: created.id, type: 'created', detail: { source: input.source ?? BOOKING_FORM_ID } },
         });
-        return created;
-      });
-
-      await this.notify(booking.id, input, type.name, startsAt, endsAt, { rescheduleToken, cancelToken });
-      await this.remind({
-        id: booking.id,
-        name: input.name,
-        email,
-        consultationType: type.name,
-        startsAt,
-        endsAt,
-        timezone: input.timezone,
-        rescheduleToken,
-        cancelToken,
-      });
-      return {
-        status: 'booked',
-        startsAt: startsAt.toISOString(),
-        endsAt: endsAt.toISOString(),
-        consultationType: type.name,
-        rescheduleToken,
-        cancelToken,
-      };
+        // The confirmation, the team's notification and the reminders commit with the call, so
+        // a process that dies before queuing them loses none (docs/08-decisions.md, 71).
+        const emails = [
+          ...bookedEmails(created.id, input, type.name, startsAt, endsAt, manage, recipients),
+          ...reminderEmails({
+            id: created.id,
+            name: input.name,
+            email,
+            consultationType: type.name,
+            startsAt,
+            endsAt,
+            timezone: input.timezone,
+            ...manage,
+          }),
+        ];
+        return { booking: created, outbox: await writeOutbox(tx, emails) };
+      }));
     } catch (error) {
-      // P2002 is the unique constraint on (consultationTypeId, startsAt): somebody else
+      // P2002 is the unique constraint on (consultationTypeId, slotStartsAt): somebody else
       // confirmed this slot between the page loading and this insert.
       if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
         throw new ConflictException({ error: BOOKING_ERRORS.slotGone });
       }
       throw error;
     }
+
+    // A failure to queue never fails the booking: the call and its emails are stored, and the
+    // worker's sweep queues whatever the API could not.
+    await dispatchOutbox(this.prisma.client, this.emailQueue, outbox, this.logger, `Booking ${booking.id}`);
+    return {
+      status: 'booked',
+      startsAt: startsAt.toISOString(),
+      endsAt: endsAt.toISOString(),
+      consultationType: type.name,
+      rescheduleToken,
+      cancelToken,
+    };
   }
 
   /**
-   * Queues the confirmation and the notification.
-   *
-   * A failure here never fails the booking: the call is in the database and the team can
-   * see it, which is more than an email would have told them.
+   * Takes a call's withdrawn reminders off the queue, and those of its old time queued before
+   * the outbox. The rows are already withdrawn, so a removal that fails reminds nobody: the
+   * worker reads the row and the booking before it sends.
    */
-  private async notify(
-    bookingId: string,
-    input: BookingSubmission,
-    typeName: string,
-    startsAt: Date,
-    endsAt: Date,
-    manage: { rescheduleToken: string; cancelToken: string },
-  ): Promise<void> {
+  private async forget(call: { id: string; startsAt: Date }, withdrawn: readonly string[]): Promise<void> {
     try {
-      const recipients = await this.settings.leadNotificationRecipients();
-      await this.emailQueue.enqueue([
-        {
-          template: 'booking-confirmation',
-          to: [input.email],
-          bookingId,
-          name: input.name,
-          consultationType: typeName,
-          startsAt: startsAt.toISOString(),
-          endsAt: endsAt.toISOString(),
-          timezone: input.timezone,
-          manage,
-        },
-        ...(recipients.length > 0
-          ? [
-              {
-                template: 'booking-notification' as const,
-                to: recipients,
-                bookingId,
-                name: input.name,
-                email: input.email,
-                consultationType: typeName,
-                startsAt: startsAt.toISOString(),
-                timezone: input.timezone,
-                context: input.context ?? null,
-              },
-            ]
-          : []),
-      ]);
-    } catch (error) {
-      this.logger.error(`Booking ${bookingId} was stored but its emails could not be queued.`, error);
-    }
-  }
-
-  /** Queues a call's reminders. As with the confirmation, a failure never fails the booking. */
-  private async remind(call: RemindedCall): Promise<void> {
-    try {
-      await this.emailQueue.schedule(reminderJobs(call));
-    } catch (error) {
-      this.logger.error(`Booking ${call.id} was stored but its reminders could not be queued.`, error);
-    }
-  }
-
-  /** Takes a call's reminders for a time off the queue; the worker's own check covers a failure. */
-  private async forget(call: { id: string; startsAt: Date }): Promise<void> {
-    try {
-      await this.emailQueue.remove(reminderJobIds(call));
+      await this.emailQueue.remove([...withdrawn, ...reminderJobIds(call)]);
     } catch (error) {
       this.logger.warn(`Booking ${call.id}: its reminders could not be removed; the worker will skip them.`, error);
     }
@@ -386,7 +343,8 @@ export class BookingService {
     if (booking.status === 'CANCELLED') return this.view(booking, action, now);
     if (!this.view(booking, action, now).open) throw new ConflictException({ error: BOOKING_ERRORS.closed });
 
-    const updated = await this.prisma.client.$transaction(async (tx) => {
+    const recipients = await this.settings.leadNotificationRecipients();
+    const { updated, withdrawn, outbox } = await this.prisma.client.$transaction(async (tx) => {
       const row = await tx.booking.update({
         where: { id: booking.id },
         // The time is given back: a cancelled call holds no slot.
@@ -394,11 +352,16 @@ export class BookingService {
         include: { consultationType: { select: { slug: true, name: true, durationMinutes: true } } },
       });
       await tx.bookingEvent.create({ data: { bookingId: booking.id, type: 'cancelled', detail: { by: 'visitor' } } });
-      return row;
+      // The reminders are withdrawn and both sides' emails written with the change itself.
+      return {
+        updated: row,
+        withdrawn: await withdrawReminders(tx, booking.id, 'the call was cancelled'),
+        outbox: await writeOutbox(tx, changeEmails(row, 'cancelled', null, recipients)),
+      };
     });
 
-    await this.forget(booking);
-    await this.announce(updated, 'cancelled', null);
+    await this.forget(booking, withdrawn);
+    await dispatchOutbox(this.prisma.client, this.emailQueue, outbox, this.logger, `Booking ${booking.id}`);
     return this.view(updated, action, now);
   }
 
@@ -419,10 +382,11 @@ export class BookingService {
     const isOffered = offered.days.some((day) => day.slots.some((slot) => slot.startsAt === startsAt.toISOString()));
     if (!isOffered) throw new ConflictException({ error: BOOKING_ERRORS.slotUnknown });
     const endsAt = new Date(startsAt.getTime() + booking.consultationType.durationMinutes * 60_000);
+    const recipients = await this.settings.leadNotificationRecipients();
 
-    let updated: typeof booking;
+    let moved: { updated: typeof booking; withdrawn: string[]; outbox: OutboxRow[] };
     try {
-      updated = await this.prisma.client.$transaction(async (tx) => {
+      moved = await this.prisma.client.$transaction(async (tx) => {
         const row = await tx.booking.update({
           where: { id: booking.id },
           data: { startsAt, endsAt, slotStartsAt: startsAt, timezone: input.timezone, status: 'RESCHEDULED' },
@@ -435,7 +399,24 @@ export class BookingService {
             detail: { from: booking.startsAt.toISOString(), to: startsAt.toISOString(), by: 'visitor' },
           },
         });
-        return row;
+        // The old time's reminders are withdrawn and the new time's written, with both sides'
+        // emails, in the same transaction as the move (docs/08-decisions.md, 71).
+        const withdrawn = await withdrawReminders(tx, booking.id, 'the call was moved');
+        const emails = [
+          ...changeEmails(row, 'moved', booking.startsAt, recipients),
+          ...reminderEmails({
+            id: row.id,
+            name: row.name,
+            email: row.email,
+            consultationType: row.consultationType.name,
+            startsAt: row.startsAt,
+            endsAt: row.endsAt,
+            timezone: row.timezone,
+            rescheduleToken: row.rescheduleToken,
+            cancelToken: row.cancelToken,
+          }),
+        ];
+        return { updated: row, withdrawn, outbox: await writeOutbox(tx, emails) };
       });
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
@@ -444,66 +425,109 @@ export class BookingService {
       throw error;
     }
 
-    await this.forget(booking);
-    await this.remind({
-      id: updated.id,
-      name: updated.name,
-      email: updated.email,
-      consultationType: updated.consultationType.name,
-      startsAt: updated.startsAt,
-      endsAt: updated.endsAt,
-      timezone: updated.timezone,
-      rescheduleToken: updated.rescheduleToken,
-      cancelToken: updated.cancelToken,
-    });
-    await this.announce(updated, 'moved', booking.startsAt);
-    return this.view(updated, action, now);
-  }
-
-  /** Tells the visitor and the team that a call moved or was cancelled. Never fails the change. */
-  private async announce(
-    booking: Awaited<ReturnType<BookingService['byToken']>>['booking'],
-    change: 'moved' | 'cancelled',
-    previousStartsAt: Date | null,
-  ): Promise<void> {
-    try {
-      const recipients = await this.settings.leadNotificationRecipients();
-      const call = {
-        bookingId: booking.id,
-        name: booking.name,
-        consultationType: booking.consultationType.name,
-        startsAt: booking.startsAt.toISOString(),
-        timezone: booking.timezone,
-      };
-      await this.emailQueue.enqueue([
-        {
-          template: 'booking-changed',
-          to: [booking.email],
-          ...call,
-          endsAt: booking.endsAt.toISOString(),
-          change,
-          previousStartsAt: previousStartsAt?.toISOString() ?? null,
-          manage: { rescheduleToken: booking.rescheduleToken, cancelToken: booking.cancelToken },
-        },
-        ...(recipients.length > 0
-          ? [
-              {
-                template: 'booking-notification' as const,
-                to: recipients,
-                ...call,
-                email: booking.email,
-                context: booking.context,
-                change,
-                previousStartsAt: previousStartsAt?.toISOString() ?? null,
-              },
-            ]
-          : []),
-      ]);
-    } catch (error) {
-      this.logger.error(`Booking ${booking.id} was ${change} but its emails could not be queued.`, error);
-    }
+    await this.forget(booking, moved.withdrawn);
+    await dispatchOutbox(this.prisma.client, this.emailQueue, moved.outbox, this.logger, `Booking ${booking.id}`);
+    return this.view(moved.updated, action, now);
   }
 }
 
 /** A call in one of these still happens; the rest are over or cancelled. */
 const ACTIVE_STATUSES = new Set(['CONFIRMED', 'RESCHEDULED']);
+
+/** The visitor's confirmation of a new call, and the team's notification when anyone is to receive it. */
+function bookedEmails(
+  bookingId: string,
+  input: BookingSubmission,
+  typeName: string,
+  startsAt: Date,
+  endsAt: Date,
+  manage: { rescheduleToken: string; cancelToken: string },
+  recipients: readonly string[],
+): OutboxEmail[] {
+  const confirmation: OutboxEmail = {
+    job: {
+      template: 'booking-confirmation',
+      to: [input.email],
+      bookingId,
+      name: input.name,
+      consultationType: typeName,
+      startsAt: startsAt.toISOString(),
+      endsAt: endsAt.toISOString(),
+      timezone: input.timezone,
+      manage,
+    },
+  };
+  if (recipients.length === 0) return [confirmation];
+  return [
+    confirmation,
+    {
+      job: {
+        template: 'booking-notification',
+        to: [...recipients],
+        bookingId,
+        name: input.name,
+        email: input.email,
+        consultationType: typeName,
+        startsAt: startsAt.toISOString(),
+        timezone: input.timezone,
+        context: input.context ?? null,
+      },
+    },
+  ];
+}
+
+/** A call as its change emails describe it. */
+interface ChangedCall {
+  id: string;
+  name: string;
+  email: string;
+  consultationType: { name: string };
+  startsAt: Date;
+  endsAt: Date;
+  timezone: string;
+  context: string | null;
+  rescheduleToken: string;
+  cancelToken: string;
+}
+
+/** Tells the visitor, and the team when anyone is to receive it, that a call moved or was cancelled. */
+function changeEmails(
+  booking: ChangedCall,
+  change: 'moved' | 'cancelled',
+  previousStartsAt: Date | null,
+  recipients: readonly string[],
+): OutboxEmail[] {
+  const call = {
+    bookingId: booking.id,
+    name: booking.name,
+    consultationType: booking.consultationType.name,
+    startsAt: booking.startsAt.toISOString(),
+    timezone: booking.timezone,
+  };
+  const visitor: OutboxEmail = {
+    job: {
+      template: 'booking-changed',
+      to: [booking.email],
+      ...call,
+      endsAt: booking.endsAt.toISOString(),
+      change,
+      previousStartsAt: previousStartsAt?.toISOString() ?? null,
+      manage: { rescheduleToken: booking.rescheduleToken, cancelToken: booking.cancelToken },
+    },
+  };
+  if (recipients.length === 0) return [visitor];
+  return [
+    visitor,
+    {
+      job: {
+        template: 'booking-notification',
+        to: [...recipients],
+        ...call,
+        email: booking.email,
+        context: booking.context,
+        change,
+        previousStartsAt: previousStartsAt?.toISOString() ?? null,
+      },
+    },
+  ];
+}

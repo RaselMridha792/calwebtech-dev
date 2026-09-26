@@ -284,6 +284,7 @@ model Project {
   testimonials  Testimonial[]
   landingPages  LandingPage[] @relation("LandingPageResults")
   beforeAfterOn LandingPage[] @relation("LandingPageBeforeAfter")
+  comparisons   Comparison[]
 
   @@index([status, featured])
 }
@@ -315,10 +316,41 @@ model Testimonial {
   date       DateTime?
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
+  /// Removed in the dashboard: kept, with its consent date, and shown nowhere.
+  deletedAt  DateTime?
 
   projectId    String?
   project      Project?      @relation(fields: [projectId], references: [id])
   landingPages LandingPage[]
+}
+
+/// A before and after comparison on `/before-and-after/` (docs/08-decisions.md, 70): two
+/// pictures of one site, the words around them and up to four figures. The homepage shows
+/// the first published one marked `onHomepage`, in `order`.
+model Comparison {
+  id         String    @id @default(cuid())
+  /// The client's name, as the slider and the page give it.
+  clientName String
+  /// The section's heading, written as a question.
+  heading    String
+  summary    String
+  /// imageSchema (packages/shared): src, alt, and optionally width and height.
+  before     Json
+  after      Json
+  /// { label, before, after }[], at most four.
+  metrics    Json      @default("[]")
+  order      Int       @default(0)
+  onHomepage Boolean   @default(false)
+  status     Status    @default(DRAFT)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  deletedAt  DateTime?
+
+  /// The case study it links to, shown only while that page is published.
+  projectId String?
+  project   Project? @relation(fields: [projectId], references: [id])
+
+  @@index([status, order])
 }
 
 /// Aggregated third-party ratings, refreshed on a schedule rather than called live,
@@ -664,6 +696,7 @@ model Lead {
   notes       LeadNote[]
   uploads     FileUpload[]
   bookings    Booking[]
+  emailOutbox EmailOutbox[]
 
   @@index([type, status, createdAt])
   @@index([email])
@@ -806,6 +839,7 @@ model Booking {
   contact          Contact?         @relation(fields: [contactId], references: [id])
   lead             Lead?            @relation(fields: [leadId], references: [id])
   events           BookingEvent[]
+  emailOutbox      EmailOutbox[]
 
   /// Database-level double-booking prevention. Client-side checks are not sufficient.
   @@unique([consultationTypeId, slotStartsAt])
@@ -975,4 +1009,43 @@ model WebhookLog {
   processed  Boolean  @default(false)
   error      String?
   receivedAt DateTime @default(now())
+}
+
+// ---------------------------------------------------------------- email outbox
+
+/// An email a lead or a booking sends (docs/08-decisions.md, 71). It is written in the same
+/// transaction as the lead or the booking, so a process that dies between the commit and the
+/// queue loses nothing: the API queues the row at once, and the worker's sweep queues any row
+/// still pending. Its job id and the provider's idempotency key are `outbox-<id>`, and the
+/// worker skips a row already sent, so a row is one email however often it is queued.
+model EmailOutbox {
+  id          String    @id @default(cuid())
+  /// The email job's template: `lead-confirmation`, `booking-reminder` and so on.
+  template    String
+  /// The whole job, as `emailJobSchema` (packages/shared) reads it: what the email says.
+  payload     Json
+  /// When it is due: at once, or a reminder's time before the call.
+  sendAt      DateTime  @default(now())
+  /// When it was first added to the queue. Null means it never reached Redis.
+  queuedAt    DateTime?
+  sentAt      DateTime?
+  /// The provider's message id, or `log-…` under the log transport.
+  providerId  String?
+  /// Withdrawn before it was sent: a reminder for a time the call no longer has.
+  cancelledAt DateTime?
+  /// Given up on: every attempt failed, or the payload can never be sent.
+  failedAt    DateTime?
+  /// Why it was withdrawn or given up on.
+  error       String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  leadId    String?
+  lead      Lead?    @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  bookingId String?
+  booking   Booking? @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  @@index([sentAt, cancelledAt, failedAt])
+  @@index([leadId])
+  @@index([bookingId, template])
 }

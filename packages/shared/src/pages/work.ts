@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { beforeAfterViewSchema, testimonialViewSchema } from '../landing-page';
+import { beforeAfterViewSchema, testimonialViewSchema, type BeforeAfterView } from '../landing-page';
 import { decorativeImageSchema, imageSchema, mediaSrcSchema } from '../media';
 import { slugSchema } from '../seo';
 import { siteLinkSchema } from '../site-chrome';
@@ -8,7 +8,8 @@ import { answerBlockSchema, caseStudyCardSchema, metricSchema, pageSeoSchema, qu
 
 /**
  * The work family (docs/10-site-pages.md): `/work/` with URL filters, `/work/<slug>/` and
- * `/before-and-after/`. Proof comes from `Project` records; the copy around it lives in
+ * `/before-and-after/`. Proof comes from `Project` records, and the comparisons on
+ * `/before-and-after/` from `Comparison` records (decision 70); the copy around it lives in
  * the `work.copy` setting, validated by `workCopySchema`.
  */
 
@@ -264,20 +265,33 @@ export const workCaseStudyViewSchema = z.object({
 });
 export type WorkCaseStudyView = z.output<typeof workCaseStudyViewSchema>;
 
-/** What `GET /pages/before-and-after` returns. */
+/** What `GET /pages/before-and-after` returns: every published comparison, in the page's order. */
 export const workBeforeAndAfterViewSchema = z.object({
   copy: workBeforeAndAfterCopySchema.omit({ comparisonHeading: true }),
   comparisons: z.array(
     beforeAfterViewSchema.extend({
-      /** The project's case study, or null when it has no page of its own. */
+      /** The case study it links to, or null when it has no page of its own. */
       slug: slugSchema.nullable(),
       heading: questionSchema(200),
       summary: requiredText(300),
+      /** Marked for the homepage; the homepage shows the first one marked (decision 70). */
+      onHomepage: z.boolean().default(false),
     }),
   ),
 });
 export type WorkBeforeAndAfterView = z.output<typeof workBeforeAndAfterViewSchema>;
 export type WorkComparison = WorkBeforeAndAfterView['comparisons'][number];
+
+/**
+ * The comparison the homepage shows: the first on `/before-and-after/` marked for it, or
+ * null (docs/08-decisions.md, 70). Both pages read one list, so the homepage never shows a
+ * comparison the page does not.
+ */
+export function homepageComparison(view: Pick<WorkBeforeAndAfterView, 'comparisons'>): BeforeAfterView | null {
+  const chosen = view.comparisons.find((comparison) => comparison.onHomepage);
+  if (!chosen) return null;
+  return { clientName: chosen.clientName, before: chosen.before, after: chosen.after, metrics: chosen.metrics };
+}
 
 // ---------------------------------------------------------------- URL state
 

@@ -9,7 +9,7 @@ import {
 import { CardGrid, CaseStudyCard, LinkCard, TestimonialCard } from '../site/cards';
 import { Section, groundOf, type SectionTone } from '../site/section';
 import { SectionHeading } from '../site/section-heading';
-import { PhoneIcon } from '../ui/icons';
+import { ArrowIcon, PhoneIcon } from '../ui/icons';
 import { reveal } from '../ui/primitives';
 import { ResponsiveImage } from '../ui/responsive-image';
 
@@ -168,11 +168,12 @@ export function WorkingModelSection({ data }: { data: LocationDetailView['workin
   return (
     <Section id="how-we-work" tone="ink" labelledBy="how-we-work-heading">
       <SectionHeading id="how-we-work-heading" title={data.heading} intro={data.intro} ground={groundOf('ink')} />
-      <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {/* Points on rules, not glass cards; each rule draws champagne under the pointer. */}
+      <ul className="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
         {data.points.map((point, index) => (
-          <li key={point.title} className="glass p-7" {...reveal(index)}>
-            <p className="font-display text-[15px] font-extrabold text-ink-invert-muted">{String(index + 1).padStart(2, '0')}</p>
-            <p className="mt-3 font-display text-[19px] leading-snug font-bold">{point.title}</p>
+          <li key={point.title} className="group relative border-t border-ink-invert/20 pt-7 pb-2 before:absolute before:inset-x-0 before:-top-px before:h-0.5 before:origin-left before:scale-x-0 before:bg-gold-500 before:transition-transform before:duration-500 before:ease-out-quint hover:before:scale-x-100" {...reveal(index)}>
+            <p className="meta text-ink-invert-muted transition-colors duration-150 group-hover:text-gold-500">{String(index + 1).padStart(2, '0')}</p>
+            <p className="heading-md mt-4">{point.title}</p>
             <p className="mt-3 text-[15px] leading-relaxed text-ink-invert-muted">{point.body}</p>
           </li>
         ))}
@@ -283,32 +284,45 @@ export function NearbySection({ data, tone }: { data: LocationDetailView['nearby
   );
 }
 
-/** A location on `/locations/`, as the homepage's location cards show it. */
+/**
+ * A location on `/locations/`: no box, the photograph slowly pushing in under the pointer,
+ * or a rule drawing champagne when there is none. The link is stretched over the entry.
+ */
 export function LocationCard({ location, step }: { location: LocationCardView; step: number }) {
   return (
-    <li className="lift relative flex flex-col overflow-hidden border border-hairline bg-canvas-raised" {...reveal(step)}>
+    <li
+      className="group relative flex flex-col has-focus-visible:outline-2 has-focus-visible:outline-offset-8 has-focus-visible:outline-focus"
+      {...reveal(step)}
+    >
       {location.image ? (
-        <div className="relative aspect-[16/10] bg-canvas-sunken">
+        <div className="relative aspect-[16/10] overflow-hidden bg-canvas-sunken">
           <ResponsiveImage
             src={location.image.src}
             alt={location.image.alt}
             fill
             sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-            className="object-cover"
+            className="object-cover transition-transform duration-[1600ms] ease-out-quint motion-safe:group-hover:scale-105"
           />
         </div>
       ) : null}
-      <div className="flex flex-1 flex-col p-6">
-        <h3 className="font-display text-[20px] font-bold text-ink">{placeName(location.city, location.state)}</h3>
-        {location.serviceArea ? <p className="mt-2.5 text-[14.5px] leading-relaxed">{location.serviceArea}</p> : null}
+      <div
+        className={`relative flex flex-1 flex-col ${
+          location.image
+            ? 'pt-6'
+            : 'border-t border-hairline pt-6 before:absolute before:inset-x-0 before:-top-px before:h-0.5 before:origin-left before:scale-x-0 before:bg-gold-ink before:transition-transform before:duration-500 before:ease-out-quint group-hover:before:scale-x-100'
+        }`}
+      >
+        <h3 className="display-md text-ink">{placeName(location.city, location.state)}</h3>
+        {location.serviceArea ? <p className="body-base mt-3 text-ink-muted">{location.serviceArea}</p> : null}
         {location.address ? (
-          <p className="mt-4 border-t border-hairline pt-4 text-[14px] whitespace-pre-line">{location.address}</p>
+          <p className="meta mt-5 border-t border-hairline pt-4 whitespace-pre-line text-ink">{location.address}</p>
         ) : null}
         <a
           href={locationPath(location.slug)}
-          className="mt-auto inline-block self-start pt-4 text-[14.5px] font-semibold text-gold-ink after:absolute after:inset-0 hover:text-gold-600"
+          className="button-label mt-auto flex items-center gap-2 self-start pt-5 text-gold-ink after:absolute after:inset-0 focus-visible:outline-none"
         >
           {`Web design in ${location.city}`}
+          <ArrowIcon className="w-4 transition-transform duration-420 ease-out-quint motion-safe:group-hover:translate-x-1.5" />
         </a>
       </div>
     </li>
@@ -321,10 +335,10 @@ export function ApproachSection({ data }: { data: LocationsIndexView['content'][
   return (
     <Section id="working-remotely" tone="ink" labelledBy="working-remotely-heading">
       <SectionHeading id="working-remotely-heading" title={data.heading} intro={data.intro} ground="dark" />
-      <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <ul className="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
         {data.points.map((point, index) => (
-          <li key={point.title} className="glass p-7" {...reveal(index)}>
-            <p className="font-display text-[19px] leading-snug font-bold">{point.title}</p>
+          <li key={point.title} className="group relative border-t border-ink-invert/20 pt-7 pb-2 before:absolute before:inset-x-0 before:-top-px before:h-0.5 before:origin-left before:scale-x-0 before:bg-gold-500 before:transition-transform before:duration-500 before:ease-out-quint hover:before:scale-x-100" {...reveal(index)}>
+            <p className="heading-md">{point.title}</p>
             <p className="mt-3 text-[15px] leading-relaxed text-ink-invert-muted">{point.body}</p>
           </li>
         ))}

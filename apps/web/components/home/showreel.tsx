@@ -48,7 +48,7 @@ export function Showreel({
         <button
           type="button"
           onClick={open}
-          className="glass inline-flex items-center gap-3 px-6 py-3.5 font-semibold text-ink-invert hover:bg-navy-900-invert/15"
+          className="glass inline-flex items-center gap-3 px-6 py-3.5 font-semibold text-ink-invert hover:bg-ink-invert/15"
         >
           <span className="grid h-7 w-7 place-items-center rounded-full bg-canvas-raised text-ink" aria-hidden="true">
             <PlayIcon className="ml-0.5 h-3 w-3" />

@@ -51,9 +51,13 @@ function cardMeta(article: InsightsArticleCard, readingTimeLabel: string): strin
     .join(' · ');
 }
 
+/**
+ * A topic as a tab on a rule: the current one ink with a champagne rule drawn under it, the
+ * others muted until the pointer draws theirs. The article count follows in `meta`.
+ */
 const pillClass = (current: boolean) =>
-  `inline-flex h-10 items-center  border px-4 text-[14.5px] ${
-    current ? 'border-gold-ink bg-navy-500/5 font-semibold text-ink' : 'border-hairline text-ink-muted hover:border-ink hover:text-ink'
+  `group relative -mb-px inline-flex items-center gap-2 py-3.5 text-[15px] font-semibold transition-colors duration-150 after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:origin-left after:bg-gold-ink after:transition-transform after:duration-420 after:ease-out-quint focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-focus motion-reduce:after:transition-none ${
+    current ? 'text-ink after:scale-x-100' : 'text-ink-muted after:scale-x-0 hover:text-ink hover:after:scale-x-100'
   }`;
 
 /** The topics that have articles, each its own indexable page. */
@@ -62,7 +66,7 @@ export function TopicFilter({ view, current }: { view: InsightsIndexView; curren
   if (topics.length === 0) return null;
   return (
     <nav aria-label={view.copy.topicsLabel} className="mt-10">
-      <ul className="flex flex-wrap gap-2.5">
+      <ul className="flex flex-wrap gap-x-8 border-b border-hairline">
         <li>
           <a href={INSIGHTS_ROUTE} className={pillClass(current === null)} {...(current === null ? { 'aria-current': 'page' as const } : {})}>
             {view.copy.allTopicsLabel}
@@ -75,7 +79,9 @@ export function TopicFilter({ view, current }: { view: InsightsIndexView; curren
               className={pillClass(current === topic.slug)}
               {...(current === topic.slug ? { 'aria-current': 'page' as const } : {})}
             >
-              {`${topic.name} (${String(topic.articleCount)})`}
+              {topic.name}
+              {/* A space for the accessible name; flex layout ignores it. */}{' '}
+              <span className="meta text-ink-muted">{`(${String(topic.articleCount)})`}</span>
             </a>
           </li>
         ))}
@@ -87,28 +93,36 @@ export function TopicFilter({ view, current }: { view: InsightsIndexView; curren
 /** The article to read first, above the list, on the first page of the unfiltered index. */
 export function FeaturedArticle({ article, copy }: { article: InsightsArticleCard; copy: InsightsIndexCopy }) {
   return (
-    <article className="lift relative mt-10 grid overflow-hidden border border-hairline bg-canvas-raised lg:grid-cols-2" {...reveal()}>
+    // A spread, not a box: the photograph large beside the story, pushing in slowly under the
+    // pointer while the title underlines. The title is the link, stretched over the spread.
+    <article
+      className="group relative mt-10 grid items-center gap-8 has-focus-visible:outline-2 has-focus-visible:outline-offset-8 has-focus-visible:outline-focus lg:grid-cols-12 lg:gap-14"
+      {...reveal()}
+    >
       {article.image ? (
-        <div className="relative aspect-video bg-canvas-sunken lg:h-full">
+        <div className="relative aspect-[16/10] overflow-hidden bg-canvas-sunken lg:col-span-7">
           {/* Not preloaded: the hero backdrop above it is the listing's LCP element (docs/09). */}
           <ResponsiveImage
             src={article.image.src}
             alt={article.image.alt}
             fill
-            sizes="(min-width: 1024px) 50vw, 100vw"
-            className="object-cover"
+            sizes="(min-width: 1024px) 58vw, 100vw"
+            className="object-cover transition-transform duration-[1600ms] ease-out-quint motion-safe:group-hover:scale-[1.04]"
           />
         </div>
       ) : null}
-      <div className="flex flex-col justify-center p-7 lg:p-10">
-        <p className="text-[13px] font-semibold text-gold-ink">{copy.featuredLabel}</p>
-        <h3 className="mt-3 font-display text-[24px] leading-snug font-extrabold text-ink lg:text-[30px]">
-          <a href={insightsArticlePath(article.slug)} className="after:absolute after:inset-0 hover:text-gold-ink">
+      <div className={article.image ? 'lg:col-span-5' : 'lg:col-span-12'}>
+        <p className="eyebrow text-gold-ink">{copy.featuredLabel}</p>
+        <h3 className="display-md mt-4 text-ink">
+          <a
+            href={insightsArticlePath(article.slug)}
+            className="decoration-gold-ink decoration-2 underline-offset-[8px] after:absolute after:inset-0 focus-visible:outline-none group-hover:underline"
+          >
             {article.title}
           </a>
         </h3>
-        <p className="mt-3 max-w-[52ch] text-[16px] leading-relaxed">{article.excerpt}</p>
-        <p className="mt-5 text-[13.5px]">{cardMeta(article, copy.readingTimeLabel)}</p>
+        <p className="body-lg mt-4 max-w-[52ch] text-ink-muted">{article.excerpt}</p>
+        <p className="meta mt-6 text-ink-muted uppercase">{cardMeta(article, copy.readingTimeLabel)}</p>
       </div>
     </article>
   );

@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { leadTypeSchema, utmSchema } from './lead';
+import { FORMS_PROJECT_STEPS, FORMS_PROJECT_STEP_COUNT, type FormsProjectStep } from './pages/forms';
 
 /**
  * The leads inbox (docs/12-admin-dashboard.md, module 2): one table for every capture
@@ -131,6 +132,8 @@ export const adminLeadQuerySchema = z.object({
   campaignSlug: z.preprocess(blankToUndefined, z.string().max(80).optional()),
   /** An `EnquiryType.slug`; only CONTACT leads carry one. */
   enquiry: z.preprocess(blankToUndefined, z.string().max(80).optional()),
+  /** Start-a-project briefs by whether they were sent (decision 69). */
+  brief: z.preprocess(blankToUndefined, z.enum(['unfinished', 'finished']).optional()),
   /** Closed leads are out of the way until asked for. */
   includeClosed: z.preprocess((v) => v === 'true' || v === true, z.boolean()).default(false),
   sort: adminLeadSortSchema.default('received'),
@@ -152,8 +155,15 @@ export function narrowingFilters(query: AdminLeadQuery): number {
   if (query.serviceSlug) count += 1;
   if (query.campaignSlug) count += 1;
   if (query.enquiry) count += 1;
+  if (query.brief) count += 1;
   return count;
 }
+
+/** What the inbox's brief filter offers (decision 69). */
+export const LEAD_BRIEF_FILTERS = [
+  { value: 'unfinished', label: 'Unfinished briefs' },
+  { value: 'finished', label: 'Sent briefs' },
+] as const;
 
 // ---------------------------------------------------------------- list
 
@@ -172,6 +182,11 @@ export const adminLeadListItemSchema = z.object({
   value: z.number().nullable(),
   owner: z.object({ id: z.string(), name: z.string() }).nullable(),
   nextActionDate: z.iso.datetime().nullable(),
+  /**
+   * For a start-a-project brief nobody sent, the furthest step its visitor reached, 3 to 6;
+   * null for every other lead, a sent brief included (decision 69).
+   */
+  unfinishedBriefStep: z.number().int().min(1).max(FORMS_PROJECT_STEP_COUNT).nullable(),
   createdAt: z.iso.datetime(),
   updatedAt: z.iso.datetime(),
 });
@@ -316,3 +331,62 @@ export const leadBulkSchema = z
     path: ['reason'],
   });
 export type LeadBulk = z.infer<typeof leadBulkSchema>;
+
+// ---------------------------------------------------------------- brief drop-off
+
+/**
+ * Where start-a-project briefs are abandoned (docs/06-build-plan.md, task 5.2; decision 69).
+ *
+ * A brief is first stored when its visitor leaves the contact step, so it is counted from
+ * step 3: someone who stops at step 1 or 2 leaves nothing behind. Steps 1 and 2 are listed,
+ * with every stored brief having passed them, and marked as not measured.
+ */
+export const BRIEF_FUNNEL_PERIODS = [7, 30, 90] as const;
+export type BriefFunnelPeriod = (typeof BRIEF_FUNNEL_PERIODS)[number];
+
+export const adminBriefFunnelQuerySchema = z.object({
+  days: z.coerce
+    .number()
+    .refine((value): value is BriefFunnelPeriod => (BRIEF_FUNNEL_PERIODS as readonly number[]).includes(value))
+    .default(30),
+});
+export type AdminBriefFunnelQuery = z.output<typeof adminBriefFunnelQuerySchema>;
+
+/** The step a brief is first stored at, and so the first whose drop-off can be counted. */
+export const BRIEF_FIRST_MEASURED_STEP = 3;
+
+export const BRIEF_STEP_LABELS: Record<FormsProjectStep, string> = {
+  'project-type': 'Project type',
+  contact: 'Contact details',
+  services: 'Services',
+  budget: 'Budget',
+  timeline: 'Timeline',
+  brief: 'The brief',
+};
+
+const funnelCount = z.number().int().min(0);
+
+export const adminBriefFunnelSchema = z.object({
+  days: z.number().int(),
+  from: z.iso.datetime(),
+  to: z.iso.datetime(),
+  /** Briefs stored in the period: every one reached step 3. */
+  started: funnelCount,
+  /** Of those, the ones sent. */
+  finished: funnelCount,
+  steps: z
+    .array(
+      z.object({
+        step: z.number().int().min(1).max(FORMS_PROJECT_STEP_COUNT),
+        key: z.enum(FORMS_PROJECT_STEPS),
+        /** Briefs whose visitor got at least this far. */
+        reached: funnelCount,
+        /** Unsent briefs whose visitor got this far and no further. */
+        stoppedHere: funnelCount,
+        /** False for the steps before a brief is stored, where nobody who left can be seen. */
+        measured: z.boolean(),
+      }),
+    )
+    .length(FORMS_PROJECT_STEP_COUNT),
+});
+export type AdminBriefFunnel = z.infer<typeof adminBriefFunnelSchema>;

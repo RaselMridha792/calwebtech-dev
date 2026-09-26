@@ -8,6 +8,7 @@ import {
   siteProofSchema,
 } from '@calwebtech/shared';
 import { z } from 'zod';
+import { CONSENTED } from '../common/published';
 
 /** Relations loaded for a landing page. Unpublished or unconsented proof is filtered out here. */
 export const landingPageInclude = {
@@ -18,7 +19,7 @@ export const landingPageInclude = {
   },
   beforeAfterProject: true,
   testimonials: {
-    where: { consentAt: { not: null } },
+    where: CONSENTED,
     orderBy: [{ featured: 'desc' }, { date: 'desc' }],
   },
   team: { where: { active: true }, orderBy: { order: 'asc' } },

@@ -16,6 +16,7 @@ import type {
 } from '@calwebtech/db';
 import {
   homePageViewSchema,
+  homepageComparison,
   homepageIndexingSchema,
   siteProofSchema,
   type HomePageView,
@@ -23,18 +24,15 @@ import {
   type TestimonialView,
 } from '@calwebtech/shared';
 import { z } from 'zod';
-import {
-  beforeAfterMetricsSchema,
-  image,
-  outcomeMetricsSchema,
-  summariseReviews,
-} from '../landing-pages/landing-page.mapper';
+import { CONSENTED } from '../common/published';
+import { image, outcomeMetricsSchema, summariseReviews } from '../landing-pages/landing-page.mapper';
+import { comparisonView, type WorkComparisonRecord } from '../work/work.mapper';
 
 /** Relations loaded for featured projects: the industry for the filter, one consented quote. */
 export const homeProjectInclude = {
   industry: { select: { name: true } },
   testimonials: {
-    where: { consentAt: { not: null } },
+    where: CONSENTED,
     orderBy: [{ featured: 'desc' }, { date: 'desc' }],
     take: 1,
   },
@@ -76,6 +74,8 @@ export interface HomePageSources {
   guide: Guide | null;
   locations: Location[];
   pricingTiers: PricingTier[];
+  /** The published comparison marked for the homepage, first in the page's order (decision 70). */
+  comparison?: WorkComparisonRecord | null;
 }
 
 export const HOME_PROJECT_LIMIT = 5;
@@ -125,17 +125,12 @@ export function projectView(project: HomeProjectRecord): HomeProject | null {
   };
 }
 
-/** The first featured project with both screenshots. Unfeatured projects never appear here. */
-function beforeAfterView(projects: readonly HomeProjectRecord[]): HomePageView['beforeAfter'] {
-  for (const project of projects) {
-    const clientName = project.clientAlias ?? project.clientName;
-    const before = image(project.beforeImageUrl, `${clientName} website before the redesign`);
-    const after = image(project.afterImageUrl, `${clientName} website after the redesign`);
-    if (!before || !after) continue;
-    const metrics = beforeAfterMetricsSchema.safeParse(project.beforeAfterMetrics ?? []);
-    return { clientName, before, after, metrics: metrics.success ? metrics.data.slice(0, 4) : [] };
-  }
-  return null;
+/**
+ * The before and after comparison: the one /before-and-after/ marks for the homepage, shown
+ * as that page shows it, so the two never disagree (docs/08-decisions.md, 70).
+ */
+function beforeAfterView(comparison: WorkComparisonRecord | null | undefined): HomePageView['beforeAfter'] {
+  return comparison ? homepageComparison({ comparisons: [comparisonView(comparison)] }) : null;
 }
 
 function technologyGroups(technologies: readonly Technology[]): HomePageView['technologyGroups'] {
@@ -213,7 +208,7 @@ export function toHomePageView(sources: HomePageSources): HomePageView {
     problemRouter: sources.problemRouter.map((faq) => ({ id: faq.id, question: faq.question, answer: faq.answer })),
     projects,
     pullQuote: pullQuote ? testimonialView(pullQuote) : null,
-    beforeAfter: beforeAfterView(sources.projects),
+    beforeAfter: beforeAfterView(sources.comparison),
     technologyGroups: technologyGroups(sources.technologies),
     processSteps: sources.processSteps.map((step) => ({ title: step.title, timing: step.timing, summary: step.summary })),
     testimonials: testimonials.map(testimonialView),

@@ -86,6 +86,7 @@ export default async function AdminCaseStudyEditorPage({ params }: PageProps<'/a
         options={list.options}
         shapes={CASE_STUDY_SHAPES as Record<string, Json>}
         statusLabels={CONTENT_STATUS_LABELS}
+        testimonials={existing?.testimonials ?? []}
       />
     </AdminPage>
   );

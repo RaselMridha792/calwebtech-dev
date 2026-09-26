@@ -113,6 +113,7 @@ function testimonial(overrides: Partial<Testimonial> = {}): Testimonial {
     videoUrl: null,
     featured: false,
     consentAt: at,
+    deletedAt: null,
     date: at,
     createdAt: at,
     updatedAt: at,
@@ -162,19 +163,30 @@ function project(slug: string, overrides: Partial<WorkProjectRecord> = {}): Work
   };
 }
 
-function comparison(slug: string, overrides: Partial<WorkComparisonRecord> = {}): WorkComparisonRecord {
+function comparison(name: string, overrides: Partial<WorkComparisonRecord> = {}): WorkComparisonRecord {
   return {
-    slug,
-    clientName: `Client ${slug}`,
-    clientAlias: null,
+    id: `comparison-${name}`,
+    clientName: `Client ${name}`,
+    heading: `What changed for Client ${name}?`,
     summary: 'Test comparison summary.',
-    answerBlock: ANSWER,
-    outcomeMetrics: METRICS,
-    beforeImageUrl: '/media/before.jpg',
-    afterImageUrl: '/media/after.jpg',
-    beforeAfterMetrics: [{ label: 'Test measure', before: 'A', after: 'B' }],
+    before: { src: '/media/before.jpg', alt: 'Test before' },
+    after: { src: '/media/after.jpg', alt: 'Test after', width: 1448, height: 1086 },
+    metrics: [{ label: 'Test measure', before: 'A', after: 'B' }],
+    order: 0,
+    onHomepage: false,
+    status: 'PUBLISHED',
+    createdAt: at,
+    updatedAt: at,
+    deletedAt: null,
+    projectId: null,
+    project: null,
     ...overrides,
   };
+}
+
+/** A comparison's linked project, as the query selects it. */
+function linked(slug: string, overrides: Partial<NonNullable<WorkComparisonRecord['project']>> = {}) {
+  return { slug, status: 'PUBLISHED' as const, deletedAt: null, answerBlock: ANSWER, outcomeMetrics: METRICS, ...overrides };
 }
 
 const statistic = (label: string, value: string, suffix: string | null): Statistic => ({
@@ -478,25 +490,49 @@ describe('toCaseStudyView', () => {
 });
 
 describe('toBeforeAndAfterView', () => {
-  it('links a comparison to its case study only when the project has one', () => {
+  it('lists the comparisons in the order given, each with its own heading and pictures', () => {
     const view = toBeforeAndAfterView({
       copySetting: COPY,
-      projects: [
-        comparison('with-page'),
-        comparison('pair-only', { answerBlock: 'Test fixture.' }),
-        comparison('one-image', { afterImageUrl: null }),
-      ],
+      comparisons: [comparison('first', { onHomepage: true }), comparison('second', { metrics: [] })],
     });
-    expect(view.comparisons.map((item) => [item.slug, item.clientName])).toEqual([
-      ['with-page', 'Client with-page'],
-      [null, 'Client pair-only'],
+    expect(view.comparisons.map((item) => [item.clientName, item.heading, item.onHomepage])).toEqual([
+      ['Client first', 'What changed for Client first?', true],
+      ['Client second', 'What changed for Client second?', false],
     ]);
-    expect(view.comparisons[0]?.heading).toBe('What changed for Client with-page?');
+    expect(view.comparisons[0]?.after).toEqual({ src: '/media/after.jpg', alt: 'Test after', width: 1448, height: 1086 });
+    expect(view.comparisons[1]?.metrics).toEqual([]);
     expect(view.copy).not.toHaveProperty('comparisonHeading');
   });
 
-  it('renders an empty page when no pair is published', () => {
-    expect(toBeforeAndAfterView({ copySetting: COPY, projects: [] }).comparisons).toEqual([]);
+  it('links a case study only while its page is published and complete', () => {
+    const view = toBeforeAndAfterView({
+      copySetting: COPY,
+      comparisons: [
+        comparison('live', { project: linked('test-live') }),
+        comparison('draft', { project: linked('test-draft', { status: 'DRAFT' }) }),
+        comparison('removed', { project: linked('test-removed', { deletedAt: at }) }),
+        comparison('incomplete', { project: linked('test-incomplete', { answerBlock: 'Test fixture.' }) }),
+        comparison('unlinked'),
+      ],
+    });
+    expect(view.comparisons.map((item) => item.slug)).toEqual(['test-live', null, null, null, null]);
+  });
+
+  it('names the comparison whose pictures break the contract', () => {
+    const error = (() => {
+      try {
+        toBeforeAndAfterView({ copySetting: COPY, comparisons: [comparison('broken', { before: { src: '/media/x.jpg' } })] });
+      } catch (caught) {
+        return caught;
+      }
+      return null;
+    })();
+    expect(error).toBeInstanceOf(WorkContractError);
+    expect((error as WorkContractError).record).toBe('Comparison "Client broken" (comparison-broken)');
+  });
+
+  it('renders an empty page when no comparison is published', () => {
+    expect(toBeforeAndAfterView({ copySetting: COPY, comparisons: [] }).comparisons).toEqual([]);
   });
 });
 

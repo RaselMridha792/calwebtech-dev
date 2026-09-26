@@ -20,6 +20,7 @@ import {
   type WorkBeforeAndAfterView,
   type WorkCaseStudyCard,
   type WorkCaseStudyView,
+  type WorkComparison,
   type WorkCopy,
   type WorkIndexView,
   type WorkTerm,
@@ -43,11 +44,26 @@ export function workProjectInclude(now: Date) {
       select: { slug: true, title: true, shortDescription: true },
     },
     technologies: { orderBy: [{ order: 'asc' }, { name: 'asc' }], select: { slug: true, name: true } },
-    testimonials: { where: CONSENTED, orderBy: [{ featured: 'desc' }, { date: 'desc' }], take: 1 },
+    testimonials: { where: CONSENTED, orderBy: WORK_TESTIMONIAL_ORDER, take: 1 },
   } satisfies Prisma.ProjectInclude;
 }
 
 export type WorkProjectRecord = Prisma.ProjectGetPayload<{ include: ReturnType<typeof workProjectInclude> }>;
+
+/**
+ * The order a case study picks its testimonials in: featured first, then the newest. The
+ * page shows the first as its quote and the first with a video as its video; the dashboard
+ * reads them in the same order to say which is which (decision 70).
+ */
+export const WORK_TESTIMONIAL_ORDER: Prisma.TestimonialOrderByWithRelationInput[] = [{ featured: 'desc' }, { date: 'desc' }];
+
+/** The query for a case study's quote: its first consented testimonial. */
+export function workQuoteQuery(projectId: string) {
+  return {
+    where: { projectId, ...CONSENTED },
+    orderBy: WORK_TESTIMONIAL_ORDER,
+  } satisfies Prisma.TestimonialFindFirstArgs;
+}
 
 /**
  * The query for a case study's video testimonial: a consented testimonial on the project
@@ -57,24 +73,21 @@ export type WorkProjectRecord = Prisma.ProjectGetPayload<{ include: ReturnType<t
 export function workVideoTestimonialQuery(projectId: string) {
   return {
     where: { projectId, ...CONSENTED, videoUrl: { not: null } },
-    orderBy: [{ featured: 'desc' }, { date: 'desc' }],
+    orderBy: WORK_TESTIMONIAL_ORDER,
   } satisfies Prisma.TestimonialFindFirstArgs;
 }
 
-/** The columns the before and after page reads from a project. */
-export const workComparisonSelect = {
-  slug: true,
-  clientName: true,
-  clientAlias: true,
-  summary: true,
-  answerBlock: true,
-  outcomeMetrics: true,
-  beforeImageUrl: true,
-  afterImageUrl: true,
-  beforeAfterMetrics: true,
-} satisfies Prisma.ProjectSelect;
+/**
+ * Published comparisons in the page's order (decision 70). Ties in `order` fall back to the
+ * oldest first, so a new comparison joins the end of its position.
+ */
+export const WORK_COMPARISON_QUERY = {
+  where: { status: 'PUBLISHED', deletedAt: null },
+  orderBy: [{ order: 'asc' }, { createdAt: 'asc' }],
+  include: { project: { select: { slug: true, status: true, deletedAt: true, outcomeMetrics: true, answerBlock: true } } },
+} satisfies Prisma.ComparisonFindManyArgs;
 
-export type WorkComparisonRecord = Prisma.ProjectGetPayload<{ select: typeof workComparisonSelect }>;
+export type WorkComparisonRecord = Prisma.ComparisonGetPayload<{ include: (typeof WORK_COMPARISON_QUERY)['include'] }>;
 
 /** A record or setting that does not meet the contract, named so the log says which to fix. */
 export class WorkContractError extends Error {
@@ -398,29 +411,39 @@ export function toCaseStudyView(sources: WorkCaseStudySources): WorkCaseStudyVie
 
 export interface WorkBeforeAndAfterSources {
   copySetting: unknown;
-  /** Published projects with both screenshots, in display order. */
-  projects: WorkComparisonRecord[];
+  /** Published comparisons, in the page's order (`WORK_COMPARISON_QUERY`). */
+  comparisons: WorkComparisonRecord[];
 }
 
-/** The `/before-and-after/` view: every published pair, linked to its case study when it has one. */
+/** The case study a comparison links to, while that page is published and complete; otherwise null. */
+function comparisonCaseStudy(project: WorkComparisonRecord['project']): string | null {
+  if (!project || project.status !== 'PUBLISHED' || project.deletedAt !== null) return null;
+  return caseStudyReadiness(project).ready ? project.slug : null;
+}
+
+/** One comparison as `/before-and-after/` shows it, and the homepage when it is marked for it. */
+export function comparisonView(record: WorkComparisonRecord): WorkComparison {
+  const name = `Comparison "${record.clientName}" (${record.id})`;
+  return {
+    slug: comparisonCaseStudy(record.project),
+    clientName: record.clientName,
+    heading: record.heading,
+    summary: record.summary,
+    before: parseAs(name, imageSchema, record.before),
+    after: parseAs(name, imageSchema, record.after),
+    metrics: parseAs(name, beforeAfterPairsSchema, record.metrics).slice(0, 4),
+    onHomepage: record.onHomepage,
+  };
+}
+
+/**
+ * The `/before-and-after/` view: every published comparison in the page's order, each linked
+ * to its case study while that page is live (decision 70). Each comparison carries its own
+ * heading, so the copy's `comparisonHeading` template is not used; the view leaves it out.
+ */
 export function toBeforeAndAfterView(sources: WorkBeforeAndAfterSources): WorkBeforeAndAfterView {
-  const { comparisonHeading, ...copy } = parseWorkCopy(sources.copySetting).beforeAndAfter;
-  const comparisons = sources.projects.flatMap((project) => {
-    const clientName = clientOf(project);
-    const before = image(project.beforeImageUrl, `${clientName} website before the redesign`);
-    const after = image(project.afterImageUrl, `${clientName} website after the redesign`);
-    if (!before || !after) return [];
-    return [
-      {
-        slug: caseStudyReadiness(project).ready ? project.slug : null,
-        clientName,
-        heading: workHeading(comparisonHeading, clientName),
-        summary: project.summary,
-        before,
-        after,
-        metrics: parseAs(`Project "${project.slug}"`, beforeAfterPairsSchema, project.beforeAfterMetrics ?? []).slice(0, 4),
-      },
-    ];
+  return parseAs('The before and after page', workBeforeAndAfterViewSchema, {
+    copy: parseWorkCopy(sources.copySetting).beforeAndAfter,
+    comparisons: sources.comparisons.map(comparisonView),
   });
-  return parseAs('The before and after page', workBeforeAndAfterViewSchema, { copy, comparisons });
 }

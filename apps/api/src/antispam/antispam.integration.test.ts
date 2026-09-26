@@ -8,7 +8,7 @@ import {
   EMAIL_DOMAIN_MESSAGES,
   EMAIL_LIMITS,
   EMAIL_QUEUE,
-  emailJobId,
+  emailOutboxJobId,
   type BookingSubmission,
   type LeadSubmission,
 } from '@calwebtech/shared';
@@ -123,12 +123,14 @@ describe('a lead sent again', () => {
     const resubmitted = row?.activities.find((activity) => activity.type === 'form_resubmitted');
     expect(resubmitted?.detail).toMatchObject({ formId: 'contact-page', message: 'Second, with more.' });
 
-    const id = emailJobId({
-      template: 'lead-confirmation',
-      lead: { leadId: row?.id ?? '' },
-      resubmission: resubmitted?.id ?? '',
+    // The resubmission's own confirmation, committed with it (docs/08-decisions.md, 71) and queued.
+    const confirmations = await db.emailOutbox.findMany({
+      where: { leadId: row?.id ?? '', template: 'lead-confirmation' },
+      orderBy: { createdAt: 'asc' },
     });
-    const again = await inspect.getJob(id);
+    expect(confirmations).toHaveLength(2);
+    expect(confirmations[1]?.payload).toMatchObject({ resubmission: resubmitted?.id });
+    const again = await inspect.getJob(emailOutboxJobId(confirmations[1]?.id ?? ''));
     expect(again).toBeTruthy();
   });
 

@@ -127,3 +127,16 @@ export function projectDraftAttribution(input: FormsProjectDraft) {
     formId: input.formId,
   };
 }
+
+/**
+ * How far a stored brief got, from its `answers`: the furthest step its visitor reached and
+ * whether it was sent. Null for a lead that was never a stored brief (decision 69).
+ */
+export function briefProgress(answers: unknown): { furthestStep: number; completed: boolean } | null {
+  const draft = asJsonObject(asJsonObject(answers).draft);
+  if (text(draft.startedAt) === undefined) return null;
+  return {
+    furthestStep: Math.max(count(draft.furthestStep), count(draft.step)),
+    completed: text(draft.completedAt) !== undefined,
+  };
+}

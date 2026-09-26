@@ -2,6 +2,7 @@ import { industryPath, type IndustriesIndexView } from '@calwebtech/shared';
 import { EmptyState } from '../site/lists';
 import { Section } from '../site/section';
 import { SectionHeading } from '../site/section-heading';
+import { ArrowIcon } from '../ui/icons';
 import { reveal } from '../ui/primitives';
 import { ResponsiveImage } from '../ui/responsive-image';
 
@@ -33,7 +34,7 @@ export function IndustriesList({
           {industries.map((industry, index) => (
             <li
               key={industry.slug}
-              className={`lift relative isolate flex flex-col justify-end overflow-hidden  bg-navy-900 p-6 sm:aspect-3/4 ${industry.image ? 'min-h-64' : 'min-h-48'}`}
+              className={`group relative isolate flex flex-col justify-end overflow-hidden bg-navy-900 p-6 has-focus-visible:outline-2 has-focus-visible:outline-offset-4 has-focus-visible:outline-focus sm:aspect-3/4 ${industry.image ? 'min-h-64' : 'min-h-48'}`}
               {...reveal(index)}
             >
               {industry.image ? (
@@ -43,7 +44,7 @@ export function IndustriesList({
                     alt={industry.image.alt}
                     fill
                     sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                    className="-z-10 object-cover opacity-70"
+                    className="-z-10 object-cover opacity-70 transition duration-[1600ms] ease-out-quint group-hover:opacity-85 motion-safe:group-hover:scale-105"
                   />
                   <div className="absolute inset-0 -z-10 bg-linear-to-t from-navy-900 via-navy-900/50 to-transparent" aria-hidden="true" />
                 </>
@@ -54,7 +55,7 @@ export function IndustriesList({
               <h3 className="font-display text-[20px] font-bold text-ink-invert">
                 <a
                   href={industryPath(industry.slug)}
-                  className="after:absolute after:inset-0 hover:underline hover:underline-offset-4"
+                  className="decoration-2 underline-offset-[5px] after:absolute after:inset-0 focus-visible:outline-none group-hover:underline"
                 >
                   {industry.name}
                 </a>
@@ -62,11 +63,9 @@ export function IndustriesList({
               {industry.line ? (
                 <p className="mt-1.5 text-[14px] leading-snug text-ink-invert-muted">{industry.line}</p>
               ) : null}
-              <span
-                className="mt-4 text-[14px] font-semibold text-ink-invert underline decoration-white/40 underline-offset-4"
-                aria-hidden="true"
-              >
+              <span className="button-label mt-4 flex items-center gap-2 text-ink-invert" aria-hidden="true">
                 {list.cardLinkLabel}
+                <ArrowIcon className="w-4 transition-transform duration-420 ease-out-quint motion-safe:group-hover:translate-x-1.5" />
               </span>
             </li>
           ))}
@@ -106,13 +105,14 @@ export function IndustriesApproach({
   return (
     <Section id="approach" tone="ink" backdrop={backdrop} labelledBy="approach-heading">
       <SectionHeading id="approach-heading" title={approach.heading} intro={approach.intro} ground="dark" />
-      <ol className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+      {/* Steps on rules, not glass cards; each rule draws champagne under the pointer. */}
+      <ol className="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
         {approach.items.map((item, index) => (
-          <li key={item.title} className="glass flex flex-col p-7" {...reveal(index)}>
-            <span className="font-display text-[15px] font-extrabold text-ink-invert-muted" aria-hidden="true">
+          <li key={item.title} className="group relative border-t border-ink-invert/20 pt-7 pb-2 before:absolute before:inset-x-0 before:-top-px before:h-0.5 before:origin-left before:scale-x-0 before:bg-gold-500 before:transition-transform before:duration-500 before:ease-out-quint hover:before:scale-x-100 flex flex-col" {...reveal(index)}>
+            <span className="meta text-ink-invert-muted transition-colors duration-150 group-hover:text-gold-500" aria-hidden="true">
               {String(index + 1).padStart(2, '0')}
             </span>
-            <h3 className="mt-3 font-display text-[19px] leading-snug font-bold">{item.title}</h3>
+            <h3 className="heading-md mt-4">{item.title}</h3>
             <p className="mt-3 text-[15px] leading-relaxed text-ink-invert-muted">{item.body}</p>
           </li>
         ))}

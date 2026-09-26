@@ -3,7 +3,7 @@ import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { createPrismaClient } from '@calwebtech/db';
 import { importSnapshots } from '@calwebtech/db/import';
-import { BOOKING_ERRORS, EMAIL_QUEUE, emailJobId, type BookingSubmission } from '@calwebtech/shared';
+import { BOOKING_ERRORS, EMAIL_QUEUE, emailOutboxJobId, type BookingSubmission } from '@calwebtech/shared';
 import { Queue } from 'bullmq';
 import { Redis } from 'ioredis';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
@@ -16,7 +16,6 @@ import { EmailQueue } from '../queue/email-queue';
 import { SettingsService } from '../settings/settings.service';
 import { TURNSTILE_TEST } from '../turnstile/turnstile-test-keys';
 import { TurnstileService } from '../turnstile/turnstile.service';
-import { reminderJobIds } from './booking-reminders';
 import { BookingService } from './booking.service';
 import { SubmissionGuard } from '../antispam/submission-guard';
 
@@ -87,6 +86,21 @@ async function state(jobId: string): Promise<string | null> {
   return job ? await job.getState() : null;
 }
 
+/**
+ * A booking's emails of one template as its transactions committed them to the outbox
+ * (docs/08-decisions.md, 71), oldest first, with the state of the job that names each.
+ */
+async function outbox(bookingId: string, template: string) {
+  const rows = await prisma.client.emailOutbox.findMany({ where: { bookingId, template }, orderBy: { createdAt: 'asc' } });
+  return Promise.all(rows.map(async (row) => ({ ...row, job: await state(emailOutboxJobId(row.id)) })));
+}
+
+/** The reminders still to send for a call at `startsAt`. */
+async function reminders(bookingId: string, startsAt: string) {
+  const rows = await outbox(bookingId, 'booking-reminder');
+  return rows.filter((row) => (row.payload as { startsAt: string }).startsAt === startsAt);
+}
+
 beforeAll(async () => {
   await admin.$executeRawUnsafe(`CREATE DATABASE "${databaseName}"`);
   const status = migrateDeploy(databaseUrl);
@@ -117,13 +131,17 @@ describe('a booked call, moved and cancelled from its links', () => {
     const row = await prisma.client.booking.findUniqueOrThrow({ where: { rescheduleToken: tokens.rescheduleToken } });
     id = row.id;
 
-    const [day, hour] = reminderJobIds({ id, startsAt: new Date(first) });
-    expect(await state(day ?? '')).toBe('delayed');
-    expect(await state(hour ?? '')).toBe('delayed');
-    const dayJob = await inspect.getJob(day ?? '');
+    const [day, hour] = await reminders(id, first);
+    expect((day?.payload as { window: string }).window).toBe('24h');
+    expect(day?.sendAt.toISOString()).toBe(new Date(Date.parse(first) - 24 * 60 * 60 * 1000).toISOString());
+    expect(hour?.sendAt.toISOString()).toBe(new Date(Date.parse(first) - 60 * 60 * 1000).toISOString());
+    expect(day?.job).toBe('delayed');
+    expect(hour?.job).toBe('delayed');
+    const dayJob = await inspect.getJob(emailOutboxJobId(day?.id ?? ''));
     expect(dayJob?.timestamp !== undefined && dayJob.delay).toBeGreaterThan(0);
-    const confirmationJob = await inspect.getJob(emailJobId({ template: 'booking-confirmation', bookingId: id }));
-    expect(confirmationJob?.data).toMatchObject({ manage: tokens });
+    const [confirmationEmail] = await outbox(id, 'booking-confirmation');
+    expect(confirmationEmail?.payload).toMatchObject({ manage: tokens });
+    expect(confirmationEmail?.job).not.toBeNull();
   });
 
   it('shows the call behind each link, and which action each allows', async () => {
@@ -151,12 +169,20 @@ describe('a booked call, moved and cancelled from its links', () => {
     const row = await prisma.client.booking.findUniqueOrThrow({ where: { id }, include: { events: true } });
     expect(row.status).toBe('RESCHEDULED');
     expect(row.events.map((event) => event.type)).toContain('rescheduled');
-    for (const old of reminderJobIds({ id, startsAt: new Date(first) })) expect(await state(old)).toBeNull();
-    for (const fresh of reminderJobIds({ id, startsAt: new Date(second) })) expect(await state(fresh)).toBe('delayed');
-    const changed = await inspect.getJob(
-      emailJobId({ template: 'booking-changed', bookingId: id, change: 'moved', startsAt: second }),
-    );
-    expect(changed?.data).toMatchObject({ change: 'moved', previousStartsAt: first });
+    // The old time's reminders were withdrawn with the move and taken off the queue.
+    for (const old of await reminders(id, first)) {
+      expect(old.cancelledAt).not.toBeNull();
+      expect(old.job).toBeNull();
+    }
+    const fresh = await reminders(id, second);
+    expect(fresh).toHaveLength(2);
+    for (const reminder of fresh) {
+      expect(reminder.cancelledAt).toBeNull();
+      expect(reminder.job).toBe('delayed');
+    }
+    const [changed] = await outbox(id, 'booking-changed');
+    expect(changed?.payload).toMatchObject({ change: 'moved', previousStartsAt: first, startsAt: second });
+    expect(changed?.job).not.toBeNull();
     // The old time is free again; the new one is not.
     const offered = (await booking.slots()).days.flatMap((day) => day.slots.map((slot) => slot.startsAt));
     expect(offered).toContain(first);
@@ -167,7 +193,12 @@ describe('a booked call, moved and cancelled from its links', () => {
     const cancelled = await booking.cancel(tokens.cancelToken);
     expect(cancelled).toMatchObject({ cancelled: true, open: false });
     expect((await prisma.client.booking.findUniqueOrThrow({ where: { id } })).status).toBe('CANCELLED');
-    for (const reminder of reminderJobIds({ id, startsAt: new Date(second) })) expect(await state(reminder)).toBeNull();
+    for (const reminder of await reminders(id, second)) {
+      expect(reminder.cancelledAt).not.toBeNull();
+      expect(reminder.job).toBeNull();
+    }
+    const cancelledEmails = (await outbox(id, 'booking-changed')).map((row) => row.payload as { change: string });
+    expect(cancelledEmails.map((payload) => payload.change)).toEqual(['moved', 'cancelled']);
     const offered = (await booking.slots()).days.flatMap((day) => day.slots.map((slot) => slot.startsAt));
     expect(offered).toContain(second);
 
@@ -202,6 +233,11 @@ describe('a booked call, moved and cancelled from its links', () => {
     });
 
     await adminBookings.update(row.id, { status: 'CANCELLED' }, user.id);
-    for (const reminder of reminderJobIds({ id: row.id, startsAt: new Date(at) })) expect(await state(reminder)).toBeNull();
+    const withdrawn = await reminders(row.id, at);
+    expect(withdrawn).toHaveLength(2);
+    for (const reminder of withdrawn) {
+      expect(reminder.cancelledAt).not.toBeNull();
+      expect(reminder.job).toBeNull();
+    }
   });
 });

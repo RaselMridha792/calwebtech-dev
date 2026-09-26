@@ -556,7 +556,7 @@
     },
     "beforeAfter": {
       "heading": "Drag it and see the difference",
-      "intro": "Most of our work is a rescue, not a launch. Here is Halloway Group's homepage before and after, at the same scroll position, on the same screen.",
+      "intro": "Most of our work is a rescue, not a launch. Here is HelloWay's homepage before and after, at the same scroll position, on the same screen.",
       "empty": "No before and after comparison is published yet.",
       "cta": {
         "label": "See more redesigns",
@@ -1401,7 +1401,7 @@
   ],
   "pullQuote": null,
   "beforeAfter": {
-    "clientName": "Halloway Group",
+    "clientName": "HelloWay",
     "before": {
       "src": "/media/home-before-helloway.jpg",
       "alt": "The HelloWay travel website before the redesign, on a laptop: a crowded early-2000s page with a yellow banner, a blue sidebar of links, a scrolling offer and a visitor counter",
@@ -1414,23 +1414,7 @@
       "width": 1448,
       "height": 1086
     },
-    "metrics": [
-      {
-        "label": "Mobile load time",
-        "before": "6.8s",
-        "after": "1.6s"
-      },
-      {
-        "label": "Bounce rate",
-        "before": "71%",
-        "after": "38%"
-      },
-      {
-        "label": "Enquiries per month",
-        "before": "9",
-        "after": "54"
-      }
-    ]
+    "metrics": []
   },
   "technologyGroups": [
     {

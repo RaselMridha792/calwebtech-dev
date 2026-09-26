@@ -44,17 +44,24 @@ function leadsServiceWith(existing: StoredLead | null = null) {
     service: { findFirst: vi.fn(() => Promise.resolve(null)) },
     setting: { findUnique: vi.fn(() => Promise.resolve(null)) },
     leadActivity: { create: vi.fn(() => Promise.resolve({ id: 'activity-1' })) },
+    // The lead's emails are outbox rows written in its transaction (docs/08-decisions.md, 71).
+    emailOutbox: {
+      createManyAndReturn: vi.fn(({ data }: { data: { template: string; sendAt: Date }[] }) =>
+        Promise.resolve(data.map((row, index) => ({ id: `outbox-${String(index)}`, template: row.template, sendAt: row.sendAt }))),
+      ),
+      updateMany: vi.fn(() => Promise.resolve({ count: 0 })),
+    },
     $transaction: (run: (tx: unknown) => Promise<unknown>) => run(client),
   };
-  const enqueue = vi.fn(() => Promise.resolve());
+  const enqueueOutbox = vi.fn(() => Promise.resolve());
   const service = new LeadsService(
     { client } as unknown as PrismaService,
     { verify: vi.fn(() => Promise.resolve('passed')) } as unknown as TurnstileService,
     { leadNotificationRecipients: vi.fn(() => Promise.resolve(['sales@example.com'])) } as unknown as SettingsService,
-    { enqueue } as unknown as EmailQueue,
+    { enqueueOutbox } as unknown as EmailQueue,
     SubmissionGuard.off(),
   );
-  return { service, lead, created, updated, enqueue };
+  return { service, lead, created, updated, enqueueOutbox };
 }
 
 function submission(overrides: Partial<LeadSubmissionInput> = {}) {
@@ -77,7 +84,7 @@ const openDraft = {
 
 describe('POST /leads completing a saved brief', () => {
   it('completes the stored brief instead of creating a second lead', async () => {
-    const { service, lead, updated, enqueue } = leadsServiceWith(openDraft);
+    const { service, lead, updated, enqueueOutbox } = leadsServiceWith(openDraft);
     await expect(
       service.create(submission({ draftId: 'lead-1', draftToken: 'token-1', message: 'Nine pages.' }), '203.0.113.7'),
     ).resolves.toEqual({ status: 'received' });
@@ -87,7 +94,7 @@ describe('POST /leads completing a saved brief', () => {
     expect(data).toMatchObject({ message: 'Nine pages.', type: 'PROJECT' });
     // The brief is marked complete, so progressive saving can never write to it again.
     expect(openProjectDraft(data.answers, 'token-1')).toBeNull();
-    expect(enqueue).toHaveBeenCalledTimes(1);
+    expect(enqueueOutbox).toHaveBeenCalledTimes(1);
   });
 
   it('keeps the answers the draft collected and adds the ones the submit carries', async () => {

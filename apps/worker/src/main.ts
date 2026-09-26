@@ -1,14 +1,15 @@
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { createPrismaClient } from '@calwebtech/db';
-import { CAMPAIGN_QUEUE, CAMPAIGN_SWEEP_QUEUE, EMAIL_QUEUE, campaignSendJobId } from '@calwebtech/shared';
+import { CAMPAIGN_QUEUE, CAMPAIGN_SWEEP_QUEUE, EMAIL_QUEUE, campaignSendJobId, emailOutboxQueueEntry } from '@calwebtech/shared';
 import { Queue, Worker } from 'bullmq';
 import { Redis } from 'ioredis';
 import { createCampaignSendProcessor } from './campaign-send';
 import { prismaCampaignSendStore, runCampaignSweep } from './campaign-sweep';
 import { usableSigningSecret } from '@calwebtech/shared/unsubscribe-token';
+import { EMAIL_OUTBOX_SWEEP_QUEUE, markOutboxEmailFailed, runEmailOutboxSweep } from './email-outbox-sweep';
 import { loadWorkerEnv } from './env';
-import { createEmailJobProcessor } from './process-email-job';
+import { createEmailJobProcessor, outboxIdOf } from './process-email-job';
 import { prismaDeliveryStore } from './store';
 import { logTransport, resendTransport } from './transport';
 
@@ -58,8 +59,41 @@ function main(): void {
     log(`sent ${job.name} ${String(job.id)}`);
   });
   worker.on('failed', (job, error) => {
+    // Only a final failure gives an outbox row up: until then BullMQ retries it. A row given
+    // up on keeps the reason and is not queued again by the sweep.
+    const outboxId = job ? outboxIdOf(job.data) : null;
+    if (job && outboxId && (job.attemptsMade >= (job.opts.attempts ?? 1) || error.name === 'UnrecoverableError')) {
+      void markOutboxEmailFailed(db, outboxId, error.message).catch(() => undefined);
+    }
     log(`failed ${job?.name ?? 'unknown'} ${String(job?.id)} after ${String(job?.attemptsMade)} attempt(s): ${error.message}`);
   });
+
+  // ---- the email outbox (docs/08-decisions.md, 71)
+  // Lead and booking emails are rows committed with the lead or the booking. The API queues
+  // them at once; this sweep queues any it could not, every minute and on start.
+  const emailQueue = new Queue(EMAIL_QUEUE, { connection });
+  const outboxSweepQueue = new Queue(EMAIL_OUTBOX_SWEEP_QUEUE, { connection });
+  const outboxSweepWorker = new Worker(
+    EMAIL_OUTBOX_SWEEP_QUEUE,
+    async () =>
+      runEmailOutboxSweep({
+        db,
+        log,
+        enqueue: async (rows) => {
+          await emailQueue.addBulk(rows.map((row) => emailOutboxQueueEntry(row)));
+        },
+      }),
+    { connection, concurrency: 1 },
+  );
+  outboxSweepWorker.on('failed', (_job, error) => {
+    log(`outbox sweep failed: ${error.message}`);
+  });
+  // Every minute. A new scheduler runs its first job at once, and one overdue after a stop runs on start.
+  void outboxSweepQueue
+    .upsertJobScheduler('email-outbox-sweep', { every: 60_000 }, { name: 'sweep', opts: { removeOnComplete: 50, removeOnFail: 50 } })
+    .catch((error: unknown) => {
+      log(`outbox sweep could not be scheduled: ${error instanceof Error ? error.message : String(error)}`);
+    });
 
   // ---- campaigns (Task 5.4)
   const DAY_SECONDS = 24 * 60 * 60;
@@ -140,8 +174,8 @@ function main(): void {
 
   const shutdown = async (signal: string) => {
     log(`${signal}: finishing active jobs`);
-    await Promise.all([campaignWorker.close(), sweepWorker.close()]);
-    await Promise.all([campaignQueue.close(), sweepQueue.close()]);
+    await Promise.all([campaignWorker.close(), sweepWorker.close(), outboxSweepWorker.close()]);
+    await Promise.all([campaignQueue.close(), sweepQueue.close(), emailQueue.close(), outboxSweepQueue.close()]);
     await worker.close();
     await connection.quit();
     await db.$disconnect();
@@ -150,7 +184,7 @@ function main(): void {
   process.once('SIGTERM', () => void shutdown('SIGTERM'));
   process.once('SIGINT', () => void shutdown('SIGINT'));
 
-  log(`consuming "${EMAIL_QUEUE}" with the ${transport.name} transport`);
+  log(`consuming "${EMAIL_QUEUE}" with the ${transport.name} transport, sweeping the outbox every minute`);
   log(`consuming "${CAMPAIGN_QUEUE}" at ${String(env.CAMPAIGN_SEND_PER_SECOND)} a second, sweeping every minute`);
 }
 

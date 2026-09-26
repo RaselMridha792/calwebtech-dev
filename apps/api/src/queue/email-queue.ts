@@ -1,10 +1,16 @@
-import { EMAIL_QUEUE, emailJobId, emailJobSchema, type EmailJob } from '@calwebtech/shared';
+import {
+  EMAIL_JOB_OPTIONS,
+  EMAIL_QUEUE,
+  emailJobId,
+  emailJobSchema,
+  emailOutboxQueueEntry,
+  type EmailJob,
+} from '@calwebtech/shared';
 import { Logger, type OnModuleDestroy } from '@nestjs/common';
 import { Queue } from 'bullmq';
 import { Redis } from 'ioredis';
 
 const ADD_TIMEOUT_MS = 5_000;
-const DAY_SECONDS = 24 * 60 * 60;
 
 /** Adds email jobs for the worker (apps/worker). The API only produces; it never sends. */
 export class EmailQueue implements OnModuleDestroy {
@@ -26,23 +32,30 @@ export class EmailQueue implements OnModuleDestroy {
   }
 
   /**
-   * Adds all jobs or none. Ids are stable per lead and template, so adding the same job
-   * twice queues it once. Payloads persist in Redis only briefly: a day once sent, a week
-   * if every attempt failed.
+   * Adds outbox rows as jobs, each at its time: at once, or a reminder's delay
+   * (docs/08-decisions.md, 71). The job id is the row's, so a row the worker's sweep has
+   * already queued is not queued twice.
    */
-  async enqueue(jobs: readonly EmailJob[]): Promise<void> {
-    await this.add(jobs.map((job) => ({ job, delay: 0 })));
+  async enqueueOutbox(rows: readonly { id: string; template: string; sendAt: Date }[], now: Date = new Date()): Promise<void> {
+    if (rows.length === 0) return;
+    await this.withinTimeout(this.queue.addBulk(rows.map((row) => emailOutboxQueueEntry(row, now))));
   }
 
   /**
-   * Adds each job to be sent at its time: a booking's reminders (docs/08-decisions.md, 60).
-   * A time already past is not added, since a reminder after the fact reminds nobody.
+   * Adds jobs that carry their own payload: a campaign's test send, which is the team's
+   * request and not a lead's or a booking's email, so it has no outbox row. Ids are stable,
+   * so adding the same job twice queues it once.
    */
-  async schedule(jobs: readonly { job: EmailJob; at: Date }[], now: Date = new Date()): Promise<void> {
-    const due = jobs
-      .map(({ job, at }) => ({ job, delay: at.getTime() - now.getTime() }))
-      .filter((entry) => entry.delay > 0);
-    if (due.length > 0) await this.add(due);
+  async enqueue(jobs: readonly EmailJob[]): Promise<void> {
+    await this.withinTimeout(
+      this.queue.addBulk(
+        jobs.map((job) => ({
+          name: job.template,
+          data: emailJobSchema.parse(job),
+          opts: { ...EMAIL_JOB_OPTIONS, jobId: emailJobId(job) },
+        })),
+      ),
+    );
   }
 
   /**
@@ -62,21 +75,7 @@ export class EmailQueue implements OnModuleDestroy {
     return removed;
   }
 
-  private async add(entries: readonly { job: EmailJob; delay: number }[]): Promise<void> {
-    const add = this.queue.addBulk(
-      entries.map(({ job, delay }) => ({
-        name: job.template,
-        data: emailJobSchema.parse(job),
-        opts: {
-          jobId: emailJobId(job),
-          ...(delay > 0 ? { delay } : {}),
-          attempts: 5,
-          backoff: { type: 'exponential', delay: 30_000 },
-          removeOnComplete: { age: DAY_SECONDS },
-          removeOnFail: { age: 7 * DAY_SECONDS },
-        },
-      })),
-    );
+  private async withinTimeout(add: Promise<unknown>): Promise<void> {
     let timer: NodeJS.Timeout | undefined;
     const timeout = new Promise<never>((_resolve, reject) => {
       timer = setTimeout(() => {

@@ -15,6 +15,7 @@ The authoritative schema is `prisma/schema.prisma`. This file explains intent.
 | Project | title, slug, clientName, liveUrl, industry, serviceTypes[], technologies[], coverImage, gallery[], challenge, approach, outcomeMetrics[], clientQuote, duration, year, featured, SEO, status | work grid and filters, homepage, service detail, case study template |
 | Demo | title, slug, thumbnail, previewUrl, industry, functionalityTags[], stack, description | demo showcase |
 | Testimonial | clientName, role, company, avatar, rating, quote, source, videoUrl, linkedProject, featured, date | homepage, testimonials page, case studies, service pages |
+| Comparison | clientName, heading, summary, before and after images (alt, width, height), up to four figures, status, position, onHomepage, linkedProject | `/before-and-after/`, homepage (decision 70) |
 | Post | title, slug, excerpt, coverImage, author, category, tags[], body (MDX), readingTime, publishedAt, updatedAt, featured, SEO, status | insights index, article template, homepage strip |
 | Faq | question, answer, group, order, attachTo (global, service, page) | FAQ page, service accordions, booking page |
 | TeamMember | name, role, photo, bio, skills[], socials[], order | about, team, article author block |

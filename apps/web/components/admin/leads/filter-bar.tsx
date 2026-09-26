@@ -1,4 +1,5 @@
 import {
+  LEAD_BRIEF_FILTERS,
   LEAD_CHANNELS,
   LEAD_DATE_RANGES,
   LEAD_TYPE_LABELS,
@@ -115,6 +116,16 @@ export function FilterBar({
         {options.enquiryTypes.map((enquiry) => (
           <option key={enquiry.slug} value={enquiry.slug}>
             {enquiry.name}
+          </option>
+        ))}
+      </Pick>
+
+      {/* Start-a-project briefs, sent or left unsent, so an unsent one is not read as a new lead (decision 69). */}
+      <Pick label="Brief" id="filter-brief" name="brief" value={query.brief ?? ''} lit={Boolean(query.brief)}>
+        <option value="">Any lead</option>
+        {LEAD_BRIEF_FILTERS.map((filter) => (
+          <option key={filter.value} value={filter.value}>
+            {filter.label}
           </option>
         ))}
       </Pick>

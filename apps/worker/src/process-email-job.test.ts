@@ -1,7 +1,7 @@
 import type { EmailJob, LeadSummary, SiteContact } from '@calwebtech/shared';
 import { UnrecoverableError } from 'bullmq';
 import { describe, expect, it } from 'vitest';
-import { createEmailJobProcessor, type DeliveryRecord, type DeliveryStore } from './process-email-job';
+import { createEmailJobProcessor, type DeliveryRecord, type DeliveryStore, type OutboxEmailState } from './process-email-job';
 import type { EmailTransport, OutgoingEmail } from './transport';
 
 const lead: LeadSummary = {
@@ -35,6 +35,9 @@ const FROM = 'Calwebtech <onboarding@resend.dev>';
 function fakes(failWith?: Error) {
   const sent: OutgoingEmail[] = [];
   const deliveries: { leadId: string; record: DeliveryRecord }[] = [];
+  /** The outbox rows the store holds, by id, and the rows it was told to withdraw. */
+  const outbox = new Map<string, OutboxEmailState>();
+  const withdrawn: { outboxId: string; reason: string }[] = [];
   const transport: EmailTransport = {
     name: 'fake',
     send(email) {
@@ -54,8 +57,18 @@ function fakes(failWith?: Error) {
       return Promise.resolve();
     },
     bookingState: () => Promise.resolve(booking),
+    outboxEmail: (outboxId) => Promise.resolve(outbox.get(outboxId) ?? null),
+    withdrawOutboxEmail: (outboxId, reason) => {
+      withdrawn.push({ outboxId, reason });
+      return Promise.resolve();
+    },
   };
-  return { sent, deliveries, transport, store };
+  return { sent, deliveries, transport, store, outbox, withdrawn };
+}
+
+/** An outbox row still to send, holding `payload`. */
+function pendingRow(payload: EmailJob): OutboxEmailState {
+  return { payload, sentAt: null, cancelledAt: null, failedAt: null };
 }
 
 /** The booking the store reports; each reminder test sets it. */
@@ -243,5 +256,78 @@ describe('the booking reminders and calendar entries', () => {
     await createEmailJobProcessor({ transport, store, from: FROM })({ data: confirmationOfTheCall });
     expect(sent[0]?.attachments?.[0]).toMatchObject({ filename: 'calwebtech-call.ics' });
     expect(sent[0]?.attachments?.[0]?.content).toContain('DTSTART:20260924T154500Z');
+  });
+});
+
+/** A lead's and a booking's emails are outbox rows, and their jobs only name the row (docs/08-decisions.md, 71). */
+describe('outbox jobs', () => {
+  it('sends the email the row holds, keyed by the row, and records it with the row', async () => {
+    const { sent, deliveries, transport, store, outbox } = fakes();
+    outbox.set('cmrow1', pendingRow(confirmation));
+    const result = await createEmailJobProcessor({ transport, store, from: FROM })({ data: { outboxId: 'cmrow1' } });
+
+    expect(sent).toHaveLength(1);
+    expect(sent[0]).toMatchObject({ to: ['dana@company.com'], idempotencyKey: 'outbox-cmrow1' });
+    expect(result).toEqual({ providerId: 'provider-1' });
+    // The store marks the row sent in the same transaction as it writes this record.
+    expect(deliveries).toEqual([
+      {
+        leadId: 'cmf0lead0000abc',
+        record: {
+          template: 'lead-confirmation',
+          to: ['dana@company.com'],
+          transport: 'fake',
+          providerId: 'provider-1',
+          outboxId: 'cmrow1',
+        },
+      },
+    ]);
+  });
+
+  it('never sends a row that was sent, withdrawn or given up on, or one that has gone', async () => {
+    const at = new Date('2026-09-26T12:00:00.000Z');
+    for (const row of [
+      { ...pendingRow(confirmation), sentAt: at },
+      { ...pendingRow(confirmation), cancelledAt: at },
+      { ...pendingRow(confirmation), failedAt: at },
+      null,
+    ]) {
+      const { sent, deliveries, transport, store, outbox } = fakes();
+      if (row) outbox.set('cmrow2', row);
+      const result = await createEmailJobProcessor({ transport, store, from: FROM })({ data: { outboxId: 'cmrow2' } });
+      expect(sent, JSON.stringify(row)).toHaveLength(0);
+      expect(deliveries).toHaveLength(0);
+      expect(result.providerId).toMatch(/^skipped/);
+    }
+  });
+
+  it('does not retry a row whose payload can never be valid', async () => {
+    const { sent, transport, store, outbox } = fakes();
+    outbox.set('cmrow3', pendingRow({ ...confirmation, to: ['not-an-email'] }));
+    await expect(
+      createEmailJobProcessor({ transport, store, from: FROM })({ data: { outboxId: 'cmrow3' } }),
+    ).rejects.toBeInstanceOf(UnrecoverableError);
+    expect(sent).toHaveLength(0);
+  });
+
+  it('withdraws a reminder row whose call was moved or cancelled, and sends nothing', async () => {
+    const startsAt = '2026-09-24T15:45:00.000Z';
+    const reminder: EmailJob = {
+      template: 'booking-reminder',
+      to: ['dana@company.com'],
+      bookingId: 'cmf0book0000abc',
+      name: 'Dana Whitfield',
+      consultationType: 'Discovery call',
+      startsAt,
+      endsAt: '2026-09-24T16:15:00.000Z',
+      timezone: 'America/Los_Angeles',
+      window: '1h',
+    };
+    booking = { status: 'CANCELLED', startsAt: new Date(startsAt) };
+    const { sent, transport, store, outbox, withdrawn } = fakes();
+    outbox.set('cmrow4', pendingRow(reminder));
+    await createEmailJobProcessor({ transport, store, from: FROM })({ data: { outboxId: 'cmrow4' } });
+    expect(sent).toHaveLength(0);
+    expect(withdrawn).toEqual([{ outboxId: 'cmrow4', reason: 'the call was moved or cancelled' }]);
   });
 });
