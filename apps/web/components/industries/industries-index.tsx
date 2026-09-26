@@ -2,6 +2,7 @@ import { industryPath, type IndustriesIndexView } from '@calwebtech/shared';
 import { EmptyState } from '../site/lists';
 import { Section } from '../site/section';
 import { SectionHeading } from '../site/section-heading';
+import { ArrowIcon } from '../ui/icons';
 import { reveal } from '../ui/primitives';
 import { ResponsiveImage } from '../ui/responsive-image';
 
@@ -33,7 +34,7 @@ export function IndustriesList({
           {industries.map((industry, index) => (
             <li
               key={industry.slug}
-              className={`lift relative isolate flex flex-col justify-end overflow-hidden  bg-navy-900 p-6 sm:aspect-3/4 ${industry.image ? 'min-h-64' : 'min-h-48'}`}
+              className={`group relative isolate flex flex-col justify-end overflow-hidden bg-navy-900 p-6 has-focus-visible:outline-2 has-focus-visible:outline-offset-4 has-focus-visible:outline-focus sm:aspect-3/4 ${industry.image ? 'min-h-64' : 'min-h-48'}`}
               {...reveal(index)}
             >
               {industry.image ? (
@@ -43,7 +44,7 @@ export function IndustriesList({
                     alt={industry.image.alt}
                     fill
                     sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                    className="-z-10 object-cover opacity-70"
+                    className="-z-10 object-cover opacity-70 transition duration-[1600ms] ease-out-quint group-hover:opacity-85 motion-safe:group-hover:scale-105"
                   />
                   <div className="absolute inset-0 -z-10 bg-linear-to-t from-navy-900 via-navy-900/50 to-transparent" aria-hidden="true" />
                 </>
@@ -54,7 +55,7 @@ export function IndustriesList({
               <h3 className="font-display text-[20px] font-bold text-ink-invert">
                 <a
                   href={industryPath(industry.slug)}
-                  className="after:absolute after:inset-0 hover:underline hover:underline-offset-4"
+                  className="decoration-2 underline-offset-[5px] after:absolute after:inset-0 focus-visible:outline-none group-hover:underline"
                 >
                   {industry.name}
                 </a>
@@ -62,11 +63,9 @@ export function IndustriesList({
               {industry.line ? (
                 <p className="mt-1.5 text-[14px] leading-snug text-ink-invert-muted">{industry.line}</p>
               ) : null}
-              <span
-                className="mt-4 text-[14px] font-semibold text-ink-invert underline decoration-white/40 underline-offset-4"
-                aria-hidden="true"
-              >
+              <span className="button-label mt-4 flex items-center gap-2 text-ink-invert" aria-hidden="true">
                 {list.cardLinkLabel}
+                <ArrowIcon className="w-4 transition-transform duration-420 ease-out-quint motion-safe:group-hover:translate-x-1.5" />
               </span>
             </li>
           ))}
