@@ -1,34 +1,19 @@
 import { existsSync } from 'node:fs';
 import path from 'node:path';
-import { createPrismaClient, type Prisma } from '@calwebtech/db';
-import {
-  SETTING_KEYS,
-  homepageIndexingSchema,
-  leadNotificationRecipientsSchema,
-  siteContactSchema,
-  siteIndexingSchema,
-  siteProofSchema,
-} from '@calwebtech/shared';
-import type { z } from 'zod';
+import { createPrismaClient } from '@calwebtech/db';
+import { settingsCommand } from './settings/settings-command';
 
 /**
- * Reads or changes a setting without a redeploy, until the admin settings screen exists:
+ * Reads or changes a setting without a redeploy, and without the dashboard:
  *
  *   node dist/settings-cli.js get leads.notificationRecipients
  *   node dist/settings-cli.js set leads.notificationRecipients '{"emails":["leads@example.com"]}'
  *
  * On the server: docker compose run --rm api node dist/settings-cli.js set ...
  * Values are validated with the schemas the API and worker read them with, and apply to
- * the next request.
+ * the next request. Every `set` is written to the audit log, marked `via: 'settings-cli'`
+ * (docs/08-decisions.md, 68), so it shows beside the settings screen's own changes.
  */
-
-const SCHEMAS: Record<string, z.ZodType> = {
-  [SETTING_KEYS.contact]: siteContactSchema,
-  [SETTING_KEYS.proof]: siteProofSchema,
-  [SETTING_KEYS.leadNotificationRecipients]: leadNotificationRecipientsSchema,
-  [SETTING_KEYS.homepageIndexing]: homepageIndexingSchema,
-  [SETTING_KEYS.siteIndexing]: siteIndexingSchema,
-};
 
 for (const candidate of ['.env', '../../.env']) {
   const file = path.resolve(process.cwd(), candidate);
@@ -39,28 +24,12 @@ for (const candidate of ['.env', '../../.env']) {
 }
 
 async function main(): Promise<void> {
-  const [command, key, raw] = process.argv.slice(2);
-  const schema = key ? SCHEMAS[key] : undefined;
-  if ((command !== 'get' && command !== 'set') || !key || !schema || (command === 'set' && !raw)) {
-    throw new Error(`usage: settings-cli get|set <${Object.keys(SCHEMAS).join('|')}> ['<json>']`);
-  }
   const databaseUrl = process.env.DATABASE_URL;
   if (!databaseUrl) throw new Error('DATABASE_URL is required');
 
   const db = createPrismaClient(databaseUrl);
   try {
-    if (command === 'get') {
-      const row = await db.setting.findUnique({ where: { key } });
-      console.log(JSON.stringify(row?.value ?? null, null, 2));
-      return;
-    }
-    const value: unknown = JSON.parse(raw ?? '');
-    const parsed = schema.safeParse(value);
-    if (!parsed.success) throw new Error(`Invalid value for ${key}: ${parsed.error.message}`);
-    // Validated JSON from JSON.parse, so it is a JSON value.
-    const json = value as Prisma.InputJsonValue;
-    await db.setting.upsert({ where: { key }, create: { key, value: json }, update: { value: json } });
-    console.log(`${key} = ${JSON.stringify(value)}`);
+    console.log(await settingsCommand(db, process.argv.slice(2)));
   } finally {
     await db.$disconnect();
   }
