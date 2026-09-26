@@ -1,5 +1,7 @@
 # 15. Next tasks — for the collaborator on `tumit`
 
+> **Done (PR #33, decisions 67 to 74).** Task 6 continues as task 1 of `docs/17-next-tasks.md`.
+
 Written 2026-09-26. The rules have not changed:
 - you work on `tumit`, push there, and open PRs from `tumit` against `main`;
 - you do not merge your own PR, and you do not deploy; the owner verifies and ships;

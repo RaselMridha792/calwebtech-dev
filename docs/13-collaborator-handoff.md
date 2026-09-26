@@ -4,9 +4,9 @@ You have write access to this repo as a collaborator. Your work happens on the b
 `tumit` — not on `main`, and not a new branch of your own. Push your commits there and
 open your PRs from `tumit` against `main`.
 
-> **`docs/14-remaining-work.md` is done and live (PR #32).** Your next tasks, in order, and
-> what is not yours to touch, are in `docs/15-next-tasks.md`. This file still holds the
-> reading order, the rules and the workflow.
+> **`docs/15-next-tasks.md` is done (PR #33).** Your next tasks, in order, and what is not
+> yours to touch, are in `docs/17-next-tasks.md`. This file still holds the reading order, the
+> rules and the workflow.
 
 ## Read these first, in order
 
