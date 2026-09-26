@@ -280,7 +280,7 @@ export function TestimonialsBand({
                   className="flex flex-col border-t border-ink-invert/15 pt-8 lg:border-t-0 lg:border-l lg:px-8 lg:pt-0 lg:first:border-l-0 lg:first:pl-0"
                   {...reveal(index)}
                 >
-                  <span aria-hidden className="font-display text-[72px] leading-[0.6] font-extrabold text-gold-500">
+                  <span aria-hidden className="font-display text-[72px] leading-[0.6] font-extrabold text-ink-invert-muted">
                     &ldquo;
                   </span>
                   <blockquote className="mt-5 text-[17px] leading-relaxed text-ink-invert">{item.quote}</blockquote>
