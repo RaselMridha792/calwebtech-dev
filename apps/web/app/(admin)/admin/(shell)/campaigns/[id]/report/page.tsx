@@ -3,17 +3,24 @@ import {
   RECIPIENT_STATES,
   RECIPIENT_STATE_LABELS,
   campaignReportSchema,
+  type CampaignStatus,
   type RecipientState,
 } from '@calwebtech/shared';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { SubscribersIcon } from '@/components/admin/icons';
+import { StatCard } from '@/components/admin/ui/charts';
+import { AdminPage, BackLink, ChipLinks, EmptyState, PageHeader, Panel } from '@/components/admin/ui/page';
+import { PILL, TD, TH, button } from '@/components/admin/ui/styles';
 import { adminFind } from '@/lib/admin/api';
 import { requireModule } from '@/lib/admin/session';
 
 export const dynamic = 'force-dynamic';
 
 function when(value: string | null): string {
-  return value ? new Date(value).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' }) : '—';
+  return value
+    ? new Date(value).toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+    : '—';
 }
 
 /** A share of the people sent to, rounded the way a person would say it. */
@@ -56,7 +63,7 @@ export default async function CampaignReportPage({ params, searchParams }: PageP
     return `${base}${text ? `?${text}` : ''}`;
   };
 
-  const rows: { label: string; value: number; note: string }[] = [
+  const figures: { label: string; value: number; note: string }[] = [
     { label: 'Sent', value: totals.sent, note: `of ${totals.recipients.toLocaleString()} in the audience when it started` },
     { label: 'Delivered', value: totals.delivered, note: share(totals.delivered, totals.sent) },
     { label: 'Opened', value: totals.opened, note: `${share(totals.opened, totals.sent)}, at least` },
@@ -69,117 +76,190 @@ export default async function CampaignReportPage({ params, searchParams }: PageP
   const noEvents = totals.sent > 0 && totals.delivered + totals.bounced + totals.complained === 0;
 
   return (
-    <main className="min-h-0 flex-1 overflow-auto px-4 py-5">
-      <div className="mx-auto w-full max-w-[1100px]">
-        <Link
-          href={`/admin/campaigns/${encodeURIComponent(campaign.id)}/`}
-          className="text-[12.5px] font-semibold text-admin-link hover:underline"
-        >
-          ← Back to the campaign
-        </Link>
-        <h1 className="mt-2 font-display text-[21px] font-bold tracking-[-0.02em] text-admin-ink">{`Report: ${campaign.name}`}</h1>
-        <p className="mt-0.5 mb-5 text-[12.5px] text-admin-body">
-          {[
-            CAMPAIGN_STATUS_LABELS[campaign.status],
-            campaign.segment ? `to ${campaign.segment}` : null,
-            `started ${when(campaign.startedAt)}`,
-            campaign.finishedAt ? `finished ${when(campaign.finishedAt)}` : null,
-          ]
-            .filter(Boolean)
-            .join(' · ')}
+    <AdminPage>
+      <BackLink href={`/admin/campaigns/${encodeURIComponent(campaign.id)}/`}>Back to the campaign</BackLink>
+
+      <PageHeader
+        eyebrow="Campaign report"
+        title={campaign.name}
+        badge={<StatusPill status={campaign.status} />}
+        description={[
+          campaign.subject,
+          campaign.segment ? `to ${campaign.segment}` : null,
+          `started ${when(campaign.startedAt)}`,
+          campaign.finishedAt ? `finished ${when(campaign.finishedAt)}` : null,
+        ]
+          .filter(Boolean)
+          .join(' · ')}
+      />
+
+      <section aria-label="What happened, in people" className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
+        {figures.map((figure) => (
+          <StatCard key={figure.label} label={figure.label} value={figure.value.toLocaleString()} note={figure.note} />
+        ))}
+      </section>
+
+      {noEvents ? (
+        <p role="note" className="rounded-xl border border-admin-line2 bg-admin-sunken px-4 py-3.5 text-[13.5px] leading-[1.6] text-ink-invert-muted sm:px-5">
+          No delivery events have arrived yet, so deliveries, opens, clicks, bounces and complaints all read zero. They come
+          from Resend&apos;s webhook: ask a developer to point it at /api/webhooks/resend and set RESEND_WEBHOOK_SECRET.
         </p>
+      ) : null}
 
-        <dl className="border-t border-admin-line">
-          {rows.map((row) => (
-            <div key={row.label} className="flex flex-wrap items-baseline gap-x-4 gap-y-0.5 border-b border-admin-line py-2.5">
-              <dt className="w-[140px] text-[12.5px] font-semibold text-admin-ink">{row.label}</dt>
-              <dd className="font-display text-[19px] font-bold tracking-[-0.02em] text-admin-ink tabular-nums">
-                {row.value.toLocaleString()}
-              </dd>
-              <dd className="text-[11.5px] text-admin-muted">{row.note}</dd>
-            </div>
-          ))}
-        </dl>
-        {noEvents ? (
-          <p role="note" className="mt-3 text-[12px] text-admin-body">
-            No delivery events have arrived. Deliveries, opens, clicks, bounces and complaints come from Resend&apos;s
-            webhook, so they stay at zero until it is pointed at /api/webhooks/resend and RESEND_WEBHOOK_SECRET is set.
-          </p>
-        ) : null}
-
-        <h2 className="mt-8 text-[10px] font-bold tracking-[0.14em] text-admin-muted uppercase">Recipients</h2>
-        <nav aria-label="Recipients by what happened" className="mt-2 mb-3 flex flex-wrap gap-2">
-          <FilterLink href={href({ state: '', page: 1 })} current={!state}>
-            Everyone
-          </FilterLink>
-          {RECIPIENT_STATES.map((entry) => (
-            <FilterLink key={entry} href={href({ state: entry, page: 1 })} current={state === entry}>
-              {RECIPIENT_STATE_LABELS[entry]}
-            </FilterLink>
-          ))}
-        </nav>
+      <Panel
+        title="Recipients"
+        labelledBy="report-recipients"
+        description="Everyone the campaign was sent to, furthest along first. A click implies an open, an open a delivery."
+        flush
+      >
+        <div className="px-4 pb-4 sm:px-6">
+          <ChipLinks
+            label="Recipients by what happened"
+            chips={[
+              { href: href({ state: '', page: 1 }), label: 'Everyone', current: !state },
+              ...RECIPIENT_STATES.map((entry) => ({
+                href: href({ state: entry, page: 1 }),
+                label: RECIPIENT_STATE_LABELS[entry],
+                current: state === entry,
+              })),
+            ]}
+          />
+        </div>
 
         {recipients.items.length === 0 ? (
-          <p className="py-10 text-center text-[13px] text-admin-body">Nobody in this view.</p>
+          <div className="border-t border-admin-line2">
+            <EmptyState icon={<SubscribersIcon className="size-5" />} title="Nobody in this view">
+              {state ? 'No recipient has reached this state yet.' : 'Recipients are listed once the send starts.'}
+            </EmptyState>
+          </div>
         ) : (
-          <ul className="border-t border-admin-line">
-            {recipients.items.map((recipient) => (
-              <li key={recipient.id} className="flex flex-wrap items-baseline gap-x-4 gap-y-1 border-b border-admin-line py-2.5">
-                <span className="text-[13px] font-semibold break-all text-admin-ink">{recipient.email}</span>
-                {recipient.name ? <span className="text-[12px] text-admin-muted">{recipient.name}</span> : null}
-                <span className="ms-auto text-[12px] font-semibold text-admin-body">
-                  {RECIPIENT_STATE_LABELS[recipient.state]}
-                </span>
-                <span className="w-full text-[11.5px] text-admin-muted">
-                  {[
-                    recipient.sentAt ? `sent ${when(recipient.sentAt)}` : null,
-                    recipient.lastEventAt && recipient.lastEventAt !== recipient.sentAt
-                      ? `last seen ${when(recipient.lastEventAt)}`
-                      : null,
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr>
+                  <th scope="col" className={`${TH} pl-4 sm:pl-6`}>
+                    Recipient
+                  </th>
+                  <th scope="col" className={TH}>
+                    What happened
+                  </th>
+                  <th scope="col" className={`${TH} max-md:hidden`}>
+                    Sent
+                  </th>
+                  <th scope="col" className={`${TH} pr-4 max-lg:hidden sm:pr-6`}>
+                    Detail
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {recipients.items.map((recipient) => {
+                  const detail = [
+                    recipient.lastEventAt && recipient.lastEventAt !== recipient.sentAt ? `last seen ${when(recipient.lastEventAt)}` : null,
                     recipient.error,
                   ]
                     .filter(Boolean)
-                    .join(' · ')}
-                </span>
-              </li>
-            ))}
-          </ul>
+                    .join(' · ');
+                  return (
+                    <tr key={recipient.id} className="transition-colors duration-150 hover:bg-admin-hover">
+                      <td className={`${TD} py-3 pl-4 sm:pl-6`}>
+                        <span className="flex min-w-0 flex-col gap-0.5">
+                          <span className="font-semibold break-all text-ink-invert">{recipient.email}</span>
+                          {recipient.name ? <span className="text-[12.5px] text-admin-muted">{recipient.name}</span> : null}
+                          <span className="text-[12.5px] text-admin-muted lg:hidden">
+                            {[recipient.sentAt ? `sent ${when(recipient.sentAt)}` : null, detail || null].filter(Boolean).join(' · ')}
+                          </span>
+                        </span>
+                      </td>
+                      <td className={`${TD} py-3`}>
+                        <RecipientPill state={recipient.state} />
+                      </td>
+                      <td className={`${TD} py-3 whitespace-nowrap tabular-nums max-md:hidden`}>{when(recipient.sentAt)}</td>
+                      <td className={`${TD} max-w-[360px] py-3 pr-4 text-[13px] max-lg:hidden sm:pr-6`}>{detail || '—'}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         )}
 
         {pages > 1 ? (
-          <nav aria-label="Pages" className="mt-4 flex items-center justify-between text-[12.5px] text-admin-body">
-            {page > 1 ? (
-              <Link href={href({ page: page - 1 })} className="font-semibold text-admin-link hover:underline">
+          <nav
+            aria-label="Pages"
+            className="flex flex-wrap items-center justify-between gap-3 border-t border-admin-line2 px-4 py-3 sm:px-6"
+          >
+            <p className="text-[13px] text-ink-invert-muted tabular-nums">
+              {`Showing ${String((recipients.page - 1) * recipients.pageSize + 1)}–${String(Math.min(recipients.total, recipients.page * recipients.pageSize))} of ${String(recipients.total)}`}
+            </p>
+            <div className="flex items-center gap-2">
+              <PageLink href={href({ page: page - 1 })} disabled={page <= 1}>
                 Previous
-              </Link>
-            ) : (
-              <span />
-            )}
-            <span className="tabular-nums">{`Page ${String(page)} of ${String(pages)}`}</span>
-            {page < pages ? (
-              <Link href={href({ page: page + 1 })} className="font-semibold text-admin-link hover:underline">
+              </PageLink>
+              <span className="px-1 text-[13px] text-ink-invert-muted tabular-nums">{`Page ${String(page)} of ${String(pages)}`}</span>
+              <PageLink href={href({ page: page + 1 })} disabled={page >= pages}>
                 Next
-              </Link>
-            ) : (
-              <span />
-            )}
+              </PageLink>
+            </div>
           </nav>
         ) : null}
-      </div>
-    </main>
+      </Panel>
+    </AdminPage>
   );
 }
 
-function FilterLink({ href, current, children }: { href: string; current: boolean; children: React.ReactNode }) {
+function PageLink({ href, disabled, children }: { href: string; disabled: boolean; children: React.ReactNode }) {
+  if (disabled) {
+    return (
+      <span aria-disabled className={button('secondary', 'sm')}>
+        {children}
+      </span>
+    );
+  }
   return (
-    <Link
-      href={href}
-      aria-current={current ? 'page' : undefined}
-      className={`h-8 rounded-[4px] border px-3 text-[12.5px] leading-[30px] font-semibold ${
-        current ? 'border-admin-edge bg-admin-nav text-admin-ink' : 'border-admin-line text-admin-body hover:border-admin-focus'
-      }`}
-    >
+    <Link href={href} className={button('secondary', 'sm')}>
       {children}
     </Link>
+  );
+}
+
+/** Where a campaign stands, as a pill with a dot. Teal only once it has gone out. */
+const STATUS_DOT: Record<CampaignStatus, string> = {
+  DRAFT: 'rounded-full bg-admin-surface ring-2 ring-admin-muted ring-inset',
+  SCHEDULED: 'rounded-full bg-admin-dot',
+  SENDING: 'rounded-full bg-gold-500',
+  SENT: 'rounded-full bg-result',
+  FAILED: 'rounded-full bg-danger',
+};
+
+function StatusPill({ status }: { status: CampaignStatus }) {
+  return (
+    <span className={`${PILL} pl-2 font-sans tracking-normal`}>
+      <span aria-hidden className={`size-2 shrink-0 ${STATUS_DOT[status]}`} />
+      {CAMPAIGN_STATUS_LABELS[status]}
+    </span>
+  );
+}
+
+/**
+ * Where one recipient got to. A filled teal dot is the good outcome (opened, clicked), the
+ * danger tone is what needs acting on, and a ring is still on its way or never went.
+ */
+const STATE_DOT: Record<RecipientState, string> = {
+  complained: 'rounded-full bg-danger',
+  bounced: 'rounded-full bg-danger',
+  clicked: 'rounded-full bg-result',
+  opened: 'rounded-full bg-result',
+  delivered: 'rounded-full bg-admin-dot',
+  sent: 'rounded-full bg-admin-surface ring-2 ring-admin-dot ring-inset',
+  not_sent: 'rounded-full bg-admin-surface ring-2 ring-admin-muted ring-inset',
+  pending: 'rounded-full bg-admin-surface ring-2 ring-admin-muted ring-inset',
+};
+
+function RecipientPill({ state }: { state: RecipientState }) {
+  return (
+    <span className={`${PILL} pl-2`}>
+      <span aria-hidden className={`size-2 shrink-0 ${STATE_DOT[state]}`} />
+      {RECIPIENT_STATE_LABELS[state]}
+    </span>
   );
 }
