@@ -38,6 +38,18 @@ const apiEnvSchema = z.object({
    */
   RESEND_WEBHOOK_SECRET: z.preprocess(blankToUndefined, z.string().optional()),
   /**
+   * Encrypts the AI providers' keys stored from the dashboard (docs/08-decisions.md, 64): 32
+   * random bytes in base64, `openssl rand -base64 32`. Optional: without it a key is derived
+   * from AUTH_SECRET. Once keys are stored, changing it means entering them again.
+   */
+  CREDENTIALS_KEY: z.preprocess(
+    blankToUndefined,
+    z
+      .string()
+      .refine((value) => Buffer.from(value.trim(), 'base64').length === 32, 'CREDENTIALS_KEY must be 32 bytes in base64 (openssl rand -base64 32)')
+      .optional(),
+  ),
+  /**
    * Whether a form's email address is checked against DNS for a domain that can receive mail
    * (docs/08-decisions.md, 61). `off` skips only that lookup, for a machine without DNS; the
    * throwaway-inbox list, the timing check and the per-address limits still apply.
