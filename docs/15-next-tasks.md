@@ -68,6 +68,8 @@ Open entry in docs/08. `CLAUDE.md` wants an audit entry for every content change
 - A setting can hold a secret. Never write a secret value into the log.
 
 ### 3. Where start-a-project briefs are abandoned
+**Done on `tumit`, 2026-09-26 (decision 69). No dashboard edits needed.**
+
 Open entry "Nothing reports abandonment yet", and the gate of Task 5.2 in
 `docs/06-build-plan.md`: abandonment must be measurable per step.
 - The data is already there: each draft lead's step, and its `draft_*` activities

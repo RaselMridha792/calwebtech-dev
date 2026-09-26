@@ -1255,12 +1255,55 @@ content change, and the command line changed settings without one.
     audit screen showed "Command line (settings-cli)" with its before and after, at 360 and
     1440, with no overflow and no console errors.
 
+## 69. Where start-a-project briefs stop
+
+*2026-09-26.* Task 3 of `docs/15-next-tasks.md`, and the gate of build plan task 5.2:
+abandonment must be measurable per step.
+
+- **A report for a chosen period**, `/admin/leads/briefs/` ("Where briefs stop"). It is reached
+  from a button on the inbox's header and from Ctrl K.
+  - The period is the last 7, 30 or 90 days, by when the brief was begun.
+  - Four figures: begun, sent, not sent (with the step most stopped at), and the share
+    finished.
+  - A row for each of the six steps: how many reached it, a bar for their share of those
+    begun, and how many stopped there without sending.
+  - Read only. `GET /admin/leads/brief-funnel?days=` needs the leads module's read access.
+- **Steps 1 and 2 are not measured, and the report says so.** A brief is first stored when its
+  visitor leaves the contact step, the first moment there is an address to keep it under
+  (decision 56). Every stored brief has passed steps 1 and 2, and nobody who left there leaves
+  a row. Those two steps show everyone counted as having reached them, and "not measured".
+- **The data was already there.** A stored brief is a `PROJECT` lead whose `answers.draft`
+  holds `furthestStep`, which never goes back, and `completedAt` once it is sent.
+  `briefProgress` (`apps/api/src/forms/forms.draft.ts`, the family's own module) reads them for
+  both the report and the inbox. No migration.
+- **In the inbox, an unsent brief is not an ordinary new lead:**
+  - A "Brief" filter offers unfinished briefs and sent briefs. It is `brief=` in the URL, and
+    counts as a narrowing filter.
+  - An unfinished brief's form column reads "Unfinished", with a dashed edge, in place of
+    "Brief", and says the step in words for a pointer and a screen reader.
+  - Its panel says "Not sent" and the step it stopped at, above what the visitor had typed.
+- **How the filter matches.** Prisma's JSON path filters, with `AnyNull` for a key that is
+  absent, which is how an unsent brief is stored. They were checked against the local rows
+  before use. The inbox's other fragments that are AND or OR clauses (the channel filter) now
+  go into one `AND` list with this one, so neither overwrites the other.
+- **Verified.**
+  - An integration test on a real database. Seven briefs were begun in the period: two left
+    at step 3, one each at 4, 5 and 6, and two sent. One more was begun outside the period, and
+    two leads are not briefs. The test checks:
+    - every step's reached and stopped counts, and the wider period taking in the older brief;
+    - the unfinished and sent filters, each with its marker or none;
+    - the brief filter combined with search;
+    - no marker on a lead that is not a brief.
+  - Unit tests: API 278, shared 259, and the admin and lib web tests. One web test,
+    `lib/api/search.test.ts`, timed out at 5 seconds while other work loaded the machine; run
+    on its own it passes. It is not touched by this change.
+  - In Chrome at 360 and 1440, with no overflow and no console errors:
+    - the report showed the local stack's seven briefs over 90 days;
+    - the inbox, filtered to unfinished briefs, showed the one left at step 5, marked;
+    - its panel said so.
+
 ## Open
 
-- **Nothing reports abandonment yet.** The drop-off per step is in the data (each draft lead's
-  step and its `draft_*` activities) but no screen counts it; the leads inbox shows an
-  unfinished brief as an ordinary new lead. A small report in the dashboard, or a filter for
-  unfinished briefs, would make the gate visible to the owner (docs/15, task 3).
 - **The floating "Start a project" button goes to `/book-a-consultation/`**, not to this page
   (`floatingCta` in the homepage copy). The owner chose `/start-a-project/` (decision 66) and
   changes it from the page copy screen.
