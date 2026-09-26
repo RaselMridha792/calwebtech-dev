@@ -102,12 +102,18 @@ const CREATE: { module: AdminModule; href: string; label: string; keywords?: str
 
 const path = (href: string): string => href.replace(/^\/admin\/?/, '').replace(/\/$/, '');
 
-/** Path segment to page name, for the breadcrumb. One list, not two. */
-const CRUMB_LABELS: Record<string, string> = Object.fromEntries(
-  [...GROUPS.flatMap((group) => group.routes), ...INNER]
-    .filter((route) => route.href !== '/admin/')
-    .map((route) => [path(route.href), route.label]),
-);
+/**
+ * Path segment to page name, for the breadcrumb. One list, not two. An empty name leaves a
+ * segment out: `content/services` only groups the service records under Services.
+ */
+const CRUMB_LABELS: Record<string, string> = {
+  ...Object.fromEntries(
+    [...GROUPS.flatMap((group) => group.routes), ...INNER]
+      .filter((route) => route.href !== '/admin/')
+      .map((route) => [path(route.href), route.label]),
+  ),
+  'content/services': '',
+};
 
 export default async function AdminShellLayout({ children }: LayoutProps<'/admin'>) {
   const user = await requireAdmin();

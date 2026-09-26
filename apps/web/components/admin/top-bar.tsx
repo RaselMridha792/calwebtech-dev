@@ -145,6 +145,8 @@ function trail(pathname: string, labels: Record<string, string>): Crumb[] {
   for (const segment of segments) {
     seen = seen ? `${seen}/${segment}` : segment;
     const label = labels[seen];
+    // An empty name is a path segment that only groups records, such as `content/services`.
+    if (label === '') continue;
     if (label) crumbs.push({ label, href: `/admin/${seen}/` });
     else if (crumbs.length > 1) crumbs.push({ label: segment === 'new' ? 'New' : 'Record', href: null });
   }
