@@ -12,7 +12,7 @@ import {
 import { asPhrase } from '@/lib/text';
 import { CardGrid, CaseStudyCard } from '../site/cards';
 import { EmptyState } from '../site/lists';
-import { ChevronIcon } from '../ui/icons';
+import { ArrowIcon, ChevronIcon } from '../ui/icons';
 import { FilterMenus } from './filter-menus';
 import { Section } from '../site/section';
 import { SectionHeading } from '../site/section-heading';
@@ -267,14 +267,18 @@ export function WorkPagination({
 }) {
   if (pageCount <= 1) return null;
   const pages = Array.from({ length: pageCount }, (_, index) => index + 1);
-  const box =
-    'inline-flex h-11 min-w-11 items-center justify-center  border px-3 font-semibold focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus';
+  // Pages as numbers on a rule, not a row of boxes: the current one ink with a champagne rule
+  // under it, the others muted until the pointer draws theirs.
+  const item =
+    'relative inline-flex h-12 min-w-11 items-center justify-center gap-2 px-3 font-semibold transition-colors duration-150 after:absolute after:inset-x-2 after:bottom-0 after:h-0.5 after:origin-left after:bg-gold-ink after:transition-transform after:duration-420 after:ease-out-quint focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus motion-reduce:after:transition-none';
+  const idle = `${item} text-ink-muted after:scale-x-0 hover:text-ink hover:after:scale-x-100`;
   return (
-    <nav aria-label="Pagination" className="mt-12">
-      <ul className="flex flex-wrap items-center justify-center gap-2">
+    <nav aria-label="Pagination" className="mt-14 border-t border-hairline">
+      <ul className="flex flex-wrap items-center justify-center gap-1">
         {page > 1 ? (
-          <li>
-            <a href={resultsHref(filters, page - 1)} rel="prev" className={`${box} border-hairline bg-canvas-raised text-ink hover:border-ink`}>
+          <li className="me-auto">
+            <a href={resultsHref(filters, page - 1)} rel="prev" className={idle}>
+              <ArrowIcon className="w-4 rotate-180" />
               Previous
             </a>
           </li>
@@ -284,7 +288,7 @@ export function WorkPagination({
             <a
               href={resultsHref(filters, number)}
               aria-current={number === page ? 'page' : undefined}
-              className={number === page ? `${box} border-ink bg-navy-900 text-ink-invert` : `${box} border-hairline bg-canvas-raised text-ink hover:border-ink`}
+              className={number === page ? `${item} text-ink after:scale-x-100` : idle}
             >
               <span className="sr-only">Page </span>
               {number}
@@ -292,9 +296,10 @@ export function WorkPagination({
           </li>
         ))}
         {page < pageCount ? (
-          <li>
-            <a href={resultsHref(filters, page + 1)} rel="next" className={`${box} border-hairline bg-canvas-raised text-ink hover:border-ink`}>
+          <li className="ms-auto">
+            <a href={resultsHref(filters, page + 1)} rel="next" className={idle}>
               Next
+              <ArrowIcon className="w-4" />
             </a>
           </li>
         ) : null}
