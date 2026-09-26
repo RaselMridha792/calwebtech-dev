@@ -1,4 +1,4 @@
-import { SITE_ROUTES, type FinalPointIcon, type HomePageContent, type HomePageView } from '@calwebtech/shared';
+import { insightsArticlePath, type FinalPointIcon, type HomePageContent, type HomePageView } from '@calwebtech/shared';
 import type { ReactNode } from 'react';
 import { BackdropImage } from '../ui/brand';
 import { CalendarIcon, ShieldIcon, TickIcon } from '../ui/icons';
@@ -423,7 +423,7 @@ export function Insights({ insights, posts }: { insights: Content['insights']; p
               return (
                 <li key={post.slug} {...reveal(index)}>
                   <a
-                    href={`${SITE_ROUTES.insights}${post.slug}/`}
+                    href={insightsArticlePath(post.slug)}
                     className="group block focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-focus"
                   >
                     {post.image ? (
