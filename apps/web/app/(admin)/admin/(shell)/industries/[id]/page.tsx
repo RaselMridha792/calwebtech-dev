@@ -4,10 +4,11 @@ import {
   adminIndustryDetailSchema,
   templateIndustryContent,
 } from '@calwebtech/shared';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Json } from '@/components/admin/content/copy-editor';
+import { StatusPill } from '@/components/admin/content/editor-parts';
 import { IndustryEditor, type IndustryDraft } from '@/components/admin/content/industry-editor';
+import { AdminPage, BackLink, PageHeader } from '@/components/admin/ui/page';
 import { adminFind } from '@/lib/admin/api';
 import { requireModule } from '@/lib/admin/session';
 
@@ -56,21 +57,35 @@ export default async function AdminIndustryEditorPage({ params }: PageProps<'/ad
     : EMPTY;
 
   return (
-    <main className="min-h-0 flex-1 overflow-auto px-4 py-5">
-      <div className="mx-auto w-full max-w-[860px]">
-        <Link href="/admin/industries/" className="text-[12.5px] font-semibold text-admin-link hover:underline">
-          ← Back to industries
-        </Link>
-        <h1 className="mt-2 mb-4 font-display text-[21px] font-bold tracking-[-0.02em] text-admin-ink">
-          {creating ? 'New industry' : draft.name}
-        </h1>
-        <IndustryEditor
-          draft={draft}
-          template={templateIndustryContent(draft.name || 'Industry website design')}
-          shapes={INDUSTRY_CONTENT_SHAPES as Record<string, Json>}
-          statusLabels={CONTENT_STATUS_LABELS}
-        />
-      </div>
-    </main>
+    <AdminPage width="medium">
+      <BackLink href="/admin/industries/">Back to industries</BackLink>
+      <PageHeader
+        eyebrow="Industry"
+        title={creating ? 'New industry' : draft.name}
+        badge={existing ? <StatusPill status={existing.status} label={CONTENT_STATUS_LABELS[existing.status]} /> : undefined}
+        description={
+          existing
+            ? `/industries/${existing.slug}/ · last edited ${when(existing.updatedAt)}`
+            : 'Three fields make a page: the name, the address and the answer block. Save a draft, add the page copy when you are ready, then publish.'
+        }
+      />
+      <IndustryEditor
+        draft={draft}
+        template={templateIndustryContent(draft.name || 'Industry website design')}
+        shapes={INDUSTRY_CONTENT_SHAPES as Record<string, Json>}
+        statusLabels={CONTENT_STATUS_LABELS}
+      />
+    </AdminPage>
   );
+}
+
+function when(iso: string): string {
+  return new Date(iso).toLocaleString('en-GB', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone: 'UTC',
+  });
 }

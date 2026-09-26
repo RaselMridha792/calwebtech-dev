@@ -2,19 +2,22 @@
 import { slugify } from '@calwebtech/shared/slugify';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { ExternalIcon, PlusIcon } from '@/components/admin/icons';
+import { ERROR, HELP, KICKER, TEXTAREA, button } from '@/components/admin/ui/styles';
 import { MutationError, adminMutate } from '@/lib/admin/mutate';
 import { CopyEditor, ordered, type Json } from './copy-editor';
-import { Action, Area, Field, Section } from './editor-parts';
+import { Action, Area, Field, Help, INPUT, LABEL, Section, StatusPill } from './editor-parts';
 
 /**
  * The industry editor (docs/14-remaining-work.md, task 4; docs/08-decisions.md, 58).
  *
- * The record's own fields first — name, address, answer block, card line — then the page's
- * copy, the questions and the search result. A new industry can be saved with the first
- * three alone; its page then shows the hero and the answer block until copy is added, which
- * starts from the template's headings rather than an empty box.
+ * The record's own fields first — name, address, card line, answer block — then the page's
+ * copy and the questions. A new industry can be saved with the first three alone; its page
+ * then shows the hero and the answer block until copy is added, which starts from the
+ * template's headings rather than an empty box.
  *
- * Publishing is a separate action from saving, as in the service editor.
+ * Publishing is a separate action from saving, as in the service editor, and the same
+ * column on the right holds it, with the search result under it.
  */
 export interface IndustryDraft {
   id: string | null;
@@ -109,95 +112,45 @@ export function IndustryEditor({
   };
 
   const live = form.status === 'PUBLISHED';
+  const answerLength = form.answerBlock.trim().length;
 
   return (
-    <div className="flex flex-col gap-5">
-      <div className="flex flex-wrap items-center gap-2.5 rounded-[4px] border border-admin-line bg-admin-sunken px-3 py-2.5">
-        <span className="text-[12.5px] font-semibold text-admin-ink">{statusLabels[form.status] ?? form.status}</span>
-        {form.shadowsSnapshot ? (
-          <span className="text-[11.5px] text-admin-muted">
-            /industries/{form.slug}/ is still served from the committed snapshot until this is published.
-          </span>
-        ) : null}
-        <span className="ml-auto flex flex-wrap gap-2">
-          <Action busy={busy === 'save'} primary onClick={save}>
-            {form.id ? 'Save' : 'Create draft'}
-          </Action>
-          {form.id ? (
-            <Action
-              busy={busy === 'publish'}
-              onClick={() => {
-                run('publish', adminMutate(path(live ? '/unpublish' : '/publish'), { method: 'POST' }));
-              }}
-            >
-              {live ? 'Unpublish' : 'Publish'}
-            </Action>
-          ) : null}
-          {form.id ? (
-            <a
-              href={`/industries/${form.slug}/`}
-              target="_blank"
-              rel="noreferrer"
-              className="flex h-[30px] items-center rounded-[4px] border border-admin-line px-3 text-[12px] font-semibold text-admin-body hover:border-admin-focus hover:text-admin-ink"
-            >
-              View page
-            </a>
-          ) : null}
-        </span>
-      </div>
-
-      {error ? (
-        <p role="alert" className="text-[12.5px] text-danger">
-          {error}
-        </p>
-      ) : saved ? (
-        <p className="flex items-center gap-1.5 text-[12px] text-admin-body">
-          <span aria-hidden className="size-[7px] rounded-full bg-result" />
-          Saved and audited
-        </p>
-      ) : null}
-
-      <Section heading="The industry">
-        <Field
-          label="Name"
-          id="ind-name"
-          value={form.name}
-          errors={fieldErrors.name}
-          onChange={(value) => {
-            setForm((current) => ({
-              ...current,
-              name: value,
-              // The address follows the name until someone edits it: a published slug that
-              // changes leaves a redirect behind.
-              slug: current.slug === slugify(current.name) ? slugify(value) : current.slug,
-            }));
-            setSaved(false);
-          }}
-        />
-        <Field
-          label="Address"
-          id="ind-slug"
-          value={form.slug}
-          errors={fieldErrors.slug}
-          prefix="/industries/"
-          onChange={(value) => {
-            set('slug', value);
-          }}
-          help={live ? 'Changing this leaves a permanent redirect from the old address.' : undefined}
-        />
-        <Area
-          label="Answer block"
-          id="ind-answer"
-          rows={3}
-          value={form.answerBlock}
-          errors={fieldErrors.answerBlock}
-          help="Two or three sentences answering the page's question directly, before any marketing. This is what an answer engine quotes."
-          onChange={(value) => {
-            set('answerBlock', value);
-          }}
-        />
-        <div className="flex flex-wrap gap-3">
-          <div className="min-w-[240px] flex-1">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
+      <div className="flex min-w-0 flex-col gap-6">
+        <Section heading="Basics" help="What the industry is called, where its page lives on the site, and the line on its card.">
+          <Field
+            label="Name"
+            id="ind-name"
+            value={form.name}
+            errors={fieldErrors.name}
+            help="As it appears on the industries index and at the top of the page."
+            onChange={(value) => {
+              setForm((current) => ({
+                ...current,
+                name: value,
+                // The address follows the name until someone edits it: a published slug that
+                // changes leaves a redirect behind.
+                slug: current.slug === slugify(current.name) ? slugify(value) : current.slug,
+              }));
+              setSaved(false);
+            }}
+          />
+          <Field
+            label="Address"
+            id="ind-slug"
+            value={form.slug}
+            errors={fieldErrors.slug}
+            prefix="/industries/"
+            onChange={(value) => {
+              set('slug', value);
+            }}
+            help={
+              live
+                ? 'This page is published. Changing its address sends the old one to the new one automatically, so no link breaks.'
+                : 'Follows the name until you change it. Lower-case words joined with hyphens.'
+            }
+          />
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-[minmax(0,1fr)_120px]">
             <Field
               label="Card line"
               id="ind-line"
@@ -208,174 +161,327 @@ export function IndustryEditor({
                 set('heroCopy', value);
               }}
             />
+            <Field
+              label="Order"
+              id="ind-order"
+              type="number"
+              value={String(form.order)}
+              errors={fieldErrors.order}
+              help="Lower comes first."
+              onChange={(value) => {
+                set('order', Number(value) || 0);
+              }}
+            />
           </div>
-          <Field
-            label="Order"
-            id="ind-order"
-            type="number"
-            narrow
-            value={String(form.order)}
-            errors={fieldErrors.order}
+        </Section>
+
+        <Section
+          heading="Answer block"
+          help="The first thing on the page: a direct answer to the question the page is about, before any selling. Search engines and AI assistants quote this part, so every page needs one."
+        >
+          <Area
+            label="Answer block"
+            id="ind-answer"
+            rows={4}
+            value={form.answerBlock}
+            errors={fieldErrors.answerBlock}
+            help={`Two or three complete sentences: what this industry needs from a website and what they get. ${String(answerLength)} characters so far, between 80 and 600 is right.`}
             onChange={(value) => {
-              set('order', Number(value) || 0);
+              set('answerBlock', value);
             }}
           />
-        </div>
-      </Section>
+        </Section>
 
-      <Section
-        heading="The page"
-        help="The words on the page, section by section. The layout is fixed by the template; a section with nothing in it is left out."
-      >
-        {form.content === null ? (
-          <div className="flex flex-wrap items-center gap-2">
-            <p className="text-[12px] text-admin-body">
-              No page copy yet: the page shows its heading and answer block alone.
-            </p>
-            <button
-              type="button"
-              className="h-[28px] rounded-[4px] border border-admin-line px-2.5 text-[11.5px] font-semibold text-admin-body hover:border-admin-focus hover:text-admin-ink"
-              onClick={() => {
-                set('content', structuredClone(template));
-              }}
-            >
-              Start the page copy
-            </button>
-          </div>
-        ) : (
-          <>
-            <CopyEditor
-              value={form.content}
-              onChange={(value) => {
-                set('content', value);
-              }}
-              errors={fieldErrors}
-              errorPrefix="content"
-              shapes={shapes}
-            />
-            <div>
+        <Section
+          heading="The page"
+          help="The words on the page, section by section. The layout is fixed by the template; a section with nothing in it is left out."
+        >
+          {form.content === null ? (
+            <div className="flex flex-col items-start gap-3 rounded-lg border border-dashed border-admin-line px-4 py-4">
+              <p className="text-[14px] leading-[1.6] text-ink-invert-muted">
+                No page copy yet: the page shows its heading and answer block alone. Start the copy and every section
+                appears with a suggested heading to fill in.
+              </p>
               <button
                 type="button"
-                className="h-[26px] rounded-[4px] border border-admin-line px-2 text-[11px] font-semibold text-admin-body hover:border-admin-focus hover:text-admin-ink"
+                className={button('secondary', 'sm')}
                 onClick={() => {
-                  set('content', null);
+                  set('content', structuredClone(template));
                 }}
               >
-                Remove the page copy
+                <PlusIcon className="size-4" />
+                Start the page copy
               </button>
             </div>
-          </>
-        )}
-      </Section>
+          ) : (
+            <>
+              <CopyEditor
+                value={form.content}
+                onChange={(value) => {
+                  set('content', value);
+                }}
+                errors={fieldErrors}
+                errorPrefix="content"
+                shapes={shapes}
+              />
+              <div className="flex flex-col gap-2 border-t border-admin-line2 pt-4">
+                <button
+                  type="button"
+                  className={`${button('danger', 'sm')} self-start`}
+                  onClick={() => {
+                    set('content', null);
+                  }}
+                >
+                  Remove the page copy
+                </button>
+                <p className={HELP}>Takes every section off the page, leaving the heading and answer block. Nothing is lost until you save.</p>
+              </div>
+            </>
+          )}
+        </Section>
 
-      <Section heading="Questions" help="Shown on the page as its FAQ, in this order, and marked up for search.">
-        {form.faqs.map((faq, index) => (
-          <div key={index} className="flex flex-col gap-2 rounded-[4px] border border-admin-line p-3">
-            <Field
-              label={`Question ${String(index + 1)}`}
-              id={`ind-faq-${String(index)}-q`}
-              value={faq.question}
-              errors={fieldErrors[`faqs.${String(index)}.question`]}
-              onChange={(value) => {
-                set(
-                  'faqs',
-                  form.faqs.map((entry, i) => (i === index ? { ...entry, question: value } : entry)),
-                );
-              }}
-            />
-            <Area
-              label="Answer"
-              id={`ind-faq-${String(index)}-a`}
-              rows={3}
-              value={faq.answer}
-              errors={fieldErrors[`faqs.${String(index)}.answer`]}
-              onChange={(value) => {
-                set(
-                  'faqs',
-                  form.faqs.map((entry, i) => (i === index ? { ...entry, answer: value } : entry)),
-                );
-              }}
-            />
-            <div>
-              <button
-                type="button"
-                className="h-[26px] rounded-[4px] border border-admin-line px-2 text-[11px] font-semibold text-admin-body hover:border-admin-focus hover:text-admin-ink"
-                onClick={() => {
+        <Section
+          heading="Questions and answers"
+          help="Shown at the foot of the page as its FAQ, in this order, and marked up so search engines can show them too."
+        >
+          {form.faqs.length === 0 ? <p className={HELP}>No questions yet, so the page leaves this section out.</p> : null}
+          {form.faqs.map((faq, index) => (
+            <div key={index} className="flex flex-col gap-4 rounded-lg border border-admin-line2 p-3 sm:p-4">
+              <div className="flex items-center justify-between gap-3">
+                <span className={KICKER}>Question {index + 1}</span>
+                <button
+                  type="button"
+                  className={button('ghost', 'sm')}
+                  onClick={() => {
+                    set(
+                      'faqs',
+                      form.faqs.filter((_, i) => i !== index),
+                    );
+                  }}
+                >
+                  Remove
+                </button>
+              </div>
+              <Field
+                label="Question"
+                id={`ind-faq-${String(index)}-q`}
+                value={faq.question}
+                errors={fieldErrors[`faqs.${String(index)}.question`]}
+                help="As a buyer would type it, ending in a question mark."
+                onChange={(value) => {
                   set(
                     'faqs',
-                    form.faqs.filter((_, i) => i !== index),
+                    form.faqs.map((entry, i) => (i === index ? { ...entry, question: value } : entry)),
                   );
                 }}
-              >
-                Remove this question
-              </button>
+              />
+              <Area
+                label="Answer"
+                id={`ind-faq-${String(index)}-a`}
+                rows={3}
+                value={faq.answer}
+                errors={fieldErrors[`faqs.${String(index)}.answer`]}
+                onChange={(value) => {
+                  set(
+                    'faqs',
+                    form.faqs.map((entry, i) => (i === index ? { ...entry, answer: value } : entry)),
+                  );
+                }}
+              />
             </div>
+          ))}
+          <div className="flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              disabled={form.faqs.length >= 6}
+              className={button('secondary', 'sm')}
+              onClick={() => {
+                set('faqs', [...form.faqs, { question: '', answer: '' }]);
+              }}
+            >
+              <PlusIcon className="size-4" />
+              Add a question
+            </button>
+            <span className={HELP}>Up to six.</span>
           </div>
-        ))}
-        <div>
-          <button
-            type="button"
-            disabled={form.faqs.length >= 6}
-            className="h-[28px] rounded-[4px] border border-admin-line px-2.5 text-[11.5px] font-semibold text-admin-body hover:border-admin-focus hover:text-admin-ink disabled:opacity-40"
-            onClick={() => {
-              set('faqs', [...form.faqs, { question: '', answer: '' }]);
-            }}
-          >
-            Add a question
-          </button>
-        </div>
-      </Section>
+        </Section>
+      </div>
 
-      <Section heading="Search result" help="How the page reads in search and when it is shared. Each falls back to the page's own words.">
-        <Field
-          label={`Title (${String(form.seoTitle.length)}/60)`}
-          id="ind-seo-title"
-          value={form.seoTitle}
-          errors={fieldErrors['seo.title']}
-          onChange={(value) => {
-            set('seoTitle', value);
-          }}
-        />
-        <Area
-          label={`Description (${String(form.seoDescription.length)}/155)`}
-          id="ind-seo-description"
-          rows={2}
-          value={form.seoDescription}
-          errors={fieldErrors['seo.description']}
-          onChange={(value) => {
-            set('seoDescription', value);
-          }}
-        />
-        <Field
-          label="Share image"
-          id="ind-seo-image"
-          value={form.seoOgImage}
-          errors={fieldErrors['seo.ogImage']}
-          help="An address from the media library. Empty uses the industry's photograph."
-          onChange={(value) => {
-            set('seoOgImage', value);
-          }}
-        />
-      </Section>
+      <aside className="flex min-w-0 flex-col gap-4 lg:sticky lg:top-6 lg:self-start">
+        <Section
+          heading="Publishing"
+          help={
+            form.id
+              ? 'Saving keeps your changes here. Publishing is what puts them on the site.'
+              : 'Save a draft first. Publishing becomes available once it exists.'
+          }
+        >
+          <div className="flex flex-col gap-2.5">
+            <div className="flex items-center justify-between gap-3 text-[14px]">
+              <span className="text-admin-muted">Status</span>
+              <StatusPill status={form.status} label={statusLabels[form.status] ?? form.status} />
+            </div>
+            {form.shadowsSnapshot ? (
+              <p className={HELP}>
+                Visitors still see the site&apos;s built-in page at /industries/{form.slug}/ until this is published.
+              </p>
+            ) : null}
+          </div>
 
-      {form.id ? (
-        <div className="border-t border-admin-line pt-4">
-          <Action
-            busy={busy === 'delete'}
-            onClick={() => {
-              run('delete', adminMutate(path(), { method: 'DELETE' }), () => {
-                router.replace('/admin/industries/');
-              });
+          {error ? (
+            <p role="alert" className={ERROR}>
+              {error}
+            </p>
+          ) : saved ? (
+            <p
+              role="status"
+              className="flex items-center gap-2 text-[13.5px] text-ink-invert-muted motion-safe:animate-[admin-rise_180ms_var(--ease-out-quint)]"
+            >
+              <span aria-hidden className="size-2 rounded-full bg-result" />
+              Saved and audited
+            </p>
+          ) : null}
+
+          <div className="flex flex-col gap-2">
+            <Action busy={busy === 'save'} primary onClick={save}>
+              {form.id ? 'Save' : 'Create draft'}
+            </Action>
+            {form.id ? (
+              <div className="grid grid-cols-2 gap-2">
+                <Action
+                  busy={busy === 'publish'}
+                  onClick={() => {
+                    run('publish', adminMutate(path(live ? '/unpublish' : '/publish'), { method: 'POST' }));
+                  }}
+                >
+                  {live ? 'Unpublish' : 'Publish'}
+                </Action>
+                <a href={`/industries/${form.slug}/`} target="_blank" rel="noreferrer" className={button('secondary')}>
+                  View page
+                  <ExternalIcon className="size-4" />
+                </a>
+              </div>
+            ) : null}
+          </div>
+
+          {form.id ? (
+            <div className="flex flex-col gap-2 border-t border-admin-line2 pt-4">
+              <button
+                type="button"
+                disabled={busy === 'delete'}
+                onClick={() => {
+                  run('delete', adminMutate(path(), { method: 'DELETE' }), () => {
+                    router.replace('/admin/industries/');
+                  });
+                }}
+                className={`${button('danger')} self-start`}
+              >
+                {busy === 'delete' ? 'Working…' : 'Delete this industry'}
+              </button>
+              <p className={HELP}>
+                The record is kept so its history still names it, and a published address keeps working by
+                redirecting to the industries index.
+              </p>
+            </div>
+          ) : null}
+        </Section>
+
+        <Section
+          heading="Search result"
+          help="How the page reads in Google and when it is shared. Each falls back to the page's own words when left empty."
+        >
+          <Counted
+            label="Title"
+            id="ind-seo-title"
+            max={60}
+            value={form.seoTitle}
+            errors={fieldErrors['seo.title']}
+            onChange={(value) => {
+              set('seoTitle', value);
             }}
-          >
-            Delete this industry
-          </Action>
-          <p className="mt-1.5 text-[11px] text-admin-muted">
-            The record is kept so its history still names it, and a published address keeps working by redirecting to
-            the industries index.
-          </p>
-        </div>
-      ) : null}
+          />
+          <Counted
+            label="Description"
+            id="ind-seo-description"
+            max={155}
+            rows={3}
+            value={form.seoDescription}
+            errors={fieldErrors['seo.description']}
+            onChange={(value) => {
+              set('seoDescription', value);
+            }}
+          />
+          <Field
+            label="Share image"
+            id="ind-seo-image"
+            value={form.seoOgImage}
+            errors={fieldErrors['seo.ogImage']}
+            help="An address from the media library. Empty uses the industry's photograph."
+            onChange={(value) => {
+              set('seoOgImage', value);
+            }}
+          />
+        </Section>
+      </aside>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------- pieces
+
+/** A text field with a live count against the length search engines show. */
+function Counted({
+  label,
+  id,
+  value,
+  max,
+  rows,
+  errors,
+  onChange,
+}: {
+  label: string;
+  id: string;
+  value: string;
+  max: number;
+  rows?: number;
+  errors?: string[];
+  onChange: (value: string) => void;
+}) {
+  const over = value.length > max;
+  return (
+    <div className="flex min-w-0 flex-col gap-1.5">
+      <div className="flex items-baseline justify-between gap-3">
+        <label htmlFor={id} className={LABEL}>
+          {label}
+        </label>
+        <span className={`text-[12px] tabular-nums ${over ? 'font-semibold text-danger' : 'text-admin-muted'}`}>
+          {value.length}/{max}
+        </span>
+      </div>
+      {rows ? (
+        <textarea
+          id={id}
+          rows={rows}
+          value={value}
+          aria-invalid={errors ? true : undefined}
+          onChange={(event) => {
+            onChange(event.target.value);
+          }}
+          className={TEXTAREA}
+        />
+      ) : (
+        <input
+          id={id}
+          type="text"
+          value={value}
+          aria-invalid={errors ? true : undefined}
+          onChange={(event) => {
+            onChange(event.target.value);
+          }}
+          className={INPUT}
+        />
+      )}
+      <Help errors={errors} help={over ? `Keep this to ${String(max)} characters or fewer.` : undefined} />
     </div>
   );
 }
