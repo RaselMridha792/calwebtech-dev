@@ -1553,6 +1553,53 @@ additive, and nothing is lost.
     - both rows were marked sent, and the lead's timeline shows both `email_sent` entries;
     - with both jobs removed, both emails were sent.
 
+## 72. The mega menus are navy panels, and the bar shows where the reader is
+
+*2026-09-26.* Asked for by the owner's side: the four mega menus read as plain lists, too
+ordinary for a technology agency, and the bar did not show which part of the site was open.
+**This changes a section's layout and adds a few words of chrome, so under RULES.md
+section 1 it is the owner's to confirm or reverse.** No token, link, page or menu content
+changed, and the dashboard edits the menus as before.
+
+- **A panel is the brand's navy ground dropped from the bar** (`site-header.tsx`), in place
+  of the cream sheet with three kinds of promo box:
+  - the menu's name set at `display-md`, with a count over it in `meta` champagne ("18
+    services", counted from the menu's links) and, where the family has an index page, an
+    "All services" or "All industries" link beside it. Those two labels are new words;
+  - the lists under it, split evenly across the room, so Resources' four lists no longer
+    leave a column empty and wrap their links. Hairlines divide the columns;
+  - one promo form for every menu: a raised navy plate with a gold action, or a champagne link
+    for Industries' case study;
+  - Work's two projects as photographs darkened from the foot, the figure in champagne
+    `display-md` over the client's name.
+- **Motion, all opacity and transform, and none under reduced motion.** The panel settles from
+  4px, its heading and then each column rise a beat apart, a link row lifts, draws a champagne
+  rule down its edge and slides its label for an arrow, a project photograph slowly zooms, and
+  the label's chevron turns. The page behind an open panel dims (navy at 40%).
+- **A light follows the pointer across the panel**, over the brand's `grid-lines-light` fading
+  from the corner. MegaMenuState sets its position; it is the one piece of new script, a
+  pointer listener of a few lines.
+- **The bar shows where the reader is.** MegaMenuState marks the link to the current page
+  `aria-current="page"` and the menu or bar link whose section holds it `"true"`, with
+  `data-current` for the stylesheet: a 2px rule stays under that menu's label, the link inside
+  the panel keeps its lift and rule, and the small-screen menu underlines it. Pages load in
+  full, so it runs once. Where two menu entries lead to the same page (locally, "UI/UX" and
+  "Branding" both go to `/services/custom-website-development/`), both show as current: a
+  content fix, not a code one.
+- **The bar itself** (`globals.css`): once it has a ground it is frosted (canvas at 85% over a
+  blur, on a layer of its own, because a backdrop filter on the header would trap the fixed
+  dimming inside it); an open menu over a dark hero turns the bar navy, so bar and panel read
+  as one surface, and the navy action takes a light rule while it does; a champagne reading
+  progress rule runs along the bar's foot, driven by the scroll itself where the browser
+  supports scroll timelines; and the main action gains an arrow that steps on hover.
+- **Checked** at 1440 by hover and keyboard (every step `e2e/home.spec.ts` takes: open on
+  focus, Tab into the panel, Escape, Enter, Shift+Tab out), and at 360 and 768 with no
+  sideways scroll. The Playwright suite itself was not run: its browsers are not installed on
+  this machine. The own-script budget was not re-measured; the change to MegaMenuState is
+  about 1 kB of source.
+- **Locally the services promo leads to `/cost-calculator/`**, not `/#estimate`, which is what
+  `e2e/home.spec.ts` expects of it. That is the local database's menu, not this change.
+
 ## Open
 
 - **Stored redirects are written but never served** (found while planning task 6,

@@ -4,6 +4,13 @@ Last updated 2026-09-21. Written so another developer can pick up the work witho
 chat history. Everything described here is merged into `main` on
 https://github.com/RaselMridha792/calwebtech-dev unless a branch is named.
 
+## Update, 2026-09-26: mega menus
+
+The four mega menus are navy panels with motion, a pointer light and a "you are here" rule
+under the current menu; the bar frosts once scrolled, turns navy with an open menu over a dark
+hero, and carries a reading-progress rule. On `tumit`, awaiting the owner's review under
+RULES.md section 1 (docs/08, decision 72).
+
 ## Update, 2026-09-21
 
 **Production is live** at https://calwebtech.duckdns.org on a Hostinger VPS, and the admin
