@@ -1,5 +1,6 @@
 import { ADMIN_SETTING_LABELS, adminSettingsViewSchema } from '@calwebtech/shared';
 import { SettingsForm, type SettingRow } from '@/components/admin/ops/settings-form';
+import { AdminPage, PageHeader } from '@/components/admin/ui/page';
 import { adminGet } from '@/lib/admin/api';
 import { requireModule } from '@/lib/admin/session';
 
@@ -22,14 +23,13 @@ export default async function AdminSettingsPage() {
   }));
 
   return (
-    <main className="min-h-0 flex-1 overflow-auto px-4 py-5">
-      <div className="mx-auto w-full max-w-[860px]">
-        <h1 className="font-display text-[21px] font-bold tracking-[-0.02em] text-admin-ink">Settings</h1>
-        <p className="mt-0.5 mb-2 text-[12.5px] text-admin-body">
-          Five settings the site reads at request time, so a change applies to the next visitor without a deploy.
-        </p>
-        <SettingsForm settings={rows} />
-      </div>
-    </main>
+    <AdminPage width="narrow">
+      <PageHeader
+        eyebrow="Site"
+        title="Settings"
+        description="The few things the site reads every time a page loads: your contact details, who hears about new leads, the proof figures on the homepage, and whether search engines can see the site. Each saves on its own and applies to the next visitor."
+      />
+      <SettingsForm settings={rows} />
+    </AdminPage>
   );
 }
