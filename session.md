@@ -4,6 +4,13 @@ Last updated 2026-09-21. Written so another developer can pick up the work witho
 chat history. Everything described here is merged into `main` on
 https://github.com/RaselMridha792/calwebtech-dev unless a branch is named.
 
+## Update, 2026-09-26: the site without boxes
+
+The homepage and the shared cards across the marketing site move from bordered boxes to the
+brand's rows, rules, tiles and plates, with hover motion (transform and colour only). The
+`/work/` filters are a toolbar of menus with removable pills. About fifty small commits on
+`tumit`, awaiting the owner's review under RULES.md section 1 (docs/08, decision 73).
+
 ## Update, 2026-09-26: mega menus
 
 The four mega menus are navy panels with motion, a pointer light and a "you are here" rule
