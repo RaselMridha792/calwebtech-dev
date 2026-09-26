@@ -1,12 +1,14 @@
-import { BOOKING_REMINDER_WINDOWS, emailJobId, type EmailJob } from '@calwebtech/shared';
+import { BOOKING_REMINDER_WINDOWS, emailJobId } from '@calwebtech/shared';
+import type { OutboxEmail } from '../queue/email-outbox';
 
 /**
  * A booking's reminders, a day and an hour before the call (docs/08-decisions.md, 60).
  *
- * They are delayed jobs on the email queue, named by the booking, the window and the call's
- * time: moving a call removes the reminders for its old time and adds new ones, and cancelling
- * it removes them. The worker checks the booking again before sending, which covers a removal
- * that could not happen — a job already being sent, or Redis briefly away.
+ * They are outbox rows due at their time (decision 71), queued as delayed jobs. Moving a call
+ * withdraws the rows for its old time and writes new ones, and cancelling or closing it
+ * withdraws them, in the same transaction as the change; the jobs are then taken off the
+ * queue. The worker checks the row and the booking again before sending, which covers a
+ * removal that could not happen — a job already being sent, or Redis briefly away.
  */
 export interface RemindedCall {
   id: string;
@@ -20,12 +22,15 @@ export interface RemindedCall {
   cancelToken: string;
 }
 
-/** The reminder jobs for a call and when each is due. */
-export function reminderJobs(call: RemindedCall): { job: EmailJob; at: Date }[] {
+/**
+ * The reminders for a call, each due at its time. A time already past is left out, since a
+ * reminder after the fact reminds nobody.
+ */
+export function reminderEmails(call: RemindedCall, now: Date = new Date()): OutboxEmail[] {
   return BOOKING_REMINDER_WINDOWS.map((window) => ({
-    at: new Date(call.startsAt.getTime() - window.hours * 60 * 60 * 1000),
+    sendAt: new Date(call.startsAt.getTime() - window.hours * 60 * 60 * 1000),
     job: {
-      template: 'booking-reminder',
+      template: 'booking-reminder' as const,
       to: [call.email],
       bookingId: call.id,
       name: call.name,
@@ -36,10 +41,14 @@ export function reminderJobs(call: RemindedCall): { job: EmailJob; at: Date }[] 
       window: window.key,
       manage: { rescheduleToken: call.rescheduleToken, cancelToken: call.cancelToken },
     },
-  }));
+  })).filter((email) => email.sendAt.getTime() > now.getTime());
 }
 
-/** The ids of a call's reminders at a given time, to take them off the queue. */
+/**
+ * The ids reminders had before the outbox, when they were queued straight from the API. A
+ * call booked before decision 71 may still have such a job waiting, so moving or cancelling it
+ * takes these off the queue as well.
+ */
 export function reminderJobIds(call: { id: string; startsAt: Date }): string[] {
   return BOOKING_REMINDER_WINDOWS.map((window) =>
     emailJobId({

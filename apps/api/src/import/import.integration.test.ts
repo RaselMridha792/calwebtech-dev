@@ -3,7 +3,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { createPrismaClient } from '@calwebtech/db';
 import { IMPORT_MARKER_KEY, importSnapshots } from '@calwebtech/db/import';
-import { EMAIL_QUEUE, type CalculatorAnswers, type LeadSubmission } from '@calwebtech/shared';
+import { EMAIL_QUEUE, emailOutboxJobId, type CalculatorAnswers, type LeadSubmission } from '@calwebtech/shared';
 import { BadRequestException } from '@nestjs/common';
 import { Queue } from 'bullmq';
 import { Redis } from 'ioredis';
@@ -83,12 +83,15 @@ function submission(overrides: Partial<LeadSubmission>): LeadSubmission {
   };
 }
 
+/** The emails to an address that its lead committed to the outbox and queued (docs/08-decisions.md, 71). */
 async function queuedTemplates(email: string): Promise<string[]> {
-  const jobs = await inspect.getJobs(['waiting', 'prioritized', 'delayed']);
-  return jobs
-    .map((job) => job.data as { template: string; to: string[] })
-    .filter((data) => data.to.includes(email))
-    .map((data) => data.template);
+  const rows = await db.emailOutbox.findMany({ where: { lead: { email } } });
+  const queued = await Promise.all(
+    rows
+      .filter((row) => (row.payload as { to: string[] }).to.includes(email))
+      .map(async (row) => ((await inspect.getJob(emailOutboxJobId(row.id))) ? row.template : null)),
+  );
+  return queued.filter((template) => template !== null);
 }
 
 function withDatabase(url: string, name: string): string {
@@ -116,7 +119,17 @@ afterAll(async () => {
 });
 
 /** Every family in the registry, in the order they run. */
-const FAMILIES = ['operational', 'booking', 'references', 'work', 'services', 'industries', 'case-studies', 'page-copy'];
+const FAMILIES = [
+  'operational',
+  'booking',
+  'references',
+  'work',
+  'services',
+  'industries',
+  'case-studies',
+  'page-copy',
+  'before-and-after',
+];
 
 describe('snapshot import on an empty database', () => {
   it('records the marker, so the next deploy changes nothing', async () => {

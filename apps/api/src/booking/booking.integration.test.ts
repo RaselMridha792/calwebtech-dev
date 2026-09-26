@@ -8,7 +8,7 @@ import { ConflictException } from '@nestjs/common';
 import { Queue } from 'bullmq';
 import { Redis } from 'ioredis';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { EMAIL_QUEUE } from '@calwebtech/shared';
+import { EMAIL_QUEUE, emailOutboxJobId } from '@calwebtech/shared';
 import { AdminBookingsService } from '../admin/bookings/admin-bookings.service';
 import { AuditService } from '../auth/audit.service';
 import { loadEnv } from '../config/env';
@@ -184,11 +184,11 @@ describe('the booking engine against Postgres', () => {
     const input = submission(slot);
     await booking.create(input, '203.0.113.9');
 
-    const jobs = await inspect.getJobs(['waiting', 'prioritized', 'delayed']);
-    const mine = jobs
-      .map((job) => job.data as { template: string; to: string[] })
-      .filter((data) => data.to.includes(input.email));
-    expect(mine.map((data) => data.template)).toContain('booking-confirmation');
+    // Committed with the booking as an outbox row (docs/08-decisions.md, 71), and queued.
+    const rows = await prisma.client.emailOutbox.findMany({ where: { booking: { email: input.email } } });
+    const confirmation = rows.find((row) => row.template === 'booking-confirmation');
+    expect(confirmation?.payload).toMatchObject({ to: [input.email] });
+    expect(await inspect.getJob(emailOutboxJobId(confirmation?.id ?? ''))).toBeTruthy();
   });
 });
 

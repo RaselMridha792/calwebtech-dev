@@ -89,8 +89,11 @@ describe('the cost calculator page against Postgres', () => {
 
 describe('calculator leads against Postgres', () => {
   // No Turnstile secret outside production stores the lead without a verdict; no emails are sent.
-  const queued: unknown[] = [];
-  const emailQueue = { enqueue: (jobs: unknown[]) => Promise.resolve(void queued.push(...jobs)) } as unknown as EmailQueue;
+  // Nothing reaches Redis: a lead's emails are the outbox rows its transaction committed
+  // (docs/08-decisions.md, 71), read back here.
+  const emailQueue = { enqueueOutbox: () => Promise.resolve() } as unknown as EmailQueue;
+  const committed = async (email: string) =>
+    (await db.emailOutbox.findMany({ where: { lead: { email } } })).map((row) => row.payload);
   const leads = new LeadsService(
     prisma,
     new TurnstileService('', fetch, 15_000),
@@ -136,7 +139,8 @@ describe('calculator leads against Postgres', () => {
     expect(byOtherPageCount).toEqual([]);
   });
 
-  it('queues the visitor a copy of the result rather than the standard confirmation', () => {
+  it('queues the visitor a copy of the result rather than the standard confirmation', async () => {
+    const queued = await committed(`${run}.complete@example.com`);
     const templates = queued.map((job) => (job as { template: string }).template);
     expect(templates).toContain('calculator-result');
     expect(templates).not.toContain('lead-confirmation');

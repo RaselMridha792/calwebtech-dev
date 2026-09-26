@@ -1,4 +1,4 @@
-import type { Prisma } from '@calwebtech/db';
+import type { OutboxEmailJob, Prisma } from '@calwebtech/db';
 import {
   DEFAULT_ACKNOWLEDGEMENT,
   EMAIL_DOMAIN_MESSAGES,
@@ -7,7 +7,6 @@ import {
   type Acknowledgement,
   type BotCheckFailedResponse,
   type CalculatorLeadReceived,
-  type EmailJob,
   type LeadReceived,
   type LeadSubmission,
   type LeadSummary,
@@ -19,6 +18,7 @@ import { calculatorLeadOutcome, type CalculatorLeadOutcome } from '../calculator
 import { publishedAsOf } from '../common/published';
 import { completedDraftAnswers, openProjectDraft } from '../forms/forms.draft';
 import { PrismaService } from '../prisma/prisma.service';
+import { dispatchOutbox, writeOutbox } from '../queue/email-outbox';
 import { EmailQueue } from '../queue/email-queue';
 import { SettingsService } from '../settings/settings.service';
 import { TurnstileService } from '../turnstile/turnstile.service';
@@ -54,12 +54,13 @@ export class LeadsService {
   ) {}
 
   /**
-   * Checks Turnstile, stores the lead against its canonical contact with attribution,
-   * then queues the confirmation and the internal notification.
+   * Checks Turnstile, stores the lead against its canonical contact with attribution, and
+   * its confirmation and internal notification with it, then queues those.
    *
    * Bots that fill the honeypot get the same response as people but nothing is written.
-   * A Turnstile rejection writes nothing. Once the lead is stored it is never lost: a
-   * queue failure is recorded on the lead instead of failing the request.
+   * A Turnstile rejection writes nothing. The emails are outbox rows in the lead's own
+   * transaction (docs/08-decisions.md, 71), so a queue failure, or a process that dies
+   * before the queue, never fails the request or loses an email: the worker's sweep sends it.
    */
   async create(input: LeadSubmission, visitorIp: string | undefined): Promise<LeadReceived | CalculatorLeadReceived> {
     // The cost calculator's range is recomputed from the answers here and never taken from
@@ -173,8 +174,10 @@ export class LeadsService {
       },
       ...(botCheck === 'unavailable' ? [{ type: 'bot_check_unavailable', detail: { formId: input.formId } }] : []),
     ];
+    const recipients = await this.notificationRecipients(enquiryType);
+    const acknowledgement = acknowledgementFrom(landingPage?.content ?? service?.content ?? homeContent?.value);
 
-    const lead = await db.$transaction(async (tx) => {
+    const saveLead = async (tx: Prisma.TransactionClient): Promise<SavedLead> => {
       const contact = await tx.contact.upsert({
         where: { email: input.email },
         create: {
@@ -263,83 +266,89 @@ export class LeadsService {
         },
         select: { id: true, createdAt: true },
       });
+    };
+
+    const lead = await db.$transaction(async (tx) => {
+      const saved = await saveLead(tx);
+      if (recipients.length === 0) {
+        await tx.leadActivity.create({
+          data: { leadId: saved.id, type: 'notification_skipped', detail: { reason: 'no notification recipients set' } },
+        });
+      }
+      // The emails commit with the lead, so a process that dies before queuing them loses
+      // nothing: the worker's sweep queues any row still pending (docs/08-decisions.md, 71).
+      const emails = leadEmails({ ...input, serviceInterest }, saved, acknowledgement, calculator, enquiryType, recipients);
+      const outbox = await writeOutbox(tx, emails.map((job) => ({ job })));
+      return { ...saved, outbox };
     });
     if (botCheck === 'unavailable') {
       this.logger.warn(`Lead ${lead.id} stored without a Turnstile verdict`);
     }
+    if (recipients.length === 0) {
+      this.logger.warn(`Lead ${lead.id}: no internal notification, leads.notificationRecipients is empty`);
+    }
 
-    await this.queueEmails(
-      { ...input, serviceInterest },
-      lead,
-      acknowledgementFrom(landingPage?.content ?? service?.content ?? homeContent?.value),
-      calculator,
-      enquiryType,
-    );
+    await dispatchOutbox(db, this.emailQueue, lead.outbox, this.logger, `Lead ${lead.id}`);
     return received();
   }
 
-  private async queueEmails(
-    input: LeadSubmission,
-    lead: { id: string; createdAt: Date; resubmission?: string },
-    acknowledgement: Acknowledgement,
-    calculator: CalculatorLeadOutcome | null,
-    enquiryType: { name: string; mailbox: string } | null,
-  ): Promise<void> {
-    const summary: LeadSummary = {
-      leadId: lead.id,
-      type: input.type,
-      formId: input.formId,
-      name: input.name,
-      email: input.email,
-      company: input.company,
-      phone: input.phone,
-      siteUrl: input.siteUrl,
-      budgetBand: input.budgetBand,
-      timeline: input.timeline,
-      serviceInterest: input.serviceInterest,
-      message: input.message,
-      enquiry: enquiryType?.name,
-      landingPageSlug: input.landingPageSlug,
-      answers: calculator?.stored,
-      attribution: input.attribution,
-      submittedAt: lead.createdAt.toISOString(),
-    };
-    // A calculator lead gets its result instead of the standard confirmation, so the
-    // visitor's copy carries the same figures the page showed them.
-    // A merged resubmission's emails carry its id, so they are sent rather than taken for a
-    // repeat of the first submission's.
-    const again = lead.resubmission ? { resubmission: lead.resubmission } : {};
-    const jobs: EmailJob[] =
-      calculator?.email
-        ? [{ template: 'calculator-result', to: [input.email], lead: summary, result: calculator.email, ...again }]
-        : [{ template: 'lead-confirmation', to: [input.email], lead: summary, acknowledgement, ...again }];
-
-    try {
-      // The enquiry type's own mailbox joins the usual recipients, which is how enquiries are routed.
-      const configured = await this.settings.leadNotificationRecipients();
-      const mailbox = enquiryType?.mailbox.trim().toLowerCase();
-      const recipients = [...new Set([...configured, ...(mailbox && mailbox.includes('@') ? [mailbox] : [])])];
-      if (recipients.length > 0) {
-        jobs.push({ template: 'lead-notification', to: recipients, lead: summary, ...again });
-      } else {
-        this.logger.warn(`Lead ${lead.id}: no internal notification, leads.notificationRecipients is empty`);
-        await this.recordActivity(lead.id, 'notification_skipped', { reason: 'no notification recipients set' });
-      }
-      await this.emailQueue.enqueue(jobs);
-    } catch (error) {
-      this.logger.error(`Lead ${lead.id} is stored, but its emails were not queued: ${String(error)}`);
-      await this.recordActivity(lead.id, 'email_queue_failed', {
-        templates: jobs.map((job) => job.template),
-        error: String(error),
-      }).catch((recordError: unknown) => {
-        this.logger.error(`Lead ${lead.id}: could not record the queue failure: ${String(recordError)}`);
-      });
-    }
+  /** Who is told about a lead: the setting, and a routed enquiry type's own mailbox. */
+  private async notificationRecipients(enquiryType: { mailbox: string } | null): Promise<string[]> {
+    const configured = await this.settings.leadNotificationRecipients();
+    const mailbox = enquiryType?.mailbox.trim().toLowerCase();
+    return [...new Set([...configured, ...(mailbox && mailbox.includes('@') ? [mailbox] : [])])];
   }
+}
 
-  private async recordActivity(leadId: string, type: string, detail: Prisma.InputJsonObject): Promise<void> {
-    await this.prisma.client.leadActivity.create({ data: { leadId, type, detail } });
-  }
+/** A lead as its transaction stored it; a merged resubmission carries its own id. */
+interface SavedLead {
+  id: string;
+  createdAt: Date;
+  resubmission?: string;
+}
+
+/**
+ * A lead's emails: the visitor's confirmation, or the calculator's result instead, and the
+ * internal notification when anyone is to receive it.
+ */
+function leadEmails(
+  input: LeadSubmission,
+  lead: SavedLead,
+  acknowledgement: Acknowledgement,
+  calculator: CalculatorLeadOutcome | null,
+  enquiryType: { name: string } | null,
+  recipients: readonly string[],
+): OutboxEmailJob[] {
+  const summary: LeadSummary = {
+    leadId: lead.id,
+    type: input.type,
+    formId: input.formId,
+    name: input.name,
+    email: input.email,
+    company: input.company,
+    phone: input.phone,
+    siteUrl: input.siteUrl,
+    budgetBand: input.budgetBand,
+    timeline: input.timeline,
+    serviceInterest: input.serviceInterest,
+    message: input.message,
+    enquiry: enquiryType?.name,
+    landingPageSlug: input.landingPageSlug,
+    answers: calculator?.stored,
+    attribution: input.attribution,
+    submittedAt: lead.createdAt.toISOString(),
+  };
+  // A calculator lead gets its result instead of the standard confirmation, so the
+  // visitor's copy carries the same figures the page showed them.
+  // A merged resubmission's emails carry its id, so they are sent rather than taken for a
+  // repeat of the first submission's.
+  const again = lead.resubmission ? { resubmission: lead.resubmission } : {};
+  const jobs: OutboxEmailJob[] = calculator?.email
+    ? [{ template: 'calculator-result', to: [input.email], lead: summary, result: calculator.email, ...again }]
+    : [{ template: 'lead-confirmation', to: [input.email], lead: summary, acknowledgement, ...again }];
+  // The enquiry type's own mailbox is among the recipients, which is how enquiries are routed.
+  if (recipients.length > 0) jobs.push({ template: 'lead-notification', to: [...recipients], lead: summary, ...again });
+  return jobs;
 }
 
 /** A lead still being worked, which a second submission joins rather than starting another. */
