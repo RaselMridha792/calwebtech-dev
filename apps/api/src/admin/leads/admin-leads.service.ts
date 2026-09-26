@@ -1,7 +1,10 @@
 import {
+  BRIEF_FIRST_MEASURED_STEP,
   CLOSED_LEAD_STATUSES,
+  FORMS_PROJECT_STEPS,
   LEAD_STATUSES,
   leadChannel,
+  type AdminBriefFunnel,
   type AdminLeadAttribution,
   type AdminLeadDetail,
   type AdminLeadEmail,
@@ -16,9 +19,10 @@ import {
   type LeadPipelineUpdate,
   type LeadStatus,
 } from '@calwebtech/shared';
-import type { Prisma } from '@calwebtech/db';
+import { Prisma } from '@calwebtech/db';
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { AuditService } from '../../auth/audit.service';
+import { briefProgress } from '../../forms/forms.draft';
 import { PrismaService } from '../../prisma/prisma.service';
 
 /** Who is making the change, for the activity trail and the audit log. */
@@ -42,6 +46,8 @@ const LIST_SELECT = {
   budgetBand: true,
   value: true,
   nextActionDate: true,
+  // Read for one thing: whether a start-a-project brief was left unsent (decision 69).
+  answers: true,
   createdAt: true,
   updatedAt: true,
   service: { select: { title: true } },
@@ -90,6 +96,47 @@ export class AdminLeadsService {
       pageSize: query.pageSize,
       statusCounts,
       unassignedNew,
+    };
+  }
+
+  /**
+   * Where start-a-project briefs stopped, for briefs stored in the last `days` days
+   * (docs/06-build-plan.md, task 5.2; decision 69). Read only. A brief is stored from step 3,
+   * so steps 1 and 2 are passed by every stored brief and nobody who left there can be seen.
+   */
+  async briefFunnel(days: number, now = new Date()): Promise<AdminBriefFunnel> {
+    const from = new Date(now.getTime() - days * DAY_MS);
+    const rows = await this.prisma.client.lead.findMany({
+      where: {
+        type: 'PROJECT',
+        deletedAt: null,
+        createdAt: { gte: from, lte: now },
+        answers: { path: ['draft', 'startedAt'], not: Prisma.AnyNull },
+      },
+      select: { answers: true },
+    });
+    const briefs = rows.flatMap((row) => {
+      const progress = briefProgress(row.answers);
+      return progress ? [progress] : [];
+    });
+
+    return {
+      days,
+      from: from.toISOString(),
+      to: now.toISOString(),
+      started: briefs.length,
+      finished: briefs.filter((brief) => brief.completed).length,
+      steps: FORMS_PROJECT_STEPS.map((key, index) => {
+        const step = index + 1;
+        const measured = step >= BRIEF_FIRST_MEASURED_STEP;
+        return {
+          step,
+          key,
+          reached: measured ? briefs.filter((brief) => brief.completed || brief.furthestStep >= step).length : briefs.length,
+          stoppedHere: measured ? briefs.filter((brief) => !brief.completed && brief.furthestStep === step).length : 0,
+          measured,
+        };
+      }),
     };
   }
 
@@ -443,7 +490,11 @@ export class AdminLeadsService {
       // (apps/api/src/leads/leads.service.ts), and only a CONTACT lead carries one.
       ...(query.enquiry ? { answers: { path: ['enquiryType'], equals: query.enquiry } } : {}),
       ...(range ? { createdAt: range } : {}),
-      ...(query.source ? channelWhere(query.source) : {}),
+      // Filters that are themselves AND/OR fragments go in one list, so none overwrites another.
+      AND: [
+        ...(query.source ? [channelWhere(query.source)] : []),
+        ...(query.brief ? [briefWhere(query.brief)] : []),
+      ],
       ...(query.search
         ? {
             OR: [
@@ -565,6 +616,7 @@ interface ListRow {
   budgetBand: string | null;
   value: unknown;
   nextActionDate: Date | null;
+  answers: unknown;
   createdAt: Date;
   updatedAt: Date;
   service: { title: string } | null;
@@ -589,8 +641,30 @@ function toListItem(row: ListRow): AdminLeadListItem {
     value: row.value === null || row.value === undefined ? null : Number(row.value),
     owner: row.owner,
     nextActionDate: row.nextActionDate?.toISOString() ?? null,
+    unfinishedBriefStep: unfinishedBriefStep(row.type, row.answers),
     createdAt: row.createdAt.toISOString(),
     updatedAt: row.updatedAt.toISOString(),
+  };
+}
+
+/** The step an unsent start-a-project brief stopped at, or null (decision 69). */
+function unfinishedBriefStep(type: string, answers: unknown): number | null {
+  if (type !== 'PROJECT') return null;
+  const progress = briefProgress(answers);
+  return progress && !progress.completed && progress.furthestStep >= 1 ? progress.furthestStep : null;
+}
+
+/**
+ * A stored brief is a PROJECT lead with a draft; an unfinished one has no `completedAt` in
+ * it. `AnyNull` matches the key being absent, which is how an unsent brief is recorded.
+ */
+function briefWhere(brief: 'unfinished' | 'finished'): WhereFragment {
+  return {
+    type: 'PROJECT',
+    AND: [
+      { answers: { path: ['draft', 'startedAt'], not: Prisma.AnyNull } },
+      { answers: { path: ['draft', 'completedAt'], ...(brief === 'unfinished' ? { equals: Prisma.AnyNull } : { not: Prisma.AnyNull }) } },
+    ],
   };
 }
 
