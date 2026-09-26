@@ -1,22 +1,39 @@
 'use client';
-import type { ReactNode } from 'react';
+import { useId, type ReactNode } from 'react';
+import {
+  CARD,
+  CARD_PAD,
+  ERROR,
+  H2,
+  HELP,
+  INPUT as KIT_INPUT,
+  LABEL as KIT_LABEL,
+  PILL,
+  TEXTAREA,
+  button,
+} from '@/components/admin/ui/styles';
 
 /*
- * The controls every content editor in the dashboard is built from: a labelled section, an
- * input, a textarea, the help or error line under them, and an action button. Shared so the
- * service, industry and case study editors and the page copy editor read and behave alike.
+ * The controls every content editor in the dashboard is built from: a card-like section,
+ * a labelled input, a textarea, the help or error line under them, an action button and
+ * the status pill. Shared so the service, industry and case study editors and the page
+ * copy editor read and behave alike, and all of them draw from the kit in
+ * `components/admin/ui/styles` so a form here matches a form anywhere else in the admin.
  */
 
-export const LABEL = 'text-[9.5px] font-bold tracking-[0.12em] text-admin-muted uppercase';
-export const INPUT =
-  'h-[30px] w-full rounded-[4px] border border-admin-line bg-admin-surface px-2 text-[12.5px] text-admin-ink outline-none focus-visible:border-admin-focus';
+export const LABEL = KIT_LABEL;
+export const INPUT = KIT_INPUT;
 
+/** A group of related fields: a card with its heading and one line on what it is for. */
 export function Section({ heading, help, children }: { heading: string; help?: string; children: ReactNode }) {
+  const id = useId();
   return (
-    <section className="flex flex-col gap-3 border-t border-admin-line pt-4">
-      <div>
-        <h2 className="text-[10px] font-bold tracking-[0.14em] text-admin-muted uppercase">{heading}</h2>
-        {help ? <p className="mt-1 text-[11.5px] text-admin-body">{help}</p> : null}
+    <section aria-labelledby={id} className={`${CARD} ${CARD_PAD} flex min-w-0 flex-col gap-5`}>
+      <div className="flex flex-col gap-1">
+        <h2 id={id} className={H2}>
+          {heading}
+        </h2>
+        {help ? <p className="text-[13.5px] leading-[1.55] text-ink-invert-muted">{help}</p> : null}
       </div>
       {children}
     </section>
@@ -44,24 +61,33 @@ export function Field({
   type?: string;
   narrow?: boolean;
 }) {
+  const input = (
+    <input
+      id={id}
+      type={type}
+      value={value}
+      aria-invalid={errors ? true : undefined}
+      onChange={(event) => {
+        onChange(event.target.value);
+      }}
+      className={`${INPUT} ${prefix ? 'min-w-0 rounded-l-none' : ''}`}
+    />
+  );
   return (
-    <div className={`flex flex-col gap-[3px] ${narrow ? 'w-[110px]' : ''}`}>
+    <div className={`flex min-w-0 flex-col gap-1.5 ${narrow ? 'w-full sm:w-35' : ''}`}>
       <label htmlFor={id} className={LABEL}>
         {label}
       </label>
-      <span className="flex items-center gap-1.5">
-        {prefix ? <span className="text-[12px] text-admin-muted">{prefix}</span> : null}
-        <input
-          id={id}
-          type={type}
-          value={value}
-          aria-invalid={errors ? true : undefined}
-          onChange={(event) => {
-            onChange(event.target.value);
-          }}
-          className={`${INPUT} ${errors ? 'border-danger' : ''}`}
-        />
-      </span>
+      {prefix ? (
+        <span className="flex min-w-0">
+          <span className="inline-flex h-10 shrink-0 items-center rounded-l-lg border border-r-0 border-admin-line bg-admin-hover px-3 text-[14px] text-admin-muted pointer-coarse:h-11">
+            {prefix}
+          </span>
+          {input}
+        </span>
+      ) : (
+        input
+      )}
       <Help errors={errors} help={help} />
     </div>
   );
@@ -85,7 +111,7 @@ export function Area({
   help?: string;
 }) {
   return (
-    <div className="flex flex-col gap-[3px]">
+    <div className="flex min-w-0 flex-col gap-1.5">
       <label htmlFor={id} className={LABEL}>
         {label}
       </label>
@@ -97,9 +123,7 @@ export function Area({
         onChange={(event) => {
           onChange(event.target.value);
         }}
-        className={`w-full rounded-[4px] border bg-admin-surface px-2 py-1.5 text-[12.5px] text-admin-ink outline-none focus-visible:border-admin-focus ${
-          errors ? 'border-danger' : 'border-admin-line'
-        }`}
+        className={TEXTAREA}
       />
       <Help errors={errors} help={help} />
     </div>
@@ -109,12 +133,12 @@ export function Area({
 export function Help({ errors, help }: { errors?: string[]; help?: string }) {
   if (errors?.length) {
     return (
-      <p role="alert" className="text-[11px] text-danger">
+      <p role="alert" className={ERROR}>
         {errors.join(' ')}
       </p>
     );
   }
-  return help ? <p className="text-[11px] text-admin-muted">{help}</p> : null;
+  return help ? <p className={HELP}>{help}</p> : null;
 }
 
 export function Action({
@@ -129,17 +153,29 @@ export function Action({
   children: ReactNode;
 }) {
   return (
-    <button
-      type="button"
-      disabled={busy}
-      onClick={onClick}
-      className={`h-[30px] rounded-[4px] px-3 text-[12px] font-semibold disabled:opacity-40 ${
-        primary
-          ? 'bg-primary text-white hover:bg-admin-primaryh'
-          : 'border border-admin-line text-admin-body hover:border-admin-focus hover:text-admin-ink'
-      }`}
-    >
+    <button type="button" disabled={busy} onClick={onClick} className={button(primary ? 'primary' : 'secondary')}>
       {busy ? 'Working…' : children}
     </button>
+  );
+}
+
+/**
+ * A record's publishing state as a pill with a dot. Teal is a round affirmative mark and
+ * nothing else (the calwebtech/teal-usage rule), so only "published" gets it; a draft is a
+ * ring, a scheduled one is gold, and an archived one is grey.
+ */
+const DOT: Record<string, string> = {
+  PUBLISHED: 'rounded-full bg-result',
+  SCHEDULED: 'rounded-full bg-gold-500',
+  DRAFT: 'rounded-full bg-admin-surface ring-2 ring-admin-muted ring-inset',
+  ARCHIVED: 'rounded-full bg-admin-muted',
+};
+
+export function StatusPill({ status, label }: { status: string; label: string }) {
+  return (
+    <span className={`${PILL} pl-2`}>
+      <span aria-hidden className={`size-2 shrink-0 ${DOT[status] ?? 'rounded-full bg-admin-muted'}`} />
+      {label}
+    </span>
   );
 }
