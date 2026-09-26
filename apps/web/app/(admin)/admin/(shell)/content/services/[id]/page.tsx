@@ -1,7 +1,8 @@
 import { CONTENT_STATUS_LABELS, adminServiceDetailSchema, adminServiceListSchema } from '@calwebtech/shared';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { StatusPill } from '@/components/admin/content/editor-parts';
 import { ServiceEditor, type ServiceDraft } from '@/components/admin/content/service-editor';
+import { AdminPage, BackLink, PageHeader } from '@/components/admin/ui/page';
 import { adminFind, adminGet } from '@/lib/admin/api';
 import { requireModule } from '@/lib/admin/session';
 
@@ -67,20 +68,34 @@ export default async function AdminServiceEditorPage({ params }: PageProps<'/adm
     : EMPTY;
 
   return (
-    <main className="min-h-0 flex-1 overflow-auto px-4 py-5">
-      <div className="mx-auto w-full max-w-[860px]">
-        <Link href="/admin/content/" className="text-[12.5px] font-semibold text-admin-link hover:underline">
-          ← Back to services
-        </Link>
-        <h1 className="mt-2 mb-4 font-display text-[21px] font-bold tracking-[-0.02em] text-admin-ink">
-          {creating ? 'New service' : draft.title}
-        </h1>
-        <ServiceEditor
-          draft={draft}
-          categories={list.categories.map((category) => ({ id: category.id, name: category.name }))}
-          statusLabels={CONTENT_STATUS_LABELS}
-        />
-      </div>
-    </main>
+    <AdminPage width="medium">
+      <BackLink href="/admin/content/">Back to services</BackLink>
+      <PageHeader
+        eyebrow="Service"
+        title={creating ? 'New service' : draft.title}
+        badge={existing ? <StatusPill status={existing.status} label={CONTENT_STATUS_LABELS[existing.status]} /> : undefined}
+        description={
+          existing
+            ? `/services/${existing.slug}/ · last edited ${when(existing.updatedAt)}`
+            : 'Four fields make a complete page: the name, the address, a summary and the answer block. Save a draft, then publish when it reads well.'
+        }
+      />
+      <ServiceEditor
+        draft={draft}
+        categories={list.categories.map((category) => ({ id: category.id, name: category.name }))}
+        statusLabels={CONTENT_STATUS_LABELS}
+      />
+    </AdminPage>
   );
+}
+
+function when(iso: string): string {
+  return new Date(iso).toLocaleString('en-GB', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone: 'UTC',
+  });
 }
