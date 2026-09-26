@@ -325,7 +325,7 @@ export function TestimonialsBand({
 
 function RecognitionTab({ id, label, checked = false }: { id: string; label: string; checked?: boolean }) {
   return (
-    <label className="inline-flex h-11 cursor-pointer items-center border border-hairline bg-canvas-raised px-5 text-[14.5px] font-semibold text-ink hover:border-ink has-checked:border-ink has-checked:bg-navy-900 has-checked:text-ink-invert has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-primary">
+    <label className="relative -mb-px inline-flex cursor-pointer items-center py-3.5 text-[15px] font-semibold text-ink-muted transition-colors duration-150 after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:origin-left after:scale-x-0 after:bg-gold-ink after:transition-transform after:duration-420 after:ease-out-quint hover:text-ink has-checked:text-ink has-checked:after:scale-x-100 has-focus-visible:outline-2 has-focus-visible:outline-offset-4 has-focus-visible:outline-focus motion-reduce:after:transition-none">
       <input type="radio" name="recognition" id={id} defaultChecked={checked} className="sr-only" />
       {label}
     </label>
@@ -352,14 +352,12 @@ export function Recognition({
       <div className="shell">
         <SectionHead link={recognition.link}>
           {recognition.eyebrow ? <p className="mb-2 text-[14px]">{recognition.eyebrow}</p> : null}
-          <h2 className="font-display text-[30px] leading-[1.1] font-extrabold text-ink lg:text-[36px]">
-            {recognition.heading}
-          </h2>
+          <h2 className="display-md text-ink">{recognition.heading}</h2>
         </SectionHead>
         {tabs ? (
           <fieldset className="mt-9">
             <legend className="sr-only">Show</legend>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-x-8 border-b border-hairline">
               <RecognitionTab id="recognition-awards" label="Awards" checked />
               <RecognitionTab id="recognition-expertise" label="Expertise" />
             </div>
@@ -370,11 +368,19 @@ export function Recognition({
           className={tabs ? 'mt-8 group-has-[#recognition-expertise:checked]/recognition:hidden' : 'mt-10'}
         >
           {awards.length > 0 ? (
-            <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {awards.map((award) => (
-                <li key={`${award.name}${award.detail ?? ''}`} className="border border-hairline p-6">
-                  <p className="font-display text-[16px] font-bold text-ink">{award.name}</p>
-                  {award.detail ? <p className="mt-2 text-[14px] leading-relaxed">{award.detail}</p> : null}
+            // Awards on a rule, not in boxes, each drawing its stretch of the rule in champagne
+            // under the pointer.
+            <ul className="grid gap-x-8 gap-y-2 sm:grid-cols-2 lg:grid-cols-4">
+              {awards.map((award, index) => (
+                <li
+                  key={`${award.name}${award.detail ?? ''}`}
+                  className="group relative border-t border-hairline pt-6 pb-4 before:absolute before:inset-x-0 before:-top-px before:h-0.5 before:origin-left before:scale-x-0 before:bg-gold-ink before:transition-transform before:duration-500 before:ease-out-quint hover:before:scale-x-100"
+                >
+                  <span className="meta text-ink-muted transition-colors duration-150 group-hover:text-gold-ink">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <p className="heading-sm mt-3 text-ink">{award.name}</p>
+                  {award.detail ? <p className="body-sm mt-2 text-ink-muted">{award.detail}</p> : null}
                 </li>
               ))}
             </ul>
@@ -384,9 +390,10 @@ export function Recognition({
         </div>
         {tabs ? (
           <div data-pane="expertise" className="mt-8 hidden group-has-[#recognition-expertise:checked]/recognition:block">
-            <ul className="flex flex-wrap gap-2.5 border border-hairline bg-canvas-raised p-8">
-              {expertise.map((item) => (
-                <li key={item} className="bg-canvas-sunken px-4 py-2 text-[14px] font-medium text-ink">
+            <ul className="heading-sm flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-hairline pt-8 text-ink">
+              {expertise.map((item, index) => (
+                <li key={item} className="flex items-center gap-5">
+                  {index > 0 ? <span aria-hidden className="h-1.5 w-1.5 bg-gold-ink" /> : null}
                   {item}
                 </li>
               ))}
