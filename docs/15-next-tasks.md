@@ -104,6 +104,10 @@ requires a deploy.
   your plan how an edit reaches both — this is the one design question in the task.
 
 ### 5. An outbox for lead and booking emails
+**Done on `tumit`, 2026-09-26 (decision 71). No dashboard edits needed. The deploy applies a
+forward-only migration (`20260926160000_email_outbox`), and the worker must be deployed with
+the API.**
+
 Open entry "Emails are queued after the lead commits". If the API dies between committing a
 lead or a booking and queuing its emails, the emails are lost, and nothing records it.
 - Follow the campaign sends (decision 51):

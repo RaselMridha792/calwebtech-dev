@@ -1302,6 +1302,117 @@ abandonment must be measurable per step.
     - the inbox, filtered to unfinished briefs, showed the one left at step 5, marked;
     - its panel said so.
 
+## 71. An outbox for lead and booking emails
+
+*2026-09-26.* Task 5 of `docs/15-next-tasks.md`, and the Open entry "Emails are queued after the
+lead commits". Campaign sends already worked this way (decision 51): rows first, a sweep
+queues them. Migration `20260926160000_email_outbox` adds one table, `EmailOutbox`. It is
+additive, and nothing is lost.
+
+- **Each email is a row, written in the lead's or the booking's transaction.** A row holds
+  the whole job (`payload`, as `emailJobSchema` reads it), its owner (`leadId` or `bookingId`)
+  and its due time (`sendAt`). Deleting the lead or the booking deletes its rows. The rows
+  cover:
+  - for a lead, the team's notification and the acknowledgement. A calculator lead gets its
+    result instead of the acknowledgement;
+  - for a booking, the confirmation, the team's notification, and the reminders a day and an
+    hour before;
+  - for a move or a cancellation, the emails to the visitor and to the team (decision 60).
+
+  The rows commit with the lead or the booking, or not at all. A booking that loses its slot
+  to someone else is rolled back and leaves no email.
+- **The API queues the rows at once, and the worker sweeps.**
+  - After the commit, the API adds each row to the email queue and sets `queuedAt`.
+  - The worker's sweep runs every minute on its own queue, `email-outbox-sweep`. It adds
+    every row still to send: not sent, not withdrawn and not given up on.
+    - A row the API has queued is already waiting under its own id, so adding it again does
+      nothing.
+    - A row the API never queued is queued now, delayed to its time. This happens when the
+      process died between the commit and the queue, or Redis refused the job.
+    - Because every pending row is added, and not only the unqueued ones, a job Redis has
+      lost comes back too, such as a reminder due next week.
+  - The sweep logs how many rows the API had not queued.
+- **One row is one email.**
+  - The job id is `outbox-<row id>`. The job carries only that id; the email stays in
+    Postgres.
+  - The worker reads the row first. It skips a row that was already sent, withdrawn or given
+    up on, however the row came to be queued twice.
+  - The provider's idempotency key is `outbox-<row id>` as well.
+  - The delivery is written on the lead's or the booking's timeline, and the row is marked
+    sent, in one transaction.
+  - After the last failed attempt, or when the schema refuses the payload, the row gets
+    `failedAt` and the error, and the sweep stops queuing it.
+- **Reminders keep their timing and their removal.**
+  - A reminder row is due at its window. A reminder whose time has already passed is not
+    written, as before.
+  - Moving a call, cancelling it, or the team closing it withdraws its unsent reminder rows
+    (`cancelledAt`, with the reason) in the same transaction as the change. Their jobs are
+    then taken off the queue.
+  - The worker still reads the booking before it sends a reminder (decision 60). If the call
+    has been moved or cancelled, it now also withdraws the row.
+- **The emails and their words are unchanged.** Each payload is built as before; only the
+  route to the queue changed.
+  - The team's recipients are read before the transaction.
+  - `notification_skipped` is written in the lead's transaction.
+  - `email_queue_failed` is no longer written, because a queue failure now loses nothing.
+    This replaces decision 19's "a queue failure is recorded on the lead".
+- **Jobs from before the outbox still work.**
+  - The worker still sends a job that carries its own email. That covers a campaign's test
+    send, which the team requests and which belongs to no lead or booking, and any job
+    queued before this deploy.
+  - Moving or cancelling a call booked before this deploy also removes its reminders under
+    their old ids.
+- **Where the code is:**
+  - `packages/db/src/email-outbox.ts`: what a row is, and which rows are still to send. The
+    API and the worker share it, as they share `audience.ts`.
+  - `apps/api/src/queue/email-outbox.ts`: writing rows, withdrawing reminders, and queuing
+    after the commit.
+  - `apps/worker/src/email-outbox-sweep.ts`: the sweep.
+  - `emailOutboxQueueEntry` in `packages/shared/src/email-jobs.ts`: the API and the sweep
+    build the same job from it.
+- **Sent rows are kept.** A lead has two rows and a booking four, so the table stays small.
+- **Verified.**
+  - Unit tests:
+    - the queue entry's id, delay and retries;
+    - the processor sending a row's email keyed by the row;
+    - the processor skipping a row that was sent, withdrawn, given up on or deleted;
+    - the processor refusing a bad payload;
+    - the processor withdrawing a reminder for a cancelled call.
+  - An API integration test on its own database. Its queue never answers, which is the
+    process dying at the enqueue:
+    - a lead's acknowledgement and notification are committed, unqueued and pending for the
+      sweep;
+    - a booking's confirmation, notification and both reminders are committed, each
+      reminder due at its window;
+    - a move is committed with the old reminders withdrawn, and the new reminders and both
+      change emails written;
+    - with a live queue, each row is queued once, and adding it again adds nothing;
+    - the booking that loses a raced slot leaves no email.
+  - A worker integration test on its own database and queue, with the real sweep,
+    processor, store and log transport:
+    - a lead is committed with its two rows and never queued. The sweep queues both, and the
+      log transport sends each once. The rows are marked sent with `log-outbox-…`, and the
+      lead has two `email_sent` entries;
+    - a second sweep, and a job added again by hand, send nothing;
+    - a booking's confirmation is sent with its calendar file;
+    - its reminder is delayed to its time. After Redis loses the job, the next sweep puts it
+      back at the same time. When the call is cancelled, the reminder is withdrawn unsent.
+  - The existing lead, booking, move and cancel, antispam, import, calculator and service
+    enquiry integration tests now read the committed rows.
+    - The whole API integration suite ran: 33 files, 208 tests. Three files timed out under
+      load and passed when run again.
+    - The worker's suite: 5 files, 29 tests. API unit tests: 280.
+  - After `prisma migrate deploy`, `prisma migrate diff` from the database to the schema is
+    empty.
+  - On the local stack, with `EMAIL_TRANSPORT=log`:
+    - a lead sent to the running API left two rows, both queued;
+    - the confirmation's job was then taken out of Redis and its `queuedAt` cleared. That is
+      what a process that dies before the enqueue leaves behind;
+    - on start, the worker sent the notification and logged "outbox: queued 1 email(s) the
+      API had not". It then sent the confirmation;
+    - both rows were marked sent, and the lead's timeline shows both `email_sent` entries;
+    - with both jobs removed, both emails were sent.
+
 ## Open
 
 - **Stored redirects are written but never served** (found while planning task 6,
@@ -1467,11 +1578,6 @@ abandonment must be measurable per step.
   Resend's test inbox (`delivered+leads@resend.dev`).
 - The client's Resend account, sending domain, SPF, DKIM and DMARC (Task 6.2). Until
   then development uses `EMAIL_TRANSPORT=log` or Resend's test sender.
-- Emails are queued after the lead commits. If the API process dies between the commit and
-  the enqueue, the lead is stored but its emails are not queued, and nothing marks it. A
-  transactional outbox would close that gap. Campaign sends do not have it (decision 51:
-  rows first, requeued by the sweep); lead and booking emails still do (docs/15, task 5).
-  The page copy screen writes its own (decision 59).
 - Task 5.1 is complete on `tumit` (decision 60): the `.ics` entry, the 24h and 1h reminders
   and the signed reschedule and cancel pages were the last of it. None of the booking emails
   reaches anyone until production sends email (Task 6.2); until then the reminders are
