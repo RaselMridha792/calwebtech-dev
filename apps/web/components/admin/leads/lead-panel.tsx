@@ -31,6 +31,7 @@ export function LeadPanel({
   full?: boolean;
 }) {
   const firstName = lead.name.split(/\s+/)[0] ?? lead.name;
+  const Heading = full ? 'h1' : 'h2';
 
   const sections = (
     <>
@@ -160,9 +161,10 @@ export function LeadPanel({
         <div className="flex items-start gap-3">
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2.5">
-              <h2 className="font-display text-[22px] leading-tight font-extrabold tracking-[-0.02em] text-ink-invert">
+              {/* The full record is its own page, so the name is that page's one h1. */}
+              <Heading className="font-display text-[22px] leading-tight font-extrabold tracking-[-0.02em] text-ink-invert">
                 {lead.name}
-              </h2>
+              </Heading>
               <StatusPill status={lead.status} />
             </div>
             <p className="mt-1.5 text-[13.5px] text-ink-invert-muted">
