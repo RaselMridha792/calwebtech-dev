@@ -13,6 +13,7 @@ import {
   type AdminLeadQuery,
   type LeadStatus,
 } from '@calwebtech/shared';
+import Link from 'next/link';
 import { DownloadIcon } from '@/components/admin/icons';
 import { BulkBar } from '@/components/admin/leads/bulk-bar';
 import { FilterBar } from '@/components/admin/leads/filter-bar';
@@ -71,12 +72,17 @@ export default async function LeadsPage({ searchParams }: PageProps<'/admin/lead
               </>
             }
             actions={
-              mayExport ? (
-                <a href={`/api/admin/leads/export?${toSearch(query)}`} className={button('secondary')}>
-                  <DownloadIcon className="size-4" />
-                  Export this view
-                </a>
-              ) : null
+              <>
+                <Link href="/admin/leads/briefs/" className={button('secondary')}>
+                  Where briefs stop
+                </Link>
+                {mayExport ? (
+                  <a href={`/api/admin/leads/export?${toSearch(query)}`} className={button('secondary')}>
+                    <DownloadIcon className="size-4" />
+                    Export this view
+                  </a>
+                ) : null}
+              </>
             }
           />
           <LinkTabs label="Lead status" tabs={statusTabs(query, list)} />

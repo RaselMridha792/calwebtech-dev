@@ -88,6 +88,7 @@ const GROUPS: { label: string | null; routes: ModuleRoute[] }[] = [
 
 /** Screens inside a module that are not records of it, for the breadcrumb and the palette. */
 const INNER: { module: AdminModule; href: string; label: string; keywords?: string }[] = [
+  { module: 'leads', href: '/admin/leads/briefs/', label: 'Where briefs stop', keywords: 'start a project abandoned drop-off funnel unfinished' },
   { module: 'bookings', href: '/admin/bookings/availability/', label: 'Availability', keywords: 'hours week days off' },
   { module: 'subscribers', href: '/admin/subscribers/segments/', label: 'Segments', keywords: 'audience rules' },
   { module: 'subscribers', href: '/admin/subscribers/suppression/', label: 'Suppression list', keywords: 'unsubscribed bounced blocked' },
