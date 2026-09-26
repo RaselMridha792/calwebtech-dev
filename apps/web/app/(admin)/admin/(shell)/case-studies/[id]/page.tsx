@@ -3,11 +3,13 @@ import {
   CONTENT_STATUS_LABELS,
   adminCaseStudyDetailSchema,
   adminCaseStudyListSchema,
+  type ContentStatus,
 } from '@calwebtech/shared';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { CaseStudyEditor, type CaseStudyDraft, type CaseStudyRecord } from '@/components/admin/content/case-study-editor';
 import type { Json } from '@/components/admin/content/copy-editor';
+import { AdminPage, BackLink, PageHeader } from '@/components/admin/ui/page';
+import { PILL } from '@/components/admin/ui/styles';
 import { adminFind, adminGet } from '@/lib/admin/api';
 import { requireModule } from '@/lib/admin/session';
 
@@ -65,21 +67,47 @@ export default async function AdminCaseStudyEditorPage({ params }: PageProps<'/a
     : { id: null, status: 'DRAFT', notReady: null, shadowsSnapshot: false, record: EMPTY };
 
   return (
-    <main className="min-h-0 flex-1 overflow-auto px-4 py-5">
-      <div className="mx-auto w-full max-w-[860px]">
-        <Link href="/admin/case-studies/" className="text-[12.5px] font-semibold text-admin-link hover:underline">
-          ← Back to case studies
-        </Link>
-        <h1 className="mt-2 mb-4 font-display text-[21px] font-bold tracking-[-0.02em] text-admin-ink">
-          {creating ? 'New case study' : draft.record.clientName}
-        </h1>
-        <CaseStudyEditor
-          draft={draft}
-          options={list.options}
-          shapes={CASE_STUDY_SHAPES as Record<string, Json>}
-          statusLabels={CONTENT_STATUS_LABELS}
-        />
-      </div>
-    </main>
+    <AdminPage width="medium">
+      <BackLink href="/admin/case-studies/">Back to case studies</BackLink>
+
+      <PageHeader
+        eyebrow="Case study"
+        title={creating ? 'New case study' : draft.record.clientName || draft.record.title || 'Untitled case study'}
+        badge={existing ? <StatusPill status={existing.status} /> : undefined}
+        description={
+          existing
+            ? `/work/${draft.record.slug}/ · last edited ${edited(existing.updatedAt)}`
+            : 'Save a draft with the title, the client and the answer block first. It can be published once it has at least three figures.'
+        }
+      />
+
+      <CaseStudyEditor
+        draft={draft}
+        options={list.options}
+        shapes={CASE_STUDY_SHAPES as Record<string, Json>}
+        statusLabels={CONTENT_STATUS_LABELS}
+      />
+    </AdminPage>
   );
+}
+
+/** Teal is a round affirmative mark and nothing else, so only a published page gets it. */
+const DOT: Record<ContentStatus, string> = {
+  PUBLISHED: 'rounded-full bg-result',
+  SCHEDULED: 'rounded-full bg-gold-500',
+  DRAFT: 'rounded-full bg-admin-surface ring-2 ring-admin-muted ring-inset',
+  ARCHIVED: 'rounded-full bg-admin-muted',
+};
+
+function StatusPill({ status }: { status: ContentStatus }) {
+  return (
+    <span className={`${PILL} pl-2 font-sans tracking-normal`}>
+      <span aria-hidden className={`size-2 shrink-0 ${DOT[status]}`} />
+      {CONTENT_STATUS_LABELS[status]}
+    </span>
+  );
+}
+
+function edited(iso: string): string {
+  return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
 }
