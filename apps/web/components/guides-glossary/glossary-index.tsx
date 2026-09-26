@@ -71,15 +71,24 @@ export function GlossaryIndex({ view }: { view: GlossaryIndexView }) {
                   <p className="font-display text-[30px] leading-none font-extrabold text-gold-ink" aria-hidden="true">
                     {group.letter}
                   </p>
-                  <ul className="mt-5 grid gap-5 border-t border-hairline pt-6 md:grid-cols-2 lg:grid-cols-3">
+                  {/* Terms on rules, not in boxes: each rule draws champagne and the term
+                      underlines under the pointer; the term is the link, stretched over its entry. */}
+                  <ul className="mt-5 grid gap-x-8 gap-y-2 md:grid-cols-2 lg:grid-cols-3">
                     {group.terms.map((term) => (
-                      <li key={term.slug} className="lift relative border border-hairline bg-canvas-raised p-6" {...reveal(index)}>
-                        <p className="font-display text-[18px] leading-snug font-bold text-ink">
-                          <a href={glossaryTermPath(term.slug)} className="after:absolute after:inset-0 hover:text-gold-ink">
+                      <li
+                        key={term.slug}
+                        className="group relative border-t border-hairline pt-5 pb-6 before:absolute before:inset-x-0 before:-top-px before:h-0.5 before:origin-left before:scale-x-0 before:bg-gold-ink before:transition-transform before:duration-500 before:ease-out-quint hover:before:scale-x-100 has-focus-visible:outline-2 has-focus-visible:outline-offset-4 has-focus-visible:outline-focus"
+                        {...reveal(index)}
+                      >
+                        <p className="heading-sm text-ink">
+                          <a
+                            href={glossaryTermPath(term.slug)}
+                            className="decoration-gold-ink decoration-2 underline-offset-[5px] after:absolute after:inset-0 focus-visible:outline-none group-hover:underline"
+                          >
                             {term.term}
                           </a>
                         </p>
-                        <p className="mt-2 text-[15px] leading-relaxed">{term.definition}</p>
+                        <p className="body-sm mt-2 text-ink-muted">{term.definition}</p>
                       </li>
                     ))}
                   </ul>
