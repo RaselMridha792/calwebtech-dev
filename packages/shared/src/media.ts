@@ -12,6 +12,12 @@ export const mediaSrcSchema = z
 export const imageSchema = z.object({
   src: mediaSrcSchema,
   alt: z.string().trim().min(1, 'Alt text is required'),
+  /**
+   * The picture's own size in pixels, when it is known. Optional: a frame that knows it can
+   * take the picture's shape instead of cropping it (the before and after slider does).
+   */
+  width: z.number().int().positive().optional(),
+  height: z.number().int().positive().optional(),
 });
 
 /** A purely decorative image, rendered with empty alt and aria-hidden. */
