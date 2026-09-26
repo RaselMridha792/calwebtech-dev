@@ -55,7 +55,7 @@ export default async function LeadsPage({ searchParams }: PageProps<'/admin/lead
   const statuses = LEAD_STATUSES.map((value) => ({ value, label: LEAD_STATUS_LABELS[value] }));
 
   return (
-    <main id="admin-main" tabIndex={-1} className="min-h-0 flex-1 overflow-y-auto outline-none lg:flex lg:items-start">
+    <main id="admin-main" tabIndex={-1} className="relative min-h-0 flex-1 overflow-y-auto outline-none lg:flex lg:items-start">
       <div className={`flex min-w-0 flex-1 flex-col ${open ? 'max-lg:hidden' : ''}`}>
         <div className="flex shrink-0 flex-col gap-5 px-4 pt-6 sm:px-6 lg:px-8 lg:pt-8">
           <PageHeader

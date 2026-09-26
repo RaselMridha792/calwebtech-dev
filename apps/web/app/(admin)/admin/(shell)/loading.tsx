@@ -9,7 +9,7 @@ export default function AdminLoading() {
       id="admin-main"
       role="status"
       aria-live="polite"
-      className="min-h-0 flex-1 overflow-hidden"
+      className="relative min-h-0 flex-1 overflow-hidden"
     >
       <span className="sr-only">Loading…</span>
       <div aria-hidden className="mx-auto flex w-full max-w-[1320px] flex-col gap-6 px-4 pt-6 sm:px-6 lg:px-8 lg:pt-8 motion-safe:animate-pulse">

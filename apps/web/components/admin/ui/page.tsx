@@ -20,6 +20,10 @@ const WIDTHS = {
 /**
  * The screen's scrolling column, where the skip link lands. Not `#main`: the marketing
  * layout pads that id for its fixed header (globals.css), and the admin has no such header.
+ *
+ * `relative` keeps every absolutely placed child inside the column. Without it an `sr-only`
+ * label, which is absolute, is placed against the page instead, and one far down a long
+ * form made the whole document scroll past the shell and show the body under it.
  */
 export function AdminPage({
   children,
@@ -29,7 +33,7 @@ export function AdminPage({
   width?: keyof typeof WIDTHS;
 }) {
   return (
-    <main id="admin-main" tabIndex={-1} className="min-h-0 flex-1 overflow-y-auto outline-none">
+    <main id="admin-main" tabIndex={-1} className="relative min-h-0 flex-1 overflow-y-auto outline-none">
       <div className={`mx-auto flex w-full flex-col gap-6 px-4 pt-6 pb-16 sm:px-6 lg:px-8 lg:pt-8 ${WIDTHS[width]}`}>
         {children}
       </div>
