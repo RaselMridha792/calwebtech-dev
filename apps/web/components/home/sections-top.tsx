@@ -6,7 +6,7 @@ import { BackgroundVideo } from '../ui/background-video';
 import { BackdropImage } from '../ui/brand';
 import { ArrowIcon } from '../ui/icons';
 import { ResponsiveImage } from '../ui/responsive-image';
-import { EmptyNote, SectionHead, TextLink, byline, h2Dark, h2Light } from './parts';
+import { ActionLink, EmptyNote, SectionHead, TextLink, byline, h2Dark, h2Light } from './parts';
 import { Showreel } from './showreel';
 
 type Content = HomePageContent;
@@ -128,12 +128,7 @@ export function ProblemRouter({
         <div className="lg:col-span-4" {...reveal()}>
           <h2 className={h2Dark}>{problemRouter.heading}</h2>
           <p className="mt-5 text-[17px] leading-relaxed">{problemRouter.intro}</p>
-          <a
-            href={problemRouter.cta.href}
-            className="mt-7 inline-flex h-12 items-center bg-navy-900 px-6 font-semibold text-ink-invert hover:bg-navy-700"
-          >
-            {problemRouter.cta.label}
-          </a>
+          <ActionLink link={problemRouter.cta} className="mt-7" />
         </div>
         <div className="lg:col-span-8" {...reveal(1)}>
           <FaqAccordion items={faqs} group="problem-router" />

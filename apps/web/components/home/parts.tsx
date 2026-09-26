@@ -51,6 +51,34 @@ export function TextLink({
   );
 }
 
+/**
+ * The brand's filled action: its label in the button face, and an arrow that steps 4px on
+ * hover. `navy` is for cream grounds; `cream` is the same action on a dark one.
+ */
+export function ActionLink({
+  link,
+  tone = 'navy',
+  className = '',
+}: {
+  link: Link;
+  tone?: 'navy' | 'cream';
+  className?: string;
+}) {
+  const colours =
+    tone === 'navy'
+      ? 'bg-navy-900 text-ink-invert hover:bg-navy-700 focus-visible:outline-focus'
+      : 'bg-canvas-raised text-ink hover:bg-canvas-sunken focus-visible:outline-focus-invert';
+  return (
+    <a
+      href={link.href}
+      className={`group/action button-label inline-flex h-12 items-center gap-3 px-6 transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 ${colours} ${className}`}
+    >
+      {link.label}
+      <ArrowIcon className="w-4 transition-transform duration-[420ms] ease-out-quint motion-safe:group-hover/action:translate-x-1" />
+    </a>
+  );
+}
+
 /** A section's heading block, with its "see all" link at the right when one is set. */
 export function SectionHead({
   link,
