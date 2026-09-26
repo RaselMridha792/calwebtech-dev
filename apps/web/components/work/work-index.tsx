@@ -70,7 +70,7 @@ export function WorkResultsSummary({ view }: { view: WorkIndexView }) {
           <ul className="mt-4 space-y-4">
             {highlights.map(({ study, metric }) => (
               <li key={study.slug} className="flex items-baseline gap-4">
-                <span className="w-[5.5rem] shrink-0 font-display text-[26px] leading-none font-extrabold text-gold-ink">
+                <span className="w-[5.5rem] shrink-0 font-display text-[26px] leading-none font-extrabold text-gold-500">
                   {metric.value}
                 </span>
                 <span className="text-[14.5px] leading-snug text-ink-invert-muted">
