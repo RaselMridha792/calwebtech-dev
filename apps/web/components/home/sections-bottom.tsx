@@ -4,7 +4,7 @@ import { BackdropImage } from '../ui/brand';
 import { CalendarIcon, ShieldIcon, TickIcon } from '../ui/icons';
 import { PillBadge, reveal } from '../ui/primitives';
 import { ResponsiveImage } from '../ui/responsive-image';
-import { EmptyNote, SectionHead, byline, h2Dark, h2Light } from './parts';
+import { ActionLink, EmptyNote, SectionHead, byline, h2Dark, h2Light } from './parts';
 import { Showreel } from './showreel';
 
 type Content = HomePageContent;
@@ -30,7 +30,7 @@ export function EstimateBand({ estimate }: { estimate: Content['estimate'] }) {
             <ul className="mt-8 space-y-3 text-[15.5px] text-ink-invert-muted">
               {estimate.bullets.map((bullet) => (
                 <li key={bullet} className="flex gap-3">
-                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gold-ink" aria-hidden="true" />
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 bg-gold-500" aria-hidden="true" />
                   {bullet}
                 </li>
               ))}
@@ -64,12 +64,7 @@ export function EstimateBand({ estimate }: { estimate: Content['estimate'] }) {
                 ))}
               </ul>
             </figure>
-            <a
-              href={estimate.cta.href}
-              className="mt-7 flex h-14 items-center justify-center bg-navy-900 px-6 text-center font-semibold text-ink-invert hover:bg-navy-700"
-            >
-              {estimate.cta.label}
-            </a>
+            <ActionLink link={estimate.cta} size="lg" className="mt-7 w-full justify-center" />
           </div>
         </div>
       </div>
