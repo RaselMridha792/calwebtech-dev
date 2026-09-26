@@ -2,8 +2,7 @@
 import type { CampaignContent, CampaignPreview as Preview, CampaignTestSent } from '@calwebtech/shared';
 import { useState } from 'react';
 import { MutationError, adminMutate } from '@/lib/admin/mutate';
-
-const LABEL = 'text-[9.5px] font-bold tracking-[0.12em] text-admin-muted uppercase';
+import { CARD, CARD_PAD, ERROR, H2, HELP, INPUT, LABEL, button } from '../ui/styles';
 
 /**
  * The preview and the test send.
@@ -82,61 +81,59 @@ export function CampaignPreviewPanel({
   const testBlocked = !campaignId ? 'Save the campaign to send a test.' : unsaved ? 'Save your changes to send a test.' : null;
 
   return (
-    <section className="flex flex-col gap-4">
-      <div>
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <h2 className="text-[10px] font-bold tracking-[0.14em] text-admin-muted uppercase">Preview</h2>
-          <button
-            type="button"
-            onClick={showPreview}
-            disabled={!content || previewing}
-            className="h-8 rounded-[4px] border border-admin-line px-3 text-[12.5px] font-semibold text-admin-body hover:border-admin-focus disabled:opacity-40"
-          >
+    <>
+      <section aria-labelledby="campaign-preview" className={`${CARD} ${CARD_PAD}`}>
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div className="flex min-w-0 flex-col gap-1">
+            <h2 id="campaign-preview" className={H2}>
+              Preview
+            </h2>
+            <p className={HELP}>The email as a subscriber will see it, saved or not.</p>
+          </div>
+          <button type="button" onClick={showPreview} disabled={!content || previewing} className={button('secondary', 'sm')}>
             {previewing ? 'Rendering…' : preview ? 'Refresh preview' : 'Show preview'}
           </button>
         </div>
-        {!content ? (
-          <p className="mt-2 text-[12px] text-admin-body">Add a subject and at least one block to preview.</p>
-        ) : null}
+        {!content ? <p className="mt-4 text-[14px] text-ink-invert-muted">Add a subject and at least one block to preview.</p> : null}
         {previewError ? (
-          <p role="alert" className="mt-2 text-[12px] text-danger">
+          <p role="alert" className={`${ERROR} mt-4`}>
             {previewError}
           </p>
         ) : null}
         {preview ? (
-          <div className="mt-3" aria-live="polite">
-            <dl className="mb-2 space-y-1 text-[12px]">
-              <div className="flex gap-2">
-                <dt className="w-[64px] shrink-0 text-admin-muted">Subject</dt>
-                <dd className="font-semibold text-admin-ink">{preview.subject}</dd>
-              </div>
+          <div className="mt-4" aria-live="polite">
+            <dl className="mb-3 grid grid-cols-[minmax(0,84px)_minmax(0,1fr)] gap-x-3 gap-y-1.5 text-[13.5px]">
+              <dt className="text-admin-muted">Subject</dt>
+              <dd className="min-w-0 font-semibold break-words text-ink-invert">{preview.subject}</dd>
               {preview.preheader ? (
-                <div className="flex gap-2">
-                  <dt className="w-[64px] shrink-0 text-admin-muted">Preview</dt>
-                  <dd className="text-admin-body">{preview.preheader}</dd>
-                </div>
+                <>
+                  <dt className="text-admin-muted">Preview</dt>
+                  <dd className="min-w-0 break-words text-ink-invert-muted">{preview.preheader}</dd>
+                </>
               ) : null}
-              <div className="flex gap-2">
-                <dt className="w-[64px] shrink-0 text-admin-muted">As seen by</dt>
-                <dd className="break-all text-admin-body">
-                  {preview.sample.name ? `${preview.sample.name} · ${preview.sample.email}` : preview.sample.email}
-                </dd>
-              </div>
+              <dt className="text-admin-muted">As seen by</dt>
+              <dd className="min-w-0 break-all text-ink-invert-muted">
+                {preview.sample.name ? `${preview.sample.name} · ${preview.sample.email}` : preview.sample.email}
+              </dd>
             </dl>
+            {/* The email keeps its own look inside the frame; only the frame is the dashboard's. */}
             <iframe
               title="Email preview"
               srcDoc={preview.html}
               sandbox=""
-              className="h-[560px] w-full rounded-[4px] border border-admin-line bg-admin-surface"
+              className="h-[560px] w-full rounded-lg border border-admin-line2 bg-admin-surface"
             />
           </div>
         ) : null}
-      </div>
+      </section>
 
       {mayWrite ? (
-        <div className="border-t border-admin-line pt-4">
-          <h2 className="text-[10px] font-bold tracking-[0.14em] text-admin-muted uppercase">Send a test</h2>
-          <label className="mt-2 flex flex-col gap-[3px]">
+        <section aria-labelledby="campaign-test" className={`${CARD} ${CARD_PAD}`}>
+          <h2 id="campaign-test" className={H2}>
+            Send a test
+          </h2>
+          <p className={`${HELP} mt-1`}>A copy of the saved draft to your own inbox, marked [Test]. Nothing reaches a subscriber.</p>
+          <label className="mt-4 flex flex-col gap-1.5">
             <span className={LABEL}>To (up to five addresses)</span>
             <input
               value={to}
@@ -145,26 +142,29 @@ export function CampaignPreviewPanel({
                 setTo(event.target.value);
               }}
               aria-describedby="campaign-test-status"
-              className="h-[30px] w-full rounded-[4px] border border-admin-line bg-admin-surface px-2 text-[12.5px] text-admin-ink outline-none focus-visible:border-admin-focus disabled:opacity-60"
+              className={INPUT}
             />
           </label>
-          <button
-            type="button"
-            onClick={sendTest}
-            disabled={sending || testBlocked !== null || !to.trim()}
-            className="mt-2 h-8 rounded-[4px] border border-admin-line px-3 text-[12.5px] font-semibold text-admin-body hover:border-admin-focus disabled:opacity-40"
-          >
-            {sending ? 'Sending…' : 'Send test'}
-          </button>
+          <div className="mt-3 flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onClick={sendTest}
+              disabled={sending || testBlocked !== null || !to.trim()}
+              className={button('secondary')}
+            >
+              {sending ? 'Sending…' : 'Send test'}
+            </button>
+          </div>
           <p
             id="campaign-test-status"
             role={testMessage && !testMessage.ok ? 'alert' : 'status'}
-            className={`mt-2 text-[12px] ${testMessage && !testMessage.ok ? 'text-danger' : 'text-admin-body'}`}
+            className={`mt-3 flex items-start gap-2 text-[13px] leading-[1.5] ${testMessage && !testMessage.ok ? 'font-semibold text-danger' : 'text-ink-invert-muted'}`}
           >
-            {testMessage?.text ?? testBlocked ?? 'Your own name fills the tokens in a test.'}
+            {testMessage?.ok ? <span aria-hidden className="mt-[5px] size-2 shrink-0 rounded-full bg-result" /> : null}
+            <span>{testMessage?.text ?? testBlocked ?? 'Your own name fills the tokens in a test.'}</span>
           </p>
-        </div>
+        </section>
       ) : null}
-    </section>
+    </>
   );
 }
