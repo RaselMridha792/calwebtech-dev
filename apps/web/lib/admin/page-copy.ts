@@ -9,7 +9,8 @@ import { isDatabaseFirst, usesSnapshots } from '@/lib/api/core';
 export function pageCopyLiveNote(key: PageCopyKey): string {
   const { family } = PAGE_COPY_LABELS[key];
   if (family === null || !usesSnapshots() || isDatabaseFirst(family)) {
-    return 'The site reads this copy from the database: a saved change is live within half a minute.';
+    return 'Live: a saved change shows on the site within half a minute.';
   }
-  return `Saved here, but the site still shows the committed snapshot until "${family}" is read from the database first (CONTENT_DATABASE_FIRST).`;
+  // The switch is a server setting, so it is named for whoever the owner asks to turn it on.
+  return `Saved here, but visitors still see the site's built-in words until the "${family}" pages are switched to read from the dashboard (the CONTENT_DATABASE_FIRST server setting).`;
 }
