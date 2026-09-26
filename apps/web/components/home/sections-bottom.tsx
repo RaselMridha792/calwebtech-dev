@@ -576,7 +576,7 @@ export function BookSection({ book, action }: { book: Content['book']; action: R
           <div className="absolute inset-0 bg-canvas-sunken/92" />
         ) : null}
       </div>
-      <div className="shell relative grid items-start gap-12 lg:grid-cols-12 lg:gap-16">
+      <div className="shell relative grid gap-12 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-5" {...reveal()}>
           <h2 className="display-lg text-ink">{book.heading}</h2>
           <p className="body-lg mt-5 max-w-[48ch] text-ink-muted">{book.intro}</p>
