@@ -1,7 +1,7 @@
 import { adminSegmentSchema, adminSubscriberListSchema, canWrite } from '@calwebtech/shared';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { SegmentEditor } from '@/components/admin/audience/segment-editor';
+import { AdminPage, BackLink, PageHeader } from '@/components/admin/ui/page';
 import { adminFind, adminGet } from '@/lib/admin/api';
 import { requireModule } from '@/lib/admin/session';
 
@@ -26,20 +26,29 @@ export default async function AdminSegmentPage({ params }: PageProps<'/admin/sub
   if (!creating && !segment) notFound();
 
   return (
-    <main className="min-h-0 flex-1 overflow-auto px-4 py-5">
-      <div className="mx-auto w-full max-w-[860px]">
-        <Link href="/admin/subscribers/segments/" className="text-[12.5px] font-semibold text-admin-link hover:underline">
-          ← Back to segments
-        </Link>
-        <h1 className="mt-2 mb-4 font-display text-[21px] font-bold tracking-[-0.02em] text-admin-ink">
-          {segment ? segment.name : 'New segment'}
-        </h1>
-        <SegmentEditor
-          segment={segment}
-          knownTags={subscribers.tags.map((tag) => tag.name)}
-          mayWrite={mayWrite}
-        />
-      </div>
-    </main>
+    <AdminPage width="medium">
+      <BackLink href="/admin/subscribers/segments/">Back to segments</BackLink>
+
+      <PageHeader
+        eyebrow="Segment"
+        title={segment ? segment.name : 'New segment'}
+        description={
+          segment
+            ? [
+                segment.campaignCount > 0
+                  ? `Used by ${String(segment.campaignCount)} ${segment.campaignCount === 1 ? 'campaign' : 'campaigns'}`
+                  : 'Not used by a campaign yet',
+                `last edited ${edited(segment.updatedAt)}`,
+              ].join(' · ')
+            : 'Choose who this segment reaches. The count on the right follows the rules as you write them.'
+        }
+      />
+
+      <SegmentEditor segment={segment} knownTags={subscribers.tags.map((tag) => tag.name)} mayWrite={mayWrite} />
+    </AdminPage>
   );
+}
+
+function edited(iso: string): string {
+  return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 }

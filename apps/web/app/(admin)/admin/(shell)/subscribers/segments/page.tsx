@@ -2,6 +2,9 @@ import { adminSegmentListSchema, canWrite } from '@calwebtech/shared';
 import Link from 'next/link';
 import { AudienceTabs } from '@/components/admin/audience/audience-tabs';
 import { describeRules } from '@/components/admin/audience/describe-rules';
+import { PlusIcon, SubscribersIcon } from '@/components/admin/icons';
+import { AdminPage, EmptyState, PageHeader } from '@/components/admin/ui/page';
+import { LIST, LIST_ROW, button } from '@/components/admin/ui/styles';
 import { adminGet } from '@/lib/admin/api';
 import { requireModule } from '@/lib/admin/session';
 
@@ -17,63 +20,81 @@ export const dynamic = 'force-dynamic';
 export default async function AdminSegmentsPage() {
   const user = await requireModule('subscribers', 'read');
   const list = await adminGet('/admin/segments', adminSegmentListSchema);
+  const mayWrite = canWrite(user.role, 'subscribers');
 
   return (
-    <main className="min-h-0 flex-1 overflow-auto px-4 py-5">
-      <div className="mx-auto w-full max-w-[1100px]">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <h1 className="font-display text-[21px] font-bold tracking-[-0.02em] text-admin-ink">Segments</h1>
-          {canWrite(user.role, 'subscribers') ? (
-            <Link
-              href="/admin/subscribers/segments/new/"
-              className="h-8 rounded-[4px] bg-primary px-3 text-[12.5px] leading-8 font-semibold text-white hover:bg-admin-primaryh"
-            >
+    <AdminPage>
+      <PageHeader
+        eyebrow="Sales"
+        title="Segments"
+        count={list.items.length}
+        description="A segment is a set of rules that picks out part of your list, not a fixed list of names: it is counted again every time it is opened and again when a campaign is sent."
+        actions={
+          mayWrite ? (
+            <Link href="/admin/subscribers/segments/new/" className={button('primary')}>
+              <PlusIcon className="size-4" />
               New segment
             </Link>
-          ) : null}
-        </div>
-        <p className="mt-0.5 mb-4 text-[12.5px] text-admin-body">
-          A segment is a set of rules, not a list. It is counted again every time it is opened and again when a campaign
-          is sent.
-        </p>
+          ) : null
+        }
+      />
 
-        <AudienceTabs current="segments" />
+      <AudienceTabs current="segments" />
 
+      <div className={LIST}>
         {list.items.length === 0 ? (
-          <p className="py-12 text-center text-[13px] text-admin-body">No segments yet.</p>
+          <EmptyState
+            icon={<SubscribersIcon className="size-5" />}
+            title="No segments yet"
+            actions={
+              mayWrite ? (
+                <Link href="/admin/subscribers/segments/new/" className={button('primary')}>
+                  <PlusIcon className="size-4" />
+                  New segment
+                </Link>
+              ) : null
+            }
+          >
+            A segment picks subscribers by rules: a tag they carry, the page they signed up on, or how long ago they
+            joined. Create one to send a campaign to part of your list rather than all of it.
+          </EmptyState>
         ) : (
-          <ul className="border-t border-admin-line">
+          <ul className="divide-y divide-admin-line2">
             {list.items.map((segment) => (
-              <li key={segment.id} className="border-b border-admin-line py-3">
-                <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+              <li key={segment.id} className={LIST_ROW}>
+                <div className="flex min-w-0 flex-1 basis-60 flex-col gap-1">
                   <Link
                     href={`/admin/subscribers/segments/${segment.id}/`}
-                    className="text-[13px] font-semibold text-admin-ink hover:underline"
+                    className="text-[14.5px] font-semibold text-ink-invert before:absolute before:inset-0"
                   >
                     {segment.name}
                   </Link>
-                  <span className="ms-auto text-[12px] font-semibold text-admin-body tabular-nums">
-                    {`${segment.count.toLocaleString()} ${segment.count === 1 ? 'subscriber' : 'subscribers'}`}
-                  </span>
+                  {segment.description ? (
+                    <p className="line-clamp-2 text-[13.5px] text-ink-invert-muted">{segment.description}</p>
+                  ) : null}
+                  <p className="text-[12.5px] text-admin-muted">
+                    {[
+                      describeRules(segment.rules),
+                      segment.campaignCount > 0
+                        ? `used by ${String(segment.campaignCount)} ${segment.campaignCount === 1 ? 'campaign' : 'campaigns'}`
+                        : 'not used by a campaign yet',
+                    ].join(' · ')}
+                  </p>
                 </div>
-                <p className="mt-1 text-[11.5px] text-admin-muted">
-                  {[
-                    describeRules(segment.rules),
-                    segment.campaignCount > 0
-                      ? `used by ${String(segment.campaignCount)} ${segment.campaignCount === 1 ? 'campaign' : 'campaigns'}`
-                      : null,
-                  ]
-                    .filter(Boolean)
-                    .join(' · ')}
-                </p>
-                {segment.description ? (
-                  <p className="mt-1.5 line-clamp-2 text-[12.5px] text-admin-body">{segment.description}</p>
-                ) : null}
+                <div className="flex shrink-0 items-baseline gap-1.5 sm:flex-col sm:items-end sm:gap-0">
+                  <span className="font-display text-[22px] leading-none font-extrabold tracking-[-0.02em] text-ink-invert tabular-nums">
+                    {segment.count.toLocaleString('en-GB')}
+                  </span>
+                  <span className="text-[12px] text-admin-muted">{segment.count === 1 ? 'subscriber now' : 'subscribers now'}</span>
+                </div>
+                <span aria-hidden className="text-admin-muted max-sm:hidden">
+                  →
+                </span>
               </li>
             ))}
           </ul>
         )}
       </div>
-    </main>
+    </AdminPage>
   );
 }
