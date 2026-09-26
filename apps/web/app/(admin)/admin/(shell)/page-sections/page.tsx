@@ -7,7 +7,7 @@ export default async function PageSectionsPage() {
     <ModuleStub
       group="Content"
       title="Page sections"
-      note="Not in this pass. Page sections are how the announcement bar and the static blocks change without a deploy."
+      note="Page sections will let you change the announcement bar and the fixed blocks that appear across the site — the parts that are not a service, an industry or a case study — without asking a developer."
     />
   );
 }
