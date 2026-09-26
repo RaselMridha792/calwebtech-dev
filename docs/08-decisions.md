@@ -1120,14 +1120,71 @@ Dragging the handle across one laptop turns the old site into the new.
 
   Tests: web 465, shared 259, API 276.
 
+## 66. The owner's answers of 2026-09-26
+
+*2026-09-26.* The owner answered the questions left open by decisions 56 to 65 in one sitting.
+Each answer, and what it changed:
+
+- **The database-first families are on in production:**
+  `CONTENT_DATABASE_FIRST=services,industries,work,home,thank-you`. The deploy's import had
+  already run each family. The visible text of 27 pages was captured before and after the
+  switch: the homepage, `/industries/` and its twelve pages, `/work/` and its five case
+  studies, and the seven thank-you pages.
+  - 16 are identical.
+  - The other 11 differ only in their related cards: a service's summary as the database
+    holds it, a tag's capitalisation, an image's alt text. Word, link and image counts are
+    unchanged, and every sampled image answers 200.
+
+  **From now on these five families are edited from the dashboard.** A change to their
+  snapshot files still reaches a new or empty database through the import, and the tests, but
+  never the live site. The env file from before the switch is kept on the server
+  (`production.env.bak-20260926-113954`) for a rollback.
+- **The floating "Start a project" button goes to `/start-a-project/`.** It is `floatingCta`
+  in the homepage copy, so the owner changes it from `/admin/page-copy/`.
+- **Search is linked from the footer.** Also homepage copy: a "Search" link to `/search/` among
+  the footer's resources.
+- **Monitoring (Task 6.3) waits until just before launch, and off-site backups (Task 6.4) wait
+  too.** No provider is chosen for either.
+- **No AI feature yet.** When one comes, lead and subscriber data may be sent to the provider in
+  use, in full: names, email addresses and messages included. This answers the question
+  decision 64 left with the owner. It sends nothing by itself; each feature's decision still
+  says what it sends.
+- **`navy-900-invert` stays as it is.** Its classes draw nothing, and the owner is content with
+  how those sections look.
+- **The demo proof stays until the owner supplies the real one**: client names, figures,
+  testimonials and portraits. Every page stays noindex until then.
+- **The comparison's pictures are right and its words are demo.** The client is "HelloWay", as
+  in the pictures, not "Halloway Group". The three figures (6.8s to 1.6s, 71% to 38%, 9 to 54)
+  are invented and come out; `beforeAfterViewSchema` sets only a maximum, so an empty list is
+  valid.
+  - The name and figures are proof, in the snapshot: `home.json`'s `beforeAfter` and
+    `work/before-and-after.json`.
+  - The sentence that introduces them, `content.beforeAfter.intro` ("Here is Halloway Group's
+    homepage…"), is homepage copy, which production now reads from the database.
+  - Untouched: the landing page's comparison, which keeps its drawn mock-ups and its own
+    figures, and the video testimonial credited to Halloway Group, which is demo proof.
+- **The service-by-city matrix (Task 3.2) is wanted.**
+- **Given to the collaborator** in `docs/15-next-tasks.md`:
+  - the comparison's words;
+  - `settings-cli` writing to the audit log;
+  - a report of where start-a-project briefs are abandoned;
+  - editing a case study's quote and video testimonial, and `/before-and-after/`, from the
+    dashboard;
+  - an outbox for lead and booking emails;
+  - the service-by-city matrix.
+- **Already fixed:** the sidebar no longer marks Dashboard as the current page on every
+  screen. The new shell (decision 63, `9baf7d6`) matches `/admin/` exactly; its Open entry
+  is removed.
+
 ## Open
 
 - **Nothing reports abandonment yet.** The drop-off per step is in the data (each draft lead's
   step and its `draft_*` activities) but no screen counts it; the leads inbox shows an
   unfinished brief as an ordinary new lead. A small report in the dashboard, or a filter for
-  unfinished briefs, would make the gate visible to the owner.
+  unfinished briefs, would make the gate visible to the owner (docs/15, task 3).
 - **The floating "Start a project" button goes to `/book-a-consultation/`**, not to this page
-  (`floatingCta` in the homepage copy). That is the owner's content, so it was left.
+  (`floatingCta` in the homepage copy). The owner chose `/start-a-project/` (decision 66) and
+  changes it from the page copy screen.
 
 - **The article block's privacy line still mentions a name.** `insights.copy`'s
   `newsletter.privacyNote` reads "Your name and email are stored in our own database…", and
@@ -1166,7 +1223,8 @@ Dragging the handle across one laptop turns the old site into the new.
   confirmation email should come before the first real campaign; it needs email to be
   sending, which production does not do today.
 
-- The approved demo proof gives two names two identities. "Priya Raman" is Calwebtech's
+- **The owner will supply the real proof** (decision 66); every page stays noindex until then.
+  The approved demo proof gives two names two identities. "Priya Raman" is Calwebtech's
   Design Lead on the landing page and Truvia Labs' VP Marketing in a testimonial. "Dana
   Whitfield" is Calwebtech's Delivery Manager and Halloway Group's Operations Lead. Several
   portrait photos are reused between a client and a team member. The owner decides which
@@ -1201,27 +1259,25 @@ Dragging the handle across one laptop turns the old site into the new.
   Switching it on earlier fails every push to `main`. The bootstrap script prints them.
 - The owner's server has 4 GB, which runs one stack. Staging and production side by side
   need 8 GB or a second server.
-- **Turning the database-first families on in production is the owner's step.** Services,
-  industries, case studies (`work`), the homepage copy (`home`) and the thank-you copy
-  (`thank-you`) can each read the database first (decisions 44, 58 and 59). Each needs the
-  deploy's import to have run its family on that database first, then its name in
-  `CONTENT_DATABASE_FIRST`; production names `services` alone today. Until a family is named,
-  what the dashboard saves for it is stored and audited but the site keeps its snapshot, and the
-  page copy screen says so beside each row.
-- **The comparison's words name another client** (decision 65). The pictures show "HelloWay",
-  a travel site. The text beside them, and on `/before-and-after/`, says "Halloway Group's
-  homepage", with its figures (6.8s to 1.6s, 71% to 38%, 9 to 54). The words and figures are
-  the owner's. Whether HelloWay is Halloway Group, and whether those figures are this
-  redesign's, is the owner's to say. Like Northmark's picture, where the two images came from
-  and under what licence is not recorded.
+- **Production reads all five database-first families from the database** (decision 66):
+  services, industries, case studies (`work`), the homepage copy (`home`) and the thank-you
+  copy (`thank-you`). Their snapshot files no longer reach the live site; a change to their
+  words is made from the dashboard, and a PR that changes one of those snapshots says which
+  dashboard edit production needs. A new family is named in `CONTENT_DATABASE_FIRST` only
+  after the deploy's import has run it on that database.
+- **The comparison's words name another client** (decision 65). The owner answered on
+  2026-09-26 (decision 66): the client is "HelloWay" and the figures are invented. The snapshot
+  side is docs/15, task 1; the homepage's introducing sentence is the owner's edit on the page
+  copy screen. Like Northmark's picture, where the two images came from and under what licence
+  is not recorded.
 - **`navy-900-invert` is not a token**, and a dozen marketing components use it in a
   background class (`bg-navy-900-invert/5` to `/95`), which therefore draws nothing. Among
   them are the landing page's sticky header, the reviews table and several bordered notes.
-  Decision 65 fixed only the slider's label. Replacing the rest changes how those sections
-  look, which is the owner's call (RULES.md, section 1).
-- **AI is connected but used by nothing yet** (decision 64). Which feature comes first is the
-  owner's choice, as is whether any lead or subscriber data may be sent to a provider (CLAUDE.md,
-  "Ask before deciding"). Production can store keys today through its `AUTH_SECRET`; setting a
+  Decision 65 fixed only the slider's label. The owner chose to leave the rest as it is
+  (decision 66).
+- **AI is connected but used by nothing yet** (decision 64). The owner has no feature in mind
+  yet, and has said lead and subscriber data may be sent to a provider in full when one comes
+  (decision 66). Production can store keys today through its `AUTH_SECRET`; setting a
   dedicated `CREDENTIALS_KEY` is better (docs/11-vps-deploy.md, "AI providers").
 - **The dashboard has one theme, the dark one** (decision 63). A light theme would need light
   values for `result` and `danger` inside `[data-theme='admin']`, which is a token decision for
@@ -1229,10 +1285,10 @@ Dragging the handle across one laptop turns the old site into the new.
 - **Page sections and Forms and routing are still placeholders** (decision 63 restyled them,
   nothing more). The enquiry types behind the contact form are live data that a Forms screen
   could edit.
-- **The service-by-city matrix (task 3.2) is not built** and waits for the owner to say whether
-  it is still wanted (docs/14, task 7). The locations index and the two city pages are live.
-- **Nothing links to `/search/` yet** (decision 62). A search link in the header or footer is a
-  change to the homepage copy, the owner's to make from the page copy screen.
+- **The service-by-city matrix (task 3.2) is not built.** The owner wants it (decision 66); it
+  is docs/15, task 6. The locations index and the two city pages are live.
+- **Nothing links to `/search/` yet** (decision 62). The owner chose the footer (decision 66),
+  a change to the homepage copy they make from the page copy screen.
 - **The antispam figures are first guesses** (decision 61): two seconds before a lead or a
   booking, five leads an hour and three bookings a day per address. Once the site takes real
   enquiries, the `form_resubmitted` and refused-submission patterns will say whether they are
@@ -1242,12 +1298,9 @@ Dragging the handle across one laptop turns the old site into the new.
   studies that must stay first as Featured.
 - **Not editable from the dashboard yet:** a case study's quote and video testimonial (their own
   records), the proof band's figures and rating (shared with the homepage), and
-  `/before-and-after/`, which keeps its snapshot.
-- **In the dashboard's sidebar, Dashboard is marked as the current page on every screen**,
-  because its link (`/admin/`) is the start of every other one (`components/admin/sidebar.tsx`,
-  `isCurrent`). Seen while checking task 4; left as it was.
-- Content is still edited by changing a snapshot and deploying (decision 43). Families move
-  into the database one at a time once the admin exists (Task 5.3). Each needs its mapper
+  `/before-and-after/`, which keeps its snapshot. The first and the last are docs/15, task 4.
+- Outside the five database-first families, content is still edited by changing a snapshot
+  and deploying (decision 43). Families move into the database one at a time. Each needs its mapper
   extended or its snapshot corrected where the two disagree, and an owner's decision for
   every conflict between snapshots; `wip/content-import-views` has the importers for proof,
   the homepage and the landing page, the view-equality harness, and the list of differences
@@ -1266,7 +1319,9 @@ Dragging the handle across one laptop turns the old site into the new.
   rate limit with everyone). The real domain is a `SITE_HOST` change and a redeploy.
 - Of the `ops` Compose profile, `backup` is deployable and started by hand once the env
   file has a restic destination (the owner deferred the choice of provider); Umami still
-  needs its own database (Task 6.3). A deploy does not move `backup` to the new tag.
+  needs its own database (Task 6.3). A deploy does not move `backup` to the new tag. On
+  2026-09-26 the owner put both off: monitoring until just before launch, backups for now
+  (decision 66).
 - The `media` volume is mounted only by `backup`; the API does not write uploads there
   until the media library exists (Task 5.3), so that snapshot is empty for now.
 - Every container reads the one stack env file, so the backup credentials are visible to
@@ -1278,9 +1333,9 @@ Dragging the handle across one laptop turns the old site into the new.
 - Emails are queued after the lead commits. If the API process dies between the commit and
   the enqueue, the lead is stored but its emails are not queued, and nothing marks it. A
   transactional outbox would close that gap. Campaign sends do not have it (decision 51:
-  rows first, requeued by the sweep); lead and booking emails still do.
-- Settings changed with `settings-cli` are not written to the audit log yet. The admin
-  settings screen (Task 5.3) must write the audit entry.
+  rows first, requeued by the sweep); lead and booking emails still do (docs/15, task 5).
+- Settings changed with `settings-cli` are not written to the audit log yet (docs/15, task 2).
+  The page copy screen writes its own (decision 59).
 - Task 5.1 is complete on `tumit` (decision 60): the `.ics` entry, the 24h and 1h reminders
   and the signed reschedule and cancel pages were the last of it. None of the booking emails
   reaches anyone until production sends email (Task 6.2); until then the reminders are

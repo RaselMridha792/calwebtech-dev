@@ -1,5 +1,7 @@
 # 14. Remaining work — for the collaborator on `tumit`
 
+> **Finished and live (PR #32, decision 66).** The next tasks are in `docs/15-next-tasks.md`.
+
 Written 2026-09-25. You work on `tumit`, push there, and open PRs from `tumit` against `main`.
 You do not merge your own PR and you do not deploy; the owner verifies and ships. Everything
 in `docs/13-collaborator-handoff.md` about reading order, rules and workflow still applies.
