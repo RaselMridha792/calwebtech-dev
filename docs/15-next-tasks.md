@@ -57,6 +57,8 @@ photographs of a site called HelloWay, with three figures nobody measured.
   - any test fixture that uses the name as sample data.
 
 ### 2. `settings-cli` writes to the audit log
+**Done on `tumit`, 2026-09-26 (decision 68). No dashboard edits needed.**
+
 Open entry in docs/08. `CLAUDE.md` wants an audit entry for every content change.
 - Every `set` in `apps/api/src/settings-cli.ts` should write one: the key, and what changed.
 - Use the same audit writer the page copy screen uses (decision 59), so both appear in one

@@ -1211,6 +1211,50 @@ Each answer, and what it changed:
 
   Web unit tests pass (465).
 
+## 68. `settings-cli` writes to the audit log
+
+*2026-09-26.* Task 2 of `docs/15-next-tasks.md`. CLAUDE.md asks for an audit entry on every
+content change, and the command line changed settings without one.
+
+- **The same writer.** The row the dashboard writes goes through one function now,
+  `writeAudit` (`apps/api/src/auth/audit-writer.ts`), which `AuditService.record` calls.
+  `settings-cli` calls it too. It lives outside the Nest service so a command line, which
+  has no API process, can use it without loading one.
+- **What a `set` records:**
+  - the action the settings screen writes, `setting.changed`, on the `Setting` whose key was
+    set, so both show in one place on the audit screen;
+  - no user, since the actor is the command line, and `via: 'settings-cli'` in the entry, as
+    `admin-cli` marks its own;
+  - the top-level fields that changed, the same comparison the page copy screen records,
+    moved to `apps/api/src/common/changed-fields.ts` so both use one;
+  - the value before and after.
+
+  The setting and its row are written in one transaction, so a change is never made
+  unrecorded. A `get`, and a value the schema refuses, write nothing.
+- **No secret reaches the log.** A setting can hold a secret. Before either value is written,
+  any field whose name reads like a secret, at any depth, has its value replaced with
+  `[redacted]`: secret, token, password, passphrase, API key, private key, credential,
+  signing. The field's name stays, so the log still says it changed. None of the five
+  settings the command line can set holds a secret today; the rule is for the one that will.
+- **The audit screen names the tool.** An entry with no user but a `via` reads "Command line
+  (settings-cli)" where it used to read "No signed-in user". The same goes for
+  `admin-cli`'s, which carry `via: 'admin-cli'`.
+- **The command** moved into `apps/api/src/settings/settings-command.ts`, so it can be tested
+  against a database. `settings-cli.ts` is the process around it: the env file, the client,
+  and the output. Its usage and output are unchanged.
+- **Verified.**
+  - Unit tests: which fields changed, whatever the key order; a secret-named field redacted
+    at any depth, with its name kept and the original untouched.
+  - An integration test on a real database:
+    - two sets leave the setting and two rows, the second with its before, `via`, the
+      changed field and its after;
+    - a larger setting records only the field that changed;
+    - a get, a refused value and an unknown key write nothing.
+  - The page copy integration test still passes on the moved comparison. API unit tests: 278.
+  - On the local stack, `node dist/settings-cli.js set site.indexing` wrote the row, and the
+    audit screen showed "Command line (settings-cli)" with its before and after, at 360 and
+    1440, with no overflow and no console errors.
+
 ## Open
 
 - **Nothing reports abandonment yet.** The drop-off per step is in the data (each draft lead's
@@ -1373,7 +1417,6 @@ Each answer, and what it changed:
   the enqueue, the lead is stored but its emails are not queued, and nothing marks it. A
   transactional outbox would close that gap. Campaign sends do not have it (decision 51:
   rows first, requeued by the sweep); lead and booking emails still do (docs/15, task 5).
-- Settings changed with `settings-cli` are not written to the audit log yet (docs/15, task 2).
   The page copy screen writes its own (decision 59).
 - Task 5.1 is complete on `tumit` (decision 60): the `.ics` entry, the 24h and 1h reminders
   and the signed reschedule and cancel pages were the last of it. None of the booking emails
