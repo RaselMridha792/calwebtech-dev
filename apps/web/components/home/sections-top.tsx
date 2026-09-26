@@ -98,12 +98,7 @@ export function CapabilityBand({ capability }: { capability: Content['capability
         ) : null}
         <p className="mt-8 max-w-[62ch] text-[16.5px] leading-relaxed text-ink-invert-muted">{capability.body}</p>
         <div className="mt-9 flex flex-wrap gap-3">
-          <a
-            href={capability.primaryCta.href}
-            className="inline-flex items-center bg-canvas-raised px-6 py-3.5 font-semibold text-ink hover:bg-canvas-sunken"
-          >
-            {capability.primaryCta.label}
-          </a>
+          <ActionLink link={capability.primaryCta} tone="cream" />
           {showreel ? (
             <Showreel label={showreel.label} videoUrl={showreel.videoUrl} poster={showreel.poster?.src ?? null} />
           ) : null}
@@ -453,12 +448,7 @@ export function MidCta({ midCta }: { midCta: Content['midCta'] }) {
           </h2>
         </div>
         <div className="flex flex-wrap gap-3">
-          <a
-            href={midCta.primaryCta.href}
-            className="inline-flex h-14 items-center bg-navy-900 px-7 text-[16px] font-semibold text-ink-invert hover:bg-navy-700"
-          >
-            {midCta.primaryCta.label}
-          </a>
+          <ActionLink link={midCta.primaryCta} className="h-14 px-7" />
           {midCta.secondaryCta ? (
             <a
               href={midCta.secondaryCta.href}
@@ -518,14 +508,7 @@ export function BeforeAfterHome({
               ))}
             </dl>
           ) : null}
-          {beforeAfter.cta ? (
-            <a
-              href={beforeAfter.cta.href}
-              className="mt-8 inline-flex h-12 items-center bg-canvas-raised px-6 font-semibold text-ink hover:bg-canvas-sunken"
-            >
-              {beforeAfter.cta.label}
-            </a>
-          ) : null}
+          {beforeAfter.cta ? <ActionLink link={beforeAfter.cta} tone="cream" className="mt-8" /> : null}
         </div>
         <div className="lg:col-span-8" {...reveal(1)}>
           {comparison ? (
