@@ -6,14 +6,6 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /*
-   * The admin is a dark shell inside a light app. Its own ground is set on the wrapper,
-   * but the body behind it shows through an overscroll bounce, so it follows.
-   */
-  body:has([data-theme='admin']) {
-    background-color: var(--color-admin-ground);
-  }
-
   h1,
   h2,
   h3,
@@ -54,6 +46,17 @@
    * sections render at their real height, so anchors land in the wrong place. In-page
    * links are smoothed by components/motion/anchor-scroll.tsx instead.
    */
+}
+
+/*
+ * The admin is a dark shell inside a light app. Its own ground is set on the wrapper, but
+ * the body behind it shows wherever the wrapper does not reach (an overscroll bounce, a
+ * short window), so it follows. Outside any layer on purpose: the body carries the site's
+ * `bg-canvas` utility, which a rule in the base layer can never beat, and cream showed
+ * under the dashboard.
+ */
+body:has([data-theme='admin']) {
+  background-color: var(--color-admin-ground);
 }
 
 /*
