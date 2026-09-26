@@ -664,6 +664,7 @@ model Lead {
   notes       LeadNote[]
   uploads     FileUpload[]
   bookings    Booking[]
+  emailOutbox EmailOutbox[]
 
   @@index([type, status, createdAt])
   @@index([email])
@@ -806,6 +807,7 @@ model Booking {
   contact          Contact?         @relation(fields: [contactId], references: [id])
   lead             Lead?            @relation(fields: [leadId], references: [id])
   events           BookingEvent[]
+  emailOutbox      EmailOutbox[]
 
   /// Database-level double-booking prevention. Client-side checks are not sufficient.
   @@unique([consultationTypeId, slotStartsAt])
@@ -975,4 +977,43 @@ model WebhookLog {
   processed  Boolean  @default(false)
   error      String?
   receivedAt DateTime @default(now())
+}
+
+// ---------------------------------------------------------------- email outbox
+
+/// An email a lead or a booking sends (docs/08-decisions.md, 71). It is written in the same
+/// transaction as the lead or the booking, so a process that dies between the commit and the
+/// queue loses nothing: the API queues the row at once, and the worker's sweep queues any row
+/// still pending. Its job id and the provider's idempotency key are `outbox-<id>`, and the
+/// worker skips a row already sent, so a row is one email however often it is queued.
+model EmailOutbox {
+  id          String    @id @default(cuid())
+  /// The email job's template: `lead-confirmation`, `booking-reminder` and so on.
+  template    String
+  /// The whole job, as `emailJobSchema` (packages/shared) reads it: what the email says.
+  payload     Json
+  /// When it is due: at once, or a reminder's time before the call.
+  sendAt      DateTime  @default(now())
+  /// When it was first added to the queue. Null means it never reached Redis.
+  queuedAt    DateTime?
+  sentAt      DateTime?
+  /// The provider's message id, or `log-…` under the log transport.
+  providerId  String?
+  /// Withdrawn before it was sent: a reminder for a time the call no longer has.
+  cancelledAt DateTime?
+  /// Given up on: every attempt failed, or the payload can never be sent.
+  failedAt    DateTime?
+  /// Why it was withdrawn or given up on.
+  error       String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  leadId    String?
+  lead      Lead?    @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  bookingId String?
+  booking   Booking? @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  @@index([sentAt, cancelledAt, failedAt])
+  @@index([leadId])
+  @@index([bookingId, template])
 }
