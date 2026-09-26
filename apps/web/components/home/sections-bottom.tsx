@@ -4,7 +4,7 @@ import { BackdropImage } from '../ui/brand';
 import { CalendarIcon, ShieldIcon, TickIcon } from '../ui/icons';
 import { PillBadge, reveal } from '../ui/primitives';
 import { ResponsiveImage } from '../ui/responsive-image';
-import { ActionLink, EmptyNote, SectionHead, byline, h2Dark, h2Light } from './parts';
+import { ActionLink, EmptyNote, SectionHead, TextLink, byline, h2Dark, h2Light } from './parts';
 import { Showreel } from './showreel';
 
 type Content = HomePageContent;
@@ -121,28 +121,36 @@ export function TechnologyProof({
             <dl className="mt-8 grid grid-cols-2 gap-6 border-t border-hairline pt-7">
               {technology.stats.map((stat) => (
                 <div key={stat.label} className="flex flex-col-reverse justify-end">
-                  <dt className="mt-2 text-[14px]">{stat.label}</dt>
-                  <dd className="font-display text-[30px] leading-none font-extrabold text-ink">{stat.value}</dd>
+                  <dt className="body-sm mt-2 text-ink-muted">{stat.label}</dt>
+                  <dd className="display-md leading-none text-ink">{stat.value}</dd>
                 </div>
               ))}
             </dl>
           ) : null}
-          {technology.cta ? (
-            <a
-              href={technology.cta.href}
-              className="mt-8 inline-flex h-12 items-center border border-hairline bg-canvas-raised px-6 font-semibold text-ink hover:border-ink"
-            >
-              {technology.cta.label}
-            </a>
-          ) : null}
+          {technology.cta ? <TextLink link={technology.cta} className="mt-9" /> : null}
         </div>
         <div className="lg:col-span-7" {...reveal(1)}>
           {groups.length > 0 ? (
-            <ul className="grid gap-5 sm:grid-cols-2">
-              {groups.map((group) => (
-                <li key={group.category} className="border border-hairline bg-canvas-raised p-6">
-                  <h3 className="font-display text-[17px] font-bold text-ink">{group.category}</h3>
-                  <p className="mt-3 text-[14.5px] leading-relaxed">{group.names.join(', ')}</p>
+            // The stack as rows on hairlines, a layer to a row: the layer in type, its tools in a
+            // dotted line of meta. A row warms and its numeral turns champagne under the pointer.
+            <ul className="border-t border-hairline">
+              {groups.map((group, index) => (
+                <li
+                  key={group.category}
+                  className="group grid gap-x-6 gap-y-2 border-b border-hairline py-5 transition-colors duration-200 hover:bg-canvas-raised sm:grid-cols-[3rem_11rem_1fr] sm:items-baseline"
+                >
+                  <span className="meta text-ink-muted transition-colors duration-150 group-hover:text-gold-ink max-sm:hidden">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <h3 className="heading-sm text-ink">{group.category}</h3>
+                  <ul className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[14.5px] text-ink-muted">
+                    {group.names.map((name, position) => (
+                      <li key={name} className="flex items-center gap-2.5">
+                        {position > 0 ? <span aria-hidden className="h-1 w-1 bg-hairline-strong" /> : null}
+                        {name}
+                      </li>
+                    ))}
+                  </ul>
                 </li>
               ))}
             </ul>
