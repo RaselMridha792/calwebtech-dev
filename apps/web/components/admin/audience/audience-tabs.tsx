@@ -1,4 +1,6 @@
-import Link from 'next/link';
+import { SUBSCRIBER_STATUS_LABELS, type SubscriberStatus } from '@calwebtech/shared';
+import { LinkTabs } from '@/components/admin/ui/page';
+import { PILL } from '@/components/admin/ui/styles';
 
 const TABS = [
   { key: 'subscribers', href: '/admin/subscribers/', label: 'Subscribers' },
@@ -9,21 +11,29 @@ const TABS = [
 /** The three screens of the subscribers module, one sidebar entry between them. */
 export function AudienceTabs({ current }: { current: (typeof TABS)[number]['key'] }) {
   return (
-    <nav aria-label="Subscribers module" className="mb-4 flex flex-wrap gap-x-5 border-b border-admin-line">
-      {TABS.map((tab) => (
-        <Link
-          key={tab.key}
-          href={tab.href}
-          aria-current={current === tab.key ? 'page' : undefined}
-          className={`-mb-px border-b-2 py-2 text-[12.5px] font-semibold ${
-            current === tab.key
-              ? 'border-admin-edge text-admin-ink'
-              : 'border-transparent text-admin-body hover:text-admin-ink'
-          }`}
-        >
-          {tab.label}
-        </Link>
-      ))}
-    </nav>
+    <LinkTabs
+      label="Subscribers module"
+      tabs={TABS.map((tab) => ({ href: tab.href, label: tab.label, current: current === tab.key }))}
+    />
+  );
+}
+
+/**
+ * A subscriber's state as a pill with a dot, the way the inbox marks a lead. Teal is the
+ * one affirmative mark — an address that can be mailed; the two states that stop the mail
+ * share the quiet ring and the muted fill, so the word does the telling.
+ */
+const DOT: Record<SubscriberStatus, string> = {
+  active: 'rounded-full bg-result',
+  unsubscribed: 'rounded-full bg-admin-surface ring-2 ring-admin-muted ring-inset',
+  suppressed: 'rounded-full bg-admin-muted',
+};
+
+export function SubscriberStatusPill({ status }: { status: SubscriberStatus }) {
+  return (
+    <span className={`${PILL} pl-2`}>
+      <span aria-hidden className={`size-2 shrink-0 ${DOT[status]}`} />
+      {SUBSCRIBER_STATUS_LABELS[status]}
+    </span>
   );
 }
