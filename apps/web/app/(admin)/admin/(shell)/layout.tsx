@@ -16,6 +16,7 @@ import {
   RoutingIcon,
   SectionsIcon,
   SettingsIcon,
+  SparkIcon,
   SubscribersIcon,
   TeamIcon,
 } from '@/components/admin/icons';
@@ -73,6 +74,7 @@ const GROUPS: { label: string | null; routes: ModuleRoute[] }[] = [
     routes: [
       { module: 'formsRouting', href: '/admin/forms/', label: 'Forms and routing', icon: <RoutingIcon />, keywords: 'enquiry mailbox' },
       { module: 'settings', href: '/admin/settings/', label: 'Settings', icon: <SettingsIcon />, keywords: 'contact search engines indexing' },
+      { module: 'ai', href: '/admin/ai/', label: 'AI', icon: <SparkIcon />, keywords: 'openai claude gemini api key model' },
     ],
   },
   {
