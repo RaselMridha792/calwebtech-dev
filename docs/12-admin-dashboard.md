@@ -50,6 +50,7 @@ enforced **server-side on every route**, never by hiding buttons.
 | Page sections | full | full | — | read |
 | Forms and routing | full | full | — | read |
 | Team and roles | full | — | — | — |
+| AI connections | full | — | — | — |
 | Settings | full | — | — | — |
 | Audit log | full | — | — | — |
 | Export | full | full | full | — |
@@ -217,6 +218,15 @@ The five keys that `settings-cli` changes today — `site.contact`, `site.proof`
 `leads.notificationRecipients`, `homepage.indexing`, `site.indexing` — plus the indexing
 switches presented as what they are: "show this site to search engines". Every change
 writes an audit entry, which `settings-cli` does not do today.
+
+## 11a. AI
+
+**Built** (`docs/08-decisions.md`, 64), at `/admin/ai/`, owner only.
+- Connect any AI provider with a key entered here, stored encrypted and never shown again.
+- Choose its model, and which connection the site uses.
+- Try any connection on a test bench that shows the reply, the model, the time and the tokens.
+
+Contract: `packages/shared/src/{ai-providers,admin-ai}.ts`. API: `apps/api/src/admin/ai/`.
 
 ## 12. Audit log
 
