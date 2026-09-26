@@ -140,3 +140,21 @@ export function SidebarIcon({ collapsed, ...props }: IconProps & { collapsed: bo
     />
   );
 }
+
+/** The AI screen: a spark of four points. */
+export function SparkIcon(props: IconProps) {
+  return <Glyph {...props} d="M8 1.5c.4 2.9 1.6 4.1 4.5 4.5-2.9.4-4.1 1.6-4.5 4.5-.4-2.9-1.6-4.1-4.5-4.5 2.9-.4 4.1-1.6 4.5-4.5zm4.5 8.5c.2 1.3.7 1.8 2 2-1.3.2-1.8.7-2 2-.2-1.3-.7-1.8-2-2 1.3-.2 1.8-.7 2-2z" />;
+}
+
+export function EyeIcon({ open, ...props }: IconProps & { open: boolean }) {
+  return (
+    <Glyph
+      {...props}
+      d={
+        open
+          ? 'M1.5 8S4 3.5 8 3.5 14.5 8 14.5 8 12 12.5 8 12.5 1.5 8 1.5 8zM8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4z'
+          : 'M2 2l12 12M6.6 6.6a2 2 0 0 0 2.8 2.8M4.3 4.4C2.6 5.5 1.5 8 1.5 8S4 12.5 8 12.5c1.3 0 2.5-.4 3.5-1M7 3.6c.3 0 .7-.1 1-.1 4 0 6.5 4.5 6.5 4.5s-.6 1.1-1.7 2.3'
+      }
+    />
+  );
+}
