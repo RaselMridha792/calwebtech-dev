@@ -14,6 +14,7 @@ import { cache } from 'react';
 import staticHome from '@/static-content/home.json';
 import staticLanding from '@/static-content/landing-b2b-website-design.json';
 import { apiUrl, findStoredCopy, getView, hasApi, usesSnapshots } from './core';
+import { storedHomepageComparison } from './work';
 
 /*
  * The homepage, campaign landing pages and lead submissions. Site page families keep
@@ -49,9 +50,17 @@ export async function getLandingPage(slug: string): Promise<LandingPageView | nu
 export const getHomePage = cache(async (): Promise<HomePageView> => {
   const view = await getView('/pages/home', homePageViewSchema, staticHome);
   // With `home` database-first, the words come from the dashboard and the proof from the
-  // snapshot (docs/08-decisions.md, 59).
-  const content = await findStoredCopy('home', SETTING_KEYS.homeContent, homePageContentSchema);
-  return content ? { ...view, content } : view;
+  // snapshot (docs/08-decisions.md, 59). With `before-and-after` database-first, the
+  // comparison is the one /before-and-after/ marks for the homepage (decision 70).
+  const [content, comparison] = await Promise.all([
+    findStoredCopy('home', SETTING_KEYS.homeContent, homePageContentSchema),
+    storedHomepageComparison(),
+  ]);
+  return {
+    ...view,
+    ...(content ? { content } : {}),
+    ...(comparison === undefined ? {} : { beforeAfter: comparison }),
+  };
 });
 
 export type LeadPostResult =

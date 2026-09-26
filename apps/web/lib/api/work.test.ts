@@ -1,6 +1,16 @@
-import { workCaseStudyViewSchema, workIndexViewSchema, type WorkIndexView } from '@calwebtech/shared';
+import {
+  homePageViewSchema,
+  homepageComparison,
+  workBeforeAndAfterViewSchema,
+  workCaseStudyViewSchema,
+  workIndexViewSchema,
+  type WorkBeforeAndAfterView,
+  type WorkComparison,
+  type WorkIndexView,
+} from '@calwebtech/shared';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { workCaseStudySnapshots, workIndexSnapshot } from '@/static-content/work';
+import staticHome from '@/static-content/home.json';
+import { workBeforeAndAfterSnapshot, workCaseStudySnapshots, workIndexSnapshot } from '@/static-content/work';
 
 vi.mock('server-only', () => ({}));
 
@@ -80,6 +90,56 @@ describe('the work getters in the launch mode, database first', () => {
     const fetchMock = respond({});
     const { getWorkIndex } = await load('services,industries');
     expect(await getWorkIndex()).toEqual(snapshot);
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+});
+
+describe('/before-and-after/ and the homepage’s comparison, database first (decision 70)', () => {
+  const approved = workBeforeAndAfterViewSchema.parse(workBeforeAndAfterSnapshot);
+  const home = homePageViewSchema.parse(staticHome);
+
+  /** What the API answers after the import, with the comparison edited in the dashboard. */
+  function edited(overrides: Partial<WorkComparison> = {}): WorkBeforeAndAfterView {
+    const [first] = approved.comparisons;
+    if (!first) throw new Error('the before and after snapshot needs a comparison');
+    return {
+      ...approved,
+      comparisons: [
+        { ...first, summary: 'Test summary from the dashboard.', metrics: [{ label: 'Test measure', before: '1', after: '2' }], ...overrides },
+      ],
+    };
+  }
+
+  async function loadBoth(families: string) {
+    const work = await load(families);
+    const index = await import('./index');
+    return { ...work, ...index };
+  }
+
+  it('reads the page from the database, and gives the homepage the comparison it marks', async () => {
+    const database = edited();
+    respond({ '/pages/before-and-after': database, '/pages/copy/home.content': home.content });
+    const { getBeforeAndAfter, getHomePage } = await loadBoth('home,before-and-after');
+
+    expect(await getBeforeAndAfter()).toEqual(database);
+    const page = await getHomePage();
+    expect(page.beforeAfter).toEqual(homepageComparison(database));
+    expect(page.beforeAfter?.metrics).toEqual([{ label: 'Test measure', before: '1', after: '2' }]);
+    // The rest of the homepage's proof is still the snapshot's.
+    expect(page.projects).toEqual(home.projects);
+  });
+
+  it('shows no comparison on the homepage when the database marks none', async () => {
+    respond({ '/pages/before-and-after': edited({ onHomepage: false }) });
+    const { getHomePage } = await loadBoth('before-and-after');
+    expect((await getHomePage()).beforeAfter).toBeNull();
+  });
+
+  it('keeps both snapshots, which agree, while the family is not named', async () => {
+    const fetchMock = respond({});
+    const { getBeforeAndAfter, getHomePage } = await loadBoth('work');
+    expect(await getBeforeAndAfter()).toEqual(approved);
+    expect((await getHomePage()).beforeAfter).toEqual(homepageComparison(approved));
     expect(fetchMock).not.toHaveBeenCalled();
   });
 });
